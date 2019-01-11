@@ -34,6 +34,7 @@
                     android:layout_width="120dp"
                     android:textSize="20dp"
                     android:gravity="center"
+                    android:textColor="#fff"
                     android:layout_height="wrap_content"
                     android:text="Login"/>
             </RelativeLayout>
@@ -53,13 +54,17 @@
                     android:layout_below="@+id/imgsignup"
                     android:layout_width="120dp"
                     android:textSize="20dp"
+                    android:textColor="#fff"
                     android:layout_height="wrap_content"
                     android:gravity="center"
                     android:text="Signup"/>
             </RelativeLayout>
 
         </LinearLayout>
-
+        <ImageView
+            android:src="@drawable/devider"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
         <RelativeLayout
             android:layout_weight="1"
             android:layout_height="0dp"
@@ -79,6 +84,7 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@id/imghome"
                 android:gravity="center"
+                android:textColor="#fff"
                 android:text="Iampro"
                 android:textSize="20dp" />
         </RelativeLayout>

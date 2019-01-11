@@ -30,12 +30,10 @@ public class WelcomeActivity extends AppCompatActivity implements View.OnClickLi
             case R.id.imglogin:
                 Intent i_login = new Intent(WelcomeActivity.this,LoginActivity.class);
                 WelcomeActivity.this.startActivity(i_login);
-                WelcomeActivity.this.finish();
                 break;
             case R.id.imgsignup:
                 Intent i_signup = new Intent(WelcomeActivity.this,SignupActivity.class);
                 WelcomeActivity.this.startActivity(i_signup);
-                WelcomeActivity.this.finish();
                 break;
             case R.id.imghome:
                 Intent i_home = new Intent(WelcomeActivity.this,HomeActivity.class);
