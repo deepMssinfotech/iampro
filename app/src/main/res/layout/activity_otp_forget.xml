@@ -13,7 +13,7 @@
         android:layout_marginBottom="16dp"
         android:layout_marginTop="22dp"
         android:gravity="center_horizontal"
-        android:text="Forgot Password"
+        android:text="OTP process"
         android:textColor="#fff"
         android:textSize="26sp"
         android:textStyle="bold" />
@@ -37,40 +37,74 @@
             android:paddingTop="30dp">
 
             <android.support.design.widget.TextInputLayout
-                android:id="@+id/tilemail"
+                android:id="@+id/tilotp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
                 <EditText
-                    android:id="@+id/etemail"
+                    android:id="@+id/etotp"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
-                    android:drawableLeft="@drawable/ic_action_message"
+                    android:drawableLeft="@drawable/ic_action_mobile"
                     android:drawableTint="#000000"
                     android:singleLine="true"
-                    android:hint="Email ID"
+                    android:hint="Enter OTP"
                     android:inputType="textEmailAddress" />
             </android.support.design.widget.TextInputLayout>
 
-            <TextView
-                android:id="@+id/btnLogin"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="right"
-                android:paddingTop="5dp"
-                android:text="I Know My Password" />
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/tilpassword"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <EditText
+                    android:id="@+id/etpassword"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:singleLine="true"
+                    android:drawableLeft="@drawable/ic_action_key"
+                    android:drawableTint="#000000"
+                    android:hint="New Password"
+                    android:inputType="numberPassword" />
+            </android.support.design.widget.TextInputLayout>
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/tilcpassword"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <EditText
+                    android:id="@+id/etcpassword"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:singleLine="true"
+                    android:drawableLeft="@drawable/ic_action_key"
+                    android:drawableTint="#000000"
+                    android:hint="Confirm Password"
+                    android:inputType="numberPassword" />
+            </android.support.design.widget.TextInputLayout>
+
+
 
 
             <Button
-                android:id="@+id/btnforgetProcess"
+                android:id="@+id/btnprocess"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="22dp"
                 android:background="@drawable/black"
-                android:text="Proceed Now"
+                android:text="Change Password"
                 android:textAllCaps="false"
                 android:textColor="#fff"
                 android:textSize="18sp" />
+            <TextView
+                android:id="@+id/btnResedOTP"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:paddingBottom="5dp"
+                android:text="Resend OTP?" />
         </LinearLayout>
     </RelativeLayout>
 
