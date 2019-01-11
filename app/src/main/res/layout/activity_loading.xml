@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_gravity="center"
+    android:background="#fcfcfd"
     tools:context=".LoadingActivity">
 
 
@@ -14,10 +15,11 @@
         android:gravity="center"
         android:orientation="vertical">
 
-        <ImageView
+        <pl.droidsonroids.gif.GifImageView
             android:id="@+id/imageView2"
-            android:layout_width="150dp"
-            android:layout_height="150dp"
-            android:src="@drawable/iampro" />
+            android:src="@drawable/intros"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
     </LinearLayout>
 </android.support.constraint.ConstraintLayout>
