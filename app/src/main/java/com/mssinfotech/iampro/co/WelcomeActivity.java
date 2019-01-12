@@ -7,12 +7,21 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
+
+import com.mssinfotech.iampro.co.utils.Config;
 import com.mssinfotech.iampro.co.utils.PrefManager;
+import com.squareup.picasso.Picasso;
+
 public class WelcomeActivity extends AppCompatActivity implements View.OnClickListener{
 
-
+    LinearLayout nonloginlayout;
+    RelativeLayout loginlayout;
     SharedPreferences prefrence;
-    ImageView btnsignin,btnsignup,btnhome;
+    ImageView btnsignin,btnsignup,btnhome,imguser;
+    TextView username;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -20,12 +29,25 @@ public class WelcomeActivity extends AppCompatActivity implements View.OnClickLi
         btnsignin = findViewById(R.id.imglogin);
         btnsignup = findViewById(R.id.imgsignup);
         btnhome = findViewById(R.id.imghome);
-
+        username = findViewById(R.id.username);
+        imguser = findViewById(R.id.imguser);
         btnsignin.setOnClickListener(this);
         btnsignup.setOnClickListener(this);
         btnhome.setOnClickListener(this);
-        prefrence = getSharedPreferences("LoginDetails",MODE_PRIVATE);
-        Log.d("userLogin",prefrence.getString("id",""));
+        if(PrefManager.isLogin(this)){
+            loginlayout = findViewById(R.id.loginlayout);
+            loginlayout.setVisibility(View.VISIBLE);
+            nonloginlayout = findViewById(R.id.nonloginlayout);
+            nonloginlayout.setVisibility(View.GONE);
+            username.setText(PrefManager.getLoginDetail(this,"fname"));
+            String avatar=Config.AVATAR_URL+"250/250/"+PrefManager.getLoginDetail(this,"img_url");
+            Picasso.get()
+                    .load(avatar)
+                    .placeholder(R.drawable.iampro)
+                    .error(R.drawable.image)
+                    .into(imguser);
+            Log.d(Config.TAG,avatar);
+        }
     }
 
     @Override
