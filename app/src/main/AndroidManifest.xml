@@ -55,7 +55,10 @@
         <activity android:name=".OtpForgetActivity" />
         <activity android:name=".OtpRegistrationActivity" />
         <activity android:name=".user.AddImageActivity" />
-        <activity android:name=".user.AddVideoActivity"></activity>
+        <activity android:name=".user.AddVideoActivity" />
+        <activity android:name=".user.AddProductActivity" android:label="@string/add_product" />
+        <activity android:name=".user.AddProvideActivity" />
+        <activity android:name=".user.AddDemandActivity"></activity>
     </application>
 
 </manifest>
