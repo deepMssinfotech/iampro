@@ -21,6 +21,7 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.mssinfotech.iampro.co.utils.Config;
 import com.mssinfotech.iampro.co.utils.PrefManager;
+import com.mssinfotech.iampro.co.utils.Validate;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -69,41 +70,19 @@ public class LoginActivity extends AppCompatActivity  implements View.OnClickLis
     public void processLogin(){
         String unamev=etemail.getText().toString();
         String passwordv=etpassword.getText().toString();
-        if (unamev.length()==0||passwordv.length()==0)
-        {
-            Toast.makeText(LoginActivity.this,"Fill required detail and try again...",Toast.LENGTH_LONG).show();
+        if (!Validate.Email(unamev)) {
+            tilemail.setErrorEnabled(true);
+            tilemail.setError("Not a valid email address!");
             return;
-        }
-        else if (unamev.equalsIgnoreCase(null) || unamev.equalsIgnoreCase("") || passwordv.equalsIgnoreCase(null) || passwordv.equalsIgnoreCase("")){
-            Toast.makeText(LoginActivity.this,"Fill required detail and try again...",Toast.LENGTH_LONG).show();
+        } else if (Validate.Password(passwordv)){
+            tilpassword.setErrorEnabled(true);
+            tilpassword.setError("Not a valid Password");
             return;
+        } else {
+            tilemail.setErrorEnabled(false);
+            tilpassword.setErrorEnabled(false);
+            sendData(unamev, passwordv);
         }
-        if(validate())
-            sendData(unamev,passwordv);
-    }
-    public boolean validate()
-    {
-        boolean valid=true;
-        String email =etemail.getText().toString();
-        String password =etpassword.getText().toString();
-        if(email.isEmpty())
-        {
-            //uname.setError("enter a valid username");
-            valid = false;
-        }
-        else
-        {
-            //uname.setError(null);
-        }
-        if (password.isEmpty() || password.length() < 4)
-        {
-            //pswd.setError("atleast 4 alphanumeric characters");
-            valid = false;
-        }
-        else {
-            //pswd.setError(null);
-        }
-        return valid;
     }
     public void sendData(final String unamee,final String passwordd)
     {
