@@ -126,7 +126,7 @@ public class AddProvideActivity extends AppCompatActivity {
 
                                 etprovidedetail.setText(" ");
 
-                                Intent intent=new Intent(getApplicationContext(),MyProductActivity.class);
+                                Intent intent=new Intent(getApplicationContext(),MyProvideActivity.class);
                                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                                 startActivity(intent);
                                 finish();
@@ -153,6 +153,7 @@ public class AddProvideActivity extends AppCompatActivity {
                 Map<String,String> params = new Hashtable<String, String>();
                 params.put("type","add_product_classified");
                 params.put("process_type","android");
+                params.put("product_type","PROVIDE");
                 params.put("name",providename);
                 params.put("selling_cost",sellingcost);
                 params.put("brand_name",brandname);

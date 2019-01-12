@@ -54,18 +54,24 @@
         </activity>
         <activity android:name=".OtpForgetActivity" />
         <activity android:name=".OtpRegistrationActivity" />
-        <activity android:name=".user.AddImageActivity"
-            android:label="Add Image"/>
-        <activity android:name=".user.AddVideoActivity"
-            android:label="Add Video"/>
+        <activity
+            android:name=".user.AddImageActivity"
+            android:label="Add Image" />
+        <activity
+            android:name=".user.AddVideoActivity"
+            android:label="Add Video" />
         <activity
             android:name=".user.AddProductActivity"
             android:label="@string/add_product" />
-        <activity android:name=".user.AddProvideActivity"
+        <activity
+            android:name=".user.AddProvideActivity"
             android:label="Add Provide" />
-        <activity android:name=".user.AddDemandActivity"
-            android:label="Add Demand"/>
-        <activity android:name=".user.MyProductActivity"></activity>
+        <activity
+            android:name=".user.AddDemandActivity"
+            android:label="Add Demand" />
+        <activity android:name=".user.MyProductActivity" />
+        <activity android:name=".user.MyProvideActivity" />
+        <activity android:name=".user.MyDemandActivity"></activity>
     </application>
 
 </manifest>

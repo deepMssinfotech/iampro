@@ -33,8 +33,8 @@ public class AddDemandActivity extends AppCompatActivity {
 
 
     TextInputLayout tildemandname,tilbrandname,tilsellingcost,tildemanddetail;
-    EditText etprovidename,etbrandname,etsellingcost,etprovidedetail;
-    private String providename;String brandname;String sellingcost; String providedetail;
+    EditText etdemandname,etbrandname,etsellingcost,etdemanddetail;
+    private String demandname;String brandname;String sellingcost; String demanddetail;
 
 
     @Override
@@ -42,31 +42,31 @@ public class AddDemandActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_provide);
 
-        tilprovidename = findViewById(R.id.tilprovidename);
-        etprovidename = findViewById(R.id.etprovidename);
+        tildemandname = findViewById(R.id.tildemandname);
+        etdemandname = findViewById(R.id.etdemandname);
         tilbrandname = findViewById(R.id.tilbrandname);
         etbrandname = findViewById(R.id.etbrandname);
 
         tilsellingcost = findViewById(R.id.tilsellingcost);
         etsellingcost = findViewById(R.id.etsellingcost);
 
-        tilprovidedetail=findViewById(R.id.tilprovidedetail);
-        etprovidedetail = findViewById(R.id.etprovidedetail);
+        tildemanddetail=findViewById(R.id.tildemanddetail);
+        etdemanddetail = findViewById(R.id.etdemanddetail);
 
     }
     public void processAddProduct(View v){
-        providename=etprovidename.getText().toString();
+        demandname=etdemandname.getText().toString();
         brandname=etbrandname.getText().toString();
         sellingcost=etsellingcost.getText().toString();
 
-        providedetail=etprovidedetail.getText().toString();
+        demanddetail=etdemanddetail.getText().toString();
 
-        if (!Validate.isNull(providename)) {
-            tilprovidename.setErrorEnabled(true);
-            tilprovidename.setError("Enter Product Neme ");
+        if (!Validate.isNull(demandname)) {
+            tildemandname.setErrorEnabled(true);
+            tildemandname.setError("Enter Product Neme ");
             return ;
         } else if (!Validate.isNull(brandname)) {
-            tilprovidename.setErrorEnabled(false);
+            tildemandname.setErrorEnabled(false);
             tilbrandname.setErrorEnabled(true);
             tilbrandname.setError("Enter Brand  Neme");
             return;
@@ -77,14 +77,14 @@ public class AddDemandActivity extends AppCompatActivity {
             return;
         }
 
-        else if (!Validate.isNull(providedetail)) {
+        else if (!Validate.isNull(demanddetail)) {
             tilsellingcost.setErrorEnabled(false);
-            tilprovidedetail.setErrorEnabled(true);
-            tilprovidedetail.setError("Enter Product Detail");
+            tildemanddetail.setErrorEnabled(true);
+            tildemanddetail.setError("Enter Product Detail");
             return;
         }else {
             hideKeyboard();
-            tilprovidedetail.setErrorEnabled(false);
+            tildemanddetail.setErrorEnabled(false);
             sendData();
         }
     }
@@ -120,13 +120,13 @@ public class AddDemandActivity extends AppCompatActivity {
                             if (status.equalsIgnoreCase("success")){
                                 //String urlv=jsonObject.getString("url");
 
-                                etprovidename.setText(" ");
+                                etdemandname.setText(" ");
                                 etbrandname.setText(" ");
                                 etsellingcost.setText(" ");
 
-                                etprovidedetail.setText(" ");
+                                etdemanddetail.setText(" ");
 
-                                Intent intent=new Intent(getApplicationContext(),MyProductActivity.class);
+                                Intent intent=new Intent(getApplicationContext(),MyDemandActivity.class);
                                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                                 startActivity(intent);
                                 finish();
@@ -153,10 +153,11 @@ public class AddDemandActivity extends AppCompatActivity {
                 Map<String,String> params = new Hashtable<String, String>();
                 params.put("type","add_product_classified");
                 params.put("process_type","android");
-                params.put("name",providename);
+                params.put("product_type","DEMAND");
+                params.put("name",demandname);
                 params.put("selling_cost",sellingcost);
                 params.put("brand_name",brandname);
-                params.put("detail",providedetail);
+                params.put("detail",demanddetail);
                 //returning parameters
                 return params;
             }
