@@ -1,29 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
-
     <item
-        android:id="@+id/navigation_home"
-        android:icon="@drawable/ic_home_black_24dp"
-        android:title="@string/title_home" />
-
+        android:id="@+id/bot_nav_menu"
+        android:title="Menu"
+        android:icon="@drawable/ic_apps_black_24dp"/>
     <item
-        android:id="@+id/navigation_dashboard"
-        android:icon="@drawable/ic_dashboard_black_24dp"
-        android:title="@string/title_dashboard" />
-
+        android:id="@+id/bot_nav_search"
+        android:title="Search"
+        android:icon="@drawable/ic_search_black_24dp"/>
     <item
-        android:id="@+id/navigation_notifications"
-        android:icon="@drawable/ic_notifications_black_24dp"
-        android:title="@string/title_notifications" />
-
+        android:id="@+id/bot_nav_home"
+        android:title="Home"
+        android:icon="@drawable/ic_home_black_24dp"/>
     <item
-        android:id="@+id/navigation_homee"
-        android:icon="@drawable/ic_home_black_24dp"
-        android:title="@string/title_home" />
-
+        android:id="@+id/bot_nav_cart"
+        android:title="Cart"
+        android:icon="@drawable/ic_shopping_cart_black_24dp"/>
     <item
-        android:id="@+id/navigation_dashboardd"
-        android:icon="@drawable/ic_dashboard_black_24dp"
-        android:title="@string/title_dashboard" />
+        android:id="@+id/bot_nav_chat"
+        android:title="Chat"
+        android:icon="@drawable/ic_chat_black_24dp"/>
 
 </menu>

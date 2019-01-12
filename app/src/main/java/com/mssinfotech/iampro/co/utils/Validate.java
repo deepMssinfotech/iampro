@@ -19,4 +19,20 @@ public class Validate {
     public static boolean isNull(String text) {
         return text.isEmpty();
     }
+    /*public static boolean validatePassword(data,tilPassword) {
+        //final String data = etPassword.getText().toString();
+        // Check if username is entered
+        if (data.length() == 0) {
+            if (!tilPassword.isErrorEnabled()) {
+                tilPassword.setErrorEnabled(true);
+            }
+            tilPassword.setError("Password Required");
+            return false;
+        } else {
+            if (tilPassword.isErrorEnabled()) {
+                tilPassword.setErrorEnabled(false);
+            }
+            return true;
+        }
+    }*/
 }

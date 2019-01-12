@@ -60,12 +60,12 @@
                     android:inputType="textEmailAddress" />
             </android.support.design.widget.TextInputLayout>
             <android.support.design.widget.TextInputLayout
-                android:id="@+id/tilfname"
+                android:id="@+id/tilFirstname"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
                 <EditText
-                    android:id="@+id/etfname"
+                    android:id="@+id/etFirstname"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
                     android:drawableLeft="@drawable/ic_action_user"
@@ -75,12 +75,12 @@
                     android:singleLine="true" />
             </android.support.design.widget.TextInputLayout>
             <android.support.design.widget.TextInputLayout
-                android:id="@+id/tillname"
+                android:id="@+id/tilLastName"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
                 <EditText
-                    android:id="@+id/etlname"
+                    android:id="@+id/etLastname"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
                     android:drawableLeft="@drawable/ic_action_user"
@@ -90,27 +90,27 @@
                     android:singleLine="true" />
             </android.support.design.widget.TextInputLayout>
             <android.support.design.widget.TextInputLayout
-                android:id="@+id/tilmobile"
+                android:id="@+id/tilMobile"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
                 <EditText
-                    android:id="@+id/etlmobile"
+                    android:id="@+id/etMobile"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
                     android:drawableLeft="@drawable/ic_action_mobile"
                     android:drawableTint="#000000"
                     android:hint="Mobile Number"
-                    android:inputType="text"
+                    android:inputType="number"
                     android:singleLine="true" />
             </android.support.design.widget.TextInputLayout>
             <android.support.design.widget.TextInputLayout
-                android:id="@+id/tilemail"
+                android:id="@+id/tilEmail"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
                 <EditText
-                    android:id="@+id/etemail"
+                    android:id="@+id/etEmail"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
                     android:drawableLeft="@drawable/ic_action_message"
@@ -121,8 +121,8 @@
             </android.support.design.widget.TextInputLayout>
 
 
-
             <Button
+                android:id="@+id/btnRegister"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="22dp"

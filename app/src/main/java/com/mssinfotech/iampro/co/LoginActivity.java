@@ -73,11 +73,13 @@ public class LoginActivity extends AppCompatActivity  implements View.OnClickLis
         if (!Validate.Email(unamev)) {
             tilemail.setErrorEnabled(true);
             tilemail.setError("Not a valid email address!");
-            return;
+           // return;
         } else if (Validate.Password(passwordv)){
             tilpassword.setErrorEnabled(true);
             tilpassword.setError("Not a valid Password");
-            return;
+            //return;
+
+
         } else {
             tilemail.setErrorEnabled(false);
             tilpassword.setErrorEnabled(false);

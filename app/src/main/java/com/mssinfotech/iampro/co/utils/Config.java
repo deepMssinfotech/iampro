@@ -8,12 +8,11 @@ import android.net.NetworkInfo;
 
 public class Config
 {
-    public static final String API_URL="http://www.iampro.co/api/";
+    public static final String API_URL="https://www.iampro.co/api/";
+    public static final String AJAX_URL="https://www.iampro.co/ajax/";
 
-    public static final String AJAX_URL="http://www.iampro.co/ajax/";
-
-     /**  Network connectivity  */
-     public boolean haveNetworkConnection(Context context) {
+    /**  Network connectivity  */
+     public static boolean haveNetworkConnection(Context context) {
         boolean haveConnectedWifi = false;
         boolean haveConnectedMobile = false;
         ConnectivityManager cm = (ConnectivityManager)context.getSystemService(Context.CONNECTIVITY_SERVICE);
@@ -28,7 +27,7 @@ public class Config
         }
         return haveConnectedWifi || haveConnectedMobile;
     }
-    public void showInternetDialog(Context context)
+    public static void showInternetDialog(Context context)
     {
         new AlertDialog.Builder(context)
                 .setTitle("Oops you are offline!")

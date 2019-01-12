@@ -1,22 +1,18 @@
 package com.mssinfotech.iampro.co;
-
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
+import android.support.v4.view.GravityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 import android.widget.TextView;
-
 public class HomeActivity extends AppCompatActivity {
-
     private TextView mTextMessage;
-
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
-
         @Override
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-            switch (item.getItemId()) {
+           /* switch (item.getItemId()) {
                 case R.id.navigation_home:
                     mTextMessage.setText(R.string.title_home);
                     return true;
@@ -26,11 +22,27 @@ public class HomeActivity extends AppCompatActivity {
                 case R.id.navigation_notifications:
                     mTextMessage.setText(R.string.title_notifications);
                     return true;
+            } */
+            switch (item.getItemId()) {
+                case R.id.bot_nav_menu:
+                    //drawerLayout.openDrawer(GravityCompat.START);
+                    return false;
+                case R.id.bot_nav_search:
+                    //showSearchFragment();
+                    return true;
+                case R.id.bot_nav_home:
+                    mTextMessage.setText(R.string.title_home);
+                    return true;
+                case R.id.bot_nav_cart:
+                    //showCartFragment();
+                    return true;
+                case R.id.bot_nav_chat:
+                    //showChatFragment();
+                    return true;
             }
             return false;
         }
     };
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
