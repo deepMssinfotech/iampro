@@ -1,14 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.mssinfotech.iampro.co">
+
     <uses-permission android:name="android.permission.RECEIVE_SMS" />
     <uses-permission android:name="android.permission.READ_SMS" />
     <uses-permission android:name="android.permission.SEND_SMS" />
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"></uses-permission>
-    <uses-permission android:name="android.permission.INTERNET"></uses-permission>
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"></uses-permission>
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"></uses-permission>
-    <uses-permission android:name="android.permission.CAMERA"></uses-permission>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.CAMERA" />
+
     <application
         android:allowBackup="true"
         android:icon="@drawable/iampro"
@@ -16,11 +18,12 @@
         android:roundIcon="@drawable/iampro"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <receiver android:name="com.mssinfotech.iampro.co.utils.IncomingSms">
+        <receiver android:name=".utils.IncomingSms">
             <intent-filter>
                 <action android:name="android.provider.Telephony.SMS_RECEIVED" />
             </intent-filter>
         </receiver>
+
         <activity
             android:name=".HomeActivity"
             android:label="@string/app_name" />
@@ -50,8 +53,19 @@
             </intent-filter>
         </activity>
         <activity android:name=".OtpForgetActivity" />
-        <activity android:name=".OtpRegistrationActivity"></activity>
-
+        <activity android:name=".OtpRegistrationActivity" />
+        <activity android:name=".user.AddImageActivity"
+            android:label="Add Image"/>
+        <activity android:name=".user.AddVideoActivity"
+            android:label="Add Video"/>
+        <activity
+            android:name=".user.AddProductActivity"
+            android:label="@string/add_product" />
+        <activity android:name=".user.AddProvideActivity"
+            android:label="Add Provide" />
+        <activity android:name=".user.AddDemandActivity"
+            android:label="Add Demand"/>
+        <activity android:name=".user.MyProductActivity"></activity>
     </application>
 
 </manifest>

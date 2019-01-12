@@ -1,4 +1,4 @@
-package com.mssinfotech.iampro.co;
+package com.mssinfotech.iampro.co.user;
 
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -21,6 +22,10 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.mssinfotech.iampro.co.ForgetActivity;
+import com.mssinfotech.iampro.co.HomeActivity;
+import com.mssinfotech.iampro.co.LoginActivity;
+import com.mssinfotech.iampro.co.R;
 import com.mssinfotech.iampro.co.utils.Config;
 import com.mssinfotech.iampro.co.utils.PrefManager;
 import com.mssinfotech.iampro.co.utils.Validate;
@@ -31,44 +36,69 @@ import org.json.JSONObject;
 import java.util.Hashtable;
 import java.util.Map;
 
-public class LoginActivity extends AppCompatActivity{
+public class AddProductActivity extends AppCompatActivity {
 
-    TextView btnforgetPassword;
-    Button btnprocess;
-    TextInputLayout tilemail,tilpassword;
-    EditText etemail,etpassword;
+
+    TextInputLayout tilproductname,tilbrandname,tilpurchesecost,tilsellingcost,tilproductdetail;
+    EditText etproductname,etbrandname,etpurchesecost,etsellingcost,etproductdetail;
+    private String productname;String brandname;String purchesecost; String sellingcost;String productdetail;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_login);
+        setContentView(R.layout.activity_add_product);
 
-        tilemail = findViewById(R.id.tilemail);
-        etemail = findViewById(R.id.etemail);
+        tilproductname = findViewById(R.id.tilproductname);
+        etproductname = findViewById(R.id.etproductname);
+        tilbrandname = findViewById(R.id.tilbrandname);
+        etbrandname = findViewById(R.id.etbrandname);
 
-        tilpassword = findViewById(R.id.tilpassword);
-        etpassword = findViewById(R.id.etpassword);
+        tilpurchesecost = findViewById(R.id.tilpurchesecost);
+        etpurchesecost = findViewById(R.id.etpurchesecost);
+        tilsellingcost = findViewById(R.id.tilsellingcost);
+        etsellingcost = findViewById(R.id.etsellingcost);
+        tilproductdetail=findViewById(R.id.tilproductdetail);
+        etproductdetail = findViewById(R.id.etproductdetail);
 
     }
-    public void redirect(View v){
-        Intent i_login = new Intent(LoginActivity.this, ForgetActivity.class);
-        LoginActivity.this.startActivity(i_login);
-    }
-    public void processLogin(View v){
-        String unamev=etemail.getText().toString();
-        String passwordv=etpassword.getText().toString();
-        if (!Validate.Email(unamev)) {
-            tilemail.setErrorEnabled(true);
-            tilemail.setError("Not a valid email address!");
+    public void processAddProduct(View v){
+        productname=etproductname.getText().toString();
+        brandname=etbrandname.getText().toString();
+        purchesecost=etpurchesecost.getText().toString();
+        sellingcost=etsellingcost.getText().toString();
+        productdetail=etproductdetail.getText().toString();
+
+        if (!Validate.isNull(productname)) {
+            tilproductname.setErrorEnabled(true);
+            tilproductname.setError("Enter Product Neme ");
             return ;
-        } else if (Validate.Password(passwordv) || Validate.isNull(passwordv)){
-            tilemail.setErrorEnabled(false);
-            tilpassword.setErrorEnabled(true);
-            tilpassword.setError("Not a valid Password");
+        } else if (!Validate.isNull(brandname)) {
+            tilproductname.setErrorEnabled(false);
+            tilbrandname.setErrorEnabled(true);
+            tilbrandname.setError("Enter Brand  Neme");
             return;
-        } else {
+        } else if (!Validate.isNull(purchesecost)) {
+            tilbrandname.setErrorEnabled(false);
+            tilpurchesecost.setErrorEnabled(true);
+            tilpurchesecost.setError("Enter Product Purchese Cost");
+            return;
+        }
+        else if (!Validate.isNull(sellingcost)) {
+            tilpurchesecost.setErrorEnabled(false);
+            tilsellingcost.setErrorEnabled(true);
+            tilsellingcost.setError("Enter Product Selling Cost");
+            return;
+        }
+        else if (!Validate.isNull(productdetail)) {
+            tilsellingcost.setErrorEnabled(false);
+            tilproductdetail.setErrorEnabled(true);
+            tilproductdetail.setError("Enter Product Detail");
+            return;
+        }else {
             hideKeyboard();
-            tilpassword.setErrorEnabled(false);
-            sendData(unamev, passwordv);
+            tilproductdetail.setErrorEnabled(false);
+            sendData();
         }
     }
     private void hideKeyboard() {
@@ -78,7 +108,7 @@ public class LoginActivity extends AppCompatActivity{
                     hideSoftInputFromWindow(view.getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
         }
     }
-    public void sendData(final String unamee,final String passwordd)
+    public void sendData()
     {
 
         if (!Config.haveNetworkConnection(this)){
@@ -87,14 +117,11 @@ public class LoginActivity extends AppCompatActivity{
         }
 
         final ProgressDialog loading = ProgressDialog.show(this,"Processing...","Please wait...",false,false);
-        StringRequest stringRequest = new StringRequest(Request.Method.POST,Config.AJAX_URL+"signup.php",
+        StringRequest stringRequest = new StringRequest(Request.Method.POST,Config.AJAX_URL+"uploadprocess.php",
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String s) {
-                        //Disimissing the progress dialog
                         loading.dismiss();
-                        //Showing toast message of the response
-                        //Toast.makeText(LoginActivity.this, s , Toast.LENGTH_LONG).show();
                         Log.d("Lresponse",""+s);
                         try
                         {
@@ -102,24 +129,17 @@ public class LoginActivity extends AppCompatActivity{
                             String status=jsonObject.getString("status");
                             String msgg=jsonObject.getString("msg");
 
-
                             Toast.makeText(getApplicationContext(),""+msgg,Toast.LENGTH_LONG).show();
                             if (status.equalsIgnoreCase("success")){
                                 //String urlv=jsonObject.getString("url");
-                                String avatarv=jsonObject.getString("avatar");
-                                String id=jsonObject.getString("id");
-                                String mobilev=jsonObject.getString("mobile");
-                                String fnamem=jsonObject.getString("fname");
-                                String lnamem=jsonObject.getString("lname");
-                                String email=jsonObject.getString("email");
-                                String banner_imagev=jsonObject.getString("banner_image");
-                                String name=fnamem+"\t"+lnamem;
-                                String imgurl=avatarv;
-                                saveLoginDetails(unamee,passwordd,avatarv,id,mobilev,fnamem,lnamem,email,banner_imagev);
-                                etemail.setText(" ");
-                                etpassword.setText(" ");
 
-                                Intent intent=new Intent(getApplicationContext(),HomeActivity.class);
+                                etproductname.setText(" ");
+                                etbrandname.setText(" ");
+                                etpurchesecost.setText(" ");
+                                etsellingcost.setText(" ");
+                                etproductdetail.setText(" ");
+
+                                Intent intent=new Intent(getApplicationContext(),MyProductActivity.class);
                                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                                 startActivity(intent);
                                 finish();
@@ -144,9 +164,13 @@ public class LoginActivity extends AppCompatActivity{
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
                 Map<String,String> params = new Hashtable<String, String>();
-                params.put("type","login");
-                params.put("username",unamee);
-                params.put("pass",passwordd);
+                params.put("type","add_product");
+                params.put("process_type","android");
+                params.put("name",productname);
+                params.put("purchese_cost",purchesecost);
+                params.put("selling_cost",sellingcost);
+                params.put("brand_name",brandname);
+                params.put("detail",productdetail);
                 //returning parameters
                 return params;
             }
@@ -157,7 +181,5 @@ public class LoginActivity extends AppCompatActivity{
         //Adding request to the queue
         requestQueue.add(stringRequest);
     }
-    private void saveLoginDetails(String username, String password,String img_url,String id,String mobile,String fname,String lname,String email,String banner_imagev) {
-        new PrefManager(this).saveLoginDetails(username, password,img_url,id,mobile,fname,lname,email,banner_imagev);
-    }
+
 }

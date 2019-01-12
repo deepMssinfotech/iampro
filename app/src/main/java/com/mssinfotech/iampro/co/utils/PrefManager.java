@@ -6,6 +6,8 @@ package com.mssinfotech.iampro.co.utils;
 import android.content.Context;
 import android.content.SharedPreferences;
 
+import static android.content.Context.MODE_PRIVATE;
+
 
 public class PrefManager {
     SharedPreferences pref;
@@ -37,7 +39,7 @@ public class PrefManager {
 
     public void saveLoginDetails(String username, String password,String imgurl,String id,String mobile,String fname,String lname,String email,String banner_image) {
         //id,mobile,name,email
-        SharedPreferences sharedPreferences = _context.getSharedPreferences("LoginDetails", Context.MODE_PRIVATE);
+        SharedPreferences sharedPreferences = _context.getSharedPreferences("LoginDetails", MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putBoolean(IS_LOGIN, true);
         editor.putString("username",username);
@@ -50,6 +52,16 @@ public class PrefManager {
         editor.putString("email",email);
         editor.putString("banner_image",banner_image);
         editor.commit();
+    }
+    public static boolean isLogin(Context context){
+        SharedPreferences prefrence = context.getSharedPreferences("LoginDetails",MODE_PRIVATE);
+        String id= prefrence.getString("id","");
+        if(!id.isEmpty())return true;
+        return false;
+    }
+    public static String getLoginDetail(Context context,String field){
+        SharedPreferences prefrence = context.getSharedPreferences("LoginDetails",MODE_PRIVATE);
+        return prefrence.getString(field,"");
     }
 
 }

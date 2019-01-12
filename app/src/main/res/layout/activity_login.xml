@@ -75,6 +75,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="right"
                 android:paddingTop="5dp"
+                android:onClick="redirect"
                 android:text="Forgot Password?" />
 
 
@@ -85,6 +86,7 @@
                 android:layout_margin="22dp"
                 android:background="@drawable/black"
                 android:text="Sign in"
+                android:onClick="processLogin"
                 android:textAllCaps="false"
                 android:textColor="#fff"
                 android:textSize="18sp" />
