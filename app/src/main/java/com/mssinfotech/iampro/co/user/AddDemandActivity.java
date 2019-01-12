@@ -33,8 +33,8 @@ public class AddDemandActivity extends AppCompatActivity {
 
 
     TextInputLayout tildemandname,tilbrandname,tilsellingcost,tildemanddetail;
-    EditText etprovidename,etbrandname,etsellingcost,etprovidedetail;
-    private String providename;String brandname;String sellingcost; String providedetail;
+    EditText etdemandname,etbrandname,etsellingcost,etdemanddetail;
+    private String demandname;String brandname;String sellingcost; String demanddetail;
 
 
     @Override
@@ -42,7 +42,130 @@ public class AddDemandActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_provide);
 
+        tildemandname = findViewById(R.id.tildemandname);
+        etdemandname = findViewById(R.id.etdemandname);
+        tilbrandname = findViewById(R.id.tilbrandname);
+        etbrandname = findViewById(R.id.etbrandname);
 
+        tilsellingcost = findViewById(R.id.tilsellingcost);
+        etsellingcost = findViewById(R.id.etsellingcost);
 
+        tildemanddetail=findViewById(R.id.tildemanddetail);
+        etdemanddetail = findViewById(R.id.etdemanddetail);
+
+    }
+    public void processAddProduct(View v){
+        demandname=etdemandname.getText().toString();
+        brandname=etbrandname.getText().toString();
+        sellingcost=etsellingcost.getText().toString();
+
+        demanddetail=etdemanddetail.getText().toString();
+
+        if (!Validate.isNull(demandname)) {
+            tildemandname.setErrorEnabled(true);
+            tildemandname.setError("Enter Product Neme ");
+            return ;
+        } else if (!Validate.isNull(brandname)) {
+            tildemandname.setErrorEnabled(false);
+            tilbrandname.setErrorEnabled(true);
+            tilbrandname.setError("Enter Brand  Neme");
+            return;
+        } else if (!Validate.isNull(sellingcost)) {
+            tilbrandname.setErrorEnabled(false);
+            tilsellingcost.setErrorEnabled(true);
+            tilsellingcost.setError("Enter Product Purchese Cost");
+            return;
+        }
+
+        else if (!Validate.isNull(demanddetail)) {
+            tilsellingcost.setErrorEnabled(false);
+            tildemanddetail.setErrorEnabled(true);
+            tildemanddetail.setError("Enter Product Detail");
+            return;
+        }else {
+            hideKeyboard();
+            tildemanddetail.setErrorEnabled(false);
+            sendData();
+        }
+    }
+    private void hideKeyboard() {
+        View view = getCurrentFocus();
+        if (view != null) {
+            ((InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE)).
+                    hideSoftInputFromWindow(view.getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+        }
+    }
+    public void sendData()
+    {
+
+        if (!Config.haveNetworkConnection(this)){
+            Config.showInternetDialog(this);
+            return;
+        }
+
+        final ProgressDialog loading = ProgressDialog.show(this,"Processing...","Please wait...",false,false);
+        StringRequest stringRequest = new StringRequest(Request.Method.POST,Config.AJAX_URL+"uploadprocess.php",
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String s) {
+                        loading.dismiss();
+                        Log.d("Lresponse",""+s);
+                        try
+                        {
+                            JSONObject jsonObject = new JSONObject(s);
+                            String status=jsonObject.getString("status");
+                            String msgg=jsonObject.getString("msg");
+
+                            Toast.makeText(getApplicationContext(),""+msgg,Toast.LENGTH_LONG).show();
+                            if (status.equalsIgnoreCase("success")){
+                                //String urlv=jsonObject.getString("url");
+
+                                etdemandname.setText(" ");
+                                etbrandname.setText(" ");
+                                etsellingcost.setText(" ");
+
+                                etdemanddetail.setText(" ");
+
+                                Intent intent=new Intent(getApplicationContext(),MyDemandActivity.class);
+                                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                startActivity(intent);
+                                finish();
+                            }
+                        }
+                        catch(JSONException e)
+                        {
+                            loading.dismiss();
+                            Log.d("JSoNExceptionv",e.getMessage());
+                            Toast.makeText(getApplicationContext(),e.getMessage(),Toast.LENGTH_LONG).show();
+                        }
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError volleyError) {
+                        //Dismissing the progress dialog
+                        loading.dismiss();
+                        Toast.makeText(getApplicationContext(),volleyError.getMessage(),Toast.LENGTH_LONG).show();
+                    }
+                }){
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String,String> params = new Hashtable<String, String>();
+                params.put("type","add_product_classified");
+                params.put("process_type","android");
+                params.put("product_type","DEMAND");
+                params.put("name",demandname);
+                params.put("selling_cost",sellingcost);
+                params.put("brand_name",brandname);
+                params.put("detail",demanddetail);
+                //returning parameters
+                return params;
+            }
+        };
+        //Creating a Request Queue
+        RequestQueue requestQueue = Volley.newRequestQueue(this);
+
+        //Adding request to the queue
+        requestQueue.add(stringRequest);
     }
 }

@@ -35,9 +35,10 @@
                     android:layout_width="120dp"
                     android:textSize="20dp"
                     android:gravity="center"
+                    android:textAllCaps="true"
                     android:textColor="#fff"
                     android:layout_height="wrap_content"
-                    android:text="Login"/>
+                    android:text="Login Now"/>
             </RelativeLayout>
             <RelativeLayout
                 android:layout_weight="1"
@@ -55,6 +56,7 @@
                     android:layout_below="@+id/imgsignup"
                     android:layout_width="120dp"
                     android:textSize="20dp"
+                    android:textAllCaps="true"
                     android:textColor="#fff"
                     android:layout_height="wrap_content"
                     android:gravity="center"
@@ -81,6 +83,7 @@
             <TextView
                 android:id="@+id/username"
                 android:layout_width="120dp"
+                android:textAllCaps="true"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/imguser"
                 android:gravity="center"
@@ -108,6 +111,7 @@
 
             <TextView
                 android:layout_width="120dp"
+                android:textAllCaps="true"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/imghome"
                 android:gravity="center"

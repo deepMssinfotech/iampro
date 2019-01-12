@@ -5,11 +5,11 @@ import android.os.Bundle;
 
 import com.mssinfotech.iampro.co.R;
 
-public class MyProductActivity extends AppCompatActivity {
+public class MyProvideActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_my_product);
+        setContentView(R.layout.activity_my_provide);
     }
 }

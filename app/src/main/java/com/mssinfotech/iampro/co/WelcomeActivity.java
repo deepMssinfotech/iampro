@@ -11,6 +11,7 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.mssinfotech.iampro.co.user.ProfileActivity;
 import com.mssinfotech.iampro.co.utils.Config;
 import com.mssinfotech.iampro.co.utils.PrefManager;
 import com.squareup.picasso.Picasso;
@@ -47,6 +48,7 @@ public class WelcomeActivity extends AppCompatActivity implements View.OnClickLi
                     .error(R.drawable.image)
                     .into(imguser);
             Log.d(Config.TAG,avatar);
+            imguser.setOnClickListener(this);
         }
     }
 
@@ -64,6 +66,11 @@ public class WelcomeActivity extends AppCompatActivity implements View.OnClickLi
             case R.id.imghome:
                 Intent i_home = new Intent(WelcomeActivity.this,HomeActivity.class);
                 WelcomeActivity.this.startActivity(i_home);
+                WelcomeActivity.this.finish();
+                break;
+            case R.id.imguser:
+                Intent i_user = new Intent(WelcomeActivity.this,ProfileActivity.class);
+                WelcomeActivity.this.startActivity(i_user);
                 WelcomeActivity.this.finish();
                 break;
             default:
