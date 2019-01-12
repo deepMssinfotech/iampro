@@ -52,7 +52,7 @@ public class AddImageActivity extends AppCompatActivity {
         spcat= findViewById(R.id.spcat);
 
     }
-    public void processAddProduct(View v){
+    public void processAddImage(View v){
         albumname=etalbumname.getText().toString();
         imagename=etimagename.getText().toString();
         imagedetail=etimagedetail.getText().toString();

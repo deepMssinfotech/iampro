@@ -152,6 +152,7 @@
                 android:layout_alignParentBottom="true"
                 android:layout_gravity="bottom"
                 android:layout_weight="0"
+                android:onClick="processAddProvide"
                 android:textColor="@color/white"
                 android:background="@drawable/provide_color"
                 android:text="Button"

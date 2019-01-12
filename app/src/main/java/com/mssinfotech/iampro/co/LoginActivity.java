@@ -113,9 +113,15 @@ public class LoginActivity extends AppCompatActivity{
                                 String lnamem=jsonObject.getString("lname");
                                 String email=jsonObject.getString("email");
                                 String banner_imagev=jsonObject.getString("banner_image");
+
+                                String img_banner_image=jsonObject.getString("img_banner_image");
+                                String video_banner_image=jsonObject.getString("video_banner_image");
+                                String profile_image_gallery=jsonObject.getString("profile_image_gallery");
+                                String profile_video_gallery=jsonObject.getString("profile_video_gallery");
+
                                 String name=fnamem+"\t"+lnamem;
                                 String imgurl=avatarv;
-                                saveLoginDetails(unamee,passwordd,avatarv,id,mobilev,fnamem,lnamem,email,banner_imagev);
+                                saveLoginDetails(unamee,passwordd,avatarv,id,mobilev,fnamem,lnamem,email,banner_imagev,  img_banner_image,  video_banner_image,  profile_image_gallery,  profile_video_gallery);
                                 etemail.setText(" ");
                                 etpassword.setText(" ");
 
@@ -157,7 +163,7 @@ public class LoginActivity extends AppCompatActivity{
         //Adding request to the queue
         requestQueue.add(stringRequest);
     }
-    private void saveLoginDetails(String username, String password,String img_url,String id,String mobile,String fname,String lname,String email,String banner_imagev) {
-        new PrefManager(this).saveLoginDetails(username, password,img_url,id,mobile,fname,lname,email,banner_imagev);
+    private void saveLoginDetails(String username, String password,String img_url,String id,String mobile,String fname,String lname,String email,String banner_imagev, String img_banner_image, String video_banner_image, String profile_image_gallery, String profile_video_gallery) {
+        new PrefManager(this).saveLoginDetails(username, password,img_url,id,mobile,fname,lname,email,banner_imagev,img_banner_image,  video_banner_image,  profile_image_gallery,  profile_video_gallery);
     }
 }

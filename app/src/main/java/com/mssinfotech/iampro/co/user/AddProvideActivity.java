@@ -57,7 +57,7 @@ public class AddProvideActivity extends AppCompatActivity {
         spcat= findViewById(R.id.spcat);
 
     }
-    public void processAddProduct(View v){
+    public void processAddProvide(View v){
         providename=etprovidename.getText().toString();
         brandname=etbrandname.getText().toString();
         sellingcost=etsellingcost.getText().toString();

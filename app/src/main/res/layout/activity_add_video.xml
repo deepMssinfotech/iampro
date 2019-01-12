@@ -118,6 +118,7 @@
                 android:layout_alignParentBottom="true"
                 android:layout_gravity="bottom"
                 android:layout_weight="0"
+                android:onClick="processAddVideo"
                 android:textColor="@color/white"
                 android:background="@drawable/video_color"
                 android:text="Button"

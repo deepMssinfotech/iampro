@@ -52,7 +52,7 @@ public class AddVideoActivity extends AppCompatActivity {
         spcat= findViewById(R.id.spcat);
 
     }
-    public void processAddProduct(View v){
+    public void processAddDemand(View v){
         albumname=etalbumname.getText().toString();
         videoname=etvideoname.getText().toString();
         videodetail=etvideodetail.getText().toString();

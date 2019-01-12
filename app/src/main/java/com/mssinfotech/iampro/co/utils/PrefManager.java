@@ -37,7 +37,7 @@ public class PrefManager {
         return pref.getBoolean(IS_FIRST_TIME_LAUNCH, true);
     }
 
-    public void saveLoginDetails(String username, String password,String imgurl,String id,String mobile,String fname,String lname,String email,String banner_image) {
+    public void saveLoginDetails(String username, String password,String imgurl,String id,String mobile,String fname,String lname,String email,String banner_image, String img_banner_image, String video_banner_image, String profile_image_gallery, String profile_video_gallery) {
         //id,mobile,name,email
         SharedPreferences sharedPreferences = _context.getSharedPreferences("LoginDetails", MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
@@ -51,6 +51,12 @@ public class PrefManager {
         editor.putString("lname",lname);
         editor.putString("email",email);
         editor.putString("banner_image",banner_image);
+
+        editor.putString("img_banner_image",img_banner_image);
+        editor.putString("video_banner_image",video_banner_image);
+        editor.putString("profile_image_gallery",profile_image_gallery);
+        editor.putString("profile_video_gallery",profile_video_gallery);
+
         editor.commit();
     }
     public static boolean isLogin(Context context){

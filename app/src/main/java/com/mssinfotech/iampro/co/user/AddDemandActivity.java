@@ -57,7 +57,7 @@ public class AddDemandActivity extends AppCompatActivity {
 
         spcat= findViewById(R.id.spcat);
     }
-    public void processAddProduct(View v){
+    public void processAddDemand(View v){
         demandname=etdemandname.getText().toString();
         brandname=etbrandname.getText().toString();
         sellingcost=etsellingcost.getText().toString();
