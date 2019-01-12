@@ -67,7 +67,6 @@ public class LoginActivity extends AppCompatActivity{
             return;
         } else {
             hideKeyboard();
-            tilemail.setErrorEnabled(false);
             tilpassword.setErrorEnabled(false);
             sendData(unamev, passwordv);
         }
