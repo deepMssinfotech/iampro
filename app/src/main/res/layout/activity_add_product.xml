@@ -167,6 +167,7 @@
                 android:layout_alignParentBottom="true"
                 android:layout_gravity="bottom"
                 android:layout_weight="0"
+                android:onClick="processAddProduct"
                 android:textColor="@color/white"
                 android:background="@drawable/product_color"
                 android:text="Button"

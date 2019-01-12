@@ -1,7 +1,9 @@
 package com.mssinfotech.iampro.co.user;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -38,5 +40,10 @@ public class MyDemandActivity extends AppCompatActivity {
                 .error(R.drawable.profile_background)
                 .into(userbackgroud);
 
+    }
+
+    public void redirect(View v){
+        Intent i_signup = new Intent(MyDemandActivity.this,AddDemandActivity.class);
+        MyDemandActivity.this.startActivity(i_signup);
     }
 }
