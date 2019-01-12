@@ -10,6 +10,7 @@ import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
@@ -34,7 +35,8 @@ public class AddProvideActivity extends AppCompatActivity {
 
     TextInputLayout tilprovidename,tilbrandname,tilsellingcost,tilprovidedetail;
     EditText etprovidename,etbrandname,etsellingcost,etprovidedetail;
-    private String providename;String brandname;String sellingcost; String providedetail;
+    Spinner spcat;
+    private String providename, brandname, sellingcost, providedetail,cat;
 
 
     @Override
@@ -52,12 +54,15 @@ public class AddProvideActivity extends AppCompatActivity {
 
         tilprovidedetail=findViewById(R.id.tilprovidedetail);
         etprovidedetail = findViewById(R.id.etprovidedetail);
+        spcat= findViewById(R.id.spcat);
 
     }
     public void processAddProduct(View v){
         providename=etprovidename.getText().toString();
         brandname=etbrandname.getText().toString();
         sellingcost=etsellingcost.getText().toString();
+
+        cat=spcat.getSelectedItem().toString();
 
         providedetail=etprovidedetail.getText().toString();
 
@@ -158,6 +163,7 @@ public class AddProvideActivity extends AppCompatActivity {
                 params.put("selling_cost",sellingcost);
                 params.put("brand_name",brandname);
                 params.put("detail",providedetail);
+                params.put("category",cat);
                 //returning parameters
                 return params;
             }

@@ -10,6 +10,7 @@ import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
@@ -33,7 +34,8 @@ public class AddImageActivity extends AppCompatActivity {
 
     TextInputLayout tilalbumname,tilimagename,tilimagedetail;
     EditText etalbumname,etimagename,etimagedetail;
-    private String albumname;String imagename;String imagedetail;
+    Spinner spcat;
+    private String albumname, imagename, imagedetail,cat;
 
 
     @Override
@@ -47,12 +49,14 @@ public class AddImageActivity extends AppCompatActivity {
         etimagename = findViewById(R.id.etimagename);
         tilimagedetail = findViewById(R.id.tilimagedetail);
         etimagedetail = findViewById(R.id.etimagedetail);
+        spcat= findViewById(R.id.spcat);
 
     }
     public void processAddProduct(View v){
         albumname=etalbumname.getText().toString();
         imagename=etimagename.getText().toString();
         imagedetail=etimagedetail.getText().toString();
+        cat=spcat.getSelectedItem().toString();
 
          if (!Validate.isNull(albumname)) {
              tilalbumname.setErrorEnabled(true);
@@ -142,6 +146,7 @@ public class AddImageActivity extends AppCompatActivity {
                 params.put("albumname",albumname);
                 params.put("name",imagename);
                 params.put("Detail",imagedetail);
+                params.put("category",cat);
                 //returning parameters
                 return params;
             }

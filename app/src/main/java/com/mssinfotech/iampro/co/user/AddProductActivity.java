@@ -41,7 +41,8 @@ public class AddProductActivity extends AppCompatActivity {
 
     TextInputLayout tilproductname,tilbrandname,tilpurchesecost,tilsellingcost,tilproductdetail;
     EditText etproductname,etbrandname,etpurchesecost,etsellingcost,etproductdetail;
-    private String productname;String brandname;String purchesecost; String sellingcost;String productdetail;
+    Spinner spcat;
+    private String productname, brandname, purchesecost,sellingcost, productdetail,cat;
 
 
     @Override
@@ -60,6 +61,7 @@ public class AddProductActivity extends AppCompatActivity {
         etsellingcost = findViewById(R.id.etsellingcost);
         tilproductdetail=findViewById(R.id.tilproductdetail);
         etproductdetail = findViewById(R.id.etproductdetail);
+        spcat= findViewById(R.id.spcat);
 
     }
     public void processAddProduct(View v){
@@ -68,6 +70,7 @@ public class AddProductActivity extends AppCompatActivity {
         purchesecost=etpurchesecost.getText().toString();
         sellingcost=etsellingcost.getText().toString();
         productdetail=etproductdetail.getText().toString();
+        cat=spcat.getSelectedItem().toString();
 
         if (!Validate.isNull(productname)) {
             tilproductname.setErrorEnabled(true);
@@ -171,6 +174,7 @@ public class AddProductActivity extends AppCompatActivity {
                 params.put("selling_cost",sellingcost);
                 params.put("brand_name",brandname);
                 params.put("detail",productdetail);
+                params.put("category",cat);
                 //returning parameters
                 return params;
             }
