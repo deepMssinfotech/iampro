@@ -28,7 +28,7 @@
                     android:layout_width="120dp"
                     android:layout_height="120dp"
                     android:layout_weight="1"
-                    android:src="@drawable/welcome_newuser" />
+                    android:src="@drawable/welcome_newuser_login" />
                 <TextView
                     android:layout_below="@+id/imglogin"
                     android:layout_width="120dp"
@@ -49,7 +49,7 @@
                     android:layout_width="120dp"
                     android:layout_height="120dp"
                     android:layout_weight="1"
-                    android:src="@drawable/welcome_newuser_login" />
+                    android:src="@drawable/welcome_newuser" />
                 <TextView
                     android:layout_below="@+id/imgsignup"
                     android:layout_width="120dp"
