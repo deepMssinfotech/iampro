@@ -33,17 +33,9 @@ import java.util.Random;
 public class SignupActivity extends AppCompatActivity  implements View.OnClickListener{
     TextView btnLogin;
     private Button btnRegister;
-    private TextInputLayout tilProfession;
-    private TextInputLayout tilFirstname;
-    private TextInputLayout tilLastname;
-    private TextInputLayout tilMobile;
-    private TextInputLayout tilEmail;
-    //private Spinner etProfession;
-    private EditText etFirstname;
-    private EditText etLastname;
-    private EditText etMobile;
-    private EditText etEmail;
-    private EditText etProfession;
+    private Spinner spprofession;
+    private TextInputLayout tilFirstname,tilLastname,tilMobile,tilEmail;
+    private EditText etLastname,etMobile,etEmail,etFirstname;
     Random r = new Random();
     public static int randomNumber;
     @Override
@@ -63,19 +55,12 @@ public class SignupActivity extends AppCompatActivity  implements View.OnClickLi
 
         etFirstname = findViewById(R.id.etFirstname);
         etLastname =findViewById(R.id.etLastname);
-        etProfession=findViewById(R.id.etprofession);
-         //tilprofession
-        tilProfession=findViewById(R.id.tilprofession);
+        spprofession=findViewById(R.id.spprofession);
+
         etMobile =findViewById(R.id.etMobile);
         etEmail =findViewById(R.id.etEmail);
-/*        if (getIntent().getExtras().getString("resend")==null || getIntent().getExtras().getString("resend")==""){
 
-        }
-        else {
-            if (getIntent().getExtras().getString("resend").equalsIgnoreCase("resend")) {
-                sendOtp();
-            }
-        } */
+        Config.getData(SignupActivity.this, this, spprofession, "FRIEND");
     }
     @Override
     public void onClick(View v) {
@@ -86,7 +71,7 @@ public class SignupActivity extends AppCompatActivity  implements View.OnClickLi
                 break;
             case R.id.btnRegister:
                 Log.d("btnRegister","btnRegister");
-                if (validateProfession() && validateFirstname() && validateLastname() && validateMobile() && validateEmail()) {
+                if (validateFirstname() && validateLastname() && validateMobile() && validateEmail()) {
                     Log.d("btnRegisterin","btnRegister");
                     sendOtp();
                     /*if (etPassword.getText().toString().equalsIgnoreCase(etcPassword.getText().toString())){
@@ -121,17 +106,17 @@ public class SignupActivity extends AppCompatActivity  implements View.OnClickLi
                         //Toast.makeText(LoginActivity.this, s , Toast.LENGTH_LONG).show();
                         Log.d("Lresponse",""+s);
 
-                            Intent intent=new Intent(getApplicationContext(),OtpRegistrationActivity.class);
-                            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                            intent.putExtra("otp",String.valueOf(randomNumber));
+                        Intent intent=new Intent(getApplicationContext(),OtpRegistrationActivity.class);
+                        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                        intent.putExtra("otp",String.valueOf(randomNumber));
                         intent.putExtra("fname",etFirstname.getText().toString().trim());
                         intent.putExtra("lname",etLastname.getText().toString().trim());
                         intent.putExtra("mobile",etMobile.getText().toString().trim());
                         intent.putExtra("email",etEmail.getText().toString().trim());
-                        intent.putExtra("category",etProfession.getText().toString().trim());
+                        intent.putExtra("category",spprofession.getSelectedItem().toString().trim());
 
-                            startActivity(intent);
-                            finish();
+                        startActivity(intent);
+                        finish();
 
                     }
                 },
@@ -164,22 +149,7 @@ public class SignupActivity extends AppCompatActivity  implements View.OnClickLi
         //Adding request to the queue
         requestQueue.add(stringRequest);
     }
-    private boolean validateProfession() {
-        final String data =etProfession.getText().toString();
-        // Check if firstname is entered
-        if (data.length() == 0) {
-            if (!tilProfession.isErrorEnabled()) {
-                tilProfession.setErrorEnabled(true);
-            }
-            tilProfession.setError("Profession Required");
-            return false;
-        } else {
-            if (tilProfession.isErrorEnabled()) {
-                tilProfession.setErrorEnabled(false);
-            }
-            return true;
-        }
-    }
+
     private boolean validateFirstname() {
         final String data = etFirstname.getText().toString();
         // Check if firstname is entered
