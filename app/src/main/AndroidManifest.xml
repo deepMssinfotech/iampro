@@ -53,6 +53,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".OtpForgetActivity" />
+        <activity android:name=".user.ProfileActivity" />
         <activity android:name=".OtpRegistrationActivity" />
         <activity android:name=".user.AddImageActivity" />
         <activity android:name=".user.AddVideoActivity" />

@@ -14,6 +14,7 @@ public class Config
     public static final String API_URL="http://www.iampro.co/api/";
     public static final String AJAX_URL="http://www.iampro.co/ajax/";
     public static final String AVATAR_URL="http://www.iampro.co/uploads/avatar/";
+    public static final String BANNER_URL="http://www.iampro.co/uploads/media/";
 
      /**  Network connectivity  */
      public static boolean haveNetworkConnection(Context context) {

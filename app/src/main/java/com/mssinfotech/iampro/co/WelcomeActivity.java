@@ -11,6 +11,7 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.mssinfotech.iampro.co.common.CircleTransform;
 import com.mssinfotech.iampro.co.user.ProfileActivity;
 import com.mssinfotech.iampro.co.utils.Config;
 import com.mssinfotech.iampro.co.utils.PrefManager;
@@ -40,12 +41,14 @@ public class WelcomeActivity extends AppCompatActivity implements View.OnClickLi
             loginlayout.setVisibility(View.VISIBLE);
             nonloginlayout = findViewById(R.id.nonloginlayout);
             nonloginlayout.setVisibility(View.GONE);
-            username.setText(PrefManager.getLoginDetail(this,"fname"));
+
             String avatar=Config.AVATAR_URL+"250/250/"+PrefManager.getLoginDetail(this,"img_url");
+            username.setText(PrefManager.getLoginDetail(this,"fname"));
             Picasso.get()
                     .load(avatar)
                     .placeholder(R.drawable.iampro)
                     .error(R.drawable.image)
+                    .transform(new CircleTransform())
                     .into(imguser);
             Log.d(Config.TAG,avatar);
             imguser.setOnClickListener(this);
