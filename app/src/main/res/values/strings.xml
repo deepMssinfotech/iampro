@@ -6,7 +6,13 @@
     <string name="title_notifications">Notifications</string>
     <string name="add_product">Add Product</string>
     <array name="cat">
-        <item>Select</item>
+        <item>Select Category</item>
         <item>Other</item>
     </array>
+    <array name="album">
+        <item>Select Album</item>
+        <item>Other</item>
+    </array>
+
+
 </resources>

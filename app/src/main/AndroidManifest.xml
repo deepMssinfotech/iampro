@@ -56,9 +56,13 @@
         <activity android:name=".OtpRegistrationActivity" />
         <activity android:name=".user.AddImageActivity" />
         <activity android:name=".user.AddVideoActivity" />
-        <activity android:name=".user.AddProductActivity" android:label="@string/add_product" />
+        <activity
+            android:name=".user.AddProductActivity"
+            android:label="@string/add_product" />
         <activity android:name=".user.AddProvideActivity" />
-        <activity android:name=".user.AddDemandActivity"></activity>
+        <activity android:name=".user.AddDemandActivity" />
+        <activity android:name=".user.MyImageActivity" />
+        <activity android:name=".user.MyVideoActivity"></activity>
     </application>
 
 </manifest>
