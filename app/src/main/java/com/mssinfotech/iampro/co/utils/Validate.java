@@ -14,7 +14,7 @@ public class Validate {
         return matcher.matches();
     }
     public static boolean Password(String password) {
-        return password.length() > 5;
+        return password.length() < 5;
     }
     public static boolean isNull(String text) {
         return text.isEmpty();

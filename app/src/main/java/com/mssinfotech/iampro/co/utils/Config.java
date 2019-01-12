@@ -13,7 +13,7 @@ public class Config
     public static final String AJAX_URL="http://www.iampro.co/ajax/";
 
      /**  Network connectivity  */
-     public boolean haveNetworkConnection(Context context) {
+     public static boolean haveNetworkConnection(Context context) {
         boolean haveConnectedWifi = false;
         boolean haveConnectedMobile = false;
         ConnectivityManager cm = (ConnectivityManager)context.getSystemService(Context.CONNECTIVITY_SERVICE);
@@ -28,7 +28,7 @@ public class Config
         }
         return haveConnectedWifi || haveConnectedMobile;
     }
-    public void showInternetDialog(Context context)
+    public static void showInternetDialog(Context context)
     {
         new AlertDialog.Builder(context)
                 .setTitle("Oops you are offline!")
