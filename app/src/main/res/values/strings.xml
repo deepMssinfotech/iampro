@@ -9,4 +9,12 @@
         <item>Select</item>
         <item>Other</item>
     </array>
+    <string name="home">Home</string>
+    <string name="demand">Demand</string>
+    <string name="image">Image</string>
+    <string name="product">Product</string>
+    <string name="provide">Provide</string>
+    <string name="user">User</string>
+    <string name="video">Video</string>
+
 </resources>

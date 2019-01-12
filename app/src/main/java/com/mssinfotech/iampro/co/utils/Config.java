@@ -11,9 +11,9 @@ public class Config
 
     public static final String TAG="Imapro tag";
 
-    public static final String API_URL="http://www.iampro.co/api/";
-    public static final String AJAX_URL="http://www.iampro.co/ajax/";
-    public static final String AVATAR_URL="http://www.iampro.co/uploads/avatar/";
+    public static final String API_URL="https://www.iampro.co/api/";
+    public static final String AJAX_URL="https://www.iampro.co/ajax/";
+    public static final String AVATAR_URL="https://www.iampro.co/uploads/avatar/";
 
      /**  Network connectivity  */
      public static boolean haveNetworkConnection(Context context) {
