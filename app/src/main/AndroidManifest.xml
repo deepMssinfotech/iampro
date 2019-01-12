@@ -54,17 +54,28 @@
             </intent-filter>
         </activity>
         <activity android:name=".OtpForgetActivity" />
-        <activity android:name=".user.ProfileActivity" />
         <activity android:name=".OtpRegistrationActivity" />
-        <activity android:name=".user.AddImageActivity" />
-        <activity android:name=".user.AddVideoActivity" />
+        <activity android:name=".user.AddImageActivity"
+            android:label="Add Image"/>
+        <activity android:name=".user.AddVideoActivity"
+            android:label="Add Video" />
         <activity
             android:name=".user.AddProductActivity"
-            android:label="@string/add_product" />
-        <activity android:name=".user.AddProvideActivity" />
-        <activity android:name=".user.AddDemandActivity" />
-        <activity android:name=".user.MyImageActivity" />
-        <activity android:name=".user.MyVideoActivity"></activity>
+            android:label="Add Product" />
+        <activity android:name=".user.AddProvideActivity"
+            android:label="Add Provide"/>
+        <activity android:name=".user.AddDemandActivity"
+            android:label="Add Demand"/>
+        <activity android:name=".user.MyImageActivity"
+            android:label="My Image's"/>
+        <activity android:name=".user.MyVideoActivity"
+            android:label="My Video's"></activity>
+        <activity android:name=".user.MyProductActivity"
+            android:label="My Product's"></activity>
+        <activity android:name=".user.MyProvideActivity"
+            android:label="My Provide's"></activity>
+        <activity android:name=".user.MyDemandActivity"
+            android:label="My Demand's"></activity>
     </application>
 
 </manifest>

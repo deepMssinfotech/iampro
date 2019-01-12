@@ -10,6 +10,7 @@ import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
@@ -33,7 +34,8 @@ public class AddVideoActivity extends AppCompatActivity {
 
     TextInputLayout tilalbumname,tilvideoname,tilvideodetail;
     EditText etalbumname,etvideoname,etvideodetail;
-    private String albumname;String videoname;String videodetail;
+    Spinner spcat;
+    private String albumname, videoname, videodetail,cat;
 
 
     @Override
@@ -47,12 +49,14 @@ public class AddVideoActivity extends AppCompatActivity {
         etvideoname = findViewById(R.id.etvideoname);
         tilvideodetail = findViewById(R.id.tilvideodetail);
         etvideodetail = findViewById(R.id.etvideodetail);
+        spcat= findViewById(R.id.spcat);
 
     }
     public void processAddProduct(View v){
         albumname=etalbumname.getText().toString();
         videoname=etvideoname.getText().toString();
         videodetail=etvideodetail.getText().toString();
+        cat=spcat.getSelectedItem().toString();
 
         if (!Validate.isNull(albumname)) {
             tilalbumname.setErrorEnabled(true);
@@ -142,6 +146,7 @@ public class AddVideoActivity extends AppCompatActivity {
                 params.put("albumname",albumname);
                 params.put("name",videoname);
                 params.put("Detail",videodetail);
+                params.put("category",cat);
                 //returning parameters
                 return params;
             }
