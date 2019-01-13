@@ -42,8 +42,6 @@
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:paddingTop="0dp">
-
-
                 <LinearLayout
                     android:orientation="horizontal"
                     android:layout_width="match_parent"
