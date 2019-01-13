@@ -6,23 +6,7 @@
     android:layout_height="match_parent"
     tools:context=".user.AddProductActivity">
 
-    <RelativeLayout
-        android:id="@+id/buttonLayout"
-        android:layout_height="wrap_content"
-        android:layout_width="match_parent"
-        android:gravity="bottom"
-        android:layout_alignParentBottom="true"
-        android:layout_gravity="bottom">
-        <Button
-            android:id="@+id/button"
-            android:layout_width="match_parent"
-            android:layout_height="35dp"
-            android:onClick="processAddProduct"
-            android:layout_gravity="bottom"
-            android:background="@drawable/product_color"
-            android:text="Proceed Now"
-            android:textAlignment="center" />
-    </RelativeLayout>
+
 
     <ScrollView
         android:id="@+id/scroll"
@@ -169,18 +153,42 @@
 
                     <Button
                         android:id="@+id/ibProductMoreImage"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_width="match_parent"
+                        android:layout_height="45dp"
                         android:layout_weight="1"
                         android:drawableLeft="@drawable/ic_action_attechment"
 
                         android:drawableTint="#000000"
                         android:text="Add More Image" />
-
+                    <GridView
+                        android:layout_marginBottom="45dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/gv"
+                        android:numColumns="3"
+                        android:layout_weight="1">
+                    </GridView>
 
                 </android.support.design.widget.TextInputLayout>
             </LinearLayout>
         </LinearLayout>
     </ScrollView>
+    <RelativeLayout
+        android:id="@+id/buttonLayout"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:gravity="bottom"
+        android:layout_alignParentBottom="true"
+        android:layout_gravity="bottom">
+        <Button
+            android:id="@+id/button"
+            android:layout_width="match_parent"
+            android:layout_height="35dp"
+            android:onClick="processAddProduct"
+            android:layout_gravity="bottom"
+            android:background="@drawable/product_color"
+            android:text="Proceed Now"
+            android:textAlignment="center" />
+    </RelativeLayout>
 </RelativeLayout>
 

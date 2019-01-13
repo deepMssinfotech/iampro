@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.graphics.Bitmap;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.util.Log;
@@ -33,7 +34,7 @@ public class Config
     public static final String BANNER_URL="https://www.iampro.co/uploads/media/";
 
     public static final String IMAGE_DIRECTORY = "/iampro";
-    public static final Integer GALLERY = 1, CAMERA = 2;
+    public static final Integer GALLERY = 1, CAMERA = 2, PICK_IMAGE_MULTIPLE = 3;
     public static String layoutName="";
     public Config(){
 

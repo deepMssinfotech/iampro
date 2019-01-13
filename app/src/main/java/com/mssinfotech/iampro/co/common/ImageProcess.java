@@ -8,47 +8,46 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.media.MediaScannerConnection;
 import android.os.Environment;
+import android.util.Base64;
 import android.util.Log;
 import android.view.View;
+import android.widget.ArrayAdapter;
+import android.widget.Spinner;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.DefaultRetryPolicy;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.RetryPolicy;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.mssinfotech.iampro.co.utils.Config;
+import com.mssinfotech.iampro.co.utils.PrefManager;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Hashtable;
+import java.util.Map;
 
 public class ImageProcess {
-    public static void showPictureDialog(View.OnClickListener context, final Activity activity){
-        AlertDialog.Builder pictureDialog = new AlertDialog.Builder((Context) context);
-        pictureDialog.setTitle("Select Action");
-        String[] pictureDialogItems = {
-                "Select photo from gallery",
-                "Capture photo from camera" };
-        pictureDialog.setItems(pictureDialogItems,
-                new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        switch (which) {
-                            case 0:
-                                choosePhotoFromGallary(activity);
-                                break;
-                            case 1:
-                                takePhotoFromCamera(activity);
-                                break;
-                        }
-                    }
-                });
-        pictureDialog.show();
-    }
+
     public static void choosePhotoFromGallary(Activity activity) {
         Intent galleryIntent = new Intent(Intent.ACTION_PICK,
                 android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
         activity.startActivityForResult(galleryIntent, Config.GALLERY);
     }
 
-    private static void takePhotoFromCamera(Activity activity) {
+    public static void takePhotoFromCamera(Activity activity) {
         Intent intent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
         activity.startActivityForResult(intent, Config.CAMERA);
     }
@@ -63,8 +62,7 @@ public class ImageProcess {
         }
 
         try {
-            File f = new File(wallpaperDirectory, Calendar.getInstance()
-                    .getTimeInMillis() + ".jpg");
+            File f = new File(wallpaperDirectory, "mss-"+Calendar.getInstance().getTimeInMillis() + ".jpg");
             f.createNewFile();
             FileOutputStream fo = new FileOutputStream(f);
             fo.write(bytes.toByteArray());
@@ -79,5 +77,69 @@ public class ImageProcess {
             e1.printStackTrace();
         }
         return "";
+    }
+    public static void saveTempImage(final Context context, final String utype, final Bitmap bitmap){
+        String url=Config.AJAX_URL+"uploadImage.php";
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, url,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        JSONArray result = null;
+                        try {
+                            //Parsing the fetched Json String to JSON Object
+                            result = new JSONArray(response);
+                            for(int i=0;i<result.length();i++){
+                                try {
+                                    //Getting json object
+                                    JSONObject json = result.getJSONObject(i);
+                                    //Adding the name of the student to array list
+                                    //students.add(json.getString("name"));
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                            Log.d(Config.TAG,e.getMessage().toString());
+                        }
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Log.d(Config.TAG,error.getMessage().toString());
+                    }
+                }){
+                @Override
+                protected Map<String, String> getParams() throws AuthFailureError {
+                    String uid=PrefManager.getLoginDetail(context,"id");
+                    //Converting Bitmap to String
+                    String image = getStringImage(bitmap);
+                    //Creating parameters
+                    Map<String,String> params = new Hashtable<String, String>();
+                    //Adding parameters
+                    params.put("action","add_android");
+                    params.put("type",utype);
+                    params.put("myfile",image);
+                    params.put("uid",uid);
+                    Log.d(Config.TAG,utype+"---"+uid+"---"+image);
+                    return params;
+                }
+            };
+        //Creating a request queue
+        int socketTimeout = 30000;
+        RetryPolicy policy = new DefaultRetryPolicy(socketTimeout, DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT);
+        stringRequest.setRetryPolicy(policy);
+        RequestQueue requestQueue = Volley.newRequestQueue(context);
+        //Adding request to the queue
+        requestQueue.add(stringRequest);
+    }
+    public static String getStringImage(Bitmap bmp){
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        bmp.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+        byte[] imageBytes = baos.toByteArray();
+        String encodedImage = Base64.encodeToString(imageBytes, Base64.DEFAULT);
+        return encodedImage;
     }
 }
