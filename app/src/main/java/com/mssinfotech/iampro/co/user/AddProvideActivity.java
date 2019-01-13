@@ -55,6 +55,7 @@ public class AddProvideActivity extends AppCompatActivity {
         tilprovidedetail=findViewById(R.id.tilprovidedetail);
         etprovidedetail = findViewById(R.id.etprovidedetail);
         spcat= findViewById(R.id.spcat);
+        Config.getData(AddProvideActivity.this, this, spcat, "PROVIDE");
 
     }
     public void processAddProvide(View v){

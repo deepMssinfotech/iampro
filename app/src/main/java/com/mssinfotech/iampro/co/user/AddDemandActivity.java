@@ -56,6 +56,7 @@ public class AddDemandActivity extends AppCompatActivity {
         etdemanddetail = findViewById(R.id.etdemanddetail);
 
         spcat= findViewById(R.id.spcat);
+        Config.getData(AddDemandActivity.this, this, spcat, "DEMAND");
     }
     public void processAddDemand(View v){
         demandname=etdemandname.getText().toString();

@@ -12,6 +12,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.mssinfotech.iampro.co.common.CircleTransform;
+import com.mssinfotech.iampro.co.services.ScheduledService;
 import com.mssinfotech.iampro.co.user.ProfileActivity;
 import com.mssinfotech.iampro.co.utils.Config;
 import com.mssinfotech.iampro.co.utils.PrefManager;
@@ -53,6 +54,8 @@ public class WelcomeActivity extends AppCompatActivity implements View.OnClickLi
             Log.d(Config.TAG,avatar);
             imguser.setOnClickListener(this);
         }
+        Intent i= new Intent(this, ScheduledService.class);
+        this.startService(i);
     }
 
     @Override

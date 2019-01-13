@@ -20,14 +20,15 @@ public class MyProductActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_profile);
+        setContentView(R.layout.activity_my_product);
+        Config.setLayoutName(getResources().getResourceEntryName(R.layout.activity_my_product));
         String fname=PrefManager.getLoginDetail(this,"fname");
         String avatar=Config.AVATAR_URL+"250/250/"+PrefManager.getLoginDetail(this,"img_url");
         String background=Config.BANNER_URL+"h/250/"+PrefManager.getLoginDetail(this,"banner_image");
         username = findViewById(R.id.username);
         userimage = findViewById(R.id.userimage);
         userbackgroud = findViewById(R.id.userbackgroud);
-        username.setText(PrefManager.getLoginDetail(this,"fname") +" "+PrefManager.getLoginDetail(this,"lname"));
+        username.setText("My Product");
         Picasso.get()
                 .load(avatar)
                 .placeholder(R.drawable.iampro)

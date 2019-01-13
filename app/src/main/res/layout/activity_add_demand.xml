@@ -1,11 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".user.AddDemandActivity">
-
+    <RelativeLayout
+        android:id="@+id/buttonLayout"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:gravity="bottom"
+        android:layout_alignParentBottom="true"
+        android:layout_gravity="bottom">
+        <Button
+            android:id="@+id/button"
+            android:layout_width="match_parent"
+            android:layout_height="35dp"
+            android:onClick="processAddDemand"
+            android:layout_gravity="bottom"
+            android:background="@drawable/demand_color"
+            android:text="Proceed Now"
+            android:textAlignment="center" />
+    </RelativeLayout>
 
     <ScrollView
         android:id="@+id/scroll"
@@ -145,23 +161,11 @@
                 </android.support.design.widget.TextInputLayout>
             </LinearLayout>
 
-            <Button
-                android:id="@+id/button"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_alignParentBottom="true"
-                android:layout_gravity="bottom"
-                android:layout_weight="0"
-                android:onClick="processAddDemand"
-                android:textColor="@color/white"
-                android:background="@drawable/demand_color"
-                android:text="Button"
-                android:textAlignment="center" />
         </LinearLayout>
 
 
     </ScrollView>
 
 
-</android.support.constraint.ConstraintLayout>
+</RelativeLayout>
 

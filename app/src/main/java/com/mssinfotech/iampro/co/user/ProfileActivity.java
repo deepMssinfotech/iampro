@@ -20,6 +20,8 @@ public class ProfileActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
+        Config.setLayoutName(getResources().getResourceEntryName(R.layout.activity_profile));
+
         String fname=PrefManager.getLoginDetail(this,"fname");
         String avatar=Config.AVATAR_URL+"250/250/"+PrefManager.getLoginDetail(this,"img_url");
         String background=Config.AVATAR_URL+"h/250/"+PrefManager.getLoginDetail(this,"banner_image");
@@ -40,4 +42,5 @@ public class ProfileActivity extends AppCompatActivity {
                 .into(userbackgroud);
 
     }
+
 }

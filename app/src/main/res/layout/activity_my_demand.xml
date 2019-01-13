@@ -12,6 +12,9 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical">
+            <com.mssinfotech.iampro.co.IncludeHeader
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"></com.mssinfotech.iampro.co.IncludeHeader>
             <LinearLayout
                 android:orientation="vertical"
                 android:id="@+id/profile_header"
@@ -27,40 +30,45 @@
                         android:layout_height="match_parent" />
                     <ImageView
                         android:id="@+id/userimage"
-                        android:layout_marginTop="@dimen/profile_icon_margin_top"
+                        android:layout_alignParentBottom="true"
+                        android:layout_marginBottom="@dimen/profile_icon_margin_bottom"
                         android:layout_marginLeft="@dimen/profile_icon_margin_left"
                         android:src="@drawable/iampro"
                         android:layout_height="@dimen/profile_icon_height"
                         android:layout_width="@dimen/profile_icon_height" />
-                    <TextView
-                        android:id="@+id/username"
-                        android:layout_marginTop="5dp"
-                        android:layout_below="@+id/userimage"
-                        android:gravity="bottom"
-                        android:textColor="@color/white"
-                        android:padding="5dp"
-                        android:background="@drawable/black"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content" />
 
-                    <Button
-                        android:id="@+id/button3"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentTop="true"
-                        android:layout_alignParentEnd="true"
-                        android:onClick="redirect"
-                        android:layout_alignParentRight="true"
-                        android:layout_marginTop="5dp"
-                        android:background="@drawable/demand_color"
-                        android:text="Add New" />
 
                 </RelativeLayout>
             </LinearLayout>
-            <include
+            <RelativeLayout
+                android:background="@drawable/black"
+                android:layout_alignParentBottom="true"
+                android:layout_width="match_parent"
+                android:orientation="horizontal"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:id="@+id/username"
+                    android:gravity="bottom"
+                    android:textColor="@color/white"
+                    android:padding="5dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+                <Button
+                    android:id="@+id/btnaddnew"
+                    android:visibility="visible"
+                    android:layout_width="wrap_content"
+                    android:layout_height="20dp"
+                    android:onClick="redirect"
+                    android:layout_alignParentRight="true"
+                    android:layout_margin="5dp"
+                    android:textSize="10dp"
+                    android:background="@drawable/demand_color"
+                    android:text="Add New" />
+            </RelativeLayout>
+            <com.mssinfotech.iampro.co.IncludeShortMenu
                 layout="@layout/include_short_menu"
                 android:layout_height="wrap_content"
-                android:layout_width="match_parent"></include>
+                android:layout_width="match_parent"></com.mssinfotech.iampro.co.IncludeShortMenu>
         </LinearLayout>
     </ScrollView>
 </android.support.constraint.ConstraintLayout>

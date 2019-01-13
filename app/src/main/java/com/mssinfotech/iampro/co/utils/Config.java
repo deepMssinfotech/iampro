@@ -31,8 +31,19 @@ public class Config
     public static final String AJAX_URL="https://www.iampro.co/ajax/";
     public static final String AVATAR_URL="https://www.iampro.co/uploads/avatar/";
     public static final String BANNER_URL="https://www.iampro.co/uploads/media/";
-     /**  Network connectivity  */
-     public static boolean haveNetworkConnection(Context context) {
+
+    public static String layoutName="";
+    public Config(){
+
+    }
+    public static void setLayoutName(String name){
+        layoutName=name;
+    }
+    public static String getLayoutName(){
+        return layoutName;
+    }
+    /**  Network connectivity  */
+    public static boolean haveNetworkConnection(Context context) {
         boolean haveConnectedWifi = false;
         boolean haveConnectedMobile = false;
         ConnectivityManager cm = (ConnectivityManager)context.getSystemService(Context.CONNECTIVITY_SERVICE);
@@ -111,5 +122,9 @@ public class Config
         requestQueue.add(stringRequest);
     }
 
+
+    public static void sendRequestToServer() {
+         Log.d(TAG,"test servide for 5 sec");
+    }
 
 }

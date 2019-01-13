@@ -50,7 +50,7 @@ public class AddImageActivity extends AppCompatActivity {
         tilimagedetail = findViewById(R.id.tilimagedetail);
         etimagedetail = findViewById(R.id.etimagedetail);
         spcat= findViewById(R.id.spcat);
-
+        Config.getData(AddImageActivity.this, this, spcat, "IMAGE");
     }
     public void processAddImage(View v){
         albumname=etalbumname.getText().toString();

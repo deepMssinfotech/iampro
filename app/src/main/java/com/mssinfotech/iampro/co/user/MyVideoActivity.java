@@ -20,14 +20,15 @@ public class MyVideoActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_profile);
+        setContentView(R.layout.activity_my_video);
+        Config.setLayoutName(getResources().getResourceEntryName(R.layout.activity_my_video));
         String fname=PrefManager.getLoginDetail(this,"fname");
         String avatar=Config.BANNER_URL+"250/250/"+PrefManager.getLoginDetail(this,"profile_video_gallery");
         String background=Config.BANNER_URL+"h/250/"+PrefManager.getLoginDetail(this,"video_banner_image");
         username = findViewById(R.id.username);
         userimage = findViewById(R.id.userimage);
         userbackgroud = findViewById(R.id.userbackgroud);
-        username.setText("MY Image Gallery");
+        username.setText("My Video Gallery");
         Picasso.get()
                 .load(avatar)
                 .placeholder(R.drawable.iampro)

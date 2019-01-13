@@ -50,9 +50,10 @@ public class AddVideoActivity extends AppCompatActivity {
         tilvideodetail = findViewById(R.id.tilvideodetail);
         etvideodetail = findViewById(R.id.etvideodetail);
         spcat= findViewById(R.id.spcat);
+        Config.getData(AddVideoActivity.this, this, spcat, "VIDEO");
 
     }
-    public void processAddDemand(View v){
+    public void processAddVideo(View v){
         albumname=etalbumname.getText().toString();
         videoname=etvideoname.getText().toString();
         videodetail=etvideodetail.getText().toString();

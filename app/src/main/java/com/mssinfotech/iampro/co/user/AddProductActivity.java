@@ -62,7 +62,7 @@ public class AddProductActivity extends AppCompatActivity {
         tilproductdetail=findViewById(R.id.tilproductdetail);
         etproductdetail = findViewById(R.id.etproductdetail);
         spcat= findViewById(R.id.spcat);
-
+        Config.getData(AddProductActivity.this, this, spcat, "PRODUCT");
     }
     public void processAddProduct(View v){
         productname=etproductname.getText().toString();

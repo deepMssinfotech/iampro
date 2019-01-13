@@ -18,6 +18,12 @@
         android:roundIcon="@drawable/iampro"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <service
+            android:name=".services.ScheduledService"
+            android:enabled="true"
+            android:icon="@drawable/iampro"
+            android:label="@string/app_name" />
+
         <receiver android:name=".utils.IncomingSms">
             <intent-filter>
                 <action android:name="android.provider.Telephony.SMS_RECEIVED" />
@@ -26,8 +32,8 @@
 
         <activity
             android:name=".HomeActivity"
-            android:theme="@style/MyMaterialTheme"
-            android:label="@string/app_name" />
+            android:label="@string/app_name"
+            android:theme="@style/MyMaterialTheme" />
         <activity
             android:name=".WelcomeActivity"
             android:theme="@style/AppTheme.NoActionBar" />
@@ -55,29 +61,53 @@
         </activity>
         <activity android:name=".OtpForgetActivity" />
         <activity android:name=".OtpRegistrationActivity" />
-        <activity android:name=".user.AddImageActivity"
-            android:label="Add Image"/>
-        <activity android:name=".user.AddVideoActivity"
-            android:label="Add Video" />
+        <activity
+            android:name=".user.AddImageActivity"
+            android:label="Add Image"
+            android:parentActivityName=".user.MyImageActivity" />
+        <activity
+            android:name=".user.AddVideoActivity"
+            android:label="Add Video"
+            android:parentActivityName=".user.MyVideoActivity" />
         <activity
             android:name=".user.AddProductActivity"
-            android:label="Add Product" />
-        <activity android:name=".user.AddProvideActivity"
-            android:label="Add Provide"/>
-        <activity android:name=".user.AddDemandActivity"
-            android:label="Add Demand"/>
-        <activity android:name=".user.MyImageActivity"
-            android:label="My Image's"/>
-        <activity android:name=".user.MyVideoActivity"
-            android:label="My Video's"></activity>
-        <activity android:name=".user.MyProductActivity"
-            android:label="My Product's"></activity>
-        <activity android:name=".user.MyProvideActivity"
-            android:label="My Provide's"></activity>
-        <activity android:name=".user.MyDemandActivity"
-            android:label="My Demand's"></activity>
-        <activity android:name=".user.ProfileActivity"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:label="Add Product"
+            android:parentActivityName=".user.MyProductActivity" />
+        <activity
+            android:name=".user.AddProvideActivity"
+            android:label="Add Provide"
+            android:parentActivityName=".user.MyProvideActivity" />
+        <activity
+            android:name=".user.AddDemandActivity"
+            android:label="Add Demand"
+            android:parentActivityName=".user.MyDemandActivity" />
+        <activity
+            android:name=".user.MyImageActivity"
+            android:label="My Image&apos;s"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".user.MyVideoActivity"
+            android:label="My Video&apos;s"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".user.MyProductActivity"
+            android:label="My Product&apos;s"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".user.MyProvideActivity"
+            android:label="My Provide&apos;s"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".user.MyDemandActivity"
+            android:label="My Demand&apos;s"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".user.ProfileActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".SearchActivity" />
+        <activity android:name=".CartActivity" />
+        <activity android:name=".NotificationActivity" />
+        <activity android:name=".MessageActivity"></activity>
     </application>
 
 </manifest>
