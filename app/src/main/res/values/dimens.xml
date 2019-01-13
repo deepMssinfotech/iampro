@@ -32,4 +32,11 @@
     <dimen name="tab_padding_bottom">16dp</dimen>
     <dimen name="tab_label">14sp</dimen>
     <dimen name="custom_tab_layout_height">72dp</dimen>
+
+    <dimen name="header_image_height">40dp</dimen>
+    <dimen name="header_image_width">40dp</dimen>
+    <dimen name="header_image_margin">5dp</dimen>
+
+    <dimen name="bottom_icon_height">40dp</dimen>
+    <dimen name="bottom_icon_padding">5dp</dimen>
 </resources>
