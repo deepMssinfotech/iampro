@@ -32,6 +32,8 @@ public class Config
     public static final String AVATAR_URL="https://www.iampro.co/uploads/avatar/";
     public static final String BANNER_URL="https://www.iampro.co/uploads/media/";
 
+    public static final String IMAGE_DIRECTORY = "/iampro";
+    public static final Integer GALLERY = 1, CAMERA = 2;
     public static String layoutName="";
     public Config(){
 
@@ -91,7 +93,7 @@ public class Config
                             //JSONArray result = j.getJSONArray("data");
                             ArrayList<String> students = new ArrayList<String>();
                             //Calling method getStudents to get the students from the JSON Array
-                            Log.d(TAG,result.toString());
+                            //Log.d(TAG,result.toString());
                             for(int i=0;i<result.length();i++){
                                 try {
                                     //Getting json object

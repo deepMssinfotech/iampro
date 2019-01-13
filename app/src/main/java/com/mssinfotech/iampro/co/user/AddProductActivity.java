@@ -1,8 +1,15 @@
 package com.mssinfotech.iampro.co.user;
 
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.media.MediaScannerConnection;
+import android.net.Uri;
+import android.os.Environment;
+import android.provider.MediaStore;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -11,6 +18,7 @@ import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -26,6 +34,7 @@ import com.mssinfotech.iampro.co.ForgetActivity;
 import com.mssinfotech.iampro.co.HomeActivity;
 import com.mssinfotech.iampro.co.LoginActivity;
 import com.mssinfotech.iampro.co.R;
+import com.mssinfotech.iampro.co.common.ImageProcess;
 import com.mssinfotech.iampro.co.utils.Config;
 import com.mssinfotech.iampro.co.utils.PrefManager;
 import com.mssinfotech.iampro.co.utils.Validate;
@@ -33,17 +42,23 @@ import com.mssinfotech.iampro.co.utils.Validate;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.util.Calendar;
 import java.util.Hashtable;
 import java.util.Map;
 
 public class AddProductActivity extends AppCompatActivity {
 
 
+    private ImageView imageview;
     TextInputLayout tilproductname,tilbrandname,tilpurchesecost,tilsellingcost,tilproductdetail;
     EditText etproductname,etbrandname,etpurchesecost,etsellingcost,etproductdetail;
     Spinner spcat;
     private String productname, brandname, purchesecost,sellingcost, productdetail,cat;
-
+    Button ibproductimage;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,7 +78,48 @@ public class AddProductActivity extends AppCompatActivity {
         etproductdetail = findViewById(R.id.etproductdetail);
         spcat= findViewById(R.id.spcat);
         Config.getData(AddProductActivity.this, this, spcat, "PRODUCT");
+
+        imageview  = (ImageView) findViewById(R.id.iv);
+        ibproductimage = findViewById(R.id.ibproductimage);
+        ibproductimage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ImageProcess.showPictureDialog(this,AddProductActivity.this);
+            }
+        });
     }
+
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == this.RESULT_CANCELED) {
+            return;
+        }
+        if (requestCode == Config.GALLERY) {
+            if (data != null) {
+                Uri contentURI = data.getData();
+                try {
+                    Bitmap bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), contentURI);
+                    String path = ImageProcess.saveImage(this,bitmap);
+                    Toast.makeText(AddProductActivity.this, "Image Saved!", Toast.LENGTH_SHORT).show();
+                    imageview.setImageBitmap(bitmap);
+
+                } catch (IOException e) {
+                    e.printStackTrace();
+                    Toast.makeText(AddProductActivity.this, "Failed!", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+        } else if (requestCode == Config.CAMERA) {
+            Bitmap thumbnail = (Bitmap) data.getExtras().get("data");
+            imageview.setImageBitmap(thumbnail);
+            ImageProcess.saveImage(this,thumbnail);
+            Toast.makeText(AddProductActivity.this, "Image Saved!", Toast.LENGTH_SHORT).show();
+        }
+    }
+
     public void processAddProduct(View v){
         productname=etproductname.getText().toString();
         brandname=etbrandname.getText().toString();

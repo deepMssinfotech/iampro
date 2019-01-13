@@ -34,8 +34,7 @@
             android:id="@+id/btn_menu_iampro"
             android:layout_width="0dp"
             android:layout_weight="1"
-            android:padding="@dimen/bottom_icon_padding"
-            android:layout_height="@dimen/bottom_icon_height"
+            android:layout_height="40dp"
             android:src="@drawable/iampro" />
         <ImageView
             android:id="@+id/btn_menu_notice"
@@ -48,6 +47,7 @@
             android:id="@+id/btn_menu_message"
             android:layout_width="0dp"
             android:layout_weight="1"
+            android:padding="@dimen/bottom_icon_padding"
             android:layout_height="@dimen/bottom_icon_height"
             android:src="@drawable/message" />
         <ImageView
