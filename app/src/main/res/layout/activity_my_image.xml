@@ -58,7 +58,7 @@
                 </RelativeLayout>
             </LinearLayout>
             <include
-                layout="@layout/shortcutment_menu"
+                layout="@layout/include_short_menu"
                 android:layout_height="wrap_content"
                 android:layout_width="match_parent"></include>
         </LinearLayout>

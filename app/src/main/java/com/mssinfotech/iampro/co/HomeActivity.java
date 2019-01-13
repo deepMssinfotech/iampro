@@ -24,7 +24,6 @@ import com.mssinfotech.iampro.co.uppertab.ProductFragment;
 import com.mssinfotech.iampro.co.uppertab.ProvideFragment;
 import com.mssinfotech.iampro.co.uppertab.UserFragment;
 import com.mssinfotech.iampro.co.uppertab.VideoFragment;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -39,13 +38,13 @@ public class HomeActivity extends AppCompatActivity {
     private TabLayout tabLayout;
     private ViewPager viewPager;
      int[] tabIcons = {
-            R.drawable.home,
-            R.drawable.image,
-            R.drawable.video,
-             R.drawable.userprofile_icon,
-             R.drawable.product,
-             R.drawable.provide,
-             R.drawable.demand,
+            R.drawable.tab_home,
+            R.drawable.tab_image,
+            R.drawable.tab_video,
+             R.drawable.tab_home,
+             R.drawable.tab_product,
+             R.drawable.tab_provide,
+             R.drawable.tab_demand,
     };
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {

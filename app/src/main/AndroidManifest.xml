@@ -76,6 +76,8 @@
             android:label="My Provide's"></activity>
         <activity android:name=".user.MyDemandActivity"
             android:label="My Demand's"></activity>
+        <activity android:name=".user.ProfileActivity"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
 </manifest>

@@ -15,12 +15,12 @@
     <color name="color_transucent_black">#77000000</color>
 
     <!--         Login Activity Colors        -->
-    <color name="loginPrimary">#1ba7ff</color>
+    <color name="loginPrimary">#77000000</color>
     <color name="loginPrimaryDark">#4f5b62</color>
     <color name="loginAccent">#77000000</color>
     <color name="black_overlay">#66000000</color>
 
-    <color name="white">#000000</color>
+    <color name="white">#ffffff</color>
     <color name="feed_bg">#d3d6db</color>
     <color name="feed_item_bg">#ffffff</color>
     <color name="feed_item_border">#c2c3c8</color>
