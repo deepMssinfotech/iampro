@@ -65,7 +65,7 @@ public class AddDemandActivity extends AppCompatActivity {
         setContentView(R.layout.activity_add_demand);
 
         tildemandname = findViewById(R.id.tildemandname);
-        etprovidename = findViewById(R.id.etprovidename);
+        etdemandname = findViewById(R.id.etprovidename);
         tilbrandname = findViewById(R.id.tilbrandname);
         etbrandname = findViewById(R.id.etbrandname);
 
