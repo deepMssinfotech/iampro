@@ -48,7 +48,7 @@
                     android:drawableLeft="@drawable/ic_action_mobile"
                     android:drawableTint="#000000"
                     android:hint="Enter OTP"
-                    android:inputType="text"
+                    android:inputType="number"
                     android:singleLine="true" />
             </android.support.design.widget.TextInputLayout>
 

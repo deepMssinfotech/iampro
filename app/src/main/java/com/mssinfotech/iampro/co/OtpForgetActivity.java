@@ -90,7 +90,7 @@ public class OtpForgetActivity extends AppCompatActivity {
                                     startActivity(intent);
                                     finish();
                                 } else {
-                                    Toast.makeText(OtpForgetActivity.this, msg, Toast.LENGTH_LONG).show();
+                                    Toast.makeText(OtpForgetActivity.this, msg+"database code/"+vcode+"/inputcode"+etotp, Toast.LENGTH_LONG).show();
                                 }
                             } catch (JSONException e) {
                                 e.printStackTrace();
