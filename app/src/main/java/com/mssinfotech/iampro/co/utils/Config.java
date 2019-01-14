@@ -125,7 +125,6 @@ public class Config
         requestQueue.add(stringRequest);
     }
 
-
     public static void sendRequestToServer() {
          Log.d(TAG,"test servide for 5 sec");
     }

@@ -7,6 +7,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -21,6 +22,11 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.mssinfotech.iampro.co.utils.Config;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.Map;
 import java.util.Random;
@@ -78,19 +84,28 @@ public class ForgetActivity extends AppCompatActivity   implements View.OnClickL
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String s) {
-                        //Disimissing the progress dialog
+                        JSONObject result = null;
                         loading.dismiss();
+                        try {
+                            //Parsing the fetched Json String to JSON Object
+                            result = new JSONObject(s);
+
+                            String vcode = result.getString("vcode");
+                            Log.d("Lresponse",""+vcode);
+                            Intent intent=new Intent(getApplicationContext(),OtpForgetActivity.class);
+                            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                            intent.putExtra("vcode",vcode);
+                            intent.putExtra("email",etemail.getText().toString().trim());
+                            startActivity(intent);
+                            finish();
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+
                         //Showing toast message of the response
                         //Toast.makeText(LoginActivity.this, s , Toast.LENGTH_LONG).show();
-                        Log.d("Lresponse",""+s);
 
-                        Intent intent=new Intent(getApplicationContext(),OtpRegistrationActivity.class);
-                        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                        intent.putExtra("otp",String.valueOf(randomNumber));
 
-                        intent.putExtra("email",etemail.getText().toString().trim());
-                        startActivity(intent);
-                        finish();
 
                     }
                 },
