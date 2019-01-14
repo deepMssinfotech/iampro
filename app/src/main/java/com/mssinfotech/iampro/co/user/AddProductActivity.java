@@ -65,6 +65,7 @@ public class AddProductActivity extends AppCompatActivity {
     EditText etproductname,etbrandname,etpurchesecost,etsellingcost,etproductdetail;
     Spinner spcat;
     String imageEncoded;
+    private Bitmap bitmap=null;
     private String productname, brandname, purchesecost,sellingcost, productdetail,cat;
     Button ibproductimage,ibProductMoreImage;
     List<String> imagesEncodedList;
@@ -145,11 +146,11 @@ public class AddProductActivity extends AppCompatActivity {
             if (data != null) {
                 Uri contentURI = data.getData();
                 try {
-                    Bitmap bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), contentURI);
+                    bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), contentURI);
                     //String path = ImageProcess.saveImage(this,Config.bitmap);
                     //Toast.makeText(AddProductActivity.this, "Image Saved!", Toast.LENGTH_SHORT).show();
                     imageview.setImageBitmap(bitmap);
-                    ImageProcess.saveTempImage(this,"product",bitmap);
+                    //ImageProcess.saveTempImage(this,"product",bitmap);
                 } catch (IOException e) {
                     e.printStackTrace();
                     Toast.makeText(AddProductActivity.this, "Failed!", Toast.LENGTH_SHORT).show();
@@ -157,10 +158,10 @@ public class AddProductActivity extends AppCompatActivity {
             }
 
         } else if (requestCode == Config.CAMERA) {
-            Bitmap bitmap = (Bitmap) data.getExtras().get("data");
+            bitmap = (Bitmap) data.getExtras().get("data");
             imageview.setImageBitmap(bitmap);
             ImageProcess.saveImage(this,bitmap);
-            ImageProcess.saveTempImage(this,"product",bitmap);
+            //ImageProcess.saveTempImage(this,"product",bitmap);
             Toast.makeText(AddProductActivity.this, "Image Saved!", Toast.LENGTH_SHORT).show();
         } else if (requestCode == Config.PICK_IMAGE_MULTIPLE && resultCode == RESULT_OK  && null != data) {
             // Get the Image from data
@@ -286,12 +287,10 @@ public class AddProductActivity extends AppCompatActivity {
     }
     public void sendData()
     {
-
         if (!Config.haveNetworkConnection(this)){
             Config.showInternetDialog(this);
             return;
         }
-
         final ProgressDialog loading = ProgressDialog.show(this,"Processing...","Please wait...",false,false);
         StringRequest stringRequest = new StringRequest(Request.Method.POST,Config.AJAX_URL+"uploadprocess.php",
                 new Response.Listener<String>() {
@@ -339,6 +338,7 @@ public class AddProductActivity extends AppCompatActivity {
                 }){
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
+                String image=ImageProcess.getStringImage(bitmap);
                 Map<String,String> params = new Hashtable<String, String>();
                 params.put("type","add_product");
                 params.put("process_type","android");
@@ -348,6 +348,8 @@ public class AddProductActivity extends AppCompatActivity {
                 params.put("brand_name",brandname);
                 params.put("detail",productdetail);
                 params.put("category",cat);
+                params.put("myfile",image);
+                params.put("added_by",PrefManager.getLoginDetail(getApplicationContext(),"id"));
                 //returning parameters
                 return params;
             }
