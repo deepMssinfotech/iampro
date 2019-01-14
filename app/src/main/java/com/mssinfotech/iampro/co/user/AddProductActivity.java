@@ -352,9 +352,7 @@ public class AddProductActivity extends AppCompatActivity {
                 return params;
             }
         };
-        //Creating a Request Queue
         RequestQueue requestQueue = Volley.newRequestQueue(this);
-
         //Adding request to the queue
         requestQueue.add(stringRequest);
     }
