@@ -322,10 +322,10 @@ public class AddProvideActivity extends AppCompatActivity {
             protected Map<String, String> getParams() throws AuthFailureError {
                 String image=ImageProcess.getStringImage(bitmap);
                 Map<String,String> params = new Hashtable<String, String>();
-                params.put("type","add_provide");
+                params.put("type","add_product_classified");
                 params.put("process_type","android");
+                params.put("product_type","PROVIDE");
                 params.put("name",providename);
-
                 params.put("selling_cost",sellingcost);
                 params.put("brand_name",brandname);
                 params.put("detail",providedetail);

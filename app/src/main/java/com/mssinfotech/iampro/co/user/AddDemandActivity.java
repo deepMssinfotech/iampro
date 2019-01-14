@@ -65,7 +65,7 @@ public class AddDemandActivity extends AppCompatActivity {
         setContentView(R.layout.activity_add_demand);
 
         tildemandname = findViewById(R.id.tildemandname);
-        etdemandname = findViewById(R.id.etprovidename);
+        etdemandname = findViewById(R.id.etdemandname);
         tilbrandname = findViewById(R.id.tilbrandname);
         etbrandname = findViewById(R.id.etbrandname);
 
@@ -77,7 +77,7 @@ public class AddDemandActivity extends AppCompatActivity {
         Config.getData(AddDemandActivity.this, this, spcat, "DEMAND");
 
         imageview  = findViewById(R.id.iv);
-        ibdemandimage = findViewById(R.id.ibprovideimage);
+        ibdemandimage = findViewById(R.id.ibdemandimage);
         ibdemandimage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -322,8 +322,9 @@ public class AddDemandActivity extends AppCompatActivity {
             protected Map<String, String> getParams() throws AuthFailureError {
                 String image=ImageProcess.getStringImage(bitmap);
                 Map<String,String> params = new Hashtable<String, String>();
-                params.put("type","add_demand");
+                params.put("type","add_product_classified");
                 params.put("process_type","android");
+                params.put("product_type","DEMAND");
                 params.put("name",demandname);
 
                 params.put("selling_cost",sellingcost);
