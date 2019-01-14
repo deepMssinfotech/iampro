@@ -149,7 +149,6 @@ public class SignupActivity extends AppCompatActivity  implements View.OnClickLi
         //Adding request to the queue
         requestQueue.add(stringRequest);
     }
-
     private boolean validateFirstname() {
         final String data = etFirstname.getText().toString();
         // Check if firstname is entered
