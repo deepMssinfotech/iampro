@@ -95,11 +95,6 @@ public class OtpForgetActivity extends AppCompatActivity {
                             } catch (JSONException e) {
                                 e.printStackTrace();
                             }
-
-                            //Showing toast message of the response
-                            //Toast.makeText(LoginActivity.this, s , Toast.LENGTH_LONG).show();
-
-
                         }
                     },
                     new Response.ErrorListener() {
