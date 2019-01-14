@@ -5,23 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".user.AddDemandActivity">
-    <RelativeLayout
-        android:id="@+id/buttonLayout"
-        android:layout_height="wrap_content"
-        android:layout_width="match_parent"
-        android:gravity="bottom"
-        android:layout_alignParentBottom="true"
-        android:layout_gravity="bottom">
-        <Button
-            android:id="@+id/button"
-            android:layout_width="match_parent"
-            android:layout_height="35dp"
-            android:onClick="processAddDemand"
-            android:layout_gravity="bottom"
-            android:background="@drawable/demand_color"
-            android:text="Proceed Now"
-            android:textAlignment="center" />
-    </RelativeLayout>
+
+
 
     <ScrollView
         android:id="@+id/scroll"
@@ -42,22 +27,21 @@
                 android:layout_weight="0"
                 android:orientation="vertical"
                 android:padding="10dp">
-
-                <android.support.design.widget.TextInputLayout
-                    android:id="@+id/tilDemandCategory"
+                <LinearLayout
+                    android:orientation="horizontal"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:padding="2dp">
-
+                    android:layout_height="wrap_content">
+                    <TextView
+                        android:id="@+id/tvpprofession"
+                        android:text="Category : "
+                        android:layout_marginTop="15dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent" />
                     <Spinner
                         android:id="@+id/spcat"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginBottom="15dp"
-                        android:drawableLeft="@drawable/ic_action_common"
-                        android:drawableTint="#000000"
-                        android:entries="@array/cat" />
-                </android.support.design.widget.TextInputLayout>
+                        android:layout_height="wrap_content" />
+                </LinearLayout>
 
                 <android.support.design.widget.TextInputLayout
                     android:id="@+id/tildemandname"
@@ -70,7 +54,7 @@
                         android:layout_height="wrap_content"
                         android:drawableLeft="@drawable/ic_action_common"
                         android:drawableTint="#000000"
-                        android:hint="Provide Name"
+                        android:hint="demand Name"
                         android:inputType="text"
                         android:singleLine="true" />
                 </android.support.design.widget.TextInputLayout>
@@ -91,6 +75,8 @@
                         android:singleLine="true" />
                 </android.support.design.widget.TextInputLayout>
 
+
+
                 <android.support.design.widget.TextInputLayout
                     android:id="@+id/tilsellingcost"
                     android:layout_width="match_parent"
@@ -103,10 +89,9 @@
                         android:drawableLeft="@drawable/ic_action_common"
                         android:drawableTint="#000000"
                         android:hint="Selling Cost"
-                        android:inputType="text"
+                        android:inputType="number"
                         android:singleLine="true" />
                 </android.support.design.widget.TextInputLayout>
-
 
                 <android.support.design.widget.TextInputLayout
                     android:id="@+id/tildemanddetail"
@@ -119,53 +104,76 @@
                         android:layout_height="wrap_content"
                         android:drawableLeft="@drawable/ic_action_common"
                         android:drawableTint="#000000"
-                        android:hint="Provide Detail"
+                        android:hint="demand Detail"
                         android:inputType="textMultiLine|textLongMessage"
                         android:singleLine="true" />
                 </android.support.design.widget.TextInputLayout>
 
                 <android.support.design.widget.TextInputLayout
-                    android:id="@+id/tilprovideimage"
+                    android:id="@+id/tildemandimage"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
 
                     <Button
-                        android:id="@+id/ibprovideimage"
-                        android:layout_width="wrap_content"
+                        android:id="@+id/ibdemandimage"
+                        android:layout_width="328dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:drawableLeft="@drawable/ic_action_attechment"
 
                         android:drawableTint="#000000"
                         android:text="Select Image" />
-
+                    <ImageView
+                        android:id="@+id/iv"
+                        android:layout_centerInParent="true"
+                        android:layout_width="50dp"
+                        android:layout_height="50dp" />
 
                 </android.support.design.widget.TextInputLayout>
 
                 <android.support.design.widget.TextInputLayout
-                    android:id="@+id/tilProvideMoreImage"
+                    android:id="@+id/tildemandMoreImage"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
 
                     <Button
-                        android:id="@+id/ibProvideMoreImage"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:id="@+id/ibDemandMoreImage"
+                        android:layout_width="match_parent"
+                        android:layout_height="45dp"
                         android:layout_weight="1"
                         android:drawableLeft="@drawable/ic_action_attechment"
 
                         android:drawableTint="#000000"
                         android:text="Add More Image" />
-
+                    <GridView
+                        android:layout_marginBottom="45dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/gv"
+                        android:numColumns="3"
+                        android:layout_weight="1">
+                    </GridView>
 
                 </android.support.design.widget.TextInputLayout>
             </LinearLayout>
-
         </LinearLayout>
-
-
     </ScrollView>
-
-
+    <RelativeLayout
+        android:id="@+id/buttonLayout"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:gravity="bottom"
+        android:layout_alignParentBottom="true"
+        android:layout_gravity="bottom">
+        <Button
+            android:id="@+id/button"
+            android:layout_width="match_parent"
+            android:layout_height="35dp"
+            android:onClick="processAddProvide"
+            android:layout_gravity="bottom"
+            android:background="@drawable/provide_color"
+            android:text="Proceed Now"
+            android:textAlignment="center" />
+    </RelativeLayout>
 </RelativeLayout>
 
