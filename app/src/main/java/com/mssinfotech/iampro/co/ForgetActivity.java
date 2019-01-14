@@ -63,15 +63,14 @@ public class ForgetActivity extends AppCompatActivity   implements View.OnClickL
                 Log.d("btnforgetProcess","btnforgetProcess");
                 if (validateemail()) {
                     Log.d("btnforgetProcess","btnforgetProcess");
-                    sendOtp();
-
+                    sendOtp(v);
                 }
                 break;
             default:
                 break;
         }
     }
-    public void sendOtp(){
+    public void sendOtp(View v){
         if (!Config.haveNetworkConnection(this)){
             Config.showInternetDialog(this);
             return;
@@ -87,17 +86,23 @@ public class ForgetActivity extends AppCompatActivity   implements View.OnClickL
                         JSONObject result = null;
                         loading.dismiss();
                         try {
+
                             //Parsing the fetched Json String to JSON Object
                             result = new JSONObject(s);
-
-                            String vcode = result.getString("vcode");
-                            Log.d("Lresponse",""+vcode);
-                            Intent intent=new Intent(getApplicationContext(),OtpForgetActivity.class);
-                            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                            intent.putExtra("vcode",vcode);
-                            intent.putExtra("email",etemail.getText().toString().trim());
-                            startActivity(intent);
-                            finish();
+                            String status=result.getString("status");
+                            String msg=result.getString("msg");
+                            if(status.equals("success")) {
+                                String vcode = result.getString("vcode");
+                                Log.d("Lresponse", "" + vcode);
+                                Intent intent = new Intent(getApplicationContext(), OtpForgetActivity.class);
+                                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                intent.putExtra("vcode", vcode);
+                                intent.putExtra("email", etemail.getText().toString().trim());
+                                startActivity(intent);
+                                finish();
+                            }else{
+                                Toast.makeText(ForgetActivity.this, msg , Toast.LENGTH_LONG).show();
+                            }
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
