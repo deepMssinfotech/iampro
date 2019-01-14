@@ -2,30 +2,40 @@ package com.mssinfotech.iampro.co.adapter;
 
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.widget.TextView;
 
 import com.mssinfotech.iampro.co.HomeActivity;
 
-public class HomePagerAdapter extends FragmentStatePagerAdapter {
+import java.util.ArrayList;
+import java.util.List;
 
-    public HomePagerAdapter(FragmentManager fm) {
-        super(fm);
+public class HomePagerAdapter extends FragmentPagerAdapter {
+    private final List<Fragment> mFragmentList = new ArrayList<>();
+    private final List<String> mFragmentTitleList = new ArrayList<>();
+
+    public HomePagerAdapter(FragmentManager manager) {
+        super(manager);
     }
 
     @Override
-    public Fragment getItem(int i) {
-        HomeActivity.MyFregment mFregment = new HomeActivity.MyFregment();
-        return mFregment;
+    public Fragment getItem(int position) {
+        return mFragmentList.get(position);
     }
 
     @Override
     public int getCount() {
-        return 7;
+        return mFragmentList.size();
+    }
+
+    public void addFragment(Fragment fragment, String title) {
+        mFragmentList.add(fragment);
+        mFragmentTitleList.add(title);
     }
 
     @Override
-    public CharSequence getPageTitle(int position){
-        return super.getPageTitle(position);
+    public CharSequence getPageTitle(int position) {
+        return mFragmentTitleList.get(position);
     }
 }
