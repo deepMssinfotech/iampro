@@ -69,24 +69,23 @@ public class ForgetActivity extends AppCompatActivity   implements View.OnClickL
                 Config.showInternetDialog(this);
                 return;
             }
-            randomNumber = r.nextInt(10000);
-            final String url = Config.API_URL + "ajax.php";
+            final String url = Config.API_URL + "app_service.php";
             //tv.setText(String.valueOf(randomNumber));
             final ProgressDialog loading = ProgressDialog.show(this, "Processing...", "Please wait...", false, false);
             StringRequest stringRequest = new StringRequest(Request.Method.POST, url,
                     new Response.Listener<String>() {
                         @Override
                         public void onResponse(String s) {
-                            JSONObject result = null;
+                            Log.d("Lresponse", "" + s);
                             loading.dismiss();
                             try {
 
-                                //Parsing the fetched Json String to JSON Object
-                                result = new JSONObject(s);
-                                String status = result.getString("status");
-                                String msg = result.getString("msg");
-                                if (status.equals("success")) {
-                                    String vcode = result.getString("vcode");
+                                JSONObject jsonObject = new JSONObject(s);
+                                String status=jsonObject.getString("status");
+                                String msg=jsonObject.getString("msg");
+                                Toast.makeText(ForgetActivity.this, msg, Toast.LENGTH_LONG).show();
+                                if (status.equalsIgnoreCase("success")) {
+                                    String vcode = jsonObject.getString("vcode");
                                     Log.d("Lresponse", "" + vcode);
                                     Intent intent = new Intent(getApplicationContext(), OtpForgetActivity.class);
                                     intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
@@ -94,17 +93,10 @@ public class ForgetActivity extends AppCompatActivity   implements View.OnClickL
                                     intent.putExtra("email", etemail.getText().toString().trim());
                                     startActivity(intent);
                                     finish();
-                                } else {
-                                    Toast.makeText(ForgetActivity.this, msg, Toast.LENGTH_LONG).show();
                                 }
                             } catch (JSONException e) {
                                 e.printStackTrace();
                             }
-
-                            //Showing toast message of the response
-                            //Toast.makeText(LoginActivity.this, s , Toast.LENGTH_LONG).show();
-
-
                         }
                     },
                     new Response.ErrorListener() {
@@ -123,9 +115,9 @@ public class ForgetActivity extends AppCompatActivity   implements View.OnClickL
                     //Creating parameters
                     Map<String, String> params = new Hashtable<String, String>();
 
-                    params.put("type", "sendotp");
-                    params.put("otp", String.valueOf(randomNumber));
-                    //params.put("mobile",etMobile.getText().toString());
+                    params.put("type", "ForgetPassword");
+                    params.put("email", etemail.getText().toString());
+                    params.put("process_type","android");
                     //returning parameters
                     return params;
                 }
