@@ -46,7 +46,7 @@ public class OtpForgetActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_forget);
+        setContentView(R.layout.activity_otp_forget);
         tilotp= findViewById(R.id.tilotp);
         etotp = findViewById(R.id.etotp);
         tilnpassword= findViewById(R.id.tilnpassword);
