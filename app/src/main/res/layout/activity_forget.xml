@@ -65,6 +65,7 @@
                 android:id="@+id/btnforgetProcess"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
+                android:onClick="sendOtp"
                 android:layout_margin="22dp"
                 android:background="@drawable/black"
                 android:text="Proceed Now"
