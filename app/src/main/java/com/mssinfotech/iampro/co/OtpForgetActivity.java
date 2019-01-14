@@ -58,6 +58,8 @@ public class OtpForgetActivity extends AppCompatActivity {
 
     }
 
+
+
     public void update_password(View v){
         if (validatenpassword()) {
             if (!Config.haveNetworkConnection(this)) {
@@ -118,8 +120,8 @@ public class OtpForgetActivity extends AppCompatActivity {
 
                     params.put("type", "resetpassword");
                     params.put("vcode", vcode);
-                    params.put("npass", findViewById(R.id.tilnpassword));
-                    params.put("cpass", findViewById(R.id.tilcpassword));
+                    params.put("npass",etnpassword.getText().toString());
+                    params.put("cpass", etcpassword.getText().toString());
                     params.put("process_type", "process_type");
                     //params.put("mobile",etMobile.getText().toString());
                     //returning parameters
