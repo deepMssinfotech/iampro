@@ -2,6 +2,7 @@ package com.mssinfotech.iampro.co.common;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -80,10 +81,12 @@ public class ImageProcess {
     }
     public static void saveTempImage(final Context context, final String utype, final Bitmap bitmap){
         String url=Config.AJAX_URL+"uploadImage.php";
+        final ProgressDialog loading = ProgressDialog.show(context,"Processing...","Please wait...",false,false);
         StringRequest stringRequest = new StringRequest(Request.Method.POST, url,
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
+                        loading.dismiss();
                         JSONArray result = null;
                         try {
                             //Parsing the fetched Json String to JSON Object
@@ -100,6 +103,7 @@ public class ImageProcess {
                             }
 
                         } catch (JSONException e) {
+                            loading.dismiss();
                             e.printStackTrace();
                             Log.d(Config.TAG,e.getMessage().toString());
                         }
@@ -108,6 +112,7 @@ public class ImageProcess {
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
+                        loading.dismiss();
                         Log.d(Config.TAG,error.getMessage().toString());
                     }
                 }){
