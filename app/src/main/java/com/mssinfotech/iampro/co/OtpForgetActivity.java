@@ -90,7 +90,7 @@ public class OtpForgetActivity extends AppCompatActivity {
                                     startActivity(intent);
                                     finish();
                                 } else {
-                                    Toast.makeText(OtpForgetActivity.this, msg+"database code/"+vcode+"/inputcode"+etotp, Toast.LENGTH_LONG).show();
+                                    Toast.makeText(OtpForgetActivity.this, msg+"database code/"+vcode+"/inputcode"+etotp.getText().toString(), Toast.LENGTH_LONG).show();
                                 }
                             } catch (JSONException e) {
                                 e.printStackTrace();
@@ -114,7 +114,7 @@ public class OtpForgetActivity extends AppCompatActivity {
                     Map<String, String> params = new Hashtable<String, String>();
 
                     params.put("type", "resetpassword");
-                    params.put("vcode", vcode);
+                    params.put("vcode", etotp.getText().toString());
                     params.put("npass",etnpassword.getText().toString());
                     params.put("cpass", etcpassword.getText().toString());
                     params.put("process_type", "process_type");
@@ -133,6 +133,7 @@ public class OtpForgetActivity extends AppCompatActivity {
     private boolean validatenpassword() {
         final String data = etnpassword.getText().toString();
         final String cpass = etcpassword.getText().toString();
+        final String newotp=  etotp.getText().toString();
         // Check if mobile is entered
         if (data.length() == 0) {
             if (!tilnpassword.isErrorEnabled()) {
@@ -147,8 +148,15 @@ public class OtpForgetActivity extends AppCompatActivity {
             }
             tilnpassword.setError("Conform Password Required");
             return false;
+        } else if (vcode.equals(newotp)) {
+            if (!tilcpassword.isErrorEnabled()) {
+                tilcpassword.setErrorEnabled(false);
+                tilotp.setErrorEnabled(true);
+            }
+            tilnpassword.setError("Security Code Is Incorrect");
+            return false;
         } else {
-            tilcpassword.setErrorEnabled(false);
+            tilotp.setErrorEnabled(false);
             return true;
         }
     }
