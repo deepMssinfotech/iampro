@@ -45,6 +45,7 @@ public class HomeActivity extends AppCompatActivity {
             R.drawable.tab_provide,
             R.drawable.tab_demand
     };
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -78,5 +79,6 @@ public class HomeActivity extends AppCompatActivity {
         adapter.addFragment(new DemandFragment(), "Demand");
         viewPager.setAdapter(adapter);
     }
+
 
 }
