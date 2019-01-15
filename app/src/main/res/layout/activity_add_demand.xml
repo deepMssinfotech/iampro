@@ -132,11 +132,7 @@
                 </android.support.design.widget.TextInputLayout>
 
                 <android.support.design.widget.TextInputLayout
-<<<<<<< HEAD
-                    android:id="@+id/tildemandMoreImage"
-=======
                     android:id="@+id/tilDemandMoreImage"
->>>>>>> deep commit
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
 
@@ -173,15 +169,10 @@
             android:id="@+id/button"
             android:layout_width="match_parent"
             android:layout_height="35dp"
-<<<<<<< HEAD
-            android:onClick="processAddProvide"
-=======
             android:onClick="processAddDemand"
->>>>>>> deep commit
             android:layout_gravity="bottom"
             android:background="@drawable/provide_color"
             android:text="Proceed Now"
             android:textAlignment="center" />
     </RelativeLayout>
 </RelativeLayout>
-

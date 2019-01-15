@@ -28,9 +28,9 @@
                 android:orientation="vertical"
                 android:padding="10dp">
                 <LinearLayout
-                android:orientation="horizontal"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                    android:orientation="horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
                     <TextView
                         android:id="@+id/tvpprofession"
                         android:text="Category : "
@@ -190,4 +190,3 @@
             android:textAlignment="center" />
     </RelativeLayout>
 </RelativeLayout>
-

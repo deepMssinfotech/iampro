@@ -30,14 +30,8 @@
             android:padding="10dp">
 
             <LinearLayout
-<<<<<<< HEAD
-                android:layout_width="361dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1">
-=======
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
->>>>>>> deep commit
 
                 <RelativeLayout
                     android:layout_width="0dp"
@@ -48,11 +42,7 @@
                         android:id="@+id/album_button"
                         android:background="@drawable/black"
                         android:textColor="@color/white"
-<<<<<<< HEAD
-                        android:onClick="select_album_button"
-=======
                         android:onClick="select_button"
->>>>>>> deep commit
                         style="@style/Widget.AppCompat.Button.Small"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -70,11 +60,7 @@
                         android:background="@drawable/white"
                         android:textColor="@color/black_overlay"
                         android:id="@+id/create_album_button"
-<<<<<<< HEAD
-                        android:onClick="new_album_button"
-=======
                         android:onClick="click_album_button"
->>>>>>> deep commit
                         style="@style/Widget.AppCompat.Button.Small"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -95,11 +81,7 @@
                     android:text="Category : " />
 
                 <Spinner
-<<<<<<< HEAD
-                    android:id="@+id/spprofession"
-=======
                     android:id="@+id/spcat"
->>>>>>> deep commit
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content" />
 
@@ -171,35 +153,20 @@
                     android:singleLine="true" />
             </android.support.design.widget.TextInputLayout>
 
-<<<<<<< HEAD
-            <android.support.design.widget.TextInputLayout
-                android:id="@+id/tilMoreImage"
-=======
 
             <android.support.design.widget.TextInputLayout
                 android:id="@+id/tilImageMoreImage"
->>>>>>> deep commit
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
                 <Button
-<<<<<<< HEAD
-                    android:id="@+id/ibMoreImage"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-=======
                     android:id="@+id/ibImageMoreImage"
                     android:layout_width="match_parent"
                     android:layout_height="45dp"
->>>>>>> deep commit
                     android:layout_weight="1"
                     android:drawableLeft="@drawable/ic_action_attechment"
 
                     android:drawableTint="#000000"
-<<<<<<< HEAD
-                    android:text="Add Album Image" />
-
-=======
                     android:text="Add More Image" />
                 <GridView
                     android:layout_marginBottom="45dp"
@@ -209,7 +176,6 @@
                     android:numColumns="3"
                     android:layout_weight="1">
                 </GridView>
->>>>>>> deep commit
 
             </android.support.design.widget.TextInputLayout>
 
@@ -234,4 +200,3 @@
             android:textAlignment="center" />
     </RelativeLayout>
 </RelativeLayout>
-

@@ -153,10 +153,7 @@
                         android:numColumns="3"
                         android:layout_weight="1">
                     </GridView>
-<<<<<<< HEAD
-=======
 
->>>>>>> deep commit
                 </android.support.design.widget.TextInputLayout>
             </LinearLayout>
         </LinearLayout>
@@ -179,4 +176,3 @@
             android:textAlignment="center" />
     </RelativeLayout>
 </RelativeLayout>
-
