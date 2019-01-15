@@ -74,25 +74,16 @@ public class ProfileActivity extends AppCompatActivity {
                 .into(userbackgroud);
 
         feedItems = new ArrayList<FeedItem>();
-
         handler = new Handler();
-
         loadFeedList(start,limit);
-
         mRecyclerView = (RecyclerView ) findViewById(R.id.list);
-
         mRecyclerView.setHasFixedSize(true);
-
         mLayoutManager = new LinearLayoutManager(this);
-
         mRecyclerView.setLayoutManager(mLayoutManager);
-
         // create an Object for Adapter
         listAdapter = new FeedListAdapter(feedItems, mRecyclerView);
-
         // set the adapter object to the Recyclerview
         mRecyclerView.setAdapter(listAdapter);
-
         listAdapter.setOnLoadMoreListener(new FeedListAdapter.OnLoadMoreListener() {
             @Override
             public void onLoadMore() {
