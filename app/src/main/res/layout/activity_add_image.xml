@@ -30,9 +30,8 @@
             android:padding="10dp">
 
             <LinearLayout
-                android:layout_width="361dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1">
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
 
                 <RelativeLayout
                     android:layout_width="0dp"
@@ -43,7 +42,7 @@
                         android:id="@+id/album_button"
                         android:background="@drawable/black"
                         android:textColor="@color/white"
-                        android:onClick="select_album_button"
+                        android:onClick="select_button"
                         style="@style/Widget.AppCompat.Button.Small"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -61,7 +60,7 @@
                         android:background="@drawable/white"
                         android:textColor="@color/black_overlay"
                         android:id="@+id/create_album_button"
-                        android:onClick="new_album_button"
+                        android:onClick="click_album_button"
                         style="@style/Widget.AppCompat.Button.Small"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -82,7 +81,7 @@
                     android:text="Category : " />
 
                 <Spinner
-                    android:id="@+id/spprofession"
+                    android:id="@+id/spcat"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content" />
 
@@ -154,21 +153,29 @@
                     android:singleLine="true" />
             </android.support.design.widget.TextInputLayout>
 
+
             <android.support.design.widget.TextInputLayout
-                android:id="@+id/tilMoreImage"
+                android:id="@+id/tilImageMoreImage"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
                 <Button
-                    android:id="@+id/ibMoreImage"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:id="@+id/ibImageMoreImage"
+                    android:layout_width="match_parent"
+                    android:layout_height="45dp"
                     android:layout_weight="1"
                     android:drawableLeft="@drawable/ic_action_attechment"
 
                     android:drawableTint="#000000"
-                    android:text="Add Album Image" />
-
+                    android:text="Add More Image" />
+                <GridView
+                    android:layout_marginBottom="45dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/gv"
+                    android:numColumns="3"
+                    android:layout_weight="1">
+                </GridView>
 
             </android.support.design.widget.TextInputLayout>
 

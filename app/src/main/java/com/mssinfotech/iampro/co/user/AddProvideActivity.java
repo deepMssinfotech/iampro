@@ -279,7 +279,7 @@ public class AddProvideActivity extends AppCompatActivity {
                     @Override
                     public void onResponse(String s) {
                         loading.dismiss();
-                        Log.d("Lresponse",""+s);
+                        //Log.e("Lresponse",""+s);
                         try
                         {
                             JSONObject jsonObject = new JSONObject(s);

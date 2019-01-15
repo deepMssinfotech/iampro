@@ -153,6 +153,7 @@
                         android:numColumns="3"
                         android:layout_weight="1">
                     </GridView>
+
                 </android.support.design.widget.TextInputLayout>
             </LinearLayout>
         </LinearLayout>
