@@ -28,6 +28,7 @@
     <dimen name="bottom_icon_height">30dp</dimen>
     <dimen name="bottom_icon_padding">3dp</dimen>
 
+
     <dimen name="feed_item_margin">10dp</dimen>
     <dimen name="feed_item_padding_top_bottom">20dp</dimen>
     <dimen name="feed_item_padding_left_right">15dp</dimen>
@@ -39,4 +40,22 @@
     <dimen name="feed_item_status_pad_top">13dp</dimen>
     <dimen name="feed_item_corner_radius">3dp</dimen>
     <dimen name="feed_item_border_width">1dp</dimen>
+
+    <!-- home fragment   -->
+    <item name="normal_speed" type="dimen" format="float">100</item>
+    <item name="high_speed" type="dimen" format="float">50</item>
+    <item name="low_speed" type="dimen" format="float">120</item>
+    <dimen name="movie_title_padding">10dp</dimen>
+    <dimen name="movie_title">15dp</dimen>
+    <dimen name="movie_cover_height">150dp</dimen>
+    <dimen name="card_movie_radius">0dp</dimen>
+    <dimen name="card_margin">5dp</dimen>
+    <dimen name="user_rating_padding_bottom">5dp</dimen>
+    <dimen name="user_rating">12dp</dimen>
+    <dimen name="detail_backdrop_height">500dp</dimen>
+    <dimen name="layout_margin_left">10dp</dimen>
+    <dimen name="layout_margin_top">3dp</dimen>
+    <dimen name="layout_margin_top2">10dp</dimen>
+    <dimen name="padding_layout">16dp</dimen>
+>>>>>>> home frag
 </resources>
