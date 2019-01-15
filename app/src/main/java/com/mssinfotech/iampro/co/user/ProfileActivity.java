@@ -113,7 +113,6 @@ public class ProfileActivity extends AppCompatActivity {
                         listAdapter.setLoaded();
                     }
                 }, 2000);
-
             }
         });
 
