@@ -33,4 +33,12 @@
 
     <color name="colorPrimaryDark">#000000</color>
     <color name="textColorPrimary">#FFFFFF</color>
+
+     <!--home frag -->
+    <color name="movie_title">#4c4c4c</color>
+
+    <!--  home frag2222     -->
+
+    <color name="teal_100">#b2dfdb</color>
+    <color name="teal_500">#009688</color>
 </resources>

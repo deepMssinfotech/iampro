@@ -9,4 +9,8 @@
         <item>Select</item>
         <item>Other</item>
     </array>
+
+    <!-- home fragment    -->
+    <string name="popular">Popular Movies</string>
+    <string name="top_rated">Top Rated Movies</string>
 </resources>
