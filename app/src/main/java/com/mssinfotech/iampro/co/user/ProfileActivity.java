@@ -115,9 +115,6 @@ public class ProfileActivity extends AppCompatActivity {
                 }, 2000);
             }
         });
-
-
-
     }
     private void  loadFeedList(Integer mStart,Integer mLimit){
         URL_FEED = Config.API_URL+ "feed_service.php?type=AllFeeds&start=" +mStart.toString()+ "&limit=" +mLimit.toString()+ "&fid=" +uid+ "&uid=" +uid+ "&my_id=" +uid;
