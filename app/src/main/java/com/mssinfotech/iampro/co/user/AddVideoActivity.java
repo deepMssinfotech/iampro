@@ -37,6 +37,10 @@ public class AddVideoActivity extends AppCompatActivity {
     Spinner spcat;
     private String albumname, videoname, videodetail,cat;
 
+<<<<<<< HEAD
+
+=======
+>>>>>>> deep commit
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

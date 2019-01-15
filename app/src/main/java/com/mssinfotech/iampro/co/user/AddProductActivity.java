@@ -236,6 +236,11 @@ public class AddProductActivity extends AppCompatActivity {
                     Toast.LENGTH_LONG).show();
         }
     }
+<<<<<<< HEAD
+
+
+=======
+>>>>>>> deep commit
     public void processAddProduct(View v){
         productname=etproductname.getText().toString();
         brandname=etbrandname.getText().toString();

@@ -1,6 +1,11 @@
 package com.mssinfotech.iampro.co.user;
 
 import android.app.Activity;
+<<<<<<< HEAD
+import android.app.ProgressDialog;
+import android.content.Context;
+import android.content.Intent;
+=======
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.ClipData;
@@ -11,17 +16,24 @@ import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.provider.MediaStore;
+>>>>>>> deep commit
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+<<<<<<< HEAD
+=======
 import android.view.ViewGroup;
+>>>>>>> deep commit
 import android.view.inputmethod.InputMethodManager;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+<<<<<<< HEAD
+=======
 import android.widget.GridView;
+>>>>>>> deep commit
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -34,8 +46,11 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.mssinfotech.iampro.co.R;
+<<<<<<< HEAD
+=======
 import com.mssinfotech.iampro.co.adapter.GalleryAdapter;
 import com.mssinfotech.iampro.co.common.ImageProcess;
+>>>>>>> deep commit
 import com.mssinfotech.iampro.co.utils.Config;
 import com.mssinfotech.iampro.co.utils.PrefManager;
 import com.mssinfotech.iampro.co.utils.Validate;
@@ -44,10 +59,15 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+<<<<<<< HEAD
+import java.util.ArrayList;
+import java.util.Hashtable;
+=======
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.List;
+>>>>>>> deep commit
 import java.util.Map;
 
 public class AddImageActivity extends AppCompatActivity {
@@ -55,6 +75,11 @@ public class AddImageActivity extends AppCompatActivity {
     TextInputLayout tilalbumname,tilimagename,tilimagedetail;
     EditText etalbumname,etimagename,etimagedetail;
     Spinner spcat,spimage_album;
+<<<<<<< HEAD
+    Button album_button,create_album_button;
+    private String albumname, imagename, imagedetail,cat,image_album;
+
+=======
     Button album_button,create_album_button,ibImageMoreImage;;
     List<String> imagesEncodedList;
     String imageEncoded;
@@ -62,6 +87,7 @@ public class AddImageActivity extends AppCompatActivity {
     private GridView gvGallery;
     private Bitmap bitmap=null;
     private GalleryAdapter galleryAdapter;
+>>>>>>> deep commit
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -79,6 +105,10 @@ public class AddImageActivity extends AppCompatActivity {
         album_button = findViewById(R.id.album_button);
         create_album_button = findViewById(R.id.create_album_button);
         Config.getData(AddImageActivity.this, this, spcat, "IMAGE");
+<<<<<<< HEAD
+        getAlbumList();
+    }
+=======
 
         gvGallery  = findViewById(R.id.gv);
         ibImageMoreImage = findViewById(R.id.ibImageMoreImage);
@@ -200,6 +230,7 @@ public class AddImageActivity extends AppCompatActivity {
         }
     }
 
+>>>>>>> deep commit
     public void processAddImage(View v){
         albumname=etalbumname.getText().toString();
         imagename=etimagename.getText().toString();
@@ -207,16 +238,28 @@ public class AddImageActivity extends AppCompatActivity {
         cat=spcat.getSelectedItem().toString();
         image_album=spimage_album.getSelectedItem().toString();
 
+<<<<<<< HEAD
+         if (!Validate.isNull(albumname)) {
+             tilalbumname.setErrorEnabled(true);
+             tilalbumname.setError("Enter Album Neme ");
+            return ;
+        } else if (!Validate.isNull(imagename)) {
+=======
          if (Validate.isNull(albumname)) {
              tilalbumname.setErrorEnabled(true);
              tilalbumname.setError("Enter Album Neme ");
             return ;
         } else if (Validate.isNull(imagename)) {
+>>>>>>> deep commit
              tilalbumname.setErrorEnabled(false);
              tilimagename.setErrorEnabled(true);
              tilimagename.setError("Enter Image  Neme");
             return;
+<<<<<<< HEAD
+        } else if (!Validate.isNull(imagedetail)) {
+=======
         } else if (Validate.isNull(imagedetail)) {
+>>>>>>> deep commit
              tilimagename.setErrorEnabled(false);
              tilimagedetail.setErrorEnabled(true);
              tilimagedetail.setError("Enter Image Detail");
@@ -292,12 +335,19 @@ public class AddImageActivity extends AppCompatActivity {
                 Map<String,String> params = new Hashtable<String, String>();
                 params.put("type","uploadfiles");
                 params.put("process_type","android");
+<<<<<<< HEAD
+                params.put("albumname",albumname);
+                params.put("name",imagename);
+                params.put("Detail",imagedetail);
+                params.put("category",cat);
+=======
                 params.put("palbumname","imagenew");
                 params.put("albumname",albumname);
                 params.put("name",imagename);
                 params.put("about_us",imagedetail);
                 params.put("category",cat);
                 params.put("user_id",PrefManager.getLoginDetail(getApplicationContext(),"id"));
+>>>>>>> deep commit
                 //returning parameters
                 return params;
             }
@@ -308,7 +358,11 @@ public class AddImageActivity extends AppCompatActivity {
         //Adding request to the queue
         requestQueue.add(stringRequest);
     }
+<<<<<<< HEAD
+    private void select_album_button(View v){
+=======
     private void select_button(View v){
+>>>>>>> deep commit
         album_button.setBackgroundResource(R.drawable.white);
         album_button.setTextColor(getResources().getColor(R.color.black));
         create_album_button.setBackgroundResource(R.drawable.black);
@@ -318,9 +372,14 @@ public class AddImageActivity extends AppCompatActivity {
         tilalbumname.setVisibility(View.INVISIBLE);
         etalbumname.setVisibility(View.INVISIBLE);
         spimage_album.setVisibility(View.VISIBLE);
+<<<<<<< HEAD
+    }
+    private void new_album_button(View v){
+=======
         return;
     }
     private void click_album_button(View v){
+>>>>>>> deep commit
         album_button.setBackgroundResource(R.drawable.black);
         album_button.setTextColor(getResources().getColor(R.color.white));
         create_album_button.setBackgroundResource(R.drawable.white);
@@ -330,12 +389,19 @@ public class AddImageActivity extends AppCompatActivity {
         tilalbumname.setVisibility(View.VISIBLE);
         etalbumname.setVisibility(View.VISIBLE);
         spimage_album.setVisibility(View.INVISIBLE);
+<<<<<<< HEAD
+=======
         return;
+>>>>>>> deep commit
     }
     public void getAlbumList(){
         //Creating a string request
         String uid=PrefManager.getLoginDetail(this,"id");
+<<<<<<< HEAD
+        String url=Config.API_URL+"app_service.php?type=getMyAlbemsListt&name=IMAGE&image&uid="+uid+"&my_id="+uid;
+=======
         String url=Config.API_URL+"app_service.php?type=getMyAlbemsListt&search_type=image&uid="+uid+"&my_id="+uid;
+>>>>>>> deep commit
 
         StringRequest stringRequest = new StringRequest(url,
                 new Response.Listener<String>() {

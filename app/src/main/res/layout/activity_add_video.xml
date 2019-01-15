@@ -1,22 +1,156 @@
 <?xml version="1.0" encoding="utf-8"?>
+<<<<<<< HEAD
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+=======
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+>>>>>>> deep commit
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".user.AddVideoActivity">
 
+<<<<<<< HEAD
+
+    <RelativeLayout
+        android:id="@+id/buttonLayout"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:gravity="bottom"
+        android:layout_alignParentBottom="true"
+        android:layout_gravity="bottom">
+        <Button
+            android:id="@+id/button"
+            android:layout_width="match_parent"
+            android:layout_height="35dp"
+            android:onClick="processAddVideo"
+            android:layout_gravity="bottom"
+            android:background="@drawable/video_color"
+            android:text="Proceed Now"
+            android:textAlignment="center" />
+    </RelativeLayout>
+=======
     <TextView
         android:text="new_album"
         android:id="@+id/tvlayouttype"
         android:visibility="invisible"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
+>>>>>>> deep commit
     <ScrollView
         android:id="@+id/scroll"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+<<<<<<< HEAD
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="0"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:layout_weight="0"
+                android:orientation="vertical"
+                android:padding="10dp">
+
+
+                <android.support.design.widget.TextInputLayout
+                    android:id="@+id/tilVideoCategory"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="2dp">
+
+                    <Spinner
+                        android:id="@+id/spcat"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="15dp"
+                        android:drawableLeft="@drawable/ic_action_common"
+                        android:drawableTint="#000000"
+                        android:entries="@array/cat" />
+                </android.support.design.widget.TextInputLayout>
+
+                <android.support.design.widget.TextInputLayout
+                    android:id="@+id/tilalbumname"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <EditText
+                        android:id="@+id/etalbumname"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:drawableLeft="@drawable/ic_action_common"
+                        android:drawableTint="#000000"
+                        android:hint="Album Name"
+                        android:inputType="text"
+                        android:singleLine="true" />
+                </android.support.design.widget.TextInputLayout>
+
+                <android.support.design.widget.TextInputLayout
+                    android:id="@+id/tilvideoname"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <EditText
+                        android:id="@+id/etvideoname"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:drawableLeft="@drawable/ic_action_common"
+                        android:drawableTint="#000000"
+                        android:hint="Video Name"
+                        android:inputType="text"
+                        android:singleLine="true" />
+                </android.support.design.widget.TextInputLayout>
+
+                <android.support.design.widget.TextInputLayout
+                    android:id="@+id/tilvideodetail"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <EditText
+                        android:id="@+id/etvideodetail"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:drawableLeft="@drawable/ic_action_common"
+                        android:drawableTint="#000000"
+                        android:hint="Video Detail"
+                        android:inputType="textMultiLine|textLongMessage"
+                        android:singleLine="true" />
+                </android.support.design.widget.TextInputLayout>
+
+                <android.support.design.widget.TextInputLayout
+                    android:id="@+id/tilMoreVideo"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <Button
+                        android:id="@+id/ibMoreVideo"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:drawableLeft="@drawable/ic_action_attechment"
+
+                        android:drawableTint="#000000"
+                        android:text="Add Album Video" />
+
+
+                </android.support.design.widget.TextInputLayout>
+            </LinearLayout>
+
+
+        </LinearLayout>
+
+
+    </ScrollView>
+
+
+=======
         android:layout_above="@+id/buttonLayout"
         android:layout_alignParentStart="true"
         android:layout_marginBottom="0dp"
@@ -196,5 +330,6 @@
             android:text="Proceed Now"
             android:textAlignment="center" />
     </RelativeLayout>
+>>>>>>> deep commit
 </RelativeLayout>
 

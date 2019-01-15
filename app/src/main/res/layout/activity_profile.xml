@@ -14,7 +14,7 @@
             android:layout_alignParentBottom="true"
             android:layout_height="wrap_content"
             android:layout_width="match_parent"></com.mssinfotech.iampro.co.IncludeFooter>
-        <ScrollView
+        <LinearLayout
             android:id="@+id/scroll_view"
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
@@ -66,9 +66,15 @@
                         android:layout_height="wrap_content" />
                 </RelativeLayout>
                 <com.mssinfotech.iampro.co.IncludeShortMenu
-                        layout="@layout/include_short_menu"
+                    android:layout_width="match_parent"
+                    android:layout_height="85dp"></com.mssinfotech.iampro.co.IncludeShortMenu>
+                    <android.support.v7.widget.RecyclerView
+                        android:id="@+id/list"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_width="match_parent"></com.mssinfotech.iampro.co.IncludeShortMenu>
-                </LinearLayout>
-        </ScrollView>
+                        android:layout_margin="5dp"
+                        android:scrollbars="vertical" />
+            </LinearLayout>
+
+        </LinearLayout>
 </RelativeLayout>

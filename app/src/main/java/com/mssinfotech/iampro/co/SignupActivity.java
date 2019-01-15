@@ -20,6 +20,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.mssinfotech.iampro.co.common.function;
 import com.mssinfotech.iampro.co.utils.Config;
 import com.mssinfotech.iampro.co.utils.Validate;
 
@@ -60,7 +61,7 @@ public class SignupActivity extends AppCompatActivity  implements View.OnClickLi
         etMobile =findViewById(R.id.etMobile);
         etEmail =findViewById(R.id.etEmail);
 
-        Config.getData(SignupActivity.this, this, spprofession, "FRIEND");
+        function.getData(SignupActivity.this, this, spprofession, "FRIEND");
     }
     @Override
     public void onClick(View v) {
