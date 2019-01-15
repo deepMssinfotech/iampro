@@ -21,6 +21,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.mssinfotech.iampro.co.R;
+import com.mssinfotech.iampro.co.common.function;
 import com.mssinfotech.iampro.co.utils.Config;
 import com.mssinfotech.iampro.co.utils.Validate;
 
@@ -37,10 +38,6 @@ public class AddVideoActivity extends AppCompatActivity {
     Spinner spcat;
     private String albumname, videoname, videodetail,cat;
 
-<<<<<<< HEAD
-
-=======
->>>>>>> deep commit
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -53,7 +50,7 @@ public class AddVideoActivity extends AppCompatActivity {
         tilvideodetail = findViewById(R.id.tilvideodetail);
         etvideodetail = findViewById(R.id.etvideodetail);
         spcat= findViewById(R.id.spcat);
-        Config.getData(AddVideoActivity.this, this, spcat, "VIDEO");
+        function.getData(AddVideoActivity.this, this, spcat, "VIDEO");
 
     }
     public void processAddVideo(View v){

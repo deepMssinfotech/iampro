@@ -34,6 +34,7 @@ import com.android.volley.toolbox.Volley;
 import com.mssinfotech.iampro.co.R;
 import com.mssinfotech.iampro.co.adapter.GalleryAdapter;
 import com.mssinfotech.iampro.co.common.ImageProcess;
+import com.mssinfotech.iampro.co.common.function;
 import com.mssinfotech.iampro.co.utils.Config;
 import com.mssinfotech.iampro.co.utils.PrefManager;
 import com.mssinfotech.iampro.co.utils.Validate;
@@ -65,11 +66,7 @@ public class AddDemandActivity extends AppCompatActivity {
         setContentView(R.layout.activity_add_demand);
 
         tildemandname = findViewById(R.id.tildemandname);
-<<<<<<< HEAD
-        etdemandname = findViewById(R.id.etprovidename);
-=======
         etdemandname = findViewById(R.id.etdemandname);
->>>>>>> deep commit
         tilbrandname = findViewById(R.id.tilbrandname);
         etbrandname = findViewById(R.id.etbrandname);
 
@@ -78,14 +75,10 @@ public class AddDemandActivity extends AppCompatActivity {
         tildemanddetail=findViewById(R.id.tildemanddetail);
         etdemanddetail = findViewById(R.id.etdemanddetail);
         spcat= findViewById(R.id.spcat);
-        Config.getData(AddDemandActivity.this, this, spcat, "DEMAND");
+        function.getData(AddDemandActivity.this, this, spcat, "DEMAND");
 
         imageview  = findViewById(R.id.iv);
-<<<<<<< HEAD
-        ibdemandimage = findViewById(R.id.ibprovideimage);
-=======
         ibdemandimage = findViewById(R.id.ibdemandimage);
->>>>>>> deep commit
         ibdemandimage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -287,11 +280,7 @@ public class AddDemandActivity extends AppCompatActivity {
                     @Override
                     public void onResponse(String s) {
                         loading.dismiss();
-<<<<<<< HEAD
-                        Log.d("Lresponse",""+s);
-=======
-                       // Log.e("Lresponse",""+s);
->>>>>>> deep commit
+                        // Log.e("Lresponse",""+s);
                         try
                         {
                             JSONObject jsonObject = new JSONObject(s);
@@ -334,14 +323,9 @@ public class AddDemandActivity extends AppCompatActivity {
             protected Map<String, String> getParams() throws AuthFailureError {
                 String image=ImageProcess.getStringImage(bitmap);
                 Map<String,String> params = new Hashtable<String, String>();
-<<<<<<< HEAD
-                params.put("type","add_demand");
-                params.put("process_type","android");
-=======
                 params.put("type","add_product_classified");
                 params.put("process_type","android");
                 params.put("product_type","DEMAND");
->>>>>>> deep commit
                 params.put("name",demandname);
 
                 params.put("selling_cost",sellingcost);

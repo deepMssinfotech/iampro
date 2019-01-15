@@ -40,6 +40,7 @@ import com.mssinfotech.iampro.co.LoginActivity;
 import com.mssinfotech.iampro.co.R;
 import com.mssinfotech.iampro.co.adapter.GalleryAdapter;
 import com.mssinfotech.iampro.co.common.ImageProcess;
+import com.mssinfotech.iampro.co.common.function;
 import com.mssinfotech.iampro.co.utils.Config;
 import com.mssinfotech.iampro.co.utils.PrefManager;
 import com.mssinfotech.iampro.co.utils.Validate;
@@ -87,7 +88,7 @@ public class AddProductActivity extends AppCompatActivity {
         tilproductdetail=findViewById(R.id.tilproductdetail);
         etproductdetail = findViewById(R.id.etproductdetail);
         spcat= findViewById(R.id.spcat);
-        Config.getData(AddProductActivity.this, this, spcat, "PRODUCT");
+        function.getData(AddProductActivity.this, this, spcat, "PRODUCT");
 
         imageview  = findViewById(R.id.iv);
         ibproductimage = findViewById(R.id.ibproductimage);
@@ -236,11 +237,6 @@ public class AddProductActivity extends AppCompatActivity {
                     Toast.LENGTH_LONG).show();
         }
     }
-<<<<<<< HEAD
-
-
-=======
->>>>>>> deep commit
     public void processAddProduct(View v){
         productname=etproductname.getText().toString();
         brandname=etbrandname.getText().toString();

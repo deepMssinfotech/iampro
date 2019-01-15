@@ -34,6 +34,7 @@ import com.android.volley.toolbox.Volley;
 import com.mssinfotech.iampro.co.R;
 import com.mssinfotech.iampro.co.adapter.GalleryAdapter;
 import com.mssinfotech.iampro.co.common.ImageProcess;
+import com.mssinfotech.iampro.co.common.function;
 import com.mssinfotech.iampro.co.utils.Config;
 import com.mssinfotech.iampro.co.utils.PrefManager;
 import com.mssinfotech.iampro.co.utils.Validate;
@@ -74,7 +75,7 @@ public class AddProvideActivity extends AppCompatActivity {
         tilprovidedetail=findViewById(R.id.tilprovidedetail);
         etprovidedetail = findViewById(R.id.etprovidedetail);
         spcat= findViewById(R.id.spcat);
-        Config.getData(AddProvideActivity.this, this, spcat, "PROVIDE");
+        function.getData(AddProvideActivity.this, this, spcat, "PROVIDE");
 
         imageview  = findViewById(R.id.iv);
         ibprovideimage = findViewById(R.id.ibprovideimage);
@@ -279,11 +280,7 @@ public class AddProvideActivity extends AppCompatActivity {
                     @Override
                     public void onResponse(String s) {
                         loading.dismiss();
-<<<<<<< HEAD
-                        Log.d("Lresponse",""+s);
-=======
                         //Log.e("Lresponse",""+s);
->>>>>>> deep commit
                         try
                         {
                             JSONObject jsonObject = new JSONObject(s);
