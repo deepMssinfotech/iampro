@@ -90,7 +90,7 @@ public class OtpForgetActivity extends AppCompatActivity {
                                     startActivity(intent);
                                     finish();
                                 } else {
-                                    Toast.makeText(OtpForgetActivity.this, msg+"database code/"+vcode+"/inputcode"+etotp.getText().toString(), Toast.LENGTH_LONG).show();
+                                    Toast.makeText(OtpForgetActivity.this, msg, Toast.LENGTH_LONG).show();
                                 }
                             } catch (JSONException e) {
                                 e.printStackTrace();
@@ -117,8 +117,8 @@ public class OtpForgetActivity extends AppCompatActivity {
                     params.put("vcode", etotp.getText().toString());
                     params.put("npass",etnpassword.getText().toString());
                     params.put("cpass", etcpassword.getText().toString());
-                    params.put("process_type", "process_type");
-                    //params.put("mobile",etMobile.getText().toString());
+                    params.put("process_type", "android");
+                    params.put("email",email);
                     //returning parameters
                     return params;
                 }
@@ -148,14 +148,16 @@ public class OtpForgetActivity extends AppCompatActivity {
             }
             tilnpassword.setError("Conform Password Required");
             return false;
-        } else if (vcode.equals(newotp)) {
+        } else if (!vcode.equals(newotp)) {
             if (!tilcpassword.isErrorEnabled()) {
                 tilcpassword.setErrorEnabled(false);
                 tilotp.setErrorEnabled(true);
             }
-            tilnpassword.setError("Security Code Is Incorrect");
+            tilotp.setError("Security Code Is Incorrect");
             return false;
         } else {
+            tilnpassword.setErrorEnabled(false);
+            tilcpassword.setErrorEnabled(false);
             tilotp.setErrorEnabled(false);
             return true;
         }
