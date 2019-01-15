@@ -24,7 +24,6 @@
     <dimen name="header_image_height">30dp</dimen>
     <dimen name="header_image_width">30dp</dimen>
     <dimen name="header_image_margin">5dp</dimen>
-
     <dimen name="bottom_icon_height">30dp</dimen>
     <dimen name="bottom_icon_padding">3dp</dimen>
 
