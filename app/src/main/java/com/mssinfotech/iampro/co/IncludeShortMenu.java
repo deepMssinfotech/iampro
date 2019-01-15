@@ -32,26 +32,20 @@ import org.json.JSONObject;
 
 public class IncludeShortMenu  extends RelativeLayout {
     private LayoutInflater inflater;
-    private static TextView image_text,video_text,product_text,provide_text,demand_text,user_text;
+
     private boolean isLogin = false;
     public IncludeShortMenu(Context context, AttributeSet attrs) {
         super(context, attrs);
 
         inflater = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         inflater.inflate(R.layout.include_short_menu, this, true);
-        ((ImageView)this.findViewById(R.id.img_image)).setOnClickListener(imageOnClickListener);
-        ((ImageView)this.findViewById(R.id.img_video)).setOnClickListener(videoOnClickListener);
-        ((ImageView)this.findViewById(R.id.img_user)).setOnClickListener(userOnClickListener);
-        ((ImageView)this.findViewById(R.id.img_product)).setOnClickListener(productOnClickListener);
-        ((ImageView)this.findViewById(R.id.img_provide)).setOnClickListener(provideOnClickListener);
-        ((ImageView)this.findViewById(R.id.img_demand)).setOnClickListener(demandOnClickListener);
+        (this.findViewById(R.id.img_image)).setOnClickListener(imageOnClickListener);
+        (this.findViewById(R.id.img_video)).setOnClickListener(videoOnClickListener);
+        (this.findViewById(R.id.img_user)).setOnClickListener(userOnClickListener);
+        (this.findViewById(R.id.img_product)).setOnClickListener(productOnClickListener);
+        (this.findViewById(R.id.img_provide)).setOnClickListener(provideOnClickListener);
+        (this.findViewById(R.id.img_demand)).setOnClickListener(demandOnClickListener);
 
-        image_text = this.findViewById(R.id.image_count);
-        video_text = this.findViewById(R.id.video_count);
-        user_text = this.findViewById(R.id.user_count);
-        product_text = this.findViewById(R.id.product_count);
-        provide_text = this.findViewById(R.id.provide_count);
-        demand_text = this.findViewById(R.id.demand_count);
         userProfileCount(context, PrefManager.getLoginDetail(context,"id"));
     }
     private OnClickListener imageOnClickListener = new OnClickListener() {
@@ -86,7 +80,13 @@ public class IncludeShortMenu  extends RelativeLayout {
             getContext().startActivity(new Intent(getContext(), MyDemandActivity.class));
         }
     };
-    public static void userProfileCount(Context context, String uid){
+    public void userProfileCount(Context context, String uid){
+        final TextView image_text = findViewById(R.id.image_count);
+        final TextView video_text = findViewById(R.id.video_count);
+        final TextView user_text = findViewById(R.id.user_count);
+        final TextView product_text = findViewById(R.id.product_count);
+        final TextView provide_text = findViewById(R.id.provide_count);
+        final TextView demand_text = findViewById(R.id.demand_count);
         //Creating a string request
         String url=Config.API_URL+"ajax.php?type=get_allcount_item&uid="+uid;
         StringRequest stringRequest = new StringRequest(url,
