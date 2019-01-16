@@ -5,15 +5,12 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".user.ProfileActivity">
+
         <com.mssinfotech.iampro.co.IncludeHeader
             android:id="@+id/header"
             android:layout_height="wrap_content"
             android:layout_width="match_parent"></com.mssinfotech.iampro.co.IncludeHeader>
-        <com.mssinfotech.iampro.co.IncludeFooter
-            android:id="@+id/footer"
-            android:layout_alignParentBottom="true"
-            android:layout_height="wrap_content"
-            android:layout_width="match_parent"></com.mssinfotech.iampro.co.IncludeFooter>
+
         <LinearLayout
             android:id="@+id/scroll_view"
             android:layout_width="fill_parent"
@@ -77,4 +74,9 @@
             </LinearLayout>
 
         </LinearLayout>
+    <com.mssinfotech.iampro.co.IncludeFooter
+    android:id="@+id/footer"
+    android:layout_alignParentBottom="true"
+    android:layout_height="wrap_content"
+    android:layout_width="match_parent"/>
 </RelativeLayout>

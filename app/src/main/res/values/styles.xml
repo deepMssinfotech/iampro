@@ -7,6 +7,7 @@
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
     </style>
+
     <style name="AppTheme.NoActionBar" parent="AppTheme">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
@@ -18,7 +19,7 @@
 
 
     <!--          Login page Theme                -->
-    <style name="AppTheme.Login" parent="AppTheme.NoActionBar" >
+    <style name="AppTheme.Login" parent="AppTheme.NoActionBar">
         <item name="android:windowBackground">@color/loginPrimary</item>
         <item name="colorPrimary">@color/loginPrimary</item>
         <item name="colorPrimaryDark">@color/loginPrimaryDark</item>
@@ -37,11 +38,12 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
-<<<<<<< HEAD
+
     <style name="MyButton" parent="Theme.AppCompat.Light">
         <item name="colorControlHighlight">@color/teal_100</item>
         <item name="colorButtonNormal">@color/teal_500</item>
     </style>
-=======
->>>>>>> deep commit
+
+    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+
 </resources>

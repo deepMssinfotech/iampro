@@ -36,7 +36,6 @@ public class IncludeShortMenu  extends RelativeLayout {
     private boolean isLogin = false;
     public IncludeShortMenu(Context context, AttributeSet attrs) {
         super(context, attrs);
-
         inflater = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         inflater.inflate(R.layout.include_short_menu, this, true);
         (this.findViewById(R.id.img_image)).setOnClickListener(imageOnClickListener);

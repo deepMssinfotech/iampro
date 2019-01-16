@@ -27,7 +27,7 @@ public class Config
 {
 
     public static final String TAG="Imapro tag";
-
+    public static boolean doubleBackToExitPressedOnce = false;
     public static final String API_URL="https://www.iampro.co/api/";
     public static final String URL_ROOT="https://www.iampro.co/";
     public static final String AJAX_URL="https://www.iampro.co/ajax/";
@@ -71,9 +71,6 @@ public class Config
                 .setPositiveButton("ok", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        // Whatever...
-                        //Intent intent=new Intent(LoginActivity.this,MainActivity.class);
-                        //startActivity(intent);
                         //finish();
                     }
                 }).show();

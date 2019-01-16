@@ -1,5 +1,6 @@
 package com.mssinfotech.iampro.co;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.view.GravityCompat;
@@ -19,6 +20,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.mssinfotech.iampro.co.adapter.HomePagerAdapter;
 import com.mssinfotech.iampro.co.tab.DemandFragment;
@@ -28,6 +30,8 @@ import com.mssinfotech.iampro.co.tab.ProductFragment;
 import com.mssinfotech.iampro.co.tab.ProvideFragment;
 import com.mssinfotech.iampro.co.tab.UserFragment;
 import com.mssinfotech.iampro.co.tab.VideoFragment;
+import com.mssinfotech.iampro.co.utils.Config;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -79,6 +83,24 @@ public class HomeActivity extends AppCompatActivity {
         adapter.addFragment(new DemandFragment(), "Demand");
         viewPager.setAdapter(adapter);
     }
+    @Override
+    public void onBackPressed() {
+        if (Config.doubleBackToExitPressedOnce) {
+            super.onBackPressed();
+            finish();
+            return;
+        }
 
+        Config.doubleBackToExitPressedOnce = true;
+        Toast.makeText(this, "Please click BACK again to exit", Toast.LENGTH_SHORT).show();
+
+        new Handler().postDelayed(new Runnable() {
+
+            @Override
+            public void run() {
+                Config.doubleBackToExitPressedOnce = false;
+            }
+        }, 2000);
+    }
 
 }

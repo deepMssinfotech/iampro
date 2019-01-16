@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
         <LinearLayout
             android:id="@+id/innerLay"
@@ -206,7 +207,7 @@
                         android:id="@+id/demand_text"
                         android:textSize="@dimen/shortcut_font_size"
                         android:textAlignment="center"
-                        android:text="IMAGES"
+                        android:text="DEMAND"
                         android:layout_width="@dimen/shortcut_image_width"
                         android:layout_height="wrap_content" />
                     <TextView
@@ -220,4 +221,5 @@
                 </RelativeLayout>
             </LinearLayout>
         </LinearLayout>
+
 </LinearLayout>
