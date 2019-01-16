@@ -2,8 +2,10 @@ package com.mssinfotech.iampro.co.tab;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -19,6 +21,7 @@ import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.VolleyError;
 import com.android.volley.VolleyLog;
+import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
@@ -28,6 +31,7 @@ import com.mssinfotech.iampro.co.adapter.HomeAdapter;
 import com.mssinfotech.iampro.co.adapter.RecyclerViewDataAdapter;
 import com.mssinfotech.iampro.co.api.Client;
 import com.mssinfotech.iampro.co.api.Service;
+import com.mssinfotech.iampro.co.data.AutoFitGridLayoutManager;
 import com.mssinfotech.iampro.co.model.Home;
 import com.mssinfotech.iampro.co.model.HomesResponse;
 //import com.takusemba.multisnaprecyclerview.BuildConfig;
@@ -45,9 +49,11 @@ import retrofit2.Response;
 
 import com.mssinfotech.iampro.co.model.SectionDataModel;
 import com.mssinfotech.iampro.co.model.SingleItemModel;
+import com.mssinfotech.iampro.co.utils.Config;
 import com.takusemba.multisnaprecyclerview.MultiSnapRecyclerView;
 
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import static com.mssinfotech.iampro.co.utils.Config.TAG;
@@ -55,8 +61,10 @@ import static com.mssinfotech.iampro.co.utils.Config.TAG;
 public class HomeFragment extends Fragment{
     private Toolbar toolbar;
 
-
-    ArrayList<SectionDataModel> allSampleData;
+    SectionDataModel dm = new SectionDataModel();
+    ArrayList<SingleItemModel> singleItem = new ArrayList<>();
+    ArrayList<SectionDataModel> allSampleData=new ArrayList<>();
+    RecyclerView my_recycler_view;
     public HomeFragment() {
         // Required empty public constructor
     }
@@ -78,108 +86,28 @@ public class HomeFragment extends Fragment{
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        allSampleData = new ArrayList<>();
+       // allSampleData = new ArrayList<>();
 
        /* if (toolbar != null) {
             ((AppCompatActivity)getActivity()).setSupportActionBar(toolbar);
             toolbar.setTitle("G PlayStore");
 
         } */
-        createDummyData();
+        //createDummyData();
+        callData();
+         my_recycler_view =view.findViewById(R.id.my_recycler_view);
 
-        RecyclerView my_recycler_view =view.findViewById(R.id.my_recycler_view);
-
-        my_recycler_view.setHasFixedSize(true);
-
+      /*  my_recycler_view.setHasFixedSize(true);
+         Log.d("allSampleDatas",""+allSampleData.size()+"--"+allSampleData.toString());
         RecyclerViewDataAdapter adapter = new RecyclerViewDataAdapter(getContext(), allSampleData);
 
         my_recycler_view.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
 
-        my_recycler_view.setAdapter(adapter);
+        my_recycler_view.setAdapter(adapter); */
 
         // Inflate the layout for this fragment
 
     }
-
-   /* private void loadPopular(){
-
-        try{
-            if (BuildConfig.THE_MOVIE_DB_API_TOKEN.isEmpty()){
-                Toast.makeText(getContext(), "Please obtain your API Key from themoviedb.org", Toast.LENGTH_SHORT).show();
-                return;
-            }
-            Client Client = new Client();
-            Service apiService = Client.getClient().create(Service.class);
-            Call<HomesResponse> call = apiService.getPopularMovies(BuildConfig.THE_MOVIE_DB_API_TOKEN);
-            call.enqueue(new Callback<HomesResponse>() {
-                @Override
-                public void onResponse(Call<HomesResponse> call, Response<HomesResponse> response) {
-                    List<Home> movies = response.body().getResults();
-                    if (response.isSuccessful()){
-                        if (response.body() != null){
-                            HomeAdapter firstAdapter = new HomeAdapter(getContext(), movies);
-                            MultiSnapRecyclerView firstRecyclerView = (MultiSnapRecyclerView)findViewById(R.id.first_recycler_view);
-                            LinearLayoutManager firstManager = new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false);
-                            firstRecyclerView.setLayoutManager(firstManager);
-                            firstRecyclerView.setAdapter(firstAdapter);
-                        }
-                    }
-                }
-
-                @Override
-                public void onFailure(Call<HomesResponse> call, Throwable t) {
-                    Log.d("Error", t.getMessage());
-                    Toast.makeText(getContext(), "Error fetching trailer data", Toast.LENGTH_SHORT).show();
-
-                }
-            });
-
-        }catch (Exception e){
-            Log.d("Error", e.getMessage());
-            Toast.makeText(getContext(), e.toString(), Toast.LENGTH_SHORT).show();
-        }
-    }
-
-    private void loadTopRated(){
-
-        try{
-            if (BuildConfig.THE_MOVIE_DB_API_TOKEN.isEmpty()){
-                Toast.makeText(getContext(), "Please obtain your API Key from themoviedb.org", Toast.LENGTH_SHORT).show();
-                return;
-            }
-            Client Client = new Client();
-            Service apiService = Client.getClient().create(Service.class);
-            Call<HomesResponse> call = apiService.getTopRatedMovies(BuildConfig.THE_MOVIE_DB_API_TOKEN);
-            call.enqueue(new Callback<HomesResponse>() {
-                @Override
-                public void onResponse(Call<HomesResponse> call, Response<HomesResponse> response) {
-                    if (response.isSuccessful()){
-                        if (response.body() != null){
-                            List<Home> movies = response.body().getResults();
-
-                            HomeAdapter secondAdapter = new HomeAdapter(getContext(), movies);
-                            MultiSnapRecyclerView secondRecyclerView =(MultiSnapRecyclerView) findViewById(R.id.second_recycler_view);
-                            LinearLayoutManager secondManager = new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false);
-                            secondRecyclerView.setLayoutManager(secondManager);
-                            secondRecyclerView.setAdapter(secondAdapter);
-
-                        }
-                    }
-                }
-
-                @Override
-                public void onFailure(Call<HomesResponse> call, Throwable t) {
-                    Log.d("Error", t.getMessage());
-                    Toast.makeText(getContext(), "Error fetching trailer data", Toast.LENGTH_SHORT).show();
-
-                }
-            });
-
-        }catch (Exception e){
-            Log.d("Error", e.getMessage());
-            Toast.makeText(getContext(), e.toString(), Toast.LENGTH_SHORT).show();
-        }
-    }*/
 
     public void createDummyData() {
         ArrayList<String> type=new ArrayList<>();
@@ -234,110 +162,454 @@ public class HomeFragment extends Fragment{
      for (int i = 1; i <= 5; i++) {
 
             SectionDataModel dm = new SectionDataModel();
-
             dm.setHeaderTitle("Section " + i);
-
             ArrayList<SingleItemModel> singleItem = new ArrayList<SingleItemModel>();
             for (int j = 0; j <= 5; j++) {
                 singleItem.add(new SingleItemModel("Item " + j, "URL " + j));
             }
-
             dm.setAllItemsInSection(singleItem);
-
             allSampleData.add(dm);
-
         }
     }
-     public void  getImage( final SectionDataModel dm){
-         //SectionDataModel dm = new SectionDataModel();
-         //dm.setHeaderTitle("Section " + i);
-
+    public void callData(){
+        //getImage();
+       for(int i=0;i<6;i++) {
+            if (i==0)
+            getImage();
+          else if (i==1)
+            getVideo();
+            else if (i==2)
+            getUser();
+           else if (i==3)
+            getProduct();
+           else if (i==4)
+            getProvide();
+           else if (i==5)
+            getDemand();
+        }
+    }
+     public void  getImage(){
+         Log.d("rrrresponse_enterrr","rrrresponse_enterrr");
          final String url = "https://www.iampro.co/api/app_service.php?type=all_item&name=image&uid=&my_id=";
-         JsonObjectRequest jsonObjReq = new JsonObjectRequest(Request.Method.GET,
-                 url, null,
-                 new com.android.volley.Response.Listener<JSONObject>() {
+         // Initialize a new RequestQueue instance
+         RequestQueue requestQueue = Volley.newRequestQueue(getContext());
 
+         // Initialize a new JsonArrayRequest instance
+         JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(
+                 Request.Method.GET,
+                 url,
+                 null,
+                 new com.android.volley.Response.Listener<JSONArray>() {
                      @Override
-                     public void onResponse(JSONObject response) {
-                         Log.d(TAG, response.toString());
-                         Toast.makeText(getContext(),"Response:"+response.toString(),Toast.LENGTH_LONG).show();
-                         int j=1;
-                           // while()
-                         JSONArray keys =response.names();
-                         Log.d("home_key",""+keys);
-                         for (int i = 0; i < keys.length (); i++) {
-                              try {
-                                  dm.setHeaderTitle("Section " + i);
-                                  //String key = keys.getString(i); // Here's your key
-                                  //String value = response.getString(key); // Here's your value
-                                  JSONObject jsonObject=keys.getJSONObject(i);
-                                   String name=jsonObject.getString("name");
-                                   //Log.d("getImage",""+key+"--"+value+"--"+name);
-                                  Log.d("getImage",""+"--"+name);
+                     public void onResponse(JSONArray response) {
+                           Log.d("responsef",response.toString());
+                         SectionDataModel dm = new SectionDataModel();
+                         dm.setHeaderTitle("Images ");
+                         ArrayList<SingleItemModel> singleItem = new ArrayList<SingleItemModel>();
+                         try{
+                             for(int i=0;i<response.length();i++){
+                                 // Get current json object
+                                 JSONObject student = response.getJSONObject(i);
 
-                                  Toast.makeText(getContext(), "name:"+name, Toast.LENGTH_SHORT).show();
-                              }
-                              catch (Exception e){
-                                  Toast.makeText(getContext(),"catch:"+e.getMessage(), Toast.LENGTH_SHORT).show();
-                                  Log.d("catch_getAll",""+e.getMessage());
+                                 String name = student.getString("name");
+                                 String categoryv=student.getString("category");
+                                  String imagev=student.getString("image");
+                                  String image= Config.URL_ROOT+"uploads/album/450/500/"+imagev;
+                                  String udate=student.getString("udate");
+                                  Log.d("pdata",""+name+""+categoryv+""+image+""+udate);
+                                 //SectionDataModel dm = new SectionDataModel();
+                                 //dm.setHeaderTitle("Section " + i);
+                                 Toast.makeText(getContext(),"rrrresponse_enterrr:",Toast.LENGTH_LONG).show();
+                                 singleItem.add(new SingleItemModel(name,image,udate));
 
-                              }
+                             }
+                                Log.d("bdm",singleItem.toString());
+                             dm.setAllItemsInSection(singleItem);
+                             Log.d("adm",singleItem.toString());
+                             Log.d("dmm",dm.toString());
+                             allSampleData.add(dm);
+                             Log.d("allsampledatav", allSampleData.toString());
+                             //my_recycler_view.setHasFixedSize(true);
+                             Log.d("allSampleDatas",""+allSampleData.size()+"--"+allSampleData.toString());
+                             RecyclerViewDataAdapter adapter = new RecyclerViewDataAdapter(getContext(), allSampleData);
 
+                            // my_recycler_view.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
+              my_recycler_view.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
+
+                            // AutoFitGridLayoutManager layoutManager = new AutoFitGridLayoutManager(getActivity(), 500);
+
+                             //my_recycler_view.setLayoutManager(layoutManager);
+                             int numberOfColumns = 2;
+                            //my_recycler_view.setLayoutManager(new GridLayoutManager(getActivity(), numberOfColumns));
+
+
+                             my_recycler_view.setAdapter(adapter);
                          }
-                         //dm.setHeaderTitle("Section " + i);
-                         //hideProgressDialog();
+                         catch (JSONException e){
+                             e.printStackTrace();
+                             Toast.makeText(getContext(), ""+e.getMessage(), Toast.LENGTH_SHORT).show();
+                             Log.d("catch_f",""+e.getMessage());
+                         }
                      }
-                 }, new com.android.volley.Response.ErrorListener() {
-
-             @Override
-             public void onErrorResponse(VolleyError error) {
-                 VolleyLog.d(TAG, "Error: " + error.getMessage());
-                 Toast.makeText(getContext(), "Error: " + error.getMessage(), Toast.LENGTH_SHORT).show();
-                // hideProgressDialog();
-             }
-         }) {
-
-             /**
-              * Passing some request headers
-              * */
-             @Override
-             public Map<String, String> getHeaders() throws AuthFailureError {
-                 HashMap<String, String> headers = new HashMap<String, String>();
-                 headers.put("Content-Type", "application/json");
-                 return headers;
-             }
-
-             @Override
-             protected Map<String, String> getParams() {
-                 Map<String, String> params = new HashMap<String, String>();
-
-
-                 return params;
-             }
-
-         };
-
-       RequestQueue requestQueue=Volley.newRequestQueue(getContext());
-        requestQueue.add(jsonObjReq);
-
+                 },
+                 new com.android.volley.Response.ErrorListener(){
+                     @Override
+                     public void onErrorResponse(VolleyError error){
+                         // Do something when error occurred
+                         //Snackbar.make(getContext(),"Error...", Snackbar.LENGTH_LONG).show();
+                         Toast.makeText(getContext(), "verror"+error.getMessage(), Toast.LENGTH_SHORT).show();
+                         Log.d("verror",error.getMessage());
+                     }
+                 }
+         );
+         // Add JsonArrayRequest to the RequestQueue
+         requestQueue.add(jsonArrayRequest);
+         //getVideo();
      }
-     public void getVideo(SectionDataModel dm){
+     public void getVideo(){
+         final String url = "https://www.iampro.co/api/app_service.php?type=all_item&name=video&uid=&my_id=";
+         // Initialize a new RequestQueue instance
+         RequestQueue requestQueue = Volley.newRequestQueue(getContext());
 
+         // Initialize a new JsonArrayRequest instance
+         JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(
+                 Request.Method.GET,
+                 url,
+                 null,
+                 new com.android.volley.Response.Listener<JSONArray>() {
+                     @Override
+                     public void onResponse(JSONArray response) {
+                         Log.d("responsef",response.toString());
+                         SectionDataModel dm = new SectionDataModel();
+                         dm.setHeaderTitle("Video ");
+                         ArrayList<SingleItemModel> singleItem = new ArrayList<SingleItemModel>();
+                         try{
+                             for(int i=0;i<response.length();i++){
+                                 // Get current json object
+                                 JSONObject student = response.getJSONObject(i);
+
+                                 String name = student.getString("name");
+                                 String categoryv=student.getString("category");
+                                 String imagev=student.getString("image");
+                                 String image=Config.URL_ROOT + "uploads/v_image/" + imagev;
+                                 String udate=student.getString("udate");
+                                 Log.d("pdata",""+name+""+categoryv+""+image+""+udate);
+                                 //SectionDataModel dm = new SectionDataModel();
+                                 //dm.setHeaderTitle("Section " + i);
+                                 Toast.makeText(getContext(),"rrrresponse_enterrr:",Toast.LENGTH_LONG).show();
+                                 singleItem.add(new SingleItemModel(name,image,udate));
+
+                             }
+                             Log.d("bdm",singleItem.toString());
+                             dm.setAllItemsInSection(singleItem);
+                             Log.d("adm",singleItem.toString());
+                             Log.d("dmm",dm.toString());
+                             allSampleData.add(dm);
+                             Log.d("allsampledatav", allSampleData.toString());
+                             my_recycler_view.setHasFixedSize(true);
+                             Log.d("allSampleDatas",""+allSampleData.size()+"--"+allSampleData.toString());
+                             RecyclerViewDataAdapter adapter = new RecyclerViewDataAdapter(getContext(), allSampleData);
+
+                             my_recycler_view.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
+                             //my_recycler_view.setLayoutManager(new GridLayoutManager(getActivity(), 2));
+                             my_recycler_view.setAdapter(adapter);
+                         }
+                         catch (JSONException e){
+                             e.printStackTrace();
+                             Toast.makeText(getContext(), ""+e.getMessage(), Toast.LENGTH_SHORT).show();
+                             Log.d("catch_f",""+e.getMessage());
+                         }
+                     }
+                 },
+                 new com.android.volley.Response.ErrorListener(){
+                     @Override
+                     public void onErrorResponse(VolleyError error){
+                         // Do something when error occurred
+                         //Snackbar.make(getContext(),"Error...", Snackbar.LENGTH_LONG).show();
+                         Toast.makeText(getContext(), "verror"+error.getMessage(), Toast.LENGTH_SHORT).show();
+                         Log.d("verror",error.getMessage());
+                     }
+                 }
+         );
+         // Add JsonArrayRequest to the RequestQueue
+         requestQueue.add(jsonArrayRequest);
+         //getUser();
      }
-      public void getUser(SectionDataModel dm){
+      public void getUser(){
+          final String url = "https://www.iampro.co/api/app_service.php?type=getSelectedUser&limit=15&uid=&my_id=";
+          // Initialize a new RequestQueue instance
+          RequestQueue requestQueue = Volley.newRequestQueue(getContext());
 
+          // Initialize a new JsonArrayRequest instance
+          JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(
+                  Request.Method.GET,
+                  url,
+                  null,
+                  new com.android.volley.Response.Listener<JSONArray>() {
+                      @Override
+                      public void onResponse(JSONArray response) {
+                          Log.d("responsef",response.toString());
+                          SectionDataModel dm = new SectionDataModel();
+                          dm.setHeaderTitle("User");
+                          ArrayList<SingleItemModel> singleItem = new ArrayList<SingleItemModel>();
+                          try{
+                              for(int i=0;i<response.length();i++){
+                                  // Get current json object
+                                  JSONObject student = response.getJSONObject(i);
+
+                                  String name = student.getString("fname");
+                                  String categoryv=student.getString("identity_type");
+                                  String imagev=student.getString("avatar");
+                                   String image=Config.AVATAR_URL+"200/200/"+imagev;
+                                  String udate=student.getString("udate");
+                                  Log.d("pdata",""+name+""+categoryv+""+image+""+udate);
+                                  //SectionDataModel dm = new SectionDataModel();
+                                  //dm.setHeaderTitle("Section " + i);
+                                  Toast.makeText(getContext(),"rrrresponse_enterrr:",Toast.LENGTH_LONG).show();
+                                  singleItem.add(new SingleItemModel(name,image,udate));
+
+                              }
+                              Log.d("bdm",singleItem.toString());
+                              dm.setAllItemsInSection(singleItem);
+                              Log.d("adm",singleItem.toString());
+                              Log.d("dmm",dm.toString());
+                              allSampleData.add(dm);
+                              Log.d("allsampledatav", allSampleData.toString());
+                              my_recycler_view.setHasFixedSize(true);
+                              Log.d("allSampleDatas",""+allSampleData.size()+"--"+allSampleData.toString());
+                              RecyclerViewDataAdapter adapter = new RecyclerViewDataAdapter(getContext(), allSampleData);
+
+                              my_recycler_view.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
+                              //my_recycler_view.setLayoutManager(new GridLayoutManager(getActivity(), 2));
+                              my_recycler_view.setAdapter(adapter);
+                          }
+                          catch (JSONException e){
+                              e.printStackTrace();
+                              Toast.makeText(getContext(), ""+e.getMessage(), Toast.LENGTH_SHORT).show();
+                              Log.d("catch_f",""+e.getMessage());
+                          }
+                      }
+                  },
+                  new com.android.volley.Response.ErrorListener(){
+                      @Override
+                      public void onErrorResponse(VolleyError error){
+                          // Do something when error occurred
+                          //Snackbar.make(getContext(),"Error...", Snackbar.LENGTH_LONG).show();
+                          Toast.makeText(getContext(), "verror"+error.getMessage(), Toast.LENGTH_SHORT).show();
+                          Log.d("verror",error.getMessage());
+                      }
+                  }
+          );
+          // Add JsonArrayRequest to the RequestQueue
+          requestQueue.add(jsonArrayRequest);
+          //getProduct();
       }
-      public void getProduct(SectionDataModel dm){
+      public void getProduct(){
+          final String url = "https://www.iampro.co/api/app_service.php?type=all_product&uid=&name=product&my_id=";
+          // Initialize a new RequestQueue instance
+          RequestQueue requestQueue = Volley.newRequestQueue(getContext());
 
+          // Initialize a new JsonArrayRequest instance
+          JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(
+                  Request.Method.GET,
+                  url,
+                  null,
+                  new com.android.volley.Response.Listener<JSONArray>() {
+                      @Override
+                      public void onResponse(JSONArray response) {
+                          Log.d("responsef",response.toString());
+                          SectionDataModel dm = new SectionDataModel();
+                          dm.setHeaderTitle("Product");
+                          ArrayList<SingleItemModel> singleItem = new ArrayList<SingleItemModel>();
+                          try{
+                              for(int i=0;i<response.length();i++){
+                                  // Get current json object
+                                  JSONObject student = response.getJSONObject(i);
+
+                                  String name = student.getString("name");
+                                  String categoryv=student.getString("category");
+                                  String imagev=student.getString("image");
+                                   String image=Config.URL_ROOT + "uploads/product/" +imagev;
+                                  String udate=student.getString("udate");
+                                  Log.d("pdata",""+name+""+categoryv+""+image+""+udate);
+                                  //SectionDataModel dm = new SectionDataModel();
+                                  //dm.setHeaderTitle("Section " + i);
+                                  Toast.makeText(getContext(),"rrrresponse_enterrr:",Toast.LENGTH_LONG).show();
+                                  singleItem.add(new SingleItemModel(name,image,udate));
+
+                              }
+                              Log.d("bdm",singleItem.toString());
+                              dm.setAllItemsInSection(singleItem);
+                              Log.d("adm",singleItem.toString());
+                              Log.d("dmm",dm.toString());
+                              allSampleData.add(dm);
+                              Log.d("allsampledatav", allSampleData.toString());
+                              my_recycler_view.setHasFixedSize(true);
+                              Log.d("allSampleDatas",""+allSampleData.size()+"--"+allSampleData.toString());
+                              RecyclerViewDataAdapter adapter = new RecyclerViewDataAdapter(getContext(), allSampleData);
+
+                              my_recycler_view.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
+                              //my_recycler_view.setLayoutManager(new GridLayoutManager(getActivity(), 2));
+                              my_recycler_view.setAdapter(adapter);
+                          }
+                          catch (JSONException e){
+                              e.printStackTrace();
+                              Toast.makeText(getContext(), ""+e.getMessage(), Toast.LENGTH_SHORT).show();
+                              Log.d("catch_f",""+e.getMessage());
+                          }
+                      }
+                  },
+                  new com.android.volley.Response.ErrorListener(){
+                      @Override
+                      public void onErrorResponse(VolleyError error){
+                          // Do something when error occurred
+                          //Snackbar.make(getContext(),"Error...", Snackbar.LENGTH_LONG).show();
+                          Toast.makeText(getContext(), "verror"+error.getMessage(), Toast.LENGTH_SHORT).show();
+                          Log.d("verror",error.getMessage());
+                      }
+                  }
+          );
+          // Add JsonArrayRequest to the RequestQueue
+          requestQueue.add(jsonArrayRequest);
+          //getProvide();
       }
-       public void getProvide(SectionDataModel dm){
+       public void getProvide(){
+           final String url = "https://www.iampro.co/api/app_service.php?type=all_product_classified&uid=&name=PROVIDE&my_id=";
+           // Initialize a new RequestQueue instance
+           RequestQueue requestQueue = Volley.newRequestQueue(getContext());
 
+           // Initialize a new JsonArrayRequest instance
+           JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(
+                   Request.Method.GET,
+                   url,
+                   null,
+                   new com.android.volley.Response.Listener<JSONArray>() {
+                       @Override
+                       public void onResponse(JSONArray response) {
+                           Log.d("responsef",response.toString());
+                           SectionDataModel dm = new SectionDataModel();
+                           dm.setHeaderTitle("Provide");
+                           ArrayList<SingleItemModel> singleItem = new ArrayList<SingleItemModel>();
+                           try{
+                               for(int i=0;i<response.length();i++){
+                                   // Get current json object
+                                   JSONObject student = response.getJSONObject(i);
+
+                                   String name = student.getString("name");
+                                   String categoryv=student.getString("category");
+                                   String imagev=student.getString("image");
+                                    String image=Config.URL_ROOT + "uploads/product/" + imagev;
+                                   String udate=student.getString("udate");
+                                   Log.d("pdata",""+name+""+categoryv+""+image+""+udate);
+                                   //SectionDataModel dm = new SectionDataModel();
+                                   //dm.setHeaderTitle("Section " + i);
+                                   Toast.makeText(getContext(),"rrrresponse_enterrr:",Toast.LENGTH_LONG).show();
+                                   singleItem.add(new SingleItemModel(name,image,udate));
+
+                               }
+                               Log.d("bdm",singleItem.toString());
+                               dm.setAllItemsInSection(singleItem);
+                               Log.d("adm",singleItem.toString());
+                               Log.d("dmm",dm.toString());
+                               allSampleData.add(dm);
+                               Log.d("allsampledatav", allSampleData.toString());
+                               my_recycler_view.setHasFixedSize(true);
+                               Log.d("allSampleDatas",""+allSampleData.size()+"--"+allSampleData.toString());
+                               RecyclerViewDataAdapter adapter = new RecyclerViewDataAdapter(getContext(), allSampleData);
+
+                               my_recycler_view.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
+                               //my_recycler_view.setLayoutManager(new GridLayoutManager(getActivity(), 2));
+                               my_recycler_view.setAdapter(adapter);
+                           }
+                           catch (JSONException e){
+                               e.printStackTrace();
+                               Toast.makeText(getContext(), ""+e.getMessage(), Toast.LENGTH_SHORT).show();
+                               Log.d("catch_f",""+e.getMessage());
+                           }
+                       }
+                   },
+                   new com.android.volley.Response.ErrorListener(){
+                       @Override
+                       public void onErrorResponse(VolleyError error){
+                           // Do something when error occurred
+                           //Snackbar.make(getContext(),"Error...", Snackbar.LENGTH_LONG).show();
+                           Toast.makeText(getContext(), "verror"+error.getMessage(), Toast.LENGTH_SHORT).show();
+                           Log.d("verror",error.getMessage());
+                       }
+                   }
+           );
+           // Add JsonArrayRequest to the RequestQueue
+           requestQueue.add(jsonArrayRequest);
+           //getDemand();
        }
-        public void getDemand(SectionDataModel dm){
+        public void getDemand(){
+            final String url = "https://www.iampro.co/api/app_service.php?type=all_product_classified&uid=&name=DEMAND&my_id=";
+            // Initialize a new RequestQueue instance
+            RequestQueue requestQueue = Volley.newRequestQueue(getContext());
 
+            // Initialize a new JsonArrayRequest instance
+            JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(
+                    Request.Method.GET,
+                    url,
+                    null,
+                    new com.android.volley.Response.Listener<JSONArray>() {
+                        @Override
+                        public void onResponse(JSONArray response) {
+                            Log.d("responsef",response.toString());
+                            SectionDataModel dm = new SectionDataModel();
+                            dm.setHeaderTitle("Demand");
+                            ArrayList<SingleItemModel> singleItem = new ArrayList<SingleItemModel>();
+                            try{
+                                for(int i=0;i<response.length();i++){
+                                    // Get current json object
+                                    JSONObject student = response.getJSONObject(i);
+
+                                    String name = student.getString("name");
+                                    String categoryv=student.getString("category");
+                                    String imagev=student.getString("image");
+                                    String image=Config.URL_ROOT + "uploads/product/" +imagev;
+                                    String udate=student.getString("udate");
+                                    Log.d("pdata",""+name+""+categoryv+""+image+""+udate);
+                                    //SectionDataModel dm = new SectionDataModel();
+                                    //dm.setHeaderTitle("Section " + i);
+                                    Toast.makeText(getContext(),"rrrresponse_enterrr:",Toast.LENGTH_LONG).show();
+                                    singleItem.add(new SingleItemModel(name,image,udate));
+
+                                }
+                                Log.d("bdm",singleItem.toString());
+                                dm.setAllItemsInSection(singleItem);
+                                Log.d("adm",singleItem.toString());
+                                Log.d("dmm",dm.toString());
+                                allSampleData.add(dm);
+                                Log.d("allsampledatav", allSampleData.toString());
+                                my_recycler_view.setHasFixedSize(true);
+                                Log.d("allSampleDatas",""+allSampleData.size()+"--"+allSampleData.toString());
+                                RecyclerViewDataAdapter adapter = new RecyclerViewDataAdapter(getContext(), allSampleData);
+
+                                my_recycler_view.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
+                                //my_recycler_view.setLayoutManager(new GridLayoutManager(getActivity(), 2));
+                                my_recycler_view.setAdapter(adapter);
+                            }
+                            catch (JSONException e){
+                                e.printStackTrace();
+                                Toast.makeText(getContext(), ""+e.getMessage(), Toast.LENGTH_SHORT).show();
+                                Log.d("catch_f",""+e.getMessage());
+                            }
+                        }
+                    },
+                    new com.android.volley.Response.ErrorListener(){
+                        @Override
+                        public void onErrorResponse(VolleyError error){
+                            // Do something when error occurred
+                            //Snackbar.make(getContext(),"Error...", Snackbar.LENGTH_LONG).show();
+                            Toast.makeText(getContext(), "verror"+error.getMessage(), Toast.LENGTH_SHORT).show();
+                            Log.d("verror",error.getMessage());
+                        }
+                    }
+            );
+            // Add JsonArrayRequest to the RequestQueue
+            requestQueue.add(jsonArrayRequest);
         }
-    public void callApi(){
 
-    }
 }
 

@@ -11,6 +11,35 @@ public class SingleItemModel {
     private String url;
     private String description;
 
+    private String udate;
+    private String image;
+    private String category;
+
+    public String getUdate() {
+        return udate;
+    }
+
+    public void setUdate(String udate) {
+        this.udate = udate;
+    }
+
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
+    }
+
+    public String getCategory() {
+        return category;
+    }
+
+    public void setCategory(String category) {
+        this.category = category;
+    }
+
+
 
     public SingleItemModel() {
     }
@@ -19,7 +48,11 @@ public class SingleItemModel {
         this.name = name;
         this.url = url;
     }
-
+    public SingleItemModel(String name, String image,String udate) {
+        this.name = name;
+        this.image = image;
+        this.udate=udate;
+    }
 
     public String getUrl() {
         return url;
@@ -44,6 +77,5 @@ public class SingleItemModel {
     public void setDescription(String description) {
         this.description = description;
     }
-
 
 }
