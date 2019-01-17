@@ -12,6 +12,7 @@ import com.mssinfotech.iampro.co.tab.HomeFragment;
 import com.mssinfotech.iampro.co.tab.ImageFragment;
 import com.mssinfotech.iampro.co.tab.ProductFragment;
 import com.mssinfotech.iampro.co.tab.ProvideFragment;
+import com.mssinfotech.iampro.co.tab.TestFragment;
 import com.mssinfotech.iampro.co.tab.UserFragment;
 import com.mssinfotech.iampro.co.tab.VideoFragment;
 import com.mssinfotech.iampro.co.common.Config;
@@ -28,7 +29,8 @@ public class HomeActivity extends AppCompatActivity {
             R.drawable.tab_user,
             R.drawable.tab_product,
             R.drawable.tab_provide,
-            R.drawable.tab_demand
+            R.drawable.tab_demand,
+            android.R.drawable.alert_dark_frame
     };
 
     @Override
@@ -52,6 +54,7 @@ public class HomeActivity extends AppCompatActivity {
         tabLayout.getTabAt(4).setIcon(tabIcons[4]);
         tabLayout.getTabAt(5).setIcon(tabIcons[5]);
         tabLayout.getTabAt(6).setIcon(tabIcons[6]);
+        //tabLayout.getTabAt(7).setIcon(tabIcons[7]);
     }
     private void setupViewPager(ViewPager viewPager) {
         HomePagerAdapter adapter = new HomePagerAdapter(getSupportFragmentManager());
@@ -62,6 +65,8 @@ public class HomeActivity extends AppCompatActivity {
         adapter.addFragment(new ProductFragment(), "Product");
         adapter.addFragment(new ProvideFragment(), "Provide");
         adapter.addFragment(new DemandFragment(), "Demand");
+        //TestFragment
+        //adapter.addFragment(new TestFragment(), "TestFragment");
         viewPager.setAdapter(adapter);
     }
     @Override

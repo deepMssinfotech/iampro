@@ -41,9 +41,9 @@
     <dimen name="feed_item_border_width">1dp</dimen>
 
     <!-- home fragment   -->
-    <item name="normal_speed" format="float" type="dimen">100</item>
-    <item name="high_speed" format="float" type="dimen">50</item>
-    <item name="low_speed" format="float" type="dimen">120</item>
+    <item name="normal_speed" type="dimen" format="float">100</item>
+    <item name="high_speed" type="dimen" format="float">50</item>
+    <item name="low_speed" type="dimen" format="float">120</item>
     <dimen name="movie_title_padding">10dp</dimen>
     <dimen name="movie_title">15dp</dimen>
     <dimen name="movie_cover_height">150dp</dimen>
@@ -56,14 +56,5 @@
     <dimen name="layout_margin_top">3dp</dimen>
     <dimen name="layout_margin_top2">10dp</dimen>
     <dimen name="padding_layout">16dp</dimen>
-    <dimen name="nav_header_vertical_spacing">8dp</dimen>
-    <dimen name="nav_header_height">176dp</dimen>
-    <dimen name="fab_margin_bottom">46dp</dimen>
-    <dimen name="fab_margin_right">16dp</dimen>
-
-
-    <dimen name="activity_padding_horizontal">16dp</dimen>
-    <dimen name="padd_10">10dp</dimen>
-    <dimen name="ic_delete">30dp</dimen>
-    <dimen name="thumbnail">90dp</dimen>
+>>>>>>> home frag
 </resources>
