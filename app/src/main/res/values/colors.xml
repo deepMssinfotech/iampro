@@ -41,4 +41,8 @@
 
     <color name="teal_100">#b2dfdb</color>
     <color name="teal_500">#009688</color>
+
+    <color name="bg_row_background">#fa315b</color>
+    <color name="item_name">#535353</color>
+    <color name="description">#a9a9a9</color>
 </resources>

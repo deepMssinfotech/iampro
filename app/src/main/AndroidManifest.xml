@@ -32,7 +32,7 @@
         <activity android:name=".user.EditProfileActivity"></activity>
         <activity android:name=".user.JoinedFriendsActivity" />
         <activity android:name=".user.FriendRequestActivity" />
-        <activity android:name=".user.MyWhishlistActivity" />
+        <activity android:name=".user.MyWhishlistActivity" android:label="@string/whishlist_title" />
         <activity android:name=".user.MyPurchsaeActivity" />
         <activity android:name=".user.MySellingActivity" />
         <activity android:name=".user.ChangePasswordActivity" />

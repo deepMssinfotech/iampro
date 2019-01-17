@@ -1,23 +1,21 @@
 package com.mssinfotech.iampro.co.data;
 import java.io.Serializable;
-public class FeedItem {
+public class WhishListItem {
     private int id;
-    private String name, status, image, profilePic, timeStamp, url;
+    private String name, status, image, timeStamp;
+    private Float price;
     private static final long serialVersionUID = 1L;
-    public FeedItem() {
+    public WhishListItem() {
     }
 
-    public FeedItem(int id, String name, String image, String status,
-                    String profilePic, String timeStamp, String url) {
+    public WhishListItem(int id, String name, String image, String status, String timeStamp, Float price) {
         super();
         this.id = id;
         this.name = name;
         this.image = image;
         this.status = status;
-        this.profilePic = profilePic;
         this.timeStamp = timeStamp;
-        this.url = url;
-
+        this.price = price;
     }
 
     public int getId() {
@@ -28,6 +26,14 @@ public class FeedItem {
         this.id = id;
     }
 
+    public float getPrice() {
+        return price;
+    }
+
+    public void setPrice(float price) {
+        this.price = price;
+    }
+
     public String getName() {
         return name;
     }
@@ -36,11 +42,11 @@ public class FeedItem {
         this.name = name;
     }
 
-    public String getImge() {
+    public String getImage() {
         return image;
     }
 
-    public void setImge(String image) {
+    public void setImage(String image) {
         this.image = image;
     }
 
@@ -52,14 +58,6 @@ public class FeedItem {
         this.status = status;
     }
 
-    public String getProfilePic() {
-        return profilePic;
-    }
-
-    public void setProfilePic(String profilePic) {
-        this.profilePic = profilePic;
-    }
-
     public String getTimeStamp() {
         return timeStamp;
     }
@@ -68,11 +66,4 @@ public class FeedItem {
         this.timeStamp = timeStamp;
     }
 
-    public String getUrl() {
-        return url;
-    }
-
-    public void setUrl(String url) {
-        this.url = url;
-    }
 }
