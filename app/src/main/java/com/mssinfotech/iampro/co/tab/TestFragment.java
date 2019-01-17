@@ -41,7 +41,6 @@ public class TestFragment extends Fragment implements RecyclerViewAdapter.ItemLi
         // Required empty public constructor
     }
 
-
     // TODO: Rename and change types and number of parameters
 
 //import com.mssinfotech.iampro.co.model.DataModel;
