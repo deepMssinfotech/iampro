@@ -18,6 +18,7 @@ import com.mssinfotech.iampro.co.MessageActivity;
 import com.mssinfotech.iampro.co.R;
 import com.mssinfotech.iampro.co.SearchActivity;
 import com.mssinfotech.iampro.co.user.ChangePasswordActivity;
+import com.mssinfotech.iampro.co.user.EditProfileActivity;
 import com.mssinfotech.iampro.co.user.FriendRequestActivity;
 import com.mssinfotech.iampro.co.user.JoinedFriendsActivity;
 import com.mssinfotech.iampro.co.user.MyDemandActivity;
@@ -38,6 +39,156 @@ public class UserMenuActivity  extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup parent, Bundle savedInstanceState) {
         // Defines the xml file for the fragment
         View view = inflater.inflate(R.layout.include_user_menu, parent, false);
+
+        return view;
+    }
+    private View.OnClickListener dashboardOnClickListener = new View.OnClickListener() {
+        public void onClick(View v) {
+            if(function.isSamePage("activity_dashboard"))return;
+            Intent intent = new Intent(getContext(), DashboardActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            getContext().startActivity(intent);
+        }
+    };
+    private View.OnClickListener myprofileOnClickListener = new View.OnClickListener() {
+        public void onClick(View v) {
+            if(function.isSamePage("activity_profile"))return;
+            Intent intent = new Intent(getContext(), ProfileActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            getContext().startActivity(intent);
+        }
+    };
+    private View.OnClickListener editprofileOnClickListener = new View.OnClickListener() {
+        public void onClick(View v) {
+            if(function.isSamePage("activity_edit_profile"))return;
+            Intent intent = new Intent(getContext(), EditProfileActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            getContext().startActivity(intent);
+        }
+    };
+    private View.OnClickListener changepasswordOnClickListener = new View.OnClickListener() {
+        public void onClick(View v) {
+            if(function.isSamePage("activity_change_password"))return;
+            Intent intent = new Intent(getContext(), ChangePasswordActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            getContext().startActivity(intent);
+        }
+    };
+    private View.OnClickListener joinedfriendOnClickListener = new View.OnClickListener() {
+        public void onClick(View v) {
+            if(function.isSamePage("activity_joined_friends"))return;
+            Intent intent = new Intent(getContext(), JoinedFriendsActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            getContext().startActivity(intent);
+        }
+    };
+    private View.OnClickListener friendrequestOnClickListener = new View.OnClickListener() {
+        public void onClick(View v) {
+            if(function.isSamePage("activity_friend_request"))return;
+            Intent intent = new Intent(getContext(), FriendRequestActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            getContext().startActivity(intent);
+        }
+    };
+    private View.OnClickListener myphotoOnClickListener = new View.OnClickListener() {
+        public void onClick(View v) {
+            if(function.isSamePage("activity_my_image"))return;
+            Intent intent = new Intent(getContext(), MyImageActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            getContext().startActivity(intent);
+        }
+    };
+    private View.OnClickListener myvideoOnClickListener = new View.OnClickListener() {
+        public void onClick(View v) {
+            if(function.isSamePage("activity_my_video"))return;
+            Intent intent = new Intent(getContext(), MyVideoActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            getContext().startActivity(intent);
+        }
+    };
+    private View.OnClickListener myproductOnClickListener = new View.OnClickListener() {
+        public void onClick(View v) {
+            if(function.isSamePage("activity_my_product"))return;
+            Intent intent = new Intent(getContext(), MyProductActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            getContext().startActivity(intent);
+        }
+    };
+    private View.OnClickListener myprovideOnClickListener = new View.OnClickListener() {
+        public void onClick(View v) {
+            if(function.isSamePage("activity_my_provide"))return;
+            Intent intent = new Intent(getContext(), MyProvideActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            getContext().startActivity(intent);
+        }
+    };
+    private View.OnClickListener demandOnClickListener = new View.OnClickListener() {
+        public void onClick(View v) {
+            if(function.isSamePage("activity_my_demand"))return;
+            Intent intent = new Intent(getContext(), MyDemandActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            getContext().startActivity(intent);
+        }
+    };
+    private View.OnClickListener mymessageOnClickListener = new View.OnClickListener() {
+        public void onClick(View v) {
+            if(function.isSamePage("activity_message"))return;
+            Intent intent = new Intent(getContext(), MessageActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            getContext().startActivity(intent);
+        }
+    };
+    private View.OnClickListener mycartOnClickListener = new View.OnClickListener() {
+        public void onClick(View v) {
+            if(function.isSamePage("activity_cart"))return;
+            Intent intent = new Intent(getContext(), CartActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            getContext().startActivity(intent);
+        }
+    };
+    private View.OnClickListener mysellingOnClickListener = new View.OnClickListener() {
+        public void onClick(View v) {
+            if(function.isSamePage("activity_my_selling"))return;
+            Intent intent = new Intent(getContext(), MySellingActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            getContext().startActivity(intent);
+        }
+    };
+    private View.OnClickListener mypurchaseOnClickListener = new View.OnClickListener() {
+        public void onClick(View v) {
+            if(function.isSamePage("activity_my_purchase"))return;
+            Intent intent = new Intent(getContext(), MyPurchsaeActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            getContext().startActivity(intent);
+        }
+    };
+    private View.OnClickListener shareOnClickListener = new View.OnClickListener() {
+        public void onClick(View v) {
+           //todo show share option
+        }
+    };
+    private View.OnClickListener mywhishlistOnClickListener = new View.OnClickListener() {
+        public void onClick(View v) {
+            if(function.isSamePage("activity_my_whishlist"))return;
+            Intent intent = new Intent(getContext(), MyWhishlistActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            getContext().startActivity(intent);
+        }
+    };
+    private View.OnClickListener logoutOnClickListener = new View.OnClickListener() {
+        public void onClick(View v) {
+            //todo logout cose
+            Intent intent = new Intent(getContext(), HomeActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            getContext().startActivity(intent);
+        }
+    };
+    // This event is triggered soon after onCreateView().
+    // Any view setup should occur here.  E.g., view lookups and attaching view listeners.
+    @Override
+    public void onViewCreated(View view, Bundle savedInstanceState) {
+        // Setup any handles to view objects here
+        // EditText etFoo = (EditText) view.findViewById(R.id.etFoo);
         menu_btn_dashboard = view.findViewById(R.id.menu_btn_dashboard);
         menu_btn_myprofile = view.findViewById(R.id.menu_btn_myprofile);
         menu_btn_editprofile = view.findViewById(R.id.menu_btn_editprofile);
@@ -75,138 +226,5 @@ public class UserMenuActivity  extends Fragment {
         menu_btn_share.setOnClickListener(shareOnClickListener);
         menu_btn_mywhishlist.setOnClickListener(mywhishlistOnClickListener);
         menu_btn_logout.setOnClickListener(logoutOnClickListener);
-        return view;
-    }
-    private View.OnClickListener dashboardOnClickListener = new View.OnClickListener() {
-        public void onClick(View v) {
-            Intent intent = new Intent(getContext(), DashboardActivity.class);
-            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            getContext().startActivity(intent);
-        }
-    };
-    private View.OnClickListener myprofileOnClickListener = new View.OnClickListener() {
-        public void onClick(View v) {
-            Intent intent = new Intent(getContext(), ProfileActivity.class);
-            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            getContext().startActivity(intent);
-        }
-    };
-    private View.OnClickListener editprofileOnClickListener = new View.OnClickListener() {
-        public void onClick(View v) {
-            Intent intent = new Intent(getContext(), ProfileActivity.class);
-            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            getContext().startActivity(intent);
-        }
-    };
-    private View.OnClickListener changepasswordOnClickListener = new View.OnClickListener() {
-        public void onClick(View v) {
-            Intent intent = new Intent(getContext(), ChangePasswordActivity.class);
-            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            getContext().startActivity(intent);
-        }
-    };
-    private View.OnClickListener joinedfriendOnClickListener = new View.OnClickListener() {
-        public void onClick(View v) {
-            Intent intent = new Intent(getContext(), JoinedFriendsActivity.class);
-            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            getContext().startActivity(intent);
-        }
-    };
-    private View.OnClickListener friendrequestOnClickListener = new View.OnClickListener() {
-        public void onClick(View v) {
-            Intent intent = new Intent(getContext(), FriendRequestActivity.class);
-            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            getContext().startActivity(intent);
-        }
-    };
-    private View.OnClickListener myphotoOnClickListener = new View.OnClickListener() {
-        public void onClick(View v) {
-            Intent intent = new Intent(getContext(), MyImageActivity.class);
-            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            getContext().startActivity(intent);
-        }
-    };
-    private View.OnClickListener myvideoOnClickListener = new View.OnClickListener() {
-        public void onClick(View v) {
-            Intent intent = new Intent(getContext(), MyVideoActivity.class);
-            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            getContext().startActivity(intent);
-        }
-    };
-    private View.OnClickListener myproductOnClickListener = new View.OnClickListener() {
-        public void onClick(View v) {
-            Intent intent = new Intent(getContext(), MyProductActivity.class);
-            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            getContext().startActivity(intent);
-        }
-    };
-    private View.OnClickListener myprovideOnClickListener = new View.OnClickListener() {
-        public void onClick(View v) {
-            Intent intent = new Intent(getContext(), MyProvideActivity.class);
-            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            getContext().startActivity(intent);
-        }
-    };
-    private View.OnClickListener demandOnClickListener = new View.OnClickListener() {
-        public void onClick(View v) {
-            Intent intent = new Intent(getContext(), MyDemandActivity.class);
-            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            getContext().startActivity(intent);
-        }
-    };
-    private View.OnClickListener mymessageOnClickListener = new View.OnClickListener() {
-        public void onClick(View v) {
-            Intent intent = new Intent(getContext(), MessageActivity.class);
-            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            getContext().startActivity(intent);
-        }
-    };
-    private View.OnClickListener mycartOnClickListener = new View.OnClickListener() {
-        public void onClick(View v) {
-            Intent intent = new Intent(getContext(), CartActivity.class);
-            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            getContext().startActivity(intent);
-        }
-    };
-    private View.OnClickListener mysellingOnClickListener = new View.OnClickListener() {
-        public void onClick(View v) {
-            Intent intent = new Intent(getContext(), MySellingActivity.class);
-            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            getContext().startActivity(intent);
-        }
-    };
-    private View.OnClickListener mypurchaseOnClickListener = new View.OnClickListener() {
-        public void onClick(View v) {
-            Intent intent = new Intent(getContext(), MyPurchsaeActivity.class);
-            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            getContext().startActivity(intent);
-        }
-    };
-    private View.OnClickListener shareOnClickListener = new View.OnClickListener() {
-        public void onClick(View v) {
-           //todo show share option
-        }
-    };
-    private View.OnClickListener mywhishlistOnClickListener = new View.OnClickListener() {
-        public void onClick(View v) {
-            Intent intent = new Intent(getContext(), MyWhishlistActivity.class);
-            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            getContext().startActivity(intent);
-        }
-    };
-    private View.OnClickListener logoutOnClickListener = new View.OnClickListener() {
-        public void onClick(View v) {
-            //todo logout cose
-            Intent intent = new Intent(getContext(), HomeActivity.class);
-            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            getContext().startActivity(intent);
-        }
-    };
-    // This event is triggered soon after onCreateView().
-    // Any view setup should occur here.  E.g., view lookups and attaching view listeners.
-    @Override
-    public void onViewCreated(View view, Bundle savedInstanceState) {
-        // Setup any handles to view objects here
-        // EditText etFoo = (EditText) view.findViewById(R.id.etFoo);
     }
 }

@@ -29,7 +29,8 @@
         android:roundIcon="@drawable/iampro"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".user.JoinedFriendsActivity"></activity>
+        <activity android:name=".user.EditProfileActivity"></activity>
+        <activity android:name=".user.JoinedFriendsActivity" />
         <activity android:name=".user.FriendRequestActivity" />
         <activity android:name=".user.MyWhishlistActivity" />
         <activity android:name=".user.MyPurchsaeActivity" />
