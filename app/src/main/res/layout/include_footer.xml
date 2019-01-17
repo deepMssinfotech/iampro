@@ -61,5 +61,12 @@
             android:layout_height="@dimen/bottom_icon_height"
             android:src="@drawable/login" />
     </LinearLayout>
-    <include layout="@layout/include_drawer_layout"/>
+    <FrameLayout
+
+        android:visibility="gone"
+        android:id="@+id/content"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+    </FrameLayout>
+   <!-- <include layout="@layout/include_drawer_layout"/> -->
 </merge>

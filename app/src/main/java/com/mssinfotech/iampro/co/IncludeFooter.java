@@ -1,12 +1,20 @@
 package com.mssinfotech.iampro.co;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.support.annotation.NonNull;
-import android.support.design.widget.NavigationView;
-import android.support.v4.view.GravityCompat;
+//import android.support.annotation.NonNull;
+//import android.support.design.widget.NavigationView;
+//import android.support.v4.view.GravityCompat;
+import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.app.AppCompatActivity;
+import android.transition.Transition;
+import android.transition.TransitionInflater;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -16,6 +24,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.mssinfotech.iampro.co.common.CircleTransform;
+import com.mssinfotech.iampro.co.common.UserMenuActivity;
 import com.mssinfotech.iampro.co.user.ProfileActivity;
 import com.mssinfotech.iampro.co.utils.Config;
 import com.mssinfotech.iampro.co.utils.PrefManager;
@@ -26,10 +35,10 @@ public class IncludeFooter  extends RelativeLayout {
 
     private LayoutInflater inflater;
     private boolean isLogin = false;
-    NavigationView navigationView;
-    DrawerLayout drawer;
+    //NavigationView navigationView;
+    //DrawerLayout drawer;
     private Context context;
-    TextView title;
+    //TextView title;
 
     public IncludeFooter(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -54,7 +63,7 @@ public class IncludeFooter  extends RelativeLayout {
                     .transform(new CircleTransform())
                     .into((ImageView)this.findViewById(R.id.btn_menu_user));
         }
-        drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+       /* drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
 
         navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
@@ -79,8 +88,9 @@ public class IncludeFooter  extends RelativeLayout {
                 return true;
             }
         });
-        closeNavDrawer();
+        closeNavDrawer();*/
     }
+    /*
     protected boolean isNavDrawerOpen() {
         return drawer != null && drawer.isDrawerOpen(GravityCompat.START);
     }
@@ -89,10 +99,30 @@ public class IncludeFooter  extends RelativeLayout {
         if (drawer != null) {
             drawer.closeDrawer(GravityCompat.START);
         }
-    }
+    }*/
     private OnClickListener moreOnClickListener = new OnClickListener() {
         public void onClick(View v) {
-            drawer.openDrawer(GravityCompat.START);
+
+            AppCompatActivity activity = (AppCompatActivity) getContext();
+   /*          //UserMenuActivity userMenufragment = new UserMenuActivity();
+            //FragmentManager manager = activity.getSupportFragmentManager();
+            //FragmentTransaction transaction = manager.beginTransaction();
+            //transaction.replace(R.id.container,userMenufragment,"null");
+            //transaction.addToBackStack(null);
+            //transaction.commit();
+
+*/
+            UserMenuActivity userMenufragment = new UserMenuActivity();
+            Bundle args = new Bundle();
+            args.putString("name", "mragank");
+            userMenufragment.setArguments(args);
+
+            FragmentManager fragmentManager = activity.getSupportFragmentManager();
+            fragmentManager.beginTransaction()
+                    .replace(android.R.id.content, userMenufragment, "LOGIN")
+                    //.setTransition(android.R.transition.move)
+                    .addToBackStack("LOGIN")
+                    .commit();
         }
     };
     private OnClickListener searchOnClickListener = new OnClickListener() {

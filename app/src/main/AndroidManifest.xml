@@ -29,10 +29,10 @@
         android:roundIcon="@drawable/iampro"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity
-            android:name=".TestActivity"
-            android:label="@string/title_activity_test"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+        <activity android:name=".user.MyWhishlistActivity"></activity>
+        <activity android:name=".user.MyPurchsaeActivity" />
+        <activity android:name=".user.MySellingActivity" />
+        <activity android:name=".user.ChangePasswordActivity" />
 
         <service
             android:name=".services.ScheduledService"
@@ -55,7 +55,7 @@
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".LoadingActivity"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".ForgetActivity"
             android:theme="@style/AppTheme.NoActionBar" />
