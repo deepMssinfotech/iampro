@@ -3,6 +3,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -17,7 +18,9 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.Volley;
 import com.mssinfotech.iampro.co.R;
+import com.mssinfotech.iampro.co.adapter.RecyclerViewAdapter;
 import com.mssinfotech.iampro.co.adapter.RecyclerViewDataAdapter;
+import com.mssinfotech.iampro.co.model.DataModel;
 import com.mssinfotech.iampro.co.model.SectionDataModel;
 import com.mssinfotech.iampro.co.model.SingleItemModel;
 import com.mssinfotech.iampro.co.utils.Config;
@@ -28,9 +31,10 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
-public class ProductFragment extends Fragment{
-    ArrayList<SectionDataModel> allSampleData=new ArrayList<>();
+public class ProductFragment extends Fragment implements RecyclerViewAdapter.ItemListener{
+    ArrayList<DataModel> allSampleData=new ArrayList<>();
     RecyclerView my_recycler_view;
+    RecyclerViewAdapter adapter;
     public ProductFragment() {
         // Required empty public constructor
     }
@@ -77,6 +81,12 @@ public class ProductFragment extends Fragment{
                         SectionDataModel dm = new SectionDataModel();
                         dm.setHeaderTitle("Product");
                         ArrayList<SingleItemModel> singleItem = new ArrayList<SingleItemModel>();
+                        if(!singleItem.isEmpty()){
+                            singleItem.clear();
+                        }
+                        if(!allSampleData.isEmpty()){
+                            allSampleData.clear();
+                        }
                         try{
                             for(int i=0;i<response.length();i++){
                                 // Get current json object
@@ -90,23 +100,30 @@ public class ProductFragment extends Fragment{
                                 Log.d("pdata",""+name+""+categoryv+""+image+""+udate);
                                 //SectionDataModel dm = new SectionDataModel();
                                 //dm.setHeaderTitle("Section " + i);
-                                Toast.makeText(getContext(),"rrrresponse_enterrr:",Toast.LENGTH_LONG).show();
-                                singleItem.add(new SingleItemModel(name,image,udate));
-
+                                //Toast.makeText(getContext(),"rrrresponse_enterrr:",Toast.LENGTH_LONG).show();
+                                //singleItem.add(new SingleItemModel(name,image,udate));
+                                allSampleData.add(new DataModel(name,image,udate,categoryv));
                             }
                             Log.d("bdm",singleItem.toString());
                             dm.setAllItemsInSection(singleItem);
                             Log.d("adm",singleItem.toString());
                             Log.d("dmm",dm.toString());
-                            allSampleData.add(dm);
+                            //allSampleData.add(dm);
                             Log.d("allsampledatav", allSampleData.toString());
+                            /*
                             my_recycler_view.setHasFixedSize(true);
                             Log.d("allSampleDatas",""+allSampleData.size()+"--"+allSampleData.toString());
                             RecyclerViewDataAdapter adapter = new RecyclerViewDataAdapter(getContext(), allSampleData);
-
                             my_recycler_view.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
                             //my_recycler_view.setLayoutManager(new GridLayoutManager(getActivity(), 2));
                             my_recycler_view.setAdapter(adapter);
+                             */
+                            adapter = new RecyclerViewAdapter(getContext(), allSampleData,ProductFragment.this);
+                            my_recycler_view.setAdapter(adapter);
+
+                            GridLayoutManager manager = new GridLayoutManager(getContext(), 2, GridLayoutManager.VERTICAL, false);
+                            my_recycler_view.setLayoutManager(manager);
+
                         }
                         catch (JSONException e){
                             e.printStackTrace();
@@ -128,6 +145,12 @@ public class ProductFragment extends Fragment{
         // Add JsonArrayRequest to the RequestQueue
         requestQueue.add(jsonArrayRequest);
         //getProvide();
+    }
+    @Override
+    public void onItemClick(DataModel item) {
+
+        Toast.makeText(getContext(), item.getName() + " is clicked", Toast.LENGTH_SHORT).show();
+
     }
 
 }

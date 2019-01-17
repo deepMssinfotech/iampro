@@ -44,8 +44,9 @@ public class UserFragment extends Fragment{
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view=inflater.inflate(R.layout.fragment_product, container, false);
+        View view=inflater.inflate(R.layout.fragment_user, container, false);
         //oolbar =view.findViewById(R.id.toolbar);
+        view.findViewById(R.id.title_tv).setTag("User");
 
         return view;
     }
@@ -74,6 +75,12 @@ public class UserFragment extends Fragment{
                         SectionDataModel dm = new SectionDataModel();
                         dm.setHeaderTitle("User");
                         ArrayList<SingleItemModel> singleItem = new ArrayList<SingleItemModel>();
+                        if(!singleItem.isEmpty()){
+                            singleItem.clear();
+                        }
+                        if(!allSampleData.isEmpty()){
+                            allSampleData.clear();
+                        }
                         try{
                             for(int i=0;i<response.length();i++){
                                 // Get current json object
@@ -87,7 +94,7 @@ public class UserFragment extends Fragment{
                                 Log.d("pdata",""+name+""+categoryv+""+image+""+udate);
                                 //SectionDataModel dm = new SectionDataModel();
                                 //dm.setHeaderTitle("Section " + i);
-                                Toast.makeText(getContext(),"rrrresponse_enterrr:",Toast.LENGTH_LONG).show();
+                                //Toast.makeText(getContext(),"rrrresponse_enterrr:",Toast.LENGTH_LONG).show();
                                 singleItem.add(new SingleItemModel(name,image,udate));
 
                             }
