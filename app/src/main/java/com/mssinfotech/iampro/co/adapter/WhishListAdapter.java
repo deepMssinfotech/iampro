@@ -19,14 +19,13 @@ public class WhishListAdapter  extends RecyclerView.Adapter<WhishListAdapter.MyV
     private List<WhishListItem> whishList;
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
-        public TextView name, description, price;
+        public TextView name, price;
         public ImageView thumbnail;
         public RelativeLayout viewBackground, viewForeground;
 
         public MyViewHolder(View view) {
             super(view);
             name = view.findViewById(R.id.name);
-            description = view.findViewById(R.id.description);
             price = view.findViewById(R.id.price);
             thumbnail = view.findViewById(R.id.thumbnail);
             viewBackground = view.findViewById(R.id.view_background);

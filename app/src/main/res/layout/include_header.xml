@@ -37,7 +37,7 @@
             android:layout_margin="@dimen/header_image_margin"
             android:focusable="false"
             android:background="@drawable/bg_rounded"
-            android:drawableLeft="@drawable/search_left_icon"
+            android:drawableLeft="@drawable/search_ioc"
             android:drawablePadding="5dp"
             android:hint="Search"
             android:inputType="text"

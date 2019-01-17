@@ -49,14 +49,14 @@ import retrofit2.Response;
 
 import com.mssinfotech.iampro.co.model.SectionDataModel;
 import com.mssinfotech.iampro.co.model.SingleItemModel;
-import com.mssinfotech.iampro.co.utils.Config;
+import com.mssinfotech.iampro.co.common.Config;
 import com.takusemba.multisnaprecyclerview.MultiSnapRecyclerView;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import static com.mssinfotech.iampro.co.utils.Config.TAG;
+import static com.mssinfotech.iampro.co.common.Config.TAG;
 
 public class HomeFragment extends Fragment{
     private Toolbar toolbar;

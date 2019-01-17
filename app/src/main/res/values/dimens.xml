@@ -56,5 +56,22 @@
     <dimen name="layout_margin_top">3dp</dimen>
     <dimen name="layout_margin_top2">10dp</dimen>
     <dimen name="padding_layout">16dp</dimen>
->>>>>>> home frag
+
+    <dimen name="fab_margin">16dp</dimen>
+    <dimen name="activity_margin">16dp</dimen>
+    <dimen name="dimen_8dp">8dp</dimen>
+    <dimen name="profile_image">100dp</dimen>
+    <dimen name="fab_profile">30dp</dimen>
+    <dimen name="profile_name">15dp</dimen>
+    <dimen name="profile_about">13dp</dimen>
+    <dimen name="profile_meta">24dp</dimen>
+    <dimen name="profile_meta_label">10dp</dimen>
+
+    <dimen name="fab_margin_bottom">56dp</dimen>
+    <dimen name="fab_margin_right">16dp</dimen>
+    <dimen name="list_item_height">35dp</dimen>
+    <dimen name="activity_padding_horizontal">16dp</dimen>
+    <dimen name="padd_10">10dp</dimen>
+    <dimen name="ic_delete">30dp</dimen>
+    <dimen name="thumbnail">90dp</dimen>
 </resources>

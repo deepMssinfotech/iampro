@@ -9,6 +9,7 @@ import android.support.v7.widget.RecyclerView;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.mssinfotech.iampro.co.R;
 import com.mssinfotech.iampro.co.adapter.FeedListAdapter;
 import com.mssinfotech.iampro.co.app.AppController;
@@ -60,18 +61,15 @@ public class ProfileActivity extends AppCompatActivity {
         userimage = findViewById(R.id.userimage);
         userbackgroud = findViewById(R.id.userbackgroud);
         username.setText(PrefManager.getLoginDetail(this,"fname") +" "+PrefManager.getLoginDetail(this,"lname"));
+        Glide.with(this)
+                .load(background)
+                .into(userbackgroud);
         Picasso.get()
                 .load(avatar)
                 .placeholder(R.drawable.iampro)
                 .transform(new CircleTransform())
                 .error(R.drawable.image)
                 .into(userimage);
-        Picasso.get()
-                .load(background)
-                .placeholder(R.drawable.profile_background)
-                .error(R.drawable.profile_background)
-                .into(userbackgroud);
-
         feedItems = new ArrayList<FeedItem>();
         handler = new Handler();
         loadFeedList(start,limit);
@@ -132,7 +130,7 @@ public class ProfileActivity extends AppCompatActivity {
 
                 @Override
                 public void onResponse(JSONObject response) {
-                    VolleyLog.d(TAG, "Response: " + response.toString());
+                     
                     if (response != null) {
                         parseJsonFeed(response);
                     }

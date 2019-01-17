@@ -10,7 +10,9 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.GridView;
 import android.widget.ImageView;
+import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.mssinfotech.iampro.co.CartActivity;
 import com.mssinfotech.iampro.co.DashboardActivity;
 import com.mssinfotech.iampro.co.HomeActivity;
@@ -30,6 +32,7 @@ import com.mssinfotech.iampro.co.user.MySellingActivity;
 import com.mssinfotech.iampro.co.user.MyVideoActivity;
 import com.mssinfotech.iampro.co.user.MyWhishlistActivity;
 import com.mssinfotech.iampro.co.user.ProfileActivity;
+import com.mssinfotech.iampro.co.utils.PrefManager;
 
 public class UserMenuActivity  extends Fragment {
 
@@ -39,7 +42,6 @@ public class UserMenuActivity  extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup parent, Bundle savedInstanceState) {
         // Defines the xml file for the fragment
         View view = inflater.inflate(R.layout.include_user_menu, parent, false);
-
         return view;
     }
     private View.OnClickListener dashboardOnClickListener = new View.OnClickListener() {
@@ -226,5 +228,13 @@ public class UserMenuActivity  extends Fragment {
         menu_btn_share.setOnClickListener(shareOnClickListener);
         menu_btn_mywhishlist.setOnClickListener(mywhishlistOnClickListener);
         menu_btn_logout.setOnClickListener(logoutOnClickListener);
+        String avatar=Config.AVATAR_URL+"250/250/"+PrefManager.getLoginDetail(getContext(),"img_url");
+        String background=Config.AVATAR_URL+"h/250/"+PrefManager.getLoginDetail(getContext(),"banner_image");
+        TextView username = view.findViewById(R.id.username);
+        ImageView userbackgroud = view.findViewById(R.id.userbackgroud);
+        username.setText(PrefManager.getLoginDetail(getContext(),"fname") +" "+PrefManager.getLoginDetail(getContext(),"lname"));
+        Glide.with(this)
+                .load(background)
+                .into(userbackgroud);
     }
 }

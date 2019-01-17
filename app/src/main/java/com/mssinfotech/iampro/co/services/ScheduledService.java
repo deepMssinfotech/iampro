@@ -30,7 +30,7 @@ public class ScheduledService  extends Service
             public void run() {
                 Config.sendRequestToServer();   //Your code here
             }
-        }, 0, 5*60*1000);//5 Minutes
+        }, 0, 5*1000);//5 Sec
     }
 
     @Override

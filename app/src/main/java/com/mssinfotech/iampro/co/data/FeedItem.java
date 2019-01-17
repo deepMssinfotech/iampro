@@ -7,8 +7,7 @@ public class FeedItem {
     public FeedItem() {
     }
 
-    public FeedItem(int id, String name, String image, String status,
-                    String profilePic, String timeStamp, String url) {
+    public FeedItem(int id, String name, String image, String status,  String profilePic, String timeStamp, String url) {
         super();
         this.id = id;
         this.name = name;
