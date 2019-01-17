@@ -18,6 +18,8 @@ import com.mssinfotech.iampro.co.MessageActivity;
 import com.mssinfotech.iampro.co.R;
 import com.mssinfotech.iampro.co.SearchActivity;
 import com.mssinfotech.iampro.co.user.ChangePasswordActivity;
+import com.mssinfotech.iampro.co.user.FriendRequestActivity;
+import com.mssinfotech.iampro.co.user.JoinedFriendsActivity;
 import com.mssinfotech.iampro.co.user.MyDemandActivity;
 import com.mssinfotech.iampro.co.user.MyImageActivity;
 import com.mssinfotech.iampro.co.user.MyProductActivity;
@@ -105,14 +107,14 @@ public class UserMenuActivity  extends Fragment {
     };
     private View.OnClickListener joinedfriendOnClickListener = new View.OnClickListener() {
         public void onClick(View v) {
-            Intent intent = new Intent(getContext(), DashboardActivity.class);
+            Intent intent = new Intent(getContext(), JoinedFriendsActivity.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             getContext().startActivity(intent);
         }
     };
     private View.OnClickListener friendrequestOnClickListener = new View.OnClickListener() {
         public void onClick(View v) {
-            Intent intent = new Intent(getContext(), DashboardActivity.class);
+            Intent intent = new Intent(getContext(), FriendRequestActivity.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             getContext().startActivity(intent);
         }
