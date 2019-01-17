@@ -1,32 +1,27 @@
-package com.mssinfotech.iampro.co;
+package com.mssinfotech.iampro.co.common;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 //import android.support.annotation.NonNull;
 //import android.support.design.widget.NavigationView;
 //import android.support.v4.view.GravityCompat;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
-import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
-import android.transition.Transition;
-import android.transition.TransitionInflater;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
-import android.widget.TextView;
 
-import com.mssinfotech.iampro.co.common.CircleTransform;
-import com.mssinfotech.iampro.co.common.UserMenuActivity;
+import com.mssinfotech.iampro.co.CartActivity;
+import com.mssinfotech.iampro.co.HomeActivity;
+import com.mssinfotech.iampro.co.LoginActivity;
+import com.mssinfotech.iampro.co.MessageActivity;
+import com.mssinfotech.iampro.co.NotificationActivity;
+import com.mssinfotech.iampro.co.R;
+import com.mssinfotech.iampro.co.SearchActivity;
 import com.mssinfotech.iampro.co.user.ProfileActivity;
-import com.mssinfotech.iampro.co.utils.Config;
 import com.mssinfotech.iampro.co.utils.PrefManager;
 import com.squareup.picasso.Picasso;
 
@@ -127,6 +122,7 @@ public class IncludeFooter  extends RelativeLayout {
     };
     private OnClickListener searchOnClickListener = new OnClickListener() {
         public void onClick(View v) {
+            if(function.isSamePage("activity_search"))return;
             Intent intent = new Intent(getContext(), SearchActivity.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             getContext().startActivity(intent);
@@ -134,29 +130,34 @@ public class IncludeFooter  extends RelativeLayout {
     };
     private OnClickListener cartOnClickListener = new OnClickListener() {
         public void onClick(View v) {
+            if(function.isSamePage("activity_cart"))return;
             getContext().startActivity(new Intent(getContext(), CartActivity.class));
         }
     };
     private OnClickListener iamproOnClickListener = new OnClickListener() {
         public void onClick(View v) {
+            if(function.isSamePage("activity_home"))return;
             getContext().startActivity(new Intent(getContext(), HomeActivity.class));
         }
     };
     private OnClickListener noticeOnClickListener = new OnClickListener() {
         public void onClick(View v) {
+            if(function.isSamePage("activity_notification"))return;
             getContext().startActivity(new Intent(getContext(), NotificationActivity.class));
         }
     };
     private OnClickListener messageOnClickListener = new OnClickListener() {
         public void onClick(View v) {
+            if(function.isSamePage("activity_message"))return;
             getContext().startActivity(new Intent(getContext(), MessageActivity.class));
         }
     };
     private OnClickListener userOnClickListener = new OnClickListener() {
         public void onClick(View v) {
-            if(isLogin)
+            if(isLogin) {
+                if(function.isSamePage("activity_profile"))return;
                 getContext().startActivity(new Intent(getContext(), ProfileActivity.class));
-            else
+            }else
                 getContext().startActivity(new Intent(getContext(), LoginActivity.class));
         }
     };

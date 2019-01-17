@@ -14,7 +14,7 @@ import com.mssinfotech.iampro.co.adapter.FeedListAdapter;
 import com.mssinfotech.iampro.co.app.AppController;
 import com.mssinfotech.iampro.co.common.CircleTransform;
 import com.mssinfotech.iampro.co.data.FeedItem;
-import com.mssinfotech.iampro.co.utils.Config;
+import com.mssinfotech.iampro.co.common.Config;
 import com.mssinfotech.iampro.co.utils.PrefManager;
 import com.squareup.picasso.Picasso;
 

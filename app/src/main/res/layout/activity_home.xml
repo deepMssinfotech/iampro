@@ -6,11 +6,11 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".HomeActivity">
-    <com.mssinfotech.iampro.co.IncludeHeader
+    <com.mssinfotech.iampro.co.common.IncludeHeader
         android:id="@+id/includeheader"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
-    <com.mssinfotech.iampro.co.IncludeFooter
+    <com.mssinfotech.iampro.co.common.IncludeFooter
         android:id="@+id/includefooter"
         android:layout_alignParentBottom="true"
         android:gravity="bottom"

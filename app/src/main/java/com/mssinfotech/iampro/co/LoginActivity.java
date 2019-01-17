@@ -21,7 +21,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
-import com.mssinfotech.iampro.co.utils.Config;
+import com.mssinfotech.iampro.co.common.Config;
 import com.mssinfotech.iampro.co.utils.PrefManager;
 import com.mssinfotech.iampro.co.utils.Validate;
 

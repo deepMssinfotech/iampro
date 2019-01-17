@@ -3,16 +3,15 @@ package com.mssinfotech.iampro.co.common;
 
 import android.app.Activity;
 import android.content.Context;
+import android.util.Log;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
-import android.widget.TextView;
 
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
-import com.mssinfotech.iampro.co.utils.Config;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -21,6 +20,15 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 
 public class function {
+    public static boolean isSamePage(String pageName){
+        String CurrectPageName=Config.getLayoutName();
+        Log.d(Config.TAG,pageName+"=="+CurrectPageName);
+
+        if(pageName.equalsIgnoreCase(CurrectPageName)){
+            return true;
+        }
+        return false;
+    }
     public static void getData(final Activity activity, final Context context, final Spinner spinner, String utype){
         //Creating a string request
         String url=Config.API_URL+"app_service.php?type=all_category&name="+utype;

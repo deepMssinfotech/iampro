@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     tools:context=".user.MyDemandActivity">
 
-    <com.mssinfotech.iampro.co.IncludeFooter
+    <com.mssinfotech.iampro.co.common.IncludeFooter
         android:id="@+id/footer"
         android:layout_gravity="bottom|end"
         android:layout_alignParentBottom="true"
@@ -21,7 +21,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical">
-            <com.mssinfotech.iampro.co.IncludeHeader
+            <com.mssinfotech.iampro.co.common.IncludeHeader
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
             <LinearLayout
@@ -63,7 +63,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" />
             </RelativeLayout>
-            <com.mssinfotech.iampro.co.IncludeShortMenu
+            <com.mssinfotech.iampro.co.common.IncludeShortMenu
                 layout="@layout/include_short_menu"
                 android:layout_height="85dp"
                 android:layout_width="match_parent"/>

@@ -22,7 +22,7 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.mssinfotech.iampro.co.R;
 import com.mssinfotech.iampro.co.common.function;
-import com.mssinfotech.iampro.co.utils.Config;
+import com.mssinfotech.iampro.co.common.Config;
 import com.mssinfotech.iampro.co.utils.Validate;
 
 import org.json.JSONException;
@@ -42,7 +42,7 @@ public class AddVideoActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_video);
-
+        Config.setLayoutName(getResources().getResourceEntryName(R.layout.activity_add_video));
         tilalbumname = findViewById(R.id.tilalbumname);
         etalbumname = findViewById(R.id.etalbumname);
         tilvideoname = findViewById(R.id.tilvideoname);

@@ -4,7 +4,7 @@ import android.app.Service;
 import android.content.Intent;
 import android.os.IBinder;
 
-import com.mssinfotech.iampro.co.utils.Config;
+import com.mssinfotech.iampro.co.common.Config;
 
 import java.util.Timer;
 import java.util.TimerTask;

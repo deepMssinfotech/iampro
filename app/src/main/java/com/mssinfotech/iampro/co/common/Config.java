@@ -1,4 +1,4 @@
-package com.mssinfotech.iampro.co.utils;
+package com.mssinfotech.iampro.co.common;
 
 import android.app.Activity;
 import android.app.AlertDialog;

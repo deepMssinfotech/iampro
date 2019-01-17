@@ -8,9 +8,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
-import android.media.MediaScannerConnection;
 import android.net.Uri;
-import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
@@ -24,7 +22,6 @@ import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.Spinner;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
@@ -34,26 +31,19 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
-import com.mssinfotech.iampro.co.ForgetActivity;
-import com.mssinfotech.iampro.co.HomeActivity;
-import com.mssinfotech.iampro.co.LoginActivity;
 import com.mssinfotech.iampro.co.R;
 import com.mssinfotech.iampro.co.adapter.GalleryAdapter;
 import com.mssinfotech.iampro.co.common.ImageProcess;
 import com.mssinfotech.iampro.co.common.function;
-import com.mssinfotech.iampro.co.utils.Config;
+import com.mssinfotech.iampro.co.common.Config;
 import com.mssinfotech.iampro.co.utils.PrefManager;
 import com.mssinfotech.iampro.co.utils.Validate;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Hashtable;
 import java.util.List;
 import java.util.Map;
@@ -75,7 +65,7 @@ public class AddProductActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_product);
-
+        Config.setLayoutName(getResources().getResourceEntryName(R.layout.activity_add_product));
         tilproductname = findViewById(R.id.tilproductname);
         etproductname = findViewById(R.id.etproductname);
         tilbrandname = findViewById(R.id.tilbrandname);

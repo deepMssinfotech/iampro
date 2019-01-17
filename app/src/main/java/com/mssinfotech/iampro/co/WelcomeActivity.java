@@ -16,7 +16,7 @@ import android.widget.Toast;
 import com.mssinfotech.iampro.co.common.CircleTransform;
 import com.mssinfotech.iampro.co.services.ScheduledService;
 import com.mssinfotech.iampro.co.user.ProfileActivity;
-import com.mssinfotech.iampro.co.utils.Config;
+import com.mssinfotech.iampro.co.common.Config;
 import com.mssinfotech.iampro.co.utils.PrefManager;
 import com.squareup.picasso.Picasso;
 

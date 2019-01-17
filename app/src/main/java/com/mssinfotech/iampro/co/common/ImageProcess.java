@@ -1,19 +1,14 @@
 package com.mssinfotech.iampro.co.common;
 
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.media.MediaScannerConnection;
 import android.os.Environment;
 import android.util.Base64;
 import android.util.Log;
-import android.view.View;
-import android.widget.ArrayAdapter;
-import android.widget.Spinner;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.DefaultRetryPolicy;
@@ -24,7 +19,6 @@ import com.android.volley.RetryPolicy;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
-import com.mssinfotech.iampro.co.utils.Config;
 import com.mssinfotech.iampro.co.utils.PrefManager;
 
 import org.json.JSONArray;
@@ -35,7 +29,6 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Hashtable;
 import java.util.Map;

@@ -19,7 +19,7 @@ import com.mssinfotech.iampro.co.R;
 import com.mssinfotech.iampro.co.adapter.RecyclerViewDataAdapter;
 import com.mssinfotech.iampro.co.model.SectionDataModel;
 import com.mssinfotech.iampro.co.model.SingleItemModel;
-import com.mssinfotech.iampro.co.utils.Config;
+import com.mssinfotech.iampro.co.common.Config;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;

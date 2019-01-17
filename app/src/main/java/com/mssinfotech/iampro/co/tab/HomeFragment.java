@@ -2,10 +2,7 @@ package com.mssinfotech.iampro.co.tab;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -16,47 +13,25 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 //import android.widget.Toolbar;
 
-import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.VolleyError;
-import com.android.volley.VolleyLog;
 import com.android.volley.toolbox.JsonArrayRequest;
-import com.android.volley.toolbox.JsonObjectRequest;
-import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
-import com.mssinfotech.iampro.co.BuildConfig;
 import com.mssinfotech.iampro.co.R;
-import com.mssinfotech.iampro.co.adapter.HomeAdapter;
 import com.mssinfotech.iampro.co.adapter.RecyclerViewDataAdapter;
-import com.mssinfotech.iampro.co.api.Client;
-import com.mssinfotech.iampro.co.api.Service;
-import com.mssinfotech.iampro.co.data.AutoFitGridLayoutManager;
-import com.mssinfotech.iampro.co.model.Home;
-import com.mssinfotech.iampro.co.model.HomesResponse;
 //import com.takusemba.multisnaprecyclerview.BuildConfig;
 
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 import com.mssinfotech.iampro.co.model.SectionDataModel;
 import com.mssinfotech.iampro.co.model.SingleItemModel;
-import com.mssinfotech.iampro.co.utils.Config;
-import com.takusemba.multisnaprecyclerview.MultiSnapRecyclerView;
+import com.mssinfotech.iampro.co.common.Config;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
-import static com.mssinfotech.iampro.co.utils.Config.TAG;
 
 public class HomeFragment extends Fragment{
     private Toolbar toolbar;

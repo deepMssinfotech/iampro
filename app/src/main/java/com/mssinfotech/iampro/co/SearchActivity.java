@@ -3,7 +3,7 @@ package com.mssinfotech.iampro.co;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
-import com.mssinfotech.iampro.co.utils.Config;
+import com.mssinfotech.iampro.co.common.Config;
 
 public class SearchActivity extends AppCompatActivity {
 

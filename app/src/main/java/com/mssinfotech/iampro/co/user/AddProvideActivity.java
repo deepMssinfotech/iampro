@@ -35,7 +35,7 @@ import com.mssinfotech.iampro.co.R;
 import com.mssinfotech.iampro.co.adapter.GalleryAdapter;
 import com.mssinfotech.iampro.co.common.ImageProcess;
 import com.mssinfotech.iampro.co.common.function;
-import com.mssinfotech.iampro.co.utils.Config;
+import com.mssinfotech.iampro.co.common.Config;
 import com.mssinfotech.iampro.co.utils.PrefManager;
 import com.mssinfotech.iampro.co.utils.Validate;
 
@@ -64,7 +64,7 @@ public class AddProvideActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_provide);
-
+        Config.setLayoutName(getResources().getResourceEntryName(R.layout.activity_add_provide));
         tilprovidename = findViewById(R.id.tilprovidename);
         etprovidename = findViewById(R.id.etprovidename);
         tilbrandname = findViewById(R.id.tilbrandname);
