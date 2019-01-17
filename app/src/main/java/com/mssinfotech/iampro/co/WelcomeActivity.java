@@ -2,6 +2,7 @@ package com.mssinfotech.iampro.co;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -10,11 +11,12 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.mssinfotech.iampro.co.common.CircleTransform;
 import com.mssinfotech.iampro.co.services.ScheduledService;
 import com.mssinfotech.iampro.co.user.ProfileActivity;
-import com.mssinfotech.iampro.co.utils.Config;
+import com.mssinfotech.iampro.co.common.Config;
 import com.mssinfotech.iampro.co.utils.PrefManager;
 import com.squareup.picasso.Picasso;
 
@@ -83,6 +85,24 @@ public class WelcomeActivity extends AppCompatActivity implements View.OnClickLi
                 break;
         }
     }
+    @Override
+    public void onBackPressed() {
+        if (Config.doubleBackToExitPressedOnce) {
+            super.onBackPressed();
+            finish();
+            return;
+        }
 
+        Config.doubleBackToExitPressedOnce = true;
+        Toast.makeText(this, "Please click BACK again to exit", Toast.LENGTH_SHORT).show();
+
+        new Handler().postDelayed(new Runnable() {
+
+            @Override
+            public void run() {
+                Config.doubleBackToExitPressedOnce = false;
+            }
+        }, 2000);
+    }
 
 }

@@ -1,24 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#77000000</color>
+    <color name="colorPrimary">#000000</color>
     <color name="colorPrimaryLight">#4f5b62</color>
     <!--<color name="colorPrimaryDark">#000a12</color> -->
     <color name="colorAccent">#000000</color>
     <color name="colorAccentLight">#4f5b62</color>
-    <color name="colorAccentDark">#77000000</color>
+    <color name="colorAccentDark">#000000</color>
     <color name="dividerColor">#6da1a1a1</color>
 
     <color name="textOnPrimary">@android:color/primary_text_dark</color>
     <color name="textOnAccent">@android:color/primary_text_light</color>
 
-    <color name="color_divider">#FFCCCCCC</color>
-    <color name="color_transucent_black">#77000000</color>
+    <color name="color_divider">#CCCCCC</color>
+    <color name="color_transucent_black">#000000</color>
 
     <!--         Login Activity Colors        -->
-    <color name="loginPrimary">#77000000</color>
+    <color name="loginPrimary">#000000</color>
     <color name="loginPrimaryDark">#4f5b62</color>
-    <color name="loginAccent">#77000000</color>
-    <color name="black_overlay">#66000000</color>
+    <color name="loginAccent">#000000</color>
+    <color name="black_overlay">#000000</color>
 
     <color name="white">#ffffff</color>
     <color name="black">#000000</color>

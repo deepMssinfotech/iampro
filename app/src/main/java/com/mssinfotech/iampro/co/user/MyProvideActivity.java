@@ -9,7 +9,7 @@ import android.widget.TextView;
 
 import com.mssinfotech.iampro.co.R;
 import com.mssinfotech.iampro.co.common.CircleTransform;
-import com.mssinfotech.iampro.co.utils.Config;
+import com.mssinfotech.iampro.co.common.Config;
 import com.mssinfotech.iampro.co.utils.PrefManager;
 import com.squareup.picasso.Picasso;
 

@@ -10,9 +10,17 @@
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.CAMERA" />
-    <uses-feature android:name="android.hardware.camera" android:required="false" />
-    <uses-feature android:name="android.hardware.camera.autofocus" android:required="false" />
-    <uses-feature android:name="android.hardware.camera.flash" android:required="false" />
+
+    <uses-feature
+        android:name="android.hardware.camera"
+        android:required="false" />
+    <uses-feature
+        android:name="android.hardware.camera.autofocus"
+        android:required="false" />
+    <uses-feature
+        android:name="android.hardware.camera.flash"
+        android:required="false" />
+
     <application
         android:name=".app.AppController"
         android:allowBackup="true"
@@ -21,6 +29,14 @@
         android:roundIcon="@drawable/iampro"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <activity android:name=".user.EditProfileActivity"></activity>
+        <activity android:name=".user.JoinedFriendsActivity" />
+        <activity android:name=".user.FriendRequestActivity" />
+        <activity android:name=".user.MyWhishlistActivity" />
+        <activity android:name=".user.MyPurchsaeActivity" />
+        <activity android:name=".user.MySellingActivity" />
+        <activity android:name=".user.ChangePasswordActivity" />
+
         <service
             android:name=".services.ScheduledService"
             android:enabled="true"
@@ -42,13 +58,7 @@
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".LoadingActivity"
-            android:theme="@style/AppTheme.NoActionBar" >
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".ForgetActivity"
             android:theme="@style/AppTheme.NoActionBar" />
@@ -62,11 +72,17 @@
             android:name=".IntroActivity"
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
 
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
-        <activity android:name=".OtpForgetActivity"
+        <activity
+            android:name=".OtpForgetActivity"
             android:theme="@style/MyMaterialTheme" />
-        <activity android:name=".OtpRegistrationActivity"
+        <activity
+            android:name=".OtpRegistrationActivity"
             android:theme="@style/MyMaterialTheme" />
         <activity
             android:name=".user.AddImageActivity"
@@ -114,7 +130,7 @@
         <activity android:name=".SearchActivity" />
         <activity android:name=".CartActivity" />
         <activity android:name=".NotificationActivity" />
-        <activity android:name=".MessageActivity"></activity>
+        <activity android:name=".MessageActivity" />
     </application>
 
 </manifest>

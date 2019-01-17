@@ -1,4 +1,4 @@
-package com.mssinfotech.iampro.co;
+package com.mssinfotech.iampro.co.common;
 
 import android.content.Context;
 import android.content.Intent;
@@ -8,6 +8,8 @@ import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
+
+import com.mssinfotech.iampro.co.R;
 
 public class IncludeHeader extends RelativeLayout {
     private LayoutInflater inflater;

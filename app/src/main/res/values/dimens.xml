@@ -56,5 +56,5 @@
     <dimen name="layout_margin_top">3dp</dimen>
     <dimen name="layout_margin_top2">10dp</dimen>
     <dimen name="padding_layout">16dp</dimen>
-    <dimen name="list_item_height">72dp</dimen>
+>>>>>>> home frag
 </resources>

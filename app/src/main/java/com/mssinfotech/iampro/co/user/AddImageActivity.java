@@ -1,5 +1,4 @@
 package com.mssinfotech.iampro.co.user;
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.ClipData;
@@ -36,7 +35,7 @@ import com.mssinfotech.iampro.co.R;
 import com.mssinfotech.iampro.co.adapter.GalleryAdapter;
 import com.mssinfotech.iampro.co.common.ImageProcess;
 import com.mssinfotech.iampro.co.common.function;
-import com.mssinfotech.iampro.co.utils.Config;
+import com.mssinfotech.iampro.co.common.Config;
 import com.mssinfotech.iampro.co.utils.PrefManager;
 import com.mssinfotech.iampro.co.utils.Validate;
 
@@ -67,6 +66,7 @@ public class AddImageActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_image);
+        Config.setLayoutName(getResources().getResourceEntryName(R.layout.activity_add_image));
         tvlayouttype = findViewById(R.id.tvlayouttype);
         tilalbumname = findViewById(R.id.tilalbumname);
         etalbumname = findViewById(R.id.etalbumname);

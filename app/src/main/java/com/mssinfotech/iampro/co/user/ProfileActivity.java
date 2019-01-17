@@ -1,13 +1,11 @@
 package com.mssinfotech.iampro.co.user;
 
-import android.content.Context;
+
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
-import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -15,9 +13,8 @@ import com.mssinfotech.iampro.co.R;
 import com.mssinfotech.iampro.co.adapter.FeedListAdapter;
 import com.mssinfotech.iampro.co.app.AppController;
 import com.mssinfotech.iampro.co.common.CircleTransform;
-import com.mssinfotech.iampro.co.common.function;
 import com.mssinfotech.iampro.co.data.FeedItem;
-import com.mssinfotech.iampro.co.utils.Config;
+import com.mssinfotech.iampro.co.common.Config;
 import com.mssinfotech.iampro.co.utils.PrefManager;
 import com.squareup.picasso.Picasso;
 
@@ -108,6 +105,7 @@ public class ProfileActivity extends AppCompatActivity {
                 }, 2000);
             }
         });
+
     }
     private void  loadFeedList(Integer mStart,Integer mLimit){
         URL_FEED = Config.API_URL+ "feed_service.php?type=AllFeeds&start=" +mStart.toString()+ "&limit=" +mLimit.toString()+ "&fid=" +uid+ "&uid=" +uid+ "&my_id=" +uid;
@@ -167,13 +165,13 @@ public class ProfileActivity extends AppCompatActivity {
                 if(feed_type.equalsIgnoreCase("IMAGE")){
                     image_path = Config.URL_ROOT+"uploads/album/450/500/"+image;
                 }else if(feed_type.equalsIgnoreCase("VIDEO")){
-                    image_path = Config.URL_ROOT + "uploads/v_image/" + image;
+                    image_path = Config.URL_ROOT + "uploads/v_image/h/300/" + image;
                 }else if(feed_type.equalsIgnoreCase("PRODUCT")){
-                    image_path = Config.URL_ROOT + "uploads/product/" + image;
+                    image_path = Config.URL_ROOT + "uploads/product/h/300/" + image;
                 }else if(feed_type.equalsIgnoreCase("PROVIDE")){
-                    image_path = Config.URL_ROOT + "uploads/product/" + image;
+                    image_path = Config.URL_ROOT + "uploads/product/h/300/" + image;
                 }else if(feed_type.equalsIgnoreCase("DEMAND")){
-                    image_path = Config.URL_ROOT + "uploads/product/" + image;
+                    image_path = Config.URL_ROOT + "uploads/product/h/300/" + image;
                 }
 
                 item.setId(feedObj.getInt("id"));
