@@ -67,8 +67,10 @@
                     <ImageView
                         android:id="@+id/menu_btn_dashboard"
                         android:layout_gravity="top|center"
-                        android:layout_width="match_parent"
-                        android:layout_height="70dp"
+                        android:layout_width="@dimen/menu_img_width"
+                        android:layout_height="@dimen/menu_img_height"
+                        android:layout_margin="@dimen/menu_img_margin"
+                        android:padding="@dimen/menu_img_padding"
                         android:src="@drawable/dashboard_icon"/>
                     <TextView
                         android:textSize="12dp"
@@ -86,8 +88,10 @@
                     <ImageView
                         android:id="@+id/menu_btn_myprofile"
                         android:layout_gravity="center"
-                        android:layout_width="match_parent"
-                        android:layout_height="70dp"
+                        android:layout_width="@dimen/menu_img_width"
+                        android:layout_height="@dimen/menu_img_height"
+                        android:layout_margin="@dimen/menu_img_margin"
+                        android:padding="@dimen/menu_img_padding"
                         android:src="@drawable/userprofile_icon"/>
 
                     <TextView
@@ -106,8 +110,10 @@
                     <ImageView
                         android:id="@+id/menu_btn_editprofile"
                         android:layout_gravity="center"
-                        android:layout_width="match_parent"
-                        android:layout_height="70dp"
+                        android:layout_width="@dimen/menu_img_width"
+                        android:layout_height="@dimen/menu_img_height"
+                        android:layout_margin="@dimen/menu_img_margin"
+                        android:padding="@dimen/menu_img_padding"
                         android:src="@drawable/editprofile_icon"/>
 
                     <TextView
@@ -126,8 +132,10 @@
                     <ImageView
                         android:id="@+id/menu_btn_changepassword"
                         android:layout_gravity="center"
-                        android:layout_width="match_parent"
-                        android:layout_height="70dp"
+                        android:layout_width="@dimen/menu_img_width"
+                        android:layout_height="@dimen/menu_img_height"
+                        android:layout_margin="@dimen/menu_img_margin"
+                        android:padding="@dimen/menu_img_padding"
                         android:src="@drawable/changepassword_icon"/>
 
                     <TextView
@@ -146,8 +154,10 @@
                     <ImageView
                         android:id="@+id/menu_btn_joinedfriend"
                         android:layout_gravity="center"
-                        android:layout_width="match_parent"
-                        android:layout_height="70dp"
+                        android:layout_width="@dimen/menu_img_width"
+                        android:layout_height="@dimen/menu_img_height"
+                        android:layout_margin="@dimen/menu_img_margin"
+                        android:padding="@dimen/menu_img_padding"
                         android:src="@drawable/joinedfriend_icon"/>
 
                     <TextView
@@ -166,8 +176,10 @@
                     <ImageView
                         android:id="@+id/menu_btn_friendrequest"
                         android:layout_gravity="center"
-                        android:layout_width="match_parent"
-                        android:layout_height="70dp"
+                        android:layout_width="@dimen/menu_img_width"
+                        android:layout_height="@dimen/menu_img_height"
+                        android:layout_margin="@dimen/menu_img_margin"
+                        android:padding="@dimen/menu_img_padding"
                         android:src="@drawable/pendingfriend_icon"/>
 
                     <TextView
@@ -199,8 +211,10 @@
                     <ImageView
                         android:id="@+id/menu_btn_myphoto"
                         android:layout_gravity="center"
-                        android:layout_width="match_parent"
-                        android:layout_height="70dp"
+                        android:layout_width="@dimen/menu_img_width"
+                        android:layout_height="@dimen/menu_img_height"
+                        android:layout_margin="@dimen/menu_img_margin"
+                        android:padding="@dimen/menu_img_padding"
                         android:src="@drawable/image_icon"/>
                     <TextView
                         android:textSize="12dp"
@@ -218,8 +232,10 @@
                     <ImageView
                         android:id="@+id/menu_btn_myvideo"
                         android:layout_gravity="center"
-                        android:layout_width="match_parent"
-                        android:layout_height="70dp"
+                        android:layout_width="@dimen/menu_img_width"
+                        android:layout_height="@dimen/menu_img_height"
+                        android:layout_margin="@dimen/menu_img_margin"
+                        android:padding="@dimen/menu_img_padding"
                         android:src="@drawable/video_icon"/>
                     <TextView
                         android:textSize="12dp"
@@ -237,8 +253,10 @@
                     <ImageView
                         android:id="@+id/menu_btn_myproduct"
                         android:layout_gravity="center"
-                        android:layout_width="match_parent"
-                        android:layout_height="70dp"
+                        android:layout_width="@dimen/menu_img_width"
+                        android:layout_height="@dimen/menu_img_height"
+                        android:layout_margin="@dimen/menu_img_margin"
+                        android:padding="@dimen/menu_img_padding"
                         android:src="@drawable/product_icon"/>
                     <TextView
                         android:textSize="12dp"
@@ -256,8 +274,10 @@
                     <ImageView
                         android:id="@+id/menu_btn_myprovide"
                         android:layout_gravity="center"
-                        android:layout_width="match_parent"
-                        android:layout_height="70dp"
+                        android:layout_width="@dimen/menu_img_width"
+                        android:layout_height="@dimen/menu_img_height"
+                        android:layout_margin="@dimen/menu_img_margin"
+                        android:padding="@dimen/menu_img_padding"
                         android:src="@drawable/provide_icon"/>
                     <TextView
                         android:textSize="12dp"
@@ -275,8 +295,10 @@
                     <ImageView
                         android:id="@+id/menu_btn_demand"
                         android:layout_gravity="center"
-                        android:layout_width="match_parent"
-                        android:layout_height="70dp"
+                        android:layout_width="@dimen/menu_img_width"
+                        android:layout_height="@dimen/menu_img_height"
+                        android:layout_margin="@dimen/menu_img_margin"
+                        android:padding="@dimen/menu_img_padding"
                         android:src="@drawable/demand_icon"/>
                     <TextView
                         android:textSize="12dp"
@@ -294,8 +316,10 @@
                     <ImageView
                         android:id="@+id/menu_btn_mymessage"
                         android:layout_gravity="center"
-                        android:layout_width="match_parent"
-                        android:layout_height="70dp"
+                        android:layout_width="@dimen/menu_img_width"
+                        android:layout_height="@dimen/menu_img_height"
+                        android:layout_margin="@dimen/menu_img_margin"
+                        android:padding="@dimen/menu_img_padding"
                         android:src="@drawable/message_icon"/>
                     <TextView
                         android:textSize="12dp"
@@ -326,8 +350,10 @@
                     <ImageView
                         android:id="@+id/menu_btn_mycart"
                         android:layout_gravity="center"
-                        android:layout_width="match_parent"
-                        android:layout_height="70dp"
+                        android:layout_width="@dimen/menu_img_width"
+                        android:layout_height="@dimen/menu_img_height"
+                        android:layout_margin="@dimen/menu_img_margin"
+                        android:padding="@dimen/menu_img_padding"
                         android:src="@drawable/cart_icon"/>
                     <TextView
                         android:textSize="12dp"
@@ -345,8 +371,10 @@
                     <ImageView
                         android:id="@+id/menu_btn_myselling"
                         android:layout_gravity="center"
-                        android:layout_width="match_parent"
-                        android:layout_height="70dp"
+                        android:layout_width="@dimen/menu_img_width"
+                        android:layout_height="@dimen/menu_img_height"
+                        android:layout_margin="@dimen/menu_img_margin"
+                        android:padding="@dimen/menu_img_padding"
                         android:src="@drawable/video_icon"/>
                     <TextView
                         android:textSize="12dp"
@@ -364,8 +392,10 @@
                     <ImageView
                         android:id="@+id/menu_btn_mypurchase"
                         android:layout_gravity="center"
-                        android:layout_width="match_parent"
-                        android:layout_height="70dp"
+                        android:layout_width="@dimen/menu_img_width"
+                        android:layout_height="@dimen/menu_img_height"
+                        android:layout_margin="@dimen/menu_img_margin"
+                        android:padding="@dimen/menu_img_padding"
                         android:src="@drawable/product_icon"/>
                     <TextView
                         android:textSize="12dp"
@@ -383,8 +413,10 @@
                     <ImageView
                         android:id="@+id/menu_btn_share"
                         android:layout_gravity="center"
-                        android:layout_width="match_parent"
-                        android:layout_height="70dp"
+                        android:layout_width="@dimen/menu_img_width"
+                        android:layout_height="@dimen/menu_img_height"
+                        android:layout_margin="@dimen/menu_img_margin"
+                        android:padding="@dimen/menu_img_padding"
                         android:src="@drawable/provide_icon"/>
                     <TextView
                         android:textSize="12dp"
@@ -402,8 +434,10 @@
                     <ImageView
                         android:id="@+id/menu_btn_mywhishlist"
                         android:layout_gravity="center"
-                        android:layout_width="match_parent"
-                        android:layout_height="70dp"
+                        android:layout_width="@dimen/menu_img_width"
+                        android:layout_height="@dimen/menu_img_height"
+                        android:layout_margin="@dimen/menu_img_margin"
+                        android:padding="@dimen/menu_img_padding"
                         android:src="@drawable/whishlist_icon"/>
                     <TextView
                         android:textSize="12dp"
@@ -421,8 +455,10 @@
                     <ImageView
                         android:id="@+id/menu_btn_logout"
                         android:layout_gravity="center"
-                        android:layout_width="match_parent"
-                        android:layout_height="70dp"
+                        android:layout_width="@dimen/menu_img_width"
+                        android:layout_height="@dimen/menu_img_height"
+                        android:layout_margin="@dimen/menu_img_margin"
+                        android:padding="@dimen/menu_img_padding"
                         android:src="@drawable/logout_icon"/>
                     <TextView
                         android:textSize="12dp"

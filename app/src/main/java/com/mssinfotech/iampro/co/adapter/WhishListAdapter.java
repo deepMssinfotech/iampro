@@ -20,7 +20,7 @@ public class WhishListAdapter  extends RecyclerView.Adapter<WhishListAdapter.MyV
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
         public TextView name, price;
-        public ImageView thumbnail;
+        public ImageView thumbnail,image_type;
         public RelativeLayout viewBackground, viewForeground;
 
         public MyViewHolder(View view) {
@@ -30,6 +30,7 @@ public class WhishListAdapter  extends RecyclerView.Adapter<WhishListAdapter.MyV
             thumbnail = view.findViewById(R.id.thumbnail);
             viewBackground = view.findViewById(R.id.view_background);
             viewForeground = view.findViewById(R.id.view_foreground);
+            image_type = view.findViewById(R.id.image_type);
         }
     }
 
@@ -46,16 +47,20 @@ public class WhishListAdapter  extends RecyclerView.Adapter<WhishListAdapter.MyV
 
         return new MyViewHolder(itemView);
     }
+    public int getImage(String imageName) {
+
+        int drawableResourceId = context.getResources().getIdentifier(imageName, "drawable", context.getPackageName());
+
+        return drawableResourceId;
+    }
 
     @Override
     public void onBindViewHolder(MyViewHolder holder, final int position) {
         final WhishListItem item = whishList.get(position);
         holder.name.setText(item.getName());
         holder.price.setText("₹" + item.getPrice());
-
-        Glide.with(context)
-                .load(item.getImage())
-                .into(holder.thumbnail);
+        Glide.with(context).load(getImage(item.getType_image())).into(holder.image_type);
+        Glide.with(context).load(item.getImage()).into(holder.thumbnail);
     }
 
     @Override

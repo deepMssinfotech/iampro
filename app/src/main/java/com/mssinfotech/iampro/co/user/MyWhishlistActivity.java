@@ -2,6 +2,7 @@ package com.mssinfotech.iampro.co.user;
 
 import android.graphics.Color;
 import android.os.Bundle;
+import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
@@ -26,6 +27,7 @@ import com.mssinfotech.iampro.co.R;
 import com.mssinfotech.iampro.co.adapter.WhishListAdapter;
 import com.mssinfotech.iampro.co.app.AppController;
 import com.mssinfotech.iampro.co.common.Config;
+import com.mssinfotech.iampro.co.common.function;
 import com.mssinfotech.iampro.co.data.FeedItem;
 import com.mssinfotech.iampro.co.data.WhishListItem;
 import com.mssinfotech.iampro.co.utils.PrefManager;
@@ -43,7 +45,7 @@ public class MyWhishlistActivity extends AppCompatActivity implements WhishListI
     private RecyclerView recyclerView;
     private List<WhishListItem> whishListItemList;
     private WhishListAdapter mAdapter;
-    private CoordinatorLayout coordinatorLayout;
+    private ConstraintLayout constraintLayout;
     private static String WHISH_LIST_URL = "";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,7 +62,7 @@ public class MyWhishlistActivity extends AppCompatActivity implements WhishListI
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
         recyclerView.setAdapter(mAdapter);
-
+        constraintLayout = findViewById(R.id.constraintLayout);
         // adding item touch helper
         // only ItemTouchHelper.LEFT added to detect Right to Left swipe
         // if you want both Right -> Left and Left -> Right
@@ -76,13 +78,13 @@ public class MyWhishlistActivity extends AppCompatActivity implements WhishListI
      * method make volley network call and parses json
      */
     private void prepareWhishList() {
-        Log.d(Config.TAG,WHISH_LIST_URL);
+        //Log.d(Config.TAG,WHISH_LIST_URL);
         JsonArrayRequest jsonReq = new JsonArrayRequest(Request.Method.GET,
                 WHISH_LIST_URL , null, new Response.Listener<JSONArray>() {
 
             @Override
             public void onResponse(JSONArray response) {
-                VolleyLog.d(Config.TAG, " Response : " + response.toString());
+                //VolleyLog.d(Config.TAG, " Response : " + response.toString());
                 if (response != null) {
                     //Log.d(Config.TAG,response.toString());
                     parseJsonFeed(response);
@@ -92,42 +94,10 @@ public class MyWhishlistActivity extends AppCompatActivity implements WhishListI
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                //VolleyLog.d(Config.TAG, "Error: " + error.getMessage());
                 Log.d(Config.TAG,"onErrorResponse 96 : "+error.getMessage());
             }
         });
         AppController.getInstance().addToRequestQueue(jsonReq);
-        /*
-        JsonArrayRequest request = new JsonArrayRequest(URL,
-                new Response.Listener<JSONArray>() {
-                    @Override
-                    public void onResponse(JSONArray response) {
-                        if (response == null) {
-                            Toast.makeText(getApplicationContext(), "Couldn't fetch the menu! Pleas try again.", Toast.LENGTH_LONG).show();
-                            return;
-                        }
-                        Log.d(Config.TAG,response.toString());
-                        List<WhishListItem> items = new Gson().fromJson(response.toString(), new TypeToken<List<WhishListItem>>() {
-                        }.getType());
-
-                        // adding items to cart list
-                        whishListItemList.clear();
-                        whishListItemList.addAll(items);
-
-                        // refreshing recycler view
-                        mAdapter.notifyDataSetChanged();
-                    }
-                }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                // error in getting json
-                Log.d(Config.TAG, "Error: " + error.getMessage());
-                Toast.makeText(getApplicationContext(), "Error: " + error.getMessage(), Toast.LENGTH_SHORT).show();
-            }
-        });
-
-        AppController.getInstance().addToRequestQueue(request);
-        */
     }
     private void parseJsonFeed(JSONArray response) {
         try {
@@ -140,21 +110,26 @@ public class MyWhishlistActivity extends AppCompatActivity implements WhishListI
                 JSONObject product_detail = feedObj.getJSONObject("product_detail");
 
                 Log.d(Config.TAG,product_detail.toString());
-                String feed_type=feedObj.getString("product_type");
-
+                String feed_type = feedObj.getString("product_type");
+                String type_image = "";
                 String image = product_detail.isNull("image") ? null : product_detail.getString("image");
                 if(feed_type.equalsIgnoreCase("IMAGE")){
                     image_path = Config.URL_ROOT+"uploads/album/450/500/"+image;
+                    type_image ="image_icon";
                 }else if(feed_type.equalsIgnoreCase("VIDEO")){
                     image_path = Config.URL_ROOT + "uploads/v_image/h/300/" + image;
+                    type_image = "video_icon";
                 }else if(feed_type.equalsIgnoreCase("PRODUCT")){
                     image_path = Config.URL_ROOT + "uploads/product/h/300/" + image;
+                    type_image = "product_icon";
                 }else if(feed_type.equalsIgnoreCase("PROVIDE")){
                     image_path = Config.URL_ROOT + "uploads/product/h/300/" + image;
+                    type_image = "porvide_icon";
                 }else if(feed_type.equalsIgnoreCase("DEMAND")){
                     image_path = Config.URL_ROOT + "uploads/product/h/300/" + image;
+                    type_image = "demand_icon";
                 }
-
+                item.setType_image(type_image);
                 item.setId(product_detail.getInt("id"));
                 item.setName(product_detail.getString("name"));
                 item.setImage(image_path);
@@ -170,6 +145,7 @@ public class MyWhishlistActivity extends AppCompatActivity implements WhishListI
             e.printStackTrace();
         }
     }
+
     /**
      * callback when recycler view is swiped
      * item will be removed on swiped
@@ -180,6 +156,7 @@ public class MyWhishlistActivity extends AppCompatActivity implements WhishListI
         if (viewHolder instanceof WhishListAdapter.MyViewHolder) {
             // get the removed item name to display it in snack bar
             String name = whishListItemList.get(viewHolder.getAdapterPosition()).getName();
+            Integer id = whishListItemList.get(viewHolder.getAdapterPosition()).getId();
 
             // backup of removed item for undo purpose
             final WhishListItem deletedItem = whishListItemList.get(viewHolder.getAdapterPosition());
@@ -187,10 +164,10 @@ public class MyWhishlistActivity extends AppCompatActivity implements WhishListI
 
             // remove the item from recycler view
             mAdapter.removeItem(viewHolder.getAdapterPosition());
-
+            String url=Config.API_URL+"app_service.php?type=delete_wishlist&id="+id.toString();
+            function.executeUrl(getApplicationContext(),"get",url,null);
             // showing snack bar with Undo option
-            Snackbar snackbar = Snackbar
-                    .make(coordinatorLayout, name + " removed from whishlist!", Snackbar.LENGTH_LONG);
+            Snackbar snackbar = Snackbar.make(constraintLayout, name + " removed from whishlist! ", Snackbar.LENGTH_LONG);
             snackbar.setAction("UNDO", new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
