@@ -1,7 +1,7 @@
 package com.mssinfotech.iampro.co.adapter;
 
 /**
- * Created by mssinfotech on 16/01/19.
+ * Created by mssinfotech on 18/01/19.
  */
 
 import android.arch.lifecycle.ViewModel;
@@ -36,33 +36,38 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.mssinfotech.iampro.co.model.DataModel;
+import com.mssinfotech.iampro.co.model.UserModel;
 
 import java.util.ArrayList;
 
-public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.ViewHolder> {
-    ArrayList<DataModel> mValues;
+public class UserDataAdapter extends RecyclerView.Adapter<UserDataAdapter.ViewHolder> {
+    ArrayList<UserModel> mValues;
     Context mContext;
     protected ItemListener mListener;
-    public RecyclerViewAdapter(Context context, ArrayList<DataModel> values, ItemListener itemListener) {
+    public UserDataAdapter(Context context, ArrayList<UserModel> values, ItemListener itemListener) {
         mValues = values;
         mContext = context;
         mListener=itemListener;
     }
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-        public TextView textView;
+        public TextView textView,tv_category;
         public ImageView imageView;
         public RelativeLayout relativeLayout;
-        DataModel item;
+        UserModel item;
         public ViewHolder(View v) {
             super(v);
             v.setOnClickListener(this);
             textView = (TextView) v.findViewById(R.id.textView);
             imageView = (ImageView) v.findViewById(R.id.imageView);
+
+            tv_category=(TextView)v.findViewById(R.id.tvcategory);
+
             //relativeLayout = (RelativeLayout) v.findViewById(R.id.relativeLayout);
         }
-        public void setData(DataModel item) {
+        public void setData(UserModel item) {
             this.item = item;
             textView.setText(item.getName());
+             tv_category.setText(item.getCategory());
             //textView.setBackgroundColor(Color.BLUE);
             String url=item.getImage();
             //Toast.makeText(mContext,"image:"+url,Toast.LENGTH_LONG).show();
@@ -76,7 +81,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
                     .into(imageView);
             //imageView.setImageResource(item.image);
 
-          // relativeLayout.setBackgroundColor(Color.parseColor("#000000"));
+            // relativeLayout.setBackgroundColor(Color.parseColor("#000000"));
 
         }
         @Override
@@ -88,9 +93,9 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     }
 
     @Override
-    public RecyclerViewAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public UserDataAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 
-        View view = LayoutInflater.from(mContext).inflate(R.layout.recycler_view_item, parent, false);
+        View view = LayoutInflater.from(mContext).inflate(R.layout.user_item, parent, false);
 
         return new ViewHolder(view);
     }
@@ -108,6 +113,6 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     }
 
     public interface ItemListener {
-        void onItemClick(DataModel item);
+        void onItemClick(UserModel item);
     }
 }

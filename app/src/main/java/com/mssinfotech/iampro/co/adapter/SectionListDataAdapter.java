@@ -43,9 +43,7 @@ public class SectionListDataAdapter extends RecyclerView.Adapter<SectionListData
 
     @Override
     public void onBindViewHolder(SingleItemRowHolder holder, int i) {
-
         SingleItemModel singleItem = itemsList.get(i);
-
         holder.tvTitle.setText(singleItem.getName());
        /* Picasso.with(mContext)
                 .load(singleItem.getUrl())

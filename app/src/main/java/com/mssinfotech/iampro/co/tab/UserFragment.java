@@ -1,8 +1,10 @@
 package com.mssinfotech.iampro.co.tab;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -17,10 +19,15 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.Volley;
 import com.mssinfotech.iampro.co.R;
+import com.mssinfotech.iampro.co.adapter.RecyclerViewAdapter;
 import com.mssinfotech.iampro.co.adapter.RecyclerViewDataAdapter;
+import com.mssinfotech.iampro.co.adapter.UserDataAdapter;
+import com.mssinfotech.iampro.co.model.DataModel;
 import com.mssinfotech.iampro.co.model.SectionDataModel;
 import com.mssinfotech.iampro.co.model.SingleItemModel;
 import com.mssinfotech.iampro.co.common.Config;
+import com.mssinfotech.iampro.co.model.UserModel;
+import com.mssinfotech.iampro.co.user.ProfileActivity;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -28,13 +35,15 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
-public class UserFragment extends Fragment{
-    ArrayList<SectionDataModel> allSampleData=new ArrayList<>();
+public class UserFragment extends Fragment implements UserDataAdapter.ItemListener{
+    //ArrayList<SectionDataModel> allSampleData=new ArrayList<>();
+    ArrayList<UserModel> allSampleData=new ArrayList<>();
     RecyclerView my_recycler_view;
+     UserDataAdapter adapter;
+     int uid;
     public UserFragment() {
         // Required empty public constructor
     }
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -46,7 +55,7 @@ public class UserFragment extends Fragment{
         // Inflate the layout for this fragment
         View view=inflater.inflate(R.layout.fragment_user, container, false);
         //oolbar =view.findViewById(R.id.toolbar);
-        view.findViewById(R.id.title_tv).setTag("User");
+        //view.findViewById(R.id.title_tv).setTag("User");
 
         return view;
     }
@@ -87,30 +96,36 @@ public class UserFragment extends Fragment{
                                 JSONObject student = response.getJSONObject(i);
 
                                 String name = student.getString("fname");
-                                String categoryv=student.getString("identity_type");
+                                   uid=student.getInt("id");
+                                String identity_type=student.getString("identity_type");
+                                String category=student.getString("category");
                                 String imagev=student.getString("avatar");
                                 String image= Config.AVATAR_URL+"200/200/"+imagev;
                                 String udate=student.getString("udate");
-                                Log.d("pdata",""+name+""+categoryv+""+image+""+udate);
+                                Log.d("pdata",""+name+""+category+""+image+""+udate);
                                 //SectionDataModel dm = new SectionDataModel();
                                 //dm.setHeaderTitle("Section " + i);
                                 //Toast.makeText(getContext(),"rrrresponse_enterrr:",Toast.LENGTH_LONG).show();
-                                singleItem.add(new SingleItemModel(name,image,udate));
+                                //singleItem.add(new SingleItemModel(name,image,udate));
+                                allSampleData.add(new UserModel(uid,name,image,udate,category));
 
                             }
                             Log.d("bdm",singleItem.toString());
                             dm.setAllItemsInSection(singleItem);
                             Log.d("adm",singleItem.toString());
                             Log.d("dmm",dm.toString());
-                            allSampleData.add(dm);
+                            //allSampleData.add(dm);
                             Log.d("allsampledatav", allSampleData.toString());
-                            my_recycler_view.setHasFixedSize(true);
+                           // my_recycler_view.setHasFixedSize(true);
                             Log.d("allSampleDatas",""+allSampleData.size()+"--"+allSampleData.toString());
-                            RecyclerViewDataAdapter adapter = new RecyclerViewDataAdapter(getContext(), allSampleData);
 
-                            my_recycler_view.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
-                            //my_recycler_view.setLayoutManager(new GridLayoutManager(getActivity(), 2));
+
+                            adapter = new UserDataAdapter(getContext(), allSampleData,UserFragment.this);
                             my_recycler_view.setAdapter(adapter);
+
+                            LinearLayoutManager manager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
+                            my_recycler_view.setLayoutManager(manager);
+
                         }
                         catch (JSONException e){
                             e.printStackTrace();
@@ -133,5 +148,11 @@ public class UserFragment extends Fragment{
         requestQueue.add(jsonArrayRequest);
         //getProduct();
     }
-
+    @Override
+    public void onItemClick(UserModel item) {
+        Toast.makeText(getContext(), item.getName()+ " is clicked", Toast.LENGTH_SHORT).show();
+        Intent intent=new Intent(getContext(), ProfileActivity.class);
+        intent.putExtra("uid",uid);
+        startActivity(intent);
+    }
 }

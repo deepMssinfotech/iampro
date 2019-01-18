@@ -1,10 +1,10 @@
 package com.mssinfotech.iampro.co.model;
 
 /**
- * Created by mssinfotech on 16/01/19.
+ * Created by mssinfotech on 18/01/19.
  */
 
-public class DataModel {
+public class UserModel {
     public String text;
     public int drawable;
     public String color;
@@ -18,11 +18,21 @@ public class DataModel {
     }
 
     private int id;
+
     private String url;
     private String description;
 
     private String name;
 
+    public String getProfession() {
+        return profession;
+    }
+
+    public void setProfession(String profession) {
+        this.profession = profession;
+    }
+
+    private String profession;
     public String getName() {
         return name;
     }
@@ -59,13 +69,14 @@ public class DataModel {
     private String image;
     private String category;
 
-    public DataModel(String t, int d, String c)
+    public UserModel(String t, int d, String c)
     {
         text=t;
         drawable=d;
         color=c;
     }
-    public DataModel(String name,String image,String udate,String category){
+    public UserModel(int id,String name,String image,String udate,String category){
+        this.id=id;
         this.name=name;
         this.image=image;
         this.udate=udate;

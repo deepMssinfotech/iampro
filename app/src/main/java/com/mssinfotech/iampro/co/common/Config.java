@@ -37,6 +37,7 @@ public class Config
     public static final String IMAGE_DIRECTORY = "/iampro";
     public static final Integer GALLERY = 1, CAMERA = 2, PICK_IMAGE_MULTIPLE = 3;
     public static String layoutName="";
+    public static String ResponceResult="";
     public Config(){
 
     }
