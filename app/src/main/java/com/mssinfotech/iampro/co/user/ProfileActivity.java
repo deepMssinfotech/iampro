@@ -130,7 +130,7 @@ public class ProfileActivity extends AppCompatActivity {
 
                 @Override
                 public void onResponse(JSONObject response) {
-                     
+
                     if (response != null) {
                         parseJsonFeed(response);
                     }
@@ -142,7 +142,6 @@ public class ProfileActivity extends AppCompatActivity {
                     VolleyLog.d(TAG, "Error: " + error.getMessage());
                 }
             });
-
             // Adding request to volley request queue
             AppController.getInstance().addToRequestQueue(jsonReq);
         }

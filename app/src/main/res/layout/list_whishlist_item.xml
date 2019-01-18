@@ -44,7 +44,11 @@
             android:layout_height="@dimen/thumbnail"
             android:layout_marginRight="@dimen/activity_padding_horizontal"
             android:scaleType="centerCrop" />
-
+        <ImageView
+            android:scaleType="centerCrop"
+            android:id="@+id/image_type"
+            android:layout_width="20dp"
+            android:layout_height="20dp" />
         <TextView
             android:id="@+id/name"
             android:layout_width="wrap_content"
