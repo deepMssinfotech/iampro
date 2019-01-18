@@ -124,7 +124,7 @@ public class function {
         requestQueue.add(stringRequest);
     }
 
-    public static String executeUrl(final Context context, String type, String url, final Map<String, String> params){
+   /* public static String executeUrl(final Context context, String type, String url, final Map<String, String> params){
         if(type.equalsIgnoreCase("get")){
 
             StringRequest stringRequest = new StringRequest(Request.Method.GET,url,
@@ -168,7 +168,7 @@ public class function {
             requestQueue.add(stringRequest);
         }
         return Config.ResponceResult;
-    }
+    } */
 
 }
 
