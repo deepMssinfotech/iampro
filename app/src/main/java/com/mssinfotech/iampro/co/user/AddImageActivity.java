@@ -20,6 +20,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.GridView;
+import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -54,14 +55,14 @@ public class AddImageActivity extends AppCompatActivity {
     TextInputLayout tilalbumname,tilimagename,tilimagedetail;
     EditText etalbumname,etimagename,etimagedetail;
     Spinner spcat,spimage_album;
-    Button album_button,create_album_button,ibImageMoreImage;;
+    Button add_image_button,create_album_button,ibImageMoreImage;;
     List<String> imagesEncodedList;
     String imageEncoded;
     private String albumname, imagename, imagedetail,cat,image_album;
     private GridView gvGallery;
     private Bitmap bitmap=null;
     private GalleryAdapter galleryAdapter;
-
+    private LinearLayout categoryLayout,albumLayout;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -76,10 +77,11 @@ public class AddImageActivity extends AppCompatActivity {
         etimagedetail = findViewById(R.id.etimagedetail);
         spcat= findViewById(R.id.spcat);
         spimage_album= findViewById(R.id.spimage_album);
-        album_button = findViewById(R.id.album_button);
+        add_image_button = findViewById(R.id.add_image_button);
         create_album_button = findViewById(R.id.create_album_button);
         function.getData(AddImageActivity.this, this, spcat, "IMAGE");
-
+        categoryLayout = findViewById(R.id.categoryLayout);
+        albumLayout = findViewById(R.id.albumLayout);
         gvGallery  = findViewById(R.id.gv);
         ibImageMoreImage = findViewById(R.id.ibImageMoreImage);
         ibImageMoreImage.setOnClickListener(new View.OnClickListener() {
@@ -88,6 +90,7 @@ public class AddImageActivity extends AppCompatActivity {
                 selectMultipleImage();
             }
         });
+        function.executeUrl(this,"get",Config.API_URL+"app_service.php?type=delete_temp_data&uid="+PrefManager.getLoginDetail(this,"id"),null);
         getAlbumList();
     }
     private void selectMultipleImage(){
@@ -289,11 +292,14 @@ public class AddImageActivity extends AppCompatActivity {
                 }){
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
+
+                String palbumname= tvlayouttype.getText().toString();
+                if(!palbumname.equalsIgnoreCase("new_album"))palbumname=albumname;
                 Map<String,String> params = new Hashtable<String, String>();
                 params.put("type","uploadfiles");
                 params.put("process_type","android");
-                params.put("palbumname","imagenew");
-                params.put("albumname",albumname);
+                params.put("palbumname",palbumname);
+                //params.put("albumname",albumname);
                 params.put("name",imagename);
                 params.put("about_us",imagedetail);
                 params.put("category",cat);
@@ -308,28 +314,28 @@ public class AddImageActivity extends AppCompatActivity {
         //Adding request to the queue
         requestQueue.add(stringRequest);
     }
-    private void select_button(View v){
-        album_button.setBackgroundResource(R.drawable.white);
-        album_button.setTextColor(getResources().getColor(R.color.black));
-        create_album_button.setBackgroundResource(R.drawable.black);
-        create_album_button.setTextColor(getResources().getColor(R.color.white));
-        tvlayouttype.setText("album");
-        spcat.setVisibility(View.INVISIBLE);
-        tilalbumname.setVisibility(View.INVISIBLE);
-        etalbumname.setVisibility(View.INVISIBLE);
-        spimage_album.setVisibility(View.VISIBLE);
-        return;
-    }
-    private void click_album_button(View v){
-        album_button.setBackgroundResource(R.drawable.black);
-        album_button.setTextColor(getResources().getColor(R.color.white));
+    public void click_image_button(View v){
+        add_image_button.setBackgroundResource(R.drawable.black);
+        add_image_button.setTextColor(getResources().getColor(R.color.white));
         create_album_button.setBackgroundResource(R.drawable.white);
         create_album_button.setTextColor(getResources().getColor(R.color.black));
+        tvlayouttype.setText("add_iamge");
+        albumLayout.setVisibility(View.VISIBLE);
+        categoryLayout.setVisibility(View.GONE);
+        tilalbumname.setVisibility(View.GONE);
+        etalbumname.setVisibility(View.GONE);
+        return;
+    }
+    public void click_album_button(View v){
+        add_image_button.setBackgroundResource(R.drawable.white);
+        add_image_button.setTextColor(getResources().getColor(R.color.black));
+        create_album_button.setBackgroundResource(R.drawable.black);
+        create_album_button.setTextColor(getResources().getColor(R.color.white));
         tvlayouttype.setText("new_album");
-        spcat.setVisibility(View.VISIBLE);
+        albumLayout.setVisibility(View.GONE);
+        categoryLayout.setVisibility(View.VISIBLE);
         tilalbumname.setVisibility(View.VISIBLE);
         etalbumname.setVisibility(View.VISIBLE);
-        spimage_album.setVisibility(View.INVISIBLE);
         return;
     }
     public void getAlbumList(){

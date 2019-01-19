@@ -5,13 +5,16 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".user.MyDemandActivity">
-
-    <com.mssinfotech.iampro.co.common.IncludeFooter
-        android:id="@+id/footer"
-        android:layout_gravity="bottom|end"
-        android:layout_alignParentBottom="true"
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/fab"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_width="match_parent"/>
+        android:layout_gravity="bottom|end"
+        android:layout_marginBottom="@dimen/fab_margin_bottom"
+        android:layout_marginRight="@dimen/fab_margin_right"
+        android:onClick="redirect"
+        app:srcCompat="@android:drawable/ic_input_add" />
+
     <ScrollView
         android:layout_above="@+id/footer"
         android:fillViewport="true"
@@ -37,7 +40,7 @@
                         android:src="@drawable/profile_background"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent" />
-                    <ImageView
+                    <de.hdodenhof.circleimageview.CircleImageView
                         android:id="@+id/userimage"
                         android:layout_alignParentBottom="true"
                         android:layout_marginBottom="@dimen/profile_icon_margin_bottom"
@@ -69,14 +72,11 @@
                 android:layout_width="match_parent"/>
         </LinearLayout>
     </ScrollView>
-    <android.support.design.widget.FloatingActionButton
-        android:id="@+id/fab"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+    <com.mssinfotech.iampro.co.common.IncludeFooter
+        android:id="@+id/footer"
         android:layout_gravity="bottom|end"
-        android:layout_marginBottom="@dimen/fab_margin_bottom"
-        android:layout_marginRight="@dimen/fab_margin_right"
-        android:onClick="redirect"
-        app:srcCompat="@android:drawable/ic_input_add" />
+        android:layout_alignParentBottom="true"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"/>
 
 </android.support.design.widget.CoordinatorLayout>

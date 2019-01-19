@@ -10,7 +10,7 @@
     <TextView
         android:text="new_album"
         android:id="@+id/tvlayouttype"
-        android:visibility="invisible"
+        android:visibility="gone"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
     <ScrollView
@@ -39,15 +39,15 @@
                     android:layout_weight="1">
 
                     <Button
-                        android:id="@+id/album_button"
-                        android:background="@drawable/black"
-                        android:textColor="@color/white"
-                        android:onClick="select_button"
+                        android:id="@+id/add_video_button"
+                        android:background="@drawable/white"
+                        android:textColor="@color/black"
+                        android:onClick="click_video_button"
                         style="@style/Widget.AppCompat.Button.Small"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text="Select Album" />
+                        android:text="Add Video" />
 
                 </RelativeLayout>
 
@@ -57,18 +57,19 @@
                     android:layout_weight="1">
 
                     <Button
-                        android:background="@drawable/white"
-                        android:textColor="@color/black_overlay"
+                        android:background="@drawable/black"
+                        android:textColor="@color/white"
                         android:id="@+id/create_album_button"
                         android:onClick="click_album_button"
                         style="@style/Widget.AppCompat.Button.Small"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Create Album" />
+                        android:text="Add Album" />
                 </RelativeLayout>
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/categoryLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
@@ -87,6 +88,8 @@
 
             </LinearLayout>
             <LinearLayout
+                android:visibility="gone"
+                android:id="@+id/albumLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
@@ -155,28 +158,32 @@
 
 
             <android.support.design.widget.TextInputLayout
-                android:id="@+id/tilvideo"
+                android:id="@+id/tilVideoMoreVideo"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
-
                 <Button
-                    android:id="@+id/ibvideo"
+                    android:id="@+id/ibVideoMoreVideo"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:drawableLeft="@drawable/ic_action_attechment"
 
                     android:drawableTint="#000000"
-                    android:text="Select Video" />
-                <ImageView
-                    android:id="@+id/iv"
-                    android:layout_centerInParent="true"
-                    android:layout_width="50dp"
-                    android:layout_height="50dp" />
-
+                    android:text="Add Video" />
             </android.support.design.widget.TextInputLayout>
-
-
+            <ImageView
+                android:visibility="gone"
+                android:layout_width="300dp"
+                android:layout_height="300dp"
+                android:layout_gravity="center"
+                android:layout_marginTop="20dp"
+                android:scaleType="fitXY"
+                android:id="@+id/iv"/>
+            <VideoView
+                android:visibility="gone"
+                android:id="@+id/vv"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
         </LinearLayout>
     </ScrollView>
     <RelativeLayout
@@ -192,7 +199,7 @@
             android:layout_height="35dp"
             android:onClick="processAddVideo"
             android:layout_gravity="bottom"
-            android:background="@drawable/video_color"
+            android:background="@drawable/image_color"
             android:text="Proceed Now"
             android:textAlignment="center" />
     </RelativeLayout>

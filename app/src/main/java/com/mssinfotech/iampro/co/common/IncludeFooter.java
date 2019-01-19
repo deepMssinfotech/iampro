@@ -37,10 +37,11 @@ public class IncludeFooter  extends RelativeLayout {
 
     public IncludeFooter(Context context, AttributeSet attrs) {
         super(context, attrs);
-
         inflater = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         inflater.inflate(R.layout.include_footer, this, true);
-
+        Config.count_chat = this.findViewById(R.id.count_chat);
+        Config.count_notify = this.findViewById(R.id.count_notify);
+        Config.count_cart = this.findViewById(R.id.count_cart);
         (this.findViewById(R.id.btn_menu_more)).setOnClickListener(moreOnClickListener);
         (this.findViewById(R.id.btn_menu_search)).setOnClickListener(searchOnClickListener);
         (this.findViewById(R.id.btn_menu_cart)).setOnClickListener(cartOnClickListener);

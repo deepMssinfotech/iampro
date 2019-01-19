@@ -5,6 +5,17 @@ package com.mssinfotech.iampro.co.utils;
  */
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.util.Log;
+
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
+import com.mssinfotech.iampro.co.common.Config;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import static android.content.Context.MODE_PRIVATE;
 
@@ -37,27 +48,60 @@ public class PrefManager {
         return pref.getBoolean(IS_FIRST_TIME_LAUNCH, true);
     }
 
-    public void saveLoginDetails(String username, String password,String imgurl,String id,String mobile,String fname,String lname,String email,String banner_image, String img_banner_image, String video_banner_image, String profile_image_gallery, String profile_video_gallery) {
-        //id,mobile,name,email
-        SharedPreferences sharedPreferences = _context.getSharedPreferences("LoginDetails", MODE_PRIVATE);
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putBoolean(IS_LOGIN, true);
-        editor.putString("username",username);
-        editor.putString("password", password);
-        editor.putString("img_url",imgurl);
-        editor.putString("id",id);
-        editor.putString("mobile",mobile);
-        editor.putString("fname",fname);
-        editor.putString("lname",lname);
-        editor.putString("email",email);
-        editor.putString("banner_image",banner_image);
-
-        editor.putString("img_banner_image",img_banner_image);
-        editor.putString("video_banner_image",video_banner_image);
-        editor.putString("profile_image_gallery",profile_image_gallery);
-        editor.putString("profile_video_gallery",profile_video_gallery);
-
-        editor.commit();
+    public static void updateUserData(Context context,String uid){
+        String myid = null;
+        final SharedPreferences sharedPreferences = context.getSharedPreferences("LoginDetails", MODE_PRIVATE);
+        if(uid == null){
+            String id= sharedPreferences.getString("id","");
+            if(!id.isEmpty()){
+                myid = id;
+            }
+        }else{
+            myid = uid;
+        }
+        if(myid != null) {
+            String myurl = Config.API_URL + "ajax.php?type=friend_detail&id=" + uid + "&uid=" + uid;
+            final SharedPreferences.Editor editor = sharedPreferences.edit();
+            StringRequest stringRequest = new StringRequest(myurl,
+                    new Response.Listener<String>() {
+                        @Override
+                        public void onResponse(String response) {
+                            JSONObject result = null;
+                            //Log.d(Config.TAG, response);
+                            try {
+                                result = new JSONObject(response);
+                                //Storing the Array of JSON String to our JSON Array
+                                editor.putBoolean(IS_LOGIN, true);
+                                editor.putString("username",result.getString("username"));
+                                editor.putString("password", result.getString("password"));
+                                editor.putString("img_url",result.getString("username"));
+                                editor.putString("id",result.getString("username"));
+                                editor.putString("mobile",result.getString("username"));
+                                editor.putString("fname",result.getString("username"));
+                                editor.putString("lname",result.getString("username"));
+                                editor.putString("email",result.getString("username"));
+                                editor.putString("banner_image",result.getString("banner_image"));
+                                editor.putString("img_banner_image",result.getString("img_banner_image"));
+                                editor.putString("video_banner_image",result.getString("video_banner_image"));
+                                editor.putString("profile_image_gallery",result.getString("profile_image_gallery"));
+                                editor.putString("profile_video_gallery",result.getString("profile_video_gallery"));
+                                editor.commit();
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    },
+                    new Response.ErrorListener() {
+                        @Override
+                        public void onErrorResponse(VolleyError error) {
+                            Log.e(Config.TAG, error.toString());
+                        }
+                    });
+            //Creating a request queue
+            RequestQueue requestQueue = Volley.newRequestQueue(context);
+            //Adding request to the queue
+            requestQueue.add(stringRequest);
+        }
     }
     public static boolean isLogin(Context context){
         SharedPreferences prefrence = context.getSharedPreferences("LoginDetails",MODE_PRIVATE);

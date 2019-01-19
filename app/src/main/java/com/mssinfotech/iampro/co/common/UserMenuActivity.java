@@ -51,6 +51,7 @@ public class UserMenuActivity  extends Fragment {
             if(function.isSamePage("activity_dashboard"))return;
             Intent intent = new Intent(getContext(), WelcomeActivity.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
             getContext().startActivity(intent);
         }
     };
@@ -59,6 +60,7 @@ public class UserMenuActivity  extends Fragment {
             if(function.isSamePage("activity_profile"))return;
             Intent intent = new Intent(getContext(), ProfileActivity.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
             getContext().startActivity(intent);
         }
     };
@@ -67,6 +69,7 @@ public class UserMenuActivity  extends Fragment {
             if(function.isSamePage("activity_edit_profile"))return;
             Intent intent = new Intent(getContext(), EditProfileActivity.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
             getContext().startActivity(intent);
         }
     };
@@ -75,6 +78,7 @@ public class UserMenuActivity  extends Fragment {
             if(function.isSamePage("activity_change_password"))return;
             Intent intent = new Intent(getContext(), ChangePasswordActivity.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
             getContext().startActivity(intent);
         }
     };
@@ -83,6 +87,7 @@ public class UserMenuActivity  extends Fragment {
             if(function.isSamePage("activity_joined_friends"))return;
             Intent intent = new Intent(getContext(), JoinedFriendsActivity.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
             getContext().startActivity(intent);
         }
     };
@@ -192,7 +197,9 @@ public class UserMenuActivity  extends Fragment {
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         // Setup any handles to view objects here
-        // EditText etFoo = (EditText) view.findViewById(R.id.etFoo);
+        Config.count_whishlist = view.findViewById(R.id.count_whishlist);
+        Config.count_friend_request = view.findViewById(R.id.count_friend_request);
+        Config.count_cart = view.findViewById(R.id.count_cart);
         menu_btn_dashboard = view.findViewById(R.id.menu_btn_dashboard);
         menu_btn_myprofile = view.findViewById(R.id.menu_btn_myprofile);
         menu_btn_editprofile = view.findViewById(R.id.menu_btn_editprofile);
@@ -211,7 +218,6 @@ public class UserMenuActivity  extends Fragment {
         menu_btn_share = view.findViewById(R.id.menu_btn_share);
         menu_btn_mywhishlist = view.findViewById(R.id.menu_btn_mywhishlist);
         menu_btn_logout = view.findViewById(R.id.menu_btn_logout);
-
         menu_btn_dashboard.setOnClickListener(dashboardOnClickListener);
         menu_btn_myprofile.setOnClickListener(myprofileOnClickListener);
         menu_btn_editprofile.setOnClickListener(editprofileOnClickListener);

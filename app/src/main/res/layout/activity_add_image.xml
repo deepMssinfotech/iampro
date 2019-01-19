@@ -10,7 +10,7 @@
     <TextView
         android:text="new_album"
         android:id="@+id/tvlayouttype"
-        android:visibility="invisible"
+        android:visibility="gone"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
     <ScrollView
@@ -39,15 +39,15 @@
                     android:layout_weight="1">
 
                     <Button
-                        android:id="@+id/album_button"
-                        android:background="@drawable/black"
-                        android:textColor="@color/white"
-                        android:onClick="select_button"
+                        android:id="@+id/add_image_button"
+                        android:background="@drawable/white"
+                        android:textColor="@color/black"
+                        android:onClick="click_image_button"
                         style="@style/Widget.AppCompat.Button.Small"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text="Select Album" />
+                        android:text="Add Images" />
 
                 </RelativeLayout>
 
@@ -57,18 +57,19 @@
                     android:layout_weight="1">
 
                     <Button
-                        android:background="@drawable/white"
-                        android:textColor="@color/black_overlay"
+                        android:background="@drawable/black"
+                        android:textColor="@color/white"
                         android:id="@+id/create_album_button"
                         android:onClick="click_album_button"
                         style="@style/Widget.AppCompat.Button.Small"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Create Album" />
+                        android:text="Add Album" />
                 </RelativeLayout>
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/categoryLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
@@ -87,6 +88,8 @@
 
             </LinearLayout>
             <LinearLayout
+                android:visibility="gone"
+                android:id="@+id/albumLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
@@ -158,27 +161,23 @@
                 android:id="@+id/tilImageMoreImage"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
-
                 <Button
                     android:id="@+id/ibImageMoreImage"
                     android:layout_width="match_parent"
-                    android:layout_height="45dp"
+                    android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:drawableLeft="@drawable/ic_action_attechment"
 
                     android:drawableTint="#000000"
-                    android:text="Add More Image" />
-                <GridView
-                    android:layout_marginBottom="45dp"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/gv"
-                    android:numColumns="3"
-                    android:layout_weight="1">
-                </GridView>
-
+                    android:text="Add Image" />
             </android.support.design.widget.TextInputLayout>
-
+            <GridView
+                android:layout_marginBottom="45dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/gv"
+                android:numColumns="3">
+            </GridView>
 
         </LinearLayout>
     </ScrollView>

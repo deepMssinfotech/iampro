@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.media.MediaScannerConnection;
 import android.os.Environment;
+import android.provider.MediaStore;
 import android.util.Base64;
 import android.util.Log;
 
@@ -36,13 +37,21 @@ import java.util.Map;
 public class ImageProcess {
 
     public static void choosePhotoFromGallary(Activity activity) {
-        Intent galleryIntent = new Intent(Intent.ACTION_PICK,
-                android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+        Intent galleryIntent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
         activity.startActivityForResult(galleryIntent, Config.GALLERY);
     }
 
     public static void takePhotoFromCamera(Activity activity) {
         Intent intent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
+        activity.startActivityForResult(intent, Config.CAMERA);
+    }
+    public static void chooseVideoFromGallary(Activity activity) {
+        Intent galleryIntent = new Intent(Intent.ACTION_PICK,android.provider.MediaStore.Video.Media.EXTERNAL_CONTENT_URI);
+        activity.startActivityForResult(galleryIntent, Config.GALLERY);
+    }
+
+    public static void takeVideoFromCamera(Activity activity) {
+        Intent intent = new Intent(MediaStore.ACTION_VIDEO_CAPTURE);
         activity.startActivityForResult(intent, Config.CAMERA);
     }
     public static String saveImage(Context context, Bitmap myBitmap) {

@@ -179,7 +179,7 @@ public class EditProfileActivity extends AppCompatActivity {
                             JSONObject jsonObject = new JSONObject(s);
                             String status=jsonObject.getString("status");
                             String msgg=jsonObject.getString("msg");
-
+                            PrefManager.updateUserData(getApplicationContext(),null);
                             Toast.makeText(getApplicationContext(),""+msgg,Toast.LENGTH_LONG).show();
                             if (status.equalsIgnoreCase("success")){
                                 updateProfile();

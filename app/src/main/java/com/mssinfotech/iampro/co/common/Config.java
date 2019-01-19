@@ -7,15 +7,19 @@ import android.content.DialogInterface;
 import android.graphics.Bitmap;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.preference.Preference;
 import android.util.Log;
+import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
+import android.widget.TextView;
 
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.mssinfotech.iampro.co.utils.PrefManager;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -33,8 +37,9 @@ public class Config
     public static final String AJAX_URL="https://www.iampro.co/ajax/";
     public static final String AVATAR_URL="https://www.iampro.co/uploads/avatar/";
     public static final String BANNER_URL="https://www.iampro.co/uploads/media/";
-
-    public static final String IMAGE_DIRECTORY = "/iampro";
+    public static TextView count_chat = null, count_notify = null, count_cart=null, count_whishlist = null, count_friend_request = null;
+    public static final String IMAGE_DIRECTORY = "/iampro/image";
+    public static final String VIDEO_DIRECTORY = "/iampro/video";
     public static final Integer GALLERY = 1, CAMERA = 2, PICK_IMAGE_MULTIPLE = 3;
     public static String layoutName="";
     public static String ResponceResult="";
@@ -77,8 +82,43 @@ public class Config
                 }).show();
     }
 
-    public static void sendRequestToServer() {
-         Log.d(TAG,"test servide for 5 sec");
-    }
+    public static void sendRequestToServer(Context context) {
+        if (PrefManager.isLogin(context)) {
+            //Log.d(TAG, "test servide for 5 sec");
+            String api_url = Config.API_URL + "chat.php?type=chat_count&myid=" + PrefManager.getLoginDetail(context, "id");
+            //Log.d(Config.TAG, api_url);
+             {
+                StringRequest stringRequest = new StringRequest(api_url,
+                        new Response.Listener<String>() {
+                            @Override
+                            public void onResponse(String response) {
+                                JSONObject result = null;
+                                //Log.d(Config.TAG, response);
+                                try {
+                                    result = new JSONObject(response);
+                                    //Storing the Array of JSON String to our JSON Array
+                                    if (count_chat != null) count_chat.setText(result.getString("chatcount"));
+                                    if(count_notify != null) count_notify.setText(result.getString("my_notification"));
+                                    if(count_cart != null) count_cart.setText(result.getString("cart_count"));
+                                    if(count_whishlist != null) count_whishlist.setText(result.getString("my_wishlist"));
+                                    if(count_friend_request != null) count_friend_request.setText(result.getString("panding_friend"));
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                        },
+                        new Response.ErrorListener() {
+                            @Override
+                            public void onErrorResponse(VolleyError error) {
+                                Log.e(Config.TAG, error.toString());
+                            }
+                        });
 
+                //Creating a request queue
+                RequestQueue requestQueue = Volley.newRequestQueue(context);
+                //Adding request to the queue
+                requestQueue.add(stringRequest);
+            }
+        }
+    }
 }
