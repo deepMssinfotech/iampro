@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -51,7 +52,7 @@ public class ImageFragment extends Fragment implements RecyclerViewAdapter.ItemL
                              Bundle savedInstanceState) {
          View view=inflater.inflate(R.layout.fragment_image, container, false);
         // Inflate the layout for this fragment
-        view.findViewById(R.id.title_tv).setTag("Image");
+        //view.findViewById(R.id.title_tv).setTag("Image");
         return view;
     }
     @Override
@@ -104,6 +105,8 @@ public class ImageFragment extends Fragment implements RecyclerViewAdapter.ItemL
                             for(int i=0;i<response.length();i++){
                                 // Get current json object
                                 JSONObject student = response.getJSONObject(i);
+                                int id=student.getInt("id");
+                               // int album_id=student.getInt("album_id");
 
                                 String name = student.getString("name");
                                 String categoryv=student.getString("category");
@@ -139,6 +142,7 @@ public class ImageFragment extends Fragment implements RecyclerViewAdapter.ItemL
                             my_recycler_view.setAdapter(adapter); */
 
                             adapter = new RecyclerViewAdapter(getContext(), allSampleData, ImageFragment.this);
+                            my_recycler_view.setItemAnimator(new DefaultItemAnimator());
                             my_recycler_view.setAdapter(adapter);
 
                             GridLayoutManager manager = new GridLayoutManager(getContext(), 2, GridLayoutManager.VERTICAL, false);

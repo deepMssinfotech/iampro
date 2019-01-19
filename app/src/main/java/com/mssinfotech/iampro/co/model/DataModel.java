@@ -9,7 +9,15 @@ public class DataModel {
     public int drawable;
     public String color;
 
+    public int getId() {
+        return id;
+    }
 
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    private int id;
     private String url;
     private String description;
 

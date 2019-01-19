@@ -92,6 +92,9 @@ public class ProductFragment extends Fragment implements RecyclerViewAdapter.Ite
                                 // Get current json object
                                 JSONObject student = response.getJSONObject(i);
 
+                                int id=student.getInt("id");
+                                int added_by=student.getInt("added_by");
+
                                 String name = student.getString("name");
                                 String categoryv=student.getString("category");
                                 String imagev=student.getString("image");

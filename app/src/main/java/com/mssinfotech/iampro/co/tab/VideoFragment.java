@@ -51,7 +51,7 @@ public class VideoFragment extends Fragment implements RecyclerViewAdapter.ItemL
             // Inflate the layout for this fragment
             View view=inflater.inflate(R.layout.fragment_video, container, false);
             //oolbar =view.findViewById(R.id.toolbar);
-        view.findViewById(R.id.title_tv).setTag("Video");
+        //view.findViewById(R.id.title_tv).setTag("Video");
             return view;
         }
         @Override
@@ -88,7 +88,8 @@ public class VideoFragment extends Fragment implements RecyclerViewAdapter.ItemL
                             for(int i=0;i<response.length();i++){
                                 // Get current json object
                                 JSONObject student = response.getJSONObject(i);
-
+                                int id=student.getInt("id");
+                                //int added_by=student.getInt("albumid");
                                 String name = student.getString("name");
                                 String categoryv=student.getString("category");
                                 String imagev=student.getString("image");

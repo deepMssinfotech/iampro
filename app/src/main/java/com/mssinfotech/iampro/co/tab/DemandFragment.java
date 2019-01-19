@@ -43,7 +43,7 @@ public class DemandFragment extends Fragment implements RecyclerViewAdapter.Item
                              Bundle savedInstanceState) {
         View view=inflater.inflate(R.layout.fragment_demand, container, false);
         //oolbar =view.findViewById(R.id.toolbar);
-        view.findViewById(R.id.title_tv).setTag("Demand");
+        //view.findViewById(R.id.title_tv).setTag("Demand");
 
         return view;
     }
@@ -53,7 +53,7 @@ public class DemandFragment extends Fragment implements RecyclerViewAdapter.Item
         //createDummyData();
         getDemand();
         my_recycler_view =view.findViewById(R.id.my_recycler_view);
-        view.findViewById(R.id.title_tv).setTooltipText("Demand");
+        //view.findViewById(R.id.title_tv).setTooltipText("Demand");
 
     }
     public void getDemand(){
@@ -82,8 +82,9 @@ public class DemandFragment extends Fragment implements RecyclerViewAdapter.Item
                             for(int i=0;i<response.length();i++){
                                 // Get current json object
                                 JSONObject student = response.getJSONObject(i);
-
-                                String name = student.getString("name");
+                                 int id=student.getInt("id");
+                                 int added_by=student.getInt("added_by");
+                                 String name = student.getString("name");
                                 String categoryv=student.getString("category");
                                 String imagev=student.getString("image");
                                 String image= Config.URL_ROOT + "uploads/product/" +imagev;
@@ -116,7 +117,6 @@ public class DemandFragment extends Fragment implements RecyclerViewAdapter.Item
 
                             GridLayoutManager manager = new GridLayoutManager(getContext(), 2, GridLayoutManager.VERTICAL, false);
                             my_recycler_view.setLayoutManager(manager);
-
 
                         }
                         catch (JSONException e){

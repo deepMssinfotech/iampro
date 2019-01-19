@@ -65,7 +65,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
             textView.setText(item.getName());
             //textView.setBackgroundColor(Color.BLUE);
             String url=item.getImage();
-            Toast.makeText(mContext,"image:"+url,Toast.LENGTH_LONG).show();
+            //Toast.makeText(mContext,"image:"+url,Toast.LENGTH_LONG).show();
             //Log.d("url_adapter",url);
             //Toast.makeText(mContext, ""+url, Toast.LENGTH_SHORT).show();
             Glide.with(mContext)

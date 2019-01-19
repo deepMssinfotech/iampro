@@ -51,7 +51,7 @@ public class ProvideFragment extends Fragment implements RecyclerViewAdapter.Ite
         View view=inflater.inflate(R.layout.fragment_provide, container, false);
         //oolbar =view.findViewById(R.id.toolbar);
 
-        view.findViewById(R.id.title_tv).setTag("Provide");
+        //view.findViewById(R.id.title_tv).setTag("Provide");
         return view;
     }
     @Override
@@ -168,6 +168,8 @@ public class ProvideFragment extends Fragment implements RecyclerViewAdapter.Ite
                             for(int i=0;i<response.length();i++){
                                 // Get current json object
                                 JSONObject student = response.getJSONObject(i);
+                                int id=student.getInt("id");
+                                int added_by=student.getInt("added_by");
                                 String name = student.getString("name");
                                 String categoryv=student.getString("category");
                                 String imagev=student.getString("image");

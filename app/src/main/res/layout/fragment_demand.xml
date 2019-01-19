@@ -13,11 +13,11 @@
         android:elevation="8dp"
         android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
         app:popupTheme="@style/ThemeOverlay.AppCompat.Light" /> -->
-  <TextView
-      android:id="@+id/title_tv"
-      android:layout_width="match_parent"
-      android:layout_height="wrap_content"
-       android:text="@string/demand"/>
+    <ImageView
+        android:layout_width="170dp"
+        android:layout_height="57dp"
+        android:src="@drawable/latestdemand"
+        android:padding="0dp"/>
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/my_recycler_view"
