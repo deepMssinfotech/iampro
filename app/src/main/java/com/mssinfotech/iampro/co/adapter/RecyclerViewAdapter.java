@@ -31,6 +31,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.RatingBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -49,8 +50,12 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         mListener=itemListener;
     }
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-        public TextView textView;
-        public ImageView imageView;
+        public TextView textView,tv_tlike,tv_comments,tv_daysago,tv_sprice,tv_pprice,uname;
+
+
+
+        RatingBar ratingBar;
+        public ImageView imageView,userImage;
         public RelativeLayout relativeLayout;
         DataModel item;
         public ViewHolder(View v) {
@@ -58,6 +63,24 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
             v.setOnClickListener(this);
             textView = (TextView) v.findViewById(R.id.textView);
             imageView = (ImageView) v.findViewById(R.id.imageView);
+            tv_tlike=v.findViewById(R.id.tv_totallike);
+            //tv_comments
+            tv_comments=v.findViewById(R.id.tv_comments);
+             tv_daysago=v.findViewById(R.id.tv_daysago);
+            tv_sprice=v.findViewById(R.id.tv_sprice);
+            tv_pprice=v.findViewById(R.id.tv_sprice);
+
+            ratingBar=v.findViewById(R.id.ratingBar);
+
+            uname=v.findViewById(R.id.uname);
+            userImage=v.findViewById(R.id.user_image);
+
+             imageView.setOnClickListener(new View.OnClickListener() {
+                 @Override
+                 public void onClick(View v) {
+                     Toast.makeText(mContext, "Image clicked", Toast.LENGTH_SHORT).show();
+                 }
+             });
             //relativeLayout = (RelativeLayout) v.findViewById(R.id.relativeLayout);
         }
         public void setData(DataModel item) {
@@ -65,9 +88,34 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
             textView.setText(item.getName());
             //textView.setBackgroundColor(Color.BLUE);
             String url=item.getImage();
+            String userImages=item.getUserImage();
             //Toast.makeText(mContext,"image:"+url,Toast.LENGTH_LONG).show();
             //Log.d("url_adapter",url);
             //Toast.makeText(mContext, ""+url, Toast.LENGTH_SHORT).show();
+            tv_tlike.setText(String.valueOf(item.getTotallike()));
+            tv_comments.setText(String.valueOf(item.getComments()));
+            ratingBar.setRating(item.getRating());
+             if(String.valueOf(item.getsCost())!=null || !String.valueOf(item.getsCost()).equalsIgnoreCase(null)) {
+                 tv_sprice.setVisibility(View.VISIBLE);
+                 tv_sprice.setText(String.valueOf(String.valueOf(item.getsCost())));
+             }
+             if(String.valueOf(item.getpCost())!=null || !String.valueOf(item.getpCost()).equalsIgnoreCase(null)){
+                   tv_pprice.setVisibility(View.VISIBLE);
+                 tv_pprice.setText(String.valueOf(item.getpCost()));
+                 }
+
+                 tv_daysago.setVisibility(View.VISIBLE);
+               tv_daysago.setText(item.getDaysago());
+                uname.setText(item.getFullname());
+
+            //tv_daysago.setText();
+            Glide.with(mContext)
+                    .load(userImages)
+                    .apply(new RequestOptions()
+                            .centerCrop()
+                            .fitCenter())
+                    .into(userImage);
+
             Glide.with(mContext)
                     .load(url)
                     .apply(new RequestOptions()

@@ -45,4 +45,7 @@
     <color name="bg_row_background">#fa315b</color>
     <color name="item_name">#535353</color>
     <color name="description">#a9a9a9</color>
+    <color name="red">#FF0000</color>
+
+    <color name="trans_black">#4D000000</color>
 </resources>

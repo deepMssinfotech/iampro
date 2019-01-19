@@ -11,6 +11,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
+
+import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.VolleyError;
@@ -86,16 +88,34 @@ public class DemandFragment extends Fragment implements RecyclerViewAdapter.Item
                                  int added_by=student.getInt("added_by");
                                  String name = student.getString("name");
                                 String categoryv=student.getString("category");
+
+                                int totallike=student.getInt("totallike");
+                                int comments=student.getInt("comments");
+
+                                int scost=student.getInt("selling_cost");
+                                int pcost=student.getInt("purchese_cost");
+
                                 String imagev=student.getString("image");
                                 String image= Config.URL_ROOT + "uploads/product/" +imagev;
                                 String udate=student.getString("udate");
                                 Log.d("pdata",""+name+""+categoryv+""+image+""+udate);
+                                //String daysago=student.getString("ago");
+
+                                String rating=student.getString("rating");
+                                float ratingv=Float.parseFloat(rating);
+
+                                JSONObject userDetail=student.getJSONObject("user_detail");
+
+                                int uid=userDetail.getInt("id");
+                                String fullname=userDetail.getString("fullname");
+                                String avatar=Config.AVATAR_URL+"250/250/"+userDetail.getString("avatar");
+
                                 //SectionDataModel dm = new SectionDataModel();
                                 //dm.setHeaderTitle("Section " + i);
                                 //Toast.makeText(getContext(),"rrrresponse_enterrr:",Toast.LENGTH_LONG).show();
                                // singleItem.add(new SingleItemModel(name,image,udate));
-                                allSampleData.add(new DataModel(name,image,udate,categoryv));
-
+                                //allSampleData.add(new DataModel(name,image,udate,categoryv));
+                                allSampleData.add(new DataModel(name,image,udate,categoryv,totallike,comments,scost,pcost,ratingv,uid,fullname,avatar));
                             }
                             Log.d("bdm",singleItem.toString());
                             //dm.setAllItemsInSection(singleItem);
@@ -131,11 +151,12 @@ public class DemandFragment extends Fragment implements RecyclerViewAdapter.Item
                     public void onErrorResponse(VolleyError error){
                         // Do something when error occurred
                         //Snackbar.make(getContext(),"Error...", Snackbar.LENGTH_LONG).show();
-                        Toast.makeText(getContext(), "verror"+error.getMessage(), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getContext(), error.getMessage(), Toast.LENGTH_SHORT).show();
                         Log.d("verror",error.getMessage());
                     }
                 }
         );
+        //jsonArrayRequest.setRetryPolicy(new DefaultRetryPolicy(3000,0,DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
         // Add JsonArrayRequest to the RequestQueue
         requestQueue.add(jsonArrayRequest);
     }
