@@ -96,11 +96,17 @@ public class VideoFragment extends Fragment implements RecyclerViewAdapter.ItemL
                                 String image= Config.URL_ROOT + "uploads/v_image/" + imagev;
                                 String udate=student.getString("udate");
                                 Log.d("pdata",""+name+""+categoryv+""+image+""+udate);
+                                int totallike=student.getInt("totallike");
+                                int comments=student.getInt("comments");
+
+                                String daysago=student.getString("ago");
+
                                 //SectionDataModel dm = new SectionDataModel();
                                 //dm.setHeaderTitle("Section " + i);
                                // Toast.makeText(getContext(),"rrrresponse_enterrr:",Toast.LENGTH_LONG).show();
                                 //singleItem.add(new SingleItemModel(name,image,udate));
-                                allSampleData.add(new DataModel(name,image,udate,categoryv));
+                                //allSampleData.add(new DataModel(name,image,udate,categoryv));
+                                allSampleData.add(new DataModel(name,image,udate,categoryv,totallike,comments,daysago));
                             }
                             Log.d("bdm",singleItem.toString());
                             dm.setAllItemsInSection(singleItem);

@@ -17,6 +17,7 @@ import android.widget.Toast;
 //import android.widget.Toolbar;
 
 import com.android.volley.AuthFailureError;
+import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.VolleyError;
@@ -30,6 +31,7 @@ import com.mssinfotech.iampro.co.R;
 import com.mssinfotech.iampro.co.adapter.HomeAdapter;
 import com.mssinfotech.iampro.co.adapter.RecyclerViewAdapter;
 import com.mssinfotech.iampro.co.adapter.RecyclerViewDataAdapter;
+import com.mssinfotech.iampro.co.adapter.UserDataAdapter;
 import com.mssinfotech.iampro.co.api.Client;
 import com.mssinfotech.iampro.co.api.Service;
 import com.mssinfotech.iampro.co.data.AutoFitGridLayoutManager;
@@ -52,6 +54,7 @@ import retrofit2.Response;
 import com.mssinfotech.iampro.co.model.SectionDataModel;
 import com.mssinfotech.iampro.co.model.SingleItemModel;
 import com.mssinfotech.iampro.co.common.Config;
+import com.mssinfotech.iampro.co.model.UserModel;
 import com.takusemba.multisnaprecyclerview.MultiSnapRecyclerView;
 
 import org.json.JSONArray;
@@ -60,7 +63,7 @@ import org.json.JSONObject;
 
 import static com.mssinfotech.iampro.co.common.Config.TAG;
 
-public class HomeFragment extends Fragment {
+public class HomeFragment extends Fragment implements UserDataAdapter.ItemListener{
     private Toolbar toolbar;
 
     SectionDataModel dm = new SectionDataModel();
@@ -69,6 +72,10 @@ public class HomeFragment extends Fragment {
     //ArrayList<DataModel> allSampleData=new ArrayList<>();
     RecyclerView my_recycler_view,recycler_view_video,recycler_view_user,recycler_view_product,recycler_view_provide,recycler_view_demand,recycler_view_list;
     RecyclerViewAdapter adapter;
+    RecyclerViewDataAdapter adapterr;
+    UserDataAdapter user_adapter;
+    ArrayList<UserModel> userSampleData=new ArrayList<>();
+    int uid;
     public HomeFragment() {
         // Required empty public constructor
     }
@@ -239,7 +246,7 @@ public class HomeFragment extends Fragment {
                                 Log.d("pdata",""+name+""+categoryv+""+image+""+udate);
                                 //SectionDataModel dm = new SectionDataModel();
                                 //dm.setHeaderTitle("Section " + i);
-                                Toast.makeText(getContext(),"rrrresponse_enterrr:",Toast.LENGTH_LONG).show();
+                                //Toast.makeText(getContext(),"rrrresponse_enterrr:",Toast.LENGTH_LONG).show();
                                 singleItem.add(new SingleItemModel(name,image,udate));
 
                             }
@@ -251,7 +258,7 @@ public class HomeFragment extends Fragment {
                             Log.d("allsampledatav", allSampleData.toString());
                             //my_recycler_view.setHasFixedSize(true);
                             Log.d("allSampleDatas",""+allSampleData.size()+"--"+allSampleData.toString());
-                            RecyclerViewDataAdapter adapter = new RecyclerViewDataAdapter(getContext(), allSampleData);
+                             adapterr = new RecyclerViewDataAdapter(getContext(), allSampleData);
 
                             // my_recycler_view.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
                            // my_recycler_view.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
@@ -261,7 +268,7 @@ public class HomeFragment extends Fragment {
                             //my_recycler_view.setLayoutManager(layoutManager);
 
 
-                            my_recycler_view.setAdapter(adapter);
+                            my_recycler_view.setAdapter(adapterr);
                             int numberOfColumns = 2;
                             GridLayoutManager manager = new GridLayoutManager(getContext(), 2, GridLayoutManager.VERTICAL, false);
                             my_recycler_view.setLayoutManager(manager);
@@ -269,7 +276,7 @@ public class HomeFragment extends Fragment {
                             GridLayoutManager recycler_view_list = new GridLayoutManager(getContext(), 2, GridLayoutManager.VERTICAL, false);
                             my_recycler_view.setLayoutManager(manager);
 
-                            adapter.notifyDataSetChanged();
+                            //adapter.notifyDataSetChanged();
                           //recycler_view_list
 
 
@@ -292,6 +299,7 @@ public class HomeFragment extends Fragment {
                     }
                 }
         );
+       // jsonArrayRequest.setRetryPolicy(new DefaultRetryPolicy(3000,0,DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
         // Add JsonArrayRequest to the RequestQueue
         requestQueue.add(jsonArrayRequest);
         //getVideo();
@@ -326,7 +334,7 @@ public class HomeFragment extends Fragment {
                                 Log.d("pdata",""+name+""+categoryv+""+image+""+udate);
                                 //SectionDataModel dm = new SectionDataModel();
                                 //dm.setHeaderTitle("Section " + i);
-                                Toast.makeText(getContext(),"rrrresponse_enterrr:",Toast.LENGTH_LONG).show();
+                                //Toast.makeText(getContext(),"rrrresponse_enterrr:",Toast.LENGTH_LONG).show();
                                 singleItem.add(new SingleItemModel(name,image,udate));
 
                             }
@@ -338,82 +346,13 @@ public class HomeFragment extends Fragment {
                             Log.d("allsampledatav", allSampleData.toString());
                             my_recycler_view.setHasFixedSize(true);
                             Log.d("allSampleDatas",""+allSampleData.size()+"--"+allSampleData.toString());
-                            RecyclerViewDataAdapter adapter = new RecyclerViewDataAdapter(getContext(), allSampleData);
+                               adapterr = new RecyclerViewDataAdapter(getContext(), allSampleData);
 
                             my_recycler_view.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
                             //my_recycler_view.setLayoutManager(new GridLayoutManager(getActivity(), 2));
-                            my_recycler_view.setAdapter(adapter);
+                            my_recycler_view.setAdapter(adapterr);
 
-                            getUser();
-                        }
-                        catch (JSONException e){
-                            e.printStackTrace();
-                            Toast.makeText(getContext(), ""+e.getMessage(), Toast.LENGTH_SHORT).show();
-                            Log.d("catch_f",""+e.getMessage());
-                        }
-                    }
-                },
-                new com.android.volley.Response.ErrorListener(){
-                    @Override
-                    public void onErrorResponse(VolleyError error){
-                        // Do something when error occurred
-                        //Snackbar.make(getContext(),"Error...", Snackbar.LENGTH_LONG).show();
-                        Toast.makeText(getContext(), "verror"+error.getMessage(), Toast.LENGTH_SHORT).show();
-                        Log.d("verror",error.getMessage());
-                    }
-                }
-        );
-        // Add JsonArrayRequest to the RequestQueue
-        requestQueue.add(jsonArrayRequest);
-        //getUser();
-    }
-    public void getUser(){
-        final String url = "https://www.iampro.co/api/app_service.php?type=getSelectedUser&limit=15&uid=&my_id=";
-        // Initialize a new RequestQueue instance
-        RequestQueue requestQueue = Volley.newRequestQueue(getContext());
-
-        // Initialize a new JsonArrayRequest instance
-        JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(
-                Request.Method.GET,
-                url,
-                null,
-                new com.android.volley.Response.Listener<JSONArray>() {
-                    @Override
-                    public void onResponse(JSONArray response) {
-                        Log.d("responsef",response.toString());
-                        SectionDataModel dm = new SectionDataModel();
-                        dm.setHeaderTitle("User");
-                        ArrayList<SingleItemModel> singleItem = new ArrayList<SingleItemModel>();
-                        try{
-                            for(int i=0;i<response.length();i++){
-                                // Get current json object
-                                JSONObject student = response.getJSONObject(i);
-
-                                String name = student.getString("fname");
-                                String categoryv=student.getString("identity_type");
-                                String imagev=student.getString("avatar");
-                                String image=Config.AVATAR_URL+"200/200/"+imagev;
-                                String udate=student.getString("udate");
-                                Log.d("pdata",""+name+""+categoryv+""+image+""+udate);
-                                //SectionDataModel dm = new SectionDataModel();
-                                //dm.setHeaderTitle("Section " + i);
-                                Toast.makeText(getContext(),"rrrresponse_enterrr:",Toast.LENGTH_LONG).show();
-                                singleItem.add(new SingleItemModel(name,image,udate));
-
-                            }
-                            Log.d("bdm",singleItem.toString());
-                            dm.setAllItemsInSection(singleItem);
-                            Log.d("adm",singleItem.toString());
-                            Log.d("dmm",dm.toString());
-                            allSampleData.add(dm);
-                            Log.d("allsampledatav", allSampleData.toString());
-                            my_recycler_view.setHasFixedSize(true);
-                            Log.d("allSampleDatas",""+allSampleData.size()+"--"+allSampleData.toString());
-                            RecyclerViewDataAdapter adapter = new RecyclerViewDataAdapter(getContext(), allSampleData);
-
-                            my_recycler_view.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
-                            //my_recycler_view.setLayoutManager(new GridLayoutManager(getActivity(), 2));
-                            my_recycler_view.setAdapter(adapter);
+                            //getUser();
                             getProduct();
                         }
                         catch (JSONException e){
@@ -433,10 +372,96 @@ public class HomeFragment extends Fragment {
                     }
                 }
         );
+       // jsonArrayRequest.setRetryPolicy(new DefaultRetryPolicy(3000, 0, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+        // Add JsonArrayRequest to the RequestQueue
+        requestQueue.add(jsonArrayRequest);
+        //getUser();
+    }
+
+
+    public void getUser(){
+        final String url = "https://www.iampro.co/api/app_service.php?type=getSelectedUser&limit=15&uid=&my_id=";
+        // Initialize a new RequestQueue instance
+        RequestQueue requestQueue = Volley.newRequestQueue(getContext());
+
+        // Initialize a new JsonArrayRequest instance
+        JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(
+                Request.Method.GET,
+                url,
+                null,
+                new com.android.volley.Response.Listener<JSONArray>() {
+                    @Override
+                    public void onResponse(JSONArray response) {
+                        Log.d("responsef",response.toString());
+                        SectionDataModel dm = new SectionDataModel();
+                        dm.setHeaderTitle("User");
+                        ArrayList<SingleItemModel> singleItem = new ArrayList<SingleItemModel>();
+                       /* if(!singleItem.isEmpty()){
+                            singleItem.clear();
+                        } */
+                        if(!userSampleData.isEmpty()){
+                            userSampleData.clear();
+                        }
+                        try{
+                            for(int i=0;i<response.length();i++){
+                                // Get current json object
+                                JSONObject student = response.getJSONObject(i);
+
+                                String name = student.getString("fname");
+                                uid=student.getInt("id");
+                                String identity_type=student.getString("identity_type");
+                                String category=student.getString("category");
+                                String imagev=student.getString("avatar");
+                                String image= Config.AVATAR_URL+"200/200/"+imagev;
+                                String udate=student.getString("udate");
+                                Log.d("pdata",""+name+""+category+""+image+""+udate);
+                                //SectionDataModel dm = new SectionDataModel();
+                                //dm.setHeaderTitle("Section " + i);
+                                //Toast.makeText(getContext(),"rrrresponse_enterrr:",Toast.LENGTH_LONG).show();
+                                //singleItem.add(new SingleItemModel(name,image,udate));
+                                userSampleData.add(new UserModel(uid,name,image,udate,category));
+
+                            }
+                            Log.d("bdm",singleItem.toString());
+                            dm.setAllItemsInSection(singleItem);
+                            Log.d("adm",singleItem.toString());
+                            Log.d("dmm",dm.toString());
+                            //allSampleData.add(dm);
+                            Log.d("usersampledatav", userSampleData.toString());
+                            // my_recycler_view.setHasFixedSize(true);
+                            Log.d("userSampleDatas",""+userSampleData.size()+"--"+userSampleData.toString());
+
+
+                            user_adapter = new UserDataAdapter(getContext(),userSampleData,HomeFragment.this);
+                            my_recycler_view.setAdapter(user_adapter);
+
+                            LinearLayoutManager manager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
+                            my_recycler_view.setLayoutManager(manager);
+
+                        }
+                        catch (JSONException e){
+                            e.printStackTrace();
+                            Toast.makeText(getContext(), ""+e.getMessage(), Toast.LENGTH_SHORT).show();
+                            Log.d("catch_f",""+e.getMessage());
+                        }
+                    }
+                },
+                new com.android.volley.Response.ErrorListener(){
+                    @Override
+                    public void onErrorResponse(VolleyError error){
+                        // Do something when error occurred
+                        //Snackbar.make(getContext(),"Error...", Snackbar.LENGTH_LONG).show();
+                        Toast.makeText(getContext(), "verror"+error.getMessage(), Toast.LENGTH_SHORT).show();
+                        Log.d("verror",error.getMessage());
+                    }
+                }
+        );
+        //jsonArrayRequest.setRetryPolicy(new DefaultRetryPolicy(3000, 0, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
         // Add JsonArrayRequest to the RequestQueue
         requestQueue.add(jsonArrayRequest);
         //getProduct();
     }
+
     public void getProduct(){
         final String url = "https://www.iampro.co/api/app_service.php?type=all_product&uid=&name=product&my_id=";
         // Initialize a new RequestQueue instance
@@ -467,7 +492,7 @@ public class HomeFragment extends Fragment {
                                 Log.d("pdata",""+name+""+categoryv+""+image+""+udate);
                                 //SectionDataModel dm = new SectionDataModel();
                                 //dm.setHeaderTitle("Section " + i);
-                                Toast.makeText(getContext(),"rrrresponse_enterrr:",Toast.LENGTH_LONG).show();
+                                //Toast.makeText(getContext(),"rrrresponse_enterrr:",Toast.LENGTH_LONG).show();
                                 singleItem.add(new SingleItemModel(name,image,udate));
 
                             }
@@ -479,11 +504,11 @@ public class HomeFragment extends Fragment {
                             Log.d("allsampledatav", allSampleData.toString());
                             my_recycler_view.setHasFixedSize(true);
                             Log.d("allSampleDatas",""+allSampleData.size()+"--"+allSampleData.toString());
-                            RecyclerViewDataAdapter adapter = new RecyclerViewDataAdapter(getContext(), allSampleData);
+                            adapterr = new RecyclerViewDataAdapter(getContext(), allSampleData);
 
                             my_recycler_view.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
                             //my_recycler_view.setLayoutManager(new GridLayoutManager(getActivity(), 2));
-                            my_recycler_view.setAdapter(adapter);
+                            my_recycler_view.setAdapter(adapterr);
 
                             getProvide();
                         }
@@ -504,6 +529,7 @@ public class HomeFragment extends Fragment {
                     }
                 }
         );
+        //jsonArrayRequest.setRetryPolicy(new DefaultRetryPolicy(3000, 0, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
         // Add JsonArrayRequest to the RequestQueue
         requestQueue.add(jsonArrayRequest);
         //getProvide();
@@ -538,7 +564,7 @@ public class HomeFragment extends Fragment {
                                 Log.d("pdata",""+name+""+categoryv+""+image+""+udate);
                                 //SectionDataModel dm = new SectionDataModel();
                                 //dm.setHeaderTitle("Section " + i);
-                                Toast.makeText(getContext(),"rrrresponse_enterrr:",Toast.LENGTH_LONG).show();
+                                //Toast.makeText(getContext(),"rrrresponse_enterrr:",Toast.LENGTH_LONG).show();
                                 singleItem.add(new SingleItemModel(name,image,udate));
 
                             }
@@ -550,11 +576,11 @@ public class HomeFragment extends Fragment {
                             Log.d("allsampledatav", allSampleData.toString());
                             my_recycler_view.setHasFixedSize(true);
                             Log.d("allSampleDatas",""+allSampleData.size()+"--"+allSampleData.toString());
-                            RecyclerViewDataAdapter adapter = new RecyclerViewDataAdapter(getContext(), allSampleData);
+                            adapterr = new RecyclerViewDataAdapter(getContext(), allSampleData);
 
                             my_recycler_view.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
                             //my_recycler_view.setLayoutManager(new GridLayoutManager(getActivity(), 2));
-                            my_recycler_view.setAdapter(adapter);
+                            my_recycler_view.setAdapter(adapterr);
 
                             getDemand();
                         }
@@ -575,6 +601,7 @@ public class HomeFragment extends Fragment {
                     }
                 }
         );
+        //jsonArrayRequest.setRetryPolicy(new DefaultRetryPolicy(3000, 0, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
         // Add JsonArrayRequest to the RequestQueue
         requestQueue.add(jsonArrayRequest);
         //getDemand();
@@ -609,7 +636,7 @@ public class HomeFragment extends Fragment {
                                 Log.d("pdata",""+name+""+categoryv+""+image+""+udate);
                                 //SectionDataModel dm = new SectionDataModel();
                                 //dm.setHeaderTitle("Section " + i);
-                                Toast.makeText(getContext(),"rrrresponse_enterrr:",Toast.LENGTH_LONG).show();
+                                //Toast.makeText(getContext(),"rrrresponse_enterrr:",Toast.LENGTH_LONG).show();
                                 singleItem.add(new SingleItemModel(name,image,udate));
 
                             }
@@ -621,11 +648,11 @@ public class HomeFragment extends Fragment {
                             Log.d("allsampledatav", allSampleData.toString());
                             my_recycler_view.setHasFixedSize(true);
                             Log.d("allSampleDatas",""+allSampleData.size()+"--"+allSampleData.toString());
-                            RecyclerViewDataAdapter adapter = new RecyclerViewDataAdapter(getContext(), allSampleData);
+                           adapterr = new RecyclerViewDataAdapter(getContext(), allSampleData);
 
                             my_recycler_view.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
                             //my_recycler_view.setLayoutManager(new GridLayoutManager(getActivity(), 2));
-                            my_recycler_view.setAdapter(adapter);
+                            my_recycler_view.setAdapter(adapterr);
                         }
                         catch (JSONException e){
                             e.printStackTrace();
@@ -644,8 +671,14 @@ public class HomeFragment extends Fragment {
                     }
                 }
         );
+        //jsonArrayRequest.setRetryPolicy(new DefaultRetryPolicy(3000, 0, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
         // Add JsonArrayRequest to the RequestQueue
         requestQueue.add(jsonArrayRequest);
+    }
+
+    @Override
+    public void onItemClick(UserModel item) {
+        Toast.makeText(getContext(), item.getName()+ " is clicked", Toast.LENGTH_SHORT).show();
     }
 
 

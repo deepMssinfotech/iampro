@@ -175,12 +175,29 @@ public class ProvideFragment extends Fragment implements RecyclerViewAdapter.Ite
                                 String imagev=student.getString("image");
                                 String image= Config.URL_ROOT + "uploads/product/" + imagev;
                                 String udate=student.getString("udate");
+
+                                int totallike=student.getInt("totallike");
+                                int comments=student.getInt("comments");
+
+                                int scost=student.getInt("selling_cost");
+                                int pcost=student.getInt("purchese_cost");
+
+
                                 Log.d("pdata",""+name+""+categoryv+""+image+""+udate);
+                                //String daysago=student.getString("ago");
+                                String rating=student.getString("rating");
+                                float ratingv=Float.parseFloat(rating);
+                                JSONObject userDetail=student.getJSONObject("user_detail");
+                                 int uid=userDetail.getInt("id");
+                                   String fullname=userDetail.getString("fullname");
+                                   String avatar=Config.AVATAR_URL+"250/250/"+userDetail.getString("avatar");
+
                                 //SectionDataModel dm = new SectionDataModel();
                                 //dm.setHeaderTitle("Section " + i);
                                 //Toast.makeText(getContext(),"rrrresponse_enterrr:",Toast.LENGTH_LONG).show();
-                                //singleItem.add(new SingleItemModel(name,image,udate));
-                                allSampleData.add(new DataModel(name,image,udate,categoryv));
+                                // singleItem.add(new SingleItemModel(name,image,udate));
+                                //allSampleData.add(new DataModel(name,image,udate,categoryv));
+                                allSampleData.add(new DataModel(name,image,udate,categoryv,totallike,comments,scost,pcost,ratingv,uid,fullname,avatar));
 
                             }
                             //dm.setAllItemsInSection(singleItem);
@@ -223,7 +240,7 @@ public class ProvideFragment extends Fragment implements RecyclerViewAdapter.Ite
                     public void onErrorResponse(VolleyError error){
                         // Do something when error occurred
                         //Snackbar.make(getContext(),"Error...", Snackbar.LENGTH_LONG).show();
-                        Toast.makeText(getContext(), "verror"+error.getMessage(), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getContext(), error.getMessage(), Toast.LENGTH_SHORT).show();
                         Log.d("verror",error.getMessage());
                     }
                 }

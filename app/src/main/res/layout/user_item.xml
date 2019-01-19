@@ -76,7 +76,7 @@
                 android:gravity="center_horizontal"
 
                 android:drawableLeft="@drawable/ic_camera_white"
-
+                   android:drawablePadding="4dp"
                 android:background="@drawable/user_circular_corner"
                 android:layout_height="20dp"
                 android:textColor="@color/white"
@@ -89,6 +89,7 @@
                 android:gravity="center_horizontal"
                 android:drawableLeft="@drawable/ic_video_white"
                  android:background="@drawable/user_circular_corner"
+                android:drawablePadding="4dp"
                 android:text="1"
                 android:textColor="@color/white"
                 android:layout_marginTop="5dp"/>
@@ -99,6 +100,7 @@
                 android:layout_gravity="center_horizontal"
                 android:gravity="center_horizontal"
                 android:drawableLeft="@drawable/user_white"
+                android:drawablePadding="4dp"
                 android:text="0"
                 android:textColor="@color/white"
                 android:layout_marginTop="5dp"/>
@@ -115,6 +117,7 @@
                 android:drawableLeft="@drawable/product_white"
                 android:textColor="@color/white"
                 android:layout_gravity="center_horizontal"
+                android:drawablePadding="4dp"
                 android:gravity="center_horizontal"
 
                 android:text="4"
@@ -127,6 +130,7 @@
                 android:layout_gravity="center_horizontal"
                 android:gravity="center_horizontal"
                 android:drawableLeft="@drawable/provide_white"
+                android:drawablePadding="4dp"
                 android:textColor="@color/white"
                 android:layout_marginTop="5dp"/>
             <TextView
@@ -138,6 +142,7 @@
                 android:textColor="@color/white"
               android:background="@drawable/user_circular_corner"
                 android:drawableLeft="@drawable/demand_white"
+                android:drawablePadding="4dp"
                 android:text="0"/>
         </LinearLayout>
     </LinearLayout>
