@@ -29,8 +29,9 @@
         android:roundIcon="@drawable/iampro"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".user.EditProfileActivity"></activity>
+        <activity android:name=".user.EditProfileActivity" android:label="@string/edit_profile"></activity>
         <activity android:name=".user.JoinedFriendsActivity" />
+        <activity android:name=".user.ProfileImageCroperActivity" android:theme="@style/MyMaterialTheme" />
         <activity android:name=".user.FriendRequestActivity" />
         <activity android:name=".user.MyWhishlistActivity" android:label="@string/whishlist_title" />
         <activity android:name=".user.MyPurchsaeActivity" />
@@ -129,7 +130,7 @@
             android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".SearchActivity" />
         <activity android:name=".CartActivity" />
-        <activity android:name=".NotificationActivity" />
+        <activity android:name=".NotificationActivity" android:label="@string/notifications_title" />
         <activity android:name=".MessageActivity" />
     </application>
 

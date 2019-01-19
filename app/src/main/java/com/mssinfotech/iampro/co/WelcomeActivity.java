@@ -13,6 +13,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.mssinfotech.iampro.co.common.CircleTransform;
 import com.mssinfotech.iampro.co.services.ScheduledService;
 import com.mssinfotech.iampro.co.user.ProfileActivity;
@@ -47,12 +48,7 @@ public class WelcomeActivity extends AppCompatActivity implements View.OnClickLi
 
             String avatar=Config.AVATAR_URL+"250/250/"+PrefManager.getLoginDetail(this,"img_url");
             username.setText(PrefManager.getLoginDetail(this,"fname"));
-            Picasso.get()
-                    .load(avatar)
-                    .placeholder(R.drawable.iampro)
-                    .error(R.drawable.image)
-                    .transform(new CircleTransform())
-                    .into(imguser);
+            Glide.with(this).load(avatar).into(imguser);
             Log.d(Config.TAG,avatar);
             imguser.setOnClickListener(this);
         }

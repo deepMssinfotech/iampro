@@ -7,15 +7,19 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.mssinfotech.iampro.co.R;
 import com.mssinfotech.iampro.co.common.CircleTransform;
 import com.mssinfotech.iampro.co.common.Config;
 import com.mssinfotech.iampro.co.utils.PrefManager;
 import com.squareup.picasso.Picasso;
 
+import de.hdodenhof.circleimageview.CircleImageView;
+
 public class MyProductActivity extends AppCompatActivity {
 
-    ImageView userimage,userbackgroud;
+    ImageView userbackgroud;
+    CircleImageView userimage;
     TextView username;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,17 +33,8 @@ public class MyProductActivity extends AppCompatActivity {
         userimage = findViewById(R.id.userimage);
         userbackgroud = findViewById(R.id.userbackgroud);
         username.setText("My Product");
-        Picasso.get()
-                .load(avatar)
-                .placeholder(R.drawable.iampro)
-                .transform(new CircleTransform())
-                .error(R.drawable.image)
-                .into(userimage);
-        Picasso.get()
-                .load(background)
-                .placeholder(R.drawable.profile_background)
-                .error(R.drawable.profile_background)
-                .into(userbackgroud);
+        Glide.with(this).load(background).into(userbackgroud);
+        Glide.with(this).load(avatar).into(userimage);
 
     }
     public void redirect(View v){

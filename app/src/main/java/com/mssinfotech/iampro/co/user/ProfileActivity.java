@@ -11,7 +11,6 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.mssinfotech.iampro.co.R;
-import com.mssinfotech.iampro.co.adapter.FeedListAdapter;
 import com.mssinfotech.iampro.co.app.AppController;
 import com.mssinfotech.iampro.co.common.CircleTransform;
 import com.mssinfotech.iampro.co.data.FeedItem;
@@ -35,13 +34,14 @@ import com.android.volley.VolleyError;
 import com.android.volley.VolleyLog;
 import com.android.volley.toolbox.JsonObjectRequest;
 
+import de.hdodenhof.circleimageview.CircleImageView;
+
 public class ProfileActivity extends AppCompatActivity {
 
     private static final String TAG = ProfileActivity.class.getSimpleName();
-    private RecyclerView mRecyclerView;
-    private FeedListAdapter listAdapter;
     private List<FeedItem> feedItems;
-    ImageView userimage,userbackgroud;
+    ImageView userbackgroud;
+    CircleImageView userimage;
     TextView username;
     private String URL_FEED = "",uid="";
     private Integer start=0,limit=20;
@@ -61,49 +61,8 @@ public class ProfileActivity extends AppCompatActivity {
         userimage = findViewById(R.id.userimage);
         userbackgroud = findViewById(R.id.userbackgroud);
         username.setText(PrefManager.getLoginDetail(this,"fname") +" "+PrefManager.getLoginDetail(this,"lname"));
-        Glide.with(this)
-                .load(background)
-                .into(userbackgroud);
-        Picasso.get()
-                .load(avatar)
-                .placeholder(R.drawable.iampro)
-                .transform(new CircleTransform())
-                .error(R.drawable.image)
-                .into(userimage);
-        feedItems = new ArrayList<FeedItem>();
-        handler = new Handler();
-        loadFeedList(start,limit);
-        mRecyclerView = (RecyclerView ) findViewById(R.id.list);
-        mRecyclerView.setHasFixedSize(true);
-        mLayoutManager = new LinearLayoutManager(this);
-        mRecyclerView.setLayoutManager(mLayoutManager);
-        // create an Object for Adapter
-        listAdapter = new FeedListAdapter(feedItems, mRecyclerView);
-        // set the adapter object to the Recyclerview
-        mRecyclerView.setAdapter(listAdapter);
-        listAdapter.setOnLoadMoreListener(new FeedListAdapter.OnLoadMoreListener() {
-            @Override
-            public void onLoadMore() {
-                //add null , so the adapter will check view_type and show progress bar at bottom
-                feedItems.add(null);
-                listAdapter.notifyItemInserted(feedItems.size() - 1);
-
-                handler.postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        //   remove progress item
-                        feedItems.remove(feedItems.size() - 1);
-                        listAdapter.notifyItemRemoved(feedItems.size());
-                        //add items one by one
-                        int start = feedItems.size();
-                        int end = start + 20;
-                        loadFeedList(end,limit);
-                        listAdapter.setLoaded();
-                    }
-                }, 2000);
-            }
-        });
-
+        Glide.with(this).load(background).into(userbackgroud);
+        Glide.with(this).load(avatar).into(userimage);
     }
     private void  loadFeedList(Integer mStart,Integer mLimit){
         URL_FEED = Config.API_URL+ "feed_service.php?type=AllFeeds&start=" +mStart.toString()+ "&limit=" +mLimit.toString()+ "&fid=" +uid+ "&uid=" +uid+ "&my_id=" +uid;

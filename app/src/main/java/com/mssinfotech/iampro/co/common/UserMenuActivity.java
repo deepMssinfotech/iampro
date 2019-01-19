@@ -16,9 +16,11 @@ import com.bumptech.glide.Glide;
 import com.mssinfotech.iampro.co.CartActivity;
 import com.mssinfotech.iampro.co.DashboardActivity;
 import com.mssinfotech.iampro.co.HomeActivity;
+import com.mssinfotech.iampro.co.IntroActivity;
 import com.mssinfotech.iampro.co.MessageActivity;
 import com.mssinfotech.iampro.co.R;
 import com.mssinfotech.iampro.co.SearchActivity;
+import com.mssinfotech.iampro.co.WelcomeActivity;
 import com.mssinfotech.iampro.co.user.ChangePasswordActivity;
 import com.mssinfotech.iampro.co.user.EditProfileActivity;
 import com.mssinfotech.iampro.co.user.FriendRequestActivity;
@@ -47,7 +49,7 @@ public class UserMenuActivity  extends Fragment {
     private View.OnClickListener dashboardOnClickListener = new View.OnClickListener() {
         public void onClick(View v) {
             if(function.isSamePage("activity_dashboard"))return;
-            Intent intent = new Intent(getContext(), DashboardActivity.class);
+            Intent intent = new Intent(getContext(), WelcomeActivity.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             getContext().startActivity(intent);
         }
