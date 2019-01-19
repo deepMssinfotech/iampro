@@ -60,26 +60,28 @@ public class PrefManager {
             myid = uid;
         }
         if(myid != null) {
-            String myurl = Config.API_URL + "ajax.php?type=friend_detail&id=" + uid + "&uid=" + uid;
+            String myurl = Config.API_URL + "ajax.php?type=friend_detail&id=" + myid + "&uid=" + myid;
+
+            Log.d(Config.TAG, myurl);
             final SharedPreferences.Editor editor = sharedPreferences.edit();
             StringRequest stringRequest = new StringRequest(myurl,
                     new Response.Listener<String>() {
                         @Override
                         public void onResponse(String response) {
                             JSONObject result = null;
-                            //Log.d(Config.TAG, response);
+
                             try {
+                                Log.d(Config.TAG, response);
                                 result = new JSONObject(response);
                                 //Storing the Array of JSON String to our JSON Array
                                 editor.putBoolean(IS_LOGIN, true);
                                 editor.putString("username",result.getString("username"));
-                                editor.putString("password", result.getString("password"));
-                                editor.putString("img_url",result.getString("username"));
-                                editor.putString("id",result.getString("username"));
-                                editor.putString("mobile",result.getString("username"));
-                                editor.putString("fname",result.getString("username"));
-                                editor.putString("lname",result.getString("username"));
-                                editor.putString("email",result.getString("username"));
+                                editor.putString("img_url",result.getString("avatar"));
+                                editor.putString("id",result.getString("id"));
+                                editor.putString("mobile",result.getString("mobile"));
+                                editor.putString("fname",result.getString("fname"));
+                                editor.putString("lname",result.getString("lname"));
+                                editor.putString("email",result.getString("email"));
                                 editor.putString("banner_image",result.getString("banner_image"));
                                 editor.putString("img_banner_image",result.getString("img_banner_image"));
                                 editor.putString("video_banner_image",result.getString("video_banner_image"));

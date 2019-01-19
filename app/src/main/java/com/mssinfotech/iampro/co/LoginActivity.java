@@ -126,7 +126,7 @@ public class LoginActivity extends AppCompatActivity{
                                 SharedPreferences.Editor editor = sharedPreferences.edit();
                                 editor.putBoolean("IS_LOGIN", true);
                                 editor.putString("username",unamee);
-                                editor.putString("password", unamee);
+                                editor.putString("password", passwordd);
                                 editor.putString("img_url",imgurl);
                                 editor.putString("id",id);
                                 editor.putString("mobile",mobilev);

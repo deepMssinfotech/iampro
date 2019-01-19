@@ -36,9 +36,11 @@ import com.mssinfotech.iampro.co.user.MyWhishlistActivity;
 import com.mssinfotech.iampro.co.user.ProfileActivity;
 import com.mssinfotech.iampro.co.utils.PrefManager;
 
+import de.hdodenhof.circleimageview.CircleImageView;
+
 public class UserMenuActivity  extends Fragment {
 
-    GridView mGridView;
+    GridView mGridView;;
     ImageView menu_btn_dashboard,menu_btn_myprofile,menu_btn_editprofile,menu_btn_changepassword,menu_btn_joinedfriend,menu_btn_friendrequest,menu_btn_myphoto,menu_btn_myvideo,menu_btn_myproduct,menu_btn_myprovide,menu_btn_demand,menu_btn_mymessage,menu_btn_mycart,menu_btn_myselling,menu_btn_mypurchase,menu_btn_share,menu_btn_mywhishlist,menu_btn_logout;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup parent, Bundle savedInstanceState) {
@@ -236,13 +238,14 @@ public class UserMenuActivity  extends Fragment {
         menu_btn_share.setOnClickListener(shareOnClickListener);
         menu_btn_mywhishlist.setOnClickListener(mywhishlistOnClickListener);
         menu_btn_logout.setOnClickListener(logoutOnClickListener);
+
         String avatar=Config.AVATAR_URL+"250/250/"+PrefManager.getLoginDetail(getContext(),"img_url");
         String background=Config.AVATAR_URL+"h/250/"+PrefManager.getLoginDetail(getContext(),"banner_image");
         TextView username = view.findViewById(R.id.username);
         ImageView userbackgroud = view.findViewById(R.id.userbackgroud);
+        CircleImageView userimage = view.findViewById(R.id.userimage);
         username.setText(PrefManager.getLoginDetail(getContext(),"fname") +" "+PrefManager.getLoginDetail(getContext(),"lname"));
-        Glide.with(this)
-                .load(background)
-                .into(userbackgroud);
+        Glide.with(this).load(background).into(userbackgroud);
+        Glide.with(this).load(avatar).into(userimage);
     }
 }

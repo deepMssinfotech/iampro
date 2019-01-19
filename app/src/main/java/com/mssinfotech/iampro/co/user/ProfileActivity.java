@@ -56,13 +56,13 @@ public class ProfileActivity extends AppCompatActivity {
         uid=PrefManager.getLoginDetail(this,"id");
         String avatar=Config.AVATAR_URL+"250/250/"+PrefManager.getLoginDetail(this,"img_url");
         String background=Config.AVATAR_URL+"h/250/"+PrefManager.getLoginDetail(this,"banner_image");
-
         username = findViewById(R.id.username);
         userimage = findViewById(R.id.userimage);
         userbackgroud = findViewById(R.id.userbackgroud);
         username.setText(PrefManager.getLoginDetail(this,"fname") +" "+PrefManager.getLoginDetail(this,"lname"));
         Glide.with(this).load(background).into(userbackgroud);
         Glide.with(this).load(avatar).into(userimage);
+        PrefManager.updateUserData(this,null);
     }
     private void  loadFeedList(Integer mStart,Integer mLimit){
         URL_FEED = Config.API_URL+ "feed_service.php?type=AllFeeds&start=" +mStart.toString()+ "&limit=" +mLimit.toString()+ "&fid=" +uid+ "&uid=" +uid+ "&my_id=" +uid;

@@ -156,6 +156,7 @@ public class EditProfileActivity extends AppCompatActivity {
         state= findViewById(R.id.state);
         country=findViewById(R.id.country);
         getData();
+        PrefManager.updateUserData(this,null);
     }
     public void SaveForm(View v)
     {
