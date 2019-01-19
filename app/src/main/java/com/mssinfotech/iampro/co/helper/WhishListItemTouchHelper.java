@@ -1,4 +1,4 @@
-package com.mssinfotech.iampro.co.utils;
+package com.mssinfotech.iampro.co.helper;
 import android.graphics.Canvas;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;

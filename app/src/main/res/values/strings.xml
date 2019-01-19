@@ -2,15 +2,19 @@
     <string name="app_name">iampro</string>
     <string name="title_home">Home</string>
     <string name="whishlist_title">My WhishList</string>
+    <string name="edit_profile">Edit Profile</string>
     <string name="app_login">Login</string>
     <string name="title_dashboard">Dashboard</string>
-    <string name="title_notifications">Notifications</string>
+    <string name="notifications_title">My Notifications</string>
     <string name="add_product">Add Product</string>
     <array name="cat">
         <item>Select</item>
         <item>Other</item>
     </array>
-
+    <plurals name="likes_count">
+        <item quantity="one">%d like</item>
+        <item quantity="other">%d likes</item>
+    </plurals>
     <!-- home fragment    -->
     <string name="popular">Popular Movies</string>
     <string name="top_rated">Top Rated Movies</string>
