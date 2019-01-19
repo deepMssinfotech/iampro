@@ -3,6 +3,7 @@ package com.mssinfotech.iampro.co;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -92,7 +93,7 @@ public class LoginActivity extends AppCompatActivity{
                     @Override
                     public void onResponse(String s) {
                         //Disimissing the progress dialog
-                        loading.dismiss();
+                        //loading.dismiss();
                         //Showing toast message of the response
                         //Toast.makeText(LoginActivity.this, s , Toast.LENGTH_LONG).show();
                         Log.d("Lresponse",""+s);
@@ -121,14 +122,32 @@ public class LoginActivity extends AppCompatActivity{
 
                                 String name=fnamem+"\t"+lnamem;
                                 String imgurl=avatarv;
-                                saveLoginDetails(unamee,passwordd,avatarv,id,mobilev,fnamem,lnamem,email,banner_imagev,  img_banner_image,  video_banner_image,  profile_image_gallery,  profile_video_gallery);
+                                SharedPreferences sharedPreferences = getApplication().getSharedPreferences("LoginDetails", MODE_PRIVATE);
+                                SharedPreferences.Editor editor = sharedPreferences.edit();
+                                editor.putBoolean("IS_LOGIN", true);
+                                editor.putString("username",unamee);
+                                editor.putString("password", unamee);
+                                editor.putString("img_url",imgurl);
+                                editor.putString("id",id);
+                                editor.putString("mobile",mobilev);
+                                editor.putString("fname",fnamem);
+                                editor.putString("lname",lnamem);
+                                editor.putString("email",email);
+                                editor.putString("banner_image",banner_imagev);
+
+                                editor.putString("img_banner_image",img_banner_image);
+                                editor.putString("video_banner_image",video_banner_image);
+                                editor.putString("profile_image_gallery",profile_image_gallery);
+                                editor.putString("profile_video_gallery",profile_video_gallery);
                                 etemail.setText(" ");
                                 etpassword.setText(" ");
-
+                                Toast.makeText(LoginActivity.this, "Login successfully please wait..." , Toast.LENGTH_LONG).show();
                                 Intent intent=new Intent(getApplicationContext(),HomeActivity.class);
                                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                                 startActivity(intent);
                                 finish();
+                                loading.dismiss();
                             }
                         }
                         catch(JSONException e)
@@ -162,8 +181,5 @@ public class LoginActivity extends AppCompatActivity{
 
         //Adding request to the queue
         requestQueue.add(stringRequest);
-    }
-    private void saveLoginDetails(String username, String password,String img_url,String id,String mobile,String fname,String lname,String email,String banner_imagev, String img_banner_image, String video_banner_image, String profile_image_gallery, String profile_video_gallery) {
-        new PrefManager(this).saveLoginDetails(username, password,img_url,id,mobile,fname,lname,email,banner_imagev,img_banner_image,  video_banner_image,  profile_image_gallery,  profile_video_gallery);
     }
 }

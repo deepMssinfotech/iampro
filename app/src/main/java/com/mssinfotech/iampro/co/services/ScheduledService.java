@@ -28,7 +28,7 @@ public class ScheduledService  extends Service
         timer.scheduleAtFixedRate(new TimerTask() {
             @Override
             public void run() {
-                Config.sendRequestToServer();   //Your code here
+                Config.sendRequestToServer(getApplicationContext());   //Your code here
             }
         }, 0, 5*1000);//5 Sec
     }

@@ -102,7 +102,7 @@ public class IncludeShortMenu  extends RelativeLayout {
                             demand_text.setText(result.getString("total_count_demand"));
                             image_text.setText(result.getString("total_count_image"));
                             video_text.setText(result.getString("total_count_video"));
-                            //user_text.setText(result.getString("total_count_video"));
+                            user_text.setText(result.getString("total_count_friend"));
 
                         } catch (JSONException e) {
                             e.printStackTrace();

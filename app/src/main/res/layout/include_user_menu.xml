@@ -173,6 +173,7 @@
                     android:layout_weight="1"
                     android:layout_width="0dp"
                     android:layout_height="match_parent">
+
                     <ImageView
                         android:id="@+id/menu_btn_friendrequest"
                         android:layout_gravity="center"
@@ -181,7 +182,16 @@
                         android:layout_margin="@dimen/menu_img_margin"
                         android:padding="@dimen/menu_img_padding"
                         android:src="@drawable/pendingfriend_icon"/>
-
+                    <TextView
+                        android:background="@drawable/notify_circle_red"
+                        android:id="@+id/count_friend_request"
+                        android:layout_marginLeft="40dp"
+                        android:text="0"
+                        android:textColor="#ffffff"
+                        android:textSize="10dp"
+                        android:gravity="center"
+                        android:layout_width="25dp"
+                        android:layout_height="25dp" />
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
@@ -356,6 +366,16 @@
                         android:padding="@dimen/menu_img_padding"
                         android:src="@drawable/cart_icon"/>
                     <TextView
+                        android:background="@drawable/notify_circle_red"
+                        android:id="@+id/count_cart"
+                        android:layout_marginLeft="40dp"
+                        android:text="0"
+                        android:textColor="#ffffff"
+                        android:textSize="10dp"
+                        android:gravity="center"
+                        android:layout_width="25dp"
+                        android:layout_height="25dp" />
+                    <TextView
                         android:textSize="12dp"
                         android:layout_below="@+id/menu_btn_mycart"
                         android:text="My Cart"
@@ -439,6 +459,16 @@
                         android:layout_margin="@dimen/menu_img_margin"
                         android:padding="@dimen/menu_img_padding"
                         android:src="@drawable/whishlist_icon"/>
+                    <TextView
+                        android:background="@drawable/notify_circle_red"
+                        android:id="@+id/count_whishlist"
+                        android:layout_marginLeft="40dp"
+                        android:text="0"
+                        android:textColor="#ffffff"
+                        android:textSize="10dp"
+                        android:gravity="center"
+                        android:layout_width="25dp"
+                        android:layout_height="25dp" />
                     <TextView
                         android:textSize="12dp"
                         android:layout_below="@+id/menu_btn_mywhishlist"

@@ -93,6 +93,7 @@ public class AddDemandActivity extends AppCompatActivity {
                 selectMultipleImage();
             }
         });
+        function.executeUrl(this,"get",Config.API_URL+"app_service.php?type=delete_temp_data&uid="+PrefManager.getLoginDetail(this,"id"),null);
     }
     private void selectMultipleImage(){
         Intent intent = new Intent();

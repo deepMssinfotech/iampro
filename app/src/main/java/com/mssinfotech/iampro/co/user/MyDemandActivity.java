@@ -3,6 +3,7 @@ package com.mssinfotech.iampro.co.user;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -29,6 +30,7 @@ public class MyDemandActivity extends AppCompatActivity {
         String fname=PrefManager.getLoginDetail(this,"fname");
         String avatar=Config.AVATAR_URL+"250/250/"+PrefManager.getLoginDetail(this,"img_url");
         String background=Config.BANNER_URL+"h/250/"+PrefManager.getLoginDetail(this,"banner_image");
+        Log.d(Config.TAG,background);
         username = findViewById(R.id.username);
         userimage = findViewById(R.id.userimage);
         userbackgroud = findViewById(R.id.userbackgroud);
