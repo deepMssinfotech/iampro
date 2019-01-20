@@ -74,6 +74,7 @@ public class HomeActivity extends AppCompatActivity {
         if (Config.doubleBackToExitPressedOnce) {
             super.onBackPressed();
             finish();
+            android.os.Process.killProcess(android.os.Process.myPid());
             return;
         }
 

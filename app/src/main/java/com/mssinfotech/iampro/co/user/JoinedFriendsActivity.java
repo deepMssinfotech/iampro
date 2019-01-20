@@ -1,9 +1,11 @@
 package com.mssinfotech.iampro.co.user;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.mssinfotech.iampro.co.R;
@@ -34,5 +36,19 @@ public class JoinedFriendsActivity extends AppCompatActivity {
         Glide.with(this).load(background).into(userbackgroud);
         Glide.with(this).load(avatar).into(userimage);
         PrefManager.updateUserData(this,null);
+        Intent i = new Intent();
+        Config.PREVIOUS_PAGE_TAG = i.getStringExtra(Config.PAGE_TAG);
+    }
+    @Override
+    public void onBackPressed() {
+        //super.onBackPressed();
+        Intent i = new Intent();
+        i.putExtra(Config.PAGE_TAG, Config.PREVIOUS_PAGE_TAG);
+        setResult(RESULT_OK, i);
+        finish();
+    }
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        Toast.makeText(this, "mss popup"+resultCode+"--"+requestCode,  Toast.LENGTH_LONG).show();
     }
 }

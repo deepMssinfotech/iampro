@@ -1,6 +1,7 @@
 package com.mssinfotech.iampro.co.common;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.v4.app.DialogFragment;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -189,9 +190,11 @@ public class UserMenuActivity  extends Fragment {
     private View.OnClickListener logoutOnClickListener = new View.OnClickListener() {
         public void onClick(View v) {
             //todo logout cose
+            PrefManager.logout(getContext());
             Intent intent = new Intent(getContext(), HomeActivity.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             getContext().startActivity(intent);
+
         }
     };
     // This event is triggered soon after onCreateView().

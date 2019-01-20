@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.mssinfotech.iampro.co.R;
@@ -36,6 +37,9 @@ public class MyVideoActivity extends AppCompatActivity {
         Glide.with(this).load(background).into(userbackgroud);
         Glide.with(this).load(avatar).into(userimage);
 
+    }
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        Toast.makeText(this, "mss popup",  Toast.LENGTH_LONG).show();
     }
     public void redirect(View v){
         Intent i_signup = new Intent(MyVideoActivity.this,AddVideoActivity.class);

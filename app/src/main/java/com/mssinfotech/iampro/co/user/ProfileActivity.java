@@ -1,6 +1,7 @@
 package com.mssinfotech.iampro.co.user;
 
 
+import android.content.Intent;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -8,6 +9,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.mssinfotech.iampro.co.R;
@@ -63,6 +65,9 @@ public class ProfileActivity extends AppCompatActivity {
         Glide.with(this).load(background).into(userbackgroud);
         Glide.with(this).load(avatar).into(userimage);
         PrefManager.updateUserData(this,null);
+    }
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        Toast.makeText(this, "mss popup",  Toast.LENGTH_LONG).show();
     }
     private void  loadFeedList(Integer mStart,Integer mLimit){
         URL_FEED = Config.API_URL+ "feed_service.php?type=AllFeeds&start=" +mStart.toString()+ "&limit=" +mLimit.toString()+ "&fid=" +uid+ "&uid=" +uid+ "&my_id=" +uid;

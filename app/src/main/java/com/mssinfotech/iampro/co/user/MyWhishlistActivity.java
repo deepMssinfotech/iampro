@@ -1,5 +1,6 @@
 package com.mssinfotech.iampro.co.user;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.constraint.ConstraintLayout;
@@ -13,6 +14,7 @@ import android.support.v7.widget.helper.ItemTouchHelper;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.Response;
@@ -64,9 +66,23 @@ public class MyWhishlistActivity extends AppCompatActivity implements WhishListI
         ItemTouchHelper.SimpleCallback itemTouchHelperCallback = new WhishListItemTouchHelper(0, ItemTouchHelper.LEFT, this);
         new ItemTouchHelper(itemTouchHelperCallback).attachToRecyclerView(recyclerView);
 
+        Intent i = new Intent();
+        Config.PREVIOUS_PAGE_TAG = i.getStringExtra(Config.PAGE_TAG);
 
         // making http call and fetching menu json
         prepareWhishList();
+    }
+    @Override
+    public void onBackPressed() {
+        //super.onBackPressed();
+        Intent i = new Intent();
+        i.putExtra(Config.PAGE_TAG, Config.PREVIOUS_PAGE_TAG);
+        setResult(RESULT_OK, i);
+        finish();
+    }
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        Toast.makeText(this, "mss popup"+resultCode+"--"+requestCode,  Toast.LENGTH_LONG).show();
     }
     /**
      * method make volley network call and parses json

@@ -41,43 +41,54 @@ public class IncludeShortMenu  extends RelativeLayout {
         (this.findViewById(R.id.img_provide)).setOnClickListener(provideOnClickListener);
         (this.findViewById(R.id.img_demand)).setOnClickListener(demandOnClickListener);
         userProfileCount(context, PrefManager.getLoginDetail(context,"id"));
+
     }
     private OnClickListener imageOnClickListener = new OnClickListener() {
         public void onClick(View v) {
             if(function.isSamePage("activity_my_image"))return;
             Intent intent = new Intent(getContext(), MyImageActivity.class);
-            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            intent.putExtra(Config.PAGE_TAG,"activity_my_image");
             getContext().startActivity(intent);
         }
     };
     private OnClickListener videoOnClickListener = new OnClickListener() {
         public void onClick(View v) {
             if(function.isSamePage("activity_my_video"))return;
-            getContext().startActivity(new Intent(getContext(), MyVideoActivity.class));
+            Intent intent = new Intent(getContext(), MyVideoActivity.class);
+            intent.putExtra(Config.PAGE_TAG,"activity_my_video");
+            getContext().startActivity(intent);
         }
     };
     private OnClickListener userOnClickListener = new OnClickListener() {
         public void onClick(View v) {
             if(function.isSamePage("activity_joined_friends"))return;
-            getContext().startActivity(new Intent(getContext(), JoinedFriendsActivity.class));
+            Intent intent = new Intent(getContext(), JoinedFriendsActivity.class);
+            intent.putExtra(Config.PAGE_TAG,"activity_joined_friends");
+            getContext().startActivity(intent);
         }
     };
     private OnClickListener productOnClickListener = new OnClickListener() {
         public void onClick(View v) {
             if(function.isSamePage("activity_my_product"))return;
-            getContext().startActivity(new Intent(getContext(), MyProductActivity.class));
+            Intent intent = new Intent(getContext(), MyProductActivity.class);
+            intent.putExtra(Config.PAGE_TAG,"activity_my_product");
+            getContext().startActivity(intent);
         }
     };
     private OnClickListener provideOnClickListener = new OnClickListener() {
         public void onClick(View v) {
             if(function.isSamePage("activity_my_provide"))return;
-            getContext().startActivity(new Intent(getContext(), MyProvideActivity.class));
+            Intent intent = new Intent(getContext(), MyProvideActivity.class);
+            intent.putExtra(Config.PAGE_TAG,"activity_my_provide");
+            getContext().startActivity(intent);
         }
     };
     private OnClickListener demandOnClickListener = new OnClickListener() {
         public void onClick(View v) {
             if(function.isSamePage("activity_my_demand"))return;
-            getContext().startActivity(new Intent(getContext(), MyDemandActivity.class));
+            Intent intent = new Intent(getContext(), MyDemandActivity.class);
+            intent.putExtra(Config.PAGE_TAG,"activity_my_demand");
+            getContext().startActivity(intent);
         }
     };
     public void userProfileCount(Context context, String uid){
