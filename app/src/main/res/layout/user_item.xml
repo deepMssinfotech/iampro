@@ -25,13 +25,15 @@
           android:layout_height="wrap_content"
           android:orientation="horizontal"
           android:layout_weight="1">
-          <ImageView
+          <de.hdodenhof.circleimageview.CircleImageView
               android:id="@+id/imageView"
               android:layout_width="77dp"
               android:layout_height="77dp"
               android:padding="10dp"
               android:layout_gravity="center"
-              android:src="@drawable/user_slide_info_message"/>
+              android:src="@drawable/user_slide_info_message"
+              app:civ_border_width="1dp"
+              app:civ_border_color="#FF000000"/>
 
           <LinearLayout
               android:layout_width="wrap_content"

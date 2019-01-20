@@ -244,11 +244,25 @@ public class HomeFragment extends Fragment implements UserDataAdapter.ItemListen
                                 String image= Config.URL_ROOT+"uploads/album/450/500/"+imagev;
                                 String udate=student.getString("udate");
                                 Log.d("pdata",""+name+""+categoryv+""+image+""+udate);
+                                 String daysago=student.getString("ago");
+                                int totallike=student.getInt("totallike");
+                                int comments=student.getInt("comments");
+
+
+
+
+                                JSONObject userDetail=student.getJSONObject("user_detail");
+
+                                int uid=userDetail.getInt("id");
+                                String fullname=userDetail.getString("fullname");
+                                String avatar=Config.AVATAR_URL+"250/250/"+userDetail.getString("avatar");
+
                                 //SectionDataModel dm = new SectionDataModel();
                                 //dm.setHeaderTitle("Section " + i);
                                 //Toast.makeText(getContext(),"rrrresponse_enterrr:",Toast.LENGTH_LONG).show();
-                                singleItem.add(new SingleItemModel(name,image,udate));
 
+                                //singleItem.add(new SingleItemModel(name,image,udate));
+                                   singleItem.add(new SingleItemModel(name,image,udate,daysago,totallike,comments,uid,fullname,avatar));
                             }
                             Log.d("bdm",singleItem.toString());
                             dm.setAllItemsInSection(singleItem);
@@ -332,10 +346,25 @@ public class HomeFragment extends Fragment implements UserDataAdapter.ItemListen
                                 String image=Config.URL_ROOT + "uploads/v_image/" + imagev;
                                 String udate=student.getString("udate");
                                 Log.d("pdata",""+name+""+categoryv+""+image+""+udate);
+
+                                String daysago=student.getString("ago");
+                                int totallike=student.getInt("totallike");
+                                int comments=student.getInt("comments");
+
+
+
+
+                                JSONObject userDetail=student.getJSONObject("user_detail");
+
+                                int uid=userDetail.getInt("id");
+                                String fullname=userDetail.getString("fullname");
+                                String avatar=Config.AVATAR_URL+"250/250/"+userDetail.getString("avatar");
+
+
                                 //SectionDataModel dm = new SectionDataModel();
                                 //dm.setHeaderTitle("Section " + i);
                                 //Toast.makeText(getContext(),"rrrresponse_enterrr:",Toast.LENGTH_LONG).show();
-                                singleItem.add(new SingleItemModel(name,image,udate));
+                                singleItem.add(new SingleItemModel(name,image,udate,daysago,totallike,comments,uid,fullname,avatar));
 
                             }
                             Log.d("bdm",singleItem.toString());
@@ -352,8 +381,8 @@ public class HomeFragment extends Fragment implements UserDataAdapter.ItemListen
                             //my_recycler_view.setLayoutManager(new GridLayoutManager(getActivity(), 2));
                             my_recycler_view.setAdapter(adapterr);
 
-                            //getUser();
-                            getProduct();
+                           // getUser();
+                                getProduct();
                         }
                         catch (JSONException e){
                             e.printStackTrace();
@@ -493,7 +522,16 @@ public class HomeFragment extends Fragment implements UserDataAdapter.ItemListen
                                 //SectionDataModel dm = new SectionDataModel();
                                 //dm.setHeaderTitle("Section " + i);
                                 //Toast.makeText(getContext(),"rrrresponse_enterrr:",Toast.LENGTH_LONG).show();
-                                singleItem.add(new SingleItemModel(name,image,udate));
+
+                                String daysago=student.getString("ago");
+                                int totallike=student.getInt("totallike");
+                                int comments=student.getInt("comments");
+                                JSONObject userDetail=student.getJSONObject("user_detail");
+                                int uid=userDetail.getInt("id");
+                                String fullname=userDetail.getString("fullname");
+                                String avatar=Config.AVATAR_URL+"250/250/"+userDetail.getString("avatar");
+
+                                singleItem.add(new SingleItemModel(name,image,udate,daysago,totallike,comments,uid,fullname,avatar));
 
                             }
                             Log.d("bdm",singleItem.toString());
@@ -565,7 +603,16 @@ public class HomeFragment extends Fragment implements UserDataAdapter.ItemListen
                                 //SectionDataModel dm = new SectionDataModel();
                                 //dm.setHeaderTitle("Section " + i);
                                 //Toast.makeText(getContext(),"rrrresponse_enterrr:",Toast.LENGTH_LONG).show();
-                                singleItem.add(new SingleItemModel(name,image,udate));
+                                String daysago=student.getString("ago");
+                                int totallike=student.getInt("totallike");
+                                int comments=student.getInt("comments");
+                                JSONObject userDetail=student.getJSONObject("user_detail");
+                                int uid=userDetail.getInt("id");
+                                String fullname=userDetail.getString("fullname");
+                                String avatar=Config.AVATAR_URL+"250/250/"+userDetail.getString("avatar");
+
+                                singleItem.add(new SingleItemModel(name,image,udate,daysago,totallike,comments,uid,fullname,avatar));
+
 
                             }
                             Log.d("bdm",singleItem.toString());
@@ -637,7 +684,18 @@ public class HomeFragment extends Fragment implements UserDataAdapter.ItemListen
                                 //SectionDataModel dm = new SectionDataModel();
                                 //dm.setHeaderTitle("Section " + i);
                                 //Toast.makeText(getContext(),"rrrresponse_enterrr:",Toast.LENGTH_LONG).show();
-                                singleItem.add(new SingleItemModel(name,image,udate));
+
+                                String daysago=student.getString("ago");
+                                int totallike=student.getInt("totallike");
+                                int comments=student.getInt("comments");
+                                JSONObject userDetail=student.getJSONObject("user_detail");
+                                int uid=userDetail.getInt("id");
+                                String fullname=userDetail.getString("fullname");
+                                String avatar=Config.AVATAR_URL+"250/250/"+userDetail.getString("avatar");
+
+                                singleItem.add(new SingleItemModel(name,image,udate,daysago,totallike,comments,uid,fullname,avatar));
+
+
 
                             }
                             Log.d("bdm",singleItem.toString());

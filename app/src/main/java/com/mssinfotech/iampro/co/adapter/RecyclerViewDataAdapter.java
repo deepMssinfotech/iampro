@@ -56,12 +56,10 @@ public class RecyclerViewDataAdapter extends RecyclerView.Adapter<RecyclerViewDa
         itemRowHolder.btnMore.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-
                 Toast.makeText(v.getContext(), "click event on more, "+sectionName , Toast.LENGTH_SHORT).show();
+                 if (sectionName=="Images"){
 
-
-
+                 }
             }
         });
 
@@ -81,21 +79,24 @@ public class RecyclerViewDataAdapter extends RecyclerView.Adapter<RecyclerViewDa
 
     public class ItemRowHolder extends RecyclerView.ViewHolder {
 
-        protected TextView itemTitle;
+        protected TextView itemTitle,totallike,comments,daysago,user_name;
 
         protected RecyclerView recycler_view_list;
 
-        protected Button btnMore;
-
-
+        protected de.hdodenhof.circleimageview.CircleImageView btnMore,user_image;
 
         public ItemRowHolder(View view) {
             super(view);
 
             this.itemTitle = (TextView) view.findViewById(R.id.itemTitle);
             this.recycler_view_list = (RecyclerView) view.findViewById(R.id.recycler_view_list);
-            this.btnMore= (Button) view.findViewById(R.id.btnMore);
+            this.btnMore= view.findViewById(R.id.btnMore);
 
+             this.totallike=view.findViewById(R.id.tv_totallike);
+            this.comments=view.findViewById(R.id.tv_comments);
+            this.daysago=view.findViewById(R.id.tv_daysago);
+            this.user_image=view.findViewById(R.id.user_image);
+            this.user_name=view.findViewById(R.id.tv_user_name);
 
         }
 

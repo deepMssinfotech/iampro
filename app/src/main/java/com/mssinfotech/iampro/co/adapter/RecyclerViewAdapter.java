@@ -15,6 +15,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.resource.bitmap.CircleCrop;
 import com.bumptech.glide.request.RequestOptions;
 import com.mssinfotech.iampro.co.R;
 import android.view.ViewGroup;
@@ -52,10 +53,9 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         public TextView textView,tv_tlike,tv_comments,tv_daysago,tv_sprice,tv_pprice,uname;
 
-
-
         RatingBar ratingBar;
-        public ImageView imageView,userImage;
+        public ImageView imageView;
+        de.hdodenhof.circleimageview.CircleImageView userImage;
         public RelativeLayout relativeLayout;
         DataModel item;
         public ViewHolder(View v) {
@@ -99,7 +99,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
                  tv_sprice.setVisibility(View.VISIBLE);
                  tv_sprice.setText(String.valueOf(String.valueOf(item.getsCost())));
              }
-             if(String.valueOf(item.getpCost())!=null || !String.valueOf(item.getpCost()).equalsIgnoreCase(null)){
+             if(String.valueOf(item.getpCost())!=null || !String.valueOf(item.getpCost()).equalsIgnoreCase(null) || item.getpCost()!=0){
                    tv_pprice.setVisibility(View.VISIBLE);
                  tv_pprice.setText(String.valueOf(item.getpCost()));
                  }
@@ -112,9 +112,16 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
             Glide.with(mContext)
                     .load(userImages)
                     .apply(new RequestOptions()
-                            .centerCrop()
+                            .circleCrop().bitmapTransform(new CircleCrop())
                             .fitCenter())
                     .into(userImage);
+
+         /*   RequestOptions options=new RequestOptions();
+            options.centerCrop().placeholder(mContext.getResources().getDrawable(R.drawable.user_placeholder));
+            Glide.with(mContext)
+                    .load(userImages)
+                    .apply(options)
+                    .into(userImage); */
 
             Glide.with(mContext)
                     .load(url)

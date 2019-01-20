@@ -145,7 +145,7 @@ public class ProvideFragment extends Fragment implements RecyclerViewAdapter.Ite
         final String url = "https://www.iampro.co/api/app_service.php?type=all_product_classified&uid=&name=PROVIDE&my_id=";
         // Initialize a new RequestQueue instance
         RequestQueue requestQueue = Volley.newRequestQueue(getContext());
-
+        //Toast.makeText(getContext(), "getProvide", Toast.LENGTH_SHORT).show();
         // Initialize a new JsonArrayRequest instance
         JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(
                 Request.Method.GET,
@@ -154,17 +154,20 @@ public class ProvideFragment extends Fragment implements RecyclerViewAdapter.Ite
                 new com.android.volley.Response.Listener<JSONArray>() {
                     @Override
                     public void onResponse(JSONArray response) {
-                        Log.d("responsef",response.toString());
+                        Log.d("response_provide",response.toString());
                         SectionDataModel dm = new SectionDataModel();
+                        //Toast.makeText(getContext(),"rrrresponse_enterrr:1",Toast.LENGTH_LONG).show();
                         dm.setHeaderTitle("Provide");
                         ArrayList<SingleItemModel> singleItem = new ArrayList<SingleItemModel>();
-                        if(!singleItem.isEmpty()){
+                       /* if(!singleItem.isEmpty()){
                             singleItem.clear();
-                        }
-                        if(!allSampleData.isEmpty()){
+                        } */
+                        if(!allSampleData.isEmpty())
+                        {
                             allSampleData.clear();
                         }
                         try{
+                            int scost=0; int pcost=0;
                             for(int i=0;i<response.length();i++){
                                 // Get current json object
                                 JSONObject student = response.getJSONObject(i);
@@ -175,12 +178,23 @@ public class ProvideFragment extends Fragment implements RecyclerViewAdapter.Ite
                                 String imagev=student.getString("image");
                                 String image= Config.URL_ROOT + "uploads/product/" + imagev;
                                 String udate=student.getString("udate");
-
-                                int totallike=student.getInt("totallike");
+                                String tlike=student.getString("totallike");
+                                int totallike=Integer.parseInt(tlike);
+                                //int totallike=student.getInt("totallike");
                                 int comments=student.getInt("comments");
-
-                                int scost=student.getInt("selling_cost");
-                                int pcost=student.getInt("purchese_cost");
+                                scost = student.getInt("selling_cost");
+                               /*   if (String.valueOf(student.getInt("selling_cost"))==null){
+                                      scost=0;
+                                  }
+                                  else {
+                                      scost = student.getInt("selling_cost");
+                                  }
+                                if (String.valueOf(student.getInt("purchese_cost"))==null){
+                                    pcost=0;
+                                }
+                                else {
+                                    pcost = student.getInt("purchese_cost");
+                                } */
 
 
                                 Log.d("pdata",""+name+""+categoryv+""+image+""+udate);
@@ -194,12 +208,13 @@ public class ProvideFragment extends Fragment implements RecyclerViewAdapter.Ite
 
                                 //SectionDataModel dm = new SectionDataModel();
                                 //dm.setHeaderTitle("Section " + i);
-                                //Toast.makeText(getContext(),"rrrresponse_enterrr:",Toast.LENGTH_LONG).show();
+
                                 // singleItem.add(new SingleItemModel(name,image,udate));
                                 //allSampleData.add(new DataModel(name,image,udate,categoryv));
                                 allSampleData.add(new DataModel(name,image,udate,categoryv,totallike,comments,scost,pcost,ratingv,uid,fullname,avatar));
 
                             }
+                           // Toast.makeText(getContext(),"rrrresponse_enterrr:2",Toast.LENGTH_LONG).show();
                             //dm.setAllItemsInSection(singleItem);
 
                             //

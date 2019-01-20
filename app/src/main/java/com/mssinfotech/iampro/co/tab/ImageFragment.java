@@ -119,6 +119,13 @@ public class ImageFragment extends Fragment implements RecyclerViewAdapter.ItemL
 
                                 String daysago=student.getString("ago");
 
+
+                                JSONObject userDetail=student.getJSONObject("user_detail");
+
+                                int uid=userDetail.getInt("id");
+                                String fullname=userDetail.getString("fullname");
+                                String avatar=Config.AVATAR_URL+"250/250/"+userDetail.getString("avatar");
+
                                 //SectionDataModel dm = new SectionDataModel();
                                 //dm.setHeaderTitle("Section " + i);
                                 //Toast.makeText(getContext(),"rrrresponse_enterrr:",Toast.LENGTH_LONG).show();

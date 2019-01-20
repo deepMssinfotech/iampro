@@ -66,6 +66,13 @@ public class SectionListDataAdapter extends RecyclerView.Adapter<SectionListData
                         .centerCrop()
                         .fitCenter())
                 .into(holder.itemImage);
+
+        holder.itemImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(mContext, "Image clicked", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     @Override
