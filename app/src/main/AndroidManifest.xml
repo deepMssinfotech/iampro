@@ -32,6 +32,8 @@
         <activity android:name=".user.EditProfileActivity" android:label="@string/edit_profile"></activity>
         <activity android:name=".user.JoinedFriendsActivity" android:theme="@style/MyMaterialTheme" />
         <activity android:name=".user.ProfileImageCroperActivity" android:theme="@style/MyMaterialTheme"/>
+        <activity android:name=".user.VideoImageCroperActivity" android:theme="@style/MyMaterialTheme"/>
+        <activity android:name=".user.ImageImageCroperActivity" android:theme="@style/MyMaterialTheme"/>
         <activity android:name=".user.FriendRequestActivity" android:label="@string/friend_request" />
         <activity android:name=".user.MyWhishlistActivity" android:label="@string/whishlist_title"/>
         <activity android:name=".user.MyPurchsaeActivity" android:label="@string/my_purchase" />

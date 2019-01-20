@@ -5,17 +5,15 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".user.MyProductActivity">
-
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fab"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
-        android:layout_marginRight="@dimen/fab_margin_right"
         android:layout_marginBottom="@dimen/fab_margin_bottom"
+        android:layout_marginRight="@dimen/fab_margin_right"
         android:onClick="redirect"
-        app:backgroundTint="@color/color_provide_color"
-        app:elevation="0dp"
+        app:backgroundTint="@color/color_product_color"
         app:srcCompat="@android:drawable/ic_input_add" />
 
     <ScrollView
