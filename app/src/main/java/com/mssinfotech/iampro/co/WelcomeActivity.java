@@ -52,8 +52,8 @@ public class WelcomeActivity extends AppCompatActivity implements View.OnClickLi
             Log.d(Config.TAG,avatar);
             imguser.setOnClickListener(this);
         }
-        Intent i= new Intent(this, ScheduledService.class);
-        this.startService(i);
+       // Intent i= new Intent(this, ScheduledService.class);
+       // this.startService(i);
     }
 
     @Override

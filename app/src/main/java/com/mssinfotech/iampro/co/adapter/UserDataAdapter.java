@@ -51,14 +51,15 @@ public class UserDataAdapter extends RecyclerView.Adapter<UserDataAdapter.ViewHo
     }
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         public TextView textView,tv_category;
-        public ImageView imageView;
+        //public ImageView imageView;
+        de.hdodenhof.circleimageview.CircleImageView imageView;
         public RelativeLayout relativeLayout;
         UserModel item;
         public ViewHolder(View v) {
             super(v);
             v.setOnClickListener(this);
             textView = (TextView) v.findViewById(R.id.textView);
-            imageView = (ImageView) v.findViewById(R.id.imageView);
+            imageView =v.findViewById(R.id.imageView);
 
             tv_category=(TextView)v.findViewById(R.id.tvcategory);
 

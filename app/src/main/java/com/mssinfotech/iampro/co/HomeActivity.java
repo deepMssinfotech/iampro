@@ -74,8 +74,11 @@ public class HomeActivity extends AppCompatActivity {
         if (Config.doubleBackToExitPressedOnce) {
             super.onBackPressed();
             finish();
+            android.os.Process.killProcess(android.os.Process.myPid());
             return;
         }
+
+        this.getFragmentManager().popBackStack();
 
         Config.doubleBackToExitPressedOnce = true;
         Toast.makeText(this, "Please click BACK again to exit", Toast.LENGTH_SHORT).show();

@@ -103,7 +103,7 @@ public class ProductFragment extends Fragment implements RecyclerViewAdapter.Ite
                                 String imagev=student.getString("image");
                                 String image= Config.URL_ROOT + "uploads/product/" +imagev;
                                 String udate=student.getString("udate");
-                                int totallike=student.getInt("totallike");
+                                int totallike=Integer.parseInt(student.getString("totallike"));
                                 int comments=student.getInt("comments");
                                 Log.d("pdata",""+name+""+categoryv+""+image+""+udate);
 

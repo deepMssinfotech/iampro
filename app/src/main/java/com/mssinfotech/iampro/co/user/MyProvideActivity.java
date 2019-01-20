@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.mssinfotech.iampro.co.R;
@@ -21,23 +22,38 @@ public class MyProvideActivity extends AppCompatActivity {
     ImageView userbackgroud;
     CircleImageView userimage;
     TextView username;
+    private String uid="";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my_provide);
         Config.setLayoutName(getResources().getResourceEntryName(R.layout.activity_my_provide));
         String fname=PrefManager.getLoginDetail(this,"fname");
+        uid=PrefManager.getLoginDetail(this,"id");
         String avatar=Config.AVATAR_URL+"250/250/"+PrefManager.getLoginDetail(this,"img_url");
-        String background=Config.BANNER_URL+"h/250/"+PrefManager.getLoginDetail(this,"banner_image");
+        String background=Config.AVATAR_URL+"h/250/"+PrefManager.getLoginDetail(this,"banner_image");
         username = findViewById(R.id.username);
         userimage = findViewById(R.id.userimage);
         userbackgroud = findViewById(R.id.userbackgroud);
         username.setText("My Provide");
         Glide.with(this).load(background).into(userbackgroud);
         Glide.with(this).load(avatar).into(userimage);
-
+        PrefManager.updateUserData(this,null);
+        Intent i = new Intent();
+        Config.PREVIOUS_PAGE_TAG = i.getStringExtra(Config.PAGE_TAG);
     }
-
+    @Override
+    public void onBackPressed() {
+        //super.onBackPressed();
+        Intent i = new Intent();
+        i.putExtra(Config.PAGE_TAG, Config.PREVIOUS_PAGE_TAG);
+        setResult(RESULT_OK, i);
+        finish();
+    }
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        Toast.makeText(this, "mss popup"+resultCode+"--"+requestCode,  Toast.LENGTH_LONG).show();
+    }
     public void redirect(View v){
         Intent i_signup = new Intent(MyProvideActivity.this,AddProvideActivity.class);
         MyProvideActivity.this.startActivity(i_signup);

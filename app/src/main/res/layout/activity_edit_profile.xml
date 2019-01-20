@@ -322,6 +322,6 @@
         android:background="@color/white"
         android:onClick="SaveForm"
         android:src="@drawable/ic_action_check"
-        app:backgroundTint="@color/btn_send_pressed"
+        app:backgroundTint="@color/link"
         app:rippleColor="@color/white" />
 </RelativeLayout>

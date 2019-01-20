@@ -14,6 +14,57 @@ public class SingleItemModel {
     private String udate;
     private String image;
     private String category;
+    private int totallike;
+    private int uid;
+
+    public int getUid() {
+        return uid;
+    }
+
+    public void setUid(int uid) {
+        this.uid = uid;
+    }
+
+    public String getFullname() {
+        return fullname;
+    }
+
+    public void setFullname(String fullname) {
+        this.fullname = fullname;
+    }
+
+    public String getAvatar() {
+        return avatar;
+    }
+
+    public void setAvatar(String avatar) {
+        this.avatar = avatar;
+    }
+
+    private String fullname;
+     private String avatar;
+
+      //,daysago,totallike,comments
+    public int getTotallike() {
+        return totallike;
+    }
+    public void setTotallike(int totallike) {
+        this.totallike = totallike;
+    }
+    public int getComments() {
+        return comments;
+    }
+    public void setComments(int comments) {
+        this.comments = comments;
+    }
+    public String getDaysago() {
+        return daysago;
+    }
+    public void setDaysago(String daysago) {
+        this.daysago = daysago;
+    }
+    private int comments;
+     private String daysago;
 
     public String getUdate() {
         return udate;
@@ -52,6 +103,18 @@ public class SingleItemModel {
         this.name = name;
         this.image = image;
         this.udate=udate;
+    }
+    //daysago,totallike,comments   uid,fullname,avatar
+   public SingleItemModel(String name, String image,String udate,String daysago,int totallike,int comments,int uid,String fullname,String avatar) {
+        this.name = name;
+        this.image = image;
+        this.udate=udate;
+       this.daysago=daysago;
+        this.totallike=totallike;
+        this.comments=comments;
+        this.uid=uid;
+         this.fullname=fullname;
+          this.avatar=avatar;
     }
 
     public String getUrl() {

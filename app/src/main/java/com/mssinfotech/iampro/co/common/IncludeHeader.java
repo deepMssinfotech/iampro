@@ -27,19 +27,19 @@ public class IncludeHeader extends RelativeLayout {
 
     private OnClickListener browserOnClickListener = new OnClickListener() {
         public void onClick(View v) {
-            //getContext().startActivity(new Intent(getContext(), ScreenshotActivity.class));
+            function.OpenBrowser(getContext(),Config.URL_ROOT);
         }
     };
 
     private OnClickListener iamproOnClickListener = new OnClickListener() {
         public void onClick(View v) {
-            //getContext().startActivity(new Intent(getContext(), LiveViewActivity.class));
+            function.OpenBrowser(getContext(),Config.URL_ROOT);
         }
     };
 
     private OnClickListener walletOnClickListener = new OnClickListener() {
         public void onClick(View v) {
-            //getContext().startActivity(new Intent(getContext(), MapViewActivity.class));
+            function.OpenWallet(getContext());
         }
     };
 }

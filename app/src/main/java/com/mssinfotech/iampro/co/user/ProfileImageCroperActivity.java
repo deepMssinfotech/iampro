@@ -429,7 +429,7 @@ public class ProfileImageCroperActivity  extends AppCompatActivity implements IP
         if (saved) {
             Toast.makeText(this, "Upload Image", Toast.LENGTH_SHORT).show();
             hideCropping();
-            PrefManager.updateUserData(getApplicationContext(),null);
+            PrefManager.updateUserData(this,null);
             redirect();
         } else {
         }

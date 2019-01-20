@@ -32,6 +32,13 @@
     <string name="provide">Provide</string>
     <string name="user">User</string>
     <string name="video">Video</string>
+    <string name="friend_request">Friend Request</string>
+    <string name="my_purchase">My Purchase</string>
+    <string name="my_sell">My Selling</string>
+    <string name="change_password">Change Password</string>
+    <string name="search_title">Search</string>
+    <string name="cart_title">My Cart</string>
+    <string name="message_title">My Chat</string>
 
 
 </resources>

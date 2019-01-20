@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".user.MyDemandActivity">
+    tools:context=".user.MyImageActivity">
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fab"
         android:layout_width="wrap_content"
@@ -12,6 +12,7 @@
         android:layout_gravity="bottom|end"
         android:layout_marginBottom="@dimen/fab_margin_bottom"
         android:layout_marginRight="@dimen/fab_margin_right"
+        app:backgroundTint="@color/color_image_color"
         android:onClick="redirect"
         app:srcCompat="@android:drawable/ic_input_add" />
 

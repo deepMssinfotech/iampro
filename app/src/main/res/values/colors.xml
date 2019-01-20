@@ -8,6 +8,13 @@
     <color name="colorAccentDark">#000000</color>
     <color name="dividerColor">#6da1a1a1</color>
 
+    <color name="color_image_color">#faaa2e</color>
+    <color name="color_video_color">#bc277f</color>
+    <color name="color_user_color">#633a94</color>
+    <color name="color_product_color">#ad2c2f</color>
+    <color name="color_provide_color">#51aab3</color>
+    <color name="color_demand_color">#a3bd5a</color>
+
     <color name="textOnPrimary">@android:color/primary_text_dark</color>
     <color name="textOnAccent">@android:color/primary_text_light</color>
 
@@ -24,8 +31,9 @@
     <color name="feed_bg">#d3d6db</color>
     <color name="feed_item_bg">#ffffff</color>
     <color name="feed_item_border">#c2c3c8</color>
-    <color name="link">#0a80d1</color>
+    <color name="link">#0A80D1</color>
     <color name="timestamp">#a0a3a7</color>
+
     <color name="windowBackground">#FFFFFF</color>
     <color name="navigationBarColor">#000000</color>
 
@@ -40,10 +48,19 @@
     <color name="teal_100">#b2dfdb</color>
     <color name="teal_500">#009688</color>
 
-    <color name="bg_row_background">#fa315b</color>
+    <color name="bg_row_background">#FA315B</color>
     <color name="item_name">#535353</color>
     <color name="description">#a9a9a9</color>
     <color name="red">#FF0000</color>
 
     <color name="trans_black">#4D000000</color>
+
+    <color name="btn_default_light_normal">#a0a3a7</color>
+    <color name="btn_default_light_pressed">#4f5b62</color>
+    <color name="btn_context_menu_normal">#000000</color>
+    <color name="btn_context_menu_pressed">#4c4c4c</color>
+    <color name="btn_send_normal">#4f5b62</color>
+    <color name="btn_send_pressed">#000000</color>
+    <color name="fab_color_shadow">#000000</color>
+    <color name="transparent">#00000000</color>
 </resources>

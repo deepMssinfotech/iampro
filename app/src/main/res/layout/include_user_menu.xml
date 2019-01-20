@@ -25,7 +25,7 @@
                         android:src="@drawable/profile_background"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent" />
-                    <ImageView
+                    <de.hdodenhof.circleimageview.CircleImageView
                         android:id="@+id/userimage"
                         android:layout_alignParentBottom="true"
                         android:layout_marginBottom="@dimen/profile_icon_margin_bottom"
@@ -50,6 +50,211 @@
                     android:layout_height="wrap_content" />
             </RelativeLayout>
         <LinearLayout
+            android:id="@+id/nonuser_menu"
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <LinearLayout
+                android:layout_marginTop="5dp"
+                android:layout_marginBottom="5dp"
+                android:layout_width="match_parent"
+                android:layout_height="115dp"
+                android:orientation="horizontal"
+                >
+                <RelativeLayout
+                    android:layout_weight="1"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent">
+                    <ImageView
+                        android:id="@+id/menu_btn_dashboard_nonuser"
+                        android:layout_gravity="top|center"
+                        android:layout_width="@dimen/menu_img_width"
+                        android:layout_height="@dimen/menu_img_height"
+                        android:layout_margin="@dimen/menu_img_margin"
+                        android:padding="@dimen/menu_img_padding"
+                        android:src="@drawable/dashboard_icon"/>
+                    <TextView
+                        android:textSize="12dp"
+                        android:layout_below="@+id/menu_btn_dashboard_nonuser"
+                        android:text="Dashboard"
+                        android:gravity="center"
+                        android:textColor="@color/white"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent" />
+                </RelativeLayout>
+                <RelativeLayout
+                    android:layout_weight="1"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent">
+                    <ImageView
+                        android:id="@+id/menu_btn_login"
+                        android:layout_gravity="center"
+                        android:layout_width="@dimen/menu_img_width"
+                        android:layout_height="@dimen/menu_img_height"
+                        android:layout_margin="@dimen/menu_img_margin"
+                        android:padding="@dimen/menu_img_padding"
+                        android:src="@drawable/login_icon"/>
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_below="@+id/menu_btn_login"
+                        android:gravity="center"
+                        android:text="Login"
+                        android:textColor="@color/white"
+                        android:textSize="12dp" />
+                </RelativeLayout>
+                <RelativeLayout
+                    android:layout_weight="1"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent">
+                    <ImageView
+                        android:id="@+id/menu_btn_register"
+                        android:layout_gravity="center"
+                        android:layout_width="@dimen/menu_img_width"
+                        android:layout_height="@dimen/menu_img_height"
+                        android:layout_margin="@dimen/menu_img_margin"
+                        android:padding="@dimen/menu_img_padding"
+                        android:src="@drawable/signup_icon"/>
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_below="@+id/menu_btn_register"
+                        android:gravity="center"
+                        android:text="Register"
+                        android:textColor="@color/white"
+                        android:textSize="12dp" />
+                </RelativeLayout>
+                <RelativeLayout
+                    android:layout_weight="1"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent">
+                    <ImageView
+                        android:id="@+id/menu_btn_search"
+                        android:layout_gravity="center"
+                        android:layout_width="@dimen/menu_img_width"
+                        android:layout_height="@dimen/menu_img_height"
+                        android:layout_margin="@dimen/menu_img_margin"
+                        android:padding="@dimen/menu_img_padding"
+                        android:src="@drawable/search_icon"/>
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_below="@+id/menu_btn_search"
+                        android:gravity="center"
+                        android:text="Search"
+                        android:textColor="@color/white"
+                        android:textSize="12dp" />
+                </RelativeLayout>
+                <RelativeLayout
+                    android:layout_weight="1"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent">
+                    <ImageView
+                        android:id="@+id/menu_btn_shareit"
+                        android:layout_gravity="center"
+                        android:layout_width="@dimen/menu_img_width"
+                        android:layout_height="@dimen/menu_img_height"
+                        android:layout_margin="@dimen/menu_img_margin"
+                        android:padding="@dimen/menu_img_padding"
+                        android:src="@drawable/share_icon"/>
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_below="@+id/menu_btn_shareit"
+                        android:gravity="center"
+                        android:text="Share"
+                        android:textColor="@color/white"
+                        android:textSize="12dp" />
+                </RelativeLayout>
+                <RelativeLayout
+                    android:layout_weight="1"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent">
+
+                    <ImageView
+                        android:id="@+id/menu_btn_review"
+                        android:layout_gravity="center"
+                        android:layout_width="@dimen/menu_img_width"
+                        android:layout_height="@dimen/menu_img_height"
+                        android:layout_margin="@dimen/menu_img_margin"
+                        android:padding="@dimen/menu_img_padding"
+                        android:src="@drawable/review_icon"/>
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_below="@+id/menu_btn_review"
+                        android:gravity="center"
+                        android:text="Review"
+                        android:textColor="@color/white"
+                        android:textSize="12dp" />
+                </RelativeLayout>
+            </LinearLayout>
+            <View
+                android:layout_marginBottom="5dp"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@drawable/white"/>
+            <LinearLayout
+                android:layout_marginTop="5dp"
+                android:layout_marginBottom="5dp"
+                android:layout_width="match_parent"
+                android:layout_height="115dp"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:orientation="horizontal"
+                >
+                <RelativeLayout
+                    android:layout_width="@dimen/menu_img_width"
+                    android:layout_height="match_parent">
+                    <ImageView
+                        android:id="@+id/menu_btn_wallet"
+                        android:layout_gravity="center"
+                        android:layout_width="@dimen/menu_img_width"
+                        android:layout_height="@dimen/menu_img_height"
+                        android:layout_margin="@dimen/menu_img_margin"
+                        android:padding="@dimen/menu_img_padding"
+                        android:src="@drawable/headerwallet"/>
+                    <TextView
+                        android:textSize="12dp"
+                        android:layout_below="@+id/menu_btn_wallet"
+                        android:text="Wallet App"
+                        android:gravity="center"
+                        android:textColor="@color/white"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent" />
+                </RelativeLayout>
+                <RelativeLayout
+                    android:layout_width="@dimen/menu_img_width"
+                    android:layout_height="match_parent">
+                    <ImageView
+                        android:id="@+id/menu_btn_browser"
+                        android:layout_width="@dimen/menu_img_width"
+                        android:layout_height="@dimen/menu_img_height"
+                        android:layout_margin="@dimen/menu_img_margin"
+                        android:padding="@dimen/menu_img_padding"
+                        android:src="@drawable/headerbrowser"/>
+                    <TextView
+                        android:textSize="12dp"
+                        android:layout_below="@+id/menu_btn_browser"
+                        android:text="Browser App"
+                        android:gravity="center"
+                        android:textColor="@color/white"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent" />
+                </RelativeLayout>
+            </LinearLayout>
+            <View
+                android:layout_marginBottom="5dp"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@drawable/white"/>
+        </LinearLayout>
+        <LinearLayout
+            android:id="@+id/user_menu"
             android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="match_parent">

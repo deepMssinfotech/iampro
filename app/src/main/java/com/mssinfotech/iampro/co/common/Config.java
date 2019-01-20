@@ -43,6 +43,8 @@ public class Config
     public static final Integer GALLERY = 1, CAMERA = 2, PICK_IMAGE_MULTIPLE = 3;
     public static String layoutName="";
     public static String ResponceResult="";
+    public static String PAGE_TAG="page_tag";
+    public static String PREVIOUS_PAGE_TAG = null;
     public Config(){
 
     }

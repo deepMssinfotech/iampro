@@ -89,7 +89,7 @@ public class DemandFragment extends Fragment implements RecyclerViewAdapter.Item
                                  String name = student.getString("name");
                                 String categoryv=student.getString("category");
 
-                                int totallike=student.getInt("totallike");
+                                int totallike=Integer.parseInt(student.getString("totallike"));
                                 int comments=student.getInt("comments");
 
                                 int scost=student.getInt("selling_cost");
@@ -162,8 +162,6 @@ public class DemandFragment extends Fragment implements RecyclerViewAdapter.Item
     }
     @Override
     public void onItemClick(DataModel item) {
-
         Toast.makeText(getContext(), item.getName() + " is clicked", Toast.LENGTH_SHORT).show();
-
     }
 }
