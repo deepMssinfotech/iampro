@@ -3,10 +3,16 @@ package com.mssinfotech.iampro.co.common;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
+import android.content.ActivityNotFoundException;
 import android.content.Context;
+import android.content.Intent;
+import android.content.pm.ApplicationInfo;
+import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.util.Log;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
@@ -132,6 +138,66 @@ public class function {
         //Adding request to the queue
         requestQueue.add(stringRequest);
     }
+    public static void OpenWallet(Context context)
+    {
+        String appPackageName="com.mssinfotech.iampro.co";
+        String appName = "IAmPro Wallet";
+        String packageName = "com.mssinfotech.walletapp";
+        openApp(context, appName, packageName);
+    }
+    public static void OpenBrowser(Context context, String urls)
+    {
+        String appPackageName="com.mssinfotech.iamprobrowser";
+        try {
+            if(urls.isEmpty() || urls.equals(""))
+                urls="http://www.iampro.co";
+            Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(urls));
+            browserIntent.setPackage("com.mssinfotech.iamprobrowser");
+            context.startActivity(browserIntent);
+        } catch (ActivityNotFoundException exec) {
+            //Toast.makeText(getApplicationContext(),exec.getMessage(),Toast.LENGTH_LONG).show();
+            context.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=" + appPackageName)));
+        }
+        catch (Exception exc)
+        {
+            Toast.makeText(context.getApplicationContext(),exc.getMessage(),Toast.LENGTH_LONG).show();
+        }
+    }
+    public static void openApp(Context context, String appName, String packageName) {
+        if (isAppInstalled(context, packageName))
+            if (isAppEnabled(context, packageName))
+                context.startActivity(context.getPackageManager().getLaunchIntentForPackage(packageName));
+            else Toast.makeText(context, appName + " app is not enabled.", Toast.LENGTH_SHORT).show();
+        else {
+            context.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=" + packageName)));
+            Toast.makeText(context, appName + " app is not installed.", Toast.LENGTH_SHORT).show();
+        }
+    }
 
+    private static boolean isAppInstalled(Context context, String packageName) {
+        PackageManager pm = context.getPackageManager();
+        try {
+            pm.getPackageInfo(packageName, PackageManager.GET_ACTIVITIES);
+            return true;
+        } catch (PackageManager.NameNotFoundException ignored) {
+            context.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=" + packageName)));
+
+        }
+        return false;
+    }
+
+    private static boolean isAppEnabled(Context context, String packageName) {
+        boolean appStatus = false;
+        try {
+            ApplicationInfo ai = context.getPackageManager().getApplicationInfo(packageName, 0);
+            if (ai != null) {
+                appStatus = ai.enabled;
+            }
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+            Toast.makeText(context,e.getMessage(),Toast.LENGTH_LONG).show();
+        }
+        return appStatus;
+    }
 }
 

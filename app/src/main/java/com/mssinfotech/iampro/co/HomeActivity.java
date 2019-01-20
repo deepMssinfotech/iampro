@@ -78,6 +78,8 @@ public class HomeActivity extends AppCompatActivity {
             return;
         }
 
+        this.getFragmentManager().popBackStack();
+
         Config.doubleBackToExitPressedOnce = true;
         Toast.makeText(this, "Please click BACK again to exit", Toast.LENGTH_SHORT).show();
 
