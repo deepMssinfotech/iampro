@@ -88,25 +88,33 @@ public class VideoFragment extends Fragment implements RecyclerViewAdapter.ItemL
                             for(int i=0;i<response.length();i++){
                                 // Get current json object
                                 JSONObject student = response.getJSONObject(i);
-                                int id=student.getInt("id");
+                                int id=student.optInt("id");
                                 //int added_by=student.getInt("albumid");
-                                String name = student.getString("name");
-                                String categoryv=student.getString("category");
-                                String imagev=student.getString("image");
+                                String name = student.optString("name");
+                                String categoryv=student.optString("category");
+                                String imagev=student.optString("image");
                                 String image= Config.URL_ROOT + "uploads/v_image/" + imagev;
-                                String udate=student.getString("udate");
+                                String udate=student.optString("udate");
                                 Log.d("pdata",""+name+""+categoryv+""+image+""+udate);
-                                int totallike=student.getInt("totallike");
-                                int comments=student.getInt("comments");
+                                int totallike=student.optInt("totallike");
+                                int comments=student.optInt("comments");
 
-                                String daysago=student.getString("ago");
+                                String daysago=student.optString("ago");
+
+                                String rating=student.getString("rating");
+                                float ratingv=Float.parseFloat(rating);
+
+                                JSONObject userDetail=student.getJSONObject("user_detail");
+                                int uid=userDetail.getInt("id");
+                                String fullname=userDetail.getString("fullname");
+                                String avatar=Config.AVATAR_URL+"250/250/"+userDetail.getString("avatar");
 
                                 //SectionDataModel dm = new SectionDataModel();
                                 //dm.setHeaderTitle("Section " + i);
                                // Toast.makeText(getContext(),"rrrresponse_enterrr:",Toast.LENGTH_LONG).show();
                                 //singleItem.add(new SingleItemModel(name,image,udate));
                                 //allSampleData.add(new DataModel(name,image,udate,categoryv));
-                                allSampleData.add(new DataModel(name,image,udate,categoryv,totallike,comments,daysago));
+                                allSampleData.add(new DataModel(name,image,udate,categoryv,totallike,comments,daysago,ratingv,uid,fullname,avatar));
                             }
                             Log.d("bdm",singleItem.toString());
                             dm.setAllItemsInSection(singleItem);

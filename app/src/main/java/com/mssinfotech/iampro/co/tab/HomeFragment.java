@@ -238,24 +238,24 @@ public class HomeFragment extends Fragment implements UserDataAdapter.ItemListen
                                 // Get current json object
                                 JSONObject student = response.getJSONObject(i);
 
-                                String name = student.getString("name");
-                                String categoryv=student.getString("category");
-                                String imagev=student.getString("image");
+                                String name = student.optString("name");
+                                String categoryv=student.optString("category");
+                                String imagev=student.optString("image");
                                 String image= Config.URL_ROOT+"uploads/album/450/500/"+imagev;
-                                String udate=student.getString("udate");
+                                String udate=student.optString("udate");
                                 Log.d("pdata",""+name+""+categoryv+""+image+""+udate);
-                                 String daysago=student.getString("ago");
+                                 String daysago=student.optString("ago");
                                 int totallike=student.getInt("totallike");
                                 int comments=student.getInt("comments");
 
 
 
 
-                                JSONObject userDetail=student.getJSONObject("user_detail");
+                                JSONObject userDetail=student.optJSONObject("user_detail");
 
                                 int uid=userDetail.getInt("id");
-                                String fullname=userDetail.getString("fullname");
-                                String avatar=Config.AVATAR_URL+"250/250/"+userDetail.getString("avatar");
+                                String fullname=userDetail.optString("fullname");
+                                String avatar=Config.AVATAR_URL+"250/250/"+userDetail.optString("avatar");
 
                                 //SectionDataModel dm = new SectionDataModel();
                                 //dm.setHeaderTitle("Section " + i);
@@ -340,21 +340,21 @@ public class HomeFragment extends Fragment implements UserDataAdapter.ItemListen
                                 // Get current json object
                                 JSONObject student = response.getJSONObject(i);
 
-                                String name = student.getString("name");
-                                String categoryv=student.getString("category");
-                                String imagev=student.getString("image");
+                                String name = student.optString("name");
+                                String categoryv=student.optString("category");
+                                String imagev=student.optString("image");
                                 String image=Config.URL_ROOT + "uploads/v_image/" + imagev;
-                                String udate=student.getString("udate");
+                                String udate=student.optString("udate");
                                 Log.d("pdata",""+name+""+categoryv+""+image+""+udate);
 
-                                String daysago=student.getString("ago");
+                                String daysago=student.optString("ago");
                                 int totallike=student.getInt("totallike");
                                 int comments=student.getInt("comments");
 
 
 
 
-                                JSONObject userDetail=student.getJSONObject("user_detail");
+                                JSONObject userDetail=student.optJSONObject("user_detail");
 
                                 int uid=userDetail.getInt("id");
                                 String fullname=userDetail.getString("fullname");
@@ -438,11 +438,11 @@ public class HomeFragment extends Fragment implements UserDataAdapter.ItemListen
 
                                 String name = student.getString("fname");
                                 uid=student.getInt("id");
-                                String identity_type=student.getString("identity_type");
-                                String category=student.getString("category");
-                                String imagev=student.getString("avatar");
+                                String identity_type=student.optString("identity_type");
+                                String category=student.optString("category");
+                                String imagev=student.optString("avatar");
                                 String image= Config.AVATAR_URL+"200/200/"+imagev;
-                                String udate=student.getString("udate");
+                                String udate=student.optString("udate");
                                 Log.d("pdata",""+name+""+category+""+image+""+udate);
                                 //SectionDataModel dm = new SectionDataModel();
                                 //dm.setHeaderTitle("Section " + i);
@@ -513,22 +513,22 @@ public class HomeFragment extends Fragment implements UserDataAdapter.ItemListen
                                 // Get current json object
                                 JSONObject student = response.getJSONObject(i);
 
-                                String name = student.getString("name");
+                                String name = student.optString("name");
                                 String categoryv=student.getString("category");
-                                String imagev=student.getString("image");
+                                String imagev=student.optString("image");
                                 String image=Config.URL_ROOT + "uploads/product/" +imagev;
-                                String udate=student.getString("udate");
+                                String udate=student.optString("udate");
                                 Log.d("pdata",""+name+""+categoryv+""+image+""+udate);
                                 //SectionDataModel dm = new SectionDataModel();
                                 //dm.setHeaderTitle("Section " + i);
                                 //Toast.makeText(getContext(),"rrrresponse_enterrr:",Toast.LENGTH_LONG).show();
 
-                                String daysago=student.getString("ago");
+                                String daysago=student.optString("ago");
                                 int totallike=student.getInt("totallike");
                                 int comments=student.getInt("comments");
-                                JSONObject userDetail=student.getJSONObject("user_detail");
+                                JSONObject userDetail=student.optJSONObject("user_detail");
                                 int uid=userDetail.getInt("id");
-                                String fullname=userDetail.getString("fullname");
+                                String fullname=userDetail.optString("fullname");
                                 String avatar=Config.AVATAR_URL+"250/250/"+userDetail.getString("avatar");
 
                                 singleItem.add(new SingleItemModel(name,image,udate,daysago,totallike,comments,uid,fullname,avatar));
@@ -594,22 +594,22 @@ public class HomeFragment extends Fragment implements UserDataAdapter.ItemListen
                                 // Get current json object
                                 JSONObject student = response.getJSONObject(i);
 
-                                String name = student.getString("name");
-                                String categoryv=student.getString("category");
-                                String imagev=student.getString("image");
+                                String name = student.optString("name");
+                                String categoryv=student.optString("category");
+                                String imagev=student.optString("image");
                                 String image=Config.URL_ROOT + "uploads/product/" + imagev;
-                                String udate=student.getString("udate");
+                                String udate=student.optString("udate");
                                 Log.d("pdata",""+name+""+categoryv+""+image+""+udate);
                                 //SectionDataModel dm = new SectionDataModel();
                                 //dm.setHeaderTitle("Section " + i);
                                 //Toast.makeText(getContext(),"rrrresponse_enterrr:",Toast.LENGTH_LONG).show();
-                                String daysago=student.getString("ago");
+                                String daysago=student.optString("ago");
                                 int totallike=student.getInt("totallike");
                                 int comments=student.getInt("comments");
-                                JSONObject userDetail=student.getJSONObject("user_detail");
-                                int uid=userDetail.getInt("id");
-                                String fullname=userDetail.getString("fullname");
-                                String avatar=Config.AVATAR_URL+"250/250/"+userDetail.getString("avatar");
+                                JSONObject userDetail=student.optJSONObject("user_detail");
+                                int uid=userDetail.optInt("id");
+                                String fullname=userDetail.optString("fullname");
+                                String avatar=Config.AVATAR_URL+"250/250/"+userDetail.optString("avatar");
 
                                 singleItem.add(new SingleItemModel(name,image,udate,daysago,totallike,comments,uid,fullname,avatar));
 
@@ -675,9 +675,9 @@ public class HomeFragment extends Fragment implements UserDataAdapter.ItemListen
                                 // Get current json object
                                 JSONObject student = response.getJSONObject(i);
 
-                                String name = student.getString("name");
-                                String categoryv=student.getString("category");
-                                String imagev=student.getString("image");
+                                String name = student.optString("name");
+                                String categoryv=student.optString("category");
+                                String imagev=student.optString("image");
                                 String image=Config.URL_ROOT + "uploads/product/" +imagev;
                                 String udate=student.getString("udate");
                                 Log.d("pdata",""+name+""+categoryv+""+image+""+udate);
@@ -685,16 +685,15 @@ public class HomeFragment extends Fragment implements UserDataAdapter.ItemListen
                                 //dm.setHeaderTitle("Section " + i);
                                 //Toast.makeText(getContext(),"rrrresponse_enterrr:",Toast.LENGTH_LONG).show();
 
-                                String daysago=student.getString("ago");
+                                String daysago=student.optString("ago");
                                 int totallike=student.getInt("totallike");
                                 int comments=student.getInt("comments");
-                                JSONObject userDetail=student.getJSONObject("user_detail");
-                                int uid=userDetail.getInt("id");
-                                String fullname=userDetail.getString("fullname");
-                                String avatar=Config.AVATAR_URL+"250/250/"+userDetail.getString("avatar");
+                                JSONObject userDetail=student.optJSONObject("user_detail");
+                                int uid=userDetail.optInt("id");
+                                String fullname=userDetail.optString("fullname");
+                                String avatar=Config.AVATAR_URL+"250/250/"+userDetail.optString("avatar");
 
                                 singleItem.add(new SingleItemModel(name,image,udate,daysago,totallike,comments,uid,fullname,avatar));
-
 
 
                             }

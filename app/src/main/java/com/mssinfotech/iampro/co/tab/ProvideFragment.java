@@ -18,6 +18,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.Volley;
 import com.mssinfotech.iampro.co.R;
+import com.mssinfotech.iampro.co.adapter.ProvideAdapter;
 import com.mssinfotech.iampro.co.adapter.RecyclerViewAdapter;
 import com.mssinfotech.iampro.co.adapter.RecyclerViewDataAdapter;
 import com.mssinfotech.iampro.co.model.DataModel;
@@ -31,10 +32,11 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
-public class ProvideFragment extends Fragment implements RecyclerViewAdapter.ItemListener {
+public class ProvideFragment extends Fragment implements ProvideAdapter.ItemListener {
     ArrayList allSampleData=new ArrayList<>();
     RecyclerView my_recycler_view;
     RecyclerViewAdapter adapter;
+    ProvideAdapter adapter_provide;
     public ProvideFragment() {
         // Required empty public constructor
     }
@@ -227,8 +229,9 @@ public class ProvideFragment extends Fragment implements RecyclerViewAdapter.Ite
                             arrayList.add(new DataModel("Item 5", android.R.drawable.btn_minus, "#F94336"));
                             arrayList.add(new DataModel("Item 6", android.R.drawable.alert_dark_frame, "#0A9B88")); */
 
-                            adapter = new RecyclerViewAdapter(getContext(), allSampleData,ProvideFragment.this);
-                            my_recycler_view.setAdapter(adapter);
+                            //adapter = new RecyclerViewAdapter(getContext(), allSampleData,ProvideFragment.this);
+                            adapter_provide = new ProvideAdapter(getContext(), allSampleData,ProvideFragment.this);
+                            my_recycler_view.setAdapter(adapter_provide);
 
                             GridLayoutManager manager = new GridLayoutManager(getContext(), 2, GridLayoutManager.VERTICAL, false);
                             my_recycler_view.setLayoutManager(manager);

@@ -1,7 +1,7 @@
 package com.mssinfotech.iampro.co.adapter;
 
 /**
- * Created by mssinfotech on 16/01/19.
+ * Created by mssinfotech on 21/01/19.
  */
 
 import android.arch.lifecycle.ViewModel;
@@ -38,17 +38,19 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.mssinfotech.iampro.co.demand.DemandDetail;
 import com.mssinfotech.iampro.co.model.DataModel;
+import com.mssinfotech.iampro.co.product.ProductDetail;
 import com.mssinfotech.iampro.co.user.ProfileActivity;
 
 import java.util.ArrayList;
 
-public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.ViewHolder> {
+public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHolder> {
     ArrayList<DataModel> mValues;
     Context mContext;
     protected ItemListener mListener;
     int uid;
-    public RecyclerViewAdapter(Context context, ArrayList<DataModel> values, ItemListener itemListener) {
+    public ProductAdapter(Context context, ArrayList<DataModel> values, ItemListener itemListener) {
         mValues = values;
         mContext = context;
         mListener=itemListener;
@@ -69,7 +71,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
             tv_tlike=v.findViewById(R.id.tv_totallike);
             //tv_comments
             tv_comments=v.findViewById(R.id.tv_comments);
-             tv_daysago=v.findViewById(R.id.tv_daysago);
+            tv_daysago=v.findViewById(R.id.tv_daysago);
             tv_sprice=v.findViewById(R.id.tv_sprice);
             tv_pprice=v.findViewById(R.id.tv_sprice);
 
@@ -78,12 +80,14 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
             uname=v.findViewById(R.id.uname);
             userImage=v.findViewById(R.id.user_image);
 
-             imageView.setOnClickListener(new View.OnClickListener() {
-                 @Override
-                 public void onClick(View v) {
-                     Toast.makeText(mContext, "Image clicked", Toast.LENGTH_SHORT).show();
-                 }
-             });
+            imageView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Toast.makeText(mContext, "Image clicked", Toast.LENGTH_SHORT).show();
+                    Intent intent=new Intent(mContext, ProductDetail.class);
+                    mContext.startActivity(intent);
+                }
+            });
             //relativeLayout = (RelativeLayout) v.findViewById(R.id.relativeLayout);
         }
         public void setData(DataModel item) {
@@ -98,20 +102,20 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
             tv_tlike.setText(String.valueOf(item.getTotallike()));
             tv_comments.setText(String.valueOf(item.getComments()));
             ratingBar.setRating(item.getRating());
-             if(String.valueOf(item.getsCost())!=null || !String.valueOf(item.getsCost()).equalsIgnoreCase(null)) {
-                 tv_sprice.setVisibility(View.VISIBLE);
-                 tv_sprice.setText(String.valueOf(String.valueOf(item.getsCost())));
-             }
-             if(String.valueOf(item.getpCost())!=null || !String.valueOf(item.getpCost()).equalsIgnoreCase(null) || item.getpCost()!=0){
-                   tv_pprice.setVisibility(View.VISIBLE);
-                 tv_pprice.setText(String.valueOf(item.getpCost()));
-                 }
+            if(String.valueOf(item.getsCost())!=null || !String.valueOf(item.getsCost()).equalsIgnoreCase(null)) {
+                tv_sprice.setVisibility(View.VISIBLE);
+                tv_sprice.setText(String.valueOf(String.valueOf(item.getsCost())));
+            }
+            if(String.valueOf(item.getpCost())!=null || !String.valueOf(item.getpCost()).equalsIgnoreCase(null) || item.getpCost()!=0){
+                tv_pprice.setVisibility(View.VISIBLE);
+                tv_pprice.setText(String.valueOf(item.getpCost()));
+            }
 
-                 tv_daysago.setVisibility(View.VISIBLE);
-               tv_daysago.setText(item.getDaysago());
-                uname.setText(item.getFullname());
+            tv_daysago.setVisibility(View.VISIBLE);
+            tv_daysago.setText(item.getDaysago());
+            uname.setText(item.getFullname());
 
-                uid=item.getUid();
+            uid=item.getUid();
 
             //tv_daysago.setText();
             Glide.with(mContext)
@@ -136,18 +140,18 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
                     .into(imageView);
             //imageView.setImageResource(item.image);
 
-          // relativeLayout.setBackgroundColor(Color.parseColor("#000000"));
+            // relativeLayout.setBackgroundColor(Color.parseColor("#000000"));
             //userImage
-             userImage.setOnClickListener(new View.OnClickListener() {
-                 @Override
-                 public void onClick(View v) {
-                      Toast.makeText(mContext,"uid:"+uid,Toast.LENGTH_LONG).show();
+            userImage.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Toast.makeText(mContext,"uid:"+uid,Toast.LENGTH_LONG).show();
 
-                     Intent intent=new Intent(mContext, ProfileActivity.class);
-                      intent.putExtra("uid",String.valueOf(uid));
-                     mContext.startActivity(intent);
-                 }
-             });
+                    Intent intent=new Intent(mContext, ProfileActivity.class);
+                    intent.putExtra("uid",String.valueOf(uid));
+                    mContext.startActivity(intent);
+                }
+            });
 
         }
         @Override
@@ -158,7 +162,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         }
     }
     @Override
-    public RecyclerViewAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public ProductAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(mContext).inflate(R.layout.recycler_view_item, parent, false);
         return new ViewHolder(view);
     }

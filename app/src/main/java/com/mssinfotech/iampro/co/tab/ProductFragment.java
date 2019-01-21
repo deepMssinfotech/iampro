@@ -18,6 +18,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.Volley;
 import com.mssinfotech.iampro.co.R;
+import com.mssinfotech.iampro.co.adapter.ProductAdapter;
 import com.mssinfotech.iampro.co.adapter.RecyclerViewAdapter;
 import com.mssinfotech.iampro.co.adapter.RecyclerViewDataAdapter;
 import com.mssinfotech.iampro.co.model.DataModel;
@@ -31,10 +32,11 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
-public class ProductFragment extends Fragment implements RecyclerViewAdapter.ItemListener{
+public class ProductFragment extends Fragment implements ProductAdapter.ItemListener{
     ArrayList<DataModel> allSampleData=new ArrayList<>();
     RecyclerView my_recycler_view;
     RecyclerViewAdapter adapter;
+    ProductAdapter adapter_product;
     public ProductFragment() {
         // Required empty public constructor
     }
@@ -138,8 +140,10 @@ public class ProductFragment extends Fragment implements RecyclerViewAdapter.Ite
                             //my_recycler_view.setLayoutManager(new GridLayoutManager(getActivity(), 2));
                             my_recycler_view.setAdapter(adapter);
                              */
-                            adapter = new RecyclerViewAdapter(getContext(), allSampleData,ProductFragment.this);
-                            my_recycler_view.setAdapter(adapter);
+                            //adapter = new RecyclerViewAdapter(getContext(), allSampleData,ProductFragment.this);
+                            //adapter_product
+                            adapter_product = new ProductAdapter(getContext(), allSampleData,ProductFragment.this);
+                            my_recycler_view.setAdapter(adapter_product);
 
                             GridLayoutManager manager = new GridLayoutManager(getContext(), 2, GridLayoutManager.VERTICAL, false);
                             my_recycler_view.setLayoutManager(manager);
@@ -168,9 +172,6 @@ public class ProductFragment extends Fragment implements RecyclerViewAdapter.Ite
     }
     @Override
     public void onItemClick(DataModel item) {
-
         Toast.makeText(getContext(), item.getName() + " is clicked", Toast.LENGTH_SHORT).show();
-
     }
-
 }

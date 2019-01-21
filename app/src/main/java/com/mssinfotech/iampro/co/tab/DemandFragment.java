@@ -19,6 +19,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.Volley;
 import com.mssinfotech.iampro.co.R;
+import com.mssinfotech.iampro.co.adapter.DemandAdapter;
 import com.mssinfotech.iampro.co.adapter.RecyclerViewAdapter;
 import com.mssinfotech.iampro.co.adapter.RecyclerViewDataAdapter;
 import com.mssinfotech.iampro.co.model.DataModel;
@@ -29,10 +30,11 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import java.util.ArrayList;
-public class DemandFragment extends Fragment implements RecyclerViewAdapter.ItemListener{
+public class DemandFragment extends Fragment implements DemandAdapter.ItemListener{
     ArrayList<DataModel> allSampleData=new ArrayList<>();
     RecyclerView my_recycler_view;
     RecyclerViewAdapter adapter;
+    DemandAdapter adapter_demand;
     public DemandFragment() {
         // Required empty public constructor
     }
@@ -125,16 +127,13 @@ public class DemandFragment extends Fragment implements RecyclerViewAdapter.Item
                             Log.d("allsampledatav", allSampleData.toString());
                             //my_recycler_view.setHasFixedSize(true);
                             Log.d("allSampleDatas",""+allSampleData.size()+"--"+allSampleData.toString());
-
                            /* RecyclerViewDataAdapter adapter = new RecyclerViewDataAdapter(getContext(), allSampleData);
-
                             my_recycler_view.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
                             //my_recycler_view.setLayoutManager(new GridLayoutManager(getActivity(), 2));
                             my_recycler_view.setAdapter(adapter); */
-
-                            adapter = new RecyclerViewAdapter(getContext(), allSampleData,DemandFragment.this);
-                            my_recycler_view.setAdapter(adapter);
-
+                            //adapter= new RecyclerViewAdapter(getContext(), allSampleData,DemandFragment.this);
+                            adapter_demand= new DemandAdapter(getContext(), allSampleData,DemandFragment.this);
+                            my_recycler_view.setAdapter(adapter_demand);
                             GridLayoutManager manager = new GridLayoutManager(getContext(), 2, GridLayoutManager.VERTICAL, false);
                             my_recycler_view.setLayoutManager(manager);
 

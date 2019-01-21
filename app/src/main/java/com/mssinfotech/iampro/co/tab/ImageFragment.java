@@ -41,7 +41,6 @@ public class ImageFragment extends Fragment implements RecyclerViewAdapter.ItemL
     public ImageFragment() {
         // Required empty public constructor
     }
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -117,8 +116,9 @@ public class ImageFragment extends Fragment implements RecyclerViewAdapter.ItemL
                                 int totallike=student.getInt("totallike");
                                 int comments=student.getInt("comments");
 
-                                String daysago=student.getString("ago");
-
+                                String daysago=student.optString("ago");
+                                String rating=student.getString("rating");
+                                 float ratingv=Float.parseFloat(rating);
 
                                 JSONObject userDetail=student.getJSONObject("user_detail");
 
@@ -131,7 +131,8 @@ public class ImageFragment extends Fragment implements RecyclerViewAdapter.ItemL
                                 //Toast.makeText(getContext(),"rrrresponse_enterrr:",Toast.LENGTH_LONG).show();
                                 singleItem.add(new SingleItemModel(name,image,udate));
                                 //allSampleData.add(new DataModel(name,image,udate,categoryv));
-                                allSampleData.add(new DataModel(name,image,udate,categoryv,totallike,comments,daysago));
+                                //float rating,int uid,String fullname,String userImage
+                                allSampleData.add(new DataModel(name,image,udate,categoryv,totallike,comments,daysago,ratingv,uid,fullname,avatar));
 
                             }
                             Log.d("bdm",singleItem.toString());
