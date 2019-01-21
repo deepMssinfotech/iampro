@@ -160,9 +160,7 @@ public class AddVideoActivity extends AppCompatActivity {
         }
     }
     private void saveVideoToInternalStorage (String filePath) {
-
         File newfile;
-
         try {
 
             File currentFile = new File(filePath);
@@ -216,28 +214,33 @@ public class AddVideoActivity extends AppCompatActivity {
         videodetail = etvideodetail.getText().toString();
         cat = spcat.getSelectedItem().toString();
         video_album = spvideo_album.getSelectedItem().toString();
-
-        if (Validate.isNull(albumname)) {
+        String utype=tvlayouttype.getText().toString();
+        if (Validate.isNull(albumname) && utype.equalsIgnoreCase("new_album")) {
+            resetError();
             tilalbumname.setErrorEnabled(true);
             tilalbumname.setError("Enter Album Name ");
             return;
         } else if (Validate.isNull(videoname)) {
-            tilalbumname.setErrorEnabled(false);
+            resetError();
             tilvideoname.setErrorEnabled(true);
             tilvideoname.setError("Enter Video  Name");
             return;
         } else if (Validate.isNull(videodetail)) {
-            tilvideoname.setErrorEnabled(false);
+            resetError();
             tilvideodetail.setErrorEnabled(true);
             tilvideodetail.setError("Enter Image Detail");
             return;
         } else {
             hideKeyboard();
-            tilvideodetail.setErrorEnabled(false);
+            resetError();
             sendData();
         }
     }
-
+    public void resetError(){
+        tilalbumname.setErrorEnabled(false);
+        tilvideoname.setErrorEnabled(false);
+        tilvideodetail.setErrorEnabled(false);
+    }
     private void hideKeyboard() {
         View view = getCurrentFocus();
         if (view != null) {
@@ -252,7 +255,9 @@ public class AddVideoActivity extends AppCompatActivity {
             Config.showInternetDialog(this);
             return;
         }
-
+        Toast.makeText(getApplicationContext(), "Video upload remain pleasw wait....", Toast.LENGTH_LONG).show();
+        return;
+        /*
         final ProgressDialog loading = ProgressDialog.show(this, "Processing...", "Please wait...", false, false);
         StringRequest stringRequest = new StringRequest(Request.Method.POST, Config.AJAX_URL + "uploadprocess.php",
                 new Response.Listener<String>() {
@@ -317,6 +322,7 @@ public class AddVideoActivity extends AppCompatActivity {
 
         //Adding request to the queue
         requestQueue.add(stringRequest);
+        */
     }
 
     public void click_video_button(View v) {

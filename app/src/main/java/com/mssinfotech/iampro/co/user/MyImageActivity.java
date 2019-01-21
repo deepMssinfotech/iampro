@@ -38,6 +38,14 @@ public class MyImageActivity extends AppCompatActivity {
         Glide.with(this).load(avatar).into(userimage);
         Intent i = new Intent();
         Config.PREVIOUS_PAGE_TAG = i.getStringExtra(Config.PAGE_TAG);
+        userimage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent=new Intent(MyImageActivity.this,ImageImageCroperActivity.class);
+                startActivity(intent);
+                finish();
+            }
+        });
     }
     @Override
     public void onBackPressed() {

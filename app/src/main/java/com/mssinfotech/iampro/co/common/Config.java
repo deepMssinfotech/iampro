@@ -37,6 +37,7 @@ public class Config
     public static final String AJAX_URL="https://www.iampro.co/ajax/";
     public static final String AVATAR_URL="https://www.iampro.co/uploads/avatar/";
     public static final String BANNER_URL="https://www.iampro.co/uploads/media/";
+    public static final String MEDIA_URL="https://www.iampro.co/uploads/media/";
     public static TextView count_chat = null, count_notify = null, count_cart=null, count_whishlist = null, count_friend_request = null;
     public static final String IMAGE_DIRECTORY = "/iampro/image";
     public static final String VIDEO_DIRECTORY = "/iampro/video";
@@ -88,7 +89,7 @@ public class Config
         if (PrefManager.isLogin(context)) {
             //Log.d(TAG, "test servide for 5 sec");
             String api_url = Config.API_URL + "chat.php?type=chat_count&myid=" + PrefManager.getLoginDetail(context, "id");
-            //Log.d(Config.TAG, api_url);
+            Log.d(Config.TAG, api_url);
              {
                 StringRequest stringRequest = new StringRequest(api_url,
                         new Response.Listener<String>() {

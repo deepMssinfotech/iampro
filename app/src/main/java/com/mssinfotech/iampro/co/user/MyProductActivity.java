@@ -1,6 +1,7 @@
 package com.mssinfotech.iampro.co.user;
 
 import android.content.Intent;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -41,6 +42,14 @@ public class MyProductActivity extends AppCompatActivity {
         PrefManager.updateUserData(this,null);
         Intent i = new Intent();
         Config.PREVIOUS_PAGE_TAG = i.getStringExtra(Config.PAGE_TAG);
+        /*FloatingActionButton fv=findViewById(R.id.fab);
+        fv.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i_signup = new Intent(MyProductActivity.this,AddProductActivity.class);
+                MyProductActivity.this.startActivity(i_signup);
+            }
+        });*/
     }
     @Override
     public void onBackPressed() {

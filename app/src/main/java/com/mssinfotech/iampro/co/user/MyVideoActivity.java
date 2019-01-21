@@ -36,6 +36,14 @@ public class MyVideoActivity extends AppCompatActivity {
         username.setText("My Video Gallery");
         Glide.with(this).load(background).into(userbackgroud);
         Glide.with(this).load(avatar).into(userimage);
+        userimage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent=new Intent(MyVideoActivity.this,VideoImageCroperActivity.class);
+                startActivity(intent);
+                finish();
+            }
+        });
 
     }
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {

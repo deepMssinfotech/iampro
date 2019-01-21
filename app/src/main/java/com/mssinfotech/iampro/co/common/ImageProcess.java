@@ -73,7 +73,7 @@ public class ImageProcess {
                     new String[]{f.getPath()},
                     new String[]{"image/jpeg"}, null);
             fo.close();
-            Log.d("TAG", "File Saved::---&gt;" + f.getAbsolutePath());
+            //Log.d("TAG", "File Saved::---&gt;" + f.getAbsolutePath());
 
             return f.getAbsolutePath();
         } catch (IOException e1) {
@@ -89,26 +89,6 @@ public class ImageProcess {
                     @Override
                     public void onResponse(String response) {
                         loading.dismiss();
-                        JSONArray result = null;
-                        try {
-                            //Parsing the fetched Json String to JSON Object
-                            result = new JSONArray(response);
-                            for(int i=0;i<result.length();i++){
-                                try {
-                                    //Getting json object
-                                    JSONObject json = result.getJSONObject(i);
-                                    //Adding the name of the student to array list
-                                    //students.add(json.getString("name"));
-                                } catch (JSONException e) {
-                                    e.printStackTrace();
-                                }
-                            }
-
-                        } catch (JSONException e) {
-                            loading.dismiss();
-                            e.printStackTrace();
-                            Log.d(Config.TAG,e.getMessage().toString());
-                        }
                     }
                 },
                 new Response.ErrorListener() {
@@ -130,7 +110,7 @@ public class ImageProcess {
                     params.put("type",utype);
                     params.put("myfile",image);
                     params.put("uid",uid);
-                    Log.d(Config.TAG,utype+"---"+uid+"---"+image);
+                    //Log.d(Config.TAG,utype+"---"+uid+"---"+image);
                     return params;
                 }
             };

@@ -13,6 +13,9 @@ import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
@@ -63,6 +66,7 @@ public class AddImageActivity extends AppCompatActivity {
     private Bitmap bitmap=null;
     private GalleryAdapter galleryAdapter;
     private LinearLayout categoryLayout,albumLayout;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -209,27 +213,33 @@ public class AddImageActivity extends AppCompatActivity {
         imagedetail=etimagedetail.getText().toString();
         cat=spcat.getSelectedItem().toString();
         image_album=spimage_album.getSelectedItem().toString();
-
-        if (Validate.isNull(albumname)) {
+        String utype=tvlayouttype.getText().toString();
+        if (Validate.isNull(albumname) && utype.equalsIgnoreCase("new_album")) {
+            resetError();
             tilalbumname.setErrorEnabled(true);
             tilalbumname.setError("Enter Album Neme ");
             return ;
         } else if (Validate.isNull(imagename)) {
-            tilalbumname.setErrorEnabled(false);
+            resetError();
             tilimagename.setErrorEnabled(true);
             tilimagename.setError("Enter Image  Neme");
             return;
         } else if (Validate.isNull(imagedetail)) {
-            tilimagename.setErrorEnabled(false);
+            resetError();
             tilimagedetail.setErrorEnabled(true);
             tilimagedetail.setError("Enter Image Detail");
             return;
         }
         else {
             hideKeyboard();
-            tilimagedetail.setErrorEnabled(false);
+            resetError();
             sendData();
         }
+    }
+    public void resetError(){
+        tilalbumname.setErrorEnabled(false);
+        tilimagename.setErrorEnabled(false);
+        tilimagedetail.setErrorEnabled(false);
     }
     private void hideKeyboard() {
         View view = getCurrentFocus();
@@ -252,22 +262,15 @@ public class AddImageActivity extends AppCompatActivity {
                     @Override
                     public void onResponse(String s) {
                         loading.dismiss();
-                        Log.d("Lresponse",""+s);
                         try
                         {
                             JSONObject jsonObject = new JSONObject(s);
                             String status=jsonObject.getString("status");
-                            String msgg=jsonObject.getString("msg");
+                            String msgg=jsonObject.getString("message");
 
                             Toast.makeText(getApplicationContext(),""+msgg,Toast.LENGTH_LONG).show();
                             if (status.equalsIgnoreCase("success")){
                                 //String urlv=jsonObject.getString("url");
-
-                                etalbumname.setText(" ");
-                                etimagename.setText(" ");
-                                etimagedetail.setText(" ");
-
-
                                 Intent intent=new Intent(getApplicationContext(),MyImageActivity.class);
                                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                                 startActivity(intent);
