@@ -45,7 +45,7 @@
             android:layout_alignParentEnd="true"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
-            android:src="@drawable/more_detail"
+            android:src="@drawable/more_detail_home"
             android:theme="@style/MyButton"
             android:text="more"
             android:textColor="#FFF"

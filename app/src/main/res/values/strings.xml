@@ -40,6 +40,10 @@
     <string name="cart_title">My Cart</string>
     <string name="message_title">My Chat</string>
 
-
+    <style name="Theme.MaterialButton" parent="AppTheme">
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="colorButtonNormal">@color/colorPrimaryDark</item>
+        <item name="colorControlHighlight">@color/colorAccent</item>
+    </style>
 </resources>
 
