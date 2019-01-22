@@ -7,6 +7,8 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
@@ -50,6 +52,7 @@ public class CartActivity extends AppCompatActivity {
     Button bClear;
     Button bShop;
     TextView tvTotalPrice;
+
     private RecyclerView recyclerView;
     private List<CartItem> CartItemList;
     @Override
@@ -63,7 +66,7 @@ public class CartActivity extends AppCompatActivity {
 
         getSupportActionBar().setDisplayShowTitleEnabled(false);
         getSupportActionBar().setDisplayShowTitleEnabled(true);
-        CART_URL  = Config.API_URL+"cart.php?type=refreshCart&uid="+ PrefManager.getLoginDetail(this,"id");
+        CART_URL  = Config.API_URL+"cart.php?type=refreshCart&uid="+ PrefManager.getLoginDetail(this,"id")+"&ip_address="+Config.IP_ADDRESS;
         recyclerView = findViewById(R.id.recycler_view);
         tvTotalPrice = findViewById(R.id.tvTotalPrice);
         CartItemList = new ArrayList<CartItem>();
@@ -73,21 +76,23 @@ public class CartActivity extends AppCompatActivity {
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
         recyclerView.setAdapter(mAdapter);
-
         prepareCart();
     }
-    private void prepareCart() {
-        //Log.d(Config.TAG,WHISH_LIST_URL);
+
+    public void prepareCart() {
+        final ProgressDialog loading = ProgressDialog.show(this,"Processing...","Please wait...",false,false);
         StringRequest stringRequest = new StringRequest(Request.Method.GET,CART_URL,
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
+                        loading.dismiss();
                         parseJsonFeed(response);
                         mAdapter.notifyDataSetChanged();
                     }
                 }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
+                loading.dismiss();
                 Config.ResponceResult = error.getMessage();
                 Log.d(Config.TAG,"error : "+error.getMessage());
             }
@@ -98,7 +103,7 @@ public class CartActivity extends AppCompatActivity {
     private void parseJsonFeed(String response) {
         try {
             JSONObject jsonObject = new JSONObject(response);
-            tvTotalPrice.setText(jsonObject.getString("total"));
+            tvTotalPrice.setText("₹ " +jsonObject.getString("total"));
             JSONObject obj = new JSONObject(response.toString());
             JSONArray heroArray = obj.getJSONArray("all_product");
             if(heroArray.length()>0) {
@@ -120,7 +125,6 @@ public class CartActivity extends AppCompatActivity {
                     item.setp_cat(feedObj.getString("p_cat"));
                     item.setp_nane(feedObj.getString("p_name"));
                     item.setselling_cost(feedObj.getString("selling_cost"));
-
                     CartItemList.add(item);
                 }
             }else{
@@ -130,7 +134,6 @@ public class CartActivity extends AppCompatActivity {
 
             // notify data changes to list adapater
         } catch (JSONException e) {
-
             Log.d(Config.TAG,"printStackTrace 167" + e.getMessage() + "  Error Message");
             e.printStackTrace();
         }

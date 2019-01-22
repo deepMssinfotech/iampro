@@ -61,7 +61,7 @@
             android:textStyle="bold"
             android:layout_height="wrap_content"
             android:text="Clear Cart"/>
-        <Button android:id="@+id/bShop"
+        <Button android:id="@+id/bCheckout"
             android:layout_width="0dip"
             android:layout_weight="0.5"
             android:background="@drawable/black"
@@ -69,7 +69,7 @@
             android:textAllCaps="true"
             android:textStyle="bold"
             android:layout_height="wrap_content"
-            android:text="Shop"/>
+            android:text="Checkout"/>
     </LinearLayout>
 
 </RelativeLayout>
