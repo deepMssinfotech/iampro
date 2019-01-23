@@ -50,6 +50,12 @@ public class MessageActivity extends AppCompatActivity implements MessageItemTou
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_message);
         Config.setLayoutName(getResources().getResourceEntryName(R.layout.activity_message));
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setHomeButtonEnabled(true);
+        getSupportActionBar().setTitle("My Message");
+        getSupportActionBar().setIcon(R.drawable.delete);
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
+        getSupportActionBar().setDisplayShowTitleEnabled(true);
         String uid=PrefManager.getLoginDetail(this,"id");
         MESSAGE_URL  = Config.API_URL+"chat.php?type=nearuser&uid="+uid+"&my_id="+ uid;
         recyclerView = findViewById(R.id.recycler_view);

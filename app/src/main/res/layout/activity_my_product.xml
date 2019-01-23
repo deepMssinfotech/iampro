@@ -71,6 +71,22 @@
                 layout="@layout/include_short_menu"
                 android:layout_height="85dp"
                 android:layout_width="match_parent"/>
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/recyclerView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layoutManager="android.support.v7.widget.LinearLayoutManager"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+            <ImageView
+                android:id="@+id/no_record_found"
+                android:visibility="gone"
+                android:src="@drawable/no_results_found"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
         </LinearLayout>
     </ScrollView>
     <com.mssinfotech.iampro.co.common.IncludeFooter
