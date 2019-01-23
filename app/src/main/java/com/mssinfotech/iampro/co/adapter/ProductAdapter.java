@@ -83,8 +83,9 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
             imageView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Toast.makeText(mContext, "Image clicked", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(mContext, "Product clicked"+item.getName()+"\n"+item.getUid(), Toast.LENGTH_SHORT).show();
                     Intent intent=new Intent(mContext, ProductDetail.class);
+
                     mContext.startActivity(intent);
                 }
             });

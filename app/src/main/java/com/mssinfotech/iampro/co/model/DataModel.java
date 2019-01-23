@@ -195,6 +195,7 @@ public class DataModel {
         this.uid=uid;
         this.fullname=fullname;
         this.userImage=userImage;
+        this.uid=uid;
     }
     //name,image,udate,categoryv,totallike,comments,daysago,ratingv,uid,fullname,avatar
     public DataModel(String name,String image,String udate,String category,int totallike,int comments,String daysago,float rating,int uid,String fullname,String userImage){

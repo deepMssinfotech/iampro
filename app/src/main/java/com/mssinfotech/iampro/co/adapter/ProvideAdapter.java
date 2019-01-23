@@ -83,7 +83,7 @@ public class ProvideAdapter extends RecyclerView.Adapter<ProvideAdapter.ViewHold
             imageView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Toast.makeText(mContext, "Product clicked", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(mContext, "Provide clicked"+item.getName()+"\n"+item.getUid(), Toast.LENGTH_SHORT).show();
                     Intent intent=new Intent(mContext,ProvideDetailActivity.class);
                     mContext.startActivity(intent);
                 }

@@ -82,7 +82,7 @@ public class DemandAdapter extends RecyclerView.Adapter<DemandAdapter.ViewHolder
             imageView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Toast.makeText(mContext, "Image clicked", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(mContext, "Demand clicked"+item.getName()+"\n"+item.getUid(), Toast.LENGTH_SHORT).show();
                      Intent intent=new Intent(mContext, DemandDetail.class);
                      mContext.startActivity(intent);
                 }
