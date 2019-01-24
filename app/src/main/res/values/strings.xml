@@ -40,10 +40,17 @@
     <string name="cart_title">My Cart</string>
     <string name="message_title">My Chat</string>
 
-    <style name="Theme.MaterialButton" parent="AppTheme">
-        <item name="colorAccent">@color/colorAccent</item>
-        <item name="colorButtonNormal">@color/colorPrimaryDark</item>
-        <item name="colorControlHighlight">@color/colorAccent</item>
-    </style>
+
+    <string name="action_settings">Settings</string>
+
+
+    <string name="tequila_name">Tequila</string>
+    <string name="tequila_tagline">Is an alcoholic beverage</string>
+    <string name="tequila_title">Tequila!</string>
+     <string name="buy_now">BUY NOW</string>
+    <string name="add_to_cart">ADD TO CART</string>
+
+    <string name="chat">CHAT</string>
+      <string name="favourite">FAVOURITE</string>
 </resources>
 

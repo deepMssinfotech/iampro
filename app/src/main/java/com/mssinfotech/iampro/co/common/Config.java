@@ -29,7 +29,6 @@ import java.util.ArrayList;
 
 public class Config
 {
-
     public static final String TAG="Imapro tag";
     public static boolean doubleBackToExitPressedOnce = false;
     public static final String API_URL="https://www.iampro.co/api/";
