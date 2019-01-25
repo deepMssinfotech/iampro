@@ -61,7 +61,7 @@ public class DemandFragment extends Fragment implements DemandAdapter.ItemListen
 
     }
     public void getDemand(){
-        final String url = "https://www.iampro.co/api/app_service.php?type=all_product_classified&uid=&name=DEMAND&my_id=";
+        final String url =Config.API_URL+"app_service.php?type=all_product_classified&uid=&name=DEMAND&my_id=";
         // Initialize a new RequestQueue instance
         RequestQueue requestQueue = Volley.newRequestQueue(getContext());
         // Initialize a new JsonArrayRequest instance
@@ -87,6 +87,7 @@ public class DemandFragment extends Fragment implements DemandAdapter.ItemListen
                                 // Get current json object
                                 JSONObject student = response.getJSONObject(i);
                                  int id=student.getInt("id");
+                                  String idv=String.valueOf(id);
                                  int added_by=student.getInt("added_by");
                                  String name = student.getString("name");
                                 String categoryv=student.getString("category");
@@ -117,7 +118,7 @@ public class DemandFragment extends Fragment implements DemandAdapter.ItemListen
                                 //Toast.makeText(getContext(),"rrrresponse_enterrr:",Toast.LENGTH_LONG).show();
                                // singleItem.add(new SingleItemModel(name,image,udate));
                                 //allSampleData.add(new DataModel(name,image,udate,categoryv));
-                                allSampleData.add(new DataModel(name,image,udate,categoryv,totallike,comments,scost,pcost,ratingv,uid,fullname,avatar));
+                                allSampleData.add(new DataModel(name,image,udate,categoryv,totallike,comments,scost,pcost,ratingv,uid,fullname,avatar,idv));
                             }
                             Log.d("bdm",singleItem.toString());
                             //dm.setAllItemsInSection(singleItem);

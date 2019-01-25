@@ -9,6 +9,15 @@ public class DataModel {
     public int drawable;
     public String color;
 
+    public String getPid() {
+        return pid;
+    }
+
+    public void setPid(String pid) {
+        this.pid = pid;
+    }
+
+    private String pid;
     public float getRating() {
         return rating;
     }
@@ -182,7 +191,7 @@ public class DataModel {
          this.daysago=daysago;
     }
     //ppd
-    public DataModel(String name,String image,String udate,String category,int totallike,int comments,int sCost,int pCost,float rating,int uid,String fullname,String userImage){
+    public DataModel(String name,String image,String udate,String category,int totallike,int comments,int sCost,int pCost,float rating,int uid,String fullname,String userImage,String pid){
         this.name=name;
         this.image=image;
         this.udate=udate;
@@ -196,6 +205,7 @@ public class DataModel {
         this.fullname=fullname;
         this.userImage=userImage;
         this.uid=uid;
+        this.pid=pid;
     }
     //name,image,udate,categoryv,totallike,comments,daysago,ratingv,uid,fullname,avatar
     public DataModel(String name,String image,String udate,String category,int totallike,int comments,String daysago,float rating,int uid,String fullname,String userImage){

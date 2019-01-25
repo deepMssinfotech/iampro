@@ -77,7 +77,6 @@
                 android:orientation="horizontal">
 
                 <TextView
-                    android:id="@+id/tv_categoriess"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:text="Categories:"
@@ -107,7 +106,6 @@
                 android:orientation="horizontal">
 
                 <TextView
-                    android:id="@+id/tv_costs"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:text="Cost:"
@@ -145,7 +143,6 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
             <TextView
-                android:id="@+id/tv_product_detail"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Demand Details:"
@@ -163,7 +160,7 @@
                 android:orientation="horizontal">
 
                 <TextView
-                    android:id="@+id/tv_proddetails"
+                    android:id="@+id/tv_demanddetails"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:text="details"
@@ -191,7 +188,6 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
             <TextView
-                android:id="@+id/tv_productprovider_detail"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Demand Provider Detail:"
@@ -208,7 +204,7 @@
                 android:padding="0dp"
                 android:orientation="horizontal">
                 <de.hdodenhof.circleimageview.CircleImageView
-                    android:id="@+id/imageView"
+                    android:id="@+id/user_image"
                     android:layout_width="70dp"
                     android:layout_height="70dp"
                     android:padding="4dp"
@@ -227,7 +223,7 @@
                     android:layout_marginTop="20dp"
                     android:orientation="vertical">
                     <TextView
-                        android:id="@+id/tv_prod_prov_name"
+                        android:id="@+id/tv_demand_name"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
@@ -236,7 +232,7 @@
                         android:padding="4dp"
                         android:textStyle="bold"/>
                     <TextView
-                        android:id="@+id/tv_prod_prov_email"
+                        android:id="@+id/tv_demand_email"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
@@ -295,7 +291,6 @@
                      android:layout_weight="9"/> -->
 
                 <TextView
-                    android:id="@+id/tv_costsss"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:text="Write your review"
@@ -308,7 +303,7 @@
             </LinearLayout>
 
             <android.support.v7.widget.RecyclerView
-                android:id="@+id/recycler_view_review_product"
+                android:id="@+id/recycler_view_review_demand"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:scrollbars="none" />

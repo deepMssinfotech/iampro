@@ -144,7 +144,7 @@ public class ProvideFragment extends Fragment implements ProvideAdapter.ItemList
     } */
 
     public void getProvide(){
-        final String url = "https://www.iampro.co/api/app_service.php?type=all_product_classified&uid=&name=PROVIDE&my_id=";
+        final String url =Config.API_URL+"app_service.php?type=all_product_classified&uid=&name=PROVIDE&my_id=";
         // Initialize a new RequestQueue instance
         RequestQueue requestQueue = Volley.newRequestQueue(getContext());
         //Toast.makeText(getContext(), "getProvide", Toast.LENGTH_SHORT).show();
@@ -174,6 +174,7 @@ public class ProvideFragment extends Fragment implements ProvideAdapter.ItemList
                                 // Get current json object
                                 JSONObject student = response.getJSONObject(i);
                                 int id=student.getInt("id");
+                                 String idv=String.valueOf(id);
                                 int added_by=student.getInt("added_by");
                                 String name = student.getString("name");
                                 String categoryv=student.getString("category");
@@ -213,7 +214,7 @@ public class ProvideFragment extends Fragment implements ProvideAdapter.ItemList
 
                                 // singleItem.add(new SingleItemModel(name,image,udate));
                                 //allSampleData.add(new DataModel(name,image,udate,categoryv));
-                                allSampleData.add(new DataModel(name,image,udate,categoryv,totallike,comments,scost,pcost,ratingv,uid,fullname,avatar));
+                                allSampleData.add(new DataModel(name,image,udate,categoryv,totallike,comments,scost,pcost,ratingv,uid,fullname,avatar,idv));
 
                             }
                            // Toast.makeText(getContext(),"rrrresponse_enterrr:2",Toast.LENGTH_LONG).show();
@@ -222,7 +223,7 @@ public class ProvideFragment extends Fragment implements ProvideAdapter.ItemList
                             //
                             //recyclerView = (RecyclerView)view.findViewById(R.id.recyclerView);
 
-                            /*arrayList.add(new DataModel("Item 1", android.R.drawable.btn_default, "#09A9FF"));
+                            /*arrayList.add(new DataModel("Item 1", android.R.drawable.btn_default, "#09A9FF")),
                             arrayList.add(new DataModel("Item 2", android.R.drawable.btn_default, "#3E51B1"));
                             arrayList.add(new DataModel("Item 3", android.R.drawable.arrow_up_float, "#673BB7"));
                             arrayList.add(new DataModel("Item 4", android.R.drawable.arrow_down_float, "#4BAA50"));

@@ -85,7 +85,8 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
                 public void onClick(View v) {
                     Toast.makeText(mContext, "Product clicked"+item.getName()+"\n"+item.getUid(), Toast.LENGTH_SHORT).show();
                     Intent intent=new Intent(mContext, ProductDetail.class);
-
+                    intent.putExtra("pid",String.valueOf(item.getPid()));
+                    intent.putExtra("uid",String.valueOf(item.getUid()));
                     mContext.startActivity(intent);
                 }
             });

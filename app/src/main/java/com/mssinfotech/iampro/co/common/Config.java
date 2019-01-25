@@ -35,6 +35,8 @@ public class Config
     public static final String URL_ROOT="https://www.iampro.co/";
     public static final String AJAX_URL="https://www.iampro.co/ajax/";
     public static final String AVATAR_URL="https://www.iampro.co/uploads/avatar/";
+
+    public static final String OTHER_IMAGE_URL="https://www.iampro.co/uploads/product/";
     public static final String BANNER_URL="https://www.iampro.co/uploads/media/";
     public static final String MEDIA_URL="https://www.iampro.co/uploads/media/";
     public static final String IP_ADDRESS="";

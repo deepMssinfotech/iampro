@@ -67,7 +67,7 @@ public class ProductFragment extends Fragment implements ProductAdapter.ItemList
     }
 
     public void getProduct(){
-        final String url = "https://www.iampro.co/api/app_service.php?type=all_product&uid=&name=product&my_id=";
+        final String url =Config.API_URL+"app_service.php?type=all_product&uid=&name=product&my_id=";
         // Initialize a new RequestQueue instance
         RequestQueue requestQueue = Volley.newRequestQueue(getContext());
 
@@ -95,6 +95,7 @@ public class ProductFragment extends Fragment implements ProductAdapter.ItemList
                                 JSONObject student = response.getJSONObject(i);
 
                                 int id=student.getInt("id");
+                                 String idv=String.valueOf(id);
                                 int added_by=student.getInt("added_by");
 
                                 int scost=student.getInt("selling_cost");
@@ -124,7 +125,7 @@ public class ProductFragment extends Fragment implements ProductAdapter.ItemList
                                 //Toast.makeText(getContext(),"rrrresponse_enterrr:",Toast.LENGTH_LONG).show();
                                 // singleItem.add(new SingleItemModel(name,image,udate));
                                 //allSampleData.add(new DataModel(name,image,udate,categoryv));
-                                allSampleData.add(new DataModel(name,image,udate,categoryv,totallike,comments,scost,pcost,ratingv,uid,fullname,avatar));
+                                allSampleData.add(new DataModel(name,image,udate,categoryv,totallike,comments,scost,pcost,ratingv,uid,fullname,avatar,idv));
                             }
                             Log.d("bdm",singleItem.toString());
                             dm.setAllItemsInSection(singleItem);
