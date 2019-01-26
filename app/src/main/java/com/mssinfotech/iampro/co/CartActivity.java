@@ -1,6 +1,4 @@
 package com.mssinfotech.iampro.co;
-
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -41,10 +39,7 @@ import com.mssinfotech.iampro.co.utils.PrefManager;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
-
 public class CartActivity extends AppCompatActivity {
-
     private static final String TAG = "ShoppingCartActivity";
     private static String CART_URL  = "";
     private CartItemAdapter mAdapter;
@@ -52,7 +47,6 @@ public class CartActivity extends AppCompatActivity {
     Button bClear;
     Button bShop;
     TextView tvTotalPrice;
-
     private RecyclerView recyclerView;
     private List<CartItem> CartItemList;
     @Override
@@ -97,7 +91,6 @@ public class CartActivity extends AppCompatActivity {
                 Log.d(Config.TAG,"error : "+error.getMessage());
             }
         });
-
         AppController.getInstance().addToRequestQueue(stringRequest);
     }
     private void parseJsonFeed(String response) {
@@ -131,13 +124,10 @@ public class CartActivity extends AppCompatActivity {
                 ImageView no_rodr = findViewById(R.id.no_record_found);
                 no_rodr.setVisibility(View.VISIBLE);
             }
-
             // notify data changes to list adapater
         } catch (JSONException e) {
             Log.d(Config.TAG,"printStackTrace 167" + e.getMessage() + "  Error Message");
             e.printStackTrace();
         }
     }
-
-
 }

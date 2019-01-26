@@ -11,6 +11,7 @@
         <android.support.v7.widget.AppCompatButton
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:onClick="buyNow"
             android:background="@drawable/btn_red"
             android:layout_weight="1"
             android:layout_margin="13dp"
@@ -19,6 +20,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@drawable/btn_red"
+            android:onClick="addToCart"
             android:layout_weight="1"
             android:layout_margin="13dp"
             android:text="@string/add_to_cart"/>
@@ -271,32 +273,31 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="20dp"
+                android:onClick="sendReview"
                 android:orientation="horizontal">
                 <ImageView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="9"
-                    android:padding="10dp"
+                    android:layout_width="63dp"
+                    android:layout_height="63dp"
+                    android:padding="13dp"
                     android:layout_gravity="left"
-
                     android:src="@drawable/ic_chat_black_24dp"/>
-               <!-- <TextView
-                    android:id="@+id/tv_costss"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:text="Cost:"
-                    android:textSize="17dp"
-                    android:textStyle="bold"
-                    android:layout_weight="9"/> -->
+                <!-- <TextView
+                     android:id="@+id/tv_costss"
+                     android:layout_width="0dp"
+                     android:layout_height="wrap_content"
+                     android:text="Cost:"
+                     android:textSize="17dp"
+                     android:textStyle="bold"
+                     android:layout_weight="9"/> -->
 
                 <TextView
-                    android:id="@+id/tv_costsss"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:text="Write your review"
                     android:layout_gravity="end"
                     android:gravity="end"
-                    android:padding="10dp"
+                    android:padding="13dp"
+                    android:layout_marginTop="10dp"
                     android:textSize="17sp"
                     android:textStyle="bold"
                     android:layout_weight="9"/>

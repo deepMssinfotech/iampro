@@ -1,17 +1,22 @@
 package com.mssinfotech.iampro.co.demand;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -21,16 +26,24 @@ import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
+import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.bitmap.CircleCrop;
 import com.bumptech.glide.request.RequestOptions;
+import com.mssinfotech.iampro.co.MessageActivity;
 import com.mssinfotech.iampro.co.R;
+import com.mssinfotech.iampro.co.adapter.CommentAdapter;
+import com.mssinfotech.iampro.co.adapter.DemandAdapter;
 import com.mssinfotech.iampro.co.common.Config;
+import com.mssinfotech.iampro.co.customphoto.cropoverlay.utils.Utils;
+import com.mssinfotech.iampro.co.model.DataModel;
 import com.mssinfotech.iampro.co.model.Review;
+import com.mssinfotech.iampro.co.product.ProductDetail;
 import com.mssinfotech.iampro.co.provide.ProvideDetailActivity;
 import com.mssinfotech.iampro.co.user.ProfileActivity;
+import com.mssinfotech.iampro.co.utils.PrefManager;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -41,7 +54,7 @@ import java.util.List;
 
 import static com.mssinfotech.iampro.co.common.Config.AVATAR_URL;
 
-public class DemandDetail extends AppCompatActivity
+public class DemandDetail extends AppCompatActivity  implements CommentAdapter.ItemListener
 {
     public static String pid="",uid="";
     TextView tv_name,tv_categories,tv_cost,tv_demanddetails,tv_demand_name,tv_demand_email;
@@ -50,7 +63,8 @@ public class DemandDetail extends AppCompatActivity
     RecyclerView recycler_view_review_demand;
     CollapsingToolbarLayout collapsingToolbar;
     ImageView expandedImage;
-    List<Review> items;
+    ArrayList<Review> items=new ArrayList<>();
+    CommentAdapter comment_adapter;
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
@@ -59,7 +73,7 @@ public class DemandDetail extends AppCompatActivity
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_demand_detail);
-
+        //items=new ArrayList<>();
         //Set toolbar title
         collapsingToolbar = findViewById(R.id.collapsing_toolbar);
         expandedImage=collapsingToolbar.findViewById(R.id.expandedImage);
@@ -72,7 +86,7 @@ public class DemandDetail extends AppCompatActivity
         tv_demand_email=findViewById(R.id.tv_demand_email);
         user_image=findViewById(R.id.user_image);
 
-        recycler_view_review_demand=findViewById(R.id.recycler_view_review_provide);
+        recycler_view_review_demand=findViewById(R.id.recycler_view_review_demand);
 
         pid=getIntent().getExtras().getString("pid");
         uid=getIntent().getExtras().getString("uid");
@@ -86,9 +100,10 @@ public class DemandDetail extends AppCompatActivity
                   DemandDetail.this.startActivity(intent);
             }
         });
-        getProvideDetail();
+        getDemandDetail();
+        getDemandReview();
     }
-    protected void getProvideDetail(){
+    protected void getDemandDetail(){
         String url= Config.API_URL+"ajax.php?type=provide_details&id="+pid+"&uid="+uid;
         // Initialize a new RequestQueue instance
         RequestQueue requestQueue = Volley.newRequestQueue(DemandDetail.this);
@@ -180,8 +195,12 @@ public class DemandDetail extends AppCompatActivity
                 new Response.Listener<JSONArray>() {
                     @Override
                     public void onResponse(JSONArray response) {
-                         items=new ArrayList<>();
+
                         try{
+                            if (!items.isEmpty()){
+                                items.clear();
+                            }
+
                             // Loop through the array elements
                             for(int i=0;i<response.length();i++){
                                 // Get current json object
@@ -198,8 +217,14 @@ public class DemandDetail extends AppCompatActivity
                                   String rdate=student.optString("rdate");
                                     items.add(new Review(fullname,email,comment,id,pcid,user_img,rdate,added_by,pid));
                             }
+                            Log.d("demand_itemss",items+"");
+                            comment_adapter=new CommentAdapter(DemandDetail.this,items,DemandDetail.this);
+                            recycler_view_review_demand.setLayoutManager(new LinearLayoutManager(DemandDetail.this, LinearLayoutManager.VERTICAL, false));
+
+                            recycler_view_review_demand.setAdapter(comment_adapter);
                         }catch (JSONException e){
                             e.printStackTrace();
+                             Toast.makeText(getApplicationContext(),e.getMessage(),Toast.LENGTH_LONG).show();
                         }
                     }
                 },
@@ -216,4 +241,111 @@ public class DemandDetail extends AppCompatActivity
         requestQueue.add(jsonArrayRequest);
     }
 
+    public void sendReview(View view){
+         if(PrefManager.isLogin(DemandDetail.this)) {
+             // get prompts.xml view
+             LayoutInflater li = LayoutInflater.from(DemandDetail.this);
+             View promptsView = li.inflate(R.layout.prompts_review, null);
+
+             AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
+                     DemandDetail.this);
+
+             // set prompts.xml to alertdialog builder
+             alertDialogBuilder.setView(promptsView);
+
+             final EditText userInput = promptsView
+                     .findViewById(R.id.editTextReview);
+
+             // set dialog message
+             alertDialogBuilder
+                     .setCancelable(false)
+                     .setPositiveButton("OK",
+                             new DialogInterface.OnClickListener() {
+                                 public void onClick(DialogInterface dialog, int id) {
+                                     //Toast.makeText(getApplicationContext(), userInput.getText(), Toast.LENGTH_LONG).show();
+                                      saveReview(userInput.getText().toString().trim());
+                                     getDemandReview();
+                                 }
+                             })
+                     .setNegativeButton("Cancel",
+                             new DialogInterface.OnClickListener() {
+                                 public void onClick(DialogInterface dialog, int id) {
+                                     dialog.cancel();
+                                 }
+                             });
+
+             // create alert dialog
+             AlertDialog alertDialog = alertDialogBuilder.create();
+
+             // show it
+             alertDialog.show();
+         }
+         else{
+              Toast.makeText(DemandDetail.this,"First Login and try again...",Toast.LENGTH_LONG).show();
+              return;
+         }
     }
+    public void saveReview(String message){
+        String url="https://www.iampro.co/api/app_service.php?type=product_review&data_id="+pid+"&comment="+message+"&id="+uid+"&data_type=demand";
+        //id: 693
+        //data_type: demand
+        // Initialize a new RequestQueue instance
+        RequestQueue requestQueue = Volley.newRequestQueue(DemandDetail.this);
+
+        // Initialize a new JsonObjectRequest instance
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(
+                Request.Method.GET,
+                url,
+                null,
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        // Do something with response
+                        //mTextView.setText(response.toString());
+
+                        // Process the JSON
+                        try{
+                            String msg=response.optString("msg");
+                            Toast.makeText(getApplicationContext(),msg,Toast.LENGTH_LONG).show();
+                        }
+                        catch (Exception e){
+                            e.printStackTrace();
+                            Toast.makeText(DemandDetail.this,e.getMessage(),Toast.LENGTH_LONG).show();
+                        }
+                    }
+                },
+                new Response.ErrorListener(){
+                    @Override
+                    public void onErrorResponse(VolleyError error){
+                        // Do something when error occurred
+                        Toast.makeText(DemandDetail.this,error.getMessage(),Toast.LENGTH_LONG).show();
+                    }
+                }
+        );
+
+        // Add JsonObjectRequest to the RequestQueue
+        requestQueue.add(jsonObjectRequest);
+    }
+    public void chat(View view){
+        if(PrefManager.isLogin(DemandDetail.this)) {
+            Intent intent = new Intent(DemandDetail.this, MessageActivity.class);
+            this.startActivity(intent);
+        }
+        else {
+            Toast.makeText(DemandDetail.this,"First Login and try again...",Toast.LENGTH_LONG).show();
+        }
+    }
+    public void favourite(View view){
+        if(PrefManager.isLogin(DemandDetail.this)) {
+
+        }
+        else {
+            Toast.makeText(DemandDetail.this,"First Login and try again...",Toast.LENGTH_LONG).show();
+        }
+    }
+
+    @Override
+    public void onItemClick(Review item) {
+
+    }
+}

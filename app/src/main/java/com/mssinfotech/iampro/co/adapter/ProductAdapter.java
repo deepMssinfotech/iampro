@@ -83,11 +83,17 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
             imageView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Toast.makeText(mContext, "Product clicked"+item.getName()+"\n"+item.getUid(), Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(mContext, "Product clicked"+item.getName()+"\n"+item.getUid(), Toast.LENGTH_SHORT).show();
                     Intent intent=new Intent(mContext, ProductDetail.class);
                     intent.putExtra("pid",String.valueOf(item.getPid()));
                     intent.putExtra("uid",String.valueOf(item.getUid()));
                     mContext.startActivity(intent);
+                }
+            });
+            tv_tlike.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                     String url="https://www.iampro.co/api/app_service.php?type=like_me&id=5&uid=693&ptype=product";
                 }
             });
             //relativeLayout = (RelativeLayout) v.findViewById(R.id.relativeLayout);
