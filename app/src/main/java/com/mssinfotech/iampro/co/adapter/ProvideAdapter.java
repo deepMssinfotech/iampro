@@ -15,6 +15,12 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.Volley;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.bitmap.CircleCrop;
 import com.bumptech.glide.request.RequestOptions;
@@ -43,6 +49,8 @@ import com.mssinfotech.iampro.co.model.DataModel;
 import com.mssinfotech.iampro.co.provide.ProvideDetailActivity;
 import com.mssinfotech.iampro.co.user.ProfileActivity;
 
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 
 public class ProvideAdapter extends RecyclerView.Adapter<ProvideAdapter.ViewHolder> {
@@ -63,11 +71,13 @@ public class ProvideAdapter extends RecyclerView.Adapter<ProvideAdapter.ViewHold
         de.hdodenhof.circleimageview.CircleImageView userImage;
         public RelativeLayout relativeLayout;
         DataModel item;
+        ImageView ivLike;
         public ViewHolder(View v) {
             super(v);
             v.setOnClickListener(this);
             textView = (TextView) v.findViewById(R.id.textView);
             imageView = (ImageView) v.findViewById(R.id.imageView);
+            ivLike=v.findViewById(R.id.ivLike);
             tv_tlike=v.findViewById(R.id.tv_totallike);
             //tv_comments
             tv_comments=v.findViewById(R.id.tv_comments);
@@ -90,7 +100,114 @@ public class ProvideAdapter extends RecyclerView.Adapter<ProvideAdapter.ViewHold
                     mContext.startActivity(intent);
                 }
             });
-            //relativeLayout = (RelativeLayout) v.findViewById(R.id.relativeLayout);
+            ivLike.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    likeProvide(item.getPid(),String.valueOf(item.getUid()));
+                }
+            });
+            ratingBar.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
+                @Override
+                public void onRatingChanged(RatingBar ratingBar, float rating, boolean fromUser) {
+                    rateMe(item.getPid(),String.valueOf(item.getUid()),rating);
+                }
+            });
+        }
+        public void likeProvide(String id,String uid){
+            String url="https://www.iampro.co/api/app_service.php?type=like_me&id="+id+"&uid="+uid+"&ptype=provide";
+            RequestQueue requestQueue = Volley.newRequestQueue(mContext);
+
+            // Initialize a new JsonObjectRequest instance
+            JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(
+                    Request.Method.GET,
+                    url,
+                    null,
+                    new Response.Listener<JSONObject>() {
+                        @Override
+                        public void onResponse(JSONObject response) {
+                            // Do something with response
+                            //mTextView.setText(response.toString());
+
+                            // Process the JSON
+                            try{
+                                 String status=response.optString("status");
+                                String msg=response.optString("msg");
+                                Toast.makeText(mContext,msg,Toast.LENGTH_LONG).show();
+                                 String update_status=response.optString("update_status");
+                                   String totallike=response.optString("totallike");
+                                if ((update_status.equalsIgnoreCase("1") || update_status=="1") && (status=="success" || status.equalsIgnoreCase("success"))){
+                                    tv_tlike.setTextColor(Color.RED);
+                                    //ivLike.setBackgroundColor(Color.RED);
+                                    tv_tlike.setText(totallike);
+                                }
+                                else {
+                                    tv_tlike.setTextColor(Color.BLACK);
+                                    tv_tlike.setText(totallike);
+                                }
+                            }
+                            catch (Exception e){
+                                e.printStackTrace();
+                                Toast.makeText(mContext,e.getMessage(),Toast.LENGTH_LONG).show();
+                            }
+                        }
+                    },
+                    new Response.ErrorListener(){
+                        @Override
+                        public void onErrorResponse(VolleyError error){
+                            // Do something when error occurred
+                            Toast.makeText(mContext,error.getMessage(),Toast.LENGTH_LONG).show();
+                        }
+                    }
+            );
+            // Add JsonObjectRequest to the RequestQueue
+            requestQueue.add(jsonObjectRequest);
+        }
+        public void rateMe(String id,String uid,float rating){
+            String url="https://www.iampro.co/api/app_service.php?type=rate_me&id="+id+"&uid="+uid+"&ptype=provide&total_rate="+rating;
+
+            RequestQueue requestQueue = Volley.newRequestQueue(mContext);
+
+            // Initialize a new JsonObjectRequest instance
+            JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(
+                    Request.Method.GET,
+                    url,
+                    null,
+                    new Response.Listener<JSONObject>() {
+                        @Override
+                        public void onResponse(JSONObject response) {
+                            // Do something with response
+                            //mTextView.setText(response.toString());
+
+                            // Process the JSON
+                            try{
+                                String status=response.optString("status");
+                                String msg=response.optString("msg");
+                                String update_status=response.optString("update_status");
+                                String totalrating=response.optString("totalrating");
+                                if (status=="success" || status.equalsIgnoreCase("success")){
+                                    ratingBar.setRating(Float.parseFloat(totalrating));
+                                }
+                                else {
+
+                                }
+                                Toast.makeText(mContext,msg,Toast.LENGTH_LONG).show();
+                            }
+                            catch (Exception e){
+                                e.printStackTrace();
+                                Toast.makeText(mContext,e.getMessage(),Toast.LENGTH_LONG).show();
+                            }
+                        }
+                    },
+                    new Response.ErrorListener(){
+                        @Override
+                        public void onErrorResponse(VolleyError error){
+                            // Do something when error occurred
+                            Toast.makeText(mContext,error.getMessage(),Toast.LENGTH_LONG).show();
+                        }
+                    }
+            );
+            // Add JsonObjectRequest to the RequestQueue
+            requestQueue.add(jsonObjectRequest);
         }
         public void setData(DataModel item) {
             this.item = item;
@@ -101,6 +218,7 @@ public class ProvideAdapter extends RecyclerView.Adapter<ProvideAdapter.ViewHold
             //Toast.makeText(mContext,"image:"+url,Toast.LENGTH_LONG).show();
             //Log.d("url_adapter",url);
             //Toast.makeText(mContext, ""+url, Toast.LENGTH_SHORT).show();
+
             tv_tlike.setText(String.valueOf(item.getTotallike()));
             tv_comments.setText(String.valueOf(item.getComments()));
             ratingBar.setRating(item.getRating());
@@ -165,7 +283,7 @@ public class ProvideAdapter extends RecyclerView.Adapter<ProvideAdapter.ViewHold
     }
     @Override
     public ProvideAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(mContext).inflate(R.layout.recycler_view_item, parent, false);
+        View view = LayoutInflater.from(mContext).inflate(R.layout.provide_view_item, parent, false);
         return new ViewHolder(view);
     }
     @Override

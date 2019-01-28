@@ -156,12 +156,12 @@ public class DemandFragment extends Fragment implements DemandAdapter.ItemListen
                     }
                 }
         );
-        //jsonArrayRequest.setRetryPolicy(new DefaultRetryPolicy(3000,0,DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+        jsonArrayRequest.setRetryPolicy(new DefaultRetryPolicy(3000,0,DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
         // Add JsonArrayRequest to the RequestQueue
         requestQueue.add(jsonArrayRequest);
     }
     @Override
     public void onItemClick(DataModel item) {
-        Toast.makeText(getContext(), item.getName() + " is clicked", Toast.LENGTH_SHORT).show();
+        //Toast.makeText(getContext(), item.getName() + " is clicked", Toast.LENGTH_SHORT).show();
     }
 }

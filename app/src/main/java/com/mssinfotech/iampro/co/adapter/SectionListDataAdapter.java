@@ -32,6 +32,7 @@ public class SectionListDataAdapter extends RecyclerView.Adapter<SectionListData
     private ArrayList<SingleItemModel> itemsList;
     private Context mContext;
      private int uid;
+    ImageView ivLike;
     public SectionListDataAdapter(Context context, ArrayList<SingleItemModel> itemsList) {
         this.itemsList = itemsList;
         this.mContext = context;

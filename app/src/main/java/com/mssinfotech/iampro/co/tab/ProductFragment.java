@@ -46,6 +46,11 @@ public class ProductFragment extends Fragment implements ProductAdapter.ItemList
         super.onCreate(savedInstanceState);
     }
 
+    public  void  likeProduct(){
+        String url="https://www.iampro.co/api/app_service.php?type=like_me&id=5&uid=693&ptype=product";
+        Toast.makeText(getContext(),"Frm fragment",Toast.LENGTH_LONG).show();
+    }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -173,6 +178,6 @@ public class ProductFragment extends Fragment implements ProductAdapter.ItemList
     }
     @Override
     public void onItemClick(DataModel item) {
-        Toast.makeText(getContext(), item.getName() + " is clicked", Toast.LENGTH_SHORT).show();
+        //Toast.makeText(getContext(), item.getName() + " is clicked", Toast.LENGTH_SHORT).show();
     }
 }
