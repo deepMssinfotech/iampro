@@ -55,8 +55,8 @@ public class ImageDetail extends AppCompatActivity {
                             String group_id=responses.optString("group_id");
                             String is_featured=responses.optString("is_featured");
                             String status=responses.optString("status");
-                            String is_featured=responses.optString("is_featured");
-                            String is_featured=responses.optString("is_featured");
+                            //String is_featured=responses.optString("is_featured");
+                           // String is_featured=responses.optString("is_featured");
                             String other_image=responses.optString("other_image");
 
                             String other_image_path=Config.OTHER_IMAGE_URL+other_image;
