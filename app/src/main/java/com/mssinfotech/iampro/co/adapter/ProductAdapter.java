@@ -196,7 +196,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
                                  else {
 
                                  }
-                                 Toast.makeText(mContext,msg,Toast.LENGTH_LONG).show();
+                                 //Toast.makeText(mContext,msg,Toast.LENGTH_LONG).show();
                              }
                              catch (Exception e){
                                  e.printStackTrace();

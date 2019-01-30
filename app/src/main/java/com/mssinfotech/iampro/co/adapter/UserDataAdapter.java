@@ -4,10 +4,6 @@ package com.mssinfotech.iampro.co.adapter;
  * Created by mssinfotech on 18/01/19.
  */
 
-import android.arch.lifecycle.ViewModel;
-import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -18,26 +14,14 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.mssinfotech.iampro.co.R;
 import android.view.ViewGroup;
-import android.widget.RadioButton;
 
 /**
  * Demonstrates the use of {@link RecyclerView} with a {@link LinearLayoutManager} and a
  * {@link GridLayoutManager}.
  */
 import android.content.Context;
-import android.graphics.Color;
-import android.support.v7.widget.RecyclerView;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
-
-import com.mssinfotech.iampro.co.model.DataModel;
 import com.mssinfotech.iampro.co.model.UserModel;
-
 import java.util.ArrayList;
 
 public class UserDataAdapter extends RecyclerView.Adapter<UserDataAdapter.ViewHolder> {
@@ -50,10 +34,8 @@ public class UserDataAdapter extends RecyclerView.Adapter<UserDataAdapter.ViewHo
         mListener=itemListener;
     }
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-        public TextView textView,tv_category;
-        //public ImageView imageView;
+        public TextView textView,tv_category,tv_images,tv_videos,tv_users,tv_products,tv_provides,tv_demands;
         de.hdodenhof.circleimageview.CircleImageView imageView;
-        public RelativeLayout relativeLayout;
         UserModel item;
         public ViewHolder(View v) {
             super(v);
@@ -61,19 +43,28 @@ public class UserDataAdapter extends RecyclerView.Adapter<UserDataAdapter.ViewHo
             textView = (TextView) v.findViewById(R.id.textView);
             imageView =v.findViewById(R.id.imageView);
 
-            tv_category=(TextView)v.findViewById(R.id.tvcategory);
+            tv_category=v.findViewById(R.id.tvcategory);
+            tv_images=v.findViewById(R.id.tv_images);
+            tv_videos=v.findViewById(R.id.tv_videos);
+            tv_users=v.findViewById(R.id.tv_users);
+            tv_products=v.findViewById(R.id.tv_products);
+            tv_provides=v.findViewById(R.id.tv_provides);
+            tv_demands=v.findViewById(R.id.tv_demands);
 
-            //relativeLayout = (RelativeLayout) v.findViewById(R.id.relativeLayout);
         }
         public void setData(UserModel item) {
             this.item = item;
             textView.setText(item.getName());
              tv_category.setText(item.getCategory());
-            //textView.setBackgroundColor(Color.BLUE);
+            tv_images.setText(item.getTotal_image());
+             tv_videos.setText(item.getTotal_video());
+              tv_users.setText(item.getTotal_friend());
+               tv_products.setText(item.getTotal_product());
+               tv_provides.setText(item.getTotal_provide());
+                tv_demands.setText(item.getTotal_demand());
             String url=item.getImage();
             //Toast.makeText(mContext,"image:"+url,Toast.LENGTH_LONG).show();
-            //Log.d("url_adapter",url);
-            //Toast.makeText(mContext, ""+url, Toast.LENGTH_SHORT).show();
+
             Glide.with(mContext)
                     .load(url)
                     .apply(new RequestOptions()
@@ -82,7 +73,6 @@ public class UserDataAdapter extends RecyclerView.Adapter<UserDataAdapter.ViewHo
                     .into(imageView);
             //imageView.setImageResource(item.image);
 
-            // relativeLayout.setBackgroundColor(Color.parseColor("#000000"));
 
         }
         @Override

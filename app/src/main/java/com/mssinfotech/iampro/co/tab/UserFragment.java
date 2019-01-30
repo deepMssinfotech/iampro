@@ -28,6 +28,7 @@ import com.mssinfotech.iampro.co.model.SingleItemModel;
 import com.mssinfotech.iampro.co.common.Config;
 import com.mssinfotech.iampro.co.model.UserModel;
 import com.mssinfotech.iampro.co.user.ProfileActivity;
+import com.mssinfotech.iampro.co.utils.PrefManager;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -63,12 +64,17 @@ public class UserFragment extends Fragment implements UserDataAdapter.ItemListen
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         //createDummyData();
-        getUser();
+        if (PrefManager.isLogin(getContext())) {
+            String id = PrefManager.getLoginDetail(getContext(), "id");
+            uid = Integer.parseInt(id);
+        }
+        getUser(15);
         my_recycler_view =view.findViewById(R.id.my_recycler_view);
 
     }
-    public void getUser(){
-        final String url = "https://www.iampro.co/api/app_service.php?type=getSelectedUser&limit=15&uid=&my_id=";
+    public void getUser(int limitss){
+        final String url = "https://www.iampro.co/api/app_service.php?type=getSelectedUser&limit="+limitss+"&uid="+uid+"&my_id="+uid;
+
         // Initialize a new RequestQueue instance
         RequestQueue requestQueue = Volley.newRequestQueue(getContext());
 
@@ -103,11 +109,17 @@ public class UserFragment extends Fragment implements UserDataAdapter.ItemListen
                                 String image= Config.AVATAR_URL+"200/200/"+imagev;
                                 String udate=student.getString("udate");
                                 Log.d("pdata",""+name+""+category+""+image+""+udate);
-                                //SectionDataModel dm = new SectionDataModel();
-                                //dm.setHeaderTitle("Section " + i);
-                                //Toast.makeText(getContext(),"rrrresponse_enterrr:",Toast.LENGTH_LONG).show();
-                                //singleItem.add(new SingleItemModel(name,image,udate));
-                                allSampleData.add(new UserModel(uid,name,image,udate,category));
+
+                                String total_images=student.optString("total_image");
+                                String total_videos=student.optString("total_video");
+                                String total_users=student.optString("total_friends");
+                                String total_products=student.optString("total_product");
+                                String total_provides=student.optString("total_provide");
+                                String total_demands=student.optString("total_demend");
+
+                                //allSampleData.add(new UserModel(uid,name,image,udate,category));
+                                //String total_image,String total_video,String total_friend
+                                allSampleData.add(new UserModel(uid,name,image,udate,category,total_images,total_videos,total_users,total_products,total_provides,total_demands));
 
                             }
                             Log.d("bdm",singleItem.toString());

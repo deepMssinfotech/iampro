@@ -68,7 +68,61 @@ public class UserModel {
     private String udate;
     private String image;
     private String category;
+    private String total_image;
+    private String total_video;
+    private String total_friend;
 
+    public String getTotal_image() {
+        return total_image;
+    }
+
+    public void setTotal_image(String total_image) {
+        this.total_image = total_image;
+    }
+
+    public String getTotal_video() {
+        return total_video;
+    }
+
+    public void setTotal_video(String total_video) {
+        this.total_video = total_video;
+    }
+
+    public String getTotal_friend() {
+        return total_friend;
+    }
+
+    public void setTotal_friend(String total_friend) {
+        this.total_friend = total_friend;
+    }
+
+    public String getTotal_product() {
+        return total_product;
+    }
+
+    public void setTotal_product(String total_product) {
+        this.total_product = total_product;
+    }
+
+    public String getTotal_provide() {
+        return total_provide;
+    }
+
+    public void setTotal_provide(String total_provide) {
+        this.total_provide = total_provide;
+    }
+
+    public String getTotal_demand() {
+        return total_demand;
+    }
+
+    public void setTotal_demand(String total_demand) {
+        this.total_demand = total_demand;
+    }
+
+    private String total_product;
+    private String total_provide;
+    private String total_demand;
     public UserModel(String t, int d, String c)
     {
         text=t;
@@ -82,5 +136,17 @@ public class UserModel {
         this.udate=udate;
         this.category=category;
     }
-
+    public UserModel(int id,String name,String image,String udate,String category,String total_image,String total_video,String total_friend,String total_product,String total_provide,String total_demand){
+        this.id=id;
+        this.name=name;
+        this.image=image;
+        this.udate=udate;
+        this.category=category;
+         this.total_image=total_image;
+         this.total_video=total_video;
+        this.total_friend=total_friend;
+         this.total_product=total_product;
+         this.total_provide=total_provide;
+         this.total_demand=total_demand;
+    }
 }
