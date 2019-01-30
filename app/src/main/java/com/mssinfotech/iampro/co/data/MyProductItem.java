@@ -1,67 +1,137 @@
+/**
+ * Generated on Wed Jan 23 09:06:59 UTC 2019 by ObjGen 3.0
+ */
 package com.mssinfotech.iampro.co.data;
 
+/**
+ * Description for MyClass
+ */
 public class MyProductItem {
 
-    public String fullname;
-    public String avatar;
-    public Integer id;
-    public String email;
-    public String msg;
-    public String unread;
-    public String is_block;
-    public void setid(Integer id) {
-        this.id = id;
+    /** Property id */
+    Integer id;
+    String selling_cost,purchese_cost,image,fullname,avatar,likes,average_rating;
+    /**
+     * Constructor
+     */
+    public MyProductItem() {
     }
 
-    public Integer getid() {
-        return id;
+    /**
+     * Gets the id
+     */
+    public Integer getId() {
+        return this.id;
     }
 
-    public void setfullname(String fullname) {
-        this.fullname = fullname;
+    /**
+     * Sets the id
+     */
+    public void setId(Integer value) {
+        this.id = value;
     }
 
-    public String getfullname() {
-        return fullname;
+    /**
+     * Gets the selling_cost
+     */
+    public String getSelling_cost() {
+        return this.selling_cost;
     }
 
-    public void setavatar(String avatar) {
-        this.avatar = avatar;
+    /**
+     * Sets the selling_cost
+     */
+    public void setSelling_cost(String value) {
+        this.selling_cost = value;
     }
 
-    public String getavatar() {
-        return avatar;
+    /**
+     * Gets the purchese_cost
+     */
+    public String getPurchese_cost() {
+        return this.purchese_cost;
     }
 
-    public void setemail(String email) {
-        this.email = email;
+    /**
+     * Sets the purchese_cost
+     */
+    public void setPurchese_cost(String value) {
+        this.purchese_cost = value;
     }
 
-    public String getemail() {
-        return email;
+    /**
+     * Gets the image
+     */
+    public String getImage() {
+        return this.image;
     }
 
-    public void setmsg(String msg) {
-        this.msg = msg;
+    /**
+     * Sets the image
+     */
+    public void setImage(String value) {
+        this.image = value;
     }
 
-    public String getmsg() {
-        return msg;
+    /**
+     * Gets the fullname
+     */
+    public String getFullname() {
+        return this.fullname;
     }
 
-    public void setunread(String unread) {
-        this.unread = unread;
+    /**
+     * Sets the fullname
+     */
+    public void setFullname(String value) {
+        this.fullname = value;
     }
 
-    public String getunread() {
-        return unread;
+    /**
+     * Gets the avatar
+     */
+    public String getAvatar() {
+        return this.avatar;
     }
 
-    public void setis_block(String is_block) {
-        this.is_block = is_block;
+    /**
+     * Sets the avatar
+     */
+    public void setAvatar(String value) {
+        this.avatar = value;
     }
 
-    public String getis_block() {
-        return is_block;
+    /**
+     * Gets the likes
+     */
+    public String getLikes() {
+        return this.likes;
+    }
+
+    /**
+     * Sets the likes
+     */
+    public void setLikes(String value) {
+        this.likes = value;
+    }
+
+    /**
+     * Gets the average_rating
+     */
+    public String getAverage_rating() {
+        return this.average_rating;
+    }
+
+    /**
+     * Sets the average_rating
+     */
+    public void setAverage_rating(String value) {
+        this.average_rating = value;
+    }
+
+    /**
+     * @param args
+     */
+    public static void main(String[] args) {
     }
 }

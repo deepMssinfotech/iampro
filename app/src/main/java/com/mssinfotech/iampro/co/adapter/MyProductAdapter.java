@@ -39,7 +39,6 @@ public class MyProductAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder viewHolder, int position) {
 
         if (viewHolder instanceof ItemViewHolder) {
-
             populateItemRows((ItemViewHolder) viewHolder, position);
         } else if (viewHolder instanceof LoadingViewHolder) {
             showLoadingView((LoadingViewHolder) viewHolder, position);
@@ -96,6 +95,4 @@ public class MyProductAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
         viewHolder.tvItem.setText(item);
 
     }
-
-
 }

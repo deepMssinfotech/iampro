@@ -62,8 +62,10 @@
                         android:padding="5dp"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content" />
+
                 </RelativeLayout>
                 <com.mssinfotech.iampro.co.common.IncludeShortMenu
+                    android:id="@+id/includeShortMenu"
                     android:layout_width="match_parent"
                     android:layout_height="85dp"></com.mssinfotech.iampro.co.common.IncludeShortMenu>
                 <android.support.design.widget.CoordinatorLayout
