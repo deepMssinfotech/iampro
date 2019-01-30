@@ -309,11 +309,11 @@ public class HomeFragment extends Fragment implements UserDataAdapter.ItemListen
                         // Do something when error occurred
                         //Snackbar.make(getContext(),"Error...", Snackbar.LENGTH_LONG).show();
                         Toast.makeText(getContext(), "verror"+error.getMessage(), Toast.LENGTH_SHORT).show();
-                        Log.d("verror",error.getMessage());
+                        Log.d("verror",""+error.getMessage());
                     }
                 }
         );
-       // jsonArrayRequest.setRetryPolicy(new DefaultRetryPolicy(3000,0,DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+        jsonArrayRequest.setRetryPolicy(new DefaultRetryPolicy(3000,0,DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
         // Add JsonArrayRequest to the RequestQueue
         requestQueue.add(jsonArrayRequest);
         //getVideo();

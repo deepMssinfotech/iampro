@@ -44,22 +44,25 @@ import com.mssinfotech.iampro.co.user.ProfileActivity;
 
 import java.util.ArrayList;
 
-public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ViewHolder> {
+public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.ViewHolder> {
     ArrayList<DataModel> mValues;
     Context mContext;
     protected ItemListener mListener;
     int uid,id;
-    public ImageAdapter(Context context, ArrayList<DataModel> values, ItemListener itemListener) {
+    public VideoAdapter(Context context, ArrayList<DataModel> values, ItemListener itemListener) {
         mValues = values;
         mContext = context;
         mListener=itemListener;
     }
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         public TextView textView,tv_tlike,tv_comments,tv_daysago,tv_sprice,tv_pprice,uname;
+
         RatingBar ratingBar;
         public ImageView imageView;
         de.hdodenhof.circleimageview.CircleImageView userImage;
+        public RelativeLayout relativeLayout;
         DataModel item;
+
         public ViewHolder(View v) {
             super(v);
             v.setOnClickListener(this);
@@ -71,7 +74,9 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ViewHolder> 
             tv_daysago=v.findViewById(R.id.tv_daysago);
             tv_sprice=v.findViewById(R.id.tv_sprice);
             tv_pprice=v.findViewById(R.id.tv_sprice);
+
             ratingBar=v.findViewById(R.id.ratingBar);
+
             uname=v.findViewById(R.id.uname);
             userImage=v.findViewById(R.id.user_image);
 
@@ -79,18 +84,23 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ViewHolder> 
                 @Override
                 public void onClick(View v) {
                     Intent intent=new Intent(mContext,ImageDetail.class);
-                      intent.putExtra("uid",uid);
+                    intent.putExtra("uid",uid);
                     intent.putExtra("id",id);
-                     intent.putExtra("type","image");
-                     mContext.startActivity(intent);
+                    intent.putExtra("type","video");
+                    mContext.startActivity(intent);
                 }
             });
+            //relativeLayout = (RelativeLayout) v.findViewById(R.id.relativeLayout);
         }
         public void setData(DataModel item) {
             this.item = item;
             textView.setText(item.getName());
+            //textView.setBackgroundColor(Color.BLUE);
             String url=item.getImage();
             String userImages=item.getUserImage();
+            //Toast.makeText(mContext,"image:"+url,Toast.LENGTH_LONG).show();
+            //Log.d("url_adapter",url);
+            //Toast.makeText(mContext, ""+url, Toast.LENGTH_SHORT).show();
             tv_tlike.setText(String.valueOf(item.getTotallike()));
             tv_comments.setText(String.valueOf(item.getComments()));
             ratingBar.setRating(item.getRating());
@@ -102,11 +112,14 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ViewHolder> 
                 tv_pprice.setVisibility(View.VISIBLE);
                 tv_pprice.setText(String.valueOf(item.getpCost()));
             }
+
             tv_daysago.setVisibility(View.VISIBLE);
             tv_daysago.setText(item.getDaysago());
             uname.setText(item.getFullname());
+
             uid=item.getUid();
-            id=item.getId();
+             id=item.getId();
+            //tv_daysago.setText();
             Glide.with(mContext)
                     .load(userImages)
                     .apply(new RequestOptions()
@@ -151,7 +164,7 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ViewHolder> 
         }
     }
     @Override
-    public ImageAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public VideoAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(mContext).inflate(R.layout.recycler_view_item, parent, false);
         return new ViewHolder(view);
     }

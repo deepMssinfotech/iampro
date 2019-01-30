@@ -21,6 +21,7 @@ import com.android.volley.toolbox.Volley;
 import com.mssinfotech.iampro.co.R;
 import com.mssinfotech.iampro.co.adapter.RecyclerViewAdapter;
 import com.mssinfotech.iampro.co.adapter.RecyclerViewDataAdapter;
+import com.mssinfotech.iampro.co.adapter.VideoAdapter;
 import com.mssinfotech.iampro.co.model.DataModel;
 import com.mssinfotech.iampro.co.model.SectionDataModel;
 import com.mssinfotech.iampro.co.model.SingleItemModel;
@@ -32,10 +33,10 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
-public class VideoFragment extends Fragment implements RecyclerViewAdapter.ItemListener{
+public class VideoFragment extends Fragment implements VideoAdapter.ItemListener{
     ArrayList<DataModel> allSampleData=new ArrayList<>();
     RecyclerView my_recycler_view;
-    RecyclerViewAdapter adapter;
+    VideoAdapter adapter;
     public VideoFragment() {
         // Required empty public constructor
     }
@@ -114,7 +115,7 @@ public class VideoFragment extends Fragment implements RecyclerViewAdapter.ItemL
                                // Toast.makeText(getContext(),"rrrresponse_enterrr:",Toast.LENGTH_LONG).show();
                                 //singleItem.add(new SingleItemModel(name,image,udate));
                                 //allSampleData.add(new DataModel(name,image,udate,categoryv));
-                                allSampleData.add(new DataModel(name,image,udate,categoryv,totallike,comments,daysago,ratingv,uid,fullname,avatar));
+                                allSampleData.add(new DataModel(name,image,udate,categoryv,totallike,comments,daysago,ratingv,uid,fullname,avatar,id));
                             }
                             Log.d("bdm",singleItem.toString());
                             dm.setAllItemsInSection(singleItem);
@@ -122,7 +123,6 @@ public class VideoFragment extends Fragment implements RecyclerViewAdapter.ItemL
                             Log.d("dmm",dm.toString());
                            // allSampleData.add(dm);
                             Log.d("allsampledatav", allSampleData.toString());
-
 
                           /*  my_recycler_view.setHasFixedSize(true);
                             Log.d("allSampleDatas",""+allSampleData.size()+"--"+allSampleData.toString());
@@ -132,7 +132,7 @@ public class VideoFragment extends Fragment implements RecyclerViewAdapter.ItemL
                             //my_recycler_view.setLayoutManager(new GridLayoutManager(getActivity(), 2));
                             my_recycler_view.setAdapter(adapter); */
 
-                            adapter = new RecyclerViewAdapter(getContext(), allSampleData,VideoFragment.this);
+                            adapter = new VideoAdapter(getContext(), allSampleData,VideoFragment.this);
                             my_recycler_view.setAdapter(adapter);
 
                             GridLayoutManager manager = new GridLayoutManager(getContext(), 2, GridLayoutManager.VERTICAL, false);
