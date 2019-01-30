@@ -221,6 +221,20 @@ public class DataModel {
         this.fullname=fullname;
         this.userImage=userImage;
     }
+    public DataModel(String name,String image,String udate,String category,int totallike,int comments,String daysago,float rating,int uid,String fullname,String userImage,int id){
+        this.name=name;
+        this.image=image;
+        this.udate=udate;
+        this.category=category;
+        this.totallike=totallike;
+        this.comments=comments;
+        this.daysago=daysago;
+        this.rating=rating;
+        this.uid=uid;
+        this.fullname=fullname;
+        this.userImage=userImage;
+        this.id=id;
+    }
     public DataModel(String name,String image,String udate,String category,int totallike,int comments,int sCost,int pCost,String daysago){
         this.name=name;
         this.image=image;

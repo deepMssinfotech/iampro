@@ -118,7 +118,7 @@ public class ImageFragment extends Fragment implements ImageAdapter.ItemListener
                                 String fullname=userDetail.getString("fullname");
                                 String avatar=Config.AVATAR_URL+"250/250/"+userDetail.getString("avatar");
                                 singleItem.add(new SingleItemModel(name,image,udate));
-                                allSampleData.add(new DataModel(name,image,udate,categoryv,totallike,comments,daysago,ratingv,uid,fullname,avatar));
+                                allSampleData.add(new DataModel(name,image,udate,categoryv,totallike,comments,daysago,ratingv,uid,fullname,avatar,id));
 
                             }
                             Log.d("bdm",singleItem.toString());
