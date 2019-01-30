@@ -56,7 +56,7 @@ import static com.mssinfotech.iampro.co.common.Config.AVATAR_URL;
 
 public class DemandDetail extends AppCompatActivity  implements CommentAdapter.ItemListener
 {
-    public static String pid="",uid="";
+    public String pid="",uid="";
     TextView tv_name,tv_categories,tv_cost,tv_demanddetails,tv_demand_name,tv_demand_email;
 
     de.hdodenhof.circleimageview.CircleImageView user_image;

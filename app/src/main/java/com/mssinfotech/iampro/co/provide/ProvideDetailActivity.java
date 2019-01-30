@@ -53,7 +53,7 @@ import static com.mssinfotech.iampro.co.common.Config.AVATAR_URL;
 public class ProvideDetailActivity extends AppCompatActivity implements CommentAdapter.ItemListener
 {
     CollapsingToolbarLayout collapsingToolbar;
-    public static String pid="",uid="";
+    public String pid="",uid="";
     TextView tv_name,tv_categories,tv_cost,tv_provdetails,tv_prod_prov_name,tv_prod_prov_email;
 
     de.hdodenhof.circleimageview.CircleImageView user_image;

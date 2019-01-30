@@ -21,6 +21,7 @@ import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.Volley;
 import com.mssinfotech.iampro.co.R;
 //import com.mssinfotech.iampro.co.adapter.RecyclerViewAdapter;
+import com.mssinfotech.iampro.co.adapter.ImageAdapter;
 import com.mssinfotech.iampro.co.adapter.RecyclerViewAdapter;
 import com.mssinfotech.iampro.co.adapter.RecyclerViewDataAdapter;
 import com.mssinfotech.iampro.co.model.DataModel;
@@ -34,10 +35,10 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
-public class ImageFragment extends Fragment implements RecyclerViewAdapter.ItemListener{
+public class ImageFragment extends Fragment implements ImageAdapter.ItemListener{
     ArrayList<DataModel> allSampleData=new ArrayList<>();
     RecyclerView my_recycler_view;
-    RecyclerViewAdapter adapter;
+    ImageAdapter adapter;
     public ImageFragment() {
         // Required empty public constructor
     }
@@ -50,18 +51,11 @@ public class ImageFragment extends Fragment implements RecyclerViewAdapter.ItemL
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
          View view=inflater.inflate(R.layout.fragment_image, container, false);
-        // Inflate the layout for this fragment
-        //view.findViewById(R.id.title_tv).setTag("Image");
         return view;
     }
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        // allSampleData = new ArrayList<>();
-
-
-        //createDummyData();
-        //callData();
         getImage();
         my_recycler_view =view.findViewById(R.id.my_recycler_view);
 
@@ -77,7 +71,6 @@ public class ImageFragment extends Fragment implements RecyclerViewAdapter.ItemL
 
     }
     public void  getImage(){
-        Log.d("rrrresponse_enterrr","rrrresponse_enterrr");
         final String url = "https://www.iampro.co/api/app_service.php?type=all_item&name=image&uid=&my_id=";
         // Initialize a new RequestQueue instance
         RequestQueue requestQueue = Volley.newRequestQueue(getContext());
@@ -105,7 +98,6 @@ public class ImageFragment extends Fragment implements RecyclerViewAdapter.ItemL
                                 // Get current json object
                                 JSONObject student = response.getJSONObject(i);
                                 int id=student.getInt("id");
-                               // int album_id=student.getInt("album_id");
 
                                 String name = student.getString("name");
                                 String categoryv=student.getString("category");
@@ -125,13 +117,7 @@ public class ImageFragment extends Fragment implements RecyclerViewAdapter.ItemL
                                 int uid=userDetail.getInt("id");
                                 String fullname=userDetail.getString("fullname");
                                 String avatar=Config.AVATAR_URL+"250/250/"+userDetail.getString("avatar");
-
-                                //SectionDataModel dm = new SectionDataModel();
-                                //dm.setHeaderTitle("Section " + i);
-                                //Toast.makeText(getContext(),"rrrresponse_enterrr:",Toast.LENGTH_LONG).show();
                                 singleItem.add(new SingleItemModel(name,image,udate));
-                                //allSampleData.add(new DataModel(name,image,udate,categoryv));
-                                //float rating,int uid,String fullname,String userImage
                                 allSampleData.add(new DataModel(name,image,udate,categoryv,totallike,comments,daysago,ratingv,uid,fullname,avatar));
 
                             }
@@ -143,19 +129,7 @@ public class ImageFragment extends Fragment implements RecyclerViewAdapter.ItemL
                             Log.d("allsampledatav", allSampleData.toString());
                             //my_recycler_view.setHasFixedSize(true);
                             Log.d("allSampleDatas",""+allSampleData.size()+"--"+allSampleData.toString());
-                            //RecyclerViewDataAdapter adapter = new RecyclerViewDataAdapter(getContext(), allSampleData);
-
-                            //
-                            //RecyclerViewAdapter adapter= new RecyclerViewAdapter(getContext(), allSampleData,ImageFragment.this);
-                            //my_recycler_view.setAdapter(adapter);
-
-
-                            //
-
-                            /* my_recycler_view.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
-                            my_recycler_view.setAdapter(adapter); */
-
-                            adapter = new RecyclerViewAdapter(getContext(), allSampleData, ImageFragment.this);
+                            adapter = new ImageAdapter(getContext(), allSampleData, ImageFragment.this);
                             my_recycler_view.setItemAnimator(new DefaultItemAnimator());
                             my_recycler_view.setAdapter(adapter);
 
@@ -173,8 +147,6 @@ public class ImageFragment extends Fragment implements RecyclerViewAdapter.ItemL
                 new com.android.volley.Response.ErrorListener(){
                     @Override
                     public void onErrorResponse(VolleyError error){
-                        // Do something when error occurred
-                        //Snackbar.make(getContext(),"Error...", Snackbar.LENGTH_LONG).show();
                         Toast.makeText(getContext(), "verror"+error.getMessage(), Toast.LENGTH_SHORT).show();
                         Log.d("verror",error.getMessage());
                     }
@@ -182,7 +154,6 @@ public class ImageFragment extends Fragment implements RecyclerViewAdapter.ItemL
         );
         // Add JsonArrayRequest to the RequestQueue
         requestQueue.add(jsonArrayRequest);
-        //getVideo();
     }
     @Override
     public void onItemClick(DataModel item) {

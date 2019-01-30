@@ -157,11 +157,14 @@
             android:name=".MessageActivity"
             android:label="@string/message_title" />
         <activity android:name=".demand.DemandDetail" />
-        <activity android:name=".product.ProductDetail"
-            android:theme="@style/Base.MyTheme"/>
+        <activity
+            android:name=".product.ProductDetail"
+            android:theme="@style/Base.MyTheme" />
         <activity
             android:name=".provide.ProvideDetailActivity"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".image.ImageDetail" />
+        <activity android:name=".CommentActivity"></activity>
     </application>
 
 </manifest>

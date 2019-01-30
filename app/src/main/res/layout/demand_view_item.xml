@@ -156,6 +156,7 @@
                         android:layout_marginTop="7dp"
                         android:orientation="horizontal">
                         <ImageView
+                            android:id="@+id/iv_comments"
                             android:layout_width="20dp"
                             android:layout_height="20dp"
                             android:src="@drawable/comment"/>

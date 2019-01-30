@@ -24,6 +24,7 @@ import com.android.volley.toolbox.Volley;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.bitmap.CircleCrop;
 import com.bumptech.glide.request.RequestOptions;
+import com.mssinfotech.iampro.co.CommentActivity;
 import com.mssinfotech.iampro.co.R;
 import android.view.ViewGroup;
 import android.widget.RadioButton;
@@ -67,7 +68,7 @@ public class ProvideAdapter extends RecyclerView.Adapter<ProvideAdapter.ViewHold
         public TextView textView,tv_tlike,tv_comments,tv_daysago,tv_sprice,tv_pprice,uname;
 
         RatingBar ratingBar;
-        public ImageView imageView;
+        public ImageView imageView,iv_comments;
         de.hdodenhof.circleimageview.CircleImageView userImage;
         public RelativeLayout relativeLayout;
         DataModel item;
@@ -81,6 +82,7 @@ public class ProvideAdapter extends RecyclerView.Adapter<ProvideAdapter.ViewHold
             tv_tlike=v.findViewById(R.id.tv_totallike);
             //tv_comments
             tv_comments=v.findViewById(R.id.tv_comments);
+            iv_comments=v.findViewById(R.id.iv_comments);
             tv_daysago=v.findViewById(R.id.tv_daysago);
             tv_sprice=v.findViewById(R.id.tv_sprice);
             tv_pprice=v.findViewById(R.id.tv_sprice);
@@ -110,6 +112,22 @@ public class ProvideAdapter extends RecyclerView.Adapter<ProvideAdapter.ViewHold
                 @Override
                 public void onRatingChanged(RatingBar ratingBar, float rating, boolean fromUser) {
                     rateMe(item.getPid(),String.valueOf(item.getUid()),rating);
+                }
+            });
+            tv_comments.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent=new Intent(mContext, CommentActivity.class);
+                    intent.putExtra("id",String.valueOf(item.getUid()));
+                    mContext.startActivity(intent);
+                }
+            });
+            iv_comments.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent=new Intent(mContext, CommentActivity.class);
+                    intent.putExtra("id",String.valueOf(item.getUid()));
+                    mContext.startActivity(intent);
                 }
             });
         }
@@ -190,7 +208,7 @@ public class ProvideAdapter extends RecyclerView.Adapter<ProvideAdapter.ViewHold
                                 else {
 
                                 }
-                                Toast.makeText(mContext,msg,Toast.LENGTH_LONG).show();
+                                //Toast.makeText(mContext,msg,Toast.LENGTH_LONG).show();
                             }
                             catch (Exception e){
                                 e.printStackTrace();

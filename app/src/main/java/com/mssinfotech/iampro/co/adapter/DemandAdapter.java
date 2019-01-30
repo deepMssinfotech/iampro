@@ -25,6 +25,7 @@ import com.android.volley.toolbox.Volley;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.bitmap.CircleCrop;
 import com.bumptech.glide.request.RequestOptions;
+import com.mssinfotech.iampro.co.CommentActivity;
 import com.mssinfotech.iampro.co.R;
 import android.view.ViewGroup;
 import android.widget.RadioButton;
@@ -65,7 +66,7 @@ public class DemandAdapter extends RecyclerView.Adapter<DemandAdapter.ViewHolder
     }
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         public TextView textView,tv_tlike,tv_comments,tv_daysago,tv_sprice,tv_pprice,uname;
-          ImageView ivLike;
+          ImageView ivLike,iv_comments;
         RatingBar ratingBar;
         public ImageView imageView;
         de.hdodenhof.circleimageview.CircleImageView userImage;
@@ -84,6 +85,7 @@ public class DemandAdapter extends RecyclerView.Adapter<DemandAdapter.ViewHolder
             tv_tlike=v.findViewById(R.id.tv_totallike);
             //tv_comments
             tv_comments=v.findViewById(R.id.tv_comments);
+            iv_comments=v.findViewById(R.id.iv_comments);
             tv_daysago=v.findViewById(R.id.tv_daysago);
             tv_sprice=v.findViewById(R.id.tv_sprice);
             tv_pprice=v.findViewById(R.id.tv_sprice);
@@ -136,6 +138,22 @@ public class DemandAdapter extends RecyclerView.Adapter<DemandAdapter.ViewHolder
                      return false;
                  }
              }); */
+            tv_comments.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent=new Intent(mContext, CommentActivity.class);
+                    intent.putExtra("id",String.valueOf(item.getUid()));
+                    mContext.startActivity(intent);
+                }
+            });
+            iv_comments.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent=new Intent(mContext, CommentActivity.class);
+                    intent.putExtra("id",String.valueOf(item.getUid()));
+                    mContext.startActivity(intent);
+                }
+            });
         }
         public void setData(DataModel item) {
             this.item = item;
@@ -244,9 +262,7 @@ public class DemandAdapter extends RecyclerView.Adapter<DemandAdapter.ViewHolder
         }
         public void rateMe(String id,String uid,float rating){
             String url="https://www.iampro.co/api/app_service.php?type=rate_me&id="+id+"&uid="+uid+"&ptype=demand&total_rate="+rating;
-
             RequestQueue requestQueue = Volley.newRequestQueue(mContext);
-
             // Initialize a new JsonObjectRequest instance
             JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(
                     Request.Method.GET,
@@ -270,7 +286,7 @@ public class DemandAdapter extends RecyclerView.Adapter<DemandAdapter.ViewHolder
                                 else {
 
                                 }
-                                Toast.makeText(mContext,msg,Toast.LENGTH_LONG).show();
+                                //Toast.makeText(mContext,msg,Toast.LENGTH_LONG).show();
                             }
                             catch (Exception e){
                                 e.printStackTrace();

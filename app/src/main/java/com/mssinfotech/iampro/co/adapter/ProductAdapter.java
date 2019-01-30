@@ -24,6 +24,7 @@ import com.android.volley.toolbox.Volley;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.bitmap.CircleCrop;
 import com.bumptech.glide.request.RequestOptions;
+import com.mssinfotech.iampro.co.CommentActivity;
 import com.mssinfotech.iampro.co.R;
 import android.view.ViewGroup;
 import android.widget.RadioButton;
@@ -69,7 +70,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
         public TextView textView,tv_tlike,tv_comments,tv_daysago,tv_sprice,tv_pprice,uname;
 
         RatingBar ratingBar;
-        public ImageView imageView;
+        public ImageView imageView,iv_comments;
         de.hdodenhof.circleimageview.CircleImageView userImage;
         public RelativeLayout relativeLayout;
         DataModel item;
@@ -83,6 +84,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
             tv_tlike=v.findViewById(R.id.tv_totallike);
             //tv_comments
             tv_comments=v.findViewById(R.id.tv_comments);
+            iv_comments=v.findViewById(R.id.iv_comments);
             tv_daysago=v.findViewById(R.id.tv_daysago);
             tv_sprice=v.findViewById(R.id.tv_sprice);
             tv_pprice=v.findViewById(R.id.tv_sprice);
@@ -107,6 +109,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
                 @Override
                 public void onClick(View v) {
                      likeProduct(item.getPid(),String.valueOf(item.getUid()));
+
                 }
             });
             ratingBar.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
@@ -115,8 +118,22 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
                     rateMe(item.getPid(),String.valueOf(item.getUid()),rating);
                 }
             });
-            //relativeLayout = (RelativeLayout) v.findViewById(R.id.relativeLayout);
-
+            tv_comments.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                     Intent intent=new Intent(mContext, CommentActivity.class);
+                    intent.putExtra("id",String.valueOf(item.getUid()));
+                    mContext.startActivity(intent);
+                }
+            });
+            iv_comments.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent=new Intent(mContext, CommentActivity.class);
+                    intent.putExtra("id",String.valueOf(item.getUid()));
+                    mContext.startActivity(intent);
+                }
+            });
         }
         public void likeProduct(String id,String uid){
             String url="https://www.iampro.co/api/app_service.php?type=like_me&id="+id+"&uid="+uid+"&ptype=product";
