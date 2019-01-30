@@ -58,6 +58,7 @@
                     android:layout_height="wrap_content" />
             </RelativeLayout>
             <com.mssinfotech.iampro.co.common.IncludeShortMenu
+                android:id="@+id/includeShortMenu"
                 layout="@layout/include_short_menu"
                 android:layout_height="85dp"
                 android:layout_width="match_parent"/>

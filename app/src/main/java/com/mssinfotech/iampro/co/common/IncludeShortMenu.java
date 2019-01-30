@@ -2,12 +2,15 @@ package com.mssinfotech.iampro.co.common;
 
 import android.content.Context;
 import android.content.Intent;
+import android.provider.ContactsContract;
+import android.support.annotation.Nullable;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -28,10 +31,15 @@ import org.json.JSONObject;
 
 public class IncludeShortMenu  extends RelativeLayout {
     private LayoutInflater inflater;
-
+    TextView tvs;
     private boolean isLogin = false;
+    public IncludeShortMenu(Context context){
+        super(context);
+        init(null);
+    }
     public IncludeShortMenu(Context context, AttributeSet attrs) {
         super(context, attrs);
+        init(attrs);
         inflater = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         inflater.inflate(R.layout.include_short_menu, this, true);
         (this.findViewById(R.id.img_image)).setOnClickListener(imageOnClickListener);
@@ -40,7 +48,17 @@ public class IncludeShortMenu  extends RelativeLayout {
         (this.findViewById(R.id.img_product)).setOnClickListener(productOnClickListener);
         (this.findViewById(R.id.img_provide)).setOnClickListener(provideOnClickListener);
         (this.findViewById(R.id.img_demand)).setOnClickListener(demandOnClickListener);
-        userProfileCount(context, PrefManager.getLoginDetail(context,"id"));
+        tvs = this.findViewById(R.id.myuid);
+    }
+    public void updateCounts(Context context,String id){
+        userProfileCount(context, id);
+        Toast.makeText(context, id,  Toast.LENGTH_LONG).show();
+    }
+    public IncludeShortMenu(Context context, AttributeSet attrs, int defStyleAttr) {
+        super(context, attrs, defStyleAttr);
+        init(attrs);
+    }
+    private void init(@Nullable AttributeSet set){
 
     }
     private OnClickListener imageOnClickListener = new OnClickListener() {
@@ -48,6 +66,7 @@ public class IncludeShortMenu  extends RelativeLayout {
             if(function.isSamePage("activity_my_image"))return;
             Intent intent = new Intent(getContext(), MyImageActivity.class);
             intent.putExtra(Config.PAGE_TAG,"activity_my_image");
+            intent.putExtra("uid",tvs.getText().toString());
             getContext().startActivity(intent);
         }
     };
@@ -56,6 +75,7 @@ public class IncludeShortMenu  extends RelativeLayout {
             if(function.isSamePage("activity_my_video"))return;
             Intent intent = new Intent(getContext(), MyVideoActivity.class);
             intent.putExtra(Config.PAGE_TAG,"activity_my_video");
+            intent.putExtra("uid",tvs.getText().toString());
             getContext().startActivity(intent);
         }
     };
@@ -64,6 +84,7 @@ public class IncludeShortMenu  extends RelativeLayout {
             if(function.isSamePage("activity_joined_friends"))return;
             Intent intent = new Intent(getContext(), JoinedFriendsActivity.class);
             intent.putExtra(Config.PAGE_TAG,"activity_joined_friends");
+            intent.putExtra("uid",tvs.getText().toString());
             getContext().startActivity(intent);
         }
     };
@@ -72,6 +93,7 @@ public class IncludeShortMenu  extends RelativeLayout {
             if(function.isSamePage("activity_my_product"))return;
             Intent intent = new Intent(getContext(), MyProductActivity.class);
             intent.putExtra(Config.PAGE_TAG,"activity_my_product");
+            intent.putExtra("uid",tvs.getText().toString());
             getContext().startActivity(intent);
         }
     };
@@ -80,6 +102,7 @@ public class IncludeShortMenu  extends RelativeLayout {
             if(function.isSamePage("activity_my_provide"))return;
             Intent intent = new Intent(getContext(), MyProvideActivity.class);
             intent.putExtra(Config.PAGE_TAG,"activity_my_provide");
+            intent.putExtra("uid",tvs.getText().toString());
             getContext().startActivity(intent);
         }
     };
@@ -88,6 +111,7 @@ public class IncludeShortMenu  extends RelativeLayout {
             if(function.isSamePage("activity_my_demand"))return;
             Intent intent = new Intent(getContext(), MyDemandActivity.class);
             intent.putExtra(Config.PAGE_TAG,"activity_my_demand");
+            intent.putExtra("uid",tvs.getText().toString());
             getContext().startActivity(intent);
         }
     };

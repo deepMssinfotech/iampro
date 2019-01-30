@@ -2,19 +2,25 @@ package com.mssinfotech.iampro.co.user;
 
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.RequestQueue;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.bumptech.glide.Glide;
 import com.mssinfotech.iampro.co.R;
 import com.mssinfotech.iampro.co.app.AppController;
 import com.mssinfotech.iampro.co.common.CircleTransform;
+import com.mssinfotech.iampro.co.common.IncludeShortMenu;
 import com.mssinfotech.iampro.co.data.FeedItem;
 import com.mssinfotech.iampro.co.common.Config;
 import com.mssinfotech.iampro.co.utils.PrefManager;
@@ -44,30 +50,81 @@ public class ProfileActivity extends AppCompatActivity {
     private List<FeedItem> feedItems;
     ImageView userbackgroud;
     CircleImageView userimage;
-    TextView username;
+    TextView username,myuid;
     private String URL_FEED = "",uid="";
     private Integer start=0,limit=20;
     private LinearLayoutManager mLayoutManager;
     protected Handler handler;
+    Intent intent;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
         Config.setLayoutName(getResources().getResourceEntryName(R.layout.activity_profile));
-        String fname=PrefManager.getLoginDetail(this,"fname");
-        uid=PrefManager.getLoginDetail(this,"id");
-        String avatar=Config.AVATAR_URL+"250/250/"+PrefManager.getLoginDetail(this,"img_url");
-        String background=Config.AVATAR_URL+"h/250/"+PrefManager.getLoginDetail(this,"banner_image");
+        intent = getIntent();
+        String id = intent.getStringExtra("uid");
         username = findViewById(R.id.username);
         userimage = findViewById(R.id.userimage);
         userbackgroud = findViewById(R.id.userbackgroud);
-        username.setText(PrefManager.getLoginDetail(this,"fname") +" "+PrefManager.getLoginDetail(this,"lname"));
-        Glide.with(this).load(background).into(userbackgroud);
-        Glide.with(this).load(avatar).into(userimage);
-        PrefManager.updateUserData(this,null);
+        uid= PrefManager.getLoginDetail(this,"id");
+        if(id == null || id.equals(uid)) {
+            String fname=PrefManager.getLoginDetail(this,"fname");
+            String lname=PrefManager.getLoginDetail(this,"lname");
+            String avatar=Config.AVATAR_URL+"250/250/"+PrefManager.getLoginDetail(this,"img_url");
+            String background=Config.AVATAR_URL+"h/250/"+PrefManager.getLoginDetail(this,"banner_image");
+            username.setText(fname +" "+lname);
+            Glide.with(this).load(background).into(userbackgroud);
+            Glide.with(this).load(avatar).into(userimage);
+            PrefManager.updateUserData(this,null);
+        }else{
+            uid= id;
+            gteUsrDetail(id);
+        }
+        IncludeShortMenu includeShortMenu = findViewById(R.id.includeShortMenu);
+        includeShortMenu.updateCounts(this,uid);
+        TextView myuid= includeShortMenu.findViewById(R.id.myuid);
+        myuid.setText(uid);
     }
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         Toast.makeText(this, "mss popup",  Toast.LENGTH_LONG).show();
+    }
+    private void gteUsrDetail(String id){
+        String myurl = Config.API_URL + "ajax.php?type=friend_detail&id=" + id + "&uid=" + uid;
+        Log.d(Config.TAG, myurl);
+        StringRequest stringRequest = new StringRequest(myurl,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        JSONObject result = null;
+                        try {
+                            Log.d(Config.TAG, response);
+                            result = new JSONObject(response);
+                            String fname=result.getString("fname");
+                            String lname=result.getString("lname");
+                            String avatar=Config.AVATAR_URL+"250/250/"+result.getString("avatar");
+                            String background=Config.AVATAR_URL+"h/250/"+result.getString("banner_image");
+                            username = findViewById(R.id.username);
+                            userimage = findViewById(R.id.userimage);
+                            userbackgroud = findViewById(R.id.userbackgroud);
+                            username.setText(fname +" "+lname);
+                            Glide.with(getApplicationContext()).load(background).into(userbackgroud);
+                            Glide.with(getApplicationContext()).load(avatar).into(userimage);
+
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Log.e(Config.TAG, error.toString());
+                    }
+                });
+        //Creating a request queue
+        RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
+        //Adding request to the queue
+        requestQueue.add(stringRequest);
     }
     private void  loadFeedList(Integer mStart,Integer mLimit){
         URL_FEED = Config.API_URL+ "feed_service.php?type=AllFeeds&start=" +mStart.toString()+ "&limit=" +mLimit.toString()+ "&fid=" +uid+ "&uid=" +uid+ "&my_id=" +uid;
