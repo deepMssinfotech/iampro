@@ -1,5 +1,6 @@
 package com.mssinfotech.iampro.co.common;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 //import android.support.annotation.NonNull;
@@ -63,16 +64,6 @@ public class IncludeFooter  extends RelativeLayout {
         }
 
     }
-    public void onBackPressed() {
-        AppCompatActivity activity = (AppCompatActivity) getContext();
-        UserMenuActivity userMenufragment = new UserMenuActivity();
-        Fragment f = activity.getSupportFragmentManager().findFragmentById(R.id.content);
-        if (f instanceof UserMenuActivity){
-            activity.onBackPressed();
-        } else {
-            activity.onBackPressed();
-        }
-    }
 
     private OnClickListener moreOnClickListener = new OnClickListener() {
         public void onClick(View v) {
@@ -92,42 +83,42 @@ public class IncludeFooter  extends RelativeLayout {
     };
     private OnClickListener searchOnClickListener = new OnClickListener() {
         public void onClick(View v) {
-            if(function.isSamePage("activity_search"))return;
             Intent intent = new Intent(getContext(), SearchActivity.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             getContext().startActivity(intent);
-
+            if(function.isSamePage("activity_search"))
+                function.finishFunction(getContext());
         }
     };
     private OnClickListener cartOnClickListener = new OnClickListener() {
         public void onClick(View v) {
-            if(function.isSamePage("activity_cart"))return;
             getContext().startActivity(new Intent(getContext(), CartActivity.class));
+            if(function.isSamePage("activity_cart"))function.finishFunction(getContext());
         }
     };
     private OnClickListener iamproOnClickListener = new OnClickListener() {
         public void onClick(View v) {
-            if(function.isSamePage("activity_home"))return;
             getContext().startActivity(new Intent(getContext(), HomeActivity.class));
+            if(function.isSamePage("activity_home"))function.finishFunction(getContext());
         }
     };
     private OnClickListener noticeOnClickListener = new OnClickListener() {
         public void onClick(View v) {
-            if(function.isSamePage("activity_notification"))return;
             getContext().startActivity(new Intent(getContext(), NotificationActivity.class));
+            if(function.isSamePage("activity_notification"))function.finishFunction(getContext());
         }
     };
     private OnClickListener messageOnClickListener = new OnClickListener() {
         public void onClick(View v) {
-            if(function.isSamePage("activity_message"))return;
             getContext().startActivity(new Intent(getContext(), MessageActivity.class));
+            if(function.isSamePage("activity_message"))function.finishFunction(getContext());
         }
     };
     private OnClickListener userOnClickListener = new OnClickListener() {
         public void onClick(View v) {
             if(isLogin) {
-                if(function.isSamePage("activity_profile"))return;
                 getContext().startActivity(new Intent(getContext(), ProfileActivity.class));
+                if(function.isSamePage("activity_profile"))function.finishFunction(getContext());
             }else
                 getContext().startActivity(new Intent(getContext(), LoginActivity.class));
         }

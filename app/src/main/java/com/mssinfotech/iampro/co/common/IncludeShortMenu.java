@@ -18,7 +18,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.mssinfotech.iampro.co.R;
-import com.mssinfotech.iampro.co.user.JoinFriendActivity;
+import com.mssinfotech.iampro.co.user.JoinedFriendsActivity;
 import com.mssinfotech.iampro.co.user.MyDemandActivity;
 import com.mssinfotech.iampro.co.user.MyImageActivity;
 import com.mssinfotech.iampro.co.user.MyProductActivity;
@@ -63,56 +63,62 @@ public class IncludeShortMenu  extends RelativeLayout {
     }
     private OnClickListener imageOnClickListener = new OnClickListener() {
         public void onClick(View v) {
-            if(function.isSamePage("activity_my_image"))return;
+
             Intent intent = new Intent(getContext(), MyImageActivity.class);
             intent.putExtra(Config.PAGE_TAG,"activity_my_image");
             intent.putExtra("uid",tvs.getText().toString());
             getContext().startActivity(intent);
+            if(function.isSamePage("activity_my_image"))function.finishFunction(getContext());
         }
     };
     private OnClickListener videoOnClickListener = new OnClickListener() {
         public void onClick(View v) {
-            if(function.isSamePage("activity_my_video"))return;
+
             Intent intent = new Intent(getContext(), MyVideoActivity.class);
             intent.putExtra(Config.PAGE_TAG,"activity_my_video");
             intent.putExtra("uid",tvs.getText().toString());
             getContext().startActivity(intent);
+            if(function.isSamePage("activity_my_video"))function.finishFunction(getContext());
         }
     };
     private OnClickListener userOnClickListener = new OnClickListener() {
         public void onClick(View v) {
-            if(function.isSamePage("activity_joined_friends"))return;
-            Intent intent = new Intent(getContext(), JoinFriendActivity.class);
+
+            Intent intent = new Intent(getContext(), JoinedFriendsActivity.class);
             intent.putExtra(Config.PAGE_TAG,"activity_joined_friends");
             intent.putExtra("uid",tvs.getText().toString());
             getContext().startActivity(intent);
+            if(function.isSamePage("activity_joined_friends"))function.finishFunction(getContext());
         }
     };
     private OnClickListener productOnClickListener = new OnClickListener() {
         public void onClick(View v) {
-            if(function.isSamePage("activity_my_product"))return;
+
             Intent intent = new Intent(getContext(), MyProductActivity.class);
             intent.putExtra(Config.PAGE_TAG,"activity_my_product");
             intent.putExtra("uid",tvs.getText().toString());
             getContext().startActivity(intent);
+            if(function.isSamePage("activity_my_product"))function.finishFunction(getContext());
         }
     };
     private OnClickListener provideOnClickListener = new OnClickListener() {
         public void onClick(View v) {
-            if(function.isSamePage("activity_my_provide"))return;
+
             Intent intent = new Intent(getContext(), MyProvideActivity.class);
             intent.putExtra(Config.PAGE_TAG,"activity_my_provide");
             intent.putExtra("uid",tvs.getText().toString());
             getContext().startActivity(intent);
+            if(function.isSamePage("activity_my_provide"))function.finishFunction(getContext());
         }
     };
     private OnClickListener demandOnClickListener = new OnClickListener() {
         public void onClick(View v) {
-            if(function.isSamePage("activity_my_demand"))return;
+
             Intent intent = new Intent(getContext(), MyDemandActivity.class);
             intent.putExtra(Config.PAGE_TAG,"activity_my_demand");
             intent.putExtra("uid",tvs.getText().toString());
             getContext().startActivity(intent);
+            if(function.isSamePage("activity_my_demand"))function.finishFunction(getContext());
         }
     };
     public void userProfileCount(Context context, String uid){

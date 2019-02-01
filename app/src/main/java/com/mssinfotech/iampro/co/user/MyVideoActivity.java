@@ -15,6 +15,9 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.Priority;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.request.RequestOptions;
 import com.mssinfotech.iampro.co.R;
 import com.mssinfotech.iampro.co.common.CircleTransform;
 import com.mssinfotech.iampro.co.common.Config;
@@ -51,8 +54,8 @@ public class MyVideoActivity extends AppCompatActivity {
             String avatar=Config.BANNER_URL+"250/250/"+PrefManager.getLoginDetail(this,"profile_video_gallery");
             String background=Config.BANNER_URL+"h/250/"+PrefManager.getLoginDetail(this,"video_banner_image");
             username.setText("My Video Gallery");
-            Glide.with(this).load(background).into(userbackgroud);
-            Glide.with(this).load(avatar).into(userimage);
+            Glide.with(this).load(background).apply(Config.options_background).into(userbackgroud);
+            Glide.with(this).load(avatar).apply(Config.options_avatar).into(userimage);
             userimage.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -91,8 +94,8 @@ public class MyVideoActivity extends AppCompatActivity {
                             userimage = findViewById(R.id.userimage);
                             userbackgroud = findViewById(R.id.userbackgroud);
                             username.setText(fname +" "+lname+"'s Video Gallery");
-                            Glide.with(getApplicationContext()).load(background).into(userbackgroud);
-                            Glide.with(getApplicationContext()).load(avatar).into(userimage);
+                            Glide.with(getApplicationContext()).load(background).apply(Config.options_background).into(userbackgroud);
+                            Glide.with(getApplicationContext()).load(avatar).apply(Config.options_avatar).into(userimage);
 
                         } catch (JSONException e) {
                             e.printStackTrace();

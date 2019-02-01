@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -16,30 +15,27 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.bumptech.glide.Glide;
 import com.mssinfotech.iampro.co.R;
-import com.mssinfotech.iampro.co.common.CircleTransform;
 import com.mssinfotech.iampro.co.common.Config;
 import com.mssinfotech.iampro.co.common.IncludeShortMenu;
 import com.mssinfotech.iampro.co.utils.PrefManager;
-import com.squareup.picasso.Picasso;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
-public class MyImageActivity extends AppCompatActivity {
+public class JoinedFriendsActivity extends AppCompatActivity {
 
     ImageView userbackgroud;
     CircleImageView userimage;
     TextView username;
-    private String URL_FEED = "",uid="";
-    Intent intent;
+    private String uid="";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_my_image);
-        Config.setLayoutName(getResources().getResourceEntryName(R.layout.activity_my_image));
-        intent = getIntent();
+        setContentView(R.layout.activity_joined_friends);
+        Config.setLayoutName(getResources().getResourceEntryName(R.layout.activity_joined_friends));
+        Intent intent = getIntent();
         String id = intent.getStringExtra("uid");
         username = findViewById(R.id.username);
         userimage = findViewById(R.id.userimage);
@@ -48,19 +44,12 @@ public class MyImageActivity extends AppCompatActivity {
         if(id == null || id.equals(uid)) {
             String fname=PrefManager.getLoginDetail(this,"fname");
             String lname=PrefManager.getLoginDetail(this,"lname");
-            String avatar=Config.BANNER_URL+"250/250/"+PrefManager.getLoginDetail(this,"profile_image_gallery");
-            String background=Config.BANNER_URL+"h/250/"+PrefManager.getLoginDetail(this,"img_banner_image");
-            username.setText("My Images");
+            String avatar=Config.AVATAR_URL+"250/250/"+PrefManager.getLoginDetail(this,"img_url");
+            String background=Config.AVATAR_URL+"h/250/"+PrefManager.getLoginDetail(this,"banner_image");
+            username.setText("My Friends");
             Glide.with(this).load(background).apply(Config.options_background).into(userbackgroud);
             Glide.with(this).load(avatar).apply(Config.options_avatar).into(userimage);
-            userimage.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    Intent intent=new Intent(MyImageActivity.this,ImageImageCroperActivity.class);
-                    startActivity(intent);
-                    finish();
-                }
-            });
+            PrefManager.updateUserData(this,null);
         }else{
             uid= id;
             gteUsrDetail(id);
@@ -85,12 +74,12 @@ public class MyImageActivity extends AppCompatActivity {
                             result = new JSONObject(response);
                             String fname=result.getString("fname");
                             String lname=result.getString("lname");
-                            String avatar=Config.AVATAR_URL+"250/250/"+result.getString("profile_image_gallery");
-                            String background=Config.AVATAR_URL+"h/250/"+result.getString("img_banner_image");
+                            String avatar=Config.AVATAR_URL+"250/250/"+result.getString("avatar");
+                            String background=Config.AVATAR_URL+"h/250/"+result.getString("banner_image");
                             username = findViewById(R.id.username);
                             userimage = findViewById(R.id.userimage);
                             userbackgroud = findViewById(R.id.userbackgroud);
-                            username.setText(fname +" "+lname+"'s Images");
+                            username.setText(fname +" "+lname+"'s Friend List");
                             Glide.with(getApplicationContext()).load(background).apply(Config.options_background).into(userbackgroud);
                             Glide.with(getApplicationContext()).load(avatar).apply(Config.options_avatar).into(userimage);
 
@@ -121,9 +110,5 @@ public class MyImageActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         Toast.makeText(this, "mss popup"+resultCode+"--"+requestCode,  Toast.LENGTH_LONG).show();
-    }
-    public void redirect(View v){
-        Intent i_signup = new Intent(MyImageActivity.this,AddImageActivity.class);
-        MyImageActivity.this.startActivity(i_signup);
     }
 }

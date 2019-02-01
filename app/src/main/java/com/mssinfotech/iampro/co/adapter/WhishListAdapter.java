@@ -10,6 +10,7 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.mssinfotech.iampro.co.R;
+import com.mssinfotech.iampro.co.common.Config;
 import com.mssinfotech.iampro.co.data.WhishListItem;
 
 import java.util.List;
@@ -59,8 +60,8 @@ public class WhishListAdapter  extends RecyclerView.Adapter<WhishListAdapter.MyV
         final WhishListItem item = whishList.get(position);
         holder.name.setText(item.getName());
         holder.price.setText("₹" + item.getPrice());
-        Glide.with(context).load(getImage(item.getType_image())).into(holder.image_type);
-        Glide.with(context).load(item.getImage()).into(holder.thumbnail);
+        Glide.with(context).load(getImage(item.getType_image())).apply(Config.options_avatar).into(holder.image_type);
+        Glide.with(context).load(item.getImage()).apply(Config.options_avatar).into(holder.thumbnail);
     }
 
     @Override

@@ -155,7 +155,6 @@
             android:label="@string/notifications_title" />
         <activity
             android:name=".MessageActivity"
-            android:theme="@style/AppTheme.NoActionBar"
             android:label="@string/message_title" />
         <activity android:name=".demand.DemandDetail" />
         <activity

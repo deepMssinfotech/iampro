@@ -199,5 +199,9 @@ public class function {
         }
         return appStatus;
     }
+    public static void finishFunction(Context context) {
+        Activity activity = (Activity)context;
+        activity.finish();
+    }
 }
 
