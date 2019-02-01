@@ -32,7 +32,11 @@ public class IntroActivity extends AppCompatActivity {
         String[] PERMISSIONS = {
                 android.Manifest.permission.WRITE_EXTERNAL_STORAGE,
                 android.Manifest.permission.CAMERA,
-                Manifest.permission.INTERNET
+                Manifest.permission.INTERNET,
+                Manifest.permission.READ_SMS,
+                Manifest.permission.ACCESS_NOTIFICATION_POLICY,
+                Manifest.permission.BIND_NOTIFICATION_LISTENER_SERVICE
+
         };
 
         if(!hasPermissions(this, PERMISSIONS)){

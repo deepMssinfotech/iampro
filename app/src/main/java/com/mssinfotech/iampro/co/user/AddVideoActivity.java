@@ -1,17 +1,28 @@
 package com.mssinfotech.iampro.co.user;
 
+import android.Manifest;
 import android.app.AlertDialog;
+import android.app.Notification;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
 import android.app.ProgressDialog;
 import android.content.ClipData;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.support.annotation.NonNull;
 import android.support.design.widget.TextInputLayout;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.NotificationCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -43,6 +54,9 @@ import com.mssinfotech.iampro.co.common.Config;
 import com.mssinfotech.iampro.co.utils.PrefManager;
 import com.mssinfotech.iampro.co.utils.Validate;
 
+import net.gotev.uploadservice.MultipartUploadRequest;
+import net.gotev.uploadservice.UploadNotificationConfig;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -55,9 +69,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Hashtable;
-import java.util.List;
-import java.util.Map;
+import java.util.UUID;
 
 public class AddVideoActivity extends AppCompatActivity {
     TextView tvlayouttype;
@@ -65,17 +77,19 @@ public class AddVideoActivity extends AppCompatActivity {
     EditText etalbumname, etvideoname, etvideodetail;
     Spinner spcat, spvideo_album;
     Button add_video_button, create_album_button, ibVideoMoreVideo;
-    private String albumname, videoname, videodetail, cat, video_album;
+    private String albumname, videoname, videodetail, cat, video_album, myVideoPath;
     private GridView gvGallery;
     private Bitmap bitmap = null;
     private GalleryAdapter galleryAdapter;
     private LinearLayout categoryLayout, albumLayout;
     private VideoView videoView;
+    Intent i;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_video);
         Config.setLayoutName(getResources().getResourceEntryName(R.layout.activity_add_video));
+        i = new Intent(this, AddVideoActivity.class);
         tvlayouttype = findViewById(R.id.tvlayouttype);
         tilalbumname = findViewById(R.id.tilalbumname);
         etalbumname = findViewById(R.id.etalbumname);
@@ -101,8 +115,65 @@ public class AddVideoActivity extends AppCompatActivity {
         });
         function.executeUrl(this, "get", Config.API_URL + "app_service.php?type=delete_temp_data&uid=" + PrefManager.getLoginDetail(this, "id"), null);
         getAlbumList();
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
+            startMyOwnForeground();
+
+    }
+    private void startMyOwnForeground(){
+        String NOTIFICATION_CHANNEL_ID = "com.example.simpleapp";
+        String channelName = "My Background Service";
+        NotificationChannel chan = null;
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+            chan = new NotificationChannel(NOTIFICATION_CHANNEL_ID, channelName, NotificationManager.IMPORTANCE_NONE);
+
+            chan.setLightColor(Color.BLUE);
+            chan.setLockscreenVisibility(Notification.VISIBILITY_PRIVATE);
+            NotificationManager manager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+            assert manager != null;
+            manager.createNotificationChannel(chan);
+        }
+        NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this, NOTIFICATION_CHANNEL_ID);
+        Notification notification = notificationBuilder.setOngoing(true)
+                .setSmallIcon(R.drawable.iampro)
+                .setContentTitle("App is running in background")
+                .setPriority(NotificationManager.IMPORTANCE_MIN)
+                .setCategory(Notification.CATEGORY_SERVICE)
+                .build();
     }
 
+    //Requesting permission
+    private void requestStoragePermission() {
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED)
+            return;
+
+        if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.READ_EXTERNAL_STORAGE)) {
+            //If the user has denied the permission previously your code will come to this block
+            //Here you can explain why you need this permission
+            //Explain here why you need this permission
+        }
+        //And finally ask for the permission
+        ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, Config.STORAGE_PERMISSION_CODE);
+    }
+
+
+    //This method will be called when the user will tap on allow or deny
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+
+        //Checking the request code of our request
+        if (requestCode == Config.STORAGE_PERMISSION_CODE) {
+
+            //If permission is granted
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                //Displaying a toast
+                Toast.makeText(this, "Permission granted now you can read the storage", Toast.LENGTH_LONG).show();
+            } else {
+                //Displaying another toast if permission is not granted
+                Toast.makeText(this, "Oops you just denied the permission", Toast.LENGTH_LONG).show();
+            }
+        }
+    }
     private void showPictureDialog() {
         AlertDialog.Builder pictureDialog = new AlertDialog.Builder(this);
         pictureDialog.setTitle("Select Action");
@@ -139,6 +210,7 @@ public class AddVideoActivity extends AppCompatActivity {
             if (data != null) {
                 Uri contentURI = data.getData();
                 String selectedVideoPath = getPath(contentURI);
+                myVideoPath = selectedVideoPath;
                 Log.d("path",selectedVideoPath);
                 saveVideoToInternalStorage(selectedVideoPath);
                 videoView.setVisibility(View.VISIBLE);
@@ -151,6 +223,7 @@ public class AddVideoActivity extends AppCompatActivity {
         } else if (requestCode == Config.CAMERA) {
             Uri contentURI = data.getData();
             String recordedVideoPath = getPath(contentURI);
+            myVideoPath=recordedVideoPath;
             Log.d("frrr",recordedVideoPath);
             saveVideoToInternalStorage(recordedVideoPath);
             videoView.setVisibility(View.VISIBLE);
@@ -255,74 +328,35 @@ public class AddVideoActivity extends AppCompatActivity {
             Config.showInternetDialog(this);
             return;
         }
-        Toast.makeText(getApplicationContext(), "Video upload remain pleasw wait....", Toast.LENGTH_LONG).show();
-        return;
-        /*
-        final ProgressDialog loading = ProgressDialog.show(this, "Processing...", "Please wait...", false, false);
-        StringRequest stringRequest = new StringRequest(Request.Method.POST, Config.AJAX_URL + "uploadprocess.php",
-                new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String s) {
-                        loading.dismiss();
-                        Log.d("Lresponse", "" + s);
-                        try {
-                            JSONObject jsonObject = new JSONObject(s);
-                            String status = jsonObject.getString("status");
-                            String msgg = jsonObject.getString("msg");
+        //Toast.makeText(getApplicationContext(), "Video upload remain pleasw wait....", Toast.LENGTH_LONG).show();
+        //return;
+        try {
+            String uploadId = UUID.randomUUID().toString();
+            //Creating a multi part request
+            String palbumname= tvlayouttype.getText().toString();
+            if(!palbumname.equalsIgnoreCase("videonew"))palbumname=spvideo_album.getSelectedItem().toString();
 
-                            Toast.makeText(getApplicationContext(), "" + msgg, Toast.LENGTH_LONG).show();
-                            if (status.equalsIgnoreCase("success")) {
-                                //String urlv=jsonObject.getString("url");
+            new MultipartUploadRequest(this, uploadId, Config.AJAX_URL + "uploadprocess.php")
+                    .addFileToUpload(myVideoPath, "myfile") //Adding file
+                    .addParameter("type","uploadvideo")//Adding text parameter to the request
+                    .addParameter("process_type","native_android")
+                    .addParameter("palbumname",palbumname)
+                    //params.put("albumname",albumname)
+                    .addParameter("video_name",videoname)
+                    .addParameter("about_us",videodetail)
+                    .addParameter("category",cat)
+                    .addParameter("user_id",PrefManager.getLoginDetail(getApplicationContext(),"id"))
+                    //.setNotificationConfig(new UploadNotificationConfig())
+                    .setMaxRetries(2)
+                    .startUpload(); //Starting the upload
+                    Intent intent = new Intent(getApplicationContext(), MyVideoActivity.class);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    startActivity(intent);
+                    finish();
+        } catch (Exception exc) {
+            Toast.makeText(this, exc.getMessage(), Toast.LENGTH_SHORT).show();
+        }
 
-                                etalbumname.setText(" ");
-                                etvideoname.setText(" ");
-                                etvideodetail.setText(" ");
-
-
-                                Intent intent = new Intent(getApplicationContext(), MyImageActivity.class);
-                                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                                startActivity(intent);
-                                finish();
-                            }
-                        } catch (JSONException e) {
-                            loading.dismiss();
-                            Log.d("JSoNExceptionv", e.getMessage());
-                            Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_LONG).show();
-                        }
-                    }
-                },
-                new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError volleyError) {
-                        //Dismissing the progress dialog
-                        loading.dismiss();
-                        Toast.makeText(getApplicationContext(), volleyError.getMessage(), Toast.LENGTH_LONG).show();
-                    }
-                }) {
-            @Override
-            protected Map<String, String> getParams() throws AuthFailureError {
-
-                String palbumname = tvlayouttype.getText().toString();
-                if (!palbumname.equalsIgnoreCase("new_album")) palbumname = albumname;
-                Map<String, String> params = new Hashtable<String, String>();
-                params.put("type", "uploadfiles");
-                params.put("process_type", "android");
-                params.put("palbumname", palbumname);
-                //params.put("albumname",albumname);
-                params.put("name", videoname);
-                params.put("about_us", videodetail);
-                params.put("category", cat);
-                params.put("user_id", PrefManager.getLoginDetail(getApplicationContext(), "id"));
-                //returning parameters
-                return params;
-            }
-        };
-        //Creating a Request Queue
-        RequestQueue requestQueue = Volley.newRequestQueue(this);
-
-        //Adding request to the queue
-        requestQueue.add(stringRequest);
-        */
     }
 
     public void click_video_button(View v) {
@@ -330,7 +364,7 @@ public class AddVideoActivity extends AppCompatActivity {
         add_video_button.setTextColor(getResources().getColor(R.color.white));
         create_album_button.setBackgroundResource(R.drawable.white);
         create_album_button.setTextColor(getResources().getColor(R.color.black));
-        tvlayouttype.setText("add_iamge");
+        tvlayouttype.setText("add_video");
         albumLayout.setVisibility(View.VISIBLE);
         categoryLayout.setVisibility(View.GONE);
         tilalbumname.setVisibility(View.GONE);
@@ -343,7 +377,7 @@ public class AddVideoActivity extends AppCompatActivity {
         add_video_button.setTextColor(getResources().getColor(R.color.black));
         create_album_button.setBackgroundResource(R.drawable.black);
         create_album_button.setTextColor(getResources().getColor(R.color.white));
-        tvlayouttype.setText("new_album");
+        tvlayouttype.setText("videonew");
         albumLayout.setVisibility(View.GONE);
         categoryLayout.setVisibility(View.VISIBLE);
         tilalbumname.setVisibility(View.VISIBLE);
@@ -354,7 +388,7 @@ public class AddVideoActivity extends AppCompatActivity {
     public void getAlbumList() {
         //Creating a string request
         String uid = PrefManager.getLoginDetail(this, "id");
-        String url = Config.API_URL + "app_service.php?type=getMyAlbemsListt&search_type=image&uid=" + uid + "&my_id=" + uid;
+        String url = Config.API_URL + "app_service.php?type=getMyAlbemsListt&search_type=video&uid=" + uid + "&my_id=" + uid;
 
         StringRequest stringRequest = new StringRequest(url,
                 new Response.Listener<String>() {

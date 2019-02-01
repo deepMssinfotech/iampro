@@ -130,8 +130,8 @@ public class EditProfileActivity extends AppCompatActivity {
         userimage = findViewById(R.id.userimage);
         userbackgroud = findViewById(R.id.userbackgroud);
         username.setText(PrefManager.getLoginDetail(this,"fname") +" "+PrefManager.getLoginDetail(this,"lname"));
-        Glide.with(this).load(background).into(userbackgroud);
-        Glide.with(this).load(avatar).into(userimage);
+        Glide.with(this).load(background).apply(Config.options_background).into(userbackgroud);
+        Glide.with(this).load(avatar).apply(Config.options_avatar).into(userimage);
         userimage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

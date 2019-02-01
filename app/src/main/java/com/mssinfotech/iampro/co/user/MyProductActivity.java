@@ -74,8 +74,8 @@ public class MyProductActivity extends AppCompatActivity {
             String background=Config.AVATAR_URL+"h/250/"+PrefManager.getLoginDetail(this,"banner_image");
 
             username.setText("My Product");
-            Glide.with(this).load(background).into(userbackgroud);
-            Glide.with(this).load(avatar).into(userimage);
+            Glide.with(this).load(background).apply(Config.options_background).into(userbackgroud);
+            Glide.with(this).load(avatar).apply(Config.options_avatar).into(userimage);
             PrefManager.updateUserData(this,null);
         }else{
             uid= id;
@@ -118,8 +118,8 @@ public class MyProductActivity extends AppCompatActivity {
                             userimage = findViewById(R.id.userimage);
                             userbackgroud = findViewById(R.id.userbackgroud);
                             username.setText(fname +" "+lname+"'s Products");
-                            Glide.with(getApplicationContext()).load(background).into(userbackgroud);
-                            Glide.with(getApplicationContext()).load(avatar).into(userimage);
+                            Glide.with(getApplicationContext()).load(background).apply(Config.options_background).into(userbackgroud);
+                            Glide.with(getApplicationContext()).load(avatar).apply(Config.options_avatar).into(userimage);
 
                         } catch (JSONException e) {
                             e.printStackTrace();

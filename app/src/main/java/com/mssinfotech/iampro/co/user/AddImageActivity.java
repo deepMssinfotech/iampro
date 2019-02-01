@@ -1,15 +1,20 @@
 package com.mssinfotech.iampro.co.user;
+import android.Manifest;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.ClipData;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.provider.MediaStore;
+import android.support.annotation.NonNull;
 import android.support.design.widget.TextInputLayout;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -52,6 +57,10 @@ import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
+
+import net.gotev.uploadservice.MultipartUploadRequest;
+import net.gotev.uploadservice.UploadNotificationConfig;
 
 public class AddImageActivity extends AppCompatActivity {
     TextView tvlayouttype;
@@ -97,34 +106,44 @@ public class AddImageActivity extends AppCompatActivity {
         function.executeUrl(this,"get",Config.API_URL+"app_service.php?type=delete_temp_data&uid="+PrefManager.getLoginDetail(this,"id"),null);
         getAlbumList();
     }
+    //Requesting permission
+    private void requestStoragePermission() {
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED)
+            return;
+
+        if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.READ_EXTERNAL_STORAGE)) {
+            //If the user has denied the permission previously your code will come to this block
+            //Here you can explain why you need this permission
+            //Explain here why you need this permission
+        }
+        //And finally ask for the permission
+        ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, Config.STORAGE_PERMISSION_CODE);
+    }
+
+
+    //This method will be called when the user will tap on allow or deny
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+
+        //Checking the request code of our request
+        if (requestCode == Config.STORAGE_PERMISSION_CODE) {
+
+            //If permission is granted
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                //Displaying a toast
+                Toast.makeText(this, "Permission granted now you can read the storage", Toast.LENGTH_LONG).show();
+            } else {
+                //Displaying another toast if permission is not granted
+                Toast.makeText(this, "Oops you just denied the permission", Toast.LENGTH_LONG).show();
+            }
+        }
+    }
     private void selectMultipleImage(){
         Intent intent = new Intent();
         intent.setType("image/*");
         intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
         intent.setAction(Intent.ACTION_GET_CONTENT);
         startActivityForResult(Intent.createChooser(intent,"Select Picture"), Config.PICK_IMAGE_MULTIPLE);
-    }
-    private void showPictureDialog(){
-        AlertDialog.Builder pictureDialog = new AlertDialog.Builder(this);
-        pictureDialog.setTitle("Select Action");
-        String[] pictureDialogItems = {
-                "Select photo from gallery",
-                "Capture photo from camera" };
-        pictureDialog.setItems(pictureDialogItems,
-                new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        switch (which) {
-                            case 0:
-                                ImageProcess.choosePhotoFromGallary(AddImageActivity.this);
-                                break;
-                            case 1:
-                                ImageProcess.takePhotoFromCamera(AddImageActivity.this);
-                                break;
-                        }
-                    }
-                });
-        pictureDialog.show();
     }
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -143,11 +162,10 @@ public class AddImageActivity extends AppCompatActivity {
                 Uri mImageUri=data.getData();
                 try {
                     Bitmap bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), mImageUri);
-                    ImageProcess.saveTempImage(this,"Image", bitmap);
+                    ImageProcess.saveTempImage(this,"image", bitmap);
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-                // Get the cursor
                 Cursor cursor = getContentResolver().query(mImageUri,
                         filePathColumn, null, null, null);
                 // Move to first row
@@ -174,12 +192,14 @@ public class AddImageActivity extends AppCompatActivity {
 
                         ClipData.Item item = mClipData.getItemAt(i);
                         Uri uri = item.getUri();
+
                         try {
                             Bitmap bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), uri);
-                            ImageProcess.saveTempImage(this,"Image", bitmap);
+                            ImageProcess.saveTempImage(this,"image", bitmap);
                         } catch (IOException e) {
                             e.printStackTrace();
                         }
+
                         mArrayUri.add(uri);
                         // Get the cursor
                         Cursor cursor = getContentResolver().query(uri, filePathColumn, null, null, null);
@@ -202,8 +222,7 @@ public class AddImageActivity extends AppCompatActivity {
                 }
             }
         } else {
-            Toast.makeText(this, "You haven't picked Image",
-                    Toast.LENGTH_LONG).show();
+            Toast.makeText(this, "You haven't picked Image",  Toast.LENGTH_LONG).show();
         }
     }
 
@@ -255,7 +274,6 @@ public class AddImageActivity extends AppCompatActivity {
             Config.showInternetDialog(this);
             return;
         }
-
         final ProgressDialog loading = ProgressDialog.show(this,"Processing...","Please wait...",false,false);
         StringRequest stringRequest = new StringRequest(Request.Method.POST,Config.AJAX_URL+"uploadprocess.php",
                 new Response.Listener<String>() {
@@ -265,6 +283,7 @@ public class AddImageActivity extends AppCompatActivity {
                         try
                         {
                             JSONObject jsonObject = new JSONObject(s);
+                            Log.d(Config.TAG,"output - "+jsonObject.toString());
                             String status=jsonObject.getString("status");
                             String msgg=jsonObject.getString("message");
 
@@ -297,7 +316,7 @@ public class AddImageActivity extends AppCompatActivity {
             protected Map<String, String> getParams() throws AuthFailureError {
 
                 String palbumname= tvlayouttype.getText().toString();
-                if(!palbumname.equalsIgnoreCase("new_album"))palbumname=albumname;
+                if(!palbumname.equalsIgnoreCase("imagenew"))palbumname=spimage_album.getSelectedItem().toString();
                 Map<String,String> params = new Hashtable<String, String>();
                 params.put("type","uploadfiles");
                 params.put("process_type","android");
@@ -334,7 +353,7 @@ public class AddImageActivity extends AppCompatActivity {
         add_image_button.setTextColor(getResources().getColor(R.color.black));
         create_album_button.setBackgroundResource(R.drawable.black);
         create_album_button.setTextColor(getResources().getColor(R.color.white));
-        tvlayouttype.setText("new_album");
+        tvlayouttype.setText("imagenew");
         albumLayout.setVisibility(View.GONE);
         categoryLayout.setVisibility(View.VISIBLE);
         tilalbumname.setVisibility(View.VISIBLE);

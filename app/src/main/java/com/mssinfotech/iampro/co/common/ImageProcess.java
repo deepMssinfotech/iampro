@@ -4,12 +4,15 @@ import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.media.MediaScannerConnection;
+import android.net.Uri;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.util.Base64;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.DefaultRetryPolicy;
@@ -33,6 +36,10 @@ import java.io.IOException;
 import java.util.Calendar;
 import java.util.Hashtable;
 import java.util.Map;
+import java.util.UUID;
+
+import net.gotev.uploadservice.MultipartUploadRequest;
+import net.gotev.uploadservice.UploadNotificationConfig;
 
 public class ImageProcess {
 
@@ -81,6 +88,7 @@ public class ImageProcess {
         }
         return "";
     }
+
     public static void saveTempImage(final Context context, final String utype, final Bitmap bitmap){
         String url=Config.AJAX_URL+"uploadImage.php";
         final ProgressDialog loading = ProgressDialog.show(context,"Processing...","Please wait...",false,false);
@@ -122,6 +130,7 @@ public class ImageProcess {
         //Adding request to the queue
         requestQueue.add(stringRequest);
     }
+
     public static String getStringImage(Bitmap bmp){
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         bmp.compress(Bitmap.CompressFormat.JPEG, 100, baos);

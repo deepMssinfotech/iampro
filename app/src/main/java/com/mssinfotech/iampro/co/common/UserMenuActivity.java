@@ -55,18 +55,19 @@ public class UserMenuActivity  extends Fragment {
         View view = inflater.inflate(R.layout.include_user_menu, parent, false);
         return view;
     }
+
     public void removeFragment(){
         AppCompatActivity activity = (AppCompatActivity) getContext();
         UserMenuActivity userMenufragment = new UserMenuActivity();
         android.support.v4.app.FragmentManager fragmentManager = activity.getSupportFragmentManager();
         android.support.v4.app.FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-
         fragmentTransaction.remove(userMenufragment);
         fragmentTransaction.commit();
+        function.finishFunction(getContext());
     }
     private View.OnClickListener dashboardOnClickListener = new View.OnClickListener() {
         public void onClick(View v) {
-            if(function.isSamePage("activity_dashboard"))return;
+            //if(function.isSamePage("activity_dashboard"))return;
             Intent intent = new Intent(getContext(), WelcomeActivity.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
@@ -76,7 +77,7 @@ public class UserMenuActivity  extends Fragment {
     };
     private View.OnClickListener myprofileOnClickListener = new View.OnClickListener() {
         public void onClick(View v) {
-            if(function.isSamePage("activity_profile"))return;
+            //if(function.isSamePage("activity_profile"))return;
             Intent intent = new Intent(getContext(), ProfileActivity.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
@@ -86,7 +87,7 @@ public class UserMenuActivity  extends Fragment {
     };
     private View.OnClickListener editprofileOnClickListener = new View.OnClickListener() {
         public void onClick(View v) {
-            if(function.isSamePage("activity_edit_profile"))return;
+            //if(function.isSamePage("activity_edit_profile"))return;
             Intent intent = new Intent(getContext(), EditProfileActivity.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
@@ -96,7 +97,7 @@ public class UserMenuActivity  extends Fragment {
     };
     private View.OnClickListener changepasswordOnClickListener = new View.OnClickListener() {
         public void onClick(View v) {
-            if(function.isSamePage("activity_change_password"))return;
+            //if(function.isSamePage("activity_change_password"))return;
             Intent intent = new Intent(getContext(), ChangePasswordActivity.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
@@ -106,7 +107,7 @@ public class UserMenuActivity  extends Fragment {
     };
     private View.OnClickListener joinedfriendOnClickListener = new View.OnClickListener() {
         public void onClick(View v) {
-            if(function.isSamePage("activity_joined_friends"))return;
+            //if(function.isSamePage("activity_joined_friends"))return;
             Intent intent = new Intent(getContext(), JoinedFriendsActivity.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
@@ -116,7 +117,7 @@ public class UserMenuActivity  extends Fragment {
     };
     private View.OnClickListener friendrequestOnClickListener = new View.OnClickListener() {
         public void onClick(View v) {
-            if(function.isSamePage("activity_friend_request"))return;
+            //if(function.isSamePage("activity_friend_request"))return;
             Intent intent = new Intent(getContext(), FriendRequestActivity.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             getContext().startActivity(intent);
@@ -125,7 +126,7 @@ public class UserMenuActivity  extends Fragment {
     };
     private View.OnClickListener myphotoOnClickListener = new View.OnClickListener() {
         public void onClick(View v) {
-            if(function.isSamePage("activity_my_image"))return;
+            //if(function.isSamePage("activity_my_image"))return;
             Intent intent = new Intent(getContext(), MyImageActivity.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             getContext().startActivity(intent);
@@ -134,7 +135,7 @@ public class UserMenuActivity  extends Fragment {
     };
     private View.OnClickListener myvideoOnClickListener = new View.OnClickListener() {
         public void onClick(View v) {
-            if(function.isSamePage("activity_my_video"))return;
+            //if(function.isSamePage("activity_my_video"))return;
             Intent intent = new Intent(getContext(), MyVideoActivity.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             getContext().startActivity(intent);
@@ -143,7 +144,7 @@ public class UserMenuActivity  extends Fragment {
     };
     private View.OnClickListener myproductOnClickListener = new View.OnClickListener() {
         public void onClick(View v) {
-            if(function.isSamePage("activity_my_product"))return;
+            //if(function.isSamePage("activity_my_product"))return;
             Intent intent = new Intent(getContext(), MyProductActivity.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             getContext().startActivity(intent);
@@ -152,7 +153,7 @@ public class UserMenuActivity  extends Fragment {
     };
     private View.OnClickListener myprovideOnClickListener = new View.OnClickListener() {
         public void onClick(View v) {
-            if(function.isSamePage("activity_my_provide"))return;
+            //if(function.isSamePage("activity_my_provide"))return;
             Intent intent = new Intent(getContext(), MyProvideActivity.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             getContext().startActivity(intent);
@@ -161,7 +162,7 @@ public class UserMenuActivity  extends Fragment {
     };
     private View.OnClickListener demandOnClickListener = new View.OnClickListener() {
         public void onClick(View v) {
-            if(function.isSamePage("activity_my_demand"))return;
+            //if(function.isSamePage("activity_my_demand"))return;
             Intent intent = new Intent(getContext(), MyDemandActivity.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             getContext().startActivity(intent);
@@ -170,7 +171,7 @@ public class UserMenuActivity  extends Fragment {
     };
     private View.OnClickListener mymessageOnClickListener = new View.OnClickListener() {
         public void onClick(View v) {
-            if(function.isSamePage("activity_message"))return;
+            //if(function.isSamePage("activity_message"))return;
             Intent intent = new Intent(getContext(), MessageActivity.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             getContext().startActivity(intent);
@@ -179,7 +180,7 @@ public class UserMenuActivity  extends Fragment {
     };
     private View.OnClickListener mycartOnClickListener = new View.OnClickListener() {
         public void onClick(View v) {
-            if(function.isSamePage("activity_cart"))return;
+            //if(function.isSamePage("activity_cart"))return;
             Intent intent = new Intent(getContext(), CartActivity.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             getContext().startActivity(intent);
@@ -188,7 +189,7 @@ public class UserMenuActivity  extends Fragment {
     };
     private View.OnClickListener mysellingOnClickListener = new View.OnClickListener() {
         public void onClick(View v) {
-            if(function.isSamePage("activity_my_selling"))return;
+            //if(function.isSamePage("activity_my_selling"))return;
             Intent intent = new Intent(getContext(), MySellingActivity.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             getContext().startActivity(intent);
@@ -197,7 +198,7 @@ public class UserMenuActivity  extends Fragment {
     };
     private View.OnClickListener mypurchaseOnClickListener = new View.OnClickListener() {
         public void onClick(View v) {
-            if(function.isSamePage("activity_my_purchase"))return;
+            //if(function.isSamePage("activity_my_purchase"))return;
             Intent intent = new Intent(getContext(), MyPurchsaeActivity.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             getContext().startActivity(intent);
@@ -217,7 +218,7 @@ public class UserMenuActivity  extends Fragment {
     };
     private View.OnClickListener mywhishlistOnClickListener = new View.OnClickListener() {
         public void onClick(View v) {
-            if(function.isSamePage("activity_my_whishlist"))return;
+            //if(function.isSamePage("activity_my_whishlist"))return;
             Intent intent = new Intent(getContext(), MyWhishlistActivity.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             getContext().startActivity(intent);
@@ -235,7 +236,7 @@ public class UserMenuActivity  extends Fragment {
     };
     private View.OnClickListener loginOnClickListener = new View.OnClickListener() {
         public void onClick(View v) {
-            if(function.isSamePage("activity_login"))return;
+            //if(function.isSamePage("activity_login"))return;
             Intent intent = new Intent(getContext(), LoginActivity.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             getContext().startActivity(intent);
@@ -244,7 +245,7 @@ public class UserMenuActivity  extends Fragment {
     };
     private View.OnClickListener registerOnClickListener = new View.OnClickListener() {
         public void onClick(View v) {
-            if(function.isSamePage("activity_register"))return;
+            //if(function.isSamePage("activity_register"))return;
             Intent intent = new Intent(getContext(), SignupActivity.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             getContext().startActivity(intent);
@@ -253,7 +254,7 @@ public class UserMenuActivity  extends Fragment {
     };
     private View.OnClickListener searchOnClickListener = new View.OnClickListener() {
         public void onClick(View v) {
-            if(function.isSamePage("activity_my_whishlist"))return;
+            //if(function.isSamePage("activity_my_whishlist"))return;
             Intent intent = new Intent(getContext(), SearchActivity.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             getContext().startActivity(intent);
@@ -334,8 +335,8 @@ public class UserMenuActivity  extends Fragment {
             ImageView userbackgroud = view.findViewById(R.id.userbackgroud);
             CircleImageView userimage = view.findViewById(R.id.userimage);
             username.setText(PrefManager.getLoginDetail(getContext(), "fname") + " " + PrefManager.getLoginDetail(getContext(), "lname"));
-            Glide.with(this).load(background).into(userbackgroud);
-            Glide.with(this).load(avatar).into(userimage);
+            Glide.with(this).load(background).apply(Config.options_background).into(userbackgroud);
+            Glide.with(this).load(avatar).apply(Config.options_avatar).into(userimage);
             nonuser_menu.setVisibility(View.GONE);
             user_menu.setVisibility(View.VISIBLE);
         }else{
@@ -358,7 +359,7 @@ public class UserMenuActivity  extends Fragment {
             username.setText("Welcome To Iampro");
             nonuser_menu.setVisibility(View.VISIBLE);
             user_menu.setVisibility(View.GONE);
-
         }
     }
+
 }

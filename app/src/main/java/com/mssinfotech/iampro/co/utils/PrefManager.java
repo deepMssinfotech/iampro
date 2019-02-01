@@ -61,14 +61,14 @@ public class PrefManager {
         }
         if(myid != null) {
             String myurl = Config.API_URL + "ajax.php?type=friend_detail&id=" + myid + "&uid=" + myid;
-            Log.d(Config.TAG, myurl);
+            //Log.d(Config.TAG, myurl);
             StringRequest stringRequest = new StringRequest(myurl,
                     new Response.Listener<String>() {
                         @Override
                         public void onResponse(String response) {
                             JSONObject result = null;
                             try {
-                                Log.d(Config.TAG, response);
+                                //Log.d(Config.TAG, response);
                                 result = new JSONObject(response);
                                 //Storing the Array of JSON String to our JSON Array
                                 SharedPreferences sharedPreferences = context.getSharedPreferences("LoginDetails", MODE_PRIVATE);
