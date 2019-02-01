@@ -18,7 +18,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.mssinfotech.iampro.co.R;
-import com.mssinfotech.iampro.co.user.JoinedFriendsActivity;
+import com.mssinfotech.iampro.co.user.JoinFriendActivity;
 import com.mssinfotech.iampro.co.user.MyDemandActivity;
 import com.mssinfotech.iampro.co.user.MyImageActivity;
 import com.mssinfotech.iampro.co.user.MyProductActivity;
@@ -82,7 +82,7 @@ public class IncludeShortMenu  extends RelativeLayout {
     private OnClickListener userOnClickListener = new OnClickListener() {
         public void onClick(View v) {
             if(function.isSamePage("activity_joined_friends"))return;
-            Intent intent = new Intent(getContext(), JoinedFriendsActivity.class);
+            Intent intent = new Intent(getContext(), JoinFriendActivity.class);
             intent.putExtra(Config.PAGE_TAG,"activity_joined_friends");
             intent.putExtra("uid",tvs.getText().toString());
             getContext().startActivity(intent);

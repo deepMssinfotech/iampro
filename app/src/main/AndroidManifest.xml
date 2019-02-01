@@ -10,7 +10,7 @@
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.CAMERA" />
-
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
     <uses-feature
         android:name="android.hardware.camera"
         android:required="false" />
@@ -148,7 +148,6 @@
             android:label="@string/search_title" />
         <activity
             android:name=".CartActivity"
-            android:theme="@style/AppTheme.NoActionBar"
             android:label="@string/cart_title" />
         <activity
             android:name=".NotificationActivity"

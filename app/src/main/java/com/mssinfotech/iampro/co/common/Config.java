@@ -49,6 +49,8 @@ public class Config
     public static String ResponceResult="";
     public static String PAGE_TAG="page_tag";
     public static String PREVIOUS_PAGE_TAG = null;
+
+    public static int STORAGE_PERMISSION_CODE = 123;
     public Config(){
 
     }
@@ -92,7 +94,7 @@ public class Config
         if (PrefManager.isLogin(context)) {
             //Log.d(TAG, "test servide for 5 sec");
             String api_url = Config.API_URL + "chat.php?type=chat_count&myid=" + PrefManager.getLoginDetail(context, "id");
-            Log.d(Config.TAG, api_url);
+            //Log.d(Config.TAG, api_url);
              {
                 StringRequest stringRequest = new StringRequest(api_url,
                         new Response.Listener<String>() {

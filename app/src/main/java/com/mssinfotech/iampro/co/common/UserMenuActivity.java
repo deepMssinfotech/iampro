@@ -30,7 +30,7 @@ import com.mssinfotech.iampro.co.WelcomeActivity;
 import com.mssinfotech.iampro.co.user.ChangePasswordActivity;
 import com.mssinfotech.iampro.co.user.EditProfileActivity;
 import com.mssinfotech.iampro.co.user.FriendRequestActivity;
-import com.mssinfotech.iampro.co.user.JoinedFriendsActivity;
+import com.mssinfotech.iampro.co.user.JoinFriendActivity;
 import com.mssinfotech.iampro.co.user.MyDemandActivity;
 import com.mssinfotech.iampro.co.user.MyImageActivity;
 import com.mssinfotech.iampro.co.user.MyProductActivity;
@@ -107,7 +107,7 @@ public class UserMenuActivity  extends Fragment {
     private View.OnClickListener joinedfriendOnClickListener = new View.OnClickListener() {
         public void onClick(View v) {
             if(function.isSamePage("activity_joined_friends"))return;
-            Intent intent = new Intent(getContext(), JoinedFriendsActivity.class);
+            Intent intent = new Intent(getContext(), JoinFriendActivity.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
             getContext().startActivity(intent);
