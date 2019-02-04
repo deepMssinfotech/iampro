@@ -37,6 +37,7 @@ public class VideoFragment extends Fragment implements VideoAdapter.ItemListener
     ArrayList<DataModel> allSampleData=new ArrayList<>();
     RecyclerView my_recycler_view;
     VideoAdapter adapter;
+    public static final String VIDEO_TYPE="video";
     public VideoFragment() {
         // Required empty public constructor
     }
@@ -115,7 +116,7 @@ public class VideoFragment extends Fragment implements VideoAdapter.ItemListener
                                // Toast.makeText(getContext(),"rrrresponse_enterrr:",Toast.LENGTH_LONG).show();
                                 //singleItem.add(new SingleItemModel(name,image,udate));
                                 //allSampleData.add(new DataModel(name,image,udate,categoryv));
-                                allSampleData.add(new DataModel(name,image,udate,categoryv,totallike,comments,daysago,ratingv,uid,fullname,avatar,id));
+                                allSampleData.add(new DataModel(name,image,udate,categoryv,totallike,comments,daysago,ratingv,uid,fullname,avatar,id,VIDEO_TYPE));
                             }
                             Log.d("bdm",singleItem.toString());
                             dm.setAllItemsInSection(singleItem);

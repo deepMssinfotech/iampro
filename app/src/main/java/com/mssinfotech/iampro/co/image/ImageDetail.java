@@ -11,6 +11,7 @@ import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.VideoView;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -23,7 +24,6 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.mssinfotech.iampro.co.adapter.Img_Video_Details;
-import com.mssinfotech.iampro.co.adapter.ProductAdapter;
 import com.mssinfotech.iampro.co.common.Config;
 import com.mssinfotech.iampro.co.model.ImageDetailModel;
 import com.mssinfotech.iampro.co.user.ProfileActivity;
@@ -43,8 +43,11 @@ public class ImageDetail extends AppCompatActivity implements Img_Video_Details.
 
     TextView tv_about_tag,tv_about_msg,fullname,udate,tv_comments,tv_totallike,name,category;
      ImageView imageView_user,imageView_icon,iv_comments,image;
+    VideoView videoView;
       RatingBar ratingBar;
        RecyclerView recycler_view_review_detail;
+    public static final String IMAGE_TYPE="image";
+    public static final String VIDEO_TYPE="video";
        Img_Video_Details adapter;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,6 +66,7 @@ public class ImageDetail extends AppCompatActivity implements Img_Video_Details.
         imageView_icon=findViewById(R.id.imageView_icon);
         iv_comments=findViewById(R.id.iv_comments);
         image=findViewById(R.id.image);
+        videoView=findViewById(R.id.video);
          ratingBar=findViewById(R.id.ratingBar);
         recycler_view_review_detail=findViewById(R.id.recycler_view_review_detail);
         uid=getIntent().getExtras().getInt("uid");
@@ -120,6 +124,7 @@ public class ImageDetail extends AppCompatActivity implements Img_Video_Details.
                             category.setText(category_name);
                              ratingBar.setRating(Float.parseFloat(String.valueOf(rating)));
 
+                            videoView.setVisibility(View.GONE);
                             Glide.with(ImageDetail.this)
                                     .load(avatar_url)
                                     .into(image);
@@ -168,7 +173,7 @@ public class ImageDetail extends AppCompatActivity implements Img_Video_Details.
                                   String avataru=Config.AVATAR_URL+"250/250/"+jsonObjectUserr.optString("avatar");
                                   int uidd=jsonObjectUserr.optInt("id");
 
-                                  myData.add(new ImageDetailModel(iid,namee,imagev,about_usv,like_unlikev,ratingv,commentsv,totallikev,uidd,fullnamee,avataru,udateee,category_namee));
+                                  myData.add(new ImageDetailModel(iid,namee,imagev,about_usv,like_unlikev,ratingv,commentsv,totallikev,uidd,fullnamee,avataru,udateee,category_namee,IMAGE_TYPE));
                               }
                                Log.d("img_video",""+myData);
                              adapter=new Img_Video_Details(getApplicationContext(),myData,ImageDetail.this);
@@ -239,9 +244,14 @@ public class ImageDetail extends AppCompatActivity implements Img_Video_Details.
                             category.setText(category_name);
                             ratingBar.setRating(Float.parseFloat(String.valueOf(rating)));
 
-                            Glide.with(ImageDetail.this)
+                            /*Glide.with(ImageDetail.this)
                                     .load(avatar_url)
-                                    .into(image);
+                                    .into(image); */
+                            videoView.setVisibility(View.VISIBLE);
+
+                            videoView.setVideoPath(avatar_url);
+                            videoView.start();
+                             image.setVisibility(View.GONE);
 
                             JSONObject jsonObjectUser=responses.getJSONObject("user_detail");
                             String fullnamev=jsonObjectUser.optString("fullname");
@@ -278,7 +288,7 @@ public class ImageDetail extends AppCompatActivity implements Img_Video_Details.
                                 String avataru=Config.AVATAR_URL+"250/250/"+jsonObjectUserr.optString("avatar");
                                 int uidd=jsonObjectUserr.optInt("id");
 
-                                myData.add(new ImageDetailModel(iid,namee,imagev,about_usv,like_unlikev,ratingv,commentsv,totallikev,uidd,fullnamee,avataru,udateee,category_namee));
+                                myData.add(new ImageDetailModel(iid,namee,imagev,about_usv,like_unlikev,ratingv,commentsv,totallikev,uidd,fullnamee,avataru,udateee,category_namee,VIDEO_TYPE));
                             }
                             Log.d("img_video",""+myData);
                             adapter=new Img_Video_Details(getApplicationContext(),myData,ImageDetail.this);

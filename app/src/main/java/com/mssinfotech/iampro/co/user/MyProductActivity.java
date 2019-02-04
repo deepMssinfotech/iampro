@@ -7,6 +7,7 @@ import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -25,13 +26,20 @@ import com.android.volley.toolbox.Volley;
 import com.bumptech.glide.Glide;
 import com.mssinfotech.iampro.co.NotificationActivity;
 import com.mssinfotech.iampro.co.R;
+import com.mssinfotech.iampro.co.adapter.CommentAdapter;
 import com.mssinfotech.iampro.co.adapter.MyProductAdapter;
+import com.mssinfotech.iampro.co.adapter.ProductAdapter;
 import com.mssinfotech.iampro.co.app.AppController;
 import com.mssinfotech.iampro.co.common.CircleTransform;
 import com.mssinfotech.iampro.co.common.Config;
 import com.mssinfotech.iampro.co.common.IncludeShortMenu;
 import com.mssinfotech.iampro.co.data.MessageItem;
 import com.mssinfotech.iampro.co.data.MyProductItem;
+import com.mssinfotech.iampro.co.model.DataModel;
+import com.mssinfotech.iampro.co.model.MyProductModel;
+import com.mssinfotech.iampro.co.model.SectionDataModel;
+import com.mssinfotech.iampro.co.model.SingleItemModel;
+import com.mssinfotech.iampro.co.tab.ProductFragment;
 import com.mssinfotech.iampro.co.utils.PrefManager;
 import com.squareup.picasso.Picasso;
 
@@ -44,7 +52,7 @@ import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
-public class MyProductActivity extends AppCompatActivity {
+public class MyProductActivity extends AppCompatActivity implements MyProductAdapter.ItemListener {
     private List<MyProductItem> MyProductItemList;
 
     ImageView userbackgroud;
@@ -56,6 +64,8 @@ public class MyProductActivity extends AppCompatActivity {
     ArrayList<String> rowsArrayList = new ArrayList<>();
     boolean isLoading = false;
     Intent intent;
+    ArrayList<MyProductModel> item = new ArrayList<>();
+    MyProductAdapter adapter;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -96,8 +106,10 @@ public class MyProductActivity extends AppCompatActivity {
             }
         });*/
         recyclerView = findViewById(R.id.recyclerView);
-        initAdapter();
+        //initAdapter();
         initScrollListener();
+        getProduct();
+        Toast.makeText(getApplicationContext(),"Product myproducttt",Toast.LENGTH_LONG).show();
     }
     private void gteUsrDetail(String id){
         String myurl = Config.API_URL + "ajax.php?type=friend_detail&id=" + id + "&uid=" + uid;
@@ -155,8 +167,8 @@ public class MyProductActivity extends AppCompatActivity {
     }
     private void initAdapter() {
 
-        mAdapter = new MyProductAdapter(rowsArrayList);
-        recyclerView.setAdapter(mAdapter);
+        //mAdapter = new MyProductAdapter(rowsArrayList);
+        //recyclerView.setAdapter(mAdapter);
     }
 
     private void initScrollListener() {
@@ -236,5 +248,104 @@ public class MyProductActivity extends AppCompatActivity {
             Log.d(Config.TAG,"printStackTrace 167" + e.getMessage() + "  Error Message");
             e.printStackTrace();
         }
+    }
+
+    public void getProduct(){
+         String url=Config.API_URL+"app_service.php?type=getall_product&added_by="+uid+"&my_id="+uid+"&search_type=PRODUCT";
+        // Initialize a new RequestQueue instance
+        RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
+
+        // Initialize a new JsonArrayRequest instance
+        JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(
+                Request.Method.GET,
+                url,
+                null,
+                new com.android.volley.Response.Listener<JSONArray>() {
+                    @Override
+                    public void onResponse(JSONArray response) {
+                        Log.d("responsef",response.toString());
+                        SectionDataModel dm = new SectionDataModel();
+                        dm.setHeaderTitle("Product");
+                        ArrayList<SingleItemModel> singleItem = new ArrayList<SingleItemModel>();
+                        if(!singleItem.isEmpty()){
+                            singleItem.clear();
+                        }
+                        try{
+                            for(int i=0;i<response.length();i++){
+                                // Get current json object
+                                JSONObject student = response.getJSONObject(i);
+
+                                int id=student.getInt("id");
+                                String idv=String.valueOf(id);
+                                int added_by=student.getInt("added_by");
+
+                                int scost=student.getInt("selling_cost");
+                                int pcost=student.getInt("purchese_cost");
+
+                                String name = student.getString("name");
+                                String categoryv=student.getString("category");
+                                String imagev=student.getString("image");
+                                String image= Config.URL_ROOT + "uploads/product/" +imagev;
+                                String udate=student.getString("udate");
+                                int totallike=Integer.parseInt(student.getString("totallike"));
+                                int comments=student.getInt("comments");
+                                Log.d("pdata",""+name+""+categoryv+""+image+""+udate);
+
+                                // String daysago=student.getString("ago");
+
+                                String rating=student.getString("rating");
+                                float ratingv=Float.parseFloat(rating);
+
+                                JSONObject userDetail=student.getJSONObject("user_detail");
+                                int uid=userDetail.getInt("id");
+                                String fullname=userDetail.getString("fullname");
+                                String avatar=Config.AVATAR_URL+"250/250/"+userDetail.getString("avatar");
+
+                                //SectionDataModel dm = new SectionDataModel();
+                                //dm.setHeaderTitle("Section " + i);
+                                //Toast.makeText(getContext(),"rrrresponse_enterrr:",Toast.LENGTH_LONG).show();
+                                // singleItem.add(new SingleItemModel(name,image,udate));
+                                //allSampleData.add(new DataModel(name,image,udate,categoryv));
+                                item.add(new MyProductModel(name,image,udate,categoryv,totallike,comments,scost,pcost,ratingv,uid,fullname,avatar,idv));
+                            }
+                            Log.d("bdm",singleItem.toString());
+                           // dm.setAllItemsInSection(singleItem);
+                            Log.d("adm",singleItem.toString());
+                            Log.d("dmm",dm.toString());
+                            //allSampleData.add(dm);
+                            Log.d("allsampledatav",item.toString());
+                           Log.d("prod_enter",""+item.toString());
+                            adapter = new MyProductAdapter(getApplicationContext(),item,MyProductActivity.this);
+                            recyclerView.setAdapter(adapter);
+
+                            GridLayoutManager manager = new GridLayoutManager(getApplicationContext(), 2, GridLayoutManager.VERTICAL, false);
+                            recyclerView.setLayoutManager(manager);
+
+                        }
+                        catch (JSONException e){
+                            e.printStackTrace();
+                            Toast.makeText(getApplicationContext(), ""+e.getMessage(), Toast.LENGTH_SHORT).show();
+                            Log.d("catch_f",""+e.getMessage());
+                        }
+                    }
+                },
+                new com.android.volley.Response.ErrorListener(){
+                    @Override
+                    public void onErrorResponse(VolleyError error){
+                        // Do something when error occurred
+                        //Snackbar.make(getContext(),"Error...", Snackbar.LENGTH_LONG).show();
+                        Toast.makeText(getApplicationContext(), error.getMessage(), Toast.LENGTH_SHORT).show();
+                        Log.d("verror",error.getMessage());
+                    }
+                }
+        );
+        // Add JsonArrayRequest to the RequestQueue
+        requestQueue.add(jsonArrayRequest);
+        //getProvide();
+    }
+
+    @Override
+    public void onItemClick(MyProductModel item) {
+
     }
 }

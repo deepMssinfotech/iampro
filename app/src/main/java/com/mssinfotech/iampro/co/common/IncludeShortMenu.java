@@ -150,7 +150,6 @@ public class IncludeShortMenu  extends RelativeLayout {
 
                     }
                 });
-
         //Creating a request queue
         RequestQueue requestQueue = Volley.newRequestQueue(context);
         //Adding request to the queue

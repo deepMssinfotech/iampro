@@ -37,6 +37,7 @@ import android.widget.RatingBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.VideoView;
 
 import com.mssinfotech.iampro.co.image.ImageDetail;
 import com.mssinfotech.iampro.co.model.DataModel;
@@ -59,8 +60,8 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.ViewHolder> 
 
         RatingBar ratingBar;
         public ImageView imageView;
+         VideoView videoView;
         de.hdodenhof.circleimageview.CircleImageView userImage;
-        public RelativeLayout relativeLayout;
         DataModel item;
 
         public ViewHolder(View v) {
@@ -68,6 +69,7 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.ViewHolder> 
             v.setOnClickListener(this);
             textView = (TextView) v.findViewById(R.id.textView);
             imageView = (ImageView) v.findViewById(R.id.imageView);
+             videoView=v.findViewById(R.id.video);
             tv_tlike=v.findViewById(R.id.tv_totallike);
             //tv_comments
             tv_comments=v.findViewById(R.id.tv_comments);
@@ -134,15 +136,13 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.ViewHolder> 
                     .apply(options)
                     .into(userImage); */
 
-            Glide.with(mContext)
+           Glide.with(mContext)
                     .load(url)
                     .apply(new RequestOptions()
                             .centerCrop()
                             .fitCenter())
                     .into(imageView);
-            //imageView.setImageResource(item.image);
-
-            // relativeLayout.setBackgroundColor(Color.parseColor("#000000"));
+               //videoView.setVideoPath(url);
             //userImage
             userImage.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -165,7 +165,7 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.ViewHolder> 
     }
     @Override
     public VideoAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(mContext).inflate(R.layout.recycler_view_item, parent, false);
+        View view = LayoutInflater.from(mContext).inflate(R.layout.video_view_item, parent, false);
         return new ViewHolder(view);
     }
     @Override

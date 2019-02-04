@@ -13,16 +13,22 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.bumptech.glide.Glide;
 import com.mssinfotech.iampro.co.R;
+import com.mssinfotech.iampro.co.adapter.AllFeedAdapter;
+import com.mssinfotech.iampro.co.adapter.CommentAdapter;
 import com.mssinfotech.iampro.co.app.AppController;
 import com.mssinfotech.iampro.co.common.CircleTransform;
 import com.mssinfotech.iampro.co.common.IncludeShortMenu;
 import com.mssinfotech.iampro.co.data.FeedItem;
 import com.mssinfotech.iampro.co.common.Config;
+import com.mssinfotech.iampro.co.model.FeedModel;
+import com.mssinfotech.iampro.co.model.ImageDetailModel;
+import com.mssinfotech.iampro.co.product.ProductDetail;
 import com.mssinfotech.iampro.co.utils.PrefManager;
 import com.squareup.picasso.Picasso;
 
@@ -44,9 +50,11 @@ import com.android.volley.toolbox.JsonObjectRequest;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
-public class ProfileActivity extends AppCompatActivity {
+public class ProfileActivity extends AppCompatActivity implements AllFeedAdapter.ItemListener {
 
     private static final String TAG = ProfileActivity.class.getSimpleName();
+    private static final int FEED_LIMIT=15;
+    private static int FEED_START=0;
     private List<FeedItem> feedItems;
     ImageView userbackgroud;
     CircleImageView userimage;
@@ -56,6 +64,9 @@ public class ProfileActivity extends AppCompatActivity {
     private LinearLayoutManager mLayoutManager;
     protected Handler handler;
     Intent intent;
+     RecyclerView vFeed;
+     AllFeedAdapter adapter;
+    ArrayList<FeedModel> mValues=new ArrayList<>();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -66,6 +77,7 @@ public class ProfileActivity extends AppCompatActivity {
         username = findViewById(R.id.username);
         userimage = findViewById(R.id.userimage);
         userbackgroud = findViewById(R.id.userbackgroud);
+        vFeed=findViewById(R.id.rvFeed);
         uid= PrefManager.getLoginDetail(this,"id");
         if(id == null || id.equals(uid)) {
             String fname=PrefManager.getLoginDetail(this,"fname");
@@ -84,6 +96,7 @@ public class ProfileActivity extends AppCompatActivity {
         includeShortMenu.updateCounts(this,uid);
         TextView myuid= includeShortMenu.findViewById(R.id.myuid);
         myuid.setText(uid);
+        getFeed(FEED_START);
     }
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         Toast.makeText(this, "mss popup",  Toast.LENGTH_LONG).show();
@@ -126,6 +139,7 @@ public class ProfileActivity extends AppCompatActivity {
         //Adding request to the queue
         requestQueue.add(stringRequest);
     }
+
     private void  loadFeedList(Integer mStart,Integer mLimit){
         URL_FEED = Config.API_URL+ "feed_service.php?type=AllFeeds&start=" +mStart.toString()+ "&limit=" +mLimit.toString()+ "&fid=" +uid+ "&uid=" +uid+ "&my_id=" +uid;
         // We first check for cached request
@@ -167,6 +181,141 @@ public class ProfileActivity extends AppCompatActivity {
             AppController.getInstance().addToRequestQueue(jsonReq);
         }
     }
+
+    public void getFeed(int start){
+        URL_FEED = Config.API_URL+ "feed_service.php?type=AllFeeds&start="+start+"&limit="+FEED_LIMIT+"&fid=" +uid+ "&uid=" +uid+ "&my_id=" +uid;
+
+        RequestQueue requestQueue = Volley.newRequestQueue(ProfileActivity.this);
+
+        // Initialize a new JsonObjectRequest instance
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(
+                Request.Method.GET,
+                URL_FEED,
+                null,
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        String detail_name="";
+                        int selling_cost=0;
+                        int purchese_cost=0;
+
+                        // Process the JSON
+                        try{
+                              String feedTotal=response.getString("feedTotal");
+                              String status=response.optString("status");
+                              if(status.equalsIgnoreCase("success")) {
+
+
+                                  JSONArray jsonArray = response.getJSONArray("data");
+                                  for (int i = 0; i < jsonArray.length(); i++) {
+                                      JSONObject jsonObject = jsonArray.getJSONObject(i);
+                                      String image = jsonObject.getString("first_image");
+
+                                      String fimage_path = Config.URL_ROOT + "uploads/avatar/150/150/'" + image;
+                                      int id = jsonObject.getInt("id");
+                                      String shareid = jsonObject.getString("shareid");
+                                      String fullname = jsonObject.getString("fullname");
+                                      int uid = jsonObject.getInt("uid");
+                                      String avatar = jsonObject.getString("avatar");
+                                      String avatar_path = Config.AVATAR_URL + avatar;
+                                      String udate = jsonObject.getString("udate");
+                                      Long timespam = jsonObject.getLong("timespam");
+                                      String is_block = jsonObject.getString("is_block");
+                                      String type = jsonObject.getString("type");
+                                /* if (type.equalsIgnoreCase("PRODUCT") || type.equalsIgnoreCase("PROVIDE") || type.equalsIgnoreCase("DEMAND")) {
+                                     JSONObject jsonObjectdetail = jsonObject.getJSONObject("detail");
+                                     String detail_name = jsonObjectdetail.getString("name");
+                                     String selling_cost = jsonObjectdetail.getString("selling_cost");
+                                     String purchese_cost = jsonObjectdetail.getString("purchese_cost");
+                                 } */
+                                      ArrayList<String> imageArray = new ArrayList<>();
+                                      if (type.equalsIgnoreCase("VIDEO")) {
+                                          JSONArray jsonArrayImage = jsonObject.getJSONArray("video_array");
+                                          for (int j = 0; j < jsonArrayImage.length(); j++) {
+                                              imageArray.add(jsonArrayImage.optString(i));
+                                          }
+                                      } else {
+                                          JSONArray jsonArrayImage = jsonObject.getJSONArray("image_array");
+                                          for (int j = 0; j < jsonArrayImage.length(); j++) {
+                                              imageArray.add(jsonArrayImage.optString(i));
+                                          }
+                                      }
+                                      int comment = jsonObject.getInt("comment");
+                                      int likes = jsonObject.getInt("likes");
+                                      // int is_favrait = jsonObject.getInt("is_favrait");
+                                      int mylikes = jsonObject.getInt("mylikes");
+                                      //average_rating
+                                      int all_rating = jsonObject.getInt("average_rating");
+                                      //type all_comment average_rating
+
+
+                                      if (type.equalsIgnoreCase("IMAGE")) {
+                                          fimage_path = Config.URL_ROOT + "uploads/avatar/150/150/" + image;
+                                      } else if (type.equalsIgnoreCase("VIDEO")) {
+                                          ///uploads/album/400/500/' /uploads/v_image/'
+                                          fimage_path = Config.URL_ROOT + "uploads/album/400/500/" + image;
+                                      }
+                                      //PRODUCT
+                                      else if (type.equalsIgnoreCase("PRODUCT")) {
+                                          fimage_path = Config.URL_ROOT + "/uploads/product/400/400/" + image;
+
+                                          JSONObject jsonObjectdetail = jsonObject.getJSONObject("detail");
+                                          detail_name = jsonObjectdetail.getString("name");
+                                          selling_cost = jsonObjectdetail.getInt("selling_cost");
+                                          purchese_cost = jsonObjectdetail.getInt("purchese_cost");
+
+                                      } else if (type.equalsIgnoreCase("PROVIDE")) {
+                                          fimage_path = Config.URL_ROOT + "/uploads/product/400/400/" + image;
+
+                                          JSONObject jsonObjectdetail = jsonObject.getJSONObject("detail");
+                                          detail_name = jsonObjectdetail.getString("name");
+                                          selling_cost = jsonObjectdetail.getInt("selling_cost");
+                                          purchese_cost = jsonObjectdetail.getInt("purchese_cost");
+                                      } else if (type.equalsIgnoreCase("DEMAND")) {
+                                          fimage_path = Config.URL_ROOT + "/uploads/product/400/400/" + image;
+
+                                          JSONObject jsonObjectdetail = jsonObject.getJSONObject("detail");
+                                          detail_name = jsonObjectdetail.getString("name");
+                                          selling_cost = jsonObjectdetail.getInt("selling_cost");
+                                          purchese_cost = jsonObjectdetail.getInt("purchese_cost");
+                                      }
+                                      Log.d("image_setdata", "" + fimage_path);
+                                      int all_comment = jsonObject.getInt("all_comment");
+                                      int average_rating = jsonObject.getInt("average_rating");
+                                      if (type.equalsIgnoreCase("PRODUCT") || type.equalsIgnoreCase("PROVIDE") || type.equalsIgnoreCase("DEMAND")) {
+                                          mValues.add(new FeedModel(id, shareid, fullname, uid, avatar_path, udate, timespam, is_block, imageArray, fimage_path, comment, likes, mylikes, all_rating, type, all_comment, average_rating,detail_name,selling_cost,purchese_cost));
+
+                                      }
+                                      else{
+                                  mValues.add(new FeedModel(id, shareid, fullname, uid, avatar_path, udate, timespam, is_block, imageArray, fimage_path, comment, likes, mylikes, all_rating, type, all_comment, average_rating));
+                              }
+                             }
+                            adapter=new AllFeedAdapter(ProfileActivity.this,mValues,ProfileActivity.this);
+                            vFeed.setLayoutManager(new LinearLayoutManager(ProfileActivity.this, LinearLayoutManager.VERTICAL, false));
+                             vFeed.setNestedScrollingEnabled(false);
+                            vFeed.setAdapter(adapter);
+                            //String msg=response.optString("msg");
+                           // Toast.makeText(getApplicationContext(),msg,Toast.LENGTH_LONG).show();
+                              }
+                        }
+                        catch (Exception e){
+                            e.printStackTrace();
+                            Toast.makeText(ProfileActivity.this,e.getMessage(),Toast.LENGTH_LONG).show();
+                        }
+                    }
+                },
+                new Response.ErrorListener(){
+                    @Override
+                    public void onErrorResponse(VolleyError error){
+                        // Do something when error occurred
+                        Toast.makeText(ProfileActivity.this,error.getMessage(),Toast.LENGTH_LONG).show();
+                    }
+                }
+        );
+        // Add JsonObjectRequest to the RequestQueue
+        requestQueue.add(jsonObjectRequest);
+    }
+
     private void parseJsonFeed(JSONObject response) {
         try {
             JSONArray feedArray = response.getJSONArray("data");
@@ -174,10 +323,8 @@ public class ProfileActivity extends AppCompatActivity {
             for (int i = 0; i < feedArray.length(); i++) {
 
                 JSONObject feedObj = (JSONObject) feedArray.get(i);
-
                 FeedItem item = new FeedItem();
                 String image_path="";
-
                 String feed_type=feedObj.getString("type");
                 String image = feedObj.isNull("first_image") ? null : feedObj.getString("first_image");
                 if(feed_type.equalsIgnoreCase("IMAGE")){
@@ -191,7 +338,6 @@ public class ProfileActivity extends AppCompatActivity {
                 }else if(feed_type.equalsIgnoreCase("DEMAND")){
                     image_path = Config.URL_ROOT + "uploads/product/h/300/" + image;
                 }
-
                 item.setId(feedObj.getInt("id"));
                 item.setName(feedObj.getString("fullname"));
                 item.setImge(image_path);
@@ -208,5 +354,10 @@ public class ProfileActivity extends AppCompatActivity {
         } catch (JSONException e) {
             e.printStackTrace();
         }
+    }
+
+    @Override
+    public void onItemClick(FeedModel item) {
+
     }
 }

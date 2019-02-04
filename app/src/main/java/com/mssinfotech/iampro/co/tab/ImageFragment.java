@@ -39,6 +39,7 @@ public class ImageFragment extends Fragment implements ImageAdapter.ItemListener
     ArrayList<DataModel> allSampleData=new ArrayList<>();
     RecyclerView my_recycler_view;
     ImageAdapter adapter;
+    public static final String IMAGE_TYPE="image";
     public ImageFragment() {
         // Required empty public constructor
     }
@@ -117,8 +118,8 @@ public class ImageFragment extends Fragment implements ImageAdapter.ItemListener
                                 int uid=userDetail.getInt("id");
                                 String fullname=userDetail.getString("fullname");
                                 String avatar=Config.AVATAR_URL+"250/250/"+userDetail.getString("avatar");
-                                singleItem.add(new SingleItemModel(name,image,udate));
-                                allSampleData.add(new DataModel(name,image,udate,categoryv,totallike,comments,daysago,ratingv,uid,fullname,avatar,id));
+                                //singleItem.add(new SingleItemModel(name,image,udate));
+                                allSampleData.add(new DataModel(name,image,udate,categoryv,totallike,comments,daysago,ratingv,uid,fullname,avatar,id,IMAGE_TYPE));
 
                             }
                             Log.d("bdm",singleItem.toString());
@@ -148,7 +149,7 @@ public class ImageFragment extends Fragment implements ImageAdapter.ItemListener
                     @Override
                     public void onErrorResponse(VolleyError error){
                         Toast.makeText(getContext(), "verror"+error.getMessage(), Toast.LENGTH_SHORT).show();
-                        Log.d("verror",error.getMessage());
+                        Log.d("verror",""+error.getMessage());
                     }
                 }
         );

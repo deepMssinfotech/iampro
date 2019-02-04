@@ -68,8 +68,8 @@
 
         <activity
             android:name=".HomeActivity"
-            android:theme="@style/AppTheme.NoActionBar"
-            android:label="@string/app_name"/>
+            android:label="@string/app_name"
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".WelcomeActivity"
             android:theme="@style/AppTheme.NoActionBar" />
@@ -98,8 +98,7 @@
         <activity
             android:name=".OtpForgetActivity"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity
-            android:name=".OtpRegistrationActivity" />
+        <activity android:name=".OtpRegistrationActivity" />
         <activity
             android:name=".user.AddImageActivity"
             android:label="Add Image"
@@ -145,20 +144,20 @@
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".SearchActivity"
-            android:theme="@style/AppTheme.NoActionBar"
-            android:label="@string/search_title" />
+            android:label="@string/search_title"
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".CartActivity"
-            android:theme="@style/AppTheme.NoActionBar"
-            android:label="@string/cart_title" />
+            android:label="@string/cart_title"
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".NotificationActivity"
-            android:theme="@style/AppTheme.NoActionBar"
-            android:label="@string/notifications_title" />
+            android:label="@string/notifications_title"
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".MessageActivity"
-            android:theme="@style/AppTheme.NoActionBar"
-            android:label="@string/message_title" />
+            android:label="@string/message_title"
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".demand.DemandDetail" />
         <activity
             android:name=".product.ProductDetail"
@@ -167,7 +166,8 @@
             android:name=".provide.ProvideDetailActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".image.ImageDetail" />
-        <activity android:name=".CommentActivity"></activity>
+        <activity android:name=".CommentActivity" />
+        <activity android:name=".grid_like_facebook.GridMainActivity"></activity>
     </application>
 
 </manifest>

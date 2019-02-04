@@ -21,6 +21,7 @@ import android.widget.RatingBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.VideoView;
 
 import com.mssinfotech.iampro.co.image.ImageDetail;
 import com.mssinfotech.iampro.co.model.DataModel;
@@ -42,15 +43,9 @@ public class Img_Video_Details extends RecyclerView.Adapter<Img_Video_Details.Vi
         mListener=itemListener;
     }
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-       /* public TextView textView,tv_tlike,tv_comments,tv_daysago,tv_sprice,tv_pprice,uname;
-
-        RatingBar ratingBar;
-        public ImageView imageView;
-        de.hdodenhof.circleimageview.CircleImageView userImage;
-        public RelativeLayout relativeLayout;
-        DataModel item; */
        TextView fullname,udate,tv_comments,tv_totallike,name,category;
         ImageView imageView_user,imageView_icon,iv_comments,image;
+         VideoView videoView;
         RatingBar ratingBar;
         ImageDetailModel item;
         public ViewHolder(View v) {
@@ -81,7 +76,7 @@ public class Img_Video_Details extends RecyclerView.Adapter<Img_Video_Details.Vi
                     mContext.startActivity(intent);
                 }
             });
-
+           videoView=v.findViewById(R.id.video);
         }
         public void setData(ImageDetailModel item) {
             this.item = item;
@@ -112,25 +107,35 @@ public class Img_Video_Details extends RecyclerView.Adapter<Img_Video_Details.Vi
                             .fitCenter())
                     .into(imageView_user);
 
+           if(item.getType().equalsIgnoreCase("image")) {
+               videoView.setVisibility(View.GONE);
+                image.setVisibility(View.VISIBLE);
+               Glide.with(mContext)
+                       .load(images)
+                       .apply(new RequestOptions()
+                               .centerCrop()
+                               .fitCenter())
+                       .into(image);
+           }
+           else if(item.getType().equalsIgnoreCase("video")) {
+               image.setVisibility(View.GONE);
+                videoView.setVisibility(View.VISIBLE);
 
-            Glide.with(mContext)
-                    .load(images)
-                    .apply(new RequestOptions()
-                            .centerCrop()
-                            .fitCenter())
-                    .into(image);
+               videoView.setVideoPath(item.getImage());
+               //videoView.start();
+           }
+               imageView_user.setOnClickListener(new View.OnClickListener() {
+                   @Override
+                   public void onClick(View v) {
+                       Toast.makeText(mContext, "uid:" + uid, Toast.LENGTH_LONG).show();
 
-            imageView_user.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Toast.makeText(mContext,"uid:"+uid,Toast.LENGTH_LONG).show();
+                       Intent intent = new Intent(mContext, ProfileActivity.class);
+                       intent.putExtra("uid", String.valueOf(uid));
+                       intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                       mContext.startActivity(intent);
+                   }
+               });
 
-                    Intent intent=new Intent(mContext, ProfileActivity.class);
-                    intent.putExtra("uid",String.valueOf(uid));
-                     intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                    mContext.startActivity(intent);
-                }
-            });
 
         }
         @Override

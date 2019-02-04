@@ -14,6 +14,15 @@ public class ImageDetailModel {
     private int comments;
     private int totallike;
 
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    private String type;
     public String getFullname() {
         return fullname;
     }
@@ -61,7 +70,7 @@ public class ImageDetailModel {
     }
 
     private String category;
-    public ImageDetailModel(int id,String name, String image, String about_us, String like_unlike, int rating, int comments, int totallike,int uid,String fullname,String avatar,String udatee,String category) {
+    public ImageDetailModel(int id,String name, String image, String about_us, String like_unlike, int rating, int comments, int totallike,int uid,String fullname,String avatar,String udatee,String category,String type) {
         this.id=id;
         this.name = name;
         this.image = image;
@@ -75,13 +84,11 @@ public class ImageDetailModel {
           this.avatar=avatar;
            this.udatee=udatee;
             this.category=category;
+             this.type=type;
     }
-
     public String getName() {
-
         return name;
     }
-
     public void setName(String name) {
         this.name = name;
     }

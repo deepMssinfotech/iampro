@@ -29,6 +29,16 @@ public class DataModel {
     private float rating;
     private int uid;
 
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    private String type;
+
     public int getUid() {
         return uid;
     }
@@ -221,7 +231,7 @@ public class DataModel {
         this.fullname=fullname;
         this.userImage=userImage;
     }
-    public DataModel(String name,String image,String udate,String category,int totallike,int comments,String daysago,float rating,int uid,String fullname,String userImage,int id){
+    public DataModel(String name,String image,String udate,String category,int totallike,int comments,String daysago,float rating,int uid,String fullname,String userImage,int id,String type){
         this.name=name;
         this.image=image;
         this.udate=udate;
@@ -234,6 +244,7 @@ public class DataModel {
         this.fullname=fullname;
         this.userImage=userImage;
         this.id=id;
+        this.type=type;
     }
     public DataModel(String name,String image,String udate,String category,int totallike,int comments,int sCost,int pCost,String daysago){
         this.name=name;
