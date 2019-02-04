@@ -18,36 +18,36 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
-import com.mssinfotech.iampro.co.user.FriendRequestActivity;
+import com.mssinfotech.iampro.co.user.JoinFriendActivity;
 import com.mssinfotech.iampro.co.R;
-import com.mssinfotech.iampro.co.adapter.FriendRequestAdapter;
+import com.mssinfotech.iampro.co.adapter.JoinFriendAdapter;
 import com.mssinfotech.iampro.co.app.AppController;
 import com.mssinfotech.iampro.co.common.Config;
 import com.mssinfotech.iampro.co.common.function;
-import com.mssinfotech.iampro.co.data.FriendRequestItem;
-import com.mssinfotech.iampro.co.helper.FriendRequestItemTouchHelper;
+import com.mssinfotech.iampro.co.data.JoinFriendItem;
+import com.mssinfotech.iampro.co.helper.JoinFriendItemTouchHelper;
 import com.mssinfotech.iampro.co.utils.PrefManager;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
-public class FriendRequestActivity extends AppCompatActivity implements FriendRequestItemTouchHelper.RecyclerItemTouchHelperListener {
+public class JoinFriendActivity extends AppCompatActivity implements JoinFriendItemTouchHelper.RecyclerItemTouchHelperListener {
 
     private RecyclerView recyclerView;
-    private List<FriendRequestItem> FriendRequestItemList;
-    private FriendRequestAdapter mAdapter;
+    private List<JoinFriendItem> JoinFriendItemList;
+    private JoinFriendAdapter mAdapter;
     private ConstraintLayout constraintLayout;
     private static String NOTIFY_URL  = "";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_friendrequest);
-        Config.setLayoutName(getResources().getResourceEntryName(R.layout.activity_friendrequest));
-        NOTIFY_URL  = Config.API_URL+"app_service.php?type=view_friend_list&id="+ PrefManager.getLoginDetail(this,"id");
+        setContentView(R.layout.activity_joinfriend);
+        Config.setLayoutName(getResources().getResourceEntryName(R.layout.activity_joinfriend));
+        NOTIFY_URL  = Config.API_URL+"app_service.php?type=view_friend_list&id="+ PrefManager.getLoginDetail(this,"id")+"&my_id="+ PrefManager.getLoginDetail(this,"id")+"&status=2";
         recyclerView = findViewById(R.id.recycler_view);
-        FriendRequestItemList = new ArrayList<FriendRequestItem>();
-        mAdapter = new FriendRequestAdapter(this, FriendRequestItemList);
+        JoinFriendItemList = new ArrayList<JoinFriendItem>();
+        mAdapter = new JoinFriendAdapter(this, JoinFriendItemList);
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
         recyclerView.setLayoutManager(mLayoutManager);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
@@ -58,7 +58,7 @@ public class FriendRequestActivity extends AppCompatActivity implements FriendRe
         // only ItemTouchHelper.LEFT added to detect Right to Left swipe
         // if you want both Right -> Left and Left -> Right
         // add pass ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT as param
-        ItemTouchHelper.SimpleCallback itemTouchHelperCallback = new FriendRequestItemTouchHelper(0, ItemTouchHelper.LEFT, this);
+        ItemTouchHelper.SimpleCallback itemTouchHelperCallback = new JoinFriendItemTouchHelper(0, ItemTouchHelper.LEFT, this);
         new ItemTouchHelper(itemTouchHelperCallback).attachToRecyclerView(recyclerView);
         // making http call and fetching menu json
         prepareWhishList();
@@ -78,7 +78,7 @@ public class FriendRequestActivity extends AppCompatActivity implements FriendRe
                     parseJsonFeed(response);
                     mAdapter.notifyDataSetChanged();
                 }else{
-                    Toast.makeText(FriendRequestActivity.this, "Empty Record!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(JoinFriendActivity.this, "Empty Record!", Toast.LENGTH_SHORT).show();
                 }
             }
         }, new Response.ErrorListener() {
@@ -95,7 +95,7 @@ public class FriendRequestActivity extends AppCompatActivity implements FriendRe
             if(response.length()>0) {
                 for (int i = 0; i < response.length(); i++) {
                     JSONObject feedObj = (JSONObject) response.get(i);
-                    FriendRequestItem item = new FriendRequestItem();
+                    JoinFriendItem item = new JoinFriendItem();
 
                     String image_path = "";
                     JSONObject user_detail = feedObj.getJSONObject("user_detail");
@@ -117,7 +117,7 @@ public class FriendRequestActivity extends AppCompatActivity implements FriendRe
                     item.setTotal_product_demand(feedObj.getInt("total_product_demand"));
                     item.setTotal_video(feedObj.getInt("total_video"));
 
-                    FriendRequestItemList.add(item);
+                    JoinFriendItemList.add(item);
                 }
             }else{
                 ImageView no_rodr = findViewById(R.id.no_record_found);
@@ -139,14 +139,14 @@ public class FriendRequestActivity extends AppCompatActivity implements FriendRe
      */
     @Override
     public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction, int position) {
-        if (viewHolder instanceof FriendRequestAdapter.MyViewHolder) {
+        if (viewHolder instanceof JoinFriendAdapter.MyViewHolder) {
             // get the removed item name to display it in snack bar
-            Integer id = FriendRequestItemList.get(viewHolder.getAdapterPosition()).getId();
-            Integer Userid = FriendRequestItemList.get(viewHolder.getAdapterPosition()).getUser_id();
-            Integer Friendid = FriendRequestItemList.get(viewHolder.getAdapterPosition()).getFriend_id();
+            Integer id = JoinFriendItemList.get(viewHolder.getAdapterPosition()).getId();
+            Integer Userid = JoinFriendItemList.get(viewHolder.getAdapterPosition()).getUser_id();
+            Integer Friendid = JoinFriendItemList.get(viewHolder.getAdapterPosition()).getFriend_id();
 
             // backup of removed item for undo purpose
-            final FriendRequestItem deletedItem = FriendRequestItemList.get(viewHolder.getAdapterPosition());
+            final JoinFriendItem deletedItem = JoinFriendItemList.get(viewHolder.getAdapterPosition());
             final int deletedIndex = viewHolder.getAdapterPosition();
 
             // remove the item from recycler view

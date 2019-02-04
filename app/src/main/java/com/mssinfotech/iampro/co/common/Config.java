@@ -19,6 +19,10 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.bumptech.glide.Priority;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.request.RequestOptions;
+import com.mssinfotech.iampro.co.R;
 import com.mssinfotech.iampro.co.utils.PrefManager;
 
 import org.json.JSONArray;
@@ -49,6 +53,50 @@ public class Config
     public static String ResponceResult="";
     public static String PAGE_TAG="page_tag";
     public static String PREVIOUS_PAGE_TAG = null;
+
+    public static RequestOptions options_avatar = new RequestOptions()
+            .centerCrop()
+            .placeholder(R.drawable.iampro)
+            .error(R.drawable.iampro)
+            .diskCacheStrategy(DiskCacheStrategy.ALL)
+            .priority(Priority.HIGH);
+    public static RequestOptions options_background = new RequestOptions()
+            .centerCrop()
+            .placeholder(R.drawable.profile_background)
+            .error(R.drawable.profile_background)
+            .diskCacheStrategy(DiskCacheStrategy.ALL)
+            .priority(Priority.HIGH);
+    public static RequestOptions options_product = new RequestOptions()
+            .centerCrop()
+            .placeholder(R.drawable.profile_background)
+            .error(R.drawable.profile_background)
+            .diskCacheStrategy(DiskCacheStrategy.ALL)
+            .priority(Priority.HIGH);
+    public static RequestOptions options_image = new RequestOptions()
+            .centerCrop()
+            .placeholder(R.drawable.profile_background)
+            .error(R.drawable.profile_background)
+            .diskCacheStrategy(DiskCacheStrategy.ALL)
+            .priority(Priority.HIGH);
+    public static RequestOptions options_video= new RequestOptions()
+            .centerCrop()
+            .placeholder(R.drawable.profile_background)
+            .error(R.drawable.profile_background)
+            .diskCacheStrategy(DiskCacheStrategy.ALL)
+            .priority(Priority.HIGH);
+    public static RequestOptions options_provide = new RequestOptions()
+            .centerCrop()
+            .placeholder(R.drawable.profile_background)
+            .error(R.drawable.profile_background)
+            .diskCacheStrategy(DiskCacheStrategy.ALL)
+            .priority(Priority.HIGH);
+    public static RequestOptions options_demand = new RequestOptions()
+            .centerCrop()
+            .placeholder(R.drawable.profile_background)
+            .error(R.drawable.profile_background)
+            .diskCacheStrategy(DiskCacheStrategy.ALL)
+            .priority(Priority.HIGH);
+    public static int STORAGE_PERMISSION_CODE = 123;
     public Config(){
 
     }
@@ -92,7 +140,7 @@ public class Config
         if (PrefManager.isLogin(context)) {
             //Log.d(TAG, "test servide for 5 sec");
             String api_url = Config.API_URL + "chat.php?type=chat_count&myid=" + PrefManager.getLoginDetail(context, "id");
-            Log.d(Config.TAG, api_url);
+            //Log.d(Config.TAG, api_url);
              {
                 StringRequest stringRequest = new StringRequest(api_url,
                         new Response.Listener<String>() {

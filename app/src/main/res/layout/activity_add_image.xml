@@ -7,9 +7,9 @@
     android:layout_height="match_parent"
     tools:context=".user.AddImageActivity">
     <TextView
-        android:text="new_album"
+        android:text="imagenew"
+        android:visibility="invisible"
         android:id="@+id/tvlayouttype"
-        android:visibility="gone"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
     <ScrollView

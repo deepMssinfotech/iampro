@@ -55,11 +55,11 @@ public class CartActivity extends AppCompatActivity {
         setContentView(R.layout.activity_cart);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeButtonEnabled(true);
-        getSupportActionBar().setTitle("Cart App");
+        //getSupportActionBar().setTitle("Cart App");
         getSupportActionBar().setIcon(R.drawable.delete);
 
-        getSupportActionBar().setDisplayShowTitleEnabled(false);
-        getSupportActionBar().setDisplayShowTitleEnabled(true);
+        //getSupportActionBar().setDisplayShowTitleEnabled(false);
+        //getSupportActionBar().setDisplayShowTitleEnabled(true);
         CART_URL  = Config.API_URL+"cart.php?type=refreshCart&uid="+ PrefManager.getLoginDetail(this,"id")+"&ip_address="+Config.IP_ADDRESS;
         recyclerView = findViewById(R.id.recycler_view);
         tvTotalPrice = findViewById(R.id.tvTotalPrice);

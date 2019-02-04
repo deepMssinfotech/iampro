@@ -52,7 +52,7 @@ public class function {
                         public void onResponse(String response) {
                             loading.dismiss();
                             Config.ResponceResult = response;
-                            Log.d(Config.TAG,"result is : "+response);
+                            //Log.d(Config.TAG,"result is : "+response);
                         }
                     }, new Response.ErrorListener() {
                 @Override
@@ -198,6 +198,10 @@ public class function {
             Toast.makeText(context,e.getMessage(),Toast.LENGTH_LONG).show();
         }
         return appStatus;
+    }
+    public static void finishFunction(Context context) {
+        Activity activity = (Activity)context;
+        activity.finish();
     }
 }
 
