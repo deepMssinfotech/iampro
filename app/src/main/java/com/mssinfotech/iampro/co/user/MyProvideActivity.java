@@ -3,37 +3,52 @@ package com.mssinfotech.iampro.co.user;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.bumptech.glide.Glide;
 import com.mssinfotech.iampro.co.R;
+import com.mssinfotech.iampro.co.adapter.MyProductAdapter;
+import com.mssinfotech.iampro.co.adapter.MyProvideAdapter;
 import com.mssinfotech.iampro.co.common.CircleTransform;
 import com.mssinfotech.iampro.co.common.Config;
 import com.mssinfotech.iampro.co.common.IncludeShortMenu;
+import com.mssinfotech.iampro.co.model.MyProductModel;
+import com.mssinfotech.iampro.co.model.SectionDataModel;
+import com.mssinfotech.iampro.co.model.SingleItemModel;
 import com.mssinfotech.iampro.co.utils.PrefManager;
 import com.squareup.picasso.Picasso;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
+
 import de.hdodenhof.circleimageview.CircleImageView;
 
-public class MyProvideActivity extends AppCompatActivity {
+public class MyProvideActivity extends AppCompatActivity implements MyProvideAdapter.ItemListener {
 
     ImageView userbackgroud;
     CircleImageView userimage;
     TextView username;
     private String uid="";
     Intent intent;
+    ArrayList<MyProductModel> item = new ArrayList<>();
+    MyProvideAdapter adapter;
+    RecyclerView recyclerView;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -43,6 +58,7 @@ public class MyProvideActivity extends AppCompatActivity {
         String id = intent.getStringExtra("uid");
         username = findViewById(R.id.username);
         userimage = findViewById(R.id.userimage);
+        recyclerView = findViewById(R.id.recyclerView);
         userbackgroud = findViewById(R.id.userbackgroud);
         uid= PrefManager.getLoginDetail(this,"id");
         if(id == null || id.equals(uid)) {
@@ -64,6 +80,7 @@ public class MyProvideActivity extends AppCompatActivity {
         myuid.setText(uid);
         Intent i = new Intent();
         Config.PREVIOUS_PAGE_TAG = i.getStringExtra(Config.PAGE_TAG);
+        getProvide();
     }
     private void gteUsrDetail(String id){
         String myurl = Config.API_URL + "ajax.php?type=friend_detail&id=" + id + "&uid=" + uid;
@@ -118,5 +135,105 @@ public class MyProvideActivity extends AppCompatActivity {
     public void redirect(View v){
         Intent i_signup = new Intent(MyProvideActivity.this,AddProvideActivity.class);
         MyProvideActivity.this.startActivity(i_signup);
+    }
+
+    public void getProvide(){
+        String url=Config.API_URL+"app_service.php?type=getall_product&added_by="+uid+"&my_id="+uid+"&search_type=PROVIDE";
+        // Initialize a new RequestQueue instance
+        RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
+
+        // Initialize a new JsonArrayRequest instance
+        JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(
+                Request.Method.GET,
+                url,
+                null,
+                new com.android.volley.Response.Listener<JSONArray>() {
+                    @Override
+                    public void onResponse(JSONArray response) {
+                        Log.d("responsef",response.toString());
+                        SectionDataModel dm = new SectionDataModel();
+                        dm.setHeaderTitle("Product");
+                        ArrayList<SingleItemModel> singleItem = new ArrayList<SingleItemModel>();
+                        if(!singleItem.isEmpty()){
+                            singleItem.clear();
+                        }
+                        try{
+                            for(int i=0;i<response.length();i++){
+                                // Get current json object
+                                JSONObject student = response.getJSONObject(i);
+
+                                int id=student.getInt("id");
+                                String idv=String.valueOf(id);
+                                int added_by=student.getInt("added_by");
+
+                                int scost=student.getInt("selling_cost");
+                                //int pcost=student.getInt("purchese_cost");
+                                int pcost=0;
+                                String name = student.getString("name");
+                                String categoryv=student.getString("category");
+                                String imagev=student.getString("image");
+                                String image= Config.URL_ROOT + "uploads/product/" +imagev;
+                                String udate=student.getString("udate");
+                                int totallike=Integer.parseInt(student.getString("likes"));
+                                int comments=student.getInt("comments");
+                                Log.d("pdata",""+name+""+categoryv+""+image+""+udate);
+
+                                // String daysago=student.getString("ago");
+
+                                String rating=String.valueOf(student.getInt("average_rating"));
+                                float ratingv=Float.parseFloat(rating);
+
+                                JSONObject userDetail=student.getJSONObject("user_name");
+                                int uid=userDetail.getInt("id");
+                                String fname=userDetail.getString("fname");
+                                String lname=userDetail.getString("lname");
+                                String fullname=fname+"\t"+lname;
+                                String avatar=Config.AVATAR_URL+"250/250/"+userDetail.getString("avatar");
+
+                                //SectionDataModel dm = new SectionDataModel();
+                                //dm.setHeaderTitle("Section " + i);
+                                //Toast.makeText(getContext(),"rrrresponse_enterrr:",Toast.LENGTH_LONG).show();
+                                // singleItem.add(new SingleItemModel(name,image,udate));
+                                //allSampleData.add(new DataModel(name,image,udate,categoryv));
+                                item.add(new MyProductModel(name,image,udate,categoryv,totallike,comments,scost,ratingv,uid,fullname,avatar,idv));
+                            }
+                            Log.d("bdm",singleItem.toString());
+                            // dm.setAllItemsInSection(singleItem);
+                            Log.d("adm",singleItem.toString());
+                            Log.d("dmm",dm.toString());
+                            //allSampleData.add(dm);
+                            Log.d("allsampledatav",item.toString());
+                            adapter = new MyProvideAdapter(getApplicationContext(),item,MyProvideActivity.this);
+
+                            recyclerView.setAdapter(adapter);
+                            GridLayoutManager manager = new GridLayoutManager(getApplicationContext(), 2, GridLayoutManager.VERTICAL, false);
+                            recyclerView.setLayoutManager(manager);
+
+                        }
+                        catch (JSONException e){
+                            e.printStackTrace();
+                            Toast.makeText(getApplicationContext(), ""+e.getMessage(), Toast.LENGTH_SHORT).show();
+                            Log.d("catch_f",""+e.getMessage());
+                        }
+                    }
+                },
+                new com.android.volley.Response.ErrorListener(){
+                    @Override
+                    public void onErrorResponse(VolleyError error){
+                        // Do something when error occurred
+                        //Snackbar.make(getContext(),"Error...", Snackbar.LENGTH_LONG).show();
+                        Toast.makeText(getApplicationContext(), error.getMessage(), Toast.LENGTH_SHORT).show();
+                        Log.d("verror",""+error.getMessage());
+                    }
+                }
+        );
+        // Add JsonArrayRequest to the RequestQueue
+        requestQueue.add(jsonArrayRequest);
+        //getProvide();
+    }
+
+    @Override
+    public void onItemClick(MyProductModel item) {
+
     }
 }

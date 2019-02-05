@@ -139,4 +139,20 @@ public class MyProductModel {
         this.uid=uid;
         this.pid=pid;
     }
+    //pdemand
+    public MyProductModel(String name,String image,String udate,String category,int totallike,int comments,int sCost,float rating,int uid,String fullname,String userImage,String pid){
+        this.name=name;
+        this.image=image;
+        this.udate=udate;
+        this.category=category;
+        this.totallike=totallike;
+        this.comments=comments;
+        this.sCost=sCost;
+        this.rating=rating;
+        this.uid=uid;
+        this.fullname=fullname;
+        this.userImage=userImage;
+        this.uid=uid;
+        this.pid=pid;
+    }
 }

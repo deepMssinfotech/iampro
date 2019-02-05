@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.design.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -14,8 +15,7 @@
         android:layout_marginRight="@dimen/fab_margin_right"
         app:backgroundTint="@color/color_image_color"
         android:onClick="redirect"
-        app:srcCompat="@android:drawable/ic_input_add" />
-
+        app:srcCompat="@android:drawable/ic_input_add"/>
     <ScrollView
         android:layout_above="@+id/footer"
         android:fillViewport="true"
@@ -50,7 +50,6 @@
                         android:layout_height="@dimen/profile_icon_height"
                         android:layout_width="@dimen/profile_icon_height" />
 
-
                 </RelativeLayout>
             </LinearLayout>
             <RelativeLayout
@@ -72,6 +71,15 @@
                 layout="@layout/include_short_menu"
                 android:layout_height="85dp"
                 android:layout_width="match_parent"/>
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/recyclerView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
         </LinearLayout>
     </ScrollView>
     <com.mssinfotech.iampro.co.common.IncludeFooter

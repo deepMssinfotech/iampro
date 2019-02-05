@@ -9,7 +9,7 @@ public class JoinFriendItem {
 
     private String city;
 
-    private String avatar;
+
 
     private int total_friend;
 
@@ -29,10 +29,20 @@ public class JoinFriendItem {
 
     private String state;
 
+    private String username;
+
+    private String avatar;
+
+    public JoinFriendItem(String avatar, String fullname, String category) {
+        this.avatar = avatar;
+        this.fullname = fullname;
+        this.category = category;
+    }
+
+    private String fullname;
     private String category;
 
-    private String username;
-    private String fullname;
+
 
     public JoinFriendItem() {
 

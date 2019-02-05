@@ -3,15 +3,19 @@ package com.mssinfotech.iampro.co.user;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.bumptech.glide.Glide;
@@ -19,24 +23,36 @@ import com.bumptech.glide.Priority;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
 import com.mssinfotech.iampro.co.R;
+import com.mssinfotech.iampro.co.adapter.MyImageAdapter;
+import com.mssinfotech.iampro.co.adapter.MyProductAdapter;
+import com.mssinfotech.iampro.co.adapter.MyVideoAdapter;
 import com.mssinfotech.iampro.co.common.CircleTransform;
 import com.mssinfotech.iampro.co.common.Config;
 import com.mssinfotech.iampro.co.common.IncludeShortMenu;
+import com.mssinfotech.iampro.co.model.MyImageModel;
+import com.mssinfotech.iampro.co.model.MyProductModel;
+import com.mssinfotech.iampro.co.model.SingleItemModel;
 import com.mssinfotech.iampro.co.utils.PrefManager;
 import com.squareup.picasso.Picasso;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
+
 import de.hdodenhof.circleimageview.CircleImageView;
 
-public class MyVideoActivity extends AppCompatActivity {
+public class MyVideoActivity extends AppCompatActivity implements MyVideoAdapter.ItemListener {
 
     ImageView userbackgroud;
     CircleImageView userimage;
     TextView username;
     private String URL_FEED = "",uid="";
     Intent intent;
+    ArrayList<MyImageModel> item = new ArrayList<>();
+    MyVideoAdapter adapter;
+    RecyclerView recyclerView;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -46,6 +62,7 @@ public class MyVideoActivity extends AppCompatActivity {
         String id = intent.getStringExtra("uid");
         username = findViewById(R.id.username);
         userimage = findViewById(R.id.userimage);
+        recyclerView=findViewById(R.id.recyclerView);
         userbackgroud = findViewById(R.id.userbackgroud);
         uid= PrefManager.getLoginDetail(this,"id");
         if(id == null || id.equals(uid)) {
@@ -74,6 +91,7 @@ public class MyVideoActivity extends AppCompatActivity {
         myuid.setText(uid);
         Intent i = new Intent();
         Config.PREVIOUS_PAGE_TAG = i.getStringExtra(Config.PAGE_TAG);
+        getVideo();
     }
     private void gteUsrDetail(String id){
         String myurl = Config.API_URL + "ajax.php?type=friend_detail&id=" + id + "&uid=" + uid;
@@ -120,4 +138,93 @@ public class MyVideoActivity extends AppCompatActivity {
         Intent i_signup = new Intent(MyVideoActivity.this,AddVideoActivity.class);
         MyVideoActivity.this.startActivity(i_signup);
     }
+
+    @Override
+    public void onItemClick(MyImageModel item) {
+
+    }
+
+    public void getVideo(){
+        String url=Config.API_URL+"app_service.php?type=getMyAlbemsListt&search_type=video&uid="+uid+"&my_id="+uid;
+        // Initialize a new RequestQueue instance
+        RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
+
+        // Initialize a new JsonArrayRequest instance
+        JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(
+                Request.Method.GET,
+                url,
+                null,
+                new com.android.volley.Response.Listener<JSONArray>() {
+                    @Override
+                    public void onResponse(JSONArray response) {
+                        ArrayList<SingleItemModel> singleItem = new ArrayList<SingleItemModel>();
+                        if(!singleItem.isEmpty()){
+                            singleItem.clear();
+                        }
+
+                        try{
+                            for(int i=0;i<response.length();i++){
+                                // Get current json object
+                                JSONObject student = response.getJSONObject(i);
+                                JSONArray jsonArrayPics=student.getJSONArray("pics");
+                                Log.d("picssss",jsonArrayPics.toString());
+
+                                JSONObject picss= jsonArrayPics.getJSONObject(0);
+                                Log.d("picssss11",""+picss.toString());
+                                String idd=picss.getString("albemid");
+                                Log.d("picssss1",""+idd);
+
+                                for (int j=0;j<jsonArrayPics.length();j++){
+                                    JSONObject pics=jsonArrayPics.getJSONObject(j);
+                                    String id=pics.getString("id");
+
+                                    String albemid=pics.optString("albemid");
+                                    String name=pics.optString("name");
+                                    String category=pics.optString("category");
+                                    String albem_type=pics.optString("albem_type");
+                                    String image=pics.optString("image");
+                                    String udate=pics.optString("udate");
+                                    String about_us=pics.optString("about_us");
+                                    String group_id=pics.optString("group_id");
+                                    String is_featured=pics.optString("is_featured");
+                                    String status=pics.optString("status");
+                                    String is_block=pics.optString("is_block");
+                                    String comments=pics.optString("comments");
+                                    String totallike=pics.optString("totallike");
+                                    String like_unlike=pics.optString("like_unlike");
+                                    String rating=pics.optString("rating");
+                                    item.add(new MyImageModel(id,albemid,name,category,albem_type,image,udate,about_us,group_id,is_featured,status,is_block,comments,totallike,like_unlike,rating,uid));
+                                }
+                            }
+                            Log.d("bdm",singleItem.toString());
+                            // dm.setAllItemsInSection(singleItem);
+                            Log.d("adm",singleItem.toString());
+                            Log.d("allsampledatav",item.toString());
+                            adapter = new MyVideoAdapter(getApplicationContext(),item,MyVideoActivity.this);
+
+                            recyclerView.setAdapter(adapter);
+                            GridLayoutManager manager = new GridLayoutManager(getApplicationContext(), 2, GridLayoutManager.VERTICAL, false);
+                            recyclerView.setLayoutManager(manager);
+                            recyclerView.setNestedScrollingEnabled(false);
+                        }
+                        catch (JSONException e){
+                            e.printStackTrace();
+                            Toast.makeText(getApplicationContext(), ""+e.getMessage(), Toast.LENGTH_SHORT).show();
+                            Log.d("catch_f",""+e.getMessage());
+                        }
+                    }
+                },
+                new com.android.volley.Response.ErrorListener(){
+                    @Override
+                    public void onErrorResponse(VolleyError error){
+                        Toast.makeText(getApplicationContext(), error.getMessage(), Toast.LENGTH_SHORT).show();
+                        Log.d("verror",""+error.getMessage());
+                    }
+                }
+        );
+        // Add JsonArrayRequest to the RequestQueue
+        requestQueue.add(jsonArrayRequest);
+        //getProvide();
+    }
+
 }

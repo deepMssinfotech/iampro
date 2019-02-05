@@ -7,6 +7,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.DividerItemDecoration;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
@@ -15,9 +16,14 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.Toast;
 import com.android.volley.Request;
+import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
+import com.android.volley.toolbox.Volley;
+import com.mssinfotech.iampro.co.adapter.MyImageAdapter;
+import com.mssinfotech.iampro.co.model.MyImageModel;
+import com.mssinfotech.iampro.co.model.SingleItemModel;
 import com.mssinfotech.iampro.co.user.JoinFriendActivity;
 import com.mssinfotech.iampro.co.R;
 import com.mssinfotech.iampro.co.adapter.JoinFriendAdapter;
@@ -39,20 +45,18 @@ public class JoinFriendActivity extends AppCompatActivity implements JoinFriendI
     private JoinFriendAdapter mAdapter;
     private ConstraintLayout constraintLayout;
     private static String NOTIFY_URL  = "";
+    private String URL_FEED = "",uid="";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_joinfriend);
+        uid= PrefManager.getLoginDetail(this,"id");
         Config.setLayoutName(getResources().getResourceEntryName(R.layout.activity_joinfriend));
         NOTIFY_URL  = Config.API_URL+"app_service.php?type=view_friend_list&id="+ PrefManager.getLoginDetail(this,"id")+"&my_id="+ PrefManager.getLoginDetail(this,"id")+"&status=2";
         recyclerView = findViewById(R.id.recycler_view);
         JoinFriendItemList = new ArrayList<JoinFriendItem>();
-        mAdapter = new JoinFriendAdapter(this, JoinFriendItemList);
-        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
-        recyclerView.setLayoutManager(mLayoutManager);
-        recyclerView.setItemAnimator(new DefaultItemAnimator());
-        recyclerView.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
-        recyclerView.setAdapter(mAdapter);
+       // mAdapter = new JoinFriendAdapter(this, JoinFriendItemList);
+
         constraintLayout = findViewById(R.id.constraintLayout);
         // adding item touch helper
         // only ItemTouchHelper.LEFT added to detect Right to Left swipe
@@ -62,7 +66,7 @@ public class JoinFriendActivity extends AppCompatActivity implements JoinFriendI
         new ItemTouchHelper(itemTouchHelperCallback).attachToRecyclerView(recyclerView);
         // making http call and fetching menu json
         prepareWhishList();
-
+        getJoinedFriend();
     }
     /**
      * method make volley network call and parses json
@@ -132,11 +136,6 @@ public class JoinFriendActivity extends AppCompatActivity implements JoinFriendI
         }
     }
 
-    /**
-     * callback when recycler view is swiped
-     * item will be removed on swiped
-     * undo option will be provided in snackbar to restore the item
-     */
     @Override
     public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction, int position) {
         if (viewHolder instanceof JoinFriendAdapter.MyViewHolder) {
@@ -168,4 +167,67 @@ public class JoinFriendActivity extends AppCompatActivity implements JoinFriendI
         }
     }
 
+    public void getJoinedFriend(){
+        String url="https://www.iampro.co/api/app_service.php?type=view_friend_list&id="+uid+"&status=2&uid="+uid+"&my_id="+uid;
+        // Initialize a new RequestQueue instance
+        RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
+
+        // Initialize a new JsonArrayRequest instance
+        JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(
+                Request.Method.GET,
+                url,
+                null,
+                new com.android.volley.Response.Listener<JSONArray>() {
+                    @Override
+                    public void onResponse(JSONArray response) {
+                        ArrayList<SingleItemModel> singleItem = new ArrayList<SingleItemModel>();
+                        if(!singleItem.isEmpty()){
+                            singleItem.clear();
+                        }
+
+                        try{
+                            for(int i=0;i<response.length();i++){
+                                // Get current json object
+                                JSONObject student = response.getJSONObject(i);
+                                  JSONObject user_detaiis=student.getJSONObject("user_detail");
+                                    String id=user_detaiis.getString("id");
+                                 String fname=user_detaiis.getString("fname");
+                                 String lname=user_detaiis.getString("lname");
+                                String avatar=user_detaiis.getString("avatar");
+                                String category=user_detaiis.getString("category");
+
+                                    JoinFriendItemList.add(new JoinFriendItem(avatar,fname,category));
+                            }
+                            Log.d("bdm",singleItem.toString());
+                            // dm.setAllItemsInSection(singleItem);
+                            Log.d("adm",singleItem.toString());
+                            Log.d("allsampledatav",JoinFriendItemList.toString());
+                             mAdapter= new JoinFriendAdapter(getApplicationContext(),JoinFriendItemList);
+
+                            RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
+                            recyclerView.setLayoutManager(mLayoutManager);
+                            recyclerView.setItemAnimator(new DefaultItemAnimator());
+                            recyclerView.addItemDecoration(new DividerItemDecoration(getApplicationContext(),DividerItemDecoration.VERTICAL));
+                            recyclerView.setAdapter(mAdapter);
+                            recyclerView.setNestedScrollingEnabled(false);
+                        }
+                        catch (JSONException e){
+                            e.printStackTrace();
+                            Toast.makeText(getApplicationContext(), ""+e.getMessage(), Toast.LENGTH_SHORT).show();
+                            Log.d("catch_f",""+e.getMessage());
+                        }
+                    }
+                },
+                new com.android.volley.Response.ErrorListener(){
+                    @Override
+                    public void onErrorResponse(VolleyError error){
+                        Toast.makeText(getApplicationContext(), error.getMessage(), Toast.LENGTH_SHORT).show();
+                        Log.d("verror",""+error.getMessage());
+                    }
+                }
+        );
+        // Add JsonArrayRequest to the RequestQueue
+        requestQueue.add(jsonArrayRequest);
+        //getProvide();
+    }
 }

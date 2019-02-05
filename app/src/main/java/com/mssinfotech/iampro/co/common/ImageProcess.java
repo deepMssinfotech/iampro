@@ -38,8 +38,8 @@ import java.util.Hashtable;
 import java.util.Map;
 import java.util.UUID;
 
-import net.gotev.uploadservice.MultipartUploadRequest;
-import net.gotev.uploadservice.UploadNotificationConfig;
+//import net.gotev.uploadservice.MultipartUploadRequest;
+//import net.gotev.uploadservice.UploadNotificationConfig;
 
 public class ImageProcess {
 

@@ -109,7 +109,6 @@ public class MyProductActivity extends AppCompatActivity implements MyProductAda
         //initAdapter();
         initScrollListener();
         getProduct();
-        Toast.makeText(getApplicationContext(),"Product myproducttt",Toast.LENGTH_LONG).show();
     }
     private void gteUsrDetail(String id){
         String myurl = Config.API_URL + "ajax.php?type=friend_detail&id=" + id + "&uid=" + uid;
@@ -287,18 +286,20 @@ public class MyProductActivity extends AppCompatActivity implements MyProductAda
                                 String imagev=student.getString("image");
                                 String image= Config.URL_ROOT + "uploads/product/" +imagev;
                                 String udate=student.getString("udate");
-                                int totallike=Integer.parseInt(student.getString("totallike"));
+                                int totallike=Integer.parseInt(student.getString("likes"));
                                 int comments=student.getInt("comments");
                                 Log.d("pdata",""+name+""+categoryv+""+image+""+udate);
 
                                 // String daysago=student.getString("ago");
 
-                                String rating=student.getString("rating");
+                                String rating=String.valueOf(student.getInt("average_rating"));
                                 float ratingv=Float.parseFloat(rating);
 
-                                JSONObject userDetail=student.getJSONObject("user_detail");
+                                JSONObject userDetail=student.getJSONObject("user_name");
                                 int uid=userDetail.getInt("id");
-                                String fullname=userDetail.getString("fullname");
+                                String fname=userDetail.getString("fname");
+                                 String lname=userDetail.getString("lname");
+                                String fullname=fname+"\t"+lname;
                                 String avatar=Config.AVATAR_URL+"250/250/"+userDetail.getString("avatar");
 
                                 //SectionDataModel dm = new SectionDataModel();
@@ -314,10 +315,9 @@ public class MyProductActivity extends AppCompatActivity implements MyProductAda
                             Log.d("dmm",dm.toString());
                             //allSampleData.add(dm);
                             Log.d("allsampledatav",item.toString());
-                           Log.d("prod_enter",""+item.toString());
                             adapter = new MyProductAdapter(getApplicationContext(),item,MyProductActivity.this);
-                            recyclerView.setAdapter(adapter);
 
+                            recyclerView.setAdapter(adapter);
                             GridLayoutManager manager = new GridLayoutManager(getApplicationContext(), 2, GridLayoutManager.VERTICAL, false);
                             recyclerView.setLayoutManager(manager);
 
@@ -335,7 +335,7 @@ public class MyProductActivity extends AppCompatActivity implements MyProductAda
                         // Do something when error occurred
                         //Snackbar.make(getContext(),"Error...", Snackbar.LENGTH_LONG).show();
                         Toast.makeText(getApplicationContext(), error.getMessage(), Toast.LENGTH_SHORT).show();
-                        Log.d("verror",error.getMessage());
+                        Log.d("verror",""+error.getMessage());
                     }
                 }
         );

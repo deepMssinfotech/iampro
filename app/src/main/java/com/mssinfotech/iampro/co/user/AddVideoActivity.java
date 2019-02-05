@@ -54,8 +54,8 @@ import com.mssinfotech.iampro.co.common.Config;
 import com.mssinfotech.iampro.co.utils.PrefManager;
 import com.mssinfotech.iampro.co.utils.Validate;
 
-import net.gotev.uploadservice.MultipartUploadRequest;
-import net.gotev.uploadservice.UploadNotificationConfig;
+//import net.gotev.uploadservice.MultipartUploadRequest;
+//import net.gotev.uploadservice.UploadNotificationConfig;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -336,7 +336,7 @@ public class AddVideoActivity extends AppCompatActivity {
             String palbumname= tvlayouttype.getText().toString();
             if(!palbumname.equalsIgnoreCase("videonew"))palbumname=spvideo_album.getSelectedItem().toString();
 
-            new MultipartUploadRequest(this, uploadId, Config.AJAX_URL + "uploadprocess.php")
+          /*  new MultipartUploadRequest(this, uploadId, Config.AJAX_URL + "uploadprocess.php")
                     .addFileToUpload(myVideoPath, "myfile") //Adding file
                     .addParameter("type","uploadvideo")//Adding text parameter to the request
                     .addParameter("process_type","native_android")
@@ -352,7 +352,7 @@ public class AddVideoActivity extends AppCompatActivity {
                     Intent intent = new Intent(getApplicationContext(), MyVideoActivity.class);
                     intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     startActivity(intent);
-                    finish();
+                    finish();*/
         } catch (Exception exc) {
             Toast.makeText(this, exc.getMessage(), Toast.LENGTH_SHORT).show();
         }

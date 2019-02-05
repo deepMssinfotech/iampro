@@ -126,25 +126,17 @@ public class MyProductAdapter extends RecyclerView.Adapter<MyProductAdapter.View
             videoView=v.findViewById(R.id.videoView);
             ratingBar=v.findViewById(R.id.ratingBar);
             ivLike=v.findViewById(R.id.ivLike);
-            udate=v.findViewById(R.id.udate);
+            //udate=v.findViewById(R.id.udate);
             tv_comments=v.findViewById(R.id.tv_comments);
             tv_totallike=v.findViewById(R.id.tv_totallike);
             ll_showhide=v.findViewById(R.id.ll_showhide);
+            uname=v.findViewById(R.id.uname);
             detail_name=v.findViewById(R.id.detail_name);
 
             tv_purchaseprice=v.findViewById(R.id.tv_purchaseprice);
 
             tv_sellingprice=v.findViewById(R.id.tv_sellingprice);
 
-        }
-        public void setData(MyProductModel item) {
-            this.item = item;
-            uid=item.getUid();
-            ratingBar.setRating(Float.parseFloat(String.valueOf(item.getRating())));
-            uname.setText(item.getFullname());
-            udate.setText(item.getUdate());
-            tv_comments.setText(String.valueOf(item.getComments()));
-            tv_totallike.setText(String.valueOf(item.getTotallike()));
             imageView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -154,6 +146,20 @@ public class MyProductAdapter extends RecyclerView.Adapter<MyProductAdapter.View
                     Toast.makeText(mContext,"uid: "+uid,Toast.LENGTH_LONG).show();
                 }
             });
+
+        }
+        public void setData(MyProductModel item) {
+            this.item = item;
+            uid=item.getUid();
+            ratingBar.setRating(Float.parseFloat(String.valueOf(item.getRating())));
+            uname.setText(item.getFullname());
+            tv_name.setText(item.getName());
+            //udate.setText(item.getUdate());
+            tv_comments.setText(String.valueOf(item.getComments()));
+            tv_totallike.setText(String.valueOf(item.getTotallike()));
+            tv_purchaseprice.setText(String.valueOf(item.getpCost()));
+            tv_sellingprice.setText(String.valueOf(item.getsCost()));
+
             Glide.with(mContext)
                     .load(item.getImage())
                     .apply(new RequestOptions()

@@ -41,13 +41,10 @@ public class JoinFriendAdapter extends RecyclerView.Adapter<JoinFriendAdapter.My
             total_demand = view.findViewById(R.id.total_demand);
         }
     }
-
-
     public JoinFriendAdapter(Context context, List<JoinFriendItem> notifyList) {
         this.context = context;
         this.notifyList = notifyList;
     }
-
     @Override
     public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View itemView = LayoutInflater.from(parent.getContext())
@@ -60,14 +57,14 @@ public class JoinFriendAdapter extends RecyclerView.Adapter<JoinFriendAdapter.My
     public void onBindViewHolder(MyViewHolder holder, final int position) {
         final JoinFriendItem item = notifyList.get(position);
         holder.category.setText(item.getCategory());
-        holder.city.setText(item.getCity());
+        //holder.city.setText(item.getCity());
         holder.fullname.setText(item.getFullname());
-        holder.total_demand.setText(String.valueOf(item.getTotal_product_demand()));
-        holder.total_image.setText(String.valueOf(item.getTotal_img()));
-        holder.total_product.setText(String.valueOf(item.getTotal_product()));
-        holder.total_provide.setText(String.valueOf(item.getTotal_product_provide()));
-        holder.total_video.setText(String.valueOf(item.getTotal_video()));
-        holder.total_user.setText(String.valueOf(item.getTotal_friend()));
+       // holder.total_demand.setText(String.valueOf(item.getTotal_product_demand()));
+       // holder.total_image.setText(String.valueOf(item.getTotal_img()));
+       // holder.total_product.setText(String.valueOf(item.getTotal_product()));
+        //holder.total_provide.setText(String.valueOf(item.getTotal_product_provide()));
+        //holder.total_video.setText(String.valueOf(item.getTotal_video()));
+        //holder.total_user.setText(String.valueOf(item.getTotal_friend()));
         Glide.with(context).load(item.getAvatar()).into(holder.userimage);
 
     }

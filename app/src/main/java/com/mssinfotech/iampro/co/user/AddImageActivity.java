@@ -59,8 +59,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
-import net.gotev.uploadservice.MultipartUploadRequest;
-import net.gotev.uploadservice.UploadNotificationConfig;
+//import net.gotev.uploadservice.MultipartUploadRequest;
+//import net.gotev.uploadservice.UploadNotificationConfig;
 
 public class AddImageActivity extends AppCompatActivity {
     TextView tvlayouttype;
