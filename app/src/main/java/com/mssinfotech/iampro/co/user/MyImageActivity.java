@@ -43,7 +43,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 public class MyImageActivity extends AppCompatActivity implements MyImageAdapter.ItemListener {
 
-    ImageView userbackgroud;
+    ImageView userbackgroud,changeImage;
     CircleImageView userimage;
     TextView username;
     private String URL_FEED = "",uid="";
@@ -63,6 +63,7 @@ public class MyImageActivity extends AppCompatActivity implements MyImageAdapter
         recyclerView=findViewById(R.id.recyclerView);
         userbackgroud = findViewById(R.id.userbackgroud);
         uid= PrefManager.getLoginDetail(this,"id");
+        changeImage = findViewById(R.id.changeImage);
         if(id == null || id.equals(uid)) {
             String fname=PrefManager.getLoginDetail(this,"fname");
             String lname=PrefManager.getLoginDetail(this,"lname");
@@ -71,7 +72,8 @@ public class MyImageActivity extends AppCompatActivity implements MyImageAdapter
             username.setText("My Images");
             Glide.with(this).load(background).apply(Config.options_background).into(userbackgroud);
             Glide.with(this).load(avatar).apply(Config.options_avatar).into(userimage);
-            userimage.setOnClickListener(new View.OnClickListener() {
+            changeImage.setVisibility(View.VISIBLE);
+            changeImage.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     Intent intent=new Intent(MyImageActivity.this,ImageImageCroperActivity.class);
@@ -80,6 +82,7 @@ public class MyImageActivity extends AppCompatActivity implements MyImageAdapter
                 }
             });
         }else{
+            changeImage.setVisibility(View.GONE);
             uid= id;
             gteUsrDetail(id);
         }
@@ -162,7 +165,6 @@ public class MyImageActivity extends AppCompatActivity implements MyImageAdapter
                         if(!singleItem.isEmpty()){
                             singleItem.clear();
                         }
-
                         try{
                             for(int i=0;i<response.length();i++){
                                 // Get current json object
