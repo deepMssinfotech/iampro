@@ -21,7 +21,13 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.load.resource.bitmap.CircleCrop;
 import com.bumptech.glide.request.RequestOptions;
 import com.mssinfotech.iampro.co.R;
+import com.mssinfotech.iampro.co.common.Config;
+import com.mssinfotech.iampro.co.demand.DemandDetail;
+import com.mssinfotech.iampro.co.image.ImageDetail;
 import com.mssinfotech.iampro.co.model.SingleItemModel;
+import com.mssinfotech.iampro.co.product.ProductDetail;
+import com.mssinfotech.iampro.co.provide.ProvideDetailActivity;
+import com.mssinfotech.iampro.co.user.MyProvideActivity;
 import com.mssinfotech.iampro.co.user.ProfileActivity;
 import com.squareup.picasso.Picasso;
 
@@ -31,7 +37,7 @@ public class SectionListDataAdapter extends RecyclerView.Adapter<SectionListData
 
     private ArrayList<SingleItemModel> itemsList;
     private Context mContext;
-     private int uid;
+     private int uid,id;
     ImageView ivLike;
     public SectionListDataAdapter(Context context, ArrayList<SingleItemModel> itemsList) {
         this.itemsList = itemsList;
@@ -50,15 +56,16 @@ public class SectionListDataAdapter extends RecyclerView.Adapter<SectionListData
     public void onBindViewHolder(SingleItemRowHolder holder, int i) {
         SingleItemModel singleItem = itemsList.get(i);
         holder.tvTitle.setText(singleItem.getName());
-         holder.totallike.setText(String.valueOf(singleItem.getTotallike()));
-          holder.comments.setText(String.valueOf(singleItem.getComments()));
-          if(singleItem.getDaysago()!="") {
+        holder.totallike.setText(String.valueOf(singleItem.getTotallike()));
+        holder.comments.setText(String.valueOf(singleItem.getComments()));
+        if(singleItem.getDaysago()!="") {
               holder.daysago.setVisibility(View.VISIBLE);
               holder.daysago.setText(singleItem.getDaysago());
-          }
-            holder.user_name.setText(singleItem.getFullname());
-           uid=singleItem.getUid();
-          //user_image
+        }
+        holder.user_name.setText(singleItem.getFullname());
+        uid=singleItem.getUid();
+        id=singleItem.getId();
+        //user_image
         Glide.with(mContext)
                 .load(singleItem.getAvatar())
                 .apply(new RequestOptions()
@@ -71,14 +78,14 @@ public class SectionListDataAdapter extends RecyclerView.Adapter<SectionListData
                 .resize(70,70)
                 .into(holder.itemImage); */
 
-      /* Glide.with(mContext)
+        /* Glide.with(mContext)
                 .load(singleItem.getUrl())
                 .diskCacheStrategy(DiskCacheStrategy.ALL)
                 .centerCrop()
                 .error(R.drawable.bg)
                 .into(holder.itemImage); */
 
-    String url=singleItem.getImage();
+        String url=singleItem.getImage();
         //Log.d("url_adapter",url);
         //Toast.makeText(mContext, ""+url, Toast.LENGTH_SHORT).show();
         Glide.with(mContext)
@@ -87,11 +94,36 @@ public class SectionListDataAdapter extends RecyclerView.Adapter<SectionListData
                         .centerCrop()
                         .fitCenter())
                 .into(holder.itemImage);
-
+        final String utype=singleItem.getType();
         holder.itemImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(mContext, "Image clicked", Toast.LENGTH_SHORT).show();
+                if(utype.equals("image") || utype.equals("video")) {
+                    Intent intent = new Intent(mContext, ImageDetail.class);
+                    intent.putExtra("uid", uid);
+                    intent.putExtra("id", id);
+                    intent.putExtra("type", utype);
+                    mContext.startActivity(intent);
+                }else if(utype.equals("product")){
+                    Intent intent=new Intent(mContext, ProductDetail.class);
+                    //intent.putExtra("id",String.valueOf(item.getPid()));
+                    intent.putExtra("pid",String.valueOf(id));
+                    intent.putExtra("uid",String.valueOf(uid));
+                    mContext.startActivity(intent);
+                }else if(utype.equals("provide")){
+                    Intent intent=new Intent(mContext, ProvideDetailActivity.class);
+                    //intent.putExtra("id",String.valueOf(item.getPid()));
+                    intent.putExtra("pid",String.valueOf(id));
+                    intent.putExtra("uid",String.valueOf(uid));
+                    mContext.startActivity(intent);
+                }else if(utype.equals("demand")){
+                    Intent intent=new Intent(mContext, DemandDetail.class);
+                    //intent.putExtra("id",String.valueOf(item.getPid()));
+                    intent.putExtra("pid",String.valueOf(id));
+                    intent.putExtra("uid",String.valueOf(uid));
+                    mContext.startActivity(intent);
+                }
+                //Toast.makeText(mContext, utype+" clicked", Toast.LENGTH_SHORT).show();
             }
         });
          holder.user_image.setOnClickListener(new View.OnClickListener() {
@@ -132,7 +164,6 @@ public class SectionListDataAdapter extends RecyclerView.Adapter<SectionListData
                 @Override
                 public void onClick(View v) {
                     Toast.makeText(v.getContext(), tvTitle.getText(), Toast.LENGTH_SHORT).show();
-
                 }
             });
         }

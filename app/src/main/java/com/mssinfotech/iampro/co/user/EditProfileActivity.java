@@ -115,7 +115,7 @@ public class EditProfileActivity extends AppCompatActivity {
     TextInputEditText category,first_name,last_name,contact_no,email,dob,identity_type,identity_no,about_me,tag_line,address_tag,city,state,country;
     String uid,fname,background;
     TextView username;
-    ImageView userbackgroud;
+    ImageView userbackgroud,changeImage;
     Spinner spprofession;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -132,7 +132,8 @@ public class EditProfileActivity extends AppCompatActivity {
         username.setText(PrefManager.getLoginDetail(this,"fname") +" "+PrefManager.getLoginDetail(this,"lname"));
         Glide.with(this).load(background).apply(Config.options_background).into(userbackgroud);
         Glide.with(this).load(avatar).apply(Config.options_avatar).into(userimage);
-        userimage.setOnClickListener(new View.OnClickListener() {
+        changeImage = findViewById(R.id.changeImage);
+        changeImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent=new Intent(EditProfileActivity.this,ProfileImageCroperActivity.class);
@@ -140,6 +141,7 @@ public class EditProfileActivity extends AppCompatActivity {
                 finish();
             }
         });
+
         spprofession = findViewById(R.id.spprofession);
         function.getData(EditProfileActivity.this, this, spprofession, "FRIEND");
         first_name= findViewById(R.id.first_name);

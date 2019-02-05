@@ -59,7 +59,7 @@ public class ProfileActivity extends AppCompatActivity implements AllFeedAdapter
     ImageView userbackgroud;
     CircleImageView userimage;
     TextView username,myuid;
-    private String URL_FEED = "",uid="";
+    private String URL_FEED = "",uid="", fid = "";
     private Integer start=0,limit=20;
     private LinearLayoutManager mLayoutManager;
     protected Handler handler;
@@ -73,13 +73,13 @@ public class ProfileActivity extends AppCompatActivity implements AllFeedAdapter
         setContentView(R.layout.activity_profile);
         Config.setLayoutName(getResources().getResourceEntryName(R.layout.activity_profile));
         intent = getIntent();
-        String id = intent.getStringExtra("uid");
+        fid = intent.getStringExtra("uid");
         username = findViewById(R.id.username);
         userimage = findViewById(R.id.userimage);
         userbackgroud = findViewById(R.id.userbackgroud);
         vFeed=findViewById(R.id.rvFeed);
         uid= PrefManager.getLoginDetail(this,"id");
-        if(id == null || id.equals(uid)) {
+        if(fid == null || fid.equals(uid)) {
             String fname=PrefManager.getLoginDetail(this,"fname");
             String lname=PrefManager.getLoginDetail(this,"lname");
             String avatar=Config.AVATAR_URL+"250/250/"+PrefManager.getLoginDetail(this,"img_url");
@@ -89,8 +89,8 @@ public class ProfileActivity extends AppCompatActivity implements AllFeedAdapter
             Glide.with(this).load(avatar).into(userimage);
             PrefManager.updateUserData(this,null);
         }else{
-            uid= id;
-            gteUsrDetail(id);
+            uid= fid;
+            gteUsrDetail(fid);
         }
         IncludeShortMenu includeShortMenu = findViewById(R.id.includeShortMenu);
         includeShortMenu.updateCounts(this,uid);
@@ -141,7 +141,7 @@ public class ProfileActivity extends AppCompatActivity implements AllFeedAdapter
     }
 
     private void  loadFeedList(Integer mStart,Integer mLimit){
-        URL_FEED = Config.API_URL+ "feed_service.php?type=AllFeeds&start=" +mStart.toString()+ "&limit=" +mLimit.toString()+ "&fid=" +uid+ "&uid=" +uid+ "&my_id=" +uid;
+        URL_FEED = Config.API_URL+ "feed_service.php?type=AllFeeds&start=" +mStart.toString()+ "&limit=" +mLimit.toString()+ "&fid=" +fid+ "&uid=" +uid+ "&my_id=" +uid;
         // We first check for cached request
         Cache cache = AppController.getInstance().getRequestQueue().getCache();
         Entry entry = cache.get(URL_FEED);
@@ -183,10 +183,9 @@ public class ProfileActivity extends AppCompatActivity implements AllFeedAdapter
     }
 
     public void getFeed(int start){
-        URL_FEED = Config.API_URL+ "feed_service.php?type=AllFeeds&start="+start+"&limit="+FEED_LIMIT+"&fid=" +uid+ "&uid=" +uid+ "&my_id=" +uid;
-
+        URL_FEED = Config.API_URL+ "feed_service.php?type=AllFeeds&start="+start+"&limit="+FEED_LIMIT+"&fid=" +fid+ "&uid=" +uid+ "&my_id=" +uid;
+        Log.e(Config.TAG,URL_FEED);
         RequestQueue requestQueue = Volley.newRequestQueue(ProfileActivity.this);
-
         // Initialize a new JsonObjectRequest instance
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(
                 Request.Method.GET,
@@ -204,8 +203,6 @@ public class ProfileActivity extends AppCompatActivity implements AllFeedAdapter
                               String feedTotal=response.getString("feedTotal");
                               String status=response.optString("status");
                               if(status.equalsIgnoreCase("success")) {
-
-
                                   JSONArray jsonArray = response.getJSONArray("data");
                                   for (int i = 0; i < jsonArray.length(); i++) {
                                       JSONObject jsonObject = jsonArray.getJSONObject(i);
@@ -250,10 +247,10 @@ public class ProfileActivity extends AppCompatActivity implements AllFeedAdapter
 
 
                                       if (type.equalsIgnoreCase("IMAGE")) {
-                                          fimage_path = Config.URL_ROOT + "uploads/avatar/150/150/" + image;
+                                          fimage_path = Config.URL_ROOT + "uploads/album/150/150/" + image;
                                       } else if (type.equalsIgnoreCase("VIDEO")) {
                                           ///uploads/album/400/500/' /uploads/v_image/'
-                                          fimage_path = Config.URL_ROOT + "uploads/album/400/500/" + image;
+                                          fimage_path = Config.URL_ROOT + "uploads/v_image/400/500/" + image;
                                       }
                                       //PRODUCT
                                       else if (type.equalsIgnoreCase("PRODUCT")) {
@@ -283,12 +280,10 @@ public class ProfileActivity extends AppCompatActivity implements AllFeedAdapter
                                       int all_comment = jsonObject.getInt("all_comment");
                                       int average_rating = jsonObject.getInt("average_rating");
                                       if (type.equalsIgnoreCase("PRODUCT") || type.equalsIgnoreCase("PROVIDE") || type.equalsIgnoreCase("DEMAND")) {
-                                          mValues.add(new FeedModel(id, shareid, fullname, uid, avatar_path, udate, timespam, is_block, imageArray, fimage_path, comment, likes, mylikes, all_rating, type, all_comment, average_rating,detail_name,selling_cost,purchese_cost));
-
+                                            mValues.add(new FeedModel(id, shareid, fullname, uid, avatar_path, udate, timespam, is_block, imageArray, fimage_path, comment, likes, mylikes, all_rating, type, all_comment, average_rating,detail_name,selling_cost,purchese_cost));
+                                      } else{
+                                            mValues.add(new FeedModel(id, shareid, fullname, uid, avatar_path, udate, timespam, is_block, imageArray, fimage_path, comment, likes, mylikes, all_rating, type, all_comment, average_rating));
                                       }
-                                      else{
-                                  mValues.add(new FeedModel(id, shareid, fullname, uid, avatar_path, udate, timespam, is_block, imageArray, fimage_path, comment, likes, mylikes, all_rating, type, all_comment, average_rating));
-                              }
                              }
                             adapter=new AllFeedAdapter(ProfileActivity.this,mValues,ProfileActivity.this);
                             vFeed.setLayoutManager(new LinearLayoutManager(ProfileActivity.this, LinearLayoutManager.VERTICAL, false));

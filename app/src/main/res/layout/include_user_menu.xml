@@ -600,7 +600,7 @@
                         android:layout_height="@dimen/menu_img_height"
                         android:layout_margin="@dimen/menu_img_margin"
                         android:padding="@dimen/menu_img_padding"
-                        android:src="@drawable/video_icon"/>
+                        android:src="@drawable/myselling_icon"/>
                     <TextView
                         android:textSize="12dp"
                         android:layout_below="@+id/menu_btn_myselling"
@@ -621,7 +621,7 @@
                         android:layout_height="@dimen/menu_img_height"
                         android:layout_margin="@dimen/menu_img_margin"
                         android:padding="@dimen/menu_img_padding"
-                        android:src="@drawable/product_icon"/>
+                        android:src="@drawable/mypurchase_icon"/>
                     <TextView
                         android:textSize="12dp"
                         android:layout_below="@+id/menu_btn_mypurchase"
@@ -642,7 +642,7 @@
                         android:layout_height="@dimen/menu_img_height"
                         android:layout_margin="@dimen/menu_img_margin"
                         android:padding="@dimen/menu_img_padding"
-                        android:src="@drawable/provide_icon"/>
+                        android:src="@drawable/share_icon"/>
                     <TextView
                         android:textSize="12dp"
                         android:layout_below="@+id/menu_btn_share"
