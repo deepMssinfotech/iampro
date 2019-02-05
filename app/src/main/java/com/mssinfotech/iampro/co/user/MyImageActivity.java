@@ -7,7 +7,6 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
-import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -20,14 +19,11 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.bumptech.glide.Glide;
 import com.mssinfotech.iampro.co.R;
-import com.mssinfotech.iampro.co.adapter.MyDemandAdapter;
 import com.mssinfotech.iampro.co.adapter.MyImageAdapter;
-import com.mssinfotech.iampro.co.adapter.MyProductAdapter;
 import com.mssinfotech.iampro.co.common.CircleTransform;
 import com.mssinfotech.iampro.co.common.Config;
 import com.mssinfotech.iampro.co.common.IncludeShortMenu;
 import com.mssinfotech.iampro.co.model.MyImageModel;
-import com.mssinfotech.iampro.co.model.MyProductModel;
 import com.mssinfotech.iampro.co.model.SectionDataModel;
 import com.mssinfotech.iampro.co.model.SingleItemModel;
 import com.mssinfotech.iampro.co.utils.PrefManager;
@@ -43,7 +39,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 public class MyImageActivity extends AppCompatActivity implements MyImageAdapter.ItemListener {
 
-    ImageView userbackgroud;
+    imageview userbackgroud;
     CircleImageView userimage;
     TextView username;
     private String URL_FEED = "",uid="";
