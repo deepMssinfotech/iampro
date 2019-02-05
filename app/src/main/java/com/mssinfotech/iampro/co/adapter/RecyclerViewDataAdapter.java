@@ -7,15 +7,19 @@ package com.mssinfotech.iampro.co.adapter;
 import android.content.Context;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 
+import com.bumptech.glide.Glide;
 import com.mssinfotech.iampro.co.R;
+import com.mssinfotech.iampro.co.common.Config;
 import com.mssinfotech.iampro.co.model.SectionDataModel;
 
 import java.util.ArrayList;
@@ -43,9 +47,20 @@ public class RecyclerViewDataAdapter extends RecyclerView.Adapter<RecyclerViewDa
         final String sectionName = dataList.get(i).getHeaderTitle();
 
         ArrayList singleSectionItems = dataList.get(i).getAllItemsInSection();
-
-        itemRowHolder.itemTitle.setText(sectionName);
-
+        Log.e(Config.TAG,sectionName);
+        if(sectionName.equalsIgnoreCase("Images")){
+            Glide.with(mContext).load(R.drawable.latestphotos).into(itemRowHolder.itemTitle);
+        }else if(sectionName.equalsIgnoreCase("Video")){
+            Glide.with(mContext).load(R.drawable.latestvideo).into(itemRowHolder.itemTitle);
+        }else if(sectionName.equalsIgnoreCase("product")){
+            Glide.with(mContext).load(R.drawable.latestproduct).into(itemRowHolder.itemTitle);
+        }else if(sectionName.equalsIgnoreCase("provide")){
+            Glide.with(mContext).load(R.drawable.latestprovide).into(itemRowHolder.itemTitle);
+        }else if(sectionName.equalsIgnoreCase("demand")){
+            Glide.with(mContext).load(R.drawable.latestdemand).into(itemRowHolder.itemTitle);
+        }else if(sectionName.equalsIgnoreCase("user")){
+            Glide.with(mContext).load(R.drawable.user).into(itemRowHolder.itemTitle);
+        }
         SectionListDataAdapter itemListDataAdapter = new SectionListDataAdapter(mContext, singleSectionItems);
 
         itemRowHolder.recycler_view_list.setHasFixedSize(true);
@@ -56,10 +71,10 @@ public class RecyclerViewDataAdapter extends RecyclerView.Adapter<RecyclerViewDa
         itemRowHolder.btnMore.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(v.getContext(), "click event on more, "+sectionName , Toast.LENGTH_SHORT).show();
-                 if (sectionName=="Images"){
+            Toast.makeText(v.getContext(), "click event on more, "+sectionName , Toast.LENGTH_SHORT).show();
+             if (sectionName=="Images"){
 
-                 }
+             }
             }
         });
 
@@ -79,7 +94,9 @@ public class RecyclerViewDataAdapter extends RecyclerView.Adapter<RecyclerViewDa
 
     public class ItemRowHolder extends RecyclerView.ViewHolder {
 
-        protected TextView itemTitle,totallike,comments,daysago,user_name;
+        protected TextView totallike,comments,daysago,user_name;
+
+        protected ImageView itemTitle;
 
         protected RecyclerView recycler_view_list;
 
@@ -88,7 +105,7 @@ public class RecyclerViewDataAdapter extends RecyclerView.Adapter<RecyclerViewDa
         public ItemRowHolder(View view) {
             super(view);
 
-            this.itemTitle = (TextView) view.findViewById(R.id.itemTitle);
+            this.itemTitle = (ImageView) view.findViewById(R.id.itemTitle);
             this.recycler_view_list = (RecyclerView) view.findViewById(R.id.recycler_view_list);
             this.btnMore= view.findViewById(R.id.btnMore);
 

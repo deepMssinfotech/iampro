@@ -65,7 +65,7 @@ public class FeedModel {
         this.average_rating = average_rating;
         this.detail_name=detail_name;
         this.selling_cost=selling_cost;
-         this.purchese_cost=purchese_cost;
+        this.purchese_cost=purchese_cost;
     }
 
     public FeedModel(int id, String shareId, String fullname,int uid, String avatar_path, String udate, long timespam, String is_block, ArrayList<String> imageArray, String fimage_path, int comment, int likes, int mylikes, int all_rating, String type, int all_comment, int average_rating) {

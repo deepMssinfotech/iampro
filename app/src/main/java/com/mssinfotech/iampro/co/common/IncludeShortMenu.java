@@ -84,7 +84,6 @@ public class IncludeShortMenu  extends RelativeLayout {
     };
     private OnClickListener userOnClickListener = new OnClickListener() {
         public void onClick(View v) {
-
             Intent intent = new Intent(getContext(), JoinFriendActivity.class);
             intent.putExtra(Config.PAGE_TAG,"activity_joined_friends");
             intent.putExtra("uid",tvs.getText().toString());

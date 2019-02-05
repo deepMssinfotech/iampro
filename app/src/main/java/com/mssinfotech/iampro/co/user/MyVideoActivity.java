@@ -45,7 +45,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 public class MyVideoActivity extends AppCompatActivity implements MyVideoAdapter.ItemListener {
 
-    ImageView userbackgroud;
+    ImageView userbackgroud,changeImage;
     CircleImageView userimage;
     TextView username;
     private String URL_FEED = "",uid="";
@@ -64,6 +64,7 @@ public class MyVideoActivity extends AppCompatActivity implements MyVideoAdapter
         userimage = findViewById(R.id.userimage);
         recyclerView=findViewById(R.id.recyclerView);
         userbackgroud = findViewById(R.id.userbackgroud);
+        changeImage = findViewById(R.id.changeImage);
         uid= PrefManager.getLoginDetail(this,"id");
         if(id == null || id.equals(uid)) {
             String fname=PrefManager.getLoginDetail(this,"fname");
@@ -73,7 +74,8 @@ public class MyVideoActivity extends AppCompatActivity implements MyVideoAdapter
             username.setText("My Video Gallery");
             Glide.with(this).load(background).apply(Config.options_background).into(userbackgroud);
             Glide.with(this).load(avatar).apply(Config.options_avatar).into(userimage);
-            userimage.setOnClickListener(new View.OnClickListener() {
+            changeImage.setVisibility(View.VISIBLE);
+            changeImage .setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     Intent intent=new Intent(MyVideoActivity.this,VideoImageCroperActivity.class);
@@ -82,6 +84,7 @@ public class MyVideoActivity extends AppCompatActivity implements MyVideoAdapter
                 }
             });
         }else{
+            changeImage.setVisibility(View.GONE);
             uid= id;
             gteUsrDetail(id);
         }
