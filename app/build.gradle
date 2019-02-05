@@ -51,4 +51,5 @@ dependencies {
     implementation 'com.nostra13.universalimageloader:universal-image-loader:1.9.5'
     implementation 'org.jetbrains:annotations-java5:15.0'
     implementation 'com.felipecsl.asymmetricgridview:library:2.0.1'
+    implementation 'net.gotev:uploadservice:2.1'
 }
