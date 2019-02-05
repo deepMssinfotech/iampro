@@ -7,6 +7,7 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -39,7 +40,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 public class MyImageActivity extends AppCompatActivity implements MyImageAdapter.ItemListener {
 
-    imageview userbackgroud;
+    ImageView userbackgroud;
     CircleImageView userimage;
     TextView username;
     private String URL_FEED = "",uid="";
