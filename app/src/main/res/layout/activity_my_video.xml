@@ -88,7 +88,12 @@
                 layout="@layout/include_short_menu"
                 android:layout_height="85dp"
                 android:layout_width="match_parent"/>
-
+             <TextView
+                 android:id="@+id/tv_category"
+                 android:layout_width="match_parent"
+                 android:layout_height="wrap_content"
+                 android:text="category"
+                 android:textSize="20sp"/>
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/recyclerView"
                 android:layout_width="match_parent"

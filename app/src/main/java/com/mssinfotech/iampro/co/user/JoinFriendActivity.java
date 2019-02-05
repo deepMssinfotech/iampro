@@ -184,7 +184,6 @@ public class JoinFriendActivity extends AppCompatActivity implements JoinFriendI
                         if(!singleItem.isEmpty()){
                             singleItem.clear();
                         }
-
                         try{
                             for(int i=0;i<response.length();i++){
                                 // Get current json object

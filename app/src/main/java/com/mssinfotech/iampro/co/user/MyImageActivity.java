@@ -39,10 +39,9 @@ import java.util.ArrayList;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 public class MyImageActivity extends AppCompatActivity implements MyImageAdapter.ItemListener {
-
     ImageView userbackgroud;
     CircleImageView userimage;
-    TextView username;
+    TextView username,tv_category;
     private String URL_FEED = "",uid="";
     Intent intent;
      RecyclerView recyclerView;
@@ -58,6 +57,7 @@ public class MyImageActivity extends AppCompatActivity implements MyImageAdapter
         username = findViewById(R.id.username);
         userimage = findViewById(R.id.userimage);
         recyclerView=findViewById(R.id.recyclerView);
+        tv_category=findViewById(R.id.tv_category);
         userbackgroud = findViewById(R.id.userbackgroud);
         uid= PrefManager.getLoginDetail(this,"id");
         if(id == null || id.equals(uid)) {
@@ -99,10 +99,10 @@ public class MyImageActivity extends AppCompatActivity implements MyImageAdapter
                         try {
                             Log.d(Config.TAG, response);
                             result = new JSONObject(response);
-                            String fname=result.getString("fname");
-                            String lname=result.getString("lname");
-                            String avatar=Config.AVATAR_URL+"250/250/"+result.getString("profile_image_gallery");
-                            String background=Config.AVATAR_URL+"h/250/"+result.getString("img_banner_image");
+                            String fname=result.optString("fname");
+                            String lname=result.optString("lname");
+                            String avatar=Config.AVATAR_URL+"250/250/"+result.optString("profile_image_gallery");
+                            String background=Config.AVATAR_URL+"h/250/"+result.optString("img_banner_image");
                             username = findViewById(R.id.username);
                             userimage = findViewById(R.id.userimage);
                             userbackgroud = findViewById(R.id.userbackgroud);
@@ -147,7 +147,6 @@ public class MyImageActivity extends AppCompatActivity implements MyImageAdapter
         // Initialize a new RequestQueue instance
         RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
 
-        // Initialize a new JsonArrayRequest instance
         JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(
                 Request.Method.GET,
                 url,
@@ -159,38 +158,38 @@ public class MyImageActivity extends AppCompatActivity implements MyImageAdapter
                         if(!singleItem.isEmpty()){
                             singleItem.clear();
                         }
-
                         try{
                             for(int i=0;i<response.length();i++){
                                 // Get current json object
                                 JSONObject student = response.getJSONObject(i);
+                                 String category1=student.getString("category");
+                                  String idd=student.optString("id");
+                                  String added_byy=student.optString("added_by");
+                                   String name1=student.optString("name");
+                                    String atype=student.optString("atype");
+                                   tv_category.setText(name1);
                                 JSONArray jsonArrayPics=student.getJSONArray("pics");
                                 Log.d("picssss",jsonArrayPics.toString());
-
-                                JSONObject picss= jsonArrayPics.getJSONObject(0);
-                                Log.d("picssss11",""+picss.toString());
-                                String idd=picss.getString("albemid");
-                                Log.d("picssss1",""+idd);
 
                                  for (int j=0;j<jsonArrayPics.length();j++){
                                      JSONObject pics=jsonArrayPics.getJSONObject(j);
                                       String id=pics.getString("id");
 
-                                     String albemid=pics.getString("albemid");
-                                     String name=pics.getString("name");
-                                     String category=pics.getString("category");
-                                     String albem_type=pics.getString("albem_type");
-                                     String image=pics.getString("image");
-                                     String udate=pics.getString("udate");
-                                     String about_us=pics.getString("about_us");
-                                     String group_id=pics.getString("group_id");
-                                     String is_featured=pics.getString("is_featured");
+                                     String albemid=pics.optString("albemid");
+                                     String name=pics.optString("name");
+                                     String category=pics.optString("category");
+                                     String albem_type=pics.optString("albem_type");
+                                     String image=pics.optString("image");
+                                     String udate=pics.optString("udate");
+                                     String about_us=pics.optString("about_us");
+                                     String group_id=pics.optString("group_id");
+                                     String is_featured=pics.optString("is_featured");
                                      //status
-                                     String status=pics.getString("status");
-                                     String is_block=pics.getString("is_block");
-                                     String comments=pics.getString("comments");
-                                     String totallike=pics.getString("totallike");
-                                     String like_unlike=pics.getString("like_unlike");
+                                     String status=pics.optString("status");
+                                     String is_block=pics.optString("is_block");
+                                     String comments=pics.optString("comments");
+                                     String totallike=pics.optString("totallike");
+                                     String like_unlike=pics.optString("like_unlike");
                                        String rating=pics.optString("rating");
                                        item.add(new MyImageModel(id,albemid,name,category,albem_type,image,udate,about_us,group_id,is_featured,status,is_block,comments,totallike,like_unlike,rating,uid));
                                  }

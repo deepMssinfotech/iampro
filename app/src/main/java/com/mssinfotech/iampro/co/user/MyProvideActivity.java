@@ -43,7 +43,7 @@ public class MyProvideActivity extends AppCompatActivity implements MyProvideAda
 
     ImageView userbackgroud;
     CircleImageView userimage;
-    TextView username;
+    TextView username,tv_category;
     private String uid="";
     Intent intent;
     ArrayList<MyProductModel> item = new ArrayList<>();
@@ -59,6 +59,7 @@ public class MyProvideActivity extends AppCompatActivity implements MyProvideAda
         username = findViewById(R.id.username);
         userimage = findViewById(R.id.userimage);
         recyclerView = findViewById(R.id.recyclerView);
+        tv_category=findViewById(R.id.tv_category);
         userbackgroud = findViewById(R.id.userbackgroud);
         uid= PrefManager.getLoginDetail(this,"id");
         if(id == null || id.equals(uid)) {
@@ -93,10 +94,10 @@ public class MyProvideActivity extends AppCompatActivity implements MyProvideAda
                         try {
                             Log.d(Config.TAG, response);
                             result = new JSONObject(response);
-                            String fname=result.getString("fname");
-                            String lname=result.getString("lname");
-                            String avatar=Config.AVATAR_URL+"250/250/"+result.getString("avatar");
-                            String background=Config.AVATAR_URL+"h/250/"+result.getString("banner_image");
+                            String fname=result.optString("fname");
+                            String lname=result.optString("lname");
+                            String avatar=Config.AVATAR_URL+"250/250/"+result.optString("avatar");
+                            String background=Config.AVATAR_URL+"h/250/"+result.optString("banner_image");
                             username = findViewById(R.id.username);
                             userimage = findViewById(R.id.userimage);
                             userbackgroud = findViewById(R.id.userbackgroud);
@@ -171,6 +172,7 @@ public class MyProvideActivity extends AppCompatActivity implements MyProvideAda
                                 int pcost=0;
                                 String name = student.getString("name");
                                 String categoryv=student.getString("category");
+                                tv_category.setText(categoryv.toString()); 
                                 String imagev=student.getString("image");
                                 String image= Config.URL_ROOT + "uploads/product/" +imagev;
                                 String udate=student.getString("udate");

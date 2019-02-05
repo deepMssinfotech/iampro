@@ -110,7 +110,7 @@ public class AllFeedAdapter extends RecyclerView.Adapter<AllFeedAdapter.ViewHold
   if (type.equalsIgnoreCase("VIDEO")){
       ll_showhide.setVisibility(View.GONE);
                 imageView_icon.setImageResource(R.drawable.video_icon);
-                Toast.makeText(mContext,"Type: "+type,Toast.LENGTH_LONG).show();
+                //Toast.makeText(mContext,"Type: "+type,Toast.LENGTH_LONG).show();
       //Resources resources = mContext.getResources();
       //imageView_icon.setImageDrawable(resources.getDrawable(R.drawable.video_icon));
 
@@ -119,7 +119,7 @@ public class AllFeedAdapter extends RecyclerView.Adapter<AllFeedAdapter.ViewHold
   else if (type.equalsIgnoreCase("IMAGE")){
       ll_showhide.setVisibility(View.GONE);
                 imageView_icon.setImageResource(R.drawable.image_icon);
-                Toast.makeText(mContext,"Type: "+type,Toast.LENGTH_LONG).show();
+                //Toast.makeText(mContext,"Type: "+type,Toast.LENGTH_LONG).show();
       //Resources resources = mContext.getResources();
       //imageView_icon.setImageDrawable(resources.getDrawable(R.drawable.image_icon));
       //image.setImageDrawable(ContextCompat.getDrawable(mContext,R.drawable.image_icon));
@@ -131,7 +131,7 @@ public class AllFeedAdapter extends RecyclerView.Adapter<AllFeedAdapter.ViewHold
 
       purchese_cost.setText("Rs: "+String.valueOf(item.getPurchese_cost()));
       selling_cost.setText("Rs: "+String.valueOf(item.getSelling_cost()));
-                Toast.makeText(mContext,"Type: "+type,Toast.LENGTH_LONG).show();
+                //Toast.makeText(mContext,"Type: "+type,Toast.LENGTH_LONG).show();
       //Resources resources = mContext.getResources();
       //imageView_icon.setImageDrawable(resources.getDrawable(R.drawable.product_icon));
       //image.setImageDrawable(ContextCompat.getDrawable(mContext,R.drawable.product_icon));
@@ -139,7 +139,7 @@ public class AllFeedAdapter extends RecyclerView.Adapter<AllFeedAdapter.ViewHold
             else if (type.equalsIgnoreCase("PROVIDE")){
               ll_showhide.setVisibility(View.VISIBLE);
                 imageView_icon.setImageResource(R.drawable.provide_icon);
-                Toast.makeText(mContext,"Type: "+type,Toast.LENGTH_LONG).show();
+               // Toast.makeText(mContext,"Type: "+type,Toast.LENGTH_LONG).show();
                  detail_name.setText(item.getDetail_name());
       purchese_cost.setText("");
       selling_cost.setText("Rs: "+String.valueOf(item.getSelling_cost()));
@@ -150,7 +150,7 @@ public class AllFeedAdapter extends RecyclerView.Adapter<AllFeedAdapter.ViewHold
             else if (type.equalsIgnoreCase("DEMAND")){
                   ll_showhide.setVisibility(View.VISIBLE);
                 imageView_icon.setImageResource(R.drawable.demand_icon);
-                Toast.makeText(mContext,"Type: "+type,Toast.LENGTH_LONG).show();
+                //Toast.makeText(mContext,"Type: "+type,Toast.LENGTH_LONG).show();
       detail_name.setText(item.getDetail_name());
       purchese_cost.setText("");
       selling_cost.setText("Rs: "+String.valueOf(item.getSelling_cost()));

@@ -82,7 +82,7 @@ public class MyVideoAdapter extends RecyclerView.Adapter<MyVideoAdapter.ViewHold
                     Toast.makeText(mContext,"uid: "+uid,Toast.LENGTH_LONG).show();
                 }
             });
-            videoView.setVideoPath(item.getImage());
+            //videoView.setVideoPath(item.getImage());
         }
         @Override
         public void onClick(View view) {
