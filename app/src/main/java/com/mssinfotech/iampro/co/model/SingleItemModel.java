@@ -6,7 +6,7 @@ package com.mssinfotech.iampro.co.model;
 
 public class SingleItemModel {
 
-
+    private String type;
     private String name;
     private String url;
     private String description;
@@ -15,7 +15,7 @@ public class SingleItemModel {
     private String image;
     private String category;
     private int totallike;
-    private int uid;
+    private int uid,id;
 
     public int getUid() {
         return uid;
@@ -25,12 +25,28 @@ public class SingleItemModel {
         this.uid = uid;
     }
 
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
     public String getFullname() {
         return fullname;
     }
 
     public void setFullname(String fullname) {
         this.fullname = fullname;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
     }
 
     public String getAvatar() {
@@ -105,17 +121,19 @@ public class SingleItemModel {
         this.udate=udate;
     }
     //daysago,totallike,comments   uid,fullname,avatar
-   public SingleItemModel(String name, String image,String udate,String daysago,int totallike,int comments,int uid,String fullname,String avatar) {
-        this.name = name;
-        this.image = image;
-        this.udate=udate;
-       this.daysago=daysago;
-        this.totallike=totallike;
-        this.comments=comments;
-        this.uid=uid;
-         this.fullname=fullname;
-          this.avatar=avatar;
-    }
+   public SingleItemModel(int id, String name, String image,String udate,String daysago,int totallike,int comments,int uid,String fullname,String avatar,String type) {
+       this.name = name;
+       this.image = image;
+       this.udate = udate;
+       this.daysago = daysago;
+       this.totallike = totallike;
+       this.comments = comments;
+       this.uid = uid;
+       this.fullname = fullname;
+       this.avatar = avatar;
+       this.type = type;
+       this.id = id;
+   }
 
     public String getUrl() {
         return url;

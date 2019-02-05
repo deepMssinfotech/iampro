@@ -134,85 +134,6 @@ public class HomeFragment extends Fragment implements UserDataAdapter.ItemListen
 
     }
 
-    public void createDummyData() {
-        ArrayList<String> type=new ArrayList<>();
-        ArrayList<String> name=new ArrayList<>();
-        //type
-        type.add("get_slider");
-        type.add("all_item");
-        type.add("getSelectedUser");
-        type.add("all_product");
-        type.add("all_product_classified");
-        type.add("get_slider");
-        type.add("get_slider");
-        //name
-        name.add("TOP_SLIDER");
-        //SERVICE_SLIDER
-        name.add("SERVICE_SLIDER");
-        name.add("image");
-        name.add("video");
-        name.add("user");
-        name.add("product");
-        name.add("PROVIDE");
-        name.add("DEMAND");
-
-       /* for(int i=0; i<name.size(); i++){
-             SectionDataModel dm = new SectionDataModel();
-             if (name.get(i).toString().equalsIgnoreCase("TOP_SLIDER")){
-                          //getTopSlider(dm );
-             }
-             else if (name.get(i).toString().equalsIgnoreCase("SERVICE_SLIDER")){
-                           //getServiceSlider();
-             }
-             else if (name.get(i).toString().equalsIgnoreCase("image")){
-                       getImage(dm);
-             }
-             else if (name.get(i).toString().equalsIgnoreCase("video")){
-                          getVideo(dm);
-             }
-             else if (name.get(i).toString().equalsIgnoreCase("user")){
-                           getUser(dm);
-             }
-             else if (name.get(i).toString().equalsIgnoreCase("product")){
-                      getProduct(dm);
-             }
-             else if (name.get(i).toString().equalsIgnoreCase("PROVIDE")){
-                       getProvide(dm);
-             }
-             else if (name.get(i).toString().equalsIgnoreCase("DEMAND")){
-                        getDemand(dm);
-             }
-
-         } */
-     for (int i = 1; i <= 5; i++) {
-
-            SectionDataModel dm = new SectionDataModel();
-            dm.setHeaderTitle("Section " + i);
-            ArrayList<SingleItemModel> singleItem = new ArrayList<SingleItemModel>();
-            for (int j = 0; j <= 5; j++) {
-                singleItem.add(new SingleItemModel("Item " + j, "URL " + j));
-            }
-            dm.setAllItemsInSection(singleItem);
-            //allSampleData.add(dm);
-        }
-    }
-    public void callData(){
-        //getImage();
-       for(int i=0;i<6;i++) {
-            if (i==0)
-            getImage();
-          else if (i==1)
-            getVideo();
-            else if (i==2)
-            getUser();
-           else if (i==3)
-            getProduct();
-           else if (i==4)
-            getProvide();
-           else if (i==5)
-            getDemand();
-        }
-    }
 
 
     public void  getImage(){
@@ -239,6 +160,7 @@ public class HomeFragment extends Fragment implements UserDataAdapter.ItemListen
                                 JSONObject student = response.getJSONObject(i);
 
                                 String name = student.optString("name");
+                                String type = student.optString("type");
                                 String categoryv=student.optString("category");
                                 String imagev=student.optString("image");
                                 String image= Config.URL_ROOT+"uploads/album/450/500/"+imagev;
@@ -254,6 +176,7 @@ public class HomeFragment extends Fragment implements UserDataAdapter.ItemListen
                                 JSONObject userDetail=student.optJSONObject("user_detail");
 
                                 int uid=userDetail.getInt("id");
+                                int id=student.getInt("id");
                                 String fullname=userDetail.optString("fullname");
                                 String avatar=Config.AVATAR_URL+"250/250/"+userDetail.optString("avatar");
 
@@ -262,7 +185,7 @@ public class HomeFragment extends Fragment implements UserDataAdapter.ItemListen
                                 //Toast.makeText(getContext(),"rrrresponse_enterrr:",Toast.LENGTH_LONG).show();
 
                                 //singleItem.add(new SingleItemModel(name,image,udate));
-                                   singleItem.add(new SingleItemModel(name,image,udate,daysago,totallike,comments,uid,fullname,avatar));
+                                   singleItem.add(new SingleItemModel(id, name,image,udate,daysago,totallike,comments,uid,fullname,avatar,"image"));
                             }
                             Log.d("bdm",singleItem.toString());
                             dm.setAllItemsInSection(singleItem);
@@ -357,6 +280,7 @@ public class HomeFragment extends Fragment implements UserDataAdapter.ItemListen
                                 JSONObject userDetail=student.optJSONObject("user_detail");
 
                                 int uid=userDetail.getInt("id");
+                                int id=student.getInt("id");
                                 String fullname=userDetail.getString("fullname");
                                 String avatar=Config.AVATAR_URL+"250/250/"+userDetail.getString("avatar");
 
@@ -364,7 +288,7 @@ public class HomeFragment extends Fragment implements UserDataAdapter.ItemListen
                                 //SectionDataModel dm = new SectionDataModel();
                                 //dm.setHeaderTitle("Section " + i);
                                 //Toast.makeText(getContext(),"rrrresponse_enterrr:",Toast.LENGTH_LONG).show();
-                                singleItem.add(new SingleItemModel(name,image,udate,daysago,totallike,comments,uid,fullname,avatar));
+                                singleItem.add(new SingleItemModel(id,name,image,udate,daysago,totallike,comments,uid,fullname,avatar,"video"));
 
                             }
                             Log.d("bdm",singleItem.toString());
@@ -528,10 +452,11 @@ public class HomeFragment extends Fragment implements UserDataAdapter.ItemListen
                                 int comments=student.getInt("comments");
                                 JSONObject userDetail=student.optJSONObject("user_detail");
                                 int uid=userDetail.getInt("id");
+                                int id=student.getInt("id");
                                 String fullname=userDetail.optString("fullname");
                                 String avatar=Config.AVATAR_URL+"250/250/"+userDetail.getString("avatar");
 
-                                singleItem.add(new SingleItemModel(name,image,udate,daysago,totallike,comments,uid,fullname,avatar));
+                                singleItem.add(new SingleItemModel(id,name,image,udate,daysago,totallike,comments,uid,fullname,avatar,"product"));
 
                             }
                             Log.d("bdm",singleItem.toString());
@@ -608,10 +533,11 @@ public class HomeFragment extends Fragment implements UserDataAdapter.ItemListen
                                 int comments=student.getInt("comments");
                                 JSONObject userDetail=student.optJSONObject("user_detail");
                                 int uid=userDetail.optInt("id");
+                                int id=student.getInt("id");
                                 String fullname=userDetail.optString("fullname");
                                 String avatar=Config.AVATAR_URL+"250/250/"+userDetail.optString("avatar");
 
-                                singleItem.add(new SingleItemModel(name,image,udate,daysago,totallike,comments,uid,fullname,avatar));
+                                singleItem.add(new SingleItemModel(id, name,image,udate,daysago,totallike,comments,uid,fullname,avatar,"provide"));
 
 
                             }
@@ -690,10 +616,11 @@ public class HomeFragment extends Fragment implements UserDataAdapter.ItemListen
                                 int comments=student.getInt("comments");
                                 JSONObject userDetail=student.optJSONObject("user_detail");
                                 int uid=userDetail.optInt("id");
+                                int id=student.getInt("id");
                                 String fullname=userDetail.optString("fullname");
                                 String avatar=Config.AVATAR_URL+"250/250/"+userDetail.optString("avatar");
 
-                                singleItem.add(new SingleItemModel(name,image,udate,daysago,totallike,comments,uid,fullname,avatar));
+                                singleItem.add(new SingleItemModel(id, name,image,udate,daysago,totallike,comments,uid,fullname,avatar,"demand"));
 
 
                             }

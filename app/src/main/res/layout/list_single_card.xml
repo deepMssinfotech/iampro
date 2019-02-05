@@ -16,11 +16,12 @@
         android:orientation="vertical">
 
         <ImageView
+            android:src="@drawable/profile_background"
             android:id="@+id/itemImage"
             android:layout_width="match_parent"
             android:layout_height="100dp"
             android:layout_gravity="center_horizontal"
-            android:scaleType="fitCenter"
+            android:scaleType="fitXY"
             android:background="@color/black"
             />
 
@@ -32,21 +33,17 @@
             android:gravity="center"
             android:background="@color/trans_black"
             android:padding="4dp"
-            android:layout_marginTop="-30dp"
+            android:layout_marginTop="-25dp"
             android:lines="1"
             android:text="Sample title"
             android:textColor="@android:color/white"
-            android:textSize="17sp"/>
+            android:textSize="12sp"/>
 
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"></View>
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:padding="10dp"
-            android:layout_marginTop="14dp"
+            android:padding="5dp"
             android:orientation="horizontal">
             <LinearLayout
                 android:layout_width="wrap_content"
@@ -59,20 +56,20 @@
                     android:orientation="horizontal">
                     <de.hdodenhof.circleimageview.CircleImageView
                         android:id="@+id/user_image"
-                        android:layout_width="30dp"
+                        android:layout_width="25dp"
                         android:src="@drawable/iampro"
-                        android:layout_height="30dp"
+                        android:layout_height="25dp"
                         app:civ_border_width="1dp"
                         app:civ_border_color="#FF000000"/>
                     <TextView
                         android:id="@+id/tv_user_name"
                         android:layout_width="wrap_content"
-                        android:layout_gravity="center"
+                        android:layout_gravity="center_vertical"
                         android:layout_marginLeft="7dp"
                         android:lines="1"
                         android:layout_height="wrap_content"
                         android:text="Iampro"
-                        android:textSize="13sp"
+                        android:textSize="12sp"
                         />
                 </LinearLayout>
                 <TextView
@@ -96,7 +93,7 @@
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
+                android:layout_weight="0"
                 android:layout_gravity="end"
                 android:orientation="vertical">
                 <LinearLayout
@@ -104,17 +101,17 @@
                     android:layout_height="wrap_content"
                     android:orientation="horizontal">
                     <ImageView
-                        android:layout_width="22dp"
-                        android:layout_height="22dp"
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
                         android:src="@drawable/like"
                        />
                     <TextView
                         android:id="@+id/tv_totallike"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_gravity="center_horizontal"
+                        android:layout_gravity="center_vertical"
                         android:layout_marginLeft="7dp"
-                        android:textSize="17sp"
+                        android:textSize="12sp"
                         android:textStyle="bold"
                         android:text="10"/>
                 </LinearLayout>
@@ -131,8 +128,7 @@
                         android:layout_gravity="center_horizontal"
                         android:layout_marginLeft="2dp"
                         android:textColor="@color/red"
-
-                        android:textSize="17sp"
+                        android:textSize="12sp"
                         android:textStyle="bold"
                         android:text=""/>
                     <TextView
@@ -141,7 +137,7 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_horizontal"
                         android:layout_marginLeft="2dp"
-                        android:textSize="17sp"
+                        android:textSize="12sp"
                         android:layout_marginStart="7dp"
                         android:textStyle="bold"
                         android:text=""/>
@@ -152,14 +148,15 @@
                     android:layout_marginTop="7dp"
                     android:orientation="horizontal">
                     <ImageView
-                        android:layout_width="22dp"
-                        android:layout_height="22dp"
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
                         android:src="@drawable/comment"/>
                     <TextView
                         android:id="@+id/tv_comments"
+                        android:textSize="12sp"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_gravity="center_horizontal"
+                        android:layout_gravity="center_vertical"
                         android:layout_marginLeft="7dp"
                         android:text="4"/>
                 </LinearLayout>
