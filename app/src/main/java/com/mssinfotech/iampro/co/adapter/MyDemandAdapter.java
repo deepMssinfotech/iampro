@@ -93,6 +93,8 @@ public class MyDemandAdapter extends RecyclerView.Adapter<MyDemandAdapter.ViewHo
             //tv_purchaseprice.setVisibility(View.GONE);
             tv_sellingprice.setText("Rs: "+String.valueOf(item.getsCost()));
             if (myid.equalsIgnoreCase(String.valueOf(uid)) || uid==0 || String.valueOf(uid)=="" || String.valueOf(uid)==null)
+                iv_delete.setVisibility(View.VISIBLE);
+            else
                 iv_delete.setVisibility(View.GONE);
 
             Glide.with(mContext)
@@ -102,7 +104,9 @@ public class MyDemandAdapter extends RecyclerView.Adapter<MyDemandAdapter.ViewHo
                             .fitCenter())
                     .into(imageView);
             if (myid.equalsIgnoreCase(String.valueOf(uid)) || uid==0 || String.valueOf(uid)=="" || String.valueOf(uid)==null)
-                iv_delete.setVisibility(View.GONE);
+                iv_delete.setVisibility(View.VISIBLE);
+            else iv_delete.setVisibility(View.GONE);
+
 
            /* imageView_user.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -119,8 +123,8 @@ public class MyDemandAdapter extends RecyclerView.Adapter<MyDemandAdapter.ViewHo
                     //Toast.makeText(mContext, "Provide clicked"+item.getName()+"\n"+item.getUid(), Toast.LENGTH_SHORT).show();
                     Intent intent=new Intent(mContext, DemandDetail.class);
                     intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                    intent.putExtra("pid",String.valueOf(uid));
-                    intent.putExtra("uid",String.valueOf(pid));
+                    intent.putExtra("pid",String.valueOf(pid));
+                    intent.putExtra("uid",String.valueOf(uid));
                     mContext.startActivity(intent);
                 }
             });

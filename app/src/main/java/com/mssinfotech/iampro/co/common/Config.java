@@ -41,6 +41,7 @@ public class Config
     public static final String AVATAR_URL="https://www.iampro.co/uploads/avatar/";
 
     public static final String OTHER_IMAGE_URL="https://www.iampro.co/uploads/product/";
+    public static final String V_URL="https://www.iampro.co/uploads/v_image/";
     public static final String BANNER_URL="https://www.iampro.co/uploads/media/";
     public static final String MEDIA_URL="https://www.iampro.co/uploads/media/";
     public static final String ALBUM_URL="https://www.iampro.co/uploads/album/w/500/";
