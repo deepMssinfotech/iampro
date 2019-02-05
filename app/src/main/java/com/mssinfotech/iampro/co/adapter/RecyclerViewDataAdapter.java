@@ -77,8 +77,6 @@ public class RecyclerViewDataAdapter extends RecyclerView.Adapter<RecyclerViewDa
              }
             }
         });
-
-
        /* Glide.with(mContext)
                 .load(feedItem.getImageURL())
                 .diskCacheStrategy(DiskCacheStrategy.ALL)
