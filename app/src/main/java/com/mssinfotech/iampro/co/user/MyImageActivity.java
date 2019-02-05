@@ -7,7 +7,6 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
-import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -20,14 +19,11 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.bumptech.glide.Glide;
 import com.mssinfotech.iampro.co.R;
-import com.mssinfotech.iampro.co.adapter.MyDemandAdapter;
 import com.mssinfotech.iampro.co.adapter.MyImageAdapter;
-import com.mssinfotech.iampro.co.adapter.MyProductAdapter;
 import com.mssinfotech.iampro.co.common.CircleTransform;
 import com.mssinfotech.iampro.co.common.Config;
 import com.mssinfotech.iampro.co.common.IncludeShortMenu;
 import com.mssinfotech.iampro.co.model.MyImageModel;
-import com.mssinfotech.iampro.co.model.MyProductModel;
 import com.mssinfotech.iampro.co.model.SectionDataModel;
 import com.mssinfotech.iampro.co.model.SingleItemModel;
 import com.mssinfotech.iampro.co.utils.PrefManager;
@@ -43,7 +39,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 public class MyImageActivity extends AppCompatActivity implements MyImageAdapter.ItemListener {
 
-    ImageView userbackgroud,changeImage;
+    imageview userbackgroud;
     CircleImageView userimage;
     TextView username;
     private String URL_FEED = "",uid="";
@@ -63,7 +59,6 @@ public class MyImageActivity extends AppCompatActivity implements MyImageAdapter
         recyclerView=findViewById(R.id.recyclerView);
         userbackgroud = findViewById(R.id.userbackgroud);
         uid= PrefManager.getLoginDetail(this,"id");
-        changeImage = findViewById(R.id.changeImage);
         if(id == null || id.equals(uid)) {
             String fname=PrefManager.getLoginDetail(this,"fname");
             String lname=PrefManager.getLoginDetail(this,"lname");
@@ -72,8 +67,7 @@ public class MyImageActivity extends AppCompatActivity implements MyImageAdapter
             username.setText("My Images");
             Glide.with(this).load(background).apply(Config.options_background).into(userbackgroud);
             Glide.with(this).load(avatar).apply(Config.options_avatar).into(userimage);
-            changeImage.setVisibility(View.VISIBLE);
-            changeImage.setOnClickListener(new View.OnClickListener() {
+            userimage.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     Intent intent=new Intent(MyImageActivity.this,ImageImageCroperActivity.class);
@@ -82,7 +76,6 @@ public class MyImageActivity extends AppCompatActivity implements MyImageAdapter
                 }
             });
         }else{
-            changeImage.setVisibility(View.GONE);
             uid= id;
             gteUsrDetail(id);
         }
@@ -165,6 +158,7 @@ public class MyImageActivity extends AppCompatActivity implements MyImageAdapter
                         if(!singleItem.isEmpty()){
                             singleItem.clear();
                         }
+
                         try{
                             for(int i=0;i<response.length();i++){
                                 // Get current json object
