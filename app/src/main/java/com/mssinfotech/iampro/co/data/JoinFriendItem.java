@@ -8,19 +8,11 @@ public class JoinFriendItem {
     private int total_product;
 
     private String city;
-
-
-
     private int total_friend;
-
     private int total_product_demand;
-
     private int total_img;
-
     private int user_id;
-
     private int friend_id;
-
     private int total_video;
 
     private int total_product_provide;

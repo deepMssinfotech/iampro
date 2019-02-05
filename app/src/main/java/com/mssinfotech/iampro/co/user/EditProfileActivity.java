@@ -73,39 +73,22 @@ public class EditProfileActivity extends AppCompatActivity {
     CircleImageView userimage;
     //upload image
     EditText imageName;
-
     Bitmap FixBitmap;
-
     String ImageTag = "image_tag" ;
-
     String ImageName = "image_data" ;
-
     ProgressDialog progressDialog ;
-
     ByteArrayOutputStream byteArrayOutputStream ;
-
     byte[] byteArray ;
-
     String ConvertImage ;
-
     String GetImageNameFromEditText;
-
     HttpURLConnection httpURLConnection ;
-
     URL url;
-
     OutputStream outputStream;
-
     BufferedWriter bufferedWriter ;
-
     int RC ;
-
     BufferedReader bufferedReader ;
-
     StringBuilder stringBuilder;
-
     boolean check = true;
-
     private int GALLERY = 1, CAMERA = 2;
     Button UploadImageOnServerButton;
     String idv,usenamev,fnamev, avatar;

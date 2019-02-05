@@ -104,7 +104,8 @@ public class DemandDetail extends AppCompatActivity  implements CommentAdapter.I
         getDemandReview();
     }
     protected void getDemandDetail(){
-        String url= Config.API_URL+"ajax.php?type=provide_details&id="+pid+"&uid="+uid;
+       // String url= Config.API_URL+"ajax.php?type=provide_details&id="+pid+"&uid="+uid;
+         String url="https://www.iampro.co/api/app_service.php?id="+pid+"&uid="+uid+"&my_id="+uid+"&type=provide_details";
         // Initialize a new RequestQueue instance
         RequestQueue requestQueue = Volley.newRequestQueue(DemandDetail.this);
 

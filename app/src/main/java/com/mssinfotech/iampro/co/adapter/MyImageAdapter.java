@@ -19,6 +19,7 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.bitmap.CircleCrop;
 import com.bumptech.glide.request.RequestOptions;
 import com.mssinfotech.iampro.co.R;
+import com.mssinfotech.iampro.co.image.ImageDetail;
 import com.mssinfotech.iampro.co.model.FeedModel;
 import com.mssinfotech.iampro.co.model.MyImageModel;
 import com.mssinfotech.iampro.co.model.MyProductModel;
@@ -30,7 +31,7 @@ public class MyImageAdapter extends RecyclerView.Adapter<MyImageAdapter.ViewHold
     ArrayList<MyImageModel> mValues;
     Context mContext;
     protected ItemListener mListener;
-    String uid;
+    String uid,id;
     public MyImageAdapter(Context context, ArrayList<MyImageModel> values, ItemListener itemListener) {
         mValues = values;
         mContext = context;
@@ -66,6 +67,7 @@ public class MyImageAdapter extends RecyclerView.Adapter<MyImageAdapter.ViewHold
         public void setData(MyImageModel item) {
             this.item = item;
             uid=item.getUid();
+            id=item.getId();
             //ratingBar.setRating(Float.parseFloat(String.valueOf(item.getRating())));
             category.setText(item.getCategory());
             tv_name.setText(item.getName());
@@ -73,7 +75,7 @@ public class MyImageAdapter extends RecyclerView.Adapter<MyImageAdapter.ViewHold
             tv_comments.setText(String.valueOf(item.getComments()));
             tv_totallike.setText(String.valueOf(item.getTotallike()));
 
-            imageView.setOnClickListener(new View.OnClickListener() {
+           /* imageView_user.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     Intent intent=new Intent(mContext,ProfileActivity.class);
@@ -81,7 +83,19 @@ public class MyImageAdapter extends RecyclerView.Adapter<MyImageAdapter.ViewHold
                     mContext.startActivity(intent);
                     Toast.makeText(mContext,"uid: "+uid,Toast.LENGTH_LONG).show();
                 }
+            }); */
+
+            imageView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent=new Intent(mContext,ImageDetail.class);
+                    intent.putExtra("uid",uid);
+                    intent.putExtra("id",id);
+                    intent.putExtra("type","image");
+                    mContext.startActivity(intent);
+                }
             });
+
             Glide.with(mContext)
                     .load(item.getImage())
                     .apply(new RequestOptions()

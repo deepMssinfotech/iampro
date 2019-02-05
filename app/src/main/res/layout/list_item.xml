@@ -15,7 +15,6 @@
         <ImageView
             android:scaleType="fitStart"
             android:id="@+id/itemTitle"
-            android:src="@drawable/latestdemand"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
             android:layout_centerVertical="true"
