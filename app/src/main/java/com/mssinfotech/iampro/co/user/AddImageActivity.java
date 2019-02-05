@@ -289,7 +289,7 @@ public class AddImageActivity extends AppCompatActivity {
 
                             Toast.makeText(getApplicationContext(),""+msgg,Toast.LENGTH_LONG).show();
                             if (status.equalsIgnoreCase("success")){
-                                //String urlv=jsonObject.getString("url");
+                                String urlv=jsonObject.getString("url");
                                 Intent intent=new Intent(getApplicationContext(),MyImageActivity.class);
                                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                                 startActivity(intent);
@@ -321,7 +321,7 @@ public class AddImageActivity extends AppCompatActivity {
                 params.put("type","uploadfiles");
                 params.put("process_type","android");
                 params.put("palbumname",palbumname);
-                //params.put("albumname",albumname);
+                params.put("albumname",albumname);
                 params.put("name",imagename);
                 params.put("about_us",imagedetail);
                 params.put("category",cat);
