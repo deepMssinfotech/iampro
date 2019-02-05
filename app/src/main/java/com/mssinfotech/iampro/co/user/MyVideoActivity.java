@@ -47,12 +47,13 @@ public class MyVideoActivity extends AppCompatActivity implements MyVideoAdapter
 
     ImageView userbackgroud;
     CircleImageView userimage;
-    TextView username;
+    TextView username,tv_category;
     private String URL_FEED = "",uid="";
     Intent intent;
     ArrayList<MyImageModel> item = new ArrayList<>();
     MyVideoAdapter adapter;
     RecyclerView recyclerView;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -63,6 +64,7 @@ public class MyVideoActivity extends AppCompatActivity implements MyVideoAdapter
         username = findViewById(R.id.username);
         userimage = findViewById(R.id.userimage);
         recyclerView=findViewById(R.id.recyclerView);
+        tv_category=findViewById(R.id.tv_category);
         userbackgroud = findViewById(R.id.userbackgroud);
         uid= PrefManager.getLoginDetail(this,"id");
         if(id == null || id.equals(uid)) {
@@ -104,10 +106,10 @@ public class MyVideoActivity extends AppCompatActivity implements MyVideoAdapter
                         try {
                             Log.d(Config.TAG, response);
                             result = new JSONObject(response);
-                            String fname=result.getString("fname");
-                            String lname=result.getString("lname");
-                            String avatar=Config.AVATAR_URL+"250/250/"+result.getString("profile_video_gallery");
-                            String background=Config.AVATAR_URL+"h/250/"+result.getString("video_banner_image");
+                            String fname=result.optString("fname");
+                            String lname=result.optString("lname");
+                            String avatar=Config.AVATAR_URL+"250/250/"+result.optString("profile_video_gallery");
+                            String background=Config.AVATAR_URL+"h/250/"+result.optString("video_banner_image");
                             username = findViewById(R.id.username);
                             userimage = findViewById(R.id.userimage);
                             userbackgroud = findViewById(R.id.userbackgroud);
@@ -138,7 +140,6 @@ public class MyVideoActivity extends AppCompatActivity implements MyVideoAdapter
         Intent i_signup = new Intent(MyVideoActivity.this,AddVideoActivity.class);
         MyVideoActivity.this.startActivity(i_signup);
     }
-
     @Override
     public void onItemClick(MyImageModel item) {
 
@@ -148,7 +149,6 @@ public class MyVideoActivity extends AppCompatActivity implements MyVideoAdapter
         String url=Config.API_URL+"app_service.php?type=getMyAlbemsListt&search_type=video&uid="+uid+"&my_id="+uid;
         // Initialize a new RequestQueue instance
         RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
-
         // Initialize a new JsonArrayRequest instance
         JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(
                 Request.Method.GET,
@@ -161,18 +161,19 @@ public class MyVideoActivity extends AppCompatActivity implements MyVideoAdapter
                         if(!singleItem.isEmpty()){
                             singleItem.clear();
                         }
-
                         try{
                             for(int i=0;i<response.length();i++){
                                 // Get current json object
                                 JSONObject student = response.getJSONObject(i);
+                                 String name1=student.getString("name");
+                                tv_category.setText(name1.toString());
                                 JSONArray jsonArrayPics=student.getJSONArray("pics");
                                 Log.d("picssss",jsonArrayPics.toString());
 
-                                JSONObject picss= jsonArrayPics.getJSONObject(0);
-                                Log.d("picssss11",""+picss.toString());
-                                String idd=picss.getString("albemid");
-                                Log.d("picssss1",""+idd);
+                                //JSONObject picss= jsonArrayPics.getJSONObject(0);
+                                //Log.d("picssss11",""+picss.toString());
+                                //String idd=picss.getString("albemid");
+                                //Log.d("picssss1",""+idd);
 
                                 for (int j=0;j<jsonArrayPics.length();j++){
                                     JSONObject pics=jsonArrayPics.getJSONObject(j);
