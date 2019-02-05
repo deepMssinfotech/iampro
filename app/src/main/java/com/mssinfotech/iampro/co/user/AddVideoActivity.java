@@ -1,6 +1,7 @@
 package com.mssinfotech.iampro.co.user;
 
 import android.Manifest;
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Notification;
 import android.app.NotificationChannel;
@@ -57,6 +58,8 @@ import com.mssinfotech.iampro.co.utils.Validate;
 //import net.gotev.uploadservice.MultipartUploadRequest;
 //import net.gotev.uploadservice.UploadNotificationConfig;
 
+import net.gotev.uploadservice.MultipartUploadRequest;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -106,7 +109,7 @@ public class AddVideoActivity extends AppCompatActivity {
         albumLayout = findViewById(R.id.albumLayout);
         gvGallery = findViewById(R.id.gv);
         ibVideoMoreVideo = findViewById(R.id.ibVideoMoreVideo);
-        videoView = (VideoView) findViewById(R.id.vv);
+        videoView = findViewById(R.id.vv);
         ibVideoMoreVideo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -115,7 +118,6 @@ public class AddVideoActivity extends AppCompatActivity {
         });
         function.executeUrl(this, "get", Config.API_URL + "app_service.php?type=delete_temp_data&uid=" + PrefManager.getLoginDetail(this, "id"), null);
         getAlbumList();
-
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
             startMyOwnForeground();
 
@@ -201,7 +203,7 @@ public class AddVideoActivity extends AppCompatActivity {
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         Log.d("result",""+resultCode);
         super.onActivityResult(requestCode, resultCode, data);
-        if (resultCode == this.RESULT_CANCELED) {
+        if (resultCode == RESULT_CANCELED) {
             Log.d("what","cancle");
             return;
         }
@@ -336,12 +338,12 @@ public class AddVideoActivity extends AppCompatActivity {
             String palbumname= tvlayouttype.getText().toString();
             if(!palbumname.equalsIgnoreCase("videonew"))palbumname=spvideo_album.getSelectedItem().toString();
 
-          /*  new MultipartUploadRequest(this, uploadId, Config.AJAX_URL + "uploadprocess.php")
+            new MultipartUploadRequest(this, uploadId, Config.AJAX_URL + "uploadprocess.php")
                     .addFileToUpload(myVideoPath, "myfile") //Adding file
                     .addParameter("type","uploadvideo")//Adding text parameter to the request
                     .addParameter("process_type","native_android")
                     .addParameter("palbumname",palbumname)
-                    //params.put("albumname",albumname)
+                    .addParameter("albumname",albumname)
                     .addParameter("video_name",videoname)
                     .addParameter("about_us",videodetail)
                     .addParameter("category",cat)
@@ -349,10 +351,11 @@ public class AddVideoActivity extends AppCompatActivity {
                     //.setNotificationConfig(new UploadNotificationConfig())
                     .setMaxRetries(2)
                     .startUpload(); //Starting the upload
-                    Intent intent = new Intent(getApplicationContext(), MyVideoActivity.class);
-                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                    startActivity(intent);
-                    finish();*/
+            Intent intent = new Intent(getApplicationContext(), MyVideoActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            startActivity(intent);
+            Toast.makeText(this, "Video Uploade is processing please wait", Toast.LENGTH_SHORT).show();
+            finish();
         } catch (Exception exc) {
             Toast.makeText(this, exc.getMessage(), Toast.LENGTH_SHORT).show();
         }
