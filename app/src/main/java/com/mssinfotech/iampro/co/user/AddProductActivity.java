@@ -9,6 +9,7 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.net.Uri;
+import android.os.Handler;
 import android.provider.MediaStore;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
@@ -31,6 +32,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.bumptech.glide.Glide;
 import com.mssinfotech.iampro.co.R;
 import com.mssinfotech.iampro.co.adapter.GalleryAdapter;
 import com.mssinfotech.iampro.co.common.ImageProcess;
@@ -57,10 +59,13 @@ public class AddProductActivity extends AppCompatActivity {
     Spinner spcat;
     String imageEncoded;
     private Bitmap bitmap=null;
+    private String URL_FEED = "",uid="", pid = "";
     private String productname, brandname, purchesecost,sellingcost, productdetail,cat;
     Button ibproductimage,ibProductMoreImage;
     List<String> imagesEncodedList;
     private GalleryAdapter galleryAdapter;
+    protected Handler handler;
+    Intent intent;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -96,8 +101,64 @@ public class AddProductActivity extends AppCompatActivity {
                 selectMultipleImage();
             }
         });
+
+        pid = intent.getStringExtra("id");
+        uid= PrefManager.getLoginDetail(this,"id");
+        if(pid == null ) {
+
+        }else{
+            gteProductDetail(pid);
+        }
+
         function.executeUrl(this,"get",Config.API_URL+"app_service.php?type=delete_temp_data&uid="+PrefManager.getLoginDetail(this,"id"),null);
     }
+
+    private void gteProductDetail(String id){
+        String myurl = Config.API_URL + "app_service.php?type=get_product_detail&id=" + id + "&uid=" + uid+"&update_type=product&my_id="+uid;
+        Log.d(Config.TAG, myurl);
+        StringRequest stringRequest = new StringRequest(myurl,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        JSONObject result = null;
+                        try {
+                            Log.d(Config.TAG, response);
+                            result = new JSONObject(response);
+                            String name=result.getString("name");
+                            String brand_name=result.getString("brand_name");
+                            String id=result.getString("id");
+                            String category=result.getString("category");
+                            String city=result.getString("city");
+                            String purchese_cost=result.getString("purchese_cost");
+                            String selling_cost=result.getString("selling_cost");
+                            String detail=result.getString("detail");
+                            String pimage=Config.OTHER_IMAGE_URL+"250/250/"+result.getString("pimage");
+
+                            etproductname.setText(name);
+                            etbrandname.setText(brand_name);
+                            etpurchesecost.setText(purchese_cost);
+                            etsellingcost.setText(selling_cost);
+                            etproductdetail.setText(detail);
+                            Glide.with(getApplicationContext()).load(pimage).into(imageview);
+
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Log.e(Config.TAG, error.toString());
+                    }
+                });
+        //Creating a request queue
+        RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
+        //Adding request to the queue
+        requestQueue.add(stringRequest);
+    }
+
+
     private void selectMultipleImage(){
         Intent intent = new Intent();
         intent.setType("image/*");
