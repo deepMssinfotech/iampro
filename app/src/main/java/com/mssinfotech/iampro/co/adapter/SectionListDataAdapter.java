@@ -12,6 +12,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -37,7 +38,7 @@ public class SectionListDataAdapter extends RecyclerView.Adapter<SectionListData
 
     private ArrayList<SingleItemModel> itemsList;
     private Context mContext;
-     private int uid,id;
+    private int uid,id;
     ImageView ivLike;
     public SectionListDataAdapter(Context context, ArrayList<SingleItemModel> itemsList) {
         this.itemsList = itemsList;
@@ -58,10 +59,11 @@ public class SectionListDataAdapter extends RecyclerView.Adapter<SectionListData
         holder.tvTitle.setText(singleItem.getName());
         holder.totallike.setText(String.valueOf(singleItem.getTotallike()));
         holder.comments.setText(String.valueOf(singleItem.getComments()));
+        /*
         if(singleItem.getDaysago()!="") {
               holder.daysago.setVisibility(View.VISIBLE);
               holder.daysago.setText(singleItem.getDaysago());
-        }
+        }*/
         holder.user_name.setText(singleItem.getFullname());
         uid=singleItem.getUid();
         id=singleItem.getId();
@@ -135,6 +137,12 @@ public class SectionListDataAdapter extends RecyclerView.Adapter<SectionListData
                   mContext.startActivity(intent);
              }
          });
+         holder.likelayout.setOnClickListener(new View.OnClickListener() {
+             @Override
+             public void onClick(View v) {
+                 Toast.makeText(mContext, "Total Like "+String.valueOf(uid), Toast.LENGTH_SHORT).show();
+             }
+         });
     }
 
     @Override
@@ -145,14 +153,13 @@ public class SectionListDataAdapter extends RecyclerView.Adapter<SectionListData
         protected TextView tvTitle,totallike,comments,daysago,user_name;
         protected ImageView itemImage;
         protected de.hdodenhof.circleimageview.CircleImageView btnMore,user_image;
-
-         //this.btnMore= view.findViewById(R.id.btnMore);
-
-
+        protected LinearLayout likelayout;
+        //this.btnMore= view.findViewById(R.id.btnMore);
 
 
         public SingleItemRowHolder(View view) {
             super(view);
+            this.likelayout = view.findViewById(R.id.likelayout);
             this.tvTitle =view.findViewById(R.id.tvTitle);
             this.itemImage =  view.findViewById(R.id.itemImage);
             this.totallike=view.findViewById(R.id.tv_totallike);
@@ -163,7 +170,7 @@ public class SectionListDataAdapter extends RecyclerView.Adapter<SectionListData
             view.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Toast.makeText(v.getContext(), tvTitle.getText(), Toast.LENGTH_SHORT).show();
+            //        Toast.makeText(v.getContext(), tvTitle.getText(), Toast.LENGTH_SHORT).show();
                 }
             });
         }

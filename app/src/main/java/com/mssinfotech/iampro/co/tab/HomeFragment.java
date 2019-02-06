@@ -152,7 +152,7 @@ public class HomeFragment extends Fragment implements UserDataAdapter.ItemListen
                     public void onResponse(JSONArray response) {
                         Log.d("responsef",response.toString());
                         SectionDataModel dm = new SectionDataModel();
-                        dm.setHeaderTitle("Images ");
+                        dm.setHeaderTitle("Images");
                         ArrayList<SingleItemModel> singleItem = new ArrayList<SingleItemModel>();
                         try{
                             for(int i=0;i<response.length();i++){
@@ -256,7 +256,7 @@ public class HomeFragment extends Fragment implements UserDataAdapter.ItemListen
                     public void onResponse(JSONArray response) {
                         Log.d("responsef",response.toString());
                         SectionDataModel dm = new SectionDataModel();
-                        dm.setHeaderTitle("Video ");
+                        dm.setHeaderTitle("Video");
                         ArrayList<SingleItemModel> singleItem = new ArrayList<SingleItemModel>();
                         try{
                             for(int i=0;i<response.length();i++){
