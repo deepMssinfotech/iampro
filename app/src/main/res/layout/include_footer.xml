@@ -17,7 +17,7 @@
             android:layout_weight="1"
             android:padding="@dimen/bottom_icon_padding"
             android:layout_height="@dimen/bottom_icon_height"
-            android:src="@drawable/more_right" />
+            android:src="@drawable/more" />
         <ImageView
             android:id="@+id/btn_menu_search"
             android:layout_width="0dp"

@@ -16,7 +16,7 @@
         app:backgroundTint="@color/color_image_color"
         android:onClick="redirect"
         app:srcCompat="@android:drawable/ic_input_add"/>
-    <ScrollView
+    <android.support.v4.widget.NestedScrollView
         android:layout_above="@+id/footer"
         android:fillViewport="true"
         android:layout_width="match_parent"
@@ -91,7 +91,7 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
         </LinearLayout>
-    </ScrollView>
+    </android.support.v4.widget.NestedScrollView>
     <com.mssinfotech.iampro.co.common.IncludeFooter
         android:id="@+id/footer"
         android:layout_gravity="bottom|end"

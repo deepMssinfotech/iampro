@@ -42,7 +42,7 @@ public class function {
         return false;
     }
     public static String executeUrl(final Context context, String type, String url, final Map<String, String> params){
-        final ProgressDialog loading = ProgressDialog.show(context,"Processing...","Please wait...",false,false);
+        //final ProgressDialog loading = ProgressDialog.show(context,"Processing...","Please wait...",false,false);
         StringRequest stringRequest = null;
         //Log.d(Config.TAG,"url: "+url);
         if(type.equalsIgnoreCase("get")){
@@ -50,14 +50,14 @@ public class function {
                     new Response.Listener<String>() {
                         @Override
                         public void onResponse(String response) {
-                            loading.dismiss();
+                            //loading.dismiss();
                             Config.ResponceResult = response;
                             //Log.d(Config.TAG,"result is : "+response);
                         }
                     }, new Response.ErrorListener() {
                 @Override
                 public void onErrorResponse(VolleyError error) {
-                    loading.dismiss();
+                    //loading.dismiss();
                     Config.ResponceResult = error.getMessage();
                     //Log.d(Config.TAG,"error : "+error.getMessage());
                 }
@@ -67,7 +67,7 @@ public class function {
                     new Response.Listener<String>() {
                         @Override
                         public void onResponse(String response) {
-                            loading.dismiss();
+                            //loading.dismiss();
                             Config.ResponceResult = response;
                             //Log.d(Config.TAG,"result : "+response);
                         }
@@ -81,7 +81,7 @@ public class function {
                     }){
                 @Override
                 protected Map<String, String> getParams() throws AuthFailureError {
-                    loading.dismiss();
+                    //loading.dismiss();
                     return params;
                 }
             };
@@ -103,7 +103,7 @@ public class function {
                         try {
                             //Parsing the fetched Json String to JSON Object
                             result = new JSONArray(response);
-                            //Storing the Array of JSON String to our JSON Array
+                             //Storing the Array of JSON String to our JSON Array
                             //JSONArray result = j.getJSONArray("data");
                             ArrayList<CategoryItem> CatList = new ArrayList<>();
                             //Calling method getStudents to get the students from the JSON Array
