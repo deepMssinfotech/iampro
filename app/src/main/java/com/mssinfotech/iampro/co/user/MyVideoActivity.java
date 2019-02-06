@@ -186,7 +186,10 @@ public class MyVideoActivity extends AppCompatActivity implements MyVideoAdapter
                                     String name=pics.optString("name");
                                     String category=pics.optString("category");
                                     String albem_type=pics.optString("albem_type");
-                                    String image=pics.optString("image");
+                                    String imagev=pics.optString("image");
+                                    String imagee = imagev.substring(0, imagev.lastIndexOf("."));
+                                     String image=imagee+".jpg";
+                                      Log.d("imagebb",""+image);
                                     String udate=pics.optString("udate");
                                     String about_us=pics.optString("about_us");
                                     String group_id=pics.optString("group_id");

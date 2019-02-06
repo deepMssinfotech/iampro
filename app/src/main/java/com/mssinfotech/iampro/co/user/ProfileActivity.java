@@ -4,6 +4,7 @@ package com.mssinfotech.iampro.co.user;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Handler;
+import android.support.v4.view.ViewCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -287,7 +288,9 @@ public class ProfileActivity extends AppCompatActivity implements AllFeedAdapter
                              }
                             adapter=new AllFeedAdapter(ProfileActivity.this,mValues,ProfileActivity.this);
                             vFeed.setLayoutManager(new LinearLayoutManager(ProfileActivity.this, LinearLayoutManager.VERTICAL, false));
-                             vFeed.setNestedScrollingEnabled(false);
+                             //vFeed.setNestedScrollingEnabled(false);
+                                  ViewCompat.setNestedScrollingEnabled(vFeed, false);
+                                  //vFeed.setLayoutFrozen(true);
                             vFeed.setAdapter(adapter);
                             //String msg=response.optString("msg");
                            // Toast.makeText(getApplicationContext(),msg,Toast.LENGTH_LONG).show();

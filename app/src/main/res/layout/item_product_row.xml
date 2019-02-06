@@ -33,13 +33,14 @@
             <ImageView
                 android:id="@+id/iv_delete"
                 android:src="@drawable/delete"
+                android:layout_marginLeft="10dp"
                 android:layout_width="25dp"
                 android:layout_height="25dp" />
             <TextView
                 android:id="@+id/tv_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:gravity="center"
+                android:gravity="left"
                 android:background="@color/trans_black"
                 android:padding="4dp"
                 android:layout_marginTop="-30dp"

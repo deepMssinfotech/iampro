@@ -19,6 +19,7 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.bitmap.CircleCrop;
 import com.bumptech.glide.request.RequestOptions;
 import com.mssinfotech.iampro.co.R;
+import com.mssinfotech.iampro.co.common.Config;
 import com.mssinfotech.iampro.co.image.ImageDetail;
 import com.mssinfotech.iampro.co.model.FeedModel;
 import com.mssinfotech.iampro.co.model.MyImageModel;
@@ -97,7 +98,7 @@ public class MyImageAdapter extends RecyclerView.Adapter<MyImageAdapter.ViewHold
             });
 
             Glide.with(mContext)
-                    .load(item.getImage())
+                    .load(Config.ALBUM_URL+item.getImage())
                     .apply(new RequestOptions()
                             .circleCrop().bitmapTransform(new CircleCrop())
                             .fitCenter())

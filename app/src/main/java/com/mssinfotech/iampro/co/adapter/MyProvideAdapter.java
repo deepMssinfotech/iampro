@@ -69,8 +69,12 @@ public class MyProvideAdapter extends RecyclerView.Adapter<MyProvideAdapter.View
             detail_name=v.findViewById(R.id.detail_name);
             tv_purchaseprice=v.findViewById(R.id.tv_purchaseprice);
             tv_sellingprice=v.findViewById(R.id.tv_sellingprice);
+            iv_delete.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
 
-
+                }
+            });
         }
         public void setData(MyProductModel item) {
             this.item = item;
@@ -87,7 +91,10 @@ public class MyProvideAdapter extends RecyclerView.Adapter<MyProvideAdapter.View
             tv_totallike.setText(String.valueOf(item.getTotallike()));
             tv_purchaseprice.setVisibility(View.GONE);
             tv_sellingprice.setText("Rs: "+String.valueOf(item.getsCost()));
-
+            if (myid.equalsIgnoreCase(String.valueOf(uid)) || uid==0 || String.valueOf(uid)=="" || String.valueOf(uid)==null)
+                iv_delete.setVisibility(View.VISIBLE);
+            else
+                iv_delete.setVisibility(View.GONE);
             Glide.with(mContext)
                     .load(item.getImage())
                     .apply(new RequestOptions()

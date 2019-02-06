@@ -112,6 +112,8 @@ public class MyProductAdapter extends RecyclerView.Adapter<MyProductAdapter.View
             tv_purchaseprice.setText("Rs: "+String.valueOf(item.getpCost()));
             tv_sellingprice.setText("Rs: "+String.valueOf(item.getsCost()));
               if (myid.equalsIgnoreCase(String.valueOf(uid)) || uid==0 || String.valueOf(uid)=="" || String.valueOf(uid)==null)
+                  iv_delete.setVisibility(View.VISIBLE);
+              else
                   iv_delete.setVisibility(View.GONE);
 
             Glide.with(mContext)

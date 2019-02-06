@@ -193,7 +193,7 @@ public class ProvideDetailActivity extends AppCompatActivity implements CommentA
                             if (!items.isEmpty()){
                                 items.clear();
                             }
-                            Toast.makeText(getApplicationContext(),"Demand Review called",Toast.LENGTH_LONG).show();
+                           // Toast.makeText(getApplicationContext(),"Provide Review called",Toast.LENGTH_LONG).show();
                             // Loop through the array elements
                             for(int i=0;i<response.length();i++){
                                 // Get current json object

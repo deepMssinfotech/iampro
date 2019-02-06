@@ -11,9 +11,11 @@
         <com.mssinfotech.iampro.co.common.IncludeHeader
             android:id="@+id/header"
             android:layout_height="wrap_content"
-            android:layout_width="match_parent"></com.mssinfotech.iampro.co.common.IncludeHeader>
+            android:layout_width="match_parent">
 
-        <ScrollView
+        </com.mssinfotech.iampro.co.common.IncludeHeader>
+
+    <android.support.v4.widget.NestedScrollView
             android:id="@+id/scroll_view"
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
@@ -26,6 +28,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="#FFFFFF"
+                android:descendantFocusability="blocksDescendants"
                 android:fillViewport="true">
                 <LinearLayout
                         android:background="@color/black"
@@ -78,13 +81,12 @@
                     <android.support.v7.widget.RecyclerView
                         android:id="@+id/rvFeed"
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:scrollbars="none"
-                        app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+                        android:layout_height="match_parent" />
+                    <!--  android:scrollbars="none"   app:layout_behavior="@string/appbar_scrolling_view_behavior"  -->
                 </android.support.design.widget.CoordinatorLayout>
             </LinearLayout>
 
-        </ScrollView>
+    </android.support.v4.widget.NestedScrollView>
     <com.mssinfotech.iampro.co.common.IncludeFooter
     android:id="@+id/footer"
     android:layout_alignParentBottom="true"

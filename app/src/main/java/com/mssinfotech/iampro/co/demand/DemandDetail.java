@@ -118,9 +118,12 @@ public class DemandDetail extends AppCompatActivity  implements CommentAdapter.I
                     public void onResponse(String response) {
                         // Do something with response
                         //mTextView.setText(response.toString());
-                        Log.d("Prod_detail",response.toString());
+                        Log.d("Prod_detail_demand",response.toString());
                         // Process the JSON
                         try{
+                            if (response.toString().equalsIgnoreCase("") || response==null){
+                                return;
+                            }
                             JSONObject responses=new JSONObject(response);
 
                             // Get the current student (json object) data

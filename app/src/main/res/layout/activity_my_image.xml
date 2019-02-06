@@ -71,13 +71,16 @@
                 layout="@layout/include_short_menu"
                 android:layout_height="85dp"
                 android:layout_width="match_parent"/>
-             <TextView
-                 android:id="@+id/tv_category"
-                 android:layout_width="match_parent"
-                 android:layout_height="wrap_content"
-                 android:text="category"
-                  android:textSize="20sp"
-                 android:padding="10dp"/>
+            <TextView
+                android:id="@+id/tv_category"
+                android:layout_width="wrap_content"
+                android:textColor="@color/white"
+                android:lines="1"
+                android:layout_height="wrap_content"
+                android:background="@drawable/btn_image"
+                android:layout_marginBottom="10dp"
+                android:text="category"
+                android:textSize="14sp"/>
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/recyclerView"
                 android:layout_width="match_parent"
