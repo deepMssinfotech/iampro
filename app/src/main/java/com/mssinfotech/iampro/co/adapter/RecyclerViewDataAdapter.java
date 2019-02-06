@@ -48,11 +48,8 @@ public class RecyclerViewDataAdapter extends RecyclerView.Adapter<RecyclerViewDa
 
         ArrayList singleSectionItems = dataList.get(i).getAllItemsInSection();
         Log.e(Config.TAG,sectionName);
-        if(sectionName.equalsIgnoreCase("Images")){
-            Glide.with(mContext).load(R.drawable.latestphotos).into(itemRowHolder.itemTitle);
-        }else if(sectionName.equalsIgnoreCase("Video")){
-            Glide.with(mContext).load(R.drawable.latestvideo).into(itemRowHolder.itemTitle);
-        }else if(sectionName.equalsIgnoreCase("product")){
+        //Toast.makeText(mContext, "click event on more, "+sectionName , Toast.LENGTH_SHORT).show();
+        if(sectionName.equalsIgnoreCase("Product")){
             Glide.with(mContext).load(R.drawable.latestproduct).into(itemRowHolder.itemTitle);
         }else if(sectionName.equalsIgnoreCase("provide")){
             Glide.with(mContext).load(R.drawable.latestprovide).into(itemRowHolder.itemTitle);
@@ -60,6 +57,10 @@ public class RecyclerViewDataAdapter extends RecyclerView.Adapter<RecyclerViewDa
             Glide.with(mContext).load(R.drawable.latestdemand).into(itemRowHolder.itemTitle);
         }else if(sectionName.equalsIgnoreCase("user")){
             Glide.with(mContext).load(R.drawable.user).into(itemRowHolder.itemTitle);
+        }else if(sectionName.equalsIgnoreCase("Images")){
+            Glide.with(mContext).load(R.drawable.latestphotos).into(itemRowHolder.itemTitle);
+        }else if(sectionName.equalsIgnoreCase("Video")){
+            Glide.with(mContext).load(R.drawable.latestvideo).into(itemRowHolder.itemTitle);
         }
         SectionListDataAdapter itemListDataAdapter = new SectionListDataAdapter(mContext, singleSectionItems);
 
