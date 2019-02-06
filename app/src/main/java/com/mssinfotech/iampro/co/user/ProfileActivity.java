@@ -89,6 +89,7 @@ public class ProfileActivity extends AppCompatActivity implements AllFeedAdapter
             Glide.with(this).load(background).into(userbackgroud);
             Glide.with(this).load(avatar).into(userimage);
             PrefManager.updateUserData(this,null);
+            fid=uid;
         }else{
             uid= fid;
             gteUsrDetail(fid);
@@ -208,6 +209,7 @@ public class ProfileActivity extends AppCompatActivity implements AllFeedAdapter
                                   for (int i = 0; i < jsonArray.length(); i++) {
                                       JSONObject jsonObject = jsonArray.getJSONObject(i);
                                       String image = jsonObject.getString("first_image");
+                                      String detail = jsonObject.getString("detail");
 
                                       String fimage_path = Config.URL_ROOT + "uploads/avatar/150/150/'" + image;
                                       int id = jsonObject.getInt("id");
@@ -251,7 +253,7 @@ public class ProfileActivity extends AppCompatActivity implements AllFeedAdapter
                                           fimage_path = Config.URL_ROOT + "uploads/album/150/150/" + image;
                                       } else if (type.equalsIgnoreCase("VIDEO")) {
                                           ///uploads/album/400/500/' /uploads/v_image/'
-                                          fimage_path = Config.URL_ROOT + "uploads/v_image/400/500/" + image;
+                                          fimage_path = Config.URL_ROOT + "uploads/video/" + detail;
                                       }
                                       //PRODUCT
                                       else if (type.equalsIgnoreCase("PRODUCT")) {

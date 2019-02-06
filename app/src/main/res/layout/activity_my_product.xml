@@ -16,7 +16,7 @@
         app:backgroundTint="@color/color_product_color"
         app:srcCompat="@android:drawable/ic_input_add" />
 
-    <ScrollView
+    <android.support.v4.widget.NestedScrollView
         android:layout_above="@+id/footer"
         android:fillViewport="true"
         android:layout_width="match_parent"
@@ -99,7 +99,7 @@
                 android:layout_height="wrap_content" />
 
         </LinearLayout>
-    </ScrollView>
+    </android.support.v4.widget.NestedScrollView>
     <com.mssinfotech.iampro.co.common.IncludeFooter
         android:id="@+id/footer"
         android:layout_gravity="bottom|end"
