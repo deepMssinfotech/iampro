@@ -439,7 +439,6 @@ public class EditProfileActivity extends AppCompatActivity {
                     Toast.makeText(EditProfileActivity.this, "Failed!", Toast.LENGTH_SHORT).show();
                 }
             }
-
         } else if (requestCode == CAMERA) {
             Uri contentURI = data.getData();
             try {
@@ -459,7 +458,6 @@ public class EditProfileActivity extends AppCompatActivity {
     }
 
     public void sendData() {
-
         if (!Config.haveNetworkConnection(this)) {
             Config.showInternetDialog(this);
             return;
