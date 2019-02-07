@@ -32,16 +32,14 @@ public class MyProductAdapter extends RecyclerView.Adapter<MyProductAdapter.View
     Context mContext;
     protected ItemListener mListener;
     int uid;
-    static String pid;
-    static String myid;
-    ImageView iv_delete,iv_edit;
+     static String myid;
     public MyProductAdapter(Context context, ArrayList<MyProductModel> values, ItemListener itemListener) {
         mValues = values;
         mContext = context;
         mListener=itemListener;
     }
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-        ImageView  imageView,imageView_user,imageView_icon,iv_comments,image,iv_favourite,ivLike;
+        ImageView  imageView,imageView_user,imageView_icon,iv_comments,image,iv_favourite,ivLike,iv_delete,iv_edit;
         VideoView videoView;
         TextView tv_name,uname,udate,tv_comments,tv_totallike,detail_name,tv_purchaseprice,tv_sellingprice;
         RatingBar ratingBar;
@@ -57,10 +55,9 @@ public class MyProductAdapter extends RecyclerView.Adapter<MyProductAdapter.View
             imageView_icon=v.findViewById(R.id.imageView_icon);
             iv_comments=v.findViewById(R.id.iv_comments);
             iv_favourite=v.findViewById(R.id.iv_favourite);
-
+            iv_edit = v.findViewById(R.id.iv_edit);
             image=v.findViewById(R.id.imageView);
             iv_delete=v.findViewById(R.id.iv_delete);
-            iv_edit=v.findViewById(R.id.iv_edit);
             videoView=v.findViewById(R.id.videoView);
             ratingBar=v.findViewById(R.id.ratingBar);
             ivLike=v.findViewById(R.id.ivLike);
@@ -75,15 +72,14 @@ public class MyProductAdapter extends RecyclerView.Adapter<MyProductAdapter.View
 
             tv_sellingprice=v.findViewById(R.id.tv_sellingprice);
 
-           /* imageView_user.setOnClickListener(new View.OnClickListener() {
+            iv_edit.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Intent intent=new Intent(mContext,ProfileActivity.class);
-                    intent.putExtra("uid",uid);
+                    Intent intent=new Intent(mContext, AddProductActivity.class);
+                    intent.putExtra("id",String.valueOf(item.getPid()));
                     mContext.startActivity(intent);
-                    Toast.makeText(mContext,"uid: "+uid,Toast.LENGTH_LONG).show();
                 }
-            }); */
+            });
             imageView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -95,22 +91,19 @@ public class MyProductAdapter extends RecyclerView.Adapter<MyProductAdapter.View
                     mContext.startActivity(intent);
                 }
             });
-
-            iv_edit.setOnClickListener(new View.OnClickListener() {
+            iv_delete.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    Toast.makeText(mContext, "delete clicked"+item.getName()+"\n"+item.getUid(), Toast.LENGTH_SHORT).show();
 
-                    Intent intent=new Intent(mContext, AddProductActivity.class);
-                    intent.putExtra("id",String.valueOf(item.getPid()));
-                    mContext.startActivity(intent);
-                    //Toast.makeText(mContext,"Edit",Toast.LENGTH_LONG).show();
+
+
                 }
             });
         }
         public void setData(MyProductModel item) {
             this.item = item;
             uid=item.getUid();
-            pid=item.getPid();
             if(PrefManager.isLogin(mContext))
             myid= PrefManager.getLoginDetail(mContext,"id");
             ratingBar.setRating(Float.parseFloat(String.valueOf(item.getRating())));
@@ -121,11 +114,12 @@ public class MyProductAdapter extends RecyclerView.Adapter<MyProductAdapter.View
             tv_totallike.setText(String.valueOf(item.getTotallike()));
             tv_purchaseprice.setText("Rs: "+String.valueOf(item.getpCost()));
             tv_sellingprice.setText("Rs: "+String.valueOf(item.getsCost()));
-              if (myid.equalsIgnoreCase(String.valueOf(uid)) || uid==0 || String.valueOf(uid)=="" || String.valueOf(uid)==null)
+              if (myid.equalsIgnoreCase(String.valueOf(uid)) || uid==0 || String.valueOf(uid)=="" || String.valueOf(uid)==null) {
                   iv_delete.setVisibility(View.VISIBLE);
-              else
+              }
+              else {
                   iv_delete.setVisibility(View.GONE);
-
+              }
             Glide.with(mContext)
                     .load(item.getImage())
                     .apply(new RequestOptions()
@@ -146,27 +140,8 @@ public class MyProductAdapter extends RecyclerView.Adapter<MyProductAdapter.View
         return new ViewHolder(view);
     }
     @Override
-    public void onBindViewHolder(ViewHolder Vholder, final int position) {
+    public void onBindViewHolder(ViewHolder Vholder, int position) {
         Vholder.setData(mValues.get(position));
-        iv_delete.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mValues.remove(position);
-                notifyDataSetChanged();
-                Toast.makeText(mContext,"Deleted",Toast.LENGTH_LONG).show();
-            }
-        });
-
-        iv_edit.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent=new Intent(mContext, AddProductActivity.class);
-                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                intent.putExtra("id",String.valueOf(pid));
-                mContext.startActivity(intent);
-            }
-        });
-
     }
     @Override
     public int getItemCount() {
