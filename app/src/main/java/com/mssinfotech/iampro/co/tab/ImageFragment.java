@@ -28,6 +28,7 @@ import com.mssinfotech.iampro.co.model.DataModel;
 import com.mssinfotech.iampro.co.model.SectionDataModel;
 import com.mssinfotech.iampro.co.model.SingleItemModel;
 import com.mssinfotech.iampro.co.common.Config;
+import com.mssinfotech.iampro.co.utils.PrefManager;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -72,7 +73,8 @@ public class ImageFragment extends Fragment implements ImageAdapter.ItemListener
 
     }
     public void  getImage(){
-        final String url = "https://www.iampro.co/api/app_service.php?type=all_item&name=image&uid=&my_id=";
+        int uid = Integer.parseInt(PrefManager.getLoginDetail(getContext(),"id"));
+        final String url = "https://www.iampro.co/api/app_service.php?type=all_item&name=image&uid="+uid+"&my_id="+uid;
         // Initialize a new RequestQueue instance
         RequestQueue requestQueue = Volley.newRequestQueue(getContext());
 
@@ -99,7 +101,6 @@ public class ImageFragment extends Fragment implements ImageAdapter.ItemListener
                                 // Get current json object
                                 JSONObject student = response.getJSONObject(i);
                                 int id=student.getInt("id");
-
                                 String name = student.getString("name");
                                 String categoryv=student.getString("category");
                                 String imagev=student.getString("image");
@@ -119,7 +120,8 @@ public class ImageFragment extends Fragment implements ImageAdapter.ItemListener
                                 String fullname=userDetail.getString("fullname");
                                 String avatar=Config.AVATAR_URL+"250/250/"+userDetail.getString("avatar");
                                 //singleItem.add(new SingleItemModel(name,image,udate));
-                                allSampleData.add(new DataModel(name,image,udate,categoryv,totallike,comments,daysago,ratingv,uid,fullname,avatar,id,IMAGE_TYPE));
+                                int isliked=student.getInt("like_unlike");
+                                allSampleData.add(new DataModel(name,image,udate,categoryv,totallike,isliked,comments,daysago,ratingv,uid,fullname,avatar,id,IMAGE_TYPE));
 
                             }
                             Log.d("bdm",singleItem.toString());

@@ -6,6 +6,7 @@ package com.mssinfotech.iampro.co.adapter;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -21,8 +22,12 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.load.resource.bitmap.CircleCrop;
 import com.bumptech.glide.request.RequestOptions;
+import com.like.LikeButton;
+import com.like.OnLikeListener;
+import com.mssinfotech.iampro.co.CommentActivity;
 import com.mssinfotech.iampro.co.R;
 import com.mssinfotech.iampro.co.common.Config;
+import com.mssinfotech.iampro.co.common.function;
 import com.mssinfotech.iampro.co.demand.DemandDetail;
 import com.mssinfotech.iampro.co.image.ImageDetail;
 import com.mssinfotech.iampro.co.model.SingleItemModel;
@@ -30,6 +35,7 @@ import com.mssinfotech.iampro.co.product.ProductDetail;
 import com.mssinfotech.iampro.co.provide.ProvideDetailActivity;
 import com.mssinfotech.iampro.co.user.MyProvideActivity;
 import com.mssinfotech.iampro.co.user.ProfileActivity;
+import com.mssinfotech.iampro.co.utils.PrefManager;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -38,7 +44,9 @@ public class SectionListDataAdapter extends RecyclerView.Adapter<SectionListData
 
     private ArrayList<SingleItemModel> itemsList;
     private Context mContext;
-    private int uid,id;
+    public String uid;
+    public int id;
+    public String utype;
     ImageView ivLike;
     public SectionListDataAdapter(Context context, ArrayList<SingleItemModel> itemsList) {
         this.itemsList = itemsList;
@@ -54,9 +62,9 @@ public class SectionListDataAdapter extends RecyclerView.Adapter<SectionListData
     }
 
     @Override
-    public void onBindViewHolder(SingleItemRowHolder holder, int i) {
+    public void onBindViewHolder(final SingleItemRowHolder holder, int i) {
         SingleItemModel singleItem = itemsList.get(i);
-        holder.tvTitle.setText(singleItem.getName());
+        holder.tvTitle.setText(singleItem.getName()+"-"+singleItem.getIsliked());
         holder.totallike.setText(String.valueOf(singleItem.getTotallike()));
         holder.comments.setText(String.valueOf(singleItem.getComments()));
         /*
@@ -65,7 +73,7 @@ public class SectionListDataAdapter extends RecyclerView.Adapter<SectionListData
               holder.daysago.setText(singleItem.getDaysago());
         }*/
         holder.user_name.setText(singleItem.getFullname());
-        uid=singleItem.getUid();
+        uid= PrefManager.getLoginDetail(mContext,"id");
         id=singleItem.getId();
         //user_image
         Glide.with(mContext)
@@ -75,17 +83,6 @@ public class SectionListDataAdapter extends RecyclerView.Adapter<SectionListData
                         .fitCenter())
                 .into(holder.user_image);
 
-       /* Picasso.with(mContext)
-                .load(singleItem.getUrl())
-                .resize(70,70)
-                .into(holder.itemImage); */
-
-        /* Glide.with(mContext)
-                .load(singleItem.getUrl())
-                .diskCacheStrategy(DiskCacheStrategy.ALL)
-                .centerCrop()
-                .error(R.drawable.bg)
-                .into(holder.itemImage); */
 
         String url=singleItem.getImage();
         //Log.d("url_adapter",url);
@@ -96,7 +93,7 @@ public class SectionListDataAdapter extends RecyclerView.Adapter<SectionListData
                         .centerCrop()
                         .fitCenter())
                 .into(holder.itemImage);
-        final String utype=singleItem.getType();
+        utype=singleItem.getType();
         holder.itemImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -128,6 +125,16 @@ public class SectionListDataAdapter extends RecyclerView.Adapter<SectionListData
                 //Toast.makeText(mContext, utype+" clicked", Toast.LENGTH_SHORT).show();
             }
         });
+        if(PrefManager.getLoginDetail(mContext,"id")==null){
+            holder.likeButton.setEnabled(false);
+        }
+        if((singleItem.getIsliked())==1){
+            holder.likeButton.setLiked(true);
+            holder.totallike.setTextColor(Color.RED);
+        }else{
+            holder.likeButton.setLiked(false);
+            holder.totallike.setTextColor(Color.BLACK);
+        }
          holder.user_image.setOnClickListener(new View.OnClickListener() {
              @Override
              public void onClick(View v) {
@@ -140,10 +147,43 @@ public class SectionListDataAdapter extends RecyclerView.Adapter<SectionListData
          holder.likelayout.setOnClickListener(new View.OnClickListener() {
              @Override
              public void onClick(View v) {
-                 Toast.makeText(mContext, "Total Like "+String.valueOf(uid), Toast.LENGTH_SHORT).show();
+                //Toast.makeText(mContext, "Total Like "+String.valueOf(uid), Toast.LENGTH_SHORT).show();
              }
          });
+         holder.likeButton.setOnLikeListener(new OnLikeListener() {
+             @Override
+             public void liked(LikeButton likeButton) {
+                 int newlike = (int) Integer.parseInt(holder.totallike.getText().toString())+1;
+                 holder.totallike.setTextColor(Color.RED);
+                 holder.totallike.setText(String.valueOf(newlike));
+                 String url = Config.API_URL+"app_service.php?type=like_me&id="+String.valueOf(id)+"&uid="+uid+"&ptype="+utype;
+                 Log.e(Config.TAG,url);
+                 function.executeUrl(mContext,"get",url,null);
+             }
+
+             @Override
+             public void unLiked(LikeButton likeButton) {
+                 int newlike = (int) Integer.parseInt(holder.totallike.getText().toString())-1;
+                 holder.totallike.setTextColor(Color.BLACK);
+                 holder.totallike.setText(String.valueOf(newlike));
+                 String url = Config.API_URL+"app_service.php?type=like_me&id="+String.valueOf(id)+"&uid="+uid+"&ptype="+utype;
+                 Log.e(Config.TAG,url);
+                 function.executeUrl(mContext,"get",url,null);
+             }
+         });
+        holder.iv_comments.setOnClickListener(CommnetOnClickListener);
+        holder.comments.setOnClickListener(CommnetOnClickListener);
+
     }
+    private View.OnClickListener CommnetOnClickListener = new View.OnClickListener() {
+        public void onClick(View v) {
+            Intent intent=new Intent(mContext, CommentActivity.class);
+            intent.putExtra("id",String.valueOf(id));
+            intent.putExtra("type",utype);
+            intent.putExtra("uid",PrefManager.getLoginDetail(mContext,"id"));
+            mContext.startActivity(intent);
+        }
+    };
 
     @Override
     public int getItemCount() {
@@ -151,14 +191,15 @@ public class SectionListDataAdapter extends RecyclerView.Adapter<SectionListData
     }
     public class SingleItemRowHolder extends RecyclerView.ViewHolder {
         protected TextView tvTitle,totallike,comments,daysago,user_name;
-        protected ImageView itemImage;
+        protected ImageView itemImage,iv_comments;
         protected de.hdodenhof.circleimageview.CircleImageView btnMore,user_image;
         protected LinearLayout likelayout;
-        //this.btnMore= view.findViewById(R.id.btnMore);
-
+        protected LikeButton likeButton;
 
         public SingleItemRowHolder(View view) {
             super(view);
+            this.iv_comments = view.findViewById(R.id.iv_comments);
+            this.likeButton = view.findViewById(R.id.likeButton);
             this.likelayout = view.findViewById(R.id.likelayout);
             this.tvTitle =view.findViewById(R.id.tvTitle);
             this.itemImage =  view.findViewById(R.id.itemImage);

@@ -14,7 +14,7 @@ public class SingleItemModel {
     private String udate;
     private String image;
     private String category;
-    private int totallike;
+    private int totallike,isliked;
     private int uid,id;
 
     public int getUid() {
@@ -31,6 +31,14 @@ public class SingleItemModel {
 
     public void setId(int id) {
         this.id = id;
+    }
+
+    public int getIsliked() {
+        return isliked;
+    }
+
+    public void setIsliked(int isliked) {
+        this.isliked = isliked;
     }
 
     public String getFullname() {
@@ -121,7 +129,7 @@ public class SingleItemModel {
         this.udate=udate;
     }
     //daysago,totallike,comments   uid,fullname,avatar
-   public SingleItemModel(int id, String name, String image,String udate,String daysago,int totallike,int comments,int uid,String fullname,String avatar,String type) {
+   public SingleItemModel(int id, String name, String image,String udate,String daysago,int totallike,int comments,int uid,String fullname,String avatar,int isliked, String type) {
        this.name = name;
        this.image = image;
        this.udate = udate;
@@ -129,6 +137,7 @@ public class SingleItemModel {
        this.totallike = totallike;
        this.comments = comments;
        this.uid = uid;
+       this.isliked = isliked;
        this.fullname = fullname;
        this.avatar = avatar;
        this.type = type;

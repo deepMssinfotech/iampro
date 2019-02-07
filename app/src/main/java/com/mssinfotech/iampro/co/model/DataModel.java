@@ -27,7 +27,7 @@ public class DataModel {
     }
 
     private float rating;
-    private int uid;
+    private int uid,isliked;
 
     public String getType() {
         return type;
@@ -35,6 +35,14 @@ public class DataModel {
 
     public void setType(String type) {
         this.type = type;
+    }
+
+    public int getIsliked() {
+        return isliked;
+    }
+
+    public void setIsliked(int isliked) {
+        this.isliked = isliked;
     }
 
     private String type;
@@ -173,15 +181,16 @@ public class DataModel {
         this.udate=udate;
         this.category=category;
     }
-    public DataModel(String name,String image,String udate,String category,int totallike,int comments){
+    public DataModel(String name,String image,String udate,String category,int totallike,int isliked,int comments){
         this.name=name;
         this.image=image;
         this.udate=udate;
         this.category=category;
         this.totallike=totallike;
         this.comments=comments;
+        this.isliked=isliked;
     }
-    public DataModel(String name,String image,String udate,String category,int totallike,int comments,int sCost,int pCost){
+    public DataModel(String name,String image,String udate,String category,int totallike,int isliked,int comments,int sCost,int pCost){
         this.name=name;
         this.image=image;
         this.udate=udate;
@@ -190,8 +199,9 @@ public class DataModel {
         this.comments=comments;
         this.sCost=sCost;
         this.pCost=pCost;
+        this.isliked = isliked;
     }
-    public DataModel(String name,String image,String udate,String category,int totallike,int comments,String daysago){
+    public DataModel(String name,String image,String udate,String category,int totallike,int isliked,int comments,String daysago){
         this.name=name;
         this.image=image;
         this.udate=udate;
@@ -199,9 +209,10 @@ public class DataModel {
         this.totallike=totallike;
         this.comments=comments;
          this.daysago=daysago;
+         this.isliked = isliked;
     }
-    //ppd
-    public DataModel(String name,String image,String udate,String category,int totallike,int comments,int sCost,int pCost,float rating,int uid,String fullname,String userImage,String pid){
+    //product provide demand
+    public DataModel(String name,String image,String udate,String category,int totallike,int isliked,int comments,int sCost,int pCost,float rating,int uid,String fullname,String userImage,String pid,String type){
         this.name=name;
         this.image=image;
         this.udate=udate;
@@ -216,9 +227,11 @@ public class DataModel {
         this.userImage=userImage;
         this.uid=uid;
         this.pid=pid;
+        this.isliked = isliked;
+        this.type= type;
     }
     //name,image,udate,categoryv,totallike,comments,daysago,ratingv,uid,fullname,avatar
-    public DataModel(String name,String image,String udate,String category,int totallike,int comments,String daysago,float rating,int uid,String fullname,String userImage){
+    public DataModel(String name,String image,String udate,String category,int totallike,int isliked,int comments,String daysago,float rating,int uid,String fullname,String userImage){
         this.name=name;
         this.image=image;
         this.udate=udate;
@@ -230,8 +243,10 @@ public class DataModel {
         this.uid=uid;
         this.fullname=fullname;
         this.userImage=userImage;
+        this.isliked =isliked;
     }
-    public DataModel(String name,String image,String udate,String category,int totallike,int comments,String daysago,float rating,int uid,String fullname,String userImage,int id,String type){
+    //image
+    public DataModel(String name,String image,String udate,String category,int totallike,int isliked,int comments,String daysago,float rating,int uid,String fullname,String userImage,int id,String type){
         this.name=name;
         this.image=image;
         this.udate=udate;
@@ -245,6 +260,7 @@ public class DataModel {
         this.userImage=userImage;
         this.id=id;
         this.type=type;
+        this.isliked = isliked;
     }
     public DataModel(String name,String image,String udate,String category,int totallike,int comments,int sCost,int pCost,String daysago){
         this.name=name;
@@ -256,6 +272,7 @@ public class DataModel {
         this.sCost=sCost;
         this.pCost=pCost;
         this.daysago=daysago;
+        this.isliked = isliked;
     }
 
 }

@@ -12,12 +12,16 @@ import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.bitmap.CircleCrop;
 import com.bumptech.glide.request.RequestOptions;
+import com.like.LikeButton;
+import com.like.OnLikeListener;
+import com.mssinfotech.iampro.co.CommentActivity;
 import com.mssinfotech.iampro.co.R;
 import android.view.ViewGroup;
 import android.widget.RadioButton;
@@ -39,9 +43,12 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.VideoView;
 
+import com.mssinfotech.iampro.co.common.Config;
+import com.mssinfotech.iampro.co.common.function;
 import com.mssinfotech.iampro.co.image.ImageDetail;
 import com.mssinfotech.iampro.co.model.DataModel;
 import com.mssinfotech.iampro.co.user.ProfileActivity;
+import com.mssinfotech.iampro.co.utils.PrefManager;
 
 import java.util.ArrayList;
 
@@ -49,7 +56,7 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.ViewHolder> 
     ArrayList<DataModel> mValues;
     Context mContext;
     protected ItemListener mListener;
-    int uid,id;
+    public int uid,id,added_by;
     public VideoAdapter(Context context, ArrayList<DataModel> values, ItemListener itemListener) {
         mValues = values;
         mContext = context;
@@ -59,14 +66,17 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.ViewHolder> 
         public TextView textView,tv_tlike,tv_comments,tv_daysago,tv_sprice,tv_pprice,uname;
 
         RatingBar ratingBar;
-        public ImageView imageView;
+        public ImageView imageView,iv_comments;
          VideoView videoView;
+         LikeButton likeButton;
         de.hdodenhof.circleimageview.CircleImageView userImage;
         DataModel item;
 
         public ViewHolder(View v) {
             super(v);
             v.setOnClickListener(this);
+            iv_comments = v.findViewById(R.id.iv_comments);
+            likeButton = v.findViewById(R.id.likeButton);
             textView = (TextView) v.findViewById(R.id.textView);
             imageView = (ImageView) v.findViewById(R.id.imageView);
              videoView=v.findViewById(R.id.video);
@@ -82,27 +92,34 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.ViewHolder> 
             uname=v.findViewById(R.id.uname);
             userImage=v.findViewById(R.id.user_image);
 
+            tv_comments.setOnClickListener(CommnetOnClickListener);
+            iv_comments.setOnClickListener(CommnetOnClickListener);
             imageView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Intent intent=new Intent(mContext,ImageDetail.class);
-                    intent.putExtra("uid",uid);
-                    intent.putExtra("id",id);
-                    intent.putExtra("type","video");
+                    Intent intent = new Intent(mContext, ImageDetail.class);
+                    intent.putExtra("uid", uid);
+                    intent.putExtra("id", id);
+                    intent.putExtra("type", "video");
                     mContext.startActivity(intent);
                 }
             });
-            //relativeLayout = (RelativeLayout) v.findViewById(R.id.relativeLayout);
         }
+        private View.OnClickListener CommnetOnClickListener = new View.OnClickListener() {
+            public void onClick(View v) {
+                Intent intent=new Intent(mContext, CommentActivity.class);
+                intent.putExtra("id",String.valueOf(item.getId()));
+                intent.putExtra("type","demand");
+                intent.putExtra("uid",PrefManager.getLoginDetail(mContext,"id"));
+                mContext.startActivity(intent);
+            }
+        };
         public void setData(DataModel item) {
             this.item = item;
             textView.setText(item.getName());
             //textView.setBackgroundColor(Color.BLUE);
             String url=item.getImage();
             String userImages=item.getUserImage();
-            //Toast.makeText(mContext,"image:"+url,Toast.LENGTH_LONG).show();
-            //Log.d("url_adapter",url);
-            //Toast.makeText(mContext, ""+url, Toast.LENGTH_SHORT).show();
             tv_tlike.setText(String.valueOf(item.getTotallike()));
             tv_comments.setText(String.valueOf(item.getComments()));
             ratingBar.setRating(item.getRating());
@@ -115,32 +132,21 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.ViewHolder> 
                 tv_pprice.setText(String.valueOf(item.getpCost()));
             }
 
-            tv_daysago.setVisibility(View.VISIBLE);
-            tv_daysago.setText(item.getDaysago());
+            //tv_daysago.setVisibility(View.VISIBLE);
+            //tv_daysago.setText(item.getDaysago());
             uname.setText(item.getFullname());
-
-            uid=item.getUid();
-             id=item.getId();
+            added_by = item.getUid();
+            uid=Integer.parseInt(PrefManager.getLoginDetail(mContext,"id"));
+            id=item.getId();
             //tv_daysago.setText();
             Glide.with(mContext)
                     .load(userImages)
-                    .apply(new RequestOptions()
-                            .circleCrop().bitmapTransform(new CircleCrop())
-                            .fitCenter())
+                    .apply(Config.options_avatar)
                     .into(userImage);
-
-         /*   RequestOptions options=new RequestOptions();
-            options.centerCrop().placeholder(mContext.getResources().getDrawable(R.drawable.user_placeholder));
-            Glide.with(mContext)
-                    .load(userImages)
-                    .apply(options)
-                    .into(userImage); */
 
            Glide.with(mContext)
                     .load(url)
-                    .apply(new RequestOptions()
-                            .centerCrop()
-                            .fitCenter())
+                    .apply(Config.options_video)
                     .into(imageView);
                //videoView.setVideoPath(url);
             //userImage
@@ -148,13 +154,44 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.ViewHolder> 
                 @Override
                 public void onClick(View v) {
                     Toast.makeText(mContext,"uid:"+uid,Toast.LENGTH_LONG).show();
-
                     Intent intent=new Intent(mContext, ProfileActivity.class);
                     intent.putExtra("uid",String.valueOf(uid));
                     mContext.startActivity(intent);
                 }
             });
+            likeButton.setUnlikeDrawableRes(R.drawable.like);
+            likeButton.setLikeDrawableRes(R.drawable.like_un);
+            if(PrefManager.getLoginDetail(mContext,"id")==null){
+                likeButton.setEnabled(false);
+            }
+            if((item.getIsliked())==1){
+                likeButton.setLiked(true);
+                tv_tlike.setTextColor(Color.RED);
+            }else{
+                likeButton.setLiked(false);
+                tv_tlike.setTextColor(Color.BLACK);
+            }
+            likeButton.setOnLikeListener(new OnLikeListener() {
+                @Override
+                public void liked(LikeButton likeButton) {
+                    int newlike = (int) Integer.parseInt(tv_tlike.getText().toString())+1;
+                    tv_tlike.setTextColor(Color.RED);
+                    tv_tlike.setText(String.valueOf(newlike));
+                    String url = Config.API_URL+"app_service.php?type=like_me&id="+String.valueOf(id)+"&uid="+uid+"&ptype=video";
+                    Log.e(Config.TAG,url);
+                    function.executeUrl(mContext,"get",url,null);
+                }
 
+                @Override
+                public void unLiked(LikeButton likeButton) {
+                    int newlike = (int) Integer.parseInt(tv_tlike.getText().toString())-1;
+                    tv_tlike.setTextColor(Color.BLACK);
+                    tv_tlike.setText(String.valueOf(newlike));
+                    String url = Config.API_URL+"app_service.php?type=like_me&id="+String.valueOf(id)+"&uid="+uid+"&ptype=video";
+                    Log.e(Config.TAG,url);
+                    function.executeUrl(mContext,"get",url,null);
+                }
+            });
         }
         @Override
         public void onClick(View view) {

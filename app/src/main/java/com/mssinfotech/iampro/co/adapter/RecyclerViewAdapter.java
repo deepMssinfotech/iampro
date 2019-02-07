@@ -12,12 +12,16 @@ import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.bitmap.CircleCrop;
 import com.bumptech.glide.request.RequestOptions;
+import com.like.LikeButton;
+import com.like.OnLikeListener;
+import com.mssinfotech.iampro.co.CommentActivity;
 import com.mssinfotech.iampro.co.R;
 import android.view.ViewGroup;
 import android.widget.RadioButton;
@@ -38,8 +42,11 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.mssinfotech.iampro.co.common.Config;
+import com.mssinfotech.iampro.co.common.function;
 import com.mssinfotech.iampro.co.model.DataModel;
 import com.mssinfotech.iampro.co.user.ProfileActivity;
+import com.mssinfotech.iampro.co.utils.PrefManager;
 
 import java.util.ArrayList;
 
@@ -47,7 +54,8 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     ArrayList<DataModel> mValues;
     Context mContext;
     protected ItemListener mListener;
-    int uid;
+    public int uid,id,added_by;
+    public String utype;
     public RecyclerViewAdapter(Context context, ArrayList<DataModel> values, ItemListener itemListener) {
         mValues = values;
         mContext = context;
@@ -59,13 +67,17 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         RatingBar ratingBar;
         public ImageView imageView;
         de.hdodenhof.circleimageview.CircleImageView userImage;
+        LikeButton likeButton;
         public RelativeLayout relativeLayout;
         DataModel item;
+        ImageView iv_comments;
         public ViewHolder(View v) {
             super(v);
             v.setOnClickListener(this);
+            likeButton = v.findViewById(R.id.likeButton);
             textView = (TextView) v.findViewById(R.id.textView);
             imageView = (ImageView) v.findViewById(R.id.imageView);
+            iv_comments = v.findViewById(R.id.iv_comments);
             tv_tlike=v.findViewById(R.id.tv_totallike);
             //tv_comments
             tv_comments=v.findViewById(R.id.tv_comments);
@@ -81,74 +93,110 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
              imageView.setOnClickListener(new View.OnClickListener() {
                  @Override
                  public void onClick(View v) {
-                     Toast.makeText(mContext, "Image clicked", Toast.LENGTH_SHORT).show();
+                  //   Toast.makeText(mContext, "Image clicked", Toast.LENGTH_SHORT).show();
                  }
              });
             //relativeLayout = (RelativeLayout) v.findViewById(R.id.relativeLayout);
+            tv_comments.setOnClickListener(CommnetOnClickListener);
+            iv_comments.setOnClickListener(CommnetOnClickListener);
         }
+        private View.OnClickListener CommnetOnClickListener = new View.OnClickListener() {
+            public void onClick(View v) {
+                Intent intent=new Intent(mContext, CommentActivity.class);
+                intent.putExtra("id",String.valueOf(item.getId()));
+                intent.putExtra("type","demand");
+                intent.putExtra("uid",PrefManager.getLoginDetail(mContext,"id"));
+                mContext.startActivity(intent);
+            }
+        };
         public void setData(DataModel item) {
             this.item = item;
             textView.setText(item.getName());
+            id = item.getId();
+            added_by = item.getUid();
+            uid = Integer.parseInt(PrefManager.getLoginDetail(mContext, "id"));
             //textView.setBackgroundColor(Color.BLUE);
-            String url=item.getImage();
-            String userImages=item.getUserImage();
+            String url = item.getImage();
+            String userImages = item.getUserImage();
             //Toast.makeText(mContext,"image:"+url,Toast.LENGTH_LONG).show();
             //Log.d("url_adapter",url);
             //Toast.makeText(mContext, ""+url, Toast.LENGTH_SHORT).show();
             tv_tlike.setText(String.valueOf(item.getTotallike()));
             tv_comments.setText(String.valueOf(item.getComments()));
             ratingBar.setRating(item.getRating());
-             if(String.valueOf(item.getsCost())!=null || !String.valueOf(item.getsCost()).equalsIgnoreCase(null)) {
-                 tv_sprice.setVisibility(View.VISIBLE);
-                 tv_sprice.setText(String.valueOf(String.valueOf(item.getsCost())));
-             }
-             if(String.valueOf(item.getpCost())!=null || !String.valueOf(item.getpCost()).equalsIgnoreCase(null) || item.getpCost()!=0){
-                   tv_pprice.setVisibility(View.VISIBLE);
-                 tv_pprice.setText(String.valueOf(item.getpCost()));
-                 }
+            if (String.valueOf(item.getsCost()) != null || !String.valueOf(item.getsCost()).equalsIgnoreCase(null)) {
+                tv_sprice.setVisibility(View.VISIBLE);
+                tv_sprice.setText(String.valueOf(String.valueOf(item.getsCost())));
+            }
+            if (String.valueOf(item.getpCost()) != null || !String.valueOf(item.getpCost()).equalsIgnoreCase(null) || item.getpCost() != 0) {
+                tv_pprice.setVisibility(View.VISIBLE);
+                tv_pprice.setText(String.valueOf(item.getpCost()));
+            }
+            utype = item.getType();
+            tv_daysago.setVisibility(View.VISIBLE);
+            tv_daysago.setText(item.getDaysago());
+            uname.setText(item.getFullname());
 
-                 tv_daysago.setVisibility(View.VISIBLE);
-               tv_daysago.setText(item.getDaysago());
-                uname.setText(item.getFullname());
-
-                uid=item.getUid();
+            uid = item.getUid();
 
             //tv_daysago.setText();
             Glide.with(mContext)
                     .load(userImages)
-                    .apply(new RequestOptions()
-                            .circleCrop().bitmapTransform(new CircleCrop())
-                            .fitCenter())
+                    .apply(Config.options_avatar)
                     .into(userImage);
 
-         /*   RequestOptions options=new RequestOptions();
-            options.centerCrop().placeholder(mContext.getResources().getDrawable(R.drawable.user_placeholder));
-            Glide.with(mContext)
-                    .load(userImages)
-                    .apply(options)
-                    .into(userImage); */
 
             Glide.with(mContext)
                     .load(url)
-                    .apply(new RequestOptions()
-                            .centerCrop()
-                            .fitCenter())
+                    .apply(Config.options_product)
                     .into(imageView);
             //imageView.setImageResource(item.image);
 
-          // relativeLayout.setBackgroundColor(Color.parseColor("#000000"));
+            // relativeLayout.setBackgroundColor(Color.parseColor("#000000"));
             //userImage
-             userImage.setOnClickListener(new View.OnClickListener() {
-                 @Override
-                 public void onClick(View v) {
-                      Toast.makeText(mContext,"uid:"+uid,Toast.LENGTH_LONG).show();
+            userImage.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Toast.makeText(mContext, "uid:" + uid, Toast.LENGTH_LONG).show();
 
-                     Intent intent=new Intent(mContext, ProfileActivity.class);
-                      intent.putExtra("uid",String.valueOf(uid));
-                     mContext.startActivity(intent);
-                 }
-             });
+                    Intent intent = new Intent(mContext, ProfileActivity.class);
+                    intent.putExtra("uid", String.valueOf(uid));
+                    mContext.startActivity(intent);
+                }
+            });
+            likeButton.setUnlikeDrawableRes(R.drawable.like);
+            likeButton.setLikeDrawableRes(R.drawable.like_un);
+            if (PrefManager.getLoginDetail(mContext, "id") == null) {
+                likeButton.setEnabled(false);
+            }
+            if ((item.getIsliked()) == 1) {
+                likeButton.setLiked(true);
+                tv_tlike.setTextColor(Color.RED);
+            } else {
+                likeButton.setLiked(false);
+                tv_tlike.setTextColor(Color.BLACK);
+            }
+            likeButton.setOnLikeListener(new OnLikeListener() {
+                @Override
+                public void liked(LikeButton likeButton) {
+                    int newlike = (int) Integer.parseInt(tv_tlike.getText().toString()) + 1;
+                    tv_tlike.setTextColor(Color.RED);
+                    tv_tlike.setText(String.valueOf(newlike));
+                    String url = Config.API_URL + "app_service.php?type=like_me&id=" + String.valueOf(id) + "&uid=" + uid + "&ptype="+utype;
+                    Log.e(Config.TAG, url);
+                    function.executeUrl(mContext, "get", url, null);
+                }
 
+                @Override
+                public void unLiked(LikeButton likeButton) {
+                    int newlike = (int) Integer.parseInt(tv_tlike.getText().toString()) - 1;
+                    tv_tlike.setTextColor(Color.BLACK);
+                    tv_tlike.setText(String.valueOf(newlike));
+                    String url = Config.API_URL + "app_service.php?type=like_me&id=" + String.valueOf(id) + "&uid=" + uid + "&ptype="+utype;
+                    Log.e(Config.TAG, url);
+                    function.executeUrl(mContext, "get", url, null);
+                }
+            });
         }
         @Override
         public void onClick(View view) {

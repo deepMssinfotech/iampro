@@ -107,8 +107,7 @@ public class RecyclerViewDataAdapter extends RecyclerView.Adapter<RecyclerViewDa
             this.itemTitle = (ImageView) view.findViewById(R.id.itemTitle);
             this.recycler_view_list = (RecyclerView) view.findViewById(R.id.recycler_view_list);
             this.btnMore= view.findViewById(R.id.btnMore);
-
-             this.totallike=view.findViewById(R.id.tv_totallike);
+            this.totallike=view.findViewById(R.id.tv_totallike);
             this.comments=view.findViewById(R.id.tv_comments);
             this.daysago=view.findViewById(R.id.tv_daysago);
             this.user_image=view.findViewById(R.id.user_image);

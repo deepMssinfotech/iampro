@@ -55,6 +55,7 @@ import com.mssinfotech.iampro.co.model.SectionDataModel;
 import com.mssinfotech.iampro.co.model.SingleItemModel;
 import com.mssinfotech.iampro.co.common.Config;
 import com.mssinfotech.iampro.co.model.UserModel;
+import com.mssinfotech.iampro.co.utils.PrefManager;
 import com.takusemba.multisnaprecyclerview.MultiSnapRecyclerView;
 
 import org.json.JSONArray;
@@ -65,7 +66,7 @@ import static com.mssinfotech.iampro.co.common.Config.TAG;
 
 public class HomeFragment extends Fragment implements UserDataAdapter.ItemListener{
     private Toolbar toolbar;
-
+    int uid;
     SectionDataModel dm = new SectionDataModel();
     ArrayList<SingleItemModel> singleItem = new ArrayList<>();
     ArrayList<SectionDataModel> allSampleData=new ArrayList<>();
@@ -75,7 +76,6 @@ public class HomeFragment extends Fragment implements UserDataAdapter.ItemListen
     RecyclerViewDataAdapter adapterr;
     UserDataAdapter user_adapter;
     ArrayList<UserModel> userSampleData=new ArrayList<>();
-    int uid;
     public HomeFragment() {
         // Required empty public constructor
     }
@@ -105,6 +105,7 @@ public class HomeFragment extends Fragment implements UserDataAdapter.ItemListen
         if(!allSampleData.isEmpty()){
             allSampleData.clear();
         }
+        uid= Integer.parseInt(PrefManager.getLoginDetail(getContext(),"id"));
         //callData();
         getImage();
         //my_recycler_view,recycler_view_video,recycler_view_user,recycler_view_product,recycler_view_provide,recycler_view_demand
@@ -137,8 +138,7 @@ public class HomeFragment extends Fragment implements UserDataAdapter.ItemListen
 
 
     public void  getImage(){
-        Log.d("rrrresponse_enterrr","rrrresponse_enterrr");
-        final String url = "https://www.iampro.co/api/app_service.php?type=all_item&name=image&uid=&my_id=";
+        final String url = "https://www.iampro.co/api/app_service.php?type=all_item&name=image&uid="+uid+"&my_id="+uid;
         // Initialize a new RequestQueue instance
         RequestQueue requestQueue = Volley.newRequestQueue(getContext());
 
@@ -165,12 +165,11 @@ public class HomeFragment extends Fragment implements UserDataAdapter.ItemListen
                                 String imagev=student.optString("image");
                                 String image= Config.URL_ROOT+"uploads/album/450/500/"+imagev;
                                 String udate=student.optString("udate");
-                                Log.d("pdata",""+name+""+categoryv+""+image+""+udate);
-                                 String daysago=student.optString("ago");
+                                //Log.d("pdata",""+name+""+categoryv+""+image+""+udate);
+                                String daysago=student.optString("ago");
                                 int totallike=student.getInt("totallike");
+                                int isliked=student.getInt("like_unlike");
                                 int comments=student.getInt("comments");
-
-
 
 
                                 JSONObject userDetail=student.optJSONObject("user_detail");
@@ -185,7 +184,7 @@ public class HomeFragment extends Fragment implements UserDataAdapter.ItemListen
                                 //Toast.makeText(getContext(),"rrrresponse_enterrr:",Toast.LENGTH_LONG).show();
 
                                 //singleItem.add(new SingleItemModel(name,image,udate));
-                                   singleItem.add(new SingleItemModel(id, name,image,udate,daysago,totallike,comments,uid,fullname,avatar,"image"));
+                                singleItem.add(new SingleItemModel(id, name,image,udate,daysago,totallike,comments,uid,fullname,avatar,isliked,"image"));
                             }
                             Log.d("bdm",singleItem.toString());
                             dm.setAllItemsInSection(singleItem);
@@ -242,7 +241,7 @@ public class HomeFragment extends Fragment implements UserDataAdapter.ItemListen
         //getVideo();
     }
     public void getVideo(){
-        final String url = "https://www.iampro.co/api/app_service.php?type=all_item&name=video&uid=&my_id=";
+        final String url = "https://www.iampro.co/api/app_service.php?type=all_item&name=video&uid="+uid+"&my_id="+uid;
         // Initialize a new RequestQueue instance
         RequestQueue requestQueue = Volley.newRequestQueue(getContext());
 
@@ -265,7 +264,7 @@ public class HomeFragment extends Fragment implements UserDataAdapter.ItemListen
 
                                 String name = student.optString("name");
                                 String categoryv=student.optString("category");
-                                String imagev=student.optString("image");
+                                String imagev=student.optString("v_image");
                                 String image=Config.URL_ROOT + "uploads/v_image/" + imagev;
                                 String udate=student.optString("udate");
                                 Log.d("pdata",""+name+""+categoryv+""+image+""+udate);
@@ -274,21 +273,18 @@ public class HomeFragment extends Fragment implements UserDataAdapter.ItemListen
                                 int totallike=student.getInt("totallike");
                                 int comments=student.getInt("comments");
 
-
-
-
                                 JSONObject userDetail=student.optJSONObject("user_detail");
 
                                 int uid=userDetail.getInt("id");
                                 int id=student.getInt("id");
                                 String fullname=userDetail.getString("fullname");
                                 String avatar=Config.AVATAR_URL+"250/250/"+userDetail.getString("avatar");
-
+                                int isliked=student.getInt("like_unlike");
 
                                 //SectionDataModel dm = new SectionDataModel();
                                 //dm.setHeaderTitle("Section " + i);
                                 //Toast.makeText(getContext(),"rrrresponse_enterrr:",Toast.LENGTH_LONG).show();
-                                singleItem.add(new SingleItemModel(id,name,image,udate,daysago,totallike,comments,uid,fullname,avatar,"video"));
+                                singleItem.add(new SingleItemModel(id,name,image,udate,daysago,totallike,comments,uid,fullname,avatar,isliked,"video"));
 
                             }
                             Log.d("bdm",singleItem.toString());
@@ -305,8 +301,8 @@ public class HomeFragment extends Fragment implements UserDataAdapter.ItemListen
                             //my_recycler_view.setLayoutManager(new GridLayoutManager(getActivity(), 2));
                             my_recycler_view.setAdapter(adapterr);
 
-                           // getUser();
-                                getProduct();
+                            //getUser();
+                            getProduct();
                         }
                         catch (JSONException e){
                             e.printStackTrace();
@@ -333,7 +329,7 @@ public class HomeFragment extends Fragment implements UserDataAdapter.ItemListen
 
 
     public void getUser(){
-        final String url = "https://www.iampro.co/api/app_service.php?type=getSelectedUser&limit=15&uid=&my_id=";
+        final String url = "https://www.iampro.co/api/app_service.php?type=getSelectedUser&limit=15&uid="+uid+"&my_id="+uid;
         // Initialize a new RequestQueue instance
         RequestQueue requestQueue = Volley.newRequestQueue(getContext());
 
@@ -361,7 +357,6 @@ public class HomeFragment extends Fragment implements UserDataAdapter.ItemListen
                                 JSONObject student = response.getJSONObject(i);
 
                                 String name = student.getString("fname");
-                                uid=student.getInt("id");
                                 String identity_type=student.optString("identity_type");
                                 String category=student.optString("category");
                                 String imagev=student.optString("avatar");
@@ -391,6 +386,8 @@ public class HomeFragment extends Fragment implements UserDataAdapter.ItemListen
                             LinearLayoutManager manager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
                             my_recycler_view.setLayoutManager(manager);
 
+                            getProduct();
+
                         }
                         catch (JSONException e){
                             e.printStackTrace();
@@ -416,7 +413,7 @@ public class HomeFragment extends Fragment implements UserDataAdapter.ItemListen
     }
 
     public void getProduct(){
-        final String url = "https://www.iampro.co/api/app_service.php?type=all_product&uid=&name=product&my_id=";
+        final String url = "https://www.iampro.co/api/app_service.php?type=all_product&uid="+uid+"&name=product&my_id="+uid;
         // Initialize a new RequestQueue instance
         RequestQueue requestQueue = Volley.newRequestQueue(getContext());
 
@@ -453,10 +450,11 @@ public class HomeFragment extends Fragment implements UserDataAdapter.ItemListen
                                 JSONObject userDetail=student.optJSONObject("user_detail");
                                 int uid=userDetail.getInt("id");
                                 int id=student.getInt("id");
+                                int isliked=student.getInt("like_unlike");
                                 String fullname=userDetail.optString("fullname");
                                 String avatar=Config.AVATAR_URL+"250/250/"+userDetail.getString("avatar");
 
-                                singleItem.add(new SingleItemModel(id,name,image,udate,daysago,totallike,comments,uid,fullname,avatar,"product"));
+                                singleItem.add(new SingleItemModel(id,name,image,udate,daysago,totallike,comments,uid,fullname,avatar,isliked,"product"));
 
                             }
                             Log.d("bdm",singleItem.toString());
@@ -498,7 +496,7 @@ public class HomeFragment extends Fragment implements UserDataAdapter.ItemListen
         //getProvide();
     }
     public void getProvide(){
-        final String url = "https://www.iampro.co/api/app_service.php?type=all_product_classified&uid=&name=PROVIDE&my_id=";
+        final String url = "https://www.iampro.co/api/app_service.php?type=all_product_classified&uid="+uid+"&name=PROVIDE&my_id="+uid;
         // Initialize a new RequestQueue instance
         RequestQueue requestQueue = Volley.newRequestQueue(getContext());
 
@@ -536,8 +534,8 @@ public class HomeFragment extends Fragment implements UserDataAdapter.ItemListen
                                 int id=student.getInt("id");
                                 String fullname=userDetail.optString("fullname");
                                 String avatar=Config.AVATAR_URL+"250/250/"+userDetail.optString("avatar");
-
-                                singleItem.add(new SingleItemModel(id, name,image,udate,daysago,totallike,comments,uid,fullname,avatar,"provide"));
+                                int isliked=student.getInt("like_unlike");
+                                singleItem.add(new SingleItemModel(id, name,image,udate,daysago,totallike,comments,uid,fullname,avatar,isliked,"provide"));
 
 
                             }
@@ -580,7 +578,7 @@ public class HomeFragment extends Fragment implements UserDataAdapter.ItemListen
         //getDemand();
     }
     public void getDemand(){
-        final String url = "https://www.iampro.co/api/app_service.php?type=all_product_classified&uid=&name=DEMAND&my_id=";
+        final String url = "https://www.iampro.co/api/app_service.php?type=all_product_classified&uid="+uid+"&name=DEMAND&my_id="+uid;
         // Initialize a new RequestQueue instance
         RequestQueue requestQueue = Volley.newRequestQueue(getContext());
 
@@ -619,8 +617,8 @@ public class HomeFragment extends Fragment implements UserDataAdapter.ItemListen
                                 int id=student.getInt("id");
                                 String fullname=userDetail.optString("fullname");
                                 String avatar=Config.AVATAR_URL+"250/250/"+userDetail.optString("avatar");
-
-                                singleItem.add(new SingleItemModel(id, name,image,udate,daysago,totallike,comments,uid,fullname,avatar,"demand"));
+                                int isliked=student.getInt("like_unlike");
+                                singleItem.add(new SingleItemModel(id, name,image,udate,daysago,totallike,comments,uid,fullname,avatar,isliked,"demand"));
 
 
                             }

@@ -26,6 +26,7 @@ import com.mssinfotech.iampro.co.model.DataModel;
 import com.mssinfotech.iampro.co.model.SectionDataModel;
 import com.mssinfotech.iampro.co.model.SingleItemModel;
 import com.mssinfotech.iampro.co.common.Config;
+import com.mssinfotech.iampro.co.utils.PrefManager;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -64,7 +65,8 @@ public class VideoFragment extends Fragment implements VideoAdapter.ItemListener
             my_recycler_view =view.findViewById(R.id.my_recycler_view);
         }
     public void getVideo(){
-        final String url = "https://www.iampro.co/api/app_service.php?type=all_item&name=video&uid=&my_id=";
+        int uid= Integer.parseInt(PrefManager.getLoginDetail(getContext(),"id"));
+        final String url = "https://www.iampro.co/api/app_service.php?type=all_item&name=video&uid="+uid+"&my_id="+uid;
         // Initialize a new RequestQueue instance
         RequestQueue requestQueue = Volley.newRequestQueue(getContext());
 
@@ -94,7 +96,7 @@ public class VideoFragment extends Fragment implements VideoAdapter.ItemListener
                                 //int added_by=student.getInt("albumid");
                                 String name = student.optString("name");
                                 String categoryv=student.optString("category");
-                                String imagev=student.optString("image");
+                                String imagev=student.optString("v_image");
                                 String image= Config.URL_ROOT + "uploads/v_image/" + imagev;
                                 String udate=student.optString("udate");
                                 Log.d("pdata",""+name+""+categoryv+""+image+""+udate);
@@ -116,7 +118,8 @@ public class VideoFragment extends Fragment implements VideoAdapter.ItemListener
                                // Toast.makeText(getContext(),"rrrresponse_enterrr:",Toast.LENGTH_LONG).show();
                                 //singleItem.add(new SingleItemModel(name,image,udate));
                                 //allSampleData.add(new DataModel(name,image,udate,categoryv));
-                                allSampleData.add(new DataModel(name,image,udate,categoryv,totallike,comments,daysago,ratingv,uid,fullname,avatar,id,VIDEO_TYPE));
+                                int isliked=student.getInt("like_unlike");
+                                allSampleData.add(new DataModel(name,image,udate,categoryv,totallike,isliked,comments,daysago,ratingv,uid,fullname,avatar,id,VIDEO_TYPE));
                             }
                             Log.d("bdm",singleItem.toString());
                             dm.setAllItemsInSection(singleItem);
@@ -163,8 +166,6 @@ public class VideoFragment extends Fragment implements VideoAdapter.ItemListener
     }
     @Override
     public void onItemClick(DataModel item) {
-
         Toast.makeText(getContext(), item.getName()+ " is clicked", Toast.LENGTH_SHORT).show();
-
     }
 }
