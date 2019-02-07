@@ -50,9 +50,14 @@ import com.android.volley.VolleyLog;
 import com.android.volley.toolbox.JsonObjectRequest;
 
 import de.hdodenhof.circleimageview.CircleImageView;
+import com.like.LikeButton;
+import com.like.OnAnimationEndListener;
+import com.like.OnLikeListener;
+//import com.mikepenz.community_material_typeface_library.CommunityMaterial;
+//import com.mikepenz.iconics.IconicsDrawable;
 
-public class ProfileActivity extends AppCompatActivity implements AllFeedAdapter.ItemListener {
-
+public class ProfileActivity extends AppCompatActivity implements AllFeedAdapter.ItemListener  {
+ //,OnLikeListener,OnAnimationEndListener
     private static final String TAG = ProfileActivity.class.getSimpleName();
     private static final int FEED_LIMIT=15;
     private static int FEED_START=0;
@@ -68,6 +73,7 @@ public class ProfileActivity extends AppCompatActivity implements AllFeedAdapter
      RecyclerView vFeed;
      AllFeedAdapter adapter;
     ArrayList<FeedModel> mValues=new ArrayList<>();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

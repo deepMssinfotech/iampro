@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
@@ -24,13 +25,16 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
 import com.mssinfotech.iampro.co.R;
 import com.mssinfotech.iampro.co.adapter.MyImageAdapter;
+import com.mssinfotech.iampro.co.adapter.MyImageVideoDataAdapter;
 import com.mssinfotech.iampro.co.adapter.MyProductAdapter;
 import com.mssinfotech.iampro.co.adapter.MyVideoAdapter;
+import com.mssinfotech.iampro.co.adapter.MyVideoDataAdapter;
 import com.mssinfotech.iampro.co.common.CircleTransform;
 import com.mssinfotech.iampro.co.common.Config;
 import com.mssinfotech.iampro.co.common.IncludeShortMenu;
 import com.mssinfotech.iampro.co.model.MyImageModel;
 import com.mssinfotech.iampro.co.model.MyProductModel;
+import com.mssinfotech.iampro.co.model.SectionImageModel;
 import com.mssinfotech.iampro.co.model.SingleItemModel;
 import com.mssinfotech.iampro.co.utils.PrefManager;
 import com.squareup.picasso.Picasso;
@@ -40,6 +44,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -50,10 +55,12 @@ public class MyVideoActivity extends AppCompatActivity implements MyVideoAdapter
     TextView username,tv_category;
     private String URL_FEED = "",uid="";
     Intent intent;
-    ArrayList<MyImageModel> item = new ArrayList<>();
+    ArrayList<MyImageModel> itemm = new ArrayList<>();
     MyVideoAdapter adapter;
     RecyclerView recyclerView;
-
+    HashMap<String,String> item_name = new HashMap<>();
+    ArrayList<SectionImageModel> allSampleData=new ArrayList<>();
+    MyVideoDataAdapter adapterr;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -96,7 +103,8 @@ public class MyVideoActivity extends AppCompatActivity implements MyVideoAdapter
         myuid.setText(uid);
         Intent i = new Intent();
         Config.PREVIOUS_PAGE_TAG = i.getStringExtra(Config.PAGE_TAG);
-        getVideo();
+        //getVideo();
+        getAllAlbum();
     }
     private void gteUsrDetail(String id){
         String myurl = Config.API_URL + "ajax.php?type=friend_detail&id=" + id + "&uid=" + uid;
@@ -147,9 +155,55 @@ public class MyVideoActivity extends AppCompatActivity implements MyVideoAdapter
     public void onItemClick(MyImageModel item) {
 
     }
+    public void getAllAlbum(){
+        String url="https://www.iampro.co/api/app_service.php?type=getAlbemsListt&search_type=video&uid="+uid;
+        RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
 
-    public void getVideo(){
-        String url=Config.API_URL+"app_service.php?type=getMyAlbemsListt&search_type=video&uid="+uid+"&my_id="+uid;
+        JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(
+                Request.Method.GET,
+                url,
+                null,
+                new com.android.volley.Response.Listener<JSONArray>() {
+                    @Override
+                    public void onResponse(JSONArray response) {
+                        if(!item_name.isEmpty()){
+                            item_name.clear();
+                        }
+                        try{
+                            for(int i=0;i<response.length();i++){
+                                JSONObject student1 = response.getJSONObject(i);
+                                String name1=student1.optString("id");
+                                String album_name=student1.optString("album_name");
+                                //item_name.add(name1);
+                                item_name.put(name1,album_name);
+                            }
+                            Log.d("allsampledataname",item_name.toString());
+                            for (String data:item_name.keySet()){
+                                getVideo(data);
+                                Log.d("Keyset",""+data);
+                            }
+                        }
+                        catch (JSONException e){
+                            e.printStackTrace();
+                            Toast.makeText(getApplicationContext(), ""+e.getMessage(), Toast.LENGTH_SHORT).show();
+                            Log.d("catch_f",""+e.getMessage());
+                        }
+                    }
+                },
+                new com.android.volley.Response.ErrorListener(){
+                    @Override
+                    public void onErrorResponse(VolleyError error){
+                        Toast.makeText(getApplicationContext(), error.getMessage(), Toast.LENGTH_SHORT).show();
+                        Log.d("verror",""+error.getMessage());
+                    }
+                }
+        );
+        // Add JsonArrayRequest to the RequestQueue
+        requestQueue.add(jsonArrayRequest);
+        //getProvide();
+    }
+    public void getVideo(final String aid){
+        String url=Config.API_URL+"app_service.php?type=getMyAlbemsListt&search_type=video&uid="+uid+"&my_id="+uid+"&album_id="+aid;
         // Initialize a new RequestQueue instance
         RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
         // Initialize a new JsonArrayRequest instance
@@ -161,9 +215,10 @@ public class MyVideoActivity extends AppCompatActivity implements MyVideoAdapter
                     @Override
                     public void onResponse(JSONArray response) {
                         ArrayList<SingleItemModel> singleItem = new ArrayList<SingleItemModel>();
-                        if(!singleItem.isEmpty()){
-                            singleItem.clear();
-                        }
+                        SectionImageModel dm = new SectionImageModel();
+                        dm.setHeaderTitle(item_name.get(aid));
+                        //ArrayList<MyImageModel> singleItem = new ArrayList<>();
+                        ArrayList<MyImageModel> item = new ArrayList<>();
                         try{
                             for(int i=0;i<response.length();i++){
                                 // Get current json object
@@ -201,18 +256,32 @@ public class MyVideoActivity extends AppCompatActivity implements MyVideoAdapter
                                     String like_unlike=pics.optString("like_unlike");
                                     String rating=pics.optString("rating");
                                     item.add(new MyImageModel(id,albemid,name,category,albem_type,image,udate,about_us,group_id,is_featured,status,is_block,comments,totallike,like_unlike,rating,uid));
+
                                 }
                             }
                             Log.d("bdm",singleItem.toString());
                             // dm.setAllItemsInSection(singleItem);
                             Log.d("adm",singleItem.toString());
                             Log.d("allsampledatav",item.toString());
-                            adapter = new MyVideoAdapter(getApplicationContext(),item,MyVideoActivity.this);
-
+                           /* adapter = new MyVideoAdapter(getApplicationContext(),item,MyVideoActivity.this);
                             recyclerView.setAdapter(adapter);
                             GridLayoutManager manager = new GridLayoutManager(getApplicationContext(), 2, GridLayoutManager.VERTICAL, false);
                             recyclerView.setLayoutManager(manager);
-                            recyclerView.setNestedScrollingEnabled(false);
+                            recyclerView.setNestedScrollingEnabled(false); */
+
+
+                            dm.setAllItemsInSection(item);
+                            Log.d("adm",item.toString());
+                            Log.d("dmm",dm.toString());
+                            allSampleData.add(dm);
+                            Log.d("allsampledatav", allSampleData.toString());
+                            //my_recycler_view.setHasFixedSize(true);
+                            Log.d("allSampleDatas",""+allSampleData.size()+"--"+allSampleData.toString());
+                            adapterr = new MyVideoDataAdapter(getApplicationContext(), allSampleData,item_name);
+                            recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.VERTICAL, false));
+                            recyclerView.setAdapter(adapterr);
+
+
                         }
                         catch (JSONException e){
                             e.printStackTrace();

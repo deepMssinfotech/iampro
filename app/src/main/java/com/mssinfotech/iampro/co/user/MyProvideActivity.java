@@ -59,7 +59,7 @@ public class MyProvideActivity extends AppCompatActivity implements MyProvideAda
         username = findViewById(R.id.username);
         userimage = findViewById(R.id.userimage);
         recyclerView = findViewById(R.id.recyclerView);
-        tv_category=findViewById(R.id.tv_category);
+
         userbackgroud = findViewById(R.id.userbackgroud);
         uid= PrefManager.getLoginDetail(this,"id");
         if(id == null || id.equals(uid)) {
@@ -172,7 +172,6 @@ public class MyProvideActivity extends AppCompatActivity implements MyProvideAda
                                 int pcost=0;
                                 String name = student.getString("name");
                                 String categoryv=student.getString("category");
-                                tv_category.setText(categoryv.toString()); 
                                 String imagev=student.getString("image");
                                 String image= Config.URL_ROOT + "uploads/product/" +imagev;
                                 String udate=student.getString("udate");

@@ -31,6 +31,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.bumptech.glide.Glide;
 import com.mssinfotech.iampro.co.R;
 import com.mssinfotech.iampro.co.adapter.GalleryAdapter;
 import com.mssinfotech.iampro.co.common.ImageProcess;
@@ -56,9 +57,11 @@ public class AddDemandActivity extends AppCompatActivity {
     Spinner spcat;
     String imageEncoded;
     private Bitmap bitmap=null;
+    private String URL_FEED = "",uid="", pid = "";
     private String demandname, brandname, sellingcost, demanddetail,cat;
     Button ibdemandimage,ibDemandMoreImage;
     List<String> imagesEncodedList;
+    Intent intent;
     private GalleryAdapter galleryAdapter;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -93,8 +96,66 @@ public class AddDemandActivity extends AppCompatActivity {
                 selectMultipleImage();
             }
         });
-        function.executeUrl(this,"get",Config.API_URL+"app_service.php?type=delete_temp_data&uid="+PrefManager.getLoginDetail(this,"id"),null);
+
+        intent = getIntent();
+        pid = intent.getStringExtra("id");
+        uid= PrefManager.getLoginDetail(this,"id");
+        if(pid == null ) {
+
+        }else{
+            gteDemandDetail(pid);
+        }
     }
+
+    private void gteDemandDetail(String id){
+        String myurl = Config.API_URL + "app_service.php?type=get_product_detail&id=" + id + "&uid=" + uid+"&update_type=demand&my_id="+uid;
+        Log.d(Config.TAG, myurl);
+        StringRequest stringRequest = new StringRequest(myurl,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        JSONObject result = null;
+                        try {
+                            Log.d(Config.TAG, response);
+                            result = new JSONObject(response);
+
+                            String name=result.getString("name");
+                            String brand_name=result.getString("brand_name");
+                            String id=result.getString("id");
+                            String category=result.getString("category");
+                            String city=result.getString("city");
+                            String purchese_cost=result.getString("purchese_cost");
+                            String selling_cost=result.getString("selling_cost");
+                            String detail=result.getString("detail");
+                            String pimage=Config.OTHER_IMAGE_URL+"250/250/"+result.getString("image");
+
+                            etdemandname.setText(name);
+                            etbrandname.setText(brand_name);
+                            etsellingcost.setText(selling_cost);
+                            etdemanddetail.setText(detail);
+                            Glide.with(getApplicationContext()).load(pimage).into(imageview);
+
+
+
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Log.e(Config.TAG, error.toString());
+                    }
+                });
+        //Creating a request queue
+        RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
+        //Adding request to the queue
+        requestQueue.add(stringRequest);
+    }
+
+
+
     private void selectMultipleImage(){
         Intent intent = new Intent();
         intent.setType("image/*");
@@ -237,7 +298,7 @@ public class AddDemandActivity extends AppCompatActivity {
 
         if (Validate.isNull(demandname)) {
             tildemandname.setErrorEnabled(true);
-            tildemandname.setError("Enter demand Name ");
+            tildemandname.setError("Enter provide Name ");
             return ;
         } else if (Validate.isNull(brandname)) {
             tildemandname.setErrorEnabled(false);
@@ -248,18 +309,22 @@ public class AddDemandActivity extends AppCompatActivity {
         else if (Validate.isNull(sellingcost)) {
             tilbrandname.setErrorEnabled(false);
             tilsellingcost.setErrorEnabled(true);
-            tilsellingcost.setError("Enter demand Selling Cost");
+            tilsellingcost.setError("Enter provide Selling Cost");
             return;
         }
         else if (Validate.isNull(demanddetail)) {
             tilsellingcost.setErrorEnabled(false);
             tildemanddetail.setErrorEnabled(true);
-            tildemanddetail.setError("Enter demand Detail");
+            tildemanddetail.setError("Enter provide Detail");
             return;
         }else {
             hideKeyboard();
             tildemanddetail.setErrorEnabled(false);
-            sendData();
+            if(pid == null ) {
+                sendData();
+            }else{
+                updateData();
+            }
         }
     }
     private void hideKeyboard() {
@@ -281,7 +346,7 @@ public class AddDemandActivity extends AppCompatActivity {
                     @Override
                     public void onResponse(String s) {
                         loading.dismiss();
-                        // Log.e("Lresponse",""+s);
+                        //Log.e("Lresponse",""+s);
                         try
                         {
                             JSONObject jsonObject = new JSONObject(s);
@@ -328,7 +393,6 @@ public class AddDemandActivity extends AppCompatActivity {
                 params.put("process_type","android");
                 params.put("product_type","DEMAND");
                 params.put("name",demandname);
-
                 params.put("selling_cost",sellingcost);
                 params.put("brand_name",brandname);
                 params.put("detail",demanddetail);
@@ -343,5 +407,76 @@ public class AddDemandActivity extends AppCompatActivity {
         //Adding request to the queue
         requestQueue.add(stringRequest);
     }
+    public void updateData()
+    {
+        if (!Config.haveNetworkConnection(this)){
+            Config.showInternetDialog(this);
+            return;
+        }
+        final ProgressDialog loading = ProgressDialog.show(this,"Processing...","Please wait...",false,false);
+        StringRequest stringRequest = new StringRequest(Request.Method.POST,Config.AJAX_URL+"uploadprocess.php",
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String s) {
+                        loading.dismiss();
+                        Log.d("Lresponse",""+s);
+                        try
+                        {
+                            JSONObject jsonObject = new JSONObject(s);
+                            String status=jsonObject.getString("status");
+                            String msgg=jsonObject.getString("msg");
 
+                            Toast.makeText(getApplicationContext(),""+msgg,Toast.LENGTH_LONG).show();
+                            if (status.equalsIgnoreCase("success")){
+                                //String urlv=jsonObject.getString("url");
+
+                                etdemandname.setText(" ");
+                                etbrandname.setText(" ");
+                                etsellingcost.setText(" ");
+                                etdemanddetail.setText(" ");
+
+                                // Intent intent=new Intent(getApplicationContext(),MyDemandActivity.class);
+                                // intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                //startActivity(intent);
+                                //finish();
+                            }
+                        }
+                        catch(JSONException e)
+                        {
+                            loading.dismiss();
+                            Log.d("JSoNExceptionv",e.getMessage());
+                            Toast.makeText(getApplicationContext(),e.getMessage(),Toast.LENGTH_LONG).show();
+                        }
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError volleyError) {
+                        loading.dismiss();
+                        Toast.makeText(getApplicationContext(),volleyError.getMessage(),Toast.LENGTH_LONG).show();
+                    }
+                }){
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                String image=ImageProcess.getStringImage(bitmap);
+                Map<String,String> params = new Hashtable<String, String>();
+                params.put("type","update_product_classified");
+                params.put("process_type","android");
+                params.put("name",demandname);
+                params.put("selling_cost",sellingcost);
+                params.put("brand_name",brandname);
+                params.put("detail",demanddetail);
+                params.put("category",cat);
+                // params.put("myfile",image);
+                params.put("product_id",pid);
+                params.put("product_type","DEMAND");
+                params.put("added_by",PrefManager.getLoginDetail(getApplicationContext(),"id"));
+                //returning parameters
+                return params;
+            }
+        };
+        RequestQueue requestQueue = Volley.newRequestQueue(this);
+        //Adding request to the queue
+        requestQueue.add(stringRequest);
+    }
 }

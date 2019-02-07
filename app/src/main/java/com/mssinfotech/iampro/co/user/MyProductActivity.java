@@ -57,7 +57,7 @@ public class MyProductActivity extends AppCompatActivity implements MyProductAda
 
     ImageView userbackgroud;
     CircleImageView userimage;
-    TextView username,tv_category;
+    TextView username;
     private String uid="";
     RecyclerView recyclerView;
     MyProductAdapter mAdapter;
@@ -75,7 +75,6 @@ public class MyProductActivity extends AppCompatActivity implements MyProductAda
         String id = intent.getStringExtra("uid");
         username = findViewById(R.id.username);
         userimage = findViewById(R.id.userimage);
-        tv_category=findViewById(R.id.tv_category);
         userbackgroud = findViewById(R.id.userbackgroud);
         uid= PrefManager.getLoginDetail(this,"id");
         if(id == null || id.equals(uid)) {
@@ -284,7 +283,7 @@ public class MyProductActivity extends AppCompatActivity implements MyProductAda
 
                                 String name = student.getString("name");
                                 String categoryv=student.getString("category");
-                                tv_category.setText(categoryv);
+                                //tv_category.setText(categoryv);
 
                                 String imagev=student.getString("image");
                                 String image= Config.URL_ROOT + "uploads/product/" +imagev;
@@ -346,9 +345,9 @@ public class MyProductActivity extends AppCompatActivity implements MyProductAda
         requestQueue.add(jsonArrayRequest);
         //getProvide();
     }
-
     @Override
-    public void onItemClick(MyProductModel item) {
+    public void onItemClick(MyProductModel items) {
+       Toast.makeText(getApplicationContext(),""+items.getPid(),Toast.LENGTH_LONG).show();
 
     }
 }
