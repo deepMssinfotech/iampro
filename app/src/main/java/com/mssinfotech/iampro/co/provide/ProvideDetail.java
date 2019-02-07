@@ -1,9 +1,10 @@
-package com.mssinfotech.iampro.co.demand;
+package com.mssinfotech.iampro.co.provide;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.design.widget.CollapsingToolbarLayout;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -32,15 +33,15 @@ import com.android.volley.toolbox.Volley;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.bitmap.CircleCrop;
 import com.bumptech.glide.request.RequestOptions;
+import com.mssinfotech.iampro.co.CartActivity;
 import com.mssinfotech.iampro.co.MessageActivity;
 import com.mssinfotech.iampro.co.R;
 import com.mssinfotech.iampro.co.adapter.CommentAdapter;
-import com.mssinfotech.iampro.co.adapter.DemandAdapter;
 import com.mssinfotech.iampro.co.common.Config;
-import com.mssinfotech.iampro.co.customphoto.cropoverlay.utils.Utils;
-import com.mssinfotech.iampro.co.model.DataModel;
+import com.mssinfotech.iampro.co.demand.DemandDetail;
 import com.mssinfotech.iampro.co.model.Review;
-import com.mssinfotech.iampro.co.product.ProductDetail;
+import com.mssinfotech.iampro.co.provide.ProvideDetail;
+import com.mssinfotech.iampro.co.provide.ProvideDetailActivity;
 import com.mssinfotech.iampro.co.user.ProfileActivity;
 import com.mssinfotech.iampro.co.utils.PrefManager;
 
@@ -49,18 +50,17 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import static com.mssinfotech.iampro.co.common.Config.AVATAR_URL;
 
-public class DemandDetail extends AppCompatActivity  implements CommentAdapter.ItemListener
+public class ProvideDetail extends AppCompatActivity implements CommentAdapter.ItemListener
 {
-    public String pid="",uid="";
-    TextView tv_name,tv_categories,tv_cost,tv_demanddetails,tv_demand_name,tv_demand_email;
+    CollapsingToolbarLayout collapsingToolbar;
+    public  String pid="",uid="";
+    TextView tv_name,tv_categories,tv_cost,tv_proddetails,tv_prod_prov_name,tv_prod_prov_email;
 
     de.hdodenhof.circleimageview.CircleImageView user_image;
-    RecyclerView recycler_view_review_demand;
-    CollapsingToolbarLayout collapsingToolbar;
+    RecyclerView recycler_view_review_provide;
     ImageView expandedImage;
     ArrayList<Review> items=new ArrayList<>();
     CommentAdapter comment_adapter;
@@ -69,44 +69,41 @@ public class DemandDetail extends AppCompatActivity  implements CommentAdapter.I
     {
         //Remove title bar
         this.requestWindowFeature(Window.FEATURE_NO_TITLE);
-
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_demand_detail);
-        //items=new ArrayList<>();
+        setContentView(R.layout.activity_provide_detail);
         //Set toolbar title
         collapsingToolbar = findViewById(R.id.collapsing_toolbar);
         expandedImage=collapsingToolbar.findViewById(R.id.expandedImage);
-        //collapsingToolbar.setTitle("Product");
+        //collapsingToolbar.setTitle("provide");
         tv_name=findViewById(R.id.tv_name);
         tv_categories=findViewById(R.id.tv_categories);
         tv_cost=findViewById(R.id.tv_cost);
-        tv_demanddetails=findViewById(R.id.tv_demanddetails);
-        tv_demand_name=findViewById(R.id.tv_demand_name);
-        tv_demand_email=findViewById(R.id.tv_demand_email);
+        tv_proddetails=findViewById(R.id.tv_proddetails);
+        tv_prod_prov_name=findViewById(R.id.tv_prod_prov_name);
+        tv_prod_prov_email=findViewById(R.id.tv_prod_prov_email);
         user_image=findViewById(R.id.user_image);
 
-        recycler_view_review_demand=findViewById(R.id.recycler_view_review_demand);
+        recycler_view_review_provide=findViewById(R.id.recycler_view_review_provide);
 
         pid=getIntent().getExtras().getString("pid");
         uid=getIntent().getExtras().getString("uid");
         user_image.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(DemandDetail.this,"uid:"+uid,Toast.LENGTH_LONG).show();
+                Toast.makeText(ProvideDetail.this,"uid:"+uid,Toast.LENGTH_LONG).show();
 
-                Intent intent=new Intent(DemandDetail.this, ProfileActivity.class);
+                Intent intent=new Intent(ProvideDetail.this, ProfileActivity.class);
                 intent.putExtra("uid",String.valueOf(uid));
-                  DemandDetail.this.startActivity(intent);
+                ProvideDetail.this.startActivity(intent);
             }
         });
-        getDemandDetail();
-        getDemandReview();
+        getprovideDetail();
+        getprovideReview();
     }
-    protected void getDemandDetail(){
-       // String url= Config.API_URL+"ajax.php?type=provide_details&id="+pid+"&uid="+uid;
-         String url="https://www.iampro.co/api/app_service.php?id="+pid+"&uid="+uid+"&my_id="+uid+"&type=provide_details";
+    protected void getprovideDetail(){
+        String url= Config.API_URL+"ajax.php?type=provide_details&id="+pid+"&uid="+uid;
         // Initialize a new RequestQueue instance
-        RequestQueue requestQueue = Volley.newRequestQueue(DemandDetail.this);
+        RequestQueue requestQueue = Volley.newRequestQueue(ProvideDetail.this);
 
         // Initialize a new JsonObjectRequest instance
         StringRequest jsonObjectRequest = new StringRequest(
@@ -117,12 +114,9 @@ public class DemandDetail extends AppCompatActivity  implements CommentAdapter.I
                     public void onResponse(String response) {
                         // Do something with response
                         //mTextView.setText(response.toString());
-                        Log.d("Prod_detail_demand",response.toString());
+                        Log.d("Prod_detail",response.toString());
                         // Process the JSON
                         try{
-                            if (response.toString().equalsIgnoreCase("") || response==null){
-                                return;
-                            }
                             JSONObject responses=new JSONObject(response);
 
                             // Get the current student (json object) data
@@ -130,41 +124,39 @@ public class DemandDetail extends AppCompatActivity  implements CommentAdapter.I
                             String category =responses.optString("category");
                             String cost ="INR:"+" "+responses.optString("selling_cost")+" Rs";
 
-                            String product_details =responses.optString("detail");
-                            String product_provide_name =responses.optString("user_name");
-                            String product_provide_email =responses.optString("email");
+                            String provide_details =responses.optString("detail");
+                            String provide_provide_name =responses.optString("user_name");
+                            String provide_provide_email =responses.optString("email");
                             String avatar=responses.optString("avatar");
+                            String avatar_path=AVATAR_URL+avatar;
 
                             String other_image=responses.optString("other_image");
 
                             String other_image_path=Config.OTHER_IMAGE_URL+other_image;
 
-                            String avatar_path=AVATAR_URL+avatar;
                             // Display the formatted json data in text view
                             tv_name.setText(name);
                             tv_categories.setText(category);
                             tv_cost.setText(cost);
-                            tv_demanddetails.setText(product_details);
-                            tv_demand_name.setText(product_provide_name);
-                            tv_demand_email.setText(product_provide_email);
-
-                              //expandedImage
-
-                            Glide.with(DemandDetail.this)
+                            tv_proddetails.setText(provide_details);
+                            tv_prod_prov_name.setText(provide_provide_name );
+                            tv_prod_prov_email.setText(provide_provide_email);
+                            Glide.with(ProvideDetail.this)
                                     .load(other_image_path)
                                     .apply(new RequestOptions()
                                             .circleCrop().bitmapTransform(new CircleCrop())
                                             .fitCenter())
                                     .into(expandedImage);
-
-                            Glide.with(DemandDetail.this)
+                            Glide.with(ProvideDetail.this)
                                     .load(avatar_path)
                                     .apply(new RequestOptions()
                                             .circleCrop().bitmapTransform(new CircleCrop())
                                             .fitCenter())
                                     .into(user_image);
                             //user_image
+
                             // mTextView.append("\n\n");
+
                         }catch (Exception e){
                             e.printStackTrace();
                             Toast.makeText(getApplicationContext(),e.getMessage(),Toast.LENGTH_LONG).show();
@@ -183,10 +175,8 @@ public class DemandDetail extends AppCompatActivity  implements CommentAdapter.I
         requestQueue.add(jsonObjectRequest);
     }
 
-    public void getDemandReview(){
-         //https://www.iampro.co/api/
-     String url=Config.API_URL+"ajax.php?type=getProductReview&pcid="+pid+"&id="+pid;
-
+    public void getprovideReview(){
+        String url=Config.API_URL+"ajax.php?type=getProvideReview&pid="+pid;
         // Initialize a new RequestQueue instance
         RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
 
@@ -200,10 +190,9 @@ public class DemandDetail extends AppCompatActivity  implements CommentAdapter.I
                     public void onResponse(JSONArray response) {
 
                         try{
-                            if (!items.isEmpty()){
+                            if(!items.isEmpty()){
                                 items.clear();
                             }
-
                             // Loop through the array elements
                             for(int i=0;i<response.length();i++){
                                 // Get current json object
@@ -216,18 +205,18 @@ public class DemandDetail extends AppCompatActivity  implements CommentAdapter.I
                                 String comment = student.optString("comment");
                                 String fullname = student.optString("fullname");
                                 String email = student.optString("email");
-                                 String user_img=student.optString("user_img");
-                                  String rdate=student.optString("rdate");
-                                    items.add(new Review(fullname,email,comment,id,pcid,user_img,rdate,added_by,pid));
+                                String user_img=student.optString("user_img");
+                                String rdate=student.optString("rdate");
+                                items.add(new Review(fullname,email,comment,id,pcid,user_img,rdate,added_by,pid));
                             }
                             Log.d("demand_itemss",items+"");
-                            comment_adapter=new CommentAdapter(DemandDetail.this,items,DemandDetail.this);
-                            recycler_view_review_demand.setLayoutManager(new LinearLayoutManager(DemandDetail.this, LinearLayoutManager.VERTICAL, false));
+                            comment_adapter=new CommentAdapter(ProvideDetail.this,items,ProvideDetail.this);
+                            recycler_view_review_provide.setLayoutManager(new LinearLayoutManager(ProvideDetail.this, LinearLayoutManager.VERTICAL, false));
 
-                            recycler_view_review_demand.setAdapter(comment_adapter);
+                            recycler_view_review_provide.setAdapter(comment_adapter);
                         }catch (JSONException e){
                             e.printStackTrace();
-                             Toast.makeText(getApplicationContext(),e.getMessage(),Toast.LENGTH_LONG).show();
+                            Toast.makeText(getApplicationContext(),e.getMessage(),Toast.LENGTH_LONG).show();
                         }
                     }
                 },
@@ -235,7 +224,7 @@ public class DemandDetail extends AppCompatActivity  implements CommentAdapter.I
                     @Override
                     public void onErrorResponse(VolleyError error){
                         // Do something when error occurred
-                         Toast.makeText(getApplicationContext(),error.getMessage(),Toast.LENGTH_LONG).show();
+                        Toast.makeText(getApplicationContext(),error.getMessage(),Toast.LENGTH_LONG).show();
                     }
                 }
         );
@@ -243,57 +232,53 @@ public class DemandDetail extends AppCompatActivity  implements CommentAdapter.I
         // Add JsonArrayRequest to the RequestQueue
         requestQueue.add(jsonArrayRequest);
     }
-
     public void sendReview(View view){
-         if(PrefManager.isLogin(DemandDetail.this)) {
-             // get prompts.xml view
-             LayoutInflater li = LayoutInflater.from(DemandDetail.this);
-             View promptsView = li.inflate(R.layout.prompts_review, null);
+        // get prompts.xml view
+        LayoutInflater li = LayoutInflater.from(ProvideDetail.this);
+        View promptsView = li.inflate(R.layout.prompts_review, null);
 
-             AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
-                     DemandDetail.this);
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
+                ProvideDetail.this);
 
-             // set prompts.xml to alertdialog builder
-             alertDialogBuilder.setView(promptsView);
+        // set prompts.xml to alertdialog builder
+        alertDialogBuilder.setView(promptsView);
 
-             final EditText userInput = promptsView
-                     .findViewById(R.id.editTextReview);
+        final EditText userInput =promptsView
+                .findViewById(R.id.editTextReview);
 
-             // set dialog message
-             alertDialogBuilder
-                     .setCancelable(false)
-                     .setPositiveButton("OK",
-                             new DialogInterface.OnClickListener() {
-                                 public void onClick(DialogInterface dialog, int id) {
-                                     //Toast.makeText(getApplicationContext(), userInput.getText(), Toast.LENGTH_LONG).show();
-                                      saveReview(userInput.getText().toString().trim());
-                                     getDemandReview();
-                                 }
-                             })
-                     .setNegativeButton("Cancel",
-                             new DialogInterface.OnClickListener() {
-                                 public void onClick(DialogInterface dialog, int id) {
-                                     dialog.cancel();
-                                 }
-                             });
+        // set dialog message
+        alertDialogBuilder
+                .setCancelable(false)
+                .setPositiveButton("OK",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog,int id) {
+                                // get user input and set it to result
+                                // edit text
+                                // result.setText(userInput.getText());
+                                Toast.makeText(getApplicationContext(),userInput.getText(),Toast.LENGTH_LONG).show();
+                                saveReview(userInput.getText().toString().trim());
+                                getprovideReview();
+                            }
+                        })
+                .setNegativeButton("Cancel",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                dialog.cancel();
+                            }
+                        });
 
-             // create alert dialog
-             AlertDialog alertDialog = alertDialogBuilder.create();
+        // create alert dialog
+        AlertDialog alertDialog = alertDialogBuilder.create();
 
-             // show it
-             alertDialog.show();
-         }
-         else{
-              Toast.makeText(DemandDetail.this,"First Login and try again...",Toast.LENGTH_LONG).show();
-              return;
-         }
+        // show it
+        alertDialog.show();
     }
     public void saveReview(String message){
-        String url="https://www.iampro.co/api/app_service.php?type=product_review&data_id="+pid+"&comment="+message+"&id="+uid+"&data_type=demand";
+        String url="https://www.iampro.co/api/app_service.php?type=product_review&data_id="+pid+"&comment="+message+"&id="+uid+"&data_type=provide";
         //id: 693
         //data_type: demand
         // Initialize a new RequestQueue instance
-        RequestQueue requestQueue = Volley.newRequestQueue(DemandDetail.this);
+        RequestQueue requestQueue = Volley.newRequestQueue(ProvideDetail.this);
 
         // Initialize a new JsonObjectRequest instance
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(
@@ -313,7 +298,7 @@ public class DemandDetail extends AppCompatActivity  implements CommentAdapter.I
                         }
                         catch (Exception e){
                             e.printStackTrace();
-                            Toast.makeText(DemandDetail.this,e.getMessage(),Toast.LENGTH_LONG).show();
+                            Toast.makeText(ProvideDetail.this,e.getMessage(),Toast.LENGTH_LONG).show();
                         }
                     }
                 },
@@ -321,29 +306,33 @@ public class DemandDetail extends AppCompatActivity  implements CommentAdapter.I
                     @Override
                     public void onErrorResponse(VolleyError error){
                         // Do something when error occurred
-                        Toast.makeText(DemandDetail.this,error.getMessage(),Toast.LENGTH_LONG).show();
+                        Toast.makeText(ProvideDetail.this,error.getMessage(),Toast.LENGTH_LONG).show();
                     }
                 }
         );
-
         // Add JsonObjectRequest to the RequestQueue
         requestQueue.add(jsonObjectRequest);
     }
-    public void chat(View view){
-        if(PrefManager.isLogin(DemandDetail.this)) {
-            Intent intent = new Intent(DemandDetail.this, MessageActivity.class);
-            this.startActivity(intent);
+    public void buyNow(View view)
+    {
+        if(PrefManager.isLogin(ProvideDetail.this)) {
+            Intent intent=new Intent(ProvideDetail.this, CartActivity.class);
+            startActivity(intent);
         }
         else {
-            Toast.makeText(DemandDetail.this,"First Login and try again...",Toast.LENGTH_LONG).show();
+            Toast.makeText(ProvideDetail.this,"First Login and try again...",Toast.LENGTH_LONG).show();
         }
-    }
-    public void favourite(View view){
-        if(PrefManager.isLogin(DemandDetail.this)) {
 
+    }
+    public void addToCart(View view)
+    {
+        if(PrefManager.isLogin(ProvideDetail.this)) {
+            Intent intent=new Intent(ProvideDetail.this, CartActivity.class);
+            startActivity(intent);
         }
         else {
-            Toast.makeText(DemandDetail.this,"First Login and try again...",Toast.LENGTH_LONG).show();
+            Toast.makeText(ProvideDetail.this,"First Login and try again...",Toast.LENGTH_LONG).show();
+            return;
         }
     }
 

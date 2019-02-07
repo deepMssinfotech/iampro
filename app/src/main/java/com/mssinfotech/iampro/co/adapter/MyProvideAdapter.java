@@ -21,32 +21,32 @@ import com.bumptech.glide.request.RequestOptions;
 import com.mssinfotech.iampro.co.R;
 import com.mssinfotech.iampro.co.model.FeedModel;
 import com.mssinfotech.iampro.co.model.MyProductModel;
-import com.mssinfotech.iampro.co.provide.ProvideDetailActivity;
+import com.mssinfotech.iampro.co.product.ProductDetail;
+import com.mssinfotech.iampro.co.provide.ProvideDetail;
+import com.mssinfotech.iampro.co.user.AddProductActivity;
+import com.mssinfotech.iampro.co.user.AddProvideActivity;
 import com.mssinfotech.iampro.co.user.ProfileActivity;
 import com.mssinfotech.iampro.co.utils.PrefManager;
 
 import java.util.ArrayList;
-import java.util.List;
 public class MyProvideAdapter extends RecyclerView.Adapter<MyProvideAdapter.ViewHolder> {
     ArrayList<MyProductModel> mValues;
     Context mContext;
     protected ItemListener mListener;
-
+    int uid;
+    static String myid;
     public MyProvideAdapter(Context context, ArrayList<MyProductModel> values, ItemListener itemListener) {
         mValues = values;
         mContext = context;
         mListener=itemListener;
     }
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-        ImageView  imageView,imageView_user,imageView_icon,iv_comments,image,iv_favourite,ivLike,iv_delete;
+        ImageView  imageView,imageView_user,imageView_icon,iv_comments,image,iv_favourite,ivLike,iv_delete,iv_edit;
         VideoView videoView;
-        TextView tv_name,uname,udate,tv_comments,tv_totallike,detail_name,tv_purchaseprice,tv_sellingprice;
+        TextView tv_name,uname,udate,tv_comments,tv_totallike,detail_name,tv_sellingprice;
         RatingBar ratingBar;
         LinearLayout ll_showhide;
         MyProductModel item;
-        int uid;
-        String pid;
-        String myid;
         public ViewHolder(View v) {
             super(v);
             v.setOnClickListener(this);
@@ -55,9 +55,10 @@ public class MyProvideAdapter extends RecyclerView.Adapter<MyProvideAdapter.View
             imageView_user=v.findViewById(R.id.imageView_user);
             imageView_icon=v.findViewById(R.id.imageView_icon);
             iv_comments=v.findViewById(R.id.iv_comments);
-             iv_delete=v.findViewById(R.id.iv_delete);
             iv_favourite=v.findViewById(R.id.iv_favourite);
-           // image=v.findViewById(R.id.imageView);
+            iv_edit = v.findViewById(R.id.iv_edit);
+            image=v.findViewById(R.id.imageView);
+            iv_delete=v.findViewById(R.id.iv_delete);
             videoView=v.findViewById(R.id.videoView);
             ratingBar=v.findViewById(R.id.ratingBar);
             ivLike=v.findViewById(R.id.ivLike);
@@ -67,62 +68,61 @@ public class MyProvideAdapter extends RecyclerView.Adapter<MyProvideAdapter.View
             ll_showhide=v.findViewById(R.id.ll_showhide);
             uname=v.findViewById(R.id.uname);
             detail_name=v.findViewById(R.id.detail_name);
-            tv_purchaseprice=v.findViewById(R.id.tv_purchaseprice);
+
+
             tv_sellingprice=v.findViewById(R.id.tv_sellingprice);
+
+            iv_edit.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent=new Intent(mContext, AddProvideActivity.class);
+                    intent.putExtra("id",String.valueOf(item.getPid()));
+                    mContext.startActivity(intent);
+                }
+            });
+            imageView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    //Toast.makeText(mContext, "Provide clicked"+item.getName()+"\n"+item.getUid(), Toast.LENGTH_SHORT).show();
+                    Intent intent=new Intent(mContext, ProvideDetail.class);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    intent.putExtra("pid",String.valueOf(item.getPid()));
+                    intent.putExtra("uid",String.valueOf(item.getUid()));
+                    mContext.startActivity(intent);
+                }
+            });
             iv_delete.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-
+                    Toast.makeText(mContext, "delete clicked"+item.getName()+"\n"+item.getUid(), Toast.LENGTH_SHORT).show();
                 }
             });
         }
         public void setData(MyProductModel item) {
             this.item = item;
             uid=item.getUid();
-            pid=item.getPid();
             if(PrefManager.isLogin(mContext))
                 myid= PrefManager.getLoginDetail(mContext,"id");
-            ratingBar.setRating(Float.parseFloat(String.valueOf(item.getRating())));
             ratingBar.setRating(Float.parseFloat(String.valueOf(item.getRating())));
             uname.setText(item.getFullname());
             tv_name.setText(item.getName());
             //udate.setText(item.getUdate());
             tv_comments.setText(String.valueOf(item.getComments()));
             tv_totallike.setText(String.valueOf(item.getTotallike()));
-            tv_purchaseprice.setVisibility(View.GONE);
+
             tv_sellingprice.setText("Rs: "+String.valueOf(item.getsCost()));
-            if (myid.equalsIgnoreCase(String.valueOf(uid)) || uid==0 || String.valueOf(uid)=="" || String.valueOf(uid)==null)
+            if (myid.equalsIgnoreCase(String.valueOf(uid)) || uid==0 || String.valueOf(uid)=="" || String.valueOf(uid)==null) {
                 iv_delete.setVisibility(View.VISIBLE);
-            else
+            }
+            else {
                 iv_delete.setVisibility(View.GONE);
+            }
             Glide.with(mContext)
                     .load(item.getImage())
                     .apply(new RequestOptions()
                             .circleCrop().bitmapTransform(new CircleCrop())
                             .fitCenter())
                     .into(imageView);
-
-           /* imageView_user.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Intent intent=new Intent(mContext,ProfileActivity.class);
-                    intent.putExtra("uid",uid);
-                    mContext.startActivity(intent);
-                    Toast.makeText(mContext,"uid: "+uid,Toast.LENGTH_LONG).show();
-                }
-            }); */
-            imageView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    //Toast.makeText(mContext, "Provide clicked"+item.getName()+"\n"+item.getUid(), Toast.LENGTH_SHORT).show();
-                    Intent intent=new Intent(mContext,ProvideDetailActivity.class);
-                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                    intent.putExtra("pid",String.valueOf(pid));
-                    intent.putExtra("uid",String.valueOf(uid));
-                    mContext.startActivity(intent);
-                }
-            });
-
         }
         @Override
         public void onClick(View view) {
@@ -133,7 +133,7 @@ public class MyProvideAdapter extends RecyclerView.Adapter<MyProvideAdapter.View
     }
     @Override
     public MyProvideAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(mContext).inflate(R.layout.item_product_row, parent, false);
+        View view = LayoutInflater.from(mContext).inflate(R.layout.item_provide_row, parent, false);
         return new ViewHolder(view);
     }
     @Override

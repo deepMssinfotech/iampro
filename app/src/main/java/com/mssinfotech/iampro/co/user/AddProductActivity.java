@@ -101,7 +101,7 @@ public class AddProductActivity extends AppCompatActivity {
                 selectMultipleImage();
             }
         });
-
+        intent = getIntent();
         pid = intent.getStringExtra("id");
         uid= PrefManager.getLoginDetail(this,"id");
         if(pid == null ) {
@@ -124,6 +124,7 @@ public class AddProductActivity extends AppCompatActivity {
                         try {
                             Log.d(Config.TAG, response);
                             result = new JSONObject(response);
+
                             String name=result.getString("name");
                             String brand_name=result.getString("brand_name");
                             String id=result.getString("id");
@@ -132,7 +133,7 @@ public class AddProductActivity extends AppCompatActivity {
                             String purchese_cost=result.getString("purchese_cost");
                             String selling_cost=result.getString("selling_cost");
                             String detail=result.getString("detail");
-                            String pimage=Config.OTHER_IMAGE_URL+"250/250/"+result.getString("pimage");
+                            String pimage=Config.OTHER_IMAGE_URL+"250/250/"+result.getString("image");
 
                             etproductname.setText(name);
                             etbrandname.setText(brand_name);
@@ -140,6 +141,10 @@ public class AddProductActivity extends AppCompatActivity {
                             etsellingcost.setText(selling_cost);
                             etproductdetail.setText(detail);
                             Glide.with(getApplicationContext()).load(pimage).into(imageview);
+
+
+
+
 
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -326,7 +331,11 @@ public class AddProductActivity extends AppCompatActivity {
         }else {
             hideKeyboard();
             tilproductdetail.setErrorEnabled(false);
-            sendData();
+            if(pid == null ) {
+                sendData();
+            }else{
+                updateData();
+            }
         }
     }
     private void hideKeyboard() {
@@ -400,6 +409,79 @@ public class AddProductActivity extends AppCompatActivity {
                 params.put("detail",productdetail);
                 params.put("category",cat);
                 params.put("myfile",image);
+                params.put("added_by",PrefManager.getLoginDetail(getApplicationContext(),"id"));
+                //returning parameters
+                return params;
+            }
+        };
+        RequestQueue requestQueue = Volley.newRequestQueue(this);
+        //Adding request to the queue
+        requestQueue.add(stringRequest);
+    }
+    public void updateData()
+    {
+        if (!Config.haveNetworkConnection(this)){
+            Config.showInternetDialog(this);
+            return;
+        }
+        final ProgressDialog loading = ProgressDialog.show(this,"Processing...","Please wait...",false,false);
+        StringRequest stringRequest = new StringRequest(Request.Method.POST,Config.AJAX_URL+"uploadprocess.php",
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String s) {
+                        loading.dismiss();
+                        Log.d("Lresponse",""+s);
+                        try
+                        {
+                            JSONObject jsonObject = new JSONObject(s);
+                            String status=jsonObject.getString("status");
+                            String msgg=jsonObject.getString("msg");
+
+                            Toast.makeText(getApplicationContext(),""+msgg,Toast.LENGTH_LONG).show();
+                            if (status.equalsIgnoreCase("success")){
+                                //String urlv=jsonObject.getString("url");
+
+                                etproductname.setText(" ");
+                                etbrandname.setText(" ");
+                                etpurchesecost.setText(" ");
+                                etsellingcost.setText(" ");
+                                etproductdetail.setText(" ");
+
+                                Intent intent=new Intent(getApplicationContext(),MyProductActivity.class);
+                                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                startActivity(intent);
+                                finish();
+                            }
+                        }
+                        catch(JSONException e)
+                        {
+                            loading.dismiss();
+                            Log.d("JSoNExceptionv",e.getMessage());
+                            Toast.makeText(getApplicationContext(),e.getMessage(),Toast.LENGTH_LONG).show();
+                        }
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError volleyError) {
+                        loading.dismiss();
+                        Toast.makeText(getApplicationContext(),volleyError.getMessage(),Toast.LENGTH_LONG).show();
+                    }
+                }){
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                String image=ImageProcess.getStringImage(bitmap);
+                Map<String,String> params = new Hashtable<String, String>();
+                params.put("type","update_product");
+                params.put("process_type","android");
+                params.put("name",productname);
+                params.put("purchese_cost",purchesecost);
+                params.put("selling_cost",sellingcost);
+                params.put("brand_name",brandname);
+                params.put("detail",productdetail);
+                params.put("category",cat);
+               // params.put("myfile",image);
+                params.put("product_id",pid);
                 params.put("added_by",PrefManager.getLoginDetail(getApplicationContext(),"id"));
                 //returning parameters
                 return params;
