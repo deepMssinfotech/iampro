@@ -172,7 +172,7 @@ public class MyDemandActivity extends AppCompatActivity implements MyDemandAdapt
                                 int pcost=0;
                                 String name = student.getString("name");
                                 String categoryv=student.getString("category");
-                                tv_category.setText(categoryv);
+                                //tv_category.setText(categoryv);
                                 String imagev=student.getString("image");
                                 String image= Config.URL_ROOT + "uploads/product/" +imagev;
                                 String udate=student.getString("udate");

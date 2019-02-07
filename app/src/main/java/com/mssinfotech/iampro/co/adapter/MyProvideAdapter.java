@@ -22,6 +22,7 @@ import com.mssinfotech.iampro.co.R;
 import com.mssinfotech.iampro.co.model.FeedModel;
 import com.mssinfotech.iampro.co.model.MyProductModel;
 import com.mssinfotech.iampro.co.provide.ProvideDetailActivity;
+import com.mssinfotech.iampro.co.user.AddProductActivity;
 import com.mssinfotech.iampro.co.user.ProfileActivity;
 import com.mssinfotech.iampro.co.utils.PrefManager;
 
@@ -30,6 +31,9 @@ import java.util.List;
 public class MyProvideAdapter extends RecyclerView.Adapter<MyProvideAdapter.ViewHolder> {
     ArrayList<MyProductModel> mValues;
     Context mContext;
+    ImageView iv_delete,iv_edit;
+    static String pid;
+    static String myid;
     protected ItemListener mListener;
 
     public MyProvideAdapter(Context context, ArrayList<MyProductModel> values, ItemListener itemListener) {
@@ -38,15 +42,15 @@ public class MyProvideAdapter extends RecyclerView.Adapter<MyProvideAdapter.View
         mListener=itemListener;
     }
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-        ImageView  imageView,imageView_user,imageView_icon,iv_comments,image,iv_favourite,ivLike,iv_delete;
+        ImageView  imageView,imageView_user,imageView_icon,iv_comments,image,iv_favourite,ivLike;
         VideoView videoView;
         TextView tv_name,uname,udate,tv_comments,tv_totallike,detail_name,tv_purchaseprice,tv_sellingprice;
         RatingBar ratingBar;
         LinearLayout ll_showhide;
         MyProductModel item;
         int uid;
-        String pid;
-        String myid;
+       // String pid;
+        //String myid;
         public ViewHolder(View v) {
             super(v);
             v.setOnClickListener(this);
@@ -56,6 +60,7 @@ public class MyProvideAdapter extends RecyclerView.Adapter<MyProvideAdapter.View
             imageView_icon=v.findViewById(R.id.imageView_icon);
             iv_comments=v.findViewById(R.id.iv_comments);
              iv_delete=v.findViewById(R.id.iv_delete);
+            iv_edit=v.findViewById(R.id.iv_edit);
             iv_favourite=v.findViewById(R.id.iv_favourite);
            // image=v.findViewById(R.id.imageView);
             videoView=v.findViewById(R.id.videoView);
@@ -69,12 +74,8 @@ public class MyProvideAdapter extends RecyclerView.Adapter<MyProvideAdapter.View
             detail_name=v.findViewById(R.id.detail_name);
             tv_purchaseprice=v.findViewById(R.id.tv_purchaseprice);
             tv_sellingprice=v.findViewById(R.id.tv_sellingprice);
-            iv_delete.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
 
-                }
-            });
+
         }
         public void setData(MyProductModel item) {
             this.item = item;
@@ -137,8 +138,27 @@ public class MyProvideAdapter extends RecyclerView.Adapter<MyProvideAdapter.View
         return new ViewHolder(view);
     }
     @Override
-    public void onBindViewHolder(ViewHolder Vholder, int position) {
+    public void onBindViewHolder(ViewHolder Vholder, final int position) {
         Vholder.setData(mValues.get(position));
+        iv_delete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mValues.remove(position);
+                notifyDataSetChanged();
+                Toast.makeText(mContext,"Deleted",Toast.LENGTH_LONG).show();
+            }
+        });
+
+        iv_edit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent=new Intent(mContext, AddProductActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                intent.putExtra("id",String.valueOf(pid));
+                mContext.startActivity(intent);
+            }
+        });
+
     }
     @Override
     public int getItemCount() {

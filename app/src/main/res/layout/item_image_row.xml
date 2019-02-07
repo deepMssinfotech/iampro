@@ -5,8 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="231dp"
     xmlns:app="http://schemas.android.com/tools"
-    android:layout_marginLeft="3dp"
-    android:layout_marginRight="3dp"
+    android:layout_marginLeft="7dp"
+    android:layout_marginRight="7dp"
     android:orientation="vertical"
     app:ignore="NamespaceTypo">
 

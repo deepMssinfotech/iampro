@@ -133,9 +133,6 @@ public class HomeFragment extends Fragment implements UserDataAdapter.ItemListen
         // Inflate the layout for this fragment
 
     }
-
-
-
     public void  getImage(){
         Log.d("rrrresponse_enterrr","rrrresponse_enterrr");
         final String url = "https://www.iampro.co/api/app_service.php?type=all_item&name=image&uid=&my_id=";
@@ -170,11 +167,7 @@ public class HomeFragment extends Fragment implements UserDataAdapter.ItemListen
                                 int totallike=student.getInt("totallike");
                                 int comments=student.getInt("comments");
 
-
-
-
                                 JSONObject userDetail=student.optJSONObject("user_detail");
-
                                 int uid=userDetail.getInt("id");
                                 int id=student.getInt("id");
                                 String fullname=userDetail.optString("fullname");

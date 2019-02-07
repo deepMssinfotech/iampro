@@ -27,16 +27,19 @@ import com.mssinfotech.iampro.co.model.MyProductModel;
 import com.mssinfotech.iampro.co.user.ProfileActivity;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 public class MyImageAdapter extends RecyclerView.Adapter<MyImageAdapter.ViewHolder> {
     ArrayList<MyImageModel> mValues;
+    HashSet<String> heading_name;
     Context mContext;
     protected ItemListener mListener;
     String uid,id;
-    public MyImageAdapter(Context context, ArrayList<MyImageModel> values, ItemListener itemListener) {
+    public MyImageAdapter(Context context, ArrayList<MyImageModel> values,HashSet<String> heading_name, ItemListener itemListener) {
         mValues = values;
         mContext = context;
         mListener=itemListener;
+        this.heading_name=heading_name;
     }
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         ImageView  imageView,imageView_user,imageView_icon,iv_comments,image,iv_favourite,ivLike;
@@ -69,22 +72,13 @@ public class MyImageAdapter extends RecyclerView.Adapter<MyImageAdapter.ViewHold
             this.item = item;
             uid=item.getUid();
             id=item.getId();
-            //ratingBar.setRating(Float.parseFloat(String.valueOf(item.getRating())));
+             //if(!(item.getRating()!="NAN") || !(item.getRating().equalsIgnoreCase("NAN")))
+               //ratingBar.setRating(Float.parseFloat(String.valueOf(item.getRating())));
             category.setText(item.getCategory());
             tv_name.setText(item.getName());
             //udate.setText(item.getUdate());
             tv_comments.setText(String.valueOf(item.getComments()));
             tv_totallike.setText(String.valueOf(item.getTotallike()));
-
-           /* imageView_user.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Intent intent=new Intent(mContext,ProfileActivity.class);
-                    intent.putExtra("uid",uid);
-                    mContext.startActivity(intent);
-                    Toast.makeText(mContext,"uid: "+uid,Toast.LENGTH_LONG).show();
-                }
-            }); */
 
             imageView.setOnClickListener(new View.OnClickListener() {
                 @Override

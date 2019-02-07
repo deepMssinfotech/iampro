@@ -23,6 +23,7 @@ import com.mssinfotech.iampro.co.demand.DemandDetail;
 import com.mssinfotech.iampro.co.model.FeedModel;
 import com.mssinfotech.iampro.co.model.MyProductModel;
 import com.mssinfotech.iampro.co.provide.ProvideDetailActivity;
+import com.mssinfotech.iampro.co.user.AddProductActivity;
 import com.mssinfotech.iampro.co.user.ProfileActivity;
 import com.mssinfotech.iampro.co.utils.PrefManager;
 
@@ -31,23 +32,26 @@ import java.util.List;
 public class MyDemandAdapter extends RecyclerView.Adapter<MyDemandAdapter.ViewHolder> {
     ArrayList<MyProductModel> mValues;
     Context mContext;
+    ImageView iv_delete,iv_edit;
     protected ItemListener mListener;
 
+    static String  pid;
+    static String myid;
     public MyDemandAdapter(Context context, ArrayList<MyProductModel> values, ItemListener itemListener) {
         mValues = values;
         mContext = context;
         mListener=itemListener;
     }
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-        ImageView  imageView,imageView_user,imageView_icon,iv_comments,image,iv_favourite,ivLike,iv_delete;
+        ImageView  imageView,imageView_user,imageView_icon,iv_comments,image,iv_favourite,ivLike;
         VideoView videoView;
         TextView tv_name,uname,udate,tv_comments,tv_totallike,detail_name,tv_purchaseprice,tv_sellingprice;
         RatingBar ratingBar;
         LinearLayout ll_showhide;
         MyProductModel item;
         int uid;
-         String  pid;
-         String myid;
+         //String  pid;
+         //String myid;
         public ViewHolder(View v) {
             super(v);
             v.setOnClickListener(this);
@@ -143,8 +147,25 @@ public class MyDemandAdapter extends RecyclerView.Adapter<MyDemandAdapter.ViewHo
         return new ViewHolder(view);
     }
     @Override
-    public void onBindViewHolder(ViewHolder Vholder, int position) {
+    public void onBindViewHolder(ViewHolder Vholder, final int position) {
         Vholder.setData(mValues.get(position));
+        iv_delete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mValues.remove(position);
+                notifyDataSetChanged();
+                Toast.makeText(mContext,"Deleted",Toast.LENGTH_LONG).show();
+            }
+        });
+        iv_edit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent=new Intent(mContext, AddProductActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                intent.putExtra("id",String.valueOf(pid));
+                mContext.startActivity(intent);
+            }
+        });
     }
     @Override
     public int getItemCount() {
