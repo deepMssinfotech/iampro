@@ -12,6 +12,7 @@ import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 
@@ -24,6 +25,8 @@ import com.android.volley.toolbox.Volley;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.bitmap.CircleCrop;
 import com.bumptech.glide.request.RequestOptions;
+import com.like.LikeButton;
+import com.like.OnLikeListener;
 import com.mssinfotech.iampro.co.CommentActivity;
 import com.mssinfotech.iampro.co.R;
 import android.view.ViewGroup;
@@ -45,10 +48,13 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.mssinfotech.iampro.co.common.Config;
+import com.mssinfotech.iampro.co.common.function;
 import com.mssinfotech.iampro.co.demand.DemandDetail;
 import com.mssinfotech.iampro.co.model.DataModel;
 import com.mssinfotech.iampro.co.provide.ProvideDetailActivity;
 import com.mssinfotech.iampro.co.user.ProfileActivity;
+import com.mssinfotech.iampro.co.utils.PrefManager;
 
 import org.json.JSONObject;
 
@@ -58,7 +64,8 @@ public class ProvideAdapter extends RecyclerView.Adapter<ProvideAdapter.ViewHold
     ArrayList<DataModel> mValues;
     Context mContext;
     protected ItemListener mListener;
-    int uid;
+
+    public int uid,id,added_by;
     public ProvideAdapter(Context context, ArrayList<DataModel> values, ItemListener itemListener) {
         mValues = values;
         mContext = context;
@@ -71,6 +78,7 @@ public class ProvideAdapter extends RecyclerView.Adapter<ProvideAdapter.ViewHold
         public ImageView imageView,iv_comments;
         de.hdodenhof.circleimageview.CircleImageView userImage;
         public RelativeLayout relativeLayout;
+        LikeButton likeButton;
         DataModel item;
         ImageView ivLike;
         public ViewHolder(View v) {
@@ -80,6 +88,7 @@ public class ProvideAdapter extends RecyclerView.Adapter<ProvideAdapter.ViewHold
             imageView = (ImageView) v.findViewById(R.id.imageView);
             ivLike=v.findViewById(R.id.ivLike);
             tv_tlike=v.findViewById(R.id.tv_totallike);
+            likeButton = v.findViewById(R.id.likeButton);
             //tv_comments
             tv_comments=v.findViewById(R.id.tv_comments);
             iv_comments=v.findViewById(R.id.iv_comments);
@@ -92,6 +101,7 @@ public class ProvideAdapter extends RecyclerView.Adapter<ProvideAdapter.ViewHold
             uname=v.findViewById(R.id.uname);
             userImage=v.findViewById(R.id.user_image);
 
+
             imageView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -102,84 +112,31 @@ public class ProvideAdapter extends RecyclerView.Adapter<ProvideAdapter.ViewHold
                     mContext.startActivity(intent);
                 }
             });
-            ivLike.setOnClickListener(new View.OnClickListener() {
+            /*ivLike.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     likeProvide(item.getPid(),String.valueOf(item.getUid()));
                 }
-            });
+            });*/
             ratingBar.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
                 @Override
                 public void onRatingChanged(RatingBar ratingBar, float rating, boolean fromUser) {
                     rateMe(item.getPid(),String.valueOf(item.getUid()),rating);
                 }
             });
-            tv_comments.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Intent intent=new Intent(mContext, CommentActivity.class);
-                    intent.putExtra("id",String.valueOf(item.getUid()));
-                    mContext.startActivity(intent);
-                }
-            });
-            iv_comments.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Intent intent=new Intent(mContext, CommentActivity.class);
-                    intent.putExtra("id",String.valueOf(item.getUid()));
-                    mContext.startActivity(intent);
-                }
-            });
-        }
-        public void likeProvide(String id,String uid){
-            String url="https://www.iampro.co/api/app_service.php?type=like_me&id="+id+"&uid="+uid+"&ptype=provide";
-            RequestQueue requestQueue = Volley.newRequestQueue(mContext);
+            tv_comments.setOnClickListener(CommnetOnClickListener);
+            iv_comments.setOnClickListener(CommnetOnClickListener);
 
-            // Initialize a new JsonObjectRequest instance
-            JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(
-                    Request.Method.GET,
-                    url,
-                    null,
-                    new Response.Listener<JSONObject>() {
-                        @Override
-                        public void onResponse(JSONObject response) {
-                            // Do something with response
-                            //mTextView.setText(response.toString());
-
-                            // Process the JSON
-                            try{
-                                 String status=response.optString("status");
-                                String msg=response.optString("msg");
-                                Toast.makeText(mContext,msg,Toast.LENGTH_LONG).show();
-                                 String update_status=response.optString("update_status");
-                                   String totallike=response.optString("totallike");
-                                if ((update_status.equalsIgnoreCase("1") || update_status=="1") && (status=="success" || status.equalsIgnoreCase("success"))){
-                                    tv_tlike.setTextColor(Color.RED);
-                                    //ivLike.setBackgroundColor(Color.RED);
-                                    tv_tlike.setText(totallike);
-                                }
-                                else {
-                                    tv_tlike.setTextColor(Color.BLACK);
-                                    tv_tlike.setText(totallike);
-                                }
-                            }
-                            catch (Exception e){
-                                e.printStackTrace();
-                                Toast.makeText(mContext,e.getMessage(),Toast.LENGTH_LONG).show();
-                            }
-                        }
-                    },
-                    new Response.ErrorListener(){
-                        @Override
-                        public void onErrorResponse(VolleyError error){
-                            // Do something when error occurred
-                            Toast.makeText(mContext,error.getMessage(),Toast.LENGTH_LONG).show();
-                        }
-                    }
-            );
-            // Add JsonObjectRequest to the RequestQueue
-            requestQueue.add(jsonObjectRequest);
         }
+        private View.OnClickListener CommnetOnClickListener = new View.OnClickListener() {
+            public void onClick(View v) {
+                Intent intent=new Intent(mContext, CommentActivity.class);
+                intent.putExtra("id",String.valueOf(item.getId()));
+                intent.putExtra("type","demand");
+                intent.putExtra("uid",PrefManager.getLoginDetail(mContext,"id"));
+                mContext.startActivity(intent);
+            }
+        };
         public void rateMe(String id,String uid,float rating){
             String url="https://www.iampro.co/api/app_service.php?type=rate_me&id="+id+"&uid="+uid+"&ptype=provide&total_rate="+rating;
 
@@ -236,6 +193,9 @@ public class ProvideAdapter extends RecyclerView.Adapter<ProvideAdapter.ViewHold
             //Toast.makeText(mContext,"image:"+url,Toast.LENGTH_LONG).show();
             //Log.d("url_adapter",url);
             //Toast.makeText(mContext, ""+url, Toast.LENGTH_SHORT).show();
+            id = item.getId();
+            uid = Integer.parseInt(PrefManager.getLoginDetail(mContext,"id"));
+            added_by = item.getUid();
 
             tv_tlike.setText(String.valueOf(item.getTotallike()));
             tv_comments.setText(String.valueOf(item.getComments()));
@@ -258,23 +218,12 @@ public class ProvideAdapter extends RecyclerView.Adapter<ProvideAdapter.ViewHold
             //tv_daysago.setText();
             Glide.with(mContext)
                     .load(userImages)
-                    .apply(new RequestOptions()
-                            .circleCrop().bitmapTransform(new CircleCrop())
-                            .fitCenter())
+                    .apply(Config.options_avatar)
                     .into(userImage);
-
-         /*   RequestOptions options=new RequestOptions();
-            options.centerCrop().placeholder(mContext.getResources().getDrawable(R.drawable.user_placeholder));
-            Glide.with(mContext)
-                    .load(userImages)
-                    .apply(options)
-                    .into(userImage); */
 
             Glide.with(mContext)
                     .load(url)
-                    .apply(new RequestOptions()
-                            .centerCrop()
-                            .fitCenter())
+                    .apply(Config.options_provide)
                     .into(imageView);
             //imageView.setImageResource(item.image);
 
@@ -288,6 +237,39 @@ public class ProvideAdapter extends RecyclerView.Adapter<ProvideAdapter.ViewHold
                     Intent intent=new Intent(mContext, ProfileActivity.class);
                     intent.putExtra("uid",String.valueOf(uid));
                     mContext.startActivity(intent);
+                }
+            });
+            likeButton.setUnlikeDrawableRes(R.drawable.like);
+            likeButton.setLikeDrawableRes(R.drawable.like_un);
+            if (PrefManager.getLoginDetail(mContext, "id") == null) {
+                likeButton.setEnabled(false);
+            }
+            if ((item.getIsliked()) == 1) {
+                likeButton.setLiked(true);
+                tv_tlike.setTextColor(Color.RED);
+            } else {
+                likeButton.setLiked(false);
+                tv_tlike.setTextColor(Color.BLACK);
+            }
+            likeButton.setOnLikeListener(new OnLikeListener() {
+                @Override
+                public void liked(LikeButton likeButton) {
+                    int newlike = (int) Integer.parseInt(tv_tlike.getText().toString()) + 1;
+                    tv_tlike.setTextColor(Color.RED);
+                    tv_tlike.setText(String.valueOf(newlike));
+                    String url = Config.API_URL + "app_service.php?type=like_me&id=" + String.valueOf(id) + "&uid=" + uid + "&ptype=provide";
+                    Log.e(Config.TAG, url);
+                    function.executeUrl(mContext, "get", url, null);
+                }
+
+                @Override
+                public void unLiked(LikeButton likeButton) {
+                    int newlike = (int) Integer.parseInt(tv_tlike.getText().toString()) - 1;
+                    tv_tlike.setTextColor(Color.BLACK);
+                    tv_tlike.setText(String.valueOf(newlike));
+                    String url = Config.API_URL + "app_service.php?type=like_me&id=" + String.valueOf(id) + "&uid=" + uid + "&ptype=provide";
+                    Log.e(Config.TAG, url);
+                    function.executeUrl(mContext, "get", url, null);
                 }
             });
 

@@ -94,6 +94,7 @@
                  android:textColor="@color/white"
                  android:lines="1"
                  android:layout_height="wrap_content"
+                 android:visibility="gone"
                  android:background="@drawable/btn_video"
                  android:layout_marginBottom="10dp"
                  android:text="category"

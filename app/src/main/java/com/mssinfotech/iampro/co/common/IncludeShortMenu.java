@@ -74,7 +74,6 @@ public class IncludeShortMenu  extends RelativeLayout {
     };
     private OnClickListener videoOnClickListener = new OnClickListener() {
         public void onClick(View v) {
-
             Intent intent = new Intent(getContext(), MyVideoActivity.class);
             intent.putExtra(Config.PAGE_TAG,"activity_my_video");
             intent.putExtra("uid",tvs.getText().toString());
@@ -106,7 +105,7 @@ public class IncludeShortMenu  extends RelativeLayout {
 
             Intent intent = new Intent(getContext(), MyProvideActivity.class);
             intent.putExtra(Config.PAGE_TAG,"activity_my_provide");
-            intent.putExtra("uid",tvs.getText().toString());
+            intent.putExtra(" ",tvs.getText().toString());
             getContext().startActivity(intent);
             if(function.isSamePage("activity_my_provide"))function.finishFunction(getContext());
         }

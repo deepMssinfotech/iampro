@@ -25,6 +25,7 @@ import com.mssinfotech.iampro.co.model.DataModel;
 import com.mssinfotech.iampro.co.model.SectionDataModel;
 import com.mssinfotech.iampro.co.model.SingleItemModel;
 import com.mssinfotech.iampro.co.common.Config;
+import com.mssinfotech.iampro.co.utils.PrefManager;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -144,7 +145,8 @@ public class ProvideFragment extends Fragment implements ProvideAdapter.ItemList
     } */
 
     public void getProvide(){
-        final String url =Config.API_URL+"app_service.php?type=all_product_classified&uid=&name=PROVIDE&my_id=";
+        int uid= Integer.parseInt(PrefManager.getLoginDetail(getContext(),"id"));
+        final String url =Config.API_URL+"app_service.php?type=all_product_classified&uid="+uid+"&name=PROVIDE&my_id="+uid;
         // Initialize a new RequestQueue instance
         RequestQueue requestQueue = Volley.newRequestQueue(getContext());
         //Toast.makeText(getContext(), "getProvide", Toast.LENGTH_SHORT).show();
@@ -214,7 +216,8 @@ public class ProvideFragment extends Fragment implements ProvideAdapter.ItemList
 
                                 // singleItem.add(new SingleItemModel(name,image,udate));
                                 //allSampleData.add(new DataModel(name,image,udate,categoryv));
-                                allSampleData.add(new DataModel(name,image,udate,categoryv,totallike,comments,scost,pcost,ratingv,uid,fullname,avatar,idv));
+                                int isliked=student.getInt("like_unlike");
+                                allSampleData.add(new DataModel(name,image,udate,categoryv,totallike,isliked,comments,scost,pcost,ratingv,uid,fullname,avatar,idv,"provide"));
 
                             }
                            // Toast.makeText(getContext(),"rrrresponse_enterrr:2",Toast.LENGTH_LONG).show();

@@ -151,16 +151,14 @@
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".CartActivity"
-            android:label="@string/cart_title"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:label="@string/cart_title" />
         <activity
             android:name=".NotificationActivity"
-            android:label="@string/notifications_title"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:label="@string/notifications_title" />
         <activity
             android:name=".MessageActivity"
-            android:label="@string/message_title"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:label="@string/message_title" />
+
         <activity android:name=".demand.DemandDetail" />
         <activity
             android:name=".product.ProductDetail"

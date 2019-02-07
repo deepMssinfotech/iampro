@@ -81,7 +81,7 @@ public class ImageDetail extends AppCompatActivity implements Img_Video_Details.
 
     }
     protected void getImageDetail(){
-        String url="https://www.iampro.co/api/app_service.php?type=get_image_detail&id="+id+"&update_type="+type+"&uid=1&login_id="+uid+"&my_id="+uid;
+        String url="https://www.iampro.co/api/app_service.php?type=get_image_detail&id="+id+"&update_type="+type+"&uid="+uid+"&login_id="+uid+"&my_id="+uid;
         RequestQueue requestQueue = Volley.newRequestQueue(ImageDetail.this);
 
         StringRequest jsonObjectRequest = new StringRequest(
@@ -90,7 +90,7 @@ public class ImageDetail extends AppCompatActivity implements Img_Video_Details.
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-                        Log.d("Prod_detail",response.toString());
+                        Log.d("Prod_detaili",response.toString());
                         // Process the JSON
                         try{
                             JSONObject responses=new JSONObject(response);
@@ -112,7 +112,7 @@ public class ImageDetail extends AppCompatActivity implements Img_Video_Details.
                              String is_block=responses.optString("is_block");
                               int total_group_image=responses.optInt("total_group_image");
                                 int like_unlike=responses.optInt("like_unlike");
-                                 Double rating=responses.optDouble("rating");
+                                 Double rating=Double.parseDouble(responses.opt("rating").toString());
                                   int totallike=responses.optInt("totallike");
                                    int comments=responses.optInt("comments");
                                    //tv_about_tag,tv_about_msg,fullname,udate,tv_comments,tv_totallike,name,category

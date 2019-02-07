@@ -3,7 +3,6 @@ package com.mssinfotech.iampro.co.adapter;
 /**
  * Created by mssinfotech on 18/01/19.
  */
-
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -23,7 +22,6 @@ import android.content.Context;
 import android.widget.TextView;
 import com.mssinfotech.iampro.co.model.UserModel;
 import java.util.ArrayList;
-
 public class UserDataAdapter extends RecyclerView.Adapter<UserDataAdapter.ViewHolder> {
     ArrayList<UserModel> mValues;
     Context mContext;
@@ -40,7 +38,7 @@ public class UserDataAdapter extends RecyclerView.Adapter<UserDataAdapter.ViewHo
         public ViewHolder(View v) {
             super(v);
             v.setOnClickListener(this);
-            textView = (TextView) v.findViewById(R.id.textView);
+            textView =v.findViewById(R.id.textView);
             imageView =v.findViewById(R.id.imageView);
 
             tv_category=v.findViewById(R.id.tvcategory);
@@ -50,7 +48,6 @@ public class UserDataAdapter extends RecyclerView.Adapter<UserDataAdapter.ViewHo
             tv_products=v.findViewById(R.id.tv_products);
             tv_provides=v.findViewById(R.id.tv_provides);
             tv_demands=v.findViewById(R.id.tv_demands);
-
         }
         public void setData(UserModel item) {
             this.item = item;
@@ -73,7 +70,6 @@ public class UserDataAdapter extends RecyclerView.Adapter<UserDataAdapter.ViewHo
                     .into(imageView);
             //imageView.setImageResource(item.image);
 
-
         }
         @Override
         public void onClick(View view) {
@@ -82,7 +78,6 @@ public class UserDataAdapter extends RecyclerView.Adapter<UserDataAdapter.ViewHo
             }
         }
     }
-
     @Override
     public UserDataAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 
@@ -96,7 +91,6 @@ public class UserDataAdapter extends RecyclerView.Adapter<UserDataAdapter.ViewHo
         Vholder.setData(mValues.get(position));
 
     }
-
     @Override
     public int getItemCount() {
 
