@@ -125,26 +125,27 @@
         <activity
             android:name=".user.MyImageActivity"
             android:label="My Image&apos;s"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:theme="@style/AppTheme.NoActionBar"/>
         <activity
             android:name=".user.MyVideoActivity"
             android:label="My Video&apos;s"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:theme="@style/AppTheme.NoActionBar"/>
         <activity
             android:name=".user.MyProductActivity"
             android:label="My Product&apos;s"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:theme="@style/AppTheme.NoActionBar"/>
         <activity
             android:name=".user.MyProvideActivity"
             android:label="My Provide&apos;s"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:theme="@style/AppTheme.NoActionBar"/>
         <activity
+
             android:name=".user.MyDemandActivity"
             android:label="My Demand&apos;s"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:theme="@style/AppTheme.NoActionBar"/>
         <activity
             android:name=".user.ProfileActivity"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:theme="@style/AppTheme.NoActionBar"/>
         <activity
             android:name=".SearchActivity"
             android:label="@string/search_title"

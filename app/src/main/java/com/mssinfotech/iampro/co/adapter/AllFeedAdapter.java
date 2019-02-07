@@ -22,6 +22,7 @@ import com.mssinfotech.iampro.co.R;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.bitmap.CircleCrop;
 import com.bumptech.glide.request.RequestOptions;
+import com.mssinfotech.iampro.co.common.Config;
 import com.mssinfotech.iampro.co.demand.DemandDetail;
 import com.mssinfotech.iampro.co.image.ImageDetail;
 import com.mssinfotech.iampro.co.model.FeedModel;
@@ -154,9 +155,7 @@ public class AllFeedAdapter extends RecyclerView.Adapter<AllFeedAdapter.ViewHold
                 image.setVisibility(View.VISIBLE);
                 Glide.with(mContext)
                         .load(item.getFimage_path())
-                        .apply(new RequestOptions()
-                                .circleCrop().bitmapTransform(new CircleCrop())
-                                .fitCenter())
+                        .apply(Config.options_avatar)
                         .into(image);
             }
             else{

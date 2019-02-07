@@ -429,10 +429,9 @@ public class MyVideoActivity extends AppCompatActivity implements MyVideoAdapter
                             Log.d("allsampledatav", allSampleData.toString());
                             //my_recycler_view.setHasFixedSize(true);
                             Log.d("allSampleDatas",""+allSampleData.size()+"--"+allSampleData.toString());
-                            adapterr = new MyVideoDataAdapter(getApplicationContext(), allSampleData,item_name);
-                            recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.VERTICAL, false));
+                            adapterr = new MyVideoDataAdapter(MyVideoActivity.this,allSampleData,item_name);
+                            recyclerView.setLayoutManager(new LinearLayoutManager(MyVideoActivity.this, LinearLayoutManager.VERTICAL, false));
                             recyclerView.setAdapter(adapterr);
-
 
                         }
                         catch (JSONException e){

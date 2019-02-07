@@ -255,7 +255,7 @@ public class MyProductActivity extends AppCompatActivity implements MyProductAda
         RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
 
         // Initialize a new JsonArrayRequest instance
-        JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(
+        JsonArrayRequest jsonArrayRequest= new JsonArrayRequest(
                 Request.Method.GET,
                 url,
                 null,
@@ -317,7 +317,7 @@ public class MyProductActivity extends AppCompatActivity implements MyProductAda
                             Log.d("dmm",dm.toString());
                             //allSampleData.add(dm);
                             Log.d("allsampledatav",item.toString());
-                            adapter = new MyProductAdapter(getApplicationContext(),item,MyProductActivity.this);
+                            adapter = new MyProductAdapter(MyProductActivity.this,item,MyProductActivity.this);
 
                             recyclerView.setAdapter(adapter);
                             GridLayoutManager manager = new GridLayoutManager(getApplicationContext(), 2, GridLayoutManager.VERTICAL, false);

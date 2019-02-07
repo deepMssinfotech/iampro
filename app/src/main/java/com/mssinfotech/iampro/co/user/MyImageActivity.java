@@ -438,8 +438,8 @@ public class MyImageActivity extends AppCompatActivity implements MyImageAdapter
                             Log.d("allsampledatav", allSampleData.toString());
                             //my_recycler_view.setHasFixedSize(true);
                             Log.d("allSampleDatas",""+allSampleData.size()+"--"+allSampleData.toString());
-                            adapterr = new MyImageVideoDataAdapter(getApplicationContext(), allSampleData,item_name);
-                            recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.VERTICAL, false));
+                            adapterr = new MyImageVideoDataAdapter(MyImageActivity.this, allSampleData,item_name);
+                            recyclerView.setLayoutManager(new LinearLayoutManager(MyImageActivity.this, LinearLayoutManager.VERTICAL, false));
                             recyclerView.setAdapter(adapterr);
 
                         }

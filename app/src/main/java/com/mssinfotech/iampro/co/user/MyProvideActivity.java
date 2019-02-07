@@ -204,7 +204,7 @@ public class MyProvideActivity extends AppCompatActivity implements MyProvideAda
                             Log.d("dmm",dm.toString());
                             //allSampleData.add(dm);
                             Log.d("allsampledatav",item.toString());
-                            adapter = new MyProvideAdapter(getApplicationContext(),item,MyProvideActivity.this);
+                            adapter = new MyProvideAdapter(MyProvideActivity.this,item,MyProvideActivity.this);
 
                             recyclerView.setAdapter(adapter);
                             GridLayoutManager manager = new GridLayoutManager(getApplicationContext(), 2, GridLayoutManager.VERTICAL, false);
