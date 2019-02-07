@@ -37,12 +37,16 @@ import com.bumptech.glide.Glide;
 import com.mssinfotech.iampro.co.IntroActivity;
 import com.mssinfotech.iampro.co.R;
 import com.mssinfotech.iampro.co.SignupActivity;
+import com.mssinfotech.iampro.co.adapter.GalleryAdapter;
 import com.mssinfotech.iampro.co.common.CircleTransform;
 import com.mssinfotech.iampro.co.common.Config;
+import com.mssinfotech.iampro.co.common.ImageProcess;
 import com.mssinfotech.iampro.co.common.function;
 import com.mssinfotech.iampro.co.data.CategoryItem;
 import com.mssinfotech.iampro.co.utils.PrefManager;
 import com.squareup.picasso.Picasso;
+
+import net.gotev.uploadservice.MultipartUploadRequest;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -61,6 +65,8 @@ import java.net.URLEncoder;
 import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.Map;
+import java.util.UUID;
+
 import de.hdodenhof.circleimageview.CircleImageView;
 import javax.net.ssl.HttpsURLConnection;
 
@@ -69,7 +75,7 @@ import static com.mssinfotech.iampro.co.common.ImageProcess.getStringImage;
 public class EditProfileActivity extends AppCompatActivity {
     public  static int CAMERA_CAPTURE_IMAGE_REQUEST_CODE=100;
     public static int CAMERA_CAPTURE_PICK_IMAGE_REQUEST=200;
-    Bitmap bitmap;
+    Bitmap bitmap; TextView tvlayouttype;
     CircleImageView userimage;
     //upload image
     EditText imageName;
@@ -91,15 +97,17 @@ public class EditProfileActivity extends AppCompatActivity {
     boolean check = true;
     private int GALLERY = 1, CAMERA = 2;
     Button UploadImageOnServerButton;
-    String idv,usenamev,fnamev, avatar;
+    public String idv, usenamev, fnamev, avatar;
+    public String backgroundimagePath="";
     String simg_path=null,full_simg_path,banner_imagep,fbanner_imagep;
     Context context=EditProfileActivity.this;
     ImageView view;
     TextInputEditText category,first_name,last_name,contact_no,email,dob,identity_type,identity_no,about_me,tag_line,address_tag,city,state,country;
-    String uid,fname,background;
+    String uid,fname,background,banner_img;
     TextView username;
-    ImageView userbackgroud,changeImage;
+    ImageView userbackgroud,changeImage,changeBackground_Image;
     Spinner spprofession;
+    private GalleryAdapter galleryAdapter;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -112,6 +120,7 @@ public class EditProfileActivity extends AppCompatActivity {
         username = findViewById(R.id.username);
         userimage = findViewById(R.id.userimage);
         userbackgroud = findViewById(R.id.userbackgroud);
+        tvlayouttype = findViewById(R.id.tvlayouttype);
         username.setText(PrefManager.getLoginDetail(this,"fname") +" "+PrefManager.getLoginDetail(this,"lname"));
         Glide.with(this).load(background).apply(Config.options_background).into(userbackgroud);
         Glide.with(this).load(avatar).apply(Config.options_avatar).into(userimage);
@@ -121,7 +130,15 @@ public class EditProfileActivity extends AppCompatActivity {
             public void onClick(View view) {
                 Intent intent=new Intent(EditProfileActivity.this,ProfileImageCroperActivity.class);
                 startActivity(intent);
-                finish();
+                //finish();
+            }
+        });
+
+        changeBackground_Image = findViewById(R.id.changeBackground_Image);
+        changeBackground_Image.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showPictureDialog();
             }
         });
 
@@ -140,6 +157,7 @@ public class EditProfileActivity extends AppCompatActivity {
         city= findViewById(R.id.city);
         state= findViewById(R.id.state);
         country=findViewById(R.id.country);
+
         getData();
         PrefManager.updateUserData(this,null);
     }
@@ -349,107 +367,23 @@ public class EditProfileActivity extends AppCompatActivity {
             return false;
         }
     }
-    private void showFileChooser() {
-        if (!isDeviceSupportCamera()) {
-            Toast.makeText(getApplicationContext(),
-                    "Sorry! Your device doesn't support camera",
-                    Toast.LENGTH_LONG).show();
-            // will close the app if the device does't have camera
-            //finish();
-        }else {
 
-            final CharSequence[] items = { "Take Photo", "Choose from Library", "Cancel" };
-            AlertDialog.Builder builder = new AlertDialog.Builder(EditProfileActivity.this);
-            builder.setTitle("Add Photo!");
-            builder.setItems(items, new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int item) {
-                    if (items[item].equals("Take Photo")) {
-                        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                        startActivityForResult(intent,CAMERA_CAPTURE_IMAGE_REQUEST_CODE);
-                    } else if (items[item].equals("Choose from Library")) {
-                        Intent intent = new Intent();
-                        intent.setType("image/*");
-                        intent.setAction(Intent.ACTION_GET_CONTENT);
-                        startActivityForResult(Intent.createChooser(intent, "Select Picture"),CAMERA_CAPTURE_PICK_IMAGE_REQUEST);
-                    } else if (items[item].equals("Cancel")) {
-                        dialog.dismiss();
-                    }
-                }
-            });
-            builder.show();
-        }
-
-    }
-
-    private void uploadImage(){
-        //Showing the progress dialog
-        final ProgressDialog loading = ProgressDialog.show(this,"Uploading...","Please wait...",false,false);
-        StringRequest stringRequest = new StringRequest(Request.Method.POST,"",
-                new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String s) {
-                        //Disimissing the progress dialog
-                        loading.dismiss();
-                        //Showing toast message of the response
-                        //Toast.makeText(ProfileActivity.this, s , Toast.LENGTH_LONG).show();
-                        try {
-                            JSONObject jsonObject=new JSONObject(s);
-                            String status=jsonObject.getString("status");
-                            String msg=jsonObject.getString("msg");
-                        }
-                        catch(JSONException e){
-                            Toast.makeText(getApplicationContext(),e.getMessage(),Toast.LENGTH_LONG).show();
-                        }
-                    }
-                },
-                new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError volleyError) {
-                        //Dismissing the progress dialog
-                        loading.dismiss();
-                    }
-                }){
-            @Override
-            protected Map<String, String> getParams() throws AuthFailureError {
-                //Converting Bitmap to String
-                String image = getStringImage(bitmap);
-
-                //Creating parameters
-                Map<String,String> params = new Hashtable<String, String>();
-
-                //Adding parameters
-                params.put("image", image);
-                //params.put("id", id);
-                params.put("type","uploadUserProfilePic");
-                //returning parameters
-                return params;
-            }
-        };
-        //Creating a Request Queue
-        RequestQueue requestQueue = Volley.newRequestQueue(this);
-
-        //Adding request to the queue
-        requestQueue.add(stringRequest);
-
-    }
     public String getPath(Uri uri) {
         Cursor cursor = getContentResolver().query(uri, null, null, null, null);
         cursor.moveToFirst();
         String document_id = cursor.getString(0);
         document_id = document_id.substring(document_id.lastIndexOf(":") + 1);
         cursor.close();
-
         cursor = getContentResolver().query(
                 android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
                 null, MediaStore.Images.Media._ID + " = ? ", new String[]{document_id}, null);
         cursor.moveToFirst();
         String path = cursor.getString(cursor.getColumnIndex(MediaStore.Images.Media.DATA));
         cursor.close();
-
         return path;
     }
     //image uploading
+
     private void showPictureDialog(){
         AlertDialog.Builder pictureDialog = new AlertDialog.Builder(this);
         pictureDialog.setTitle("Select Action");
@@ -496,9 +430,10 @@ public class EditProfileActivity extends AppCompatActivity {
                 Uri contentURI = data.getData();
                 try {
                     FixBitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), contentURI);
-                    userimage.setImageBitmap(FixBitmap);
-                    UploadImageOnServerButton.setVisibility(View.VISIBLE);
-
+                    userbackgroud.setImageBitmap(FixBitmap);
+                    backgroundimagePath = getPath(contentURI);
+                    //UploadImageOnServerButton.setVisibility(View.VISIBLE);
+                    sendData();
                 } catch (IOException e) {
                     e.printStackTrace();
                     Toast.makeText(EditProfileActivity.this, "Failed!", Toast.LENGTH_SHORT).show();
@@ -506,12 +441,15 @@ public class EditProfileActivity extends AppCompatActivity {
             }
 
         } else if (requestCode == CAMERA) {
+            Uri contentURI = data.getData();
             try {
                 FixBitmap = (Bitmap) data.getExtras().get("data");
                 //ShowSelectedImage.setImageBitmap(FixBitmap);
-                userimage.setImageBitmap(FixBitmap);
-                UploadImageOnServerButton.setVisibility(View.VISIBLE);
+                userbackgroud.setImageBitmap(FixBitmap);
+                backgroundimagePath = getPath(contentURI);
+                //UploadImageOnServerButton.setVisibility(View.VISIBLE);
                 //  saveImage(thumbnail);
+                sendData();
                 //Toast.makeText(ShadiRegistrationPart5.this, "Image Saved!", Toast.LENGTH_SHORT).show();
             }
             catch (Exception e){
@@ -520,155 +458,32 @@ public class EditProfileActivity extends AppCompatActivity {
         }
     }
 
+    public void sendData() {
 
-    public void UploadImageToServer(){
-        Log.d("tagg",GetImageNameFromEditText);
-        usenamev=PrefManager.getLoginDetail(this,"username");
-        fnamev=PrefManager.getLoginDetail(this,"fname");
-        FixBitmap.compress(Bitmap.CompressFormat.JPEG, 40, byteArrayOutputStream);
-
-        byteArray = byteArrayOutputStream.toByteArray();
-
-        ConvertImage = Base64.encodeToString(byteArray, Base64.DEFAULT);
-
-        class AsyncTaskUploadClass extends AsyncTask<Void,Void,String> {
-
-            @Override
-            protected void onPreExecute() {
-
-                super.onPreExecute();
-
-                progressDialog = ProgressDialog.show(EditProfileActivity.this,"Image is Uploading","Please Wait",false,false);
-            }
-            @Override
-            protected String doInBackground(Void... params) {
-
-                EditProfileActivity.ImageProcessClass imageProcessClass = new EditProfileActivity.ImageProcessClass();
-
-                HashMap<String,String> HashMapParams = new HashMap<String,String>();
-
-                HashMapParams.put("image_tag",fnamev.toString().trim());
-
-                HashMapParams.put("image_data", ConvertImage);
-                HashMapParams.put("user_id",idv.toString().trim());
-                HashMapParams.put("user_name",usenamev.toString().trim());
-                //HashMapParams.put("user_password",new PrefManager(getApplicationContext()).getPassword());
-                String FinalData = imageProcessClass.ImageHttpRequest("http://www.iampro.co/upload-image-to-server.php", HashMapParams);
-                //Log.d("iddtt",idv);
-                //Log.d("user_name",usenamev.toString().trim());
-                return FinalData;
-            }
-            @Override
-            protected void onPostExecute(String string1) {
-                super.onPostExecute(string1);
-                progressDialog.dismiss();
-                UploadImageOnServerButton.setVisibility(View.GONE);
-                //Toast.makeText(EditProfile.this,string1,Toast.LENGTH_LONG).show();
-                Log.d("responsesss",string1);
-                try {
-                    JSONObject jsonObject = new JSONObject(string1);
-                    String statusv=jsonObject.getString("status");
-                    String messagev=jsonObject.getString("msg");
-                    String img_path=jsonObject.getString("avatar");
-                    if (statusv.equalsIgnoreCase("success")) {
-
-                        SharedPreferences sharedPreferences = getApplicationContext().getSharedPreferences("LoginDetails", Context.MODE_PRIVATE);
-                        SharedPreferences.Editor editor = sharedPreferences.edit();
-                        editor.putString("img_url",img_path).apply();
-
-                        //String img_patth=PrefManager.getImagePath();
-                        //Log.d("aimg_path",img_patth);
-                        Toast.makeText(getApplicationContext(),messagev,Toast.LENGTH_LONG).show();
-                    }
-                    else
-                        Toast.makeText(getApplicationContext(),messagev,Toast.LENGTH_LONG).show();
-                }
-                catch (JSONException e){
-                    Toast.makeText(getApplicationContext(),e.getMessage(),Toast.LENGTH_LONG).show();
-                }
-
-            }
-
+        if (!Config.haveNetworkConnection(this)) {
+            Config.showInternetDialog(this);
+            return;
         }
-        AsyncTaskUploadClass AsyncTaskUploadClassOBJ = new AsyncTaskUploadClass();
-        AsyncTaskUploadClassOBJ.execute();
-    }
-
-    public class ImageProcessClass {
-
-        public String ImageHttpRequest(String requestURL,HashMap<String, String> PData) {
-
-            StringBuilder stringBuilder = new StringBuilder();
-
-            try {
-                url = new URL(requestURL);
-
-                httpURLConnection = (HttpURLConnection) url.openConnection();
-
-                httpURLConnection.setReadTimeout(20000);
-
-                httpURLConnection.setConnectTimeout(20000);
-
-                httpURLConnection.setRequestMethod("POST");
-
-                httpURLConnection.setDoInput(true);
-
-                httpURLConnection.setDoOutput(true);
-
-                outputStream = httpURLConnection.getOutputStream();
-
-                bufferedWriter = new BufferedWriter(
-
-                        new OutputStreamWriter(outputStream, "UTF-8"));
-
-                bufferedWriter.write(bufferedWriterDataFN(PData));
-
-                bufferedWriter.flush();
-
-                bufferedWriter.close();
-
-                outputStream.close();
-
-                RC = httpURLConnection.getResponseCode();
-
-                if (RC == HttpsURLConnection.HTTP_OK) {
-
-                    bufferedReader = new BufferedReader(new InputStreamReader(httpURLConnection.getInputStream()));
-
-                    stringBuilder = new StringBuilder();
-
-                    String RC2;
-
-                    while ((RC2 = bufferedReader.readLine()) != null){
-
-                        stringBuilder.append(RC2);
-                    }
-                }
-
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-            return stringBuilder.toString();
-        }
-
-        private String bufferedWriterDataFN(HashMap<String, String> HashMapParams) throws UnsupportedEncodingException {
-
-            stringBuilder = new StringBuilder();
-
-            for (Map.Entry<String, String> KEY : HashMapParams.entrySet()) {
-                if (check)
-                    check = false;
-                else
-                    stringBuilder.append("&");
-
-                stringBuilder.append(URLEncoder.encode(KEY.getKey(), "UTF-8"));
-
-                stringBuilder.append("=");
-
-                stringBuilder.append(URLEncoder.encode(KEY.getValue(), "UTF-8"));
-            }
-
-            return stringBuilder.toString();
+        //Toast.makeText(getApplicationContext(), "Video upload remain pleasw wait....", Toast.LENGTH_LONG).show();
+        //return;
+        try {
+            String uploadId = UUID.randomUUID().toString();
+            //Creating a multi part request
+            new MultipartUploadRequest(this, uploadId, Config.AJAX_URL + "signup.php")
+                    .addFileToUpload(backgroundimagePath, "banner_img") //Adding file
+                    .addParameter("type","banner_img")//Adding text parameter to the request
+                    .addParameter("process_type","android")
+                    .addParameter("userid",PrefManager.getLoginDetail(getApplicationContext(),"id"))
+                    //.setNotificationConfig(new UploadNotificationConfig())
+                    .setMaxRetries(2)
+                    .startUpload(); //Starting the upload
+            Intent intent = new Intent(getApplicationContext(), EditProfileActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            startActivity(intent);
+            Toast.makeText(this, "Update Profile Background Image is processing please wait", Toast.LENGTH_SHORT).show();
+            finish();
+        } catch (Exception exc) {
+            Toast.makeText(this, exc.getMessage(), Toast.LENGTH_SHORT).show();
         }
 
     }

@@ -219,7 +219,6 @@ public class AddVideoActivity extends AppCompatActivity {
                 videoView.setVideoURI(contentURI);
                 videoView.requestFocus();
                 videoView.start();
-
             }
 
         } else if (requestCode == Config.CAMERA) {
