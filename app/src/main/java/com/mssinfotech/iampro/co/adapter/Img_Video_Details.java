@@ -23,6 +23,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.VideoView;
 
+import com.mssinfotech.iampro.co.common.Config;
 import com.mssinfotech.iampro.co.image.ImageDetail;
 import com.mssinfotech.iampro.co.model.DataModel;
 import com.mssinfotech.iampro.co.model.ImageDetailModel;
@@ -102,9 +103,7 @@ public class Img_Video_Details extends RecyclerView.Adapter<Img_Video_Details.Vi
 
             Glide.with(mContext)
                     .load(avatar)
-                    .apply(new RequestOptions()
-                            .circleCrop().bitmapTransform(new CircleCrop())
-                            .fitCenter())
+                    .apply(Config.options_avatar)
                     .into(imageView_user);
 
            if(item.getType().equalsIgnoreCase("image")) {
@@ -116,6 +115,7 @@ public class Img_Video_Details extends RecyclerView.Adapter<Img_Video_Details.Vi
                                .centerCrop()
                                .fitCenter())
                        .into(image);
+               imageView_icon.setImageResource(R.drawable.image_icon);
            }
            else if(item.getType().equalsIgnoreCase("video")) {
                image.setVisibility(View.GONE);
@@ -123,6 +123,9 @@ public class Img_Video_Details extends RecyclerView.Adapter<Img_Video_Details.Vi
 
                videoView.setVideoPath(item.getImage());
                //videoView.start();
+
+
+               imageView_icon.setImageResource(R.drawable.video_icon);
            }
                imageView_user.setOnClickListener(new View.OnClickListener() {
                    @Override

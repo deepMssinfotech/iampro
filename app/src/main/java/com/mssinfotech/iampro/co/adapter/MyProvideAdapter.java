@@ -33,6 +33,7 @@ import com.mssinfotech.iampro.co.model.FeedModel;
 import com.mssinfotech.iampro.co.model.MyProductModel;
 import com.mssinfotech.iampro.co.product.ProductDetail;
 import com.mssinfotech.iampro.co.provide.ProvideDetail;
+import com.mssinfotech.iampro.co.provide.ProvideDetailActivity;
 import com.mssinfotech.iampro.co.user.AddProductActivity;
 import com.mssinfotech.iampro.co.user.AddProvideActivity;
 import com.mssinfotech.iampro.co.user.ProfileActivity;
@@ -101,14 +102,14 @@ public class MyProvideAdapter extends RecyclerView.Adapter<MyProvideAdapter.View
                 @Override
                 public void onClick(View v) {
                     //Toast.makeText(mContext, "Provide clicked"+item.getName()+"\n"+item.getUid(), Toast.LENGTH_SHORT).show();
-                    Intent intent=new Intent(mContext, ProvideDetail.class);
+                    Intent intent=new Intent(mContext, ProvideDetailActivity.class);
                     intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     intent.putExtra("pid",String.valueOf(item.getPid()));
                     intent.putExtra("uid",String.valueOf(item.getUid()));
+                     intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     mContext.startActivity(intent);
                 }
             });
-
         }
         public void setData(MyProductModel item) {
             this.item = item;

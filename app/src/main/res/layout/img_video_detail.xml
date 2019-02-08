@@ -15,7 +15,6 @@
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical">
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -23,8 +22,8 @@
         android:orientation="horizontal">
         <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/imageView_user"
-            android:layout_width="77dp"
-            android:layout_height="77dp"
+            android:layout_width="51dp"
+            android:layout_height="51dp"
             android:padding="10dp"
             android:layout_gravity="center"
             android:src="@drawable/iampro"
@@ -46,13 +45,12 @@
                 android:id="@+id/udate"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-
                 android:text="time ago"/>
         </LinearLayout>
         <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/imageView_icon"
-            android:layout_width="77dp"
-            android:layout_height="77dp"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
             android:padding="10dp"
             android:layout_gravity="center"
             android:src="@drawable/iampro"
@@ -97,7 +95,7 @@
         android:id="@+id/video"
         android:layout_width="match_parent"
         android:layout_height="250dp"
-         android:visibility="gone"/>
+        android:visibility="gone"/>
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -110,11 +108,11 @@
             android:layout_width="wrap_content"
             android:layout_marginTop="7dp"
             android:layout_height="wrap_content"
-            android:layout_weight="0.7"
+            android:layout_weight="0"
             android:isIndicator="false"
-            android:rating="4"
+            android:rating="5"
             android:padding="10dp"
-            android:stepSize="0.3"/>
+            android:stepSize="0.4"/>
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -127,7 +125,6 @@
                 android:id="@id/iv_comments"
                 android:layout_width="20dp"
                 android:layout_height="20dp"
-
                 android:src="@drawable/comment"/>
             <TextView
                 android:id="@+id/tv_comments"
@@ -155,7 +152,7 @@
                 android:id="@+id/tv_totallike"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                 android:layout_marginStart="10dp"
+                android:layout_marginStart="10dp"
                 android:layout_marginLeft="10dp"
                 android:layout_gravity="center_horizontal"
                 android:textSize="17sp"

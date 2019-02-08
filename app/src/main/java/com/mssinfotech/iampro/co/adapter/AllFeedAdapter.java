@@ -163,7 +163,6 @@ public class AllFeedAdapter extends RecyclerView.Adapter<AllFeedAdapter.ViewHold
                 image.setVisibility(View.GONE);
                 videoView.setVideoPath(item.getFimage_path());
                 //videoView.start();
-
                 Uri video = Uri.parse(item.getFimage_path());
                 videoView.setVideoURI(video);
 
@@ -173,7 +172,11 @@ public class AllFeedAdapter extends RecyclerView.Adapter<AllFeedAdapter.ViewHold
             }
   if (type.equalsIgnoreCase("VIDEO")){
       ll_showhide.setVisibility(View.GONE);
-                imageView_icon.setImageResource(R.drawable.video_icon);
+                //imageView_icon.setImageResource(R.drawable.video_icon);
+      Glide.with(mContext)
+              .load(R.drawable.video_icon)
+              .apply(Config.options_product)
+              .into(imageView_icon);
                 //Toast.makeText(mContext,"Type: "+type,Toast.LENGTH_LONG).show();
       //Resources resources = mContext.getResources();
       //imageView_icon.setImageDrawable(resources.getDrawable(R.drawable.video_icon));
@@ -182,7 +185,11 @@ public class AllFeedAdapter extends RecyclerView.Adapter<AllFeedAdapter.ViewHold
             }
   else if (type.equalsIgnoreCase("IMAGE")){
       ll_showhide.setVisibility(View.GONE);
-                imageView_icon.setImageResource(R.drawable.image_icon);
+                //imageView_icon.setImageResource(R.drawable.image_icon);
+      Glide.with(mContext)
+              .load(R.drawable.image_icon)
+              .apply(Config.options_avatar)
+              .into(imageView_icon);
                 //Toast.makeText(mContext,"Type: "+type,Toast.LENGTH_LONG).show();
       //Resources resources = mContext.getResources();
       //imageView_icon.setImageDrawable(resources.getDrawable(R.drawable.image_icon));
@@ -190,7 +197,11 @@ public class AllFeedAdapter extends RecyclerView.Adapter<AllFeedAdapter.ViewHold
             }
             else if (type.equalsIgnoreCase("PRODUCT")){
                   ll_showhide.setVisibility(View.VISIBLE);
-                imageView_icon.setImageResource(R.drawable.product_icon);
+                //imageView_icon.setImageResource(R.drawable.product_icon);
+      Glide.with(mContext)
+              .load(R.drawable.product_icon)
+              .apply(Config.options_product)
+              .into(imageView_icon);
       detail_name.setText(item.getDetail_name());
 
       purchese_cost.setText("Rs: "+String.valueOf(item.getPurchese_cost()));
@@ -203,19 +214,24 @@ public class AllFeedAdapter extends RecyclerView.Adapter<AllFeedAdapter.ViewHold
             }
             else if (type.equalsIgnoreCase("PROVIDE")){
               ll_showhide.setVisibility(View.VISIBLE);
-                imageView_icon.setImageResource(R.drawable.provide_icon);
+                //imageView_icon.setImageResource(R.drawable.provide_icon);
+      Glide.with(mContext)
+              .load(R.drawable.provide_icon)
+              .apply(Config.options_provide)
+              .into(imageView_icon);
                // Toast.makeText(mContext,"Type: "+type,Toast.LENGTH_LONG).show();
                  detail_name.setText(item.getDetail_name());
       purchese_cost.setText("");
       selling_cost.setText("Rs: "+String.valueOf(item.getSelling_cost()));
-      //Resources resources = mContext.getResources();
-      //imageView_icon.setImageDrawable(resources.getDrawable(R.drawable.provide_icon));
-      //image.setImageDrawable(ContextCompat.getDrawable(mContext,R.drawable.provide_icon));
       iv_favourite.setVisibility(View.VISIBLE);
             }
             else if (type.equalsIgnoreCase("DEMAND")){
                   ll_showhide.setVisibility(View.VISIBLE);
-                imageView_icon.setImageResource(R.drawable.demand_icon);
+                //imageView_icon.setImageResource(R.drawable.demand_icon);
+      Glide.with(mContext)
+              .load(R.drawable.demand_icon)
+              .apply(Config.options_demand)
+              .into(imageView_icon);
                 //Toast.makeText(mContext,"Type: "+type,Toast.LENGTH_LONG).show();
       detail_name.setText(item.getDetail_name());
       purchese_cost.setText("");

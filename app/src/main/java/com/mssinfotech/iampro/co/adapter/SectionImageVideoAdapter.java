@@ -43,6 +43,7 @@ import com.mssinfotech.iampro.co.provide.ProvideDetailActivity;
 import com.mssinfotech.iampro.co.user.AddProvideActivity;
 import com.mssinfotech.iampro.co.user.MyProvideActivity;
 import com.mssinfotech.iampro.co.user.ProfileActivity;
+import com.mssinfotech.iampro.co.utils.PrefManager;
 import com.squareup.picasso.Picasso;
 
 import org.json.JSONException;
@@ -58,7 +59,7 @@ public class SectionImageVideoAdapter extends RecyclerView.Adapter<SectionImageV
     private Context mContext;
     //private String uid,id;
     ImageView ivLike;
-     static String pid;
+
     ArrayList<MyImageModel> mValues;
     HashSet<String> heading_name;
     protected MyImageAdapter.ItemListener mListener;
@@ -77,9 +78,10 @@ public class SectionImageVideoAdapter extends RecyclerView.Adapter<SectionImageV
     public void onBindViewHolder(SingleItemRowHolder holder, final int i) {
         MyImageModel singleItem = itemsList.get(i);
         //orgg
-        final String uid=singleItem.getUid();
+        //final String uid=singleItem.getUid();
+        final String uid= PrefManager.getLoginDetail(mContext,"id");
         final String id=singleItem .getId();
-          pid=singleItem .getId();
+        final String pid=singleItem .getId();
         //if(!(item.getRating()!="NAN") || !(item.getRating().equalsIgnoreCase("NAN")))
         //ratingBar.setRating(Float.parseFloat(String.valueOf(item.getRating())));
         holder. category.setText(singleItem .getCategory());
@@ -92,10 +94,11 @@ public class SectionImageVideoAdapter extends RecyclerView.Adapter<SectionImageV
             @Override
             public void onClick(View v) {
                 Intent intent=new Intent(mContext,ImageDetail.class);
-                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                intent.putExtra("uid",uid);
-                intent.putExtra("id",id);
+
+                intent.putExtra("uid",Integer.parseInt(uid));
+                intent.putExtra("id",Integer.parseInt(id));
                 intent.putExtra("type","image");
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 mContext.startActivity(intent);
                 Log.d("uid_idvideo",""+uid+" "+id);
             }

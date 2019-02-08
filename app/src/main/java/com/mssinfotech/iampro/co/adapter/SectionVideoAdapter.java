@@ -43,6 +43,7 @@ import com.mssinfotech.iampro.co.provide.ProvideDetailActivity;
 import com.mssinfotech.iampro.co.user.AddProvideActivity;
 import com.mssinfotech.iampro.co.user.MyProvideActivity;
 import com.mssinfotech.iampro.co.user.ProfileActivity;
+import com.mssinfotech.iampro.co.utils.PrefManager;
 import com.squareup.picasso.Picasso;
 
 import org.json.JSONException;
@@ -54,7 +55,6 @@ import java.util.HashSet;
 import java.util.Map;
 
 public class SectionVideoAdapter extends RecyclerView.Adapter<SectionVideoAdapter.SingleItemRowHolder> {
-
     private ArrayList<MyImageModel> itemsList;
     private Context mContext;
     //private String uid,id;
@@ -66,22 +66,21 @@ public class SectionVideoAdapter extends RecyclerView.Adapter<SectionVideoAdapte
         this.itemsList = itemsList;
         this.mContext = context;
     }
-
     @Override
     public SingleItemRowHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
         View v = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.item_video_row, null);
-
         SingleItemRowHolder mh = new SingleItemRowHolder(v);
         return mh;
     }
-
     @Override
     public void onBindViewHolder(SingleItemRowHolder holder, final int i) {
         MyImageModel singleItem = itemsList.get(i);
         Log.d("single_item",""+singleItem);
         //orgg
          //String uid,id;
-        final String uid=singleItem .getUid();
+        //final String uid=singleItem .getUid();
+        final String uid= PrefManager.getLoginDetail(mContext,"id");
+
         final String id=singleItem .getId();
         //if(!(item.getRating()!="NAN") || !(item.getRating().equalsIgnoreCase("NAN")))
         //ratingBar.setRating(Float.parseFloat(String.valueOf(item.getRating())));
@@ -122,20 +121,18 @@ public class SectionVideoAdapter extends RecyclerView.Adapter<SectionVideoAdapte
             public void onClick(View v) {
                 Intent intent=new Intent(mContext,ImageDetail.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                intent.putExtra("uid",uid);
-                intent.putExtra("id",id);
+                intent.putExtra("uid",Integer.parseInt(uid));
+                intent.putExtra("id",Integer.parseInt(id));
                 intent.putExtra("type","video");
                 mContext.startActivity(intent);
-                Toast.makeText(mContext,"uid: "+uid,Toast.LENGTH_LONG).show();
+               // Toast.makeText(mContext,"uid: "+uid,Toast.LENGTH_LONG).show();
             }
         });
         // videoView.setVideoPath(Config.V_URL+item.getImage());
 
         Glide.with(mContext)
                 .load(Config.V_URL+singleItem.getImage())
-                .apply(new RequestOptions()
-                        .circleCrop().bitmapTransform(new CircleCrop())
-                        .fitCenter())
+                .apply(Config.options_video)
                 .into(holder.videoView);
 
         holder.iv_delete.setOnClickListener(new View.OnClickListener() {
@@ -175,7 +172,6 @@ public class SectionVideoAdapter extends RecyclerView.Adapter<SectionVideoAdapte
         });
 
     }
-
     @Override
     public int getItemCount() {
         return (null != itemsList ? itemsList.size() : 0);
@@ -186,7 +182,6 @@ public class SectionVideoAdapter extends RecyclerView.Adapter<SectionVideoAdapte
         protected de.hdodenhof.circleimageview.CircleImageView btnMore,user_image;
         protected LinearLayout likelayout;
         //this.btnMore= view.findViewById(R.id.btnMore);
-
         //orginal
         ImageView  imageView_user,imageView_icon,iv_comments,image,iv_favourite,ivLike,videoView,iv_delete,iv_edit;
         //VideoView videoView;
@@ -194,10 +189,8 @@ public class SectionVideoAdapter extends RecyclerView.Adapter<SectionVideoAdapte
         RatingBar ratingBar;
         LinearLayout ll_showhide,ll_comment;
         MyImageModel item;
-
         public SingleItemRowHolder(View view) {
             super(view);
-
             //orgg
            /* imageView=view.findViewById(R.id.imageView);
             tv_name=view.findViewById(R.id.tv_name);
@@ -237,8 +230,6 @@ public class SectionVideoAdapter extends RecyclerView.Adapter<SectionVideoAdapte
             ll_showhide=view.findViewById(R.id.ll_showhide);
             category=view.findViewById(R.id.category);
             detail_name=view.findViewById(R.id.detail_name);
-
-
             ll_comment.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -247,7 +238,6 @@ public class SectionVideoAdapter extends RecyclerView.Adapter<SectionVideoAdapte
                     mContext.startActivity(intent);
                 }
             });
-
             view.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
