@@ -40,6 +40,7 @@ import com.mssinfotech.iampro.co.model.MyImageModel;
 import com.mssinfotech.iampro.co.model.SingleItemModel;
 import com.mssinfotech.iampro.co.product.ProductDetail;
 import com.mssinfotech.iampro.co.provide.ProvideDetailActivity;
+import com.mssinfotech.iampro.co.user.AddImageActivity;
 import com.mssinfotech.iampro.co.user.AddProvideActivity;
 import com.mssinfotech.iampro.co.user.MyProvideActivity;
 import com.mssinfotech.iampro.co.user.ProfileActivity;
@@ -94,7 +95,6 @@ public class SectionImageVideoAdapter extends RecyclerView.Adapter<SectionImageV
             @Override
             public void onClick(View v) {
                 Intent intent=new Intent(mContext,ImageDetail.class);
-
                 intent.putExtra("uid",Integer.parseInt(uid));
                 intent.putExtra("id",Integer.parseInt(id));
                 intent.putExtra("type","image");
@@ -121,7 +121,7 @@ public class SectionImageVideoAdapter extends RecyclerView.Adapter<SectionImageV
                         // dialog.cancel();
                         mValues.remove(i);
                         notifyDataSetChanged();
-                        deleteImage(id);
+                        deleteImage(itemsList.get(i).getId());
                         //Toast.makeText(mContext,"deleted",Toast.LENGTH_LONG).show();
                     }
                 });
@@ -138,9 +138,9 @@ public class SectionImageVideoAdapter extends RecyclerView.Adapter<SectionImageV
         holder.iv_edit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent=new Intent(mContext, AddProvideActivity.class);
+                Intent intent=new Intent(mContext, AddImageActivity.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                intent.putExtra("id",String.valueOf(id));
+                intent.putExtra("id",itemsList.get(i).getId());
                 mContext.startActivity(intent);
             }
         });
@@ -218,7 +218,7 @@ public class SectionImageVideoAdapter extends RecyclerView.Adapter<SectionImageV
         }
     }
     public void deleteImage(String pid){
-        String url="https://www.iampro.co/ajax/profile.php?type=deleteAlbemimage&id="+pid;
+        String url="https://www.iampro.co/ajax/profile.php?type=deleteAlbemimage&id="+Integer.parseInt(pid);
         RequestQueue MyRequestQueue = Volley.newRequestQueue(mContext);
         StringRequest MyStringRequest = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
             @Override

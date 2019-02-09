@@ -120,12 +120,12 @@ public class MyDemandAdapter extends RecyclerView.Adapter<MyDemandAdapter.ViewHo
                     mContext.startActivity(intent);
                 }
             });
-            iv_delete.setOnClickListener(new View.OnClickListener() {
+           /* iv_delete.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     Toast.makeText(mContext, "delete clicked"+item.getName()+"\n"+item.getUid(), Toast.LENGTH_SHORT).show();
                 }
-            });
+            }); */
         }
         public void setData(MyProductModel item) {
             this.item = item;
@@ -172,7 +172,7 @@ public class MyDemandAdapter extends RecyclerView.Adapter<MyDemandAdapter.ViewHo
             @Override
             public void onClick(View v) {
                 AlertDialog.Builder alertDialog = new AlertDialog.Builder(mContext);
-                alertDialog.setTitle("Delete it!");
+                alertDialog.setTitle("Delete it!"+mValues.get(position).getPid());
                 alertDialog.setMessage("Are you sure...");
                 alertDialog.setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
                     @Override
@@ -180,7 +180,7 @@ public class MyDemandAdapter extends RecyclerView.Adapter<MyDemandAdapter.ViewHo
                        // dialog.cancel();
                         mValues.remove(position);
                         notifyDataSetChanged();
-                        deleteDemand();
+                        deleteDemand(mValues.get(position).getPid());
                         //Toast.makeText(mContext,"deleted",Toast.LENGTH_LONG).show();
                     }
                 });
@@ -204,9 +204,9 @@ public class MyDemandAdapter extends RecyclerView.Adapter<MyDemandAdapter.ViewHo
         Vholder.iv_edit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent=new Intent(mContext, AddProvideActivity.class);
+                Intent intent=new Intent(mContext, AddDemandActivity.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                intent.putExtra("id",String.valueOf(pid));
+                intent.putExtra("id",mValues.get(position).getPid());
                 mContext.startActivity(intent);
             }
         });
@@ -220,8 +220,8 @@ public class MyDemandAdapter extends RecyclerView.Adapter<MyDemandAdapter.ViewHo
         void onItemClick(MyProductModel item);
     }
 
-    public void deleteDemand(){
-         String url="https://www.iampro.co/api/app_service.php?type=delete_product&id="+pid+"&item_type=demand";
+    public void deleteDemand(String pid){
+         String url="https://www.iampro.co/api/app_service.php?type=delete_product&id="+Integer.parseInt(pid)+"&item_type=demand";
         RequestQueue MyRequestQueue = Volley.newRequestQueue(mContext);
         StringRequest MyStringRequest = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
             @Override

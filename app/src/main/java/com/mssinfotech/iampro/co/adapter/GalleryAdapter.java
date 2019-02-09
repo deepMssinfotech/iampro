@@ -10,9 +10,7 @@ import android.widget.ImageView;
 import com.mssinfotech.iampro.co.R;
 
 import java.util.ArrayList;
-
 public class GalleryAdapter extends BaseAdapter {
-
     private Context ctx;
     private int pos;
     private LayoutInflater inflater;
@@ -23,7 +21,6 @@ public class GalleryAdapter extends BaseAdapter {
         this.ctx = ctx;
         this.mArrayUri = mArrayUri;
     }
-
     @Override
     public int getCount() {
         return mArrayUri.size();
@@ -33,27 +30,17 @@ public class GalleryAdapter extends BaseAdapter {
     public Object getItem(int position) {
         return mArrayUri.get(position);
     }
-
     @Override
     public long getItemId(int position) {
         return 0;
     }
-
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-
         pos = position;
-        inflater = (LayoutInflater) ctx
-                .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-
+        inflater = (LayoutInflater) ctx.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View itemView = inflater.inflate(R.layout.gv_item, parent, false);
-
-        ivGallery = (ImageView) itemView.findViewById(R.id.ivGallery);
-
+        ivGallery =itemView.findViewById(R.id.ivGallery);
         ivGallery.setImageURI(mArrayUri.get(position));
-
         return itemView;
     }
-
-
 }

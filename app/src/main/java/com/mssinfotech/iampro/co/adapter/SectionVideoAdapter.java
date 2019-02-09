@@ -41,6 +41,7 @@ import com.mssinfotech.iampro.co.model.SingleItemModel;
 import com.mssinfotech.iampro.co.product.ProductDetail;
 import com.mssinfotech.iampro.co.provide.ProvideDetailActivity;
 import com.mssinfotech.iampro.co.user.AddProvideActivity;
+import com.mssinfotech.iampro.co.user.AddVideoActivity;
 import com.mssinfotech.iampro.co.user.MyProvideActivity;
 import com.mssinfotech.iampro.co.user.ProfileActivity;
 import com.mssinfotech.iampro.co.utils.PrefManager;
@@ -147,7 +148,7 @@ public class SectionVideoAdapter extends RecyclerView.Adapter<SectionVideoAdapte
                         // dialog.cancel();
                         mValues.remove(i);
                         notifyDataSetChanged();
-                        deleteVideo(id);
+                        deleteVideo(itemsList.get(i).getId());
                         //Toast.makeText(mContext,"deleted",Toast.LENGTH_LONG).show();
                     }
                 });
@@ -164,9 +165,9 @@ public class SectionVideoAdapter extends RecyclerView.Adapter<SectionVideoAdapte
         holder.iv_edit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent=new Intent(mContext, AddProvideActivity.class);
+                Intent intent=new Intent(mContext, AddVideoActivity.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                intent.putExtra("id",String.valueOf(id));
+                intent.putExtra("id",itemsList.get(i).getId());
                 mContext.startActivity(intent);
             }
         });

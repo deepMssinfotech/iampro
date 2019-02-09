@@ -48,7 +48,8 @@ public class MyProductAdapter extends RecyclerView.Adapter<MyProductAdapter.View
     Context mContext;
     protected ItemListener mListener;
     int uid;
-     static String myid,pid;
+     //static String myid,pid;
+     String myid;
     public MyProductAdapter(Context context, ArrayList<MyProductModel> values, ItemListener itemListener) {
         mValues = values;
         mContext = context;
@@ -117,9 +118,9 @@ public class MyProductAdapter extends RecyclerView.Adapter<MyProductAdapter.View
         public void setData(MyProductModel item) {
             this.item = item;
             uid=item.getUid();
-            pid=item.getPid();
+            final String pid=item.getPid();
             if(PrefManager.isLogin(mContext))
-            myid= PrefManager.getLoginDetail(mContext,"id");
+               myid= PrefManager.getLoginDetail(mContext,"id");
             ratingBar.setRating(Float.parseFloat(String.valueOf(item.getRating())));
             uname.setText(item.getFullname());
             tv_name.setText(item.getName());
@@ -160,7 +161,7 @@ public class MyProductAdapter extends RecyclerView.Adapter<MyProductAdapter.View
 
                 AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
                 builder.setCancelable(true);
-                builder.setTitle("Delete it!");
+                builder.setTitle("Delete it!"+mValues.get(position).getPid());
                 builder.setMessage("Are you sure...");
                 builder.setPositiveButton("Confirm",
                         new DialogInterface.OnClickListener() {
@@ -169,7 +170,7 @@ public class MyProductAdapter extends RecyclerView.Adapter<MyProductAdapter.View
                                 mValues.remove(position);
                                 notifyDataSetChanged();
                                 //Toast.makeText(mContext,"deleted",Toast.LENGTH_LONG).show();
-                                deleteProduct();
+                                deleteProduct(mValues.get(position).getPid());
                             }
                         });
                 builder.setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
@@ -192,7 +193,7 @@ public class MyProductAdapter extends RecyclerView.Adapter<MyProductAdapter.View
             public void onClick(View v) {
                 Intent intent=new Intent(mContext, AddProductActivity.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                intent.putExtra("id",String.valueOf(pid));
+                intent.putExtra("id",mValues.get(position).getPid());
                 mContext.startActivity(intent);
             }
         });
@@ -204,8 +205,8 @@ public class MyProductAdapter extends RecyclerView.Adapter<MyProductAdapter.View
     public interface ItemListener {
         void onItemClick(MyProductModel item);
     }
-     public void deleteProduct(){
-         String url="https://www.iampro.co/api/app_service.php?type=delete_product&id="+pid+"&item_type=product";
+     public void deleteProduct(String pid){
+         String url="https://www.iampro.co/api/app_service.php?type=delete_product&id="+Integer.parseInt(pid)+"&item_type=product";
          RequestQueue MyRequestQueue = Volley.newRequestQueue(mContext);
          StringRequest MyStringRequest = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
              @Override

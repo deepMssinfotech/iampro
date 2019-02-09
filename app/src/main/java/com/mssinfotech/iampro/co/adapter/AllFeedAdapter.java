@@ -17,6 +17,8 @@ import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.VideoView;
+
+import com.mssinfotech.iampro.co.CartActivity;
 import com.mssinfotech.iampro.co.R;
 
 import com.bumptech.glide.Glide;
@@ -30,6 +32,7 @@ import com.mssinfotech.iampro.co.model.ImageDetailModel;
 import com.mssinfotech.iampro.co.product.ProductDetail;
 import com.mssinfotech.iampro.co.provide.ProvideDetailActivity;
 import com.mssinfotech.iampro.co.user.ProfileActivity;
+import com.mssinfotech.iampro.co.utils.PrefManager;
 
 import java.util.ArrayList;
 public class AllFeedAdapter extends RecyclerView.Adapter<AllFeedAdapter.ViewHolder> {
@@ -49,9 +52,9 @@ public class AllFeedAdapter extends RecyclerView.Adapter<AllFeedAdapter.ViewHold
         RatingBar ratingBar;
          LinearLayout ll_showhide;
         FeedModel item;
-         String type;
+
          int id;
-        int uid;
+        //int uid;
         public ViewHolder(View v) {
             super(v);
             v.setOnClickListener(this);
@@ -75,11 +78,11 @@ public class AllFeedAdapter extends RecyclerView.Adapter<AllFeedAdapter.ViewHold
             selling_cost=v.findViewById(R.id.selling_cost);
 
         }
-        public void setData(FeedModel item) {
+        public void setData(final FeedModel item) {
             this.item = item;
-            uid=item.getUid();
-             type=item.getType();
-            id=item.getId();
+            final String uid= PrefManager.getLoginDetail(mContext,"id");
+            final String type=item.getType();
+            final int id=item.getId();
               ratingBar.setRating(Float.parseFloat(String.valueOf(item.getAverage_rating())));
               fullname.setText(item.getFullname());
                udate.setText(item.getUdate());
@@ -89,8 +92,8 @@ public class AllFeedAdapter extends RecyclerView.Adapter<AllFeedAdapter.ViewHold
                 @Override
                 public void onClick(View v) {
                     Intent intent=new Intent(mContext,ProfileActivity.class);
-                     intent.putExtra("uid",uid);
-                     mContext.startActivity(intent);
+                    intent.putExtra("uid",uid);
+                    mContext.startActivity(intent);
                     Toast.makeText(mContext,"uid: "+uid,Toast.LENGTH_LONG).show();
                 }
             });
@@ -102,14 +105,15 @@ public class AllFeedAdapter extends RecyclerView.Adapter<AllFeedAdapter.ViewHold
                 public void onClick(View v) {
                     if (type.equalsIgnoreCase("IMAGE")){
                         Intent intent=new Intent(mContext,ImageDetail.class);
-                        intent.putExtra("uid",uid);
+                        intent.putExtra("uid",Integer.parseInt(uid));
                         intent.putExtra("id",id);
                         intent.putExtra("type","image");
                         mContext.startActivity(intent);
+                        Toast.makeText(mContext,"uid: "+uid+"-"+id,Toast.LENGTH_LONG).show();
                     }
                     else if (type.equalsIgnoreCase("VIDEO")){
                         Intent intent=new Intent(mContext,ImageDetail.class);
-                        intent.putExtra("uid",uid);
+                        intent.putExtra("uid",Integer.parseInt(uid));
                         intent.putExtra("id",id);
                         intent.putExtra("type","video");
                         mContext.startActivity(intent);
@@ -117,6 +121,7 @@ public class AllFeedAdapter extends RecyclerView.Adapter<AllFeedAdapter.ViewHold
                     else if (type.equalsIgnoreCase("DEMAND")){
                         Intent intent=new Intent(mContext, DemandDetail.class);
                         //intent.putExtra("id",String.valueOf(item.getPid()));
+                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                         intent.putExtra("pid",String.valueOf(id));
                         intent.putExtra("uid",String.valueOf(uid));
                         mContext.startActivity(intent);
@@ -149,7 +154,7 @@ public class AllFeedAdapter extends RecyclerView.Adapter<AllFeedAdapter.ViewHold
                     .into(imageView_user);
 
             Log.d("image_setdata",""+item.getFimage_path());
-            String type=item.getType();
+            //String type=item.getType();
             if(!type.equalsIgnoreCase("VIDEO")) {
                 videoView.setVisibility(View.GONE);
                 image.setVisibility(View.VISIBLE);
@@ -207,6 +212,18 @@ public class AllFeedAdapter extends RecyclerView.Adapter<AllFeedAdapter.ViewHold
       purchese_cost.setText("Rs: "+String.valueOf(item.getPurchese_cost()));
       selling_cost.setText("Rs: "+String.valueOf(item.getSelling_cost()));
       iv_buy.setVisibility(View.VISIBLE);
+       iv_buy.setOnClickListener(new View.OnClickListener() {
+           @Override
+           public void onClick(View v) {
+               Toast.makeText(mContext,"buy clicked",Toast.LENGTH_LONG).show();
+                Intent intent=new Intent(mContext, CartActivity.class);
+                intent.putExtra("uid",item.getUid());
+                intent.putExtra("pid",item.getId());
+                intent.putExtra("id",item.getId());
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                  mContext.startActivity(intent);
+           }
+       });
                 //Toast.makeText(mContext,"Type: "+type,Toast.LENGTH_LONG).show();
       //Resources resources = mContext.getResources();
       //imageView_icon.setImageDrawable(resources.getDrawable(R.drawable.product_icon));
@@ -257,6 +274,8 @@ public class AllFeedAdapter extends RecyclerView.Adapter<AllFeedAdapter.ViewHold
     @Override
     public void onBindViewHolder(ViewHolder Vholder, int position) {
         Vholder.setData(mValues.get(position));
+        String type=mValues.get(position).getType();
+
     }
     @Override
     public int getItemCount() {

@@ -50,8 +50,9 @@ public class MyProvideAdapter extends RecyclerView.Adapter<MyProvideAdapter.View
     ArrayList<MyProductModel> mValues;
     Context mContext;
     protected ItemListener mListener;
-    int uid;
-    static String myid,pid;
+   // int uid;
+     //String myid,pid;
+    String myid;
     public MyProvideAdapter(Context context, ArrayList<MyProductModel> values, ItemListener itemListener) {
         mValues = values;
         mContext = context;
@@ -113,8 +114,8 @@ public class MyProvideAdapter extends RecyclerView.Adapter<MyProvideAdapter.View
         }
         public void setData(MyProductModel item) {
             this.item = item;
-            uid=item.getUid();
-            pid=item.getPid();
+            int uid=item.getUid();
+            final String pid=item.getPid();
             if(PrefManager.isLogin(mContext))
                 myid= PrefManager.getLoginDetail(mContext,"id");
             ratingBar.setRating(Float.parseFloat(String.valueOf(item.getRating())));
@@ -135,6 +136,16 @@ public class MyProvideAdapter extends RecyclerView.Adapter<MyProvideAdapter.View
                     .load(item.getImage())
                     .apply(Config.options_provide)
                     .into(imageView);
+
+            iv_edit.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent=new Intent(mContext, AddProvideActivity.class);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    intent.putExtra("id",String.valueOf(pid));
+                    mContext.startActivity(intent);
+                }
+            });
         }
         @Override
         public void onClick(View view) {
@@ -149,14 +160,14 @@ public class MyProvideAdapter extends RecyclerView.Adapter<MyProvideAdapter.View
         return new ViewHolder(view);
     }
     @Override
-    public void onBindViewHolder(ViewHolder Vholder, final int position) {
+    public void onBindViewHolder(final ViewHolder Vholder, final int position) {
         Vholder.setData(mValues.get(position));
         Vholder.iv_delete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
                 builder.setCancelable(true);
-                builder.setTitle("Delete it!");
+                builder.setTitle("Delete it!"+mValues.get(position).getPid());
                 builder.setMessage("Are you sure...");
                 builder.setPositiveButton("Confirm",
                         new DialogInterface.OnClickListener() {
@@ -164,7 +175,7 @@ public class MyProvideAdapter extends RecyclerView.Adapter<MyProvideAdapter.View
                             public void onClick(DialogInterface dialog, int which) {
                                 mValues.remove(position);
                                 notifyDataSetChanged();
-                                deleteProvide();
+                                deleteProvide(mValues.get(position).getPid());
                             }
                         });
                 builder.setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
@@ -176,15 +187,6 @@ public class MyProvideAdapter extends RecyclerView.Adapter<MyProvideAdapter.View
                 dialog.show();
             }
         });
-        Vholder.iv_edit.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent=new Intent(mContext, AddProvideActivity.class);
-                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                intent.putExtra("id",String.valueOf(pid));
-                mContext.startActivity(intent);
-            }
-        });
     }
     @Override
     public int getItemCount() {
@@ -194,8 +196,8 @@ public class MyProvideAdapter extends RecyclerView.Adapter<MyProvideAdapter.View
         void onItemClick(MyProductModel item);
     }
 
-    public void deleteProvide(){
-         String url="https://www.iampro.co/api/app_service.php?type=delete_product&id="+pid+"&item_type=provide";
+    public void deleteProvide(String pid){
+         String url="https://www.iampro.co/api/app_service.php?type=delete_product&id="+Integer.parseInt(pid)+"&item_type=provide";
         RequestQueue MyRequestQueue = Volley.newRequestQueue(mContext);
         StringRequest MyStringRequest = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
             @Override

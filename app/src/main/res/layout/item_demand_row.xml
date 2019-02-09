@@ -143,6 +143,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="0"
                     android:isIndicator="false"
+                    android:numStars="5"
                     android:rating="4"
                     android:stepSize="0.3"/>
                 <ImageView

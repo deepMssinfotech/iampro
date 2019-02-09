@@ -87,6 +87,7 @@ public class AddVideoActivity extends AppCompatActivity {
     private LinearLayout categoryLayout, albumLayout;
     private VideoView videoView;
     Intent i;
+    ArrayList<Uri> mArrayUri = new ArrayList<Uri>();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

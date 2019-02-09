@@ -80,7 +80,7 @@ public class JoinFriendActivity extends AppCompatActivity implements JoinFriendI
             public void onResponse(JSONArray response) {
                 if (response != null) {
                     parseJsonFeed(response);
-                    mAdapter.notifyDataSetChanged();
+                   // mAdapter.notifyDataSetChanged();
                 }else{
                     Toast.makeText(JoinFriendActivity.this, "Empty Record!", Toast.LENGTH_SHORT).show();
                 }
