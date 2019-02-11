@@ -52,6 +52,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.TreeMap;
 import java.util.UUID;
 
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -69,7 +70,7 @@ public class MyImageActivity extends AppCompatActivity implements MyImageAdapter
     public String backgroundimagePath="";
     ArrayList<MyImageModel> itemm= new ArrayList<>();
     //HashSet<String> item_name = new HashSet<>();
-    HashMap<String,String> item_name = new HashMap<>();
+    TreeMap<String,String> item_name = new TreeMap<>();
     ArrayList<SectionImageModel> allSampleData=new ArrayList<>();
     MyImageVideoDataAdapter adapterr;
     ImageView userbackgroud ,changeImage,changeBackground_Image ;
@@ -374,6 +375,7 @@ public class MyImageActivity extends AppCompatActivity implements MyImageAdapter
 
                         SectionImageModel dm = new SectionImageModel();
                         dm.setHeaderTitle(item_name.get(aid));
+                        dm.setAlbemId(aid);
                         //ArrayList<MyImageModel> singleItem = new ArrayList<>();
                         ArrayList<MyImageModel> item = new ArrayList<>();
                         try{

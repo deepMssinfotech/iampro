@@ -369,6 +369,7 @@ public class MyVideoActivity extends AppCompatActivity implements MyVideoAdapter
                         ArrayList<SingleItemModel> singleItem = new ArrayList<SingleItemModel>();
                         SectionImageModel dm = new SectionImageModel();
                         dm.setHeaderTitle(item_name.get(aid));
+                         dm.setAlbemId(aid);
                         //ArrayList<MyImageModel> singleItem = new ArrayList<>();
                         ArrayList<MyImageModel> item = new ArrayList<>();
                         try{
@@ -379,12 +380,10 @@ public class MyVideoActivity extends AppCompatActivity implements MyVideoAdapter
                                 tv_category.setText(name1.toString());
                                 JSONArray jsonArrayPics=student.getJSONArray("pics");
                                 Log.d("picssss",jsonArrayPics.toString());
-
                                 //JSONObject picss= jsonArrayPics.getJSONObject(0);
                                 //Log.d("picssss11",""+picss.toString());
                                 //String idd=picss.getString("albemid");
                                 //Log.d("picssss1",""+idd);
-
                                 for (int j=0;j<jsonArrayPics.length();j++){
                                     JSONObject pics=jsonArrayPics.getJSONObject(j);
                                     String id=pics.getString("id");

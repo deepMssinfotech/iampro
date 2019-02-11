@@ -171,7 +171,6 @@ public class SectionVideoAdapter extends RecyclerView.Adapter<SectionVideoAdapte
                 mContext.startActivity(intent);
             }
         });
-
     }
     @Override
     public int getItemCount() {
