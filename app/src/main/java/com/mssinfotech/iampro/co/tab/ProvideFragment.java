@@ -38,6 +38,7 @@ public class ProvideFragment extends Fragment implements ProvideAdapter.ItemList
     RecyclerView my_recycler_view;
     RecyclerViewAdapter adapter;
     ProvideAdapter adapter_provide;
+    int uid;
     public ProvideFragment() {
         // Required empty public constructor
     }
@@ -62,7 +63,10 @@ public class ProvideFragment extends Fragment implements ProvideAdapter.ItemList
         super.onViewCreated(view, savedInstanceState);
 
         //createDummyData();
-
+        if (PrefManager.isLogin(getContext())) {
+            String id = PrefManager.getLoginDetail(getContext(), "id");
+            uid = Integer.parseInt(id);
+        }
         getProvide();
         my_recycler_view =view.findViewById(R.id.my_recycler_view);
 
@@ -145,7 +149,7 @@ public class ProvideFragment extends Fragment implements ProvideAdapter.ItemList
     } */
 
     public void getProvide(){
-        int uid= Integer.parseInt(PrefManager.getLoginDetail(getContext(),"id"));
+       // int uid= Integer.parseInt(PrefManager.getLoginDetail(getContext(),"id"));
         final String url =Config.API_URL+"app_service.php?type=all_product_classified&uid="+uid+"&name=PROVIDE&my_id="+uid;
         // Initialize a new RequestQueue instance
         RequestQueue requestQueue = Volley.newRequestQueue(getContext());

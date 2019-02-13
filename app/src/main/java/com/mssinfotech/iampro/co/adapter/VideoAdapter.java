@@ -136,8 +136,11 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.ViewHolder> 
             //tv_daysago.setText(item.getDaysago());
             uname.setText(item.getFullname());
             added_by = item.getUid();
-            uid=Integer.parseInt(PrefManager.getLoginDetail(mContext,"id"));
-            id=item.getId();
+            uid=item.getUid();
+            if(PrefManager.isLogin(mContext)) {
+                uid = Integer.parseInt(PrefManager.getLoginDetail(mContext, "id"));
+                id = item.getId();
+            }
             //tv_daysago.setText();
             Glide.with(mContext)
                     .load(userImages)

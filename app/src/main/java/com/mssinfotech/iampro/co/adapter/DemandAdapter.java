@@ -50,6 +50,7 @@ import com.mssinfotech.iampro.co.common.Config;
 import com.mssinfotech.iampro.co.demand.DemandDetail;
 import com.mssinfotech.iampro.co.model.DataModel;
 import com.mssinfotech.iampro.co.user.ProfileActivity;
+import com.mssinfotech.iampro.co.utils.PrefManager;
 
 import org.json.JSONObject;
 
@@ -81,7 +82,7 @@ public class DemandAdapter extends RecyclerView.Adapter<DemandAdapter.ViewHolder
             textView = (TextView) v.findViewById(R.id.textView);
             imageView = (ImageView) v.findViewById(R.id.imageView);
 
-            ivLike=v.findViewById(R.id.ivLike);
+            //ivLike=v.findViewById(R.id.ivLike);
 
             tv_tlike=v.findViewById(R.id.tv_totallike);
             //tv_comments
@@ -120,13 +121,13 @@ public class DemandAdapter extends RecyclerView.Adapter<DemandAdapter.ViewHolder
                     mContext.startActivity(intent);
                 }
             });
-            ivLike.setOnClickListener(new View.OnClickListener() {
+          /*  ivLike.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     Toast.makeText(mContext,"like clicked",Toast.LENGTH_LONG).show();
                     likeDemand(String.valueOf(item.getPid()),String.valueOf(item.getUid()));
                 }
-            });
+            }); */
             ratingBar.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
                 @Override
                 public void onRatingChanged(RatingBar ratingBar, float rating, boolean fromUser) {
@@ -182,7 +183,8 @@ public class DemandAdapter extends RecyclerView.Adapter<DemandAdapter.ViewHolder
             uname.setText(item.getFullname());
 
             uid=item.getUid();
-
+            if(PrefManager.isLogin(mContext))
+                uid = Integer.parseInt(PrefManager.getLoginDetail(mContext,"id"));
             //tv_daysago.setText();
             Glide.with(mContext)
                     .load(userImages)

@@ -81,16 +81,16 @@ public class ImageDetail extends AppCompatActivity implements Img_Video_Details.
 
     }
     protected void getImageDetail(){
-        String url="https://www.iampro.co/api/app_service.php?type=get_image_detail&id="+id+"&update_type="+type+"&uid="+uid+"&login_id="+uid+"&my_id="+uid;
+        final String url="https://www.iampro.co/api/app_service.php?type=get_image_detail&id="+id+"&update_type="+type+"&uid="+uid+"&login_id="+uid+"&my_id="+uid;
         RequestQueue requestQueue = Volley.newRequestQueue(ImageDetail.this);
-
         StringRequest jsonObjectRequest = new StringRequest(
                 Request.Method.GET,
                 url,
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-                        Log.d("Prod_detaili",response.toString()+" "+id+" "+type+" "+uid+" ");
+                        Log.d("Prod_detaili1",""+url);
+                        Log.d("Prod_detaili11",response.toString()+" "+id+" "+type+" "+uid+" ");
                         // Process the JSON
                         try{
                             JSONObject responses=new JSONObject(response);

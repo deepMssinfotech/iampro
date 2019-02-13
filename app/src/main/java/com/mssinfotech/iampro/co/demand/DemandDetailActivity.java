@@ -129,6 +129,8 @@ public class DemandDetailActivity extends AppCompatActivity implements CommentAd
                             String product_demand_email =responses.optString("email");
                             String avatar=responses.optString("avatar");
                             String avatar_path=AVATAR_URL+avatar;
+                            String image=responses.optString("image");
+                            String image_path=Config.OTHER_IMAGE_URL+image;
 
                             String other_image=responses.optString("other_image");
 
@@ -142,10 +144,8 @@ public class DemandDetailActivity extends AppCompatActivity implements CommentAd
                             tv_prod_prov_name.setText(product_demand_name);
                             tv_prod_prov_email.setText(product_demand_email);
                             Glide.with(DemandDetailActivity.this)
-                                    .load(other_image_path)
-                                    .apply(new RequestOptions()
-                                            .circleCrop().bitmapTransform(new CircleCrop())
-                                            .fitCenter())
+                                    .load(image_path)
+                                    .apply(Config.options_demand)
                                     .into(expandedImage);
                             Glide.with(DemandDetailActivity.this)
                                     .load(avatar_path)

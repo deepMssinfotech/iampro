@@ -105,6 +105,7 @@ public class HomeFragment extends Fragment implements UserDataAdapter.ItemListen
         if(!allSampleData.isEmpty()){
             allSampleData.clear();
         }
+        if(PrefManager.isLogin(getContext()))
         uid= Integer.parseInt(PrefManager.getLoginDetail(getContext(),"id"));
         //callData();
         getImage();

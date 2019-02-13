@@ -58,7 +58,7 @@ public class WelcomeActivity extends AppCompatActivity implements View.OnClickLi
 
     @Override
     public void onClick(View v) {
-        switch (v.getId() /*to get clicked view id**/) {
+        switch (v.getId()) { /*to get clicked view id**/
             case R.id.imglogin:
                 Intent i_login = new Intent(WelcomeActivity.this,LoginActivity.class);
                 WelcomeActivity.this.startActivity(i_login);
@@ -70,7 +70,7 @@ public class WelcomeActivity extends AppCompatActivity implements View.OnClickLi
             case R.id.imghome:
                 Intent i_home = new Intent(WelcomeActivity.this,HomeActivity.class);
                 WelcomeActivity.this.startActivity(i_home);
-                WelcomeActivity.this.finish();
+                //WelcomeActivity.this.finish();
                 break;
             case R.id.imguser:
                 Intent i_user = new Intent(WelcomeActivity.this,ProfileActivity.class);

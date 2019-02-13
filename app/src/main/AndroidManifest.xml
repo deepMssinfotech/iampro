@@ -139,7 +139,6 @@
             android:label="My Provide&apos;s"
             android:theme="@style/AppTheme.NoActionBar"/>
         <activity
-
             android:name=".user.MyDemandActivity"
             android:label="My Demand&apos;s"
             android:theme="@style/AppTheme.NoActionBar"/>
@@ -149,7 +148,7 @@
         <activity
             android:name=".SearchActivity"
             android:label="@string/search_title"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:theme="@style/AppTheme.NoActionBar"/>
         <activity
             android:name=".CartActivity"
             android:label="@string/cart_title" />
@@ -160,16 +159,18 @@
             android:name=".MessageActivity"
             android:label="@string/message_title" />
 
-        <activity android:name=".demand.DemandDetail" />
+        <activity
+            android:name=".demand.DemandDetail"
+            android:theme="@style/AppTheme.NoActionBar"/>
         <activity
             android:name=".product.ProductDetail"
-            android:theme="@style/Base.MyTheme" />
+            android:theme="@style/AppTheme.NoActionBar"/>
         <activity
             android:name=".provide.ProvideDetailActivity"
-            android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".image.ImageDetail" />
-        <activity android:name=".CommentActivity" />
-        <activity android:name=".grid_like_facebook.GridMainActivity"></activity>
+            android:theme="@style/AppTheme.NoActionBar"/>
+        <activity android:name=".image.ImageDetail"/>
+        <activity android:name=".CommentActivity"/>
+        <activity android:name=".grid_like_facebook.GridMainActivity"> </activity>
     </application>
 
 </manifest>

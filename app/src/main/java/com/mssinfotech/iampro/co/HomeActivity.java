@@ -17,7 +17,6 @@ import com.mssinfotech.iampro.co.tab.UserFragment;
 import com.mssinfotech.iampro.co.tab.VideoFragment;
 import com.mssinfotech.iampro.co.common.Config;
 
-
 public class HomeActivity extends AppCompatActivity {
     private TabLayout tabLayout;
     private ViewPager viewPager;

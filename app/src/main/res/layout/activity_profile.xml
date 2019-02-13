@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
-
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -14,6 +13,12 @@
             android:layout_width="match_parent">
 
         </com.mssinfotech.iampro.co.common.IncludeHeader>
+    <android.support.v4.widget.SwipeRefreshLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/swiperefresh"
+        android:layout_width="match_parent"
+        android:scrollbars="none"
+        android:layout_height="wrap_content">
 
     <android.support.v4.widget.NestedScrollView
             android:id="@+id/scroll_view"
@@ -78,15 +83,31 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:orientation="vertical">
+
                     <android.support.v7.widget.RecyclerView
                         android:id="@+id/rvFeed"
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent" />
+                        android:layout_marginBottom="100dp"
+                        android:layout_height="match_parent"/>
+
                     <!--  android:scrollbars="none"   app:layout_behavior="@string/appbar_scrolling_view_behavior"  -->
+                    <Button
+                        android:layout_width="wrap_content"
+                        android:layout_height="40dp"
+                         android:textColor="@color/white"
+                        android:gravity="center_vertical"
+                        android:onClick="loadMore"
+                        android:layout_gravity="bottom|center"
+                        android:background="@drawable/product_load_more"
+                        android:layout_marginBottom="50dp"
+                        android:text="load More"/>
+
                 </android.support.design.widget.CoordinatorLayout>
+
             </LinearLayout>
 
     </android.support.v4.widget.NestedScrollView>
+    </android.support.v4.widget.SwipeRefreshLayout>
     <com.mssinfotech.iampro.co.common.IncludeFooter
     android:id="@+id/footer"
     android:layout_alignParentBottom="true"

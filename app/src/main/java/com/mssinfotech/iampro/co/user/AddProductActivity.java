@@ -113,7 +113,6 @@ public class AddProductActivity extends AppCompatActivity {
 
         function.executeUrl(this,"get",Config.API_URL+"app_service.php?type=delete_temp_data&uid="+PrefManager.getLoginDetail(this,"id"),null);
     }
-
     private void gteProductDetail(String id){
         String myurl = Config.API_URL + "app_service.php?type=get_product_detail&id=" + id + "&uid=" + uid+"&update_type=product&my_id="+uid;
         Log.d(Config.TAG, myurl);

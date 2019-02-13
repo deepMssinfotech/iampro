@@ -25,6 +25,7 @@ import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.bumptech.glide.Glide;
@@ -83,11 +84,13 @@ public class SectionVideoAdapter extends RecyclerView.Adapter<SectionVideoAdapte
         final String uid= PrefManager.getLoginDetail(mContext,"id");
 
         final String id=singleItem .getId();
-        //if(!(item.getRating()!="NAN") || !(item.getRating().equalsIgnoreCase("NAN")))
-        //ratingBar.setRating(Float.parseFloat(String.valueOf(item.getRating())));
+        final String uidd=singleItem.getUid();
+
+        //if(!(singleItem.getRating()!="NAN") || !(singleItem.getRating().equalsIgnoreCase("NAN")))
+        //holder.ratingBar.setRating(Float.parseFloat(String.valueOf(singleItem.getRating())));
        /* holder. category.setText(singleItem .getCategory());
         holder.tv_name.setText(singleItem .getName());
-        //udate.setText(item.getUdate());
+        udate.setText(item.getUdate());
         holder.tv_comments.setText(String.valueOf(singleItem .getComments()));
         holder.tv_totallike.setText(String.valueOf(singleItem .getTotallike()));
 
@@ -113,9 +116,17 @@ public class SectionVideoAdapter extends RecyclerView.Adapter<SectionVideoAdapte
         //ratingBar.setRating(Float.parseFloat(String.valueOf(item.getRating())));
         holder.category.setText(singleItem.getCategory());
         holder.tv_name.setText(singleItem.getName());
-        //udate.setText(item.getUdate());
+        holder.udate.setText(singleItem.getUdate());
         holder.tv_comments.setText(String.valueOf(singleItem.getComments()));
         holder.tv_totallike.setText(String.valueOf(singleItem.getTotallike()));
+        holder.ratingBar.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
+
+            @Override
+            public void onRatingChanged(RatingBar ratingBar, float rating,boolean fromUser) {
+                Toast.makeText(mContext,""+ratingBar.getRating(),Toast.LENGTH_LONG).show();
+                sendrating(ratingBar.getRating(),Integer.parseInt(uidd),Integer.parseInt(id));
+            }
+        });
 
         holder.videoView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -224,7 +235,7 @@ public class SectionVideoAdapter extends RecyclerView.Adapter<SectionVideoAdapte
             videoView=view.findViewById(R.id.videoView);
             ratingBar=view.findViewById(R.id.ratingBar);
             ivLike=view.findViewById(R.id.ivLike);
-            //udate=v.findViewById(R.id.udate);
+             udate=view.findViewById(R.id.udate);
             tv_comments=view.findViewById(R.id.tv_comments);
             tv_totallike=view.findViewById(R.id.tv_totallike);
             ll_showhide=view.findViewById(R.id.ll_showhide);
@@ -246,8 +257,47 @@ public class SectionVideoAdapter extends RecyclerView.Adapter<SectionVideoAdapte
             });
         }
     }
+    public void sendrating(float rating,int uid,int id){
+        String urlv="https://www.iampro.co/api/app_service.php?type=rate_me&id="+id+"&uid="+uid+"&ptype=video&total_rate="+rating;
+
+        RequestQueue requestQueue = Volley.newRequestQueue(mContext);
+        // Initialize a new JsonObjectRequest instance
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(
+                Request.Method.GET,
+                urlv,
+                null,
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        Log.d("Prod_detaili_profile",""+response);
+                        try{
+                            String status=response.optString("status");
+                            String msgv=response.optString("msg");
+                            if(status.equalsIgnoreCase("success")) {
+                                Toast.makeText(mContext,""+msgv,Toast.LENGTH_LONG).show();
+                            }
+                            else{
+                                Toast.makeText(mContext,""+msgv,Toast.LENGTH_LONG).show();
+                            }
+                        }
+                        catch (Exception e){
+                            e.printStackTrace();
+                            Toast.makeText(mContext,e.getMessage(),Toast.LENGTH_LONG).show();
+                        }
+                    }
+                },
+                new Response.ErrorListener(){
+                    @Override
+                    public void onErrorResponse(VolleyError error){
+                        Toast.makeText(mContext,error.getMessage(),Toast.LENGTH_LONG).show();
+                    }
+                }
+        );
+        requestQueue.add(jsonObjectRequest);
+
+    }
     public void deleteVideo(String pid){
-        String url="https://www.iampro.co/ajax/profile.php?type=deleteAlbemimage&id="+pid;
+        String url="https://www.iampro.co/ajax/profile.php?type=deleteAlbemimage&id="+Integer.parseInt(pid);
         RequestQueue MyRequestQueue = Volley.newRequestQueue(mContext);
         StringRequest MyStringRequest = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
             @Override

@@ -14,12 +14,14 @@
             android:background="@drawable/chat_btn"
             android:layout_weight="1"
              android:onClick="chat"
+            android:textColor="@color/white"
             android:layout_margin="13dp"
             android:text="@string/chat"/>
         <android.support.v7.widget.AppCompatButton
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@drawable/chat_btn"
+            android:textColor="@color/white"
              android:onClick="favourite"
             android:layout_weight="1"
             android:layout_margin="13dp"

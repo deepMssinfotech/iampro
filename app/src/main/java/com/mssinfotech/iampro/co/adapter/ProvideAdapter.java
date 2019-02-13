@@ -194,6 +194,8 @@ public class ProvideAdapter extends RecyclerView.Adapter<ProvideAdapter.ViewHold
             //Log.d("url_adapter",url);
             //Toast.makeText(mContext, ""+url, Toast.LENGTH_SHORT).show();
             id = item.getId();
+            uid=item.getUid();
+            if(PrefManager.isLogin(mContext))
             uid = Integer.parseInt(PrefManager.getLoginDetail(mContext,"id"));
             added_by = item.getUid();
 

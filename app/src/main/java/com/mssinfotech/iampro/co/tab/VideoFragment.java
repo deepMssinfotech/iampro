@@ -39,6 +39,7 @@ public class VideoFragment extends Fragment implements VideoAdapter.ItemListener
     RecyclerView my_recycler_view;
     VideoAdapter adapter;
     public static final String VIDEO_TYPE="video";
+    int uid;
     public VideoFragment() {
         // Required empty public constructor
     }
@@ -61,11 +62,13 @@ public class VideoFragment extends Fragment implements VideoAdapter.ItemListener
         public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
             super.onViewCreated(view, savedInstanceState);
             //createDummyData();
+            if(PrefManager.isLogin(getContext()))
+             uid= Integer.parseInt(PrefManager.getLoginDetail(getContext(),"id"));
             getVideo();
             my_recycler_view =view.findViewById(R.id.my_recycler_view);
         }
     public void getVideo(){
-        int uid= Integer.parseInt(PrefManager.getLoginDetail(getContext(),"id"));
+
         final String url = "https://www.iampro.co/api/app_service.php?type=all_item&name=video&uid="+uid+"&my_id="+uid;
         // Initialize a new RequestQueue instance
         RequestQueue requestQueue = Volley.newRequestQueue(getContext());

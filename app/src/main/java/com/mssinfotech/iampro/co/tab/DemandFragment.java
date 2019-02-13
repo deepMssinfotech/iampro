@@ -37,6 +37,7 @@ public class DemandFragment extends Fragment implements DemandAdapter.ItemListen
     RecyclerView my_recycler_view;
     RecyclerViewAdapter adapter;
     DemandAdapter adapter_demand;
+    int uid;
     public DemandFragment() {
         // Required empty public constructor
     }
@@ -57,13 +58,16 @@ public class DemandFragment extends Fragment implements DemandAdapter.ItemListen
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         //createDummyData();
+        if (PrefManager.isLogin(getContext())) {
+            String id = PrefManager.getLoginDetail(getContext(), "id");
+            uid = Integer.parseInt(id);
+        }
         getDemand();
         my_recycler_view =view.findViewById(R.id.my_recycler_view);
         //view.findViewById(R.id.title_tv).setTooltipText("Demand");
 
     }
     public void getDemand(){
-        int uid= Integer.parseInt(PrefManager.getLoginDetail(getContext(),"id"));
         final String url =Config.API_URL+"app_service.php?type=all_product_classified&uid="+uid+"&name=DEMAND&my_id="+uid;
         // Initialize a new RequestQueue instance
         RequestQueue requestQueue = Volley.newRequestQueue(getContext());

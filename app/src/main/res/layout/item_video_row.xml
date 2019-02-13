@@ -54,9 +54,15 @@
                         android:layout_width="wrap_content"
                         android:lines="1"
                         android:layout_height="wrap_content"
-                        android:text="Iampro"
-                        />
-
+                        android:text="Iampro" />
+                    <TextView
+                        android:id="@+id/udate"
+                        android:layout_width="wrap_content"
+                        android:layout_marginTop="5dp"
+                        android:lines="1"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/black_trans80"
+                        android:text="Iampro" />
                    <!-- <RatingBar
                         android:id="@+id/ratingBar"
                         style="?android:ratingBarStyleSmall"
@@ -91,13 +97,13 @@
                             android:layout_marginLeft="2dp"
                             android:textSize="12sp"
                             android:textStyle="bold"
-                            android:text="10"/>
+                            android:text=""/>
                     </LinearLayout>
                     <LinearLayout
                          android:id="@+id/ll_comment"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="7dp"
+                        android:layout_marginTop="3dp"
                         android:orientation="horizontal">
                         <ImageView
                             android:layout_width="20dp"
@@ -110,7 +116,7 @@
                             android:layout_height="wrap_content"
                             android:layout_gravity="left"
                             android:textSize="12sp"
-                            android:text="15"/>
+                            android:text=""/>
                     </LinearLayout>
 
                 </LinearLayout>
@@ -118,7 +124,7 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="3dp"
                 android:orientation="horizontal">
                 <RatingBar
                     android:id="@+id/ratingBar"
@@ -143,7 +149,7 @@
                     android:layout_marginLeft="10dp"
                     android:layout_weight="0"
                     android:layout_gravity="center"
-                    android:layout_marginRight="20dp"
+                    android:layout_marginRight="7dp"
                     android:layout_width="30dp"
                     android:layout_height="30dp"/>
             </LinearLayout>

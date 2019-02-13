@@ -3,6 +3,7 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Paint;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -21,6 +22,7 @@ import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.bumptech.glide.Glide;
@@ -128,6 +130,7 @@ public class MyProductAdapter extends RecyclerView.Adapter<MyProductAdapter.View
             tv_comments.setText(String.valueOf(item.getComments()));
             tv_totallike.setText(String.valueOf(item.getTotallike()));
             tv_purchaseprice.setText("Rs: "+String.valueOf(item.getpCost()));
+            //tv_purchaseprice.setPaintFlags(tv_purchaseprice.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
             tv_sellingprice.setText("Rs: "+String.valueOf(item.getsCost()));
               if (myid.equalsIgnoreCase(String.valueOf(uid)) || uid==0 || String.valueOf(uid)=="" || String.valueOf(uid)==null) {
                   iv_delete.setVisibility(View.VISIBLE);
@@ -155,6 +158,10 @@ public class MyProductAdapter extends RecyclerView.Adapter<MyProductAdapter.View
     @Override
     public void onBindViewHolder(ViewHolder Vholder, final int position) {
         Vholder.setData(mValues.get(position));
+        //ratingv,uidv,idv
+        //final float ratingv
+        final int uidv=mValues.get(position).getUid();
+        final String idv=mValues.get(position).getPid();
         Vholder.iv_delete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -197,6 +204,13 @@ public class MyProductAdapter extends RecyclerView.Adapter<MyProductAdapter.View
                 mContext.startActivity(intent);
             }
         });
+        Vholder.ratingBar.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
+            @Override
+            public void onRatingChanged(RatingBar ratingBar, float rating,boolean fromUser) {
+                Toast.makeText(mContext,""+ratingBar.getRating(),Toast.LENGTH_LONG).show();
+                sendrating(ratingBar.getRating(),uidv,Integer.parseInt(idv));
+            }
+        });
     }
     @Override
     public int getItemCount() {
@@ -204,6 +218,45 @@ public class MyProductAdapter extends RecyclerView.Adapter<MyProductAdapter.View
     }
     public interface ItemListener {
         void onItemClick(MyProductModel item);
+    }
+    public void sendrating(float rating,int uid,int id){
+        String urlv="https://www.iampro.co/api/app_service.php?type=rate_me&id="+id+"&uid="+uid+"&ptype=product&total_rate="+rating;
+
+        RequestQueue requestQueue = Volley.newRequestQueue(mContext);
+        // Initialize a new JsonObjectRequest instance
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(
+                Request.Method.GET,
+                urlv,
+                null,
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        Log.d("Prod_detaili_profile",""+response);
+                        try{
+                            String status=response.optString("status");
+                            String msgv=response.optString("msg");
+                            if(status.equalsIgnoreCase("success")) {
+                                Toast.makeText(mContext,""+msgv,Toast.LENGTH_LONG).show();
+                            }
+                            else{
+                                Toast.makeText(mContext,""+msgv,Toast.LENGTH_LONG).show();
+                            }
+                        }
+                        catch (Exception e){
+                            e.printStackTrace();
+                            Toast.makeText(mContext,e.getMessage(),Toast.LENGTH_LONG).show();
+                        }
+                    }
+                },
+                new Response.ErrorListener(){
+                    @Override
+                    public void onErrorResponse(VolleyError error){
+                        Toast.makeText(mContext,error.getMessage(),Toast.LENGTH_LONG).show();
+                    }
+                }
+        );
+        requestQueue.add(jsonObjectRequest);
+
     }
      public void deleteProduct(String pid){
          String url="https://www.iampro.co/api/app_service.php?type=delete_product&id="+Integer.parseInt(pid)+"&item_type=product";

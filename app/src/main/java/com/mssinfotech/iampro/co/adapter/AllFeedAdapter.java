@@ -5,6 +5,9 @@ import android.content.Intent;
 import android.content.res.Resources;
 import android.net.Uri;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.view.ViewCompat;
+import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -18,6 +21,12 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.VideoView;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.Volley;
 import com.mssinfotech.iampro.co.CartActivity;
 import com.mssinfotech.iampro.co.R;
 
@@ -34,6 +43,9 @@ import com.mssinfotech.iampro.co.provide.ProvideDetailActivity;
 import com.mssinfotech.iampro.co.user.ProfileActivity;
 import com.mssinfotech.iampro.co.utils.PrefManager;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 public class AllFeedAdapter extends RecyclerView.Adapter<AllFeedAdapter.ViewHolder> {
     ArrayList<FeedModel> mValues;
@@ -45,7 +57,7 @@ public class AllFeedAdapter extends RecyclerView.Adapter<AllFeedAdapter.ViewHold
         mContext = context;
         mListener=itemListener;
     }
-    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
         ImageView imageView_user,imageView_icon,iv_comments,image,iv_favourite,ivLike,iv_buy;
          VideoView videoView;
          TextView fullname,udate,tv_comments,tv_totallike,detail_name,purchese_cost,selling_cost;
@@ -76,13 +88,14 @@ public class AllFeedAdapter extends RecyclerView.Adapter<AllFeedAdapter.ViewHold
 
             purchese_cost=v.findViewById(R.id.purchese_cost);
             selling_cost=v.findViewById(R.id.selling_cost);
-
         }
         public void setData(final FeedModel item) {
             this.item = item;
-            final String uid= PrefManager.getLoginDetail(mContext,"id");
+            //final String uid= PrefManager.getLoginDetail(mContext,"id");
+            final String uid= String.valueOf(item.getUid());
             final String type=item.getType();
-            final int id=item.getId();
+            final String id=String.valueOf(item.getId());
+            //final String id=String.valueOf(item.getShareId());
               ratingBar.setRating(Float.parseFloat(String.valueOf(item.getAverage_rating())));
               fullname.setText(item.getFullname());
                udate.setText(item.getUdate());
@@ -97,17 +110,16 @@ public class AllFeedAdapter extends RecyclerView.Adapter<AllFeedAdapter.ViewHold
                     Toast.makeText(mContext,"uid: "+uid,Toast.LENGTH_LONG).show();
                 }
             });
-
             tv_totallike.setText(String.valueOf(item.getLikes()));
-
             image.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     if (type.equalsIgnoreCase("IMAGE")){
                         Intent intent=new Intent(mContext,ImageDetail.class);
                         intent.putExtra("uid",Integer.parseInt(uid));
-                        intent.putExtra("id",id);
+                        intent.putExtra("id",Integer.parseInt(id));
                         intent.putExtra("type","image");
+                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                         mContext.startActivity(intent);
                         Toast.makeText(mContext,"uid: "+uid+"-"+id,Toast.LENGTH_LONG).show();
                     }
@@ -265,6 +277,8 @@ public class AllFeedAdapter extends RecyclerView.Adapter<AllFeedAdapter.ViewHold
                 mListener.onItemClick(item);
             }
         }
+
+
     }
     @Override
     public AllFeedAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -274,7 +288,19 @@ public class AllFeedAdapter extends RecyclerView.Adapter<AllFeedAdapter.ViewHold
     @Override
     public void onBindViewHolder(ViewHolder Vholder, int position) {
         Vholder.setData(mValues.get(position));
-        String type=mValues.get(position).getType();
+        final String type=mValues.get(position).getType();
+        final int uid=mValues.get(position).getUid();
+        final int id=mValues.get(position).getId();
+        Vholder.ratingBar.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
+
+            @Override
+            public void onRatingChanged(RatingBar ratingBar, float rating,boolean fromUser) {
+                Toast.makeText(mContext,""+ratingBar.getRating(),Toast.LENGTH_LONG).show();
+                float ratingb=ratingBar.getRating();
+                sendrating(ratingb,uid,id);
+            }
+        });
+
 
     }
     @Override
@@ -283,6 +309,45 @@ public class AllFeedAdapter extends RecyclerView.Adapter<AllFeedAdapter.ViewHold
     }
     public interface ItemListener {
         void onItemClick(FeedModel item);
+    }
+    public void sendrating(float rating,int uid,int id){
+        String urlv="https://www.iampro.co/api/app_service.php?type=rate_me&id="+id+"&uid="+uid+"&ptype=feed&total_rate="+rating;
+
+        RequestQueue requestQueue = Volley.newRequestQueue(mContext);
+        // Initialize a new JsonObjectRequest instance
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(
+                Request.Method.GET,
+                urlv,
+                null,
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        Log.d("Prod_detaili_profile",""+response);
+                        try{
+                            String status=response.optString("status");
+                            String msgv=response.optString("msg");
+                            if(status.equalsIgnoreCase("success")) {
+                                 Toast.makeText(mContext,""+msgv,Toast.LENGTH_LONG).show();
+                            }
+                            else{
+                                Toast.makeText(mContext,""+msgv,Toast.LENGTH_LONG).show();
+                            }
+                        }
+                        catch (Exception e){
+                            e.printStackTrace();
+                            Toast.makeText(mContext,e.getMessage(),Toast.LENGTH_LONG).show();
+                        }
+                    }
+                },
+                new Response.ErrorListener(){
+                    @Override
+                    public void onErrorResponse(VolleyError error){
+                        Toast.makeText(mContext,error.getMessage(),Toast.LENGTH_LONG).show();
+                    }
+                }
+        );
+        requestQueue.add(jsonObjectRequest);
+
     }
 }
 

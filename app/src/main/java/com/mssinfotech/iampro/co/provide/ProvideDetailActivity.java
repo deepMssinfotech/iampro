@@ -130,6 +130,9 @@ public class ProvideDetailActivity extends AppCompatActivity implements CommentA
                             String avatar=responses.optString("avatar");
                             String avatar_path=AVATAR_URL+avatar;
 
+                            String image=responses.optString("image");
+                            String image_path=Config.OTHER_IMAGE_URL+image;
+
                             String other_image=responses.optString("other_image");
 
                             String other_image_path=Config.OTHER_IMAGE_URL+other_image;
@@ -142,10 +145,8 @@ public class ProvideDetailActivity extends AppCompatActivity implements CommentA
                             tv_prod_prov_name.setText(product_provide_name);
                             tv_prod_prov_email.setText(product_provide_email);
                             Glide.with(ProvideDetailActivity.this)
-                                    .load(other_image_path)
-                                    .apply(new RequestOptions()
-                                            .circleCrop().bitmapTransform(new CircleCrop())
-                                            .fitCenter())
+                                    .load(image_path)
+                                    .apply(Config.options_provide)
                                     .into(expandedImage);
                             Glide.with(ProvideDetailActivity.this)
                                     .load(avatar_path)
