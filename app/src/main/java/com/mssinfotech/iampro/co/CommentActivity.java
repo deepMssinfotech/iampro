@@ -38,6 +38,15 @@ public class CommentActivity extends AppCompatActivity {
         }
         data_type=getIntent().getExtras().getString("data_type");
         data_id=getIntent().getExtras().getString("data_id");
+        getDetail();
+        allComment();
+    }
+    public void getDetail(){
+
+
+    }
+    public void allComment(){
+
     }
     public void sendComment(View view)
     {

@@ -64,7 +64,7 @@ public class SectionListDataAdapter extends RecyclerView.Adapter<SectionListData
     @Override
     public void onBindViewHolder(final SingleItemRowHolder holder, int i) {
         SingleItemModel singleItem = itemsList.get(i);
-        holder.tvTitle.setText(singleItem.getName()+"-"+singleItem.getIsliked());
+        holder.tvTitle.setText(singleItem.getName());//+"-"+singleItem.getIsliked());
         holder.totallike.setText(String.valueOf(singleItem.getTotallike()));
         holder.comments.setText(String.valueOf(singleItem.getComments()));
         /*
