@@ -53,4 +53,5 @@ dependencies {
     implementation 'com.felipecsl.asymmetricgridview:library:2.0.1'
     implementation 'com.github.jd-alexander:LikeButton:0.2.3'
     implementation 'net.gotev:uploadservice:2.1'
+    implementation 'com.github.JakeWharton:ViewPagerIndicator:2.4.1'
 }
