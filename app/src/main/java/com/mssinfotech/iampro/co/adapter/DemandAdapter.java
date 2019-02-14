@@ -12,7 +12,6 @@ import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -26,8 +25,6 @@ import com.android.volley.toolbox.Volley;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.bitmap.CircleCrop;
 import com.bumptech.glide.request.RequestOptions;
-import com.like.LikeButton;
-import com.like.OnLikeListener;
 import com.mssinfotech.iampro.co.CommentActivity;
 import com.mssinfotech.iampro.co.R;
 import android.view.ViewGroup;
@@ -50,7 +47,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.mssinfotech.iampro.co.common.Config;
-import com.mssinfotech.iampro.co.common.function;
 import com.mssinfotech.iampro.co.demand.DemandDetail;
 import com.mssinfotech.iampro.co.model.DataModel;
 import com.mssinfotech.iampro.co.user.ProfileActivity;
@@ -64,7 +60,6 @@ public class DemandAdapter extends RecyclerView.Adapter<DemandAdapter.ViewHolder
     ArrayList<DataModel> mValues;
     Context mContext;
     protected ItemListener mListener;
-    public int id,uid,added_by;
 
     public DemandAdapter(Context context, ArrayList<DataModel> values, ItemListener itemListener) {
         mValues = values;
@@ -74,7 +69,6 @@ public class DemandAdapter extends RecyclerView.Adapter<DemandAdapter.ViewHolder
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         public TextView textView,tv_tlike,tv_comments,tv_daysago,tv_sprice,tv_pprice,uname;
           ImageView ivLike,iv_comments;
-          LikeButton likeButton;
         RatingBar ratingBar;
         public ImageView imageView;
         de.hdodenhof.circleimageview.CircleImageView userImage;
@@ -87,8 +81,8 @@ public class DemandAdapter extends RecyclerView.Adapter<DemandAdapter.ViewHolder
             v.setOnClickListener(this);
             textView = (TextView) v.findViewById(R.id.textView);
             imageView = (ImageView) v.findViewById(R.id.imageView);
-            likeButton = v.findViewById(R.id.likeButton);
-            ivLike=v.findViewById(R.id.ivLike);
+
+            //ivLike=v.findViewById(R.id.ivLike);
 
             tv_tlike=v.findViewById(R.id.tv_totallike);
             //tv_comments
@@ -99,7 +93,6 @@ public class DemandAdapter extends RecyclerView.Adapter<DemandAdapter.ViewHolder
             tv_pprice=v.findViewById(R.id.tv_sprice);
 
             ratingBar=v.findViewById(R.id.ratingBar);
-
 
             uname=v.findViewById(R.id.uname);
             userImage=v.findViewById(R.id.user_image);
@@ -128,26 +121,42 @@ public class DemandAdapter extends RecyclerView.Adapter<DemandAdapter.ViewHolder
                     mContext.startActivity(intent);
                 }
             });
+          /*  ivLike.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Toast.makeText(mContext,"like clicked",Toast.LENGTH_LONG).show();
+                    likeDemand(String.valueOf(item.getPid()),String.valueOf(item.getUid()));
+                }
+            }); */
             ratingBar.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
                 @Override
                 public void onRatingChanged(RatingBar ratingBar, float rating, boolean fromUser) {
                     rateMe(item.getPid(),String.valueOf(item.getUid()),rating);
                 }
             });
-            tv_comments.setOnClickListener(CommnetOnClickListener);
-            iv_comments.setOnClickListener(CommnetOnClickListener);
-
+             /*ratingBar.setOnTouchListener(new View.OnTouchListener() {
+                 @Override
+                 public boolean onTouch(View v, MotionEvent event) {
+                     return false;
+                 }
+             }); */
+            tv_comments.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent=new Intent(mContext, CommentActivity.class);
+                    intent.putExtra("id",String.valueOf(item.getUid()));
+                    mContext.startActivity(intent);
+                }
+            });
+            iv_comments.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent=new Intent(mContext, CommentActivity.class);
+                    intent.putExtra("id",String.valueOf(item.getUid()));
+                    mContext.startActivity(intent);
+                }
+            });
         }
-        private View.OnClickListener CommnetOnClickListener = new View.OnClickListener() {
-            public void onClick(View v) {
-                Intent intent=new Intent(mContext, CommentActivity.class);
-                intent.putExtra("id",String.valueOf(item.getId()));
-                intent.putExtra("type","demand");
-                intent.putExtra("uid",PrefManager.getLoginDetail(mContext,"id"));
-                mContext.startActivity(intent);
-            }
-        };
-
         public void setData(DataModel item) {
             this.item = item;
             textView.setText(item.getName());
@@ -160,12 +169,6 @@ public class DemandAdapter extends RecyclerView.Adapter<DemandAdapter.ViewHolder
             tv_tlike.setText(String.valueOf(item.getTotallike()));
             tv_comments.setText(String.valueOf(item.getComments()));
             ratingBar.setRating(item.getRating());
-
-            id = item.getId();
-            uid = Integer.parseInt(PrefManager.getLoginDetail(mContext,"id"));
-            added_by = item.getUid();
-
-
             if(String.valueOf(item.getsCost())!=null || !String.valueOf(item.getsCost()).equalsIgnoreCase(null)) {
                 tv_sprice.setVisibility(View.VISIBLE);
                 tv_sprice.setText(String.valueOf(String.valueOf(item.getsCost())));
@@ -180,13 +183,22 @@ public class DemandAdapter extends RecyclerView.Adapter<DemandAdapter.ViewHolder
             uname.setText(item.getFullname());
 
             uid=item.getUid();
-
+            if(PrefManager.isLogin(mContext))
+                uid = Integer.parseInt(PrefManager.getLoginDetail(mContext,"id"));
             //tv_daysago.setText();
             Glide.with(mContext)
                     .load(userImages)
-                    .apply(Config.options_avatar)
+                    .apply(new RequestOptions()
+                            .circleCrop().bitmapTransform(new CircleCrop())
+                            .fitCenter())
                     .into(userImage);
 
+         /*   RequestOptions options=new RequestOptions();
+            options.centerCrop().placeholder(mContext.getResources().getDrawable(R.drawable.user_placeholder));
+            Glide.with(mContext)
+                    .load(userImages)
+                    .apply(options)
+                    .into(userImage); */
 
             Glide.with(mContext)
                     .load(url)
@@ -196,43 +208,59 @@ public class DemandAdapter extends RecyclerView.Adapter<DemandAdapter.ViewHolder
 
             // relativeLayout.setBackgroundColor(Color.parseColor("#000000"));
             //userImage
-            likeButton.setUnlikeDrawableRes(R.drawable.like);
-            likeButton.setLikeDrawableRes(R.drawable.like_un);
-            if (PrefManager.getLoginDetail(mContext, "id") == null) {
-                likeButton.setEnabled(false);
-            }
-            if ((item.getIsliked()) == 1) {
-                likeButton.setLiked(true);
-                tv_tlike.setTextColor(Color.RED);
-            } else {
-                likeButton.setLiked(false);
-                tv_tlike.setTextColor(Color.BLACK);
-            }
-            likeButton.setOnLikeListener(new OnLikeListener() {
-                @Override
-                public void liked(LikeButton likeButton) {
-                    int newlike = (int) Integer.parseInt(tv_tlike.getText().toString()) + 1;
-                    tv_tlike.setTextColor(Color.RED);
-                    tv_tlike.setText(String.valueOf(newlike));
-                    String url = Config.API_URL + "app_service.php?type=like_me&id=" + String.valueOf(id) + "&uid=" + uid + "&ptype=demand";
-                    Log.e(Config.TAG, url);
-                    function.executeUrl(mContext, "get", url, null);
-                }
-
-                @Override
-                public void unLiked(LikeButton likeButton) {
-                    int newlike = (int) Integer.parseInt(tv_tlike.getText().toString()) - 1;
-                    tv_tlike.setTextColor(Color.BLACK);
-                    tv_tlike.setText(String.valueOf(newlike));
-                    String url = Config.API_URL + "app_service.php?type=like_me&id=" + String.valueOf(id) + "&uid=" + uid + "&ptype=demand";
-                    Log.e(Config.TAG, url);
-                    function.executeUrl(mContext, "get", url, null);
-                }
-            });
 
 
         }
+        public void likeDemand(String id,String uid){
+            String url="https://www.iampro.co/api/app_service.php?type=like_me&id="+id+"&uid="+uid+"&ptype=demand";
+            RequestQueue requestQueue = Volley.newRequestQueue(mContext);
 
+            // Initialize a new JsonObjectRequest instance
+            JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(
+                    Request.Method.GET,
+                    url,
+                    null,
+                    new Response.Listener<JSONObject>() {
+                        @Override
+                        public void onResponse(JSONObject response) {
+                            // Do something with response
+                            //mTextView.setText(response.toString());
+
+                            // Process the JSON
+                            try{
+                                 String status=response.optString("status");
+                                String msg=response.optString("msg");
+
+                                String update_status=response.optString("update_status");
+                                String totallike=response.optString("totallike");
+                                if ((update_status.equalsIgnoreCase("1") || update_status=="1") && (status=="success" || status.equalsIgnoreCase("success"))){
+                                    tv_tlike.setTextColor(Color.RED);
+                                    //ivLike.setBackgroundColor(Color.RED);
+                                    tv_tlike.setText(totallike);
+                                }
+                                else {
+                                    tv_tlike.setTextColor(Color.BLACK);
+                                    tv_tlike.setText(totallike);
+                                }
+                                Toast.makeText(mContext,msg,Toast.LENGTH_LONG).show();
+                            }
+                            catch (Exception e){
+                                e.printStackTrace();
+                                Toast.makeText(mContext,e.getMessage(),Toast.LENGTH_LONG).show();
+                            }
+                        }
+                    },
+                    new Response.ErrorListener(){
+                        @Override
+                        public void onErrorResponse(VolleyError error){
+                            // Do something when error occurred
+                            Toast.makeText(mContext,error.getMessage(),Toast.LENGTH_LONG).show();
+                        }
+                    }
+            );
+            // Add JsonObjectRequest to the RequestQueue
+            requestQueue.add(jsonObjectRequest);
+        }
         public void rateMe(String id,String uid,float rating){
             String url="https://www.iampro.co/api/app_service.php?type=rate_me&id="+id+"&uid="+uid+"&ptype=demand&total_rate="+rating;
             RequestQueue requestQueue = Volley.newRequestQueue(mContext);

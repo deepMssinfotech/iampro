@@ -128,7 +128,8 @@ public class ProductDetail extends AppCompatActivity implements CommentAdapter.I
                             String product_provide_email =responses.optString("email");
                              String avatar=responses.optString("avatar");
                               String avatar_path=AVATAR_URL+avatar;
-
+                            String image=responses.optString("image");
+                            String image_path=Config.OTHER_IMAGE_URL+image;
                             String other_image=responses.optString("other_image");
 
                             String other_image_path=Config.OTHER_IMAGE_URL+other_image;
@@ -141,11 +142,10 @@ public class ProductDetail extends AppCompatActivity implements CommentAdapter.I
                             tv_prod_prov_name.setText(product_provide_name );
                             tv_prod_prov_email.setText(product_provide_email);
                             Glide.with(ProductDetail.this)
-                                    .load(other_image_path)
-                                    .apply(new RequestOptions()
-                                            .circleCrop().bitmapTransform(new CircleCrop())
-                                            .fitCenter())
+                                    .load(image_path)
+                                    .apply(Config.options_product)
                                     .into(expandedImage);
+
                             Glide.with(ProductDetail.this)
                                     .load(avatar_path)
                                     .apply(new RequestOptions()
@@ -173,7 +173,6 @@ public class ProductDetail extends AppCompatActivity implements CommentAdapter.I
         // Add JsonObjectRequest to the RequestQueue
         requestQueue.add(jsonObjectRequest);
     }
-
     public void getProductReview(){
          String url=Config.API_URL+"ajax.php?type=getProductReview&pid="+pid;
         // Initialize a new RequestQueue instance

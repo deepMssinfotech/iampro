@@ -41,6 +41,7 @@ public class ImageFragment extends Fragment implements ImageAdapter.ItemListener
     RecyclerView my_recycler_view;
     ImageAdapter adapter;
     public static final String IMAGE_TYPE="image";
+    int uid;
     public ImageFragment() {
         // Required empty public constructor
     }
@@ -58,6 +59,8 @@ public class ImageFragment extends Fragment implements ImageAdapter.ItemListener
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        if (PrefManager.isLogin(getContext()))
+           uid = Integer.parseInt(PrefManager.getLoginDetail(getContext(),"id"));
         getImage();
         my_recycler_view =view.findViewById(R.id.my_recycler_view);
 
@@ -73,7 +76,7 @@ public class ImageFragment extends Fragment implements ImageAdapter.ItemListener
 
     }
     public void  getImage(){
-        int uid = Integer.parseInt(PrefManager.getLoginDetail(getContext(),"id"));
+
         final String url = "https://www.iampro.co/api/app_service.php?type=all_item&name=image&uid="+uid+"&my_id="+uid;
         // Initialize a new RequestQueue instance
         RequestQueue requestQueue = Volley.newRequestQueue(getContext());

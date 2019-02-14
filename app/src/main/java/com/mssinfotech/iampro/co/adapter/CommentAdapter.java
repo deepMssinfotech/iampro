@@ -82,6 +82,7 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHold
         }
         public void setData(Review item) {
             this.item = item;
+             if(item.getAdded_by()!=null)
              uid=Integer.parseInt(item.getAdded_by());
             tv_user_name.setText(item.getFname());
              tv_time_ago.setText(item.getRdate());

@@ -133,6 +133,9 @@ public class LoginActivity extends AppCompatActivity{
                                 finish();
                                 loading.dismiss();
                             }
+                            else{
+                                loading.dismiss();
+                            }
                         }
                         catch(JSONException e)
                         {

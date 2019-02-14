@@ -63,6 +63,7 @@ public class AddDemandActivity extends AppCompatActivity {
     List<String> imagesEncodedList;
     Intent intent;
     private GalleryAdapter galleryAdapter;
+    ArrayList<Uri> mArrayUri = new ArrayList<>();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -154,8 +155,6 @@ public class AddDemandActivity extends AppCompatActivity {
         requestQueue.add(stringRequest);
     }
 
-
-
     private void selectMultipleImage(){
         Intent intent = new Intent();
         intent.setType("image/*");
@@ -237,10 +236,11 @@ public class AddDemandActivity extends AppCompatActivity {
                 imageEncoded  = cursor.getString(columnIndex);
                 cursor.close();
 
-                ArrayList<Uri> mArrayUri = new ArrayList<Uri>();
+                //ArrayList<Uri> mArrayUri = new ArrayList<Uri>();
                 mArrayUri.add(mImageUri);
                 galleryAdapter = new GalleryAdapter(getApplicationContext(),mArrayUri);
                 gvGallery.setAdapter(galleryAdapter);
+                 galleryAdapter.notifyDataSetChanged();
                 gvGallery.setVerticalSpacing(gvGallery.getHorizontalSpacing());
                 ViewGroup.MarginLayoutParams mlp = (ViewGroup.MarginLayoutParams) gvGallery
                         .getLayoutParams();
@@ -249,7 +249,7 @@ public class AddDemandActivity extends AppCompatActivity {
             } else {
                 if (data.getClipData() != null) {
                     ClipData mClipData = data.getClipData();
-                    ArrayList<Uri> mArrayUri = new ArrayList<Uri>();
+                    //ArrayList<Uri> mArrayUri = new ArrayList<Uri>();
                     for (int i = 0; i < mClipData.getItemCount(); i++) {
 
                         ClipData.Item item = mClipData.getItemAt(i);
@@ -270,9 +270,9 @@ public class AddDemandActivity extends AppCompatActivity {
                         imageEncoded  = cursor.getString(columnIndex);
                         imagesEncodedList.add(imageEncoded);
                         cursor.close();
-
                         galleryAdapter = new GalleryAdapter(getApplicationContext(),mArrayUri);
                         gvGallery.setAdapter(galleryAdapter);
+                          galleryAdapter.notifyDataSetChanged();
                         gvGallery.setVerticalSpacing(gvGallery.getHorizontalSpacing());
                         ViewGroup.MarginLayoutParams mlp = (ViewGroup.MarginLayoutParams) gvGallery.getLayoutParams();
                         mlp.setMargins(0, gvGallery.getHorizontalSpacing(), 0, 0);

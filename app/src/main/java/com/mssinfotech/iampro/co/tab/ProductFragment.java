@@ -38,6 +38,7 @@ public class ProductFragment extends Fragment implements ProductAdapter.ItemList
     RecyclerView my_recycler_view;
     RecyclerViewAdapter adapter;
     ProductAdapter adapter_product;
+    int uid;
     public ProductFragment() {
         // Required empty public constructor
     }
@@ -65,7 +66,10 @@ public class ProductFragment extends Fragment implements ProductAdapter.ItemList
         super.onViewCreated(view, savedInstanceState);
 
         //createDummyData();
-
+        if (PrefManager.isLogin(getContext())) {
+            String id = PrefManager.getLoginDetail(getContext(), "id");
+            uid = Integer.parseInt(id);
+        }
         getProduct();
         my_recycler_view =view.findViewById(R.id.my_recycler_view);
 
@@ -73,7 +77,7 @@ public class ProductFragment extends Fragment implements ProductAdapter.ItemList
     }
 
     public void getProduct(){
-        int uid= Integer.parseInt(PrefManager.getLoginDetail(getContext(),"id"));
+        //int uid= Integer.parseInt(PrefManager.getLoginDetail(getContext(),"id"));
         final String url =Config.API_URL+"app_service.php?type=all_product&uid="+uid+"&name=product&my_id="+uid;
         // Initialize a new RequestQueue instance
         RequestQueue requestQueue = Volley.newRequestQueue(getContext());

@@ -202,12 +202,10 @@ public class MyDemandActivity extends AppCompatActivity implements MyDemandAdapt
                             Log.d("dmm",dm.toString());
                             //allSampleData.add(dm);
                             Log.d("allsampledatav",item.toString());
-                            adapter = new MyDemandAdapter(getApplicationContext(),item,MyDemandActivity.this);
-
+                            adapter = new MyDemandAdapter(MyDemandActivity.this,item,MyDemandActivity.this);
                             recyclerView.setAdapter(adapter);
-                            GridLayoutManager manager = new GridLayoutManager(getApplicationContext(), 2, GridLayoutManager.VERTICAL, false);
+                            GridLayoutManager manager = new GridLayoutManager(MyDemandActivity.this, 2, GridLayoutManager.VERTICAL, false);
                             recyclerView.setLayoutManager(manager);
-
                         }
                         catch (JSONException e){
                             e.printStackTrace();

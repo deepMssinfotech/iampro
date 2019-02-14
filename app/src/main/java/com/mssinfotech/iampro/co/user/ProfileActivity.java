@@ -5,11 +5,13 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Handler;
 import android.support.v4.view.ViewCompat;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -56,11 +58,12 @@ import com.like.OnLikeListener;
 //import com.mikepenz.community_material_typeface_library.CommunityMaterial;
 //import com.mikepenz.iconics.IconicsDrawable;
 
-public class ProfileActivity extends AppCompatActivity implements AllFeedAdapter.ItemListener  {
+public class ProfileActivity extends AppCompatActivity implements AllFeedAdapter.ItemListener,SwipeRefreshLayout.OnRefreshListener  {
  //,OnLikeListener,OnAnimationEndListener
     private static final String TAG = ProfileActivity.class.getSimpleName();
     private static final int FEED_LIMIT=15;
     private static int FEED_START=0;
+
     private List<FeedItem> feedItems;
     ImageView userbackgroud;
     CircleImageView userimage;
@@ -74,6 +77,8 @@ public class ProfileActivity extends AppCompatActivity implements AllFeedAdapter
      AllFeedAdapter adapter;
     ArrayList<FeedModel> mValues=new ArrayList<>();
 
+    SwipeRefreshLayout mSwipeRefreshLayout;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -84,6 +89,14 @@ public class ProfileActivity extends AppCompatActivity implements AllFeedAdapter
         username = findViewById(R.id.username);
         userimage = findViewById(R.id.userimage);
         userbackgroud = findViewById(R.id.userbackgroud);
+        mSwipeRefreshLayout = findViewById(R.id.swiperefresh);
+        mSwipeRefreshLayout.setOnRefreshListener(this);
+        // Configure the refreshing colors
+        mSwipeRefreshLayout.setColorSchemeResources(android.R.color.holo_blue_bright,
+                android.R.color.holo_green_light,
+                android.R.color.holo_orange_light,
+                android.R.color.holo_red_light);
+
         vFeed=findViewById(R.id.rvFeed);
         uid= PrefManager.getLoginDetail(this,"id");
         if(fid == null || fid.equals(uid)) {
@@ -202,10 +215,10 @@ public class ProfileActivity extends AppCompatActivity implements AllFeedAdapter
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
+                        Log.d("Prod_detaili_profile",""+response);
                         String detail_name="";
                         int selling_cost=0;
                         int purchese_cost=0;
-
                         // Process the JSON
                         try{
                               String feedTotal=response.getString("feedTotal");
@@ -321,13 +334,10 @@ public class ProfileActivity extends AppCompatActivity implements AllFeedAdapter
         // Add JsonObjectRequest to the RequestQueue
         requestQueue.add(jsonObjectRequest);
     }
-
     private void parseJsonFeed(JSONObject response) {
         try {
             JSONArray feedArray = response.getJSONArray("data");
-
             for (int i = 0; i < feedArray.length(); i++) {
-
                 JSONObject feedObj = (JSONObject) feedArray.get(i);
                 FeedItem item = new FeedItem();
                 String image_path="";
@@ -355,15 +365,28 @@ public class ProfileActivity extends AppCompatActivity implements AllFeedAdapter
                 //item.setUrl(feedUrl);
                 feedItems.add(item);
             }
-
             // notify data changes to list adapater
         } catch (JSONException e) {
             e.printStackTrace();
         }
     }
-
     @Override
     public void onItemClick(FeedModel item) {
 
     }
+    @Override
+    public void onRefresh() {
+        FEED_START=0;
+        getFeed(FEED_START);
+        new Handler().postDelayed(new Runnable() {
+            @Override public void run() {
+                // Stop animation (This will be after 3 seconds)
+                mSwipeRefreshLayout.setRefreshing(false);
+            }
+        }, 4000); // Delay in millis
+    }
+      public void loadMore(View view){
+          FEED_START=FEED_START+FEED_LIMIT;
+          getFeed(FEED_START);
+      }
 }

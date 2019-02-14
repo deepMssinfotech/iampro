@@ -6,9 +6,16 @@ package com.mssinfotech.iampro.co.adapter;
 
 import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.Volley;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.bitmap.CircleCrop;
 import com.bumptech.glide.request.RequestOptions;
@@ -23,10 +30,13 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.VideoView;
 
+import com.mssinfotech.iampro.co.common.Config;
 import com.mssinfotech.iampro.co.image.ImageDetail;
 import com.mssinfotech.iampro.co.model.DataModel;
 import com.mssinfotech.iampro.co.model.ImageDetailModel;
 import com.mssinfotech.iampro.co.user.ProfileActivity;
+
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 
@@ -102,9 +112,7 @@ public class Img_Video_Details extends RecyclerView.Adapter<Img_Video_Details.Vi
 
             Glide.with(mContext)
                     .load(avatar)
-                    .apply(new RequestOptions()
-                            .circleCrop().bitmapTransform(new CircleCrop())
-                            .fitCenter())
+                    .apply(Config.options_avatar)
                     .into(imageView_user);
 
            if(item.getType().equalsIgnoreCase("image")) {
@@ -116,6 +124,14 @@ public class Img_Video_Details extends RecyclerView.Adapter<Img_Video_Details.Vi
                                .centerCrop()
                                .fitCenter())
                        .into(image);
+
+               Glide.with(mContext)
+                       .load(R.drawable.image_icon)
+                       .apply(Config.options_avatar)
+                       .into(imageView_icon);
+
+
+               //imageView_icon.setImageResource(R.drawable.image_icon);
            }
            else if(item.getType().equalsIgnoreCase("video")) {
                image.setVisibility(View.GONE);
@@ -123,6 +139,13 @@ public class Img_Video_Details extends RecyclerView.Adapter<Img_Video_Details.Vi
 
                videoView.setVideoPath(item.getImage());
                //videoView.start();
+
+               Glide.with(mContext)
+                       .load(R.drawable.video_icon)
+                       .apply(Config.options_video)
+                       .into(imageView_icon);
+
+               //imageView_icon.setImageResource(R.drawable.video_icon);
            }
                imageView_user.setOnClickListener(new View.OnClickListener() {
                    @Override
@@ -151,8 +174,11 @@ public class Img_Video_Details extends RecyclerView.Adapter<Img_Video_Details.Vi
         return new ViewHolder(view);
     }
     @Override
-    public void onBindViewHolder(ViewHolder Vholder, int position) {
+    public void onBindViewHolder(ViewHolder Vholder,int position) {
         Vholder.setData(mValues.get(position));
+        //sendrating(float rating,int uid,int id)
+        final int uidv=mValues.get(position).getUid();
+        //final int idv=mValues.get(position).
     }
     @Override
     public int getItemCount() {
@@ -160,5 +186,46 @@ public class Img_Video_Details extends RecyclerView.Adapter<Img_Video_Details.Vi
     }
     public interface ItemListener {
         void onItemClick(ImageDetailModel item);
+    }
+
+
+    public void sendrating(float rating,int uid,int id){
+        String urlv="https://www.iampro.co/api/app_service.php?type=rate_me&id="+id+"&uid="+uid+"&ptype=image&total_rate="+rating;
+
+        RequestQueue requestQueue = Volley.newRequestQueue(mContext);
+        // Initialize a new JsonObjectRequest instance
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(
+                Request.Method.GET,
+                urlv,
+                null,
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        Log.d("Prod_detaili_profile",""+response);
+                        try{
+                            String status=response.optString("status");
+                            String msgv=response.optString("msg");
+                            if(status.equalsIgnoreCase("success")) {
+                                Toast.makeText(mContext,""+msgv,Toast.LENGTH_LONG).show();
+                            }
+                            else{
+                                Toast.makeText(mContext,""+msgv,Toast.LENGTH_LONG).show();
+                            }
+                        }
+                        catch (Exception e){
+                            e.printStackTrace();
+                            Toast.makeText(mContext,e.getMessage(),Toast.LENGTH_LONG).show();
+                        }
+                    }
+                },
+                new Response.ErrorListener(){
+                    @Override
+                    public void onErrorResponse(VolleyError error){
+                        Toast.makeText(mContext,error.getMessage(),Toast.LENGTH_LONG).show();
+                    }
+                }
+        );
+        requestQueue.add(jsonObjectRequest);
+
     }
 }

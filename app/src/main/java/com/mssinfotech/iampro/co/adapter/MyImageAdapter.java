@@ -79,7 +79,6 @@ public class MyImageAdapter extends RecyclerView.Adapter<MyImageAdapter.ViewHold
             //udate.setText(item.getUdate());
             tv_comments.setText(String.valueOf(item.getComments()));
             tv_totallike.setText(String.valueOf(item.getTotallike()));
-
             imageView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {

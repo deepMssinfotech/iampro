@@ -193,6 +193,8 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
             ratingBar.setRating(item.getRating());
 
             id = item.getId();
+            uid=item.getUid();
+            if (PrefManager.isLogin(mContext))
             uid = Integer.parseInt(PrefManager.getLoginDetail(mContext,"id"));
             added_by = item.getUid();
 

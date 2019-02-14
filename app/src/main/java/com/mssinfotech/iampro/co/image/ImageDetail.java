@@ -81,16 +81,16 @@ public class ImageDetail extends AppCompatActivity implements Img_Video_Details.
 
     }
     protected void getImageDetail(){
-        String url="https://www.iampro.co/api/app_service.php?type=get_image_detail&id="+id+"&update_type="+type+"&uid="+uid+"&login_id="+uid+"&my_id="+uid;
+        final String url="https://www.iampro.co/api/app_service.php?type=get_image_detail&id="+id+"&update_type="+type+"&uid="+uid+"&login_id="+uid+"&my_id="+uid;
         RequestQueue requestQueue = Volley.newRequestQueue(ImageDetail.this);
-
         StringRequest jsonObjectRequest = new StringRequest(
                 Request.Method.GET,
                 url,
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-                        Log.d("Prod_detaili",response.toString());
+                        Log.d("Prod_detaili1",""+url);
+                        Log.d("Prod_detaili11",response.toString()+" "+id+" "+type+" "+uid+" ");
                         // Process the JSON
                         try{
                             JSONObject responses=new JSONObject(response);
@@ -122,6 +122,7 @@ public class ImageDetail extends AppCompatActivity implements Img_Video_Details.
                             tv_totallike.setText(String.valueOf(totallike));
                             name.setText(namev);
                             category.setText(category_name);
+                            imageView_icon.setImageResource(R.drawable.image_icon);
                              ratingBar.setRating(Float.parseFloat(String.valueOf(rating)));
 
                             videoView.setVisibility(View.GONE);
@@ -238,6 +239,7 @@ public class ImageDetail extends AppCompatActivity implements Img_Video_Details.
                              tv_about_tag.setText("About Video");
                              tv_about_msg.setText(about_us);
                              udate.setText(udatev);
+                            imageView_icon.setImageResource(R.drawable.video_icon);
                              tv_comments.setText(String.valueOf(comments));
                             tv_totallike.setText(String.valueOf(totallike));
                             name.setText(namev);

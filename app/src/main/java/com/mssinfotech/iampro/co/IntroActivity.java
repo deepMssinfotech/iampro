@@ -21,23 +21,24 @@ public class IntroActivity extends AppCompatActivity {
     private PrefManager prefManager;
     private Button btnSkip;
     private GifImageView mImageView2;
+    int PERMISSION_ALL = 1;
+    String[] PERMISSIONS = {
+            android.Manifest.permission.WRITE_EXTERNAL_STORAGE,
+            android.Manifest.permission.CAMERA,
+            Manifest.permission.INTERNET,
+            Manifest.permission.READ_SMS,
+            Manifest.permission.ACCESS_NOTIFICATION_POLICY,
+            Manifest.permission.BIND_NOTIFICATION_LISTENER_SERVICE
+
+    };
     static {
-        AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
+         AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
     }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        int PERMISSION_ALL = 1;
-        String[] PERMISSIONS = {
-                android.Manifest.permission.WRITE_EXTERNAL_STORAGE,
-                android.Manifest.permission.CAMERA,
-                Manifest.permission.INTERNET,
-                Manifest.permission.READ_SMS,
-                Manifest.permission.ACCESS_NOTIFICATION_POLICY,
-                Manifest.permission.BIND_NOTIFICATION_LISTENER_SERVICE
 
-        };
 
         if(!hasPermissions(this, PERMISSIONS)){
             ActivityCompat.requestPermissions(this, PERMISSIONS, PERMISSION_ALL);
@@ -75,6 +76,6 @@ public class IntroActivity extends AppCompatActivity {
     private void launchHomeScreen() {
         prefManager.setFirstTimeLaunch(false);
         startActivity(new Intent(IntroActivity.this, LoadingActivity.class));
-        finish();
+        //finish();
     }
 }

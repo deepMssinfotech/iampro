@@ -1,6 +1,12 @@
 package com.mssinfotech.iampro.co.user;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.net.Uri;
+import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
@@ -21,6 +27,7 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.bumptech.glide.Glide;
 import com.mssinfotech.iampro.co.R;
+import com.mssinfotech.iampro.co.adapter.GalleryAdapter;
 import com.mssinfotech.iampro.co.adapter.MyImageAdapter;
 import com.mssinfotech.iampro.co.adapter.MyImageVideoDataAdapter;
 import com.mssinfotech.iampro.co.adapter.RecyclerViewDataAdapter;
@@ -34,30 +41,40 @@ import com.mssinfotech.iampro.co.model.SingleItemModel;
 import com.mssinfotech.iampro.co.utils.PrefManager;
 import com.squareup.picasso.Picasso;
 
+import net.gotev.uploadservice.MultipartUploadRequest;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.TreeMap;
+import java.util.UUID;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
 public class MyImageActivity extends AppCompatActivity implements MyImageAdapter.ItemListener {
-    ImageView userbackgroud;
+
     CircleImageView userimage;
     TextView username,tv_category;
     private String URL_FEED = "",uid="";
     Intent intent;
      RecyclerView recyclerView;
     MyImageAdapter adapter;
+    Bitmap FixBitmap;
+    private int GALLERY = 1, CAMERA = 2;
+    public String backgroundimagePath="";
     ArrayList<MyImageModel> itemm= new ArrayList<>();
     //HashSet<String> item_name = new HashSet<>();
-    HashMap<String,String> item_name = new HashMap<>();
+    TreeMap<String,String> item_name = new TreeMap<>();
     ArrayList<SectionImageModel> allSampleData=new ArrayList<>();
     MyImageVideoDataAdapter adapterr;
+    ImageView userbackgroud ,changeImage,changeBackground_Image ;
+    private GalleryAdapter galleryAdapter;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -70,6 +87,7 @@ public class MyImageActivity extends AppCompatActivity implements MyImageAdapter
         recyclerView=findViewById(R.id.recyclerView);
         tv_category=findViewById(R.id.tv_category);
         userbackgroud = findViewById(R.id.userbackgroud);
+
         uid= PrefManager.getLoginDetail(this,"id");
         if(id == null || id.equals(uid)) {
             String fname=PrefManager.getLoginDetail(this,"fname");
@@ -91,6 +109,25 @@ public class MyImageActivity extends AppCompatActivity implements MyImageAdapter
             uid= id;
             gteUsrDetail(id);
         }
+
+        changeImage = findViewById(R.id.changeImage);
+        changeImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent=new Intent(MyImageActivity.this,ProfileImageCroperActivity.class);
+                startActivity(intent);
+                //finish();
+            }
+        });
+
+        changeBackground_Image = findViewById(R.id.changeBackground_Image);
+        changeBackground_Image.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showPictureDialog();
+            }
+        });
+
         IncludeShortMenu includeShortMenu = findViewById(R.id.includeShortMenu);
         includeShortMenu.updateCounts(this,uid);
         TextView myuid= includeShortMenu.findViewById(R.id.myuid);
@@ -99,6 +136,9 @@ public class MyImageActivity extends AppCompatActivity implements MyImageAdapter
         Config.PREVIOUS_PAGE_TAG = i.getStringExtra(Config.PAGE_TAG);
         //getImages();
         getAllAlbum();
+
+
+
     }
     private void gteUsrDetail(String id){
         String myurl = Config.API_URL + "ajax.php?type=friend_detail&id=" + id + "&uid=" + uid;
@@ -138,6 +178,42 @@ public class MyImageActivity extends AppCompatActivity implements MyImageAdapter
         //Adding request to the queue
         requestQueue.add(stringRequest);
     }
+
+    private void showPictureDialog(){
+        AlertDialog.Builder pictureDialog = new AlertDialog.Builder(this);
+        pictureDialog.setTitle("Select Action");
+        String[] pictureDialogItems = {
+                "Photo Gallery",
+                "Camera" };
+        pictureDialog.setItems(pictureDialogItems,
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        switch (which) {
+                            case 0:
+                                choosePhotoFromGallary();
+                                break;
+                            case 1:
+                                takePhotoFromCamera();
+                                break;
+                        }
+                    }
+                });
+        pictureDialog.show();
+    }
+    public void choosePhotoFromGallary() {
+        Intent galleryIntent = new Intent(Intent.ACTION_PICK,
+                android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+
+        startActivityForResult(galleryIntent, GALLERY);
+    }
+
+    private void takePhotoFromCamera() {
+        Intent intent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
+        startActivityForResult(intent, CAMERA);
+    }
+
+
     @Override
     public void onBackPressed() {
         //super.onBackPressed();
@@ -146,10 +222,93 @@ public class MyImageActivity extends AppCompatActivity implements MyImageAdapter
         setResult(RESULT_OK, i);
         finish();
     }
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+   // protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+       // super.onActivityResult(requestCode, resultCode, data);
+       // Toast.makeText(this, "mss popup"+resultCode+"--"+requestCode,  Toast.LENGTH_LONG).show();
+    //}
+
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+
         super.onActivityResult(requestCode, resultCode, data);
-        Toast.makeText(this, "mss popup"+resultCode+"--"+requestCode,  Toast.LENGTH_LONG).show();
+        if (resultCode == this.RESULT_CANCELED) {
+            return;
+        }
+        if (requestCode == GALLERY) {
+            if (data != null) {
+                Uri contentURI = data.getData();
+                try {
+                    FixBitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), contentURI);
+                    userbackgroud.setImageBitmap(FixBitmap);
+                    backgroundimagePath = getPath(contentURI);
+                    //UploadImageOnServerButton.setVisibility(View.VISIBLE);
+                    sendData();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                    Toast.makeText(MyImageActivity.this, "Failed!", Toast.LENGTH_SHORT).show();
+                }
+            }
+        } else if (requestCode == CAMERA) {
+            Uri contentURI = data.getData();
+            try {
+                FixBitmap = (Bitmap) data.getExtras().get("data");
+                //ShowSelectedImage.setImageBitmap(FixBitmap);
+                userbackgroud.setImageBitmap(FixBitmap);
+                backgroundimagePath = getPath(contentURI);
+                //UploadImageOnServerButton.setVisibility(View.VISIBLE);
+                //  saveImage(thumbnail);
+                sendData();
+                //Toast.makeText(ShadiRegistrationPart5.this, "Image Saved!", Toast.LENGTH_SHORT).show();
+            }
+            catch (Exception e){
+                Toast.makeText(getApplicationContext(),e.getMessage(),Toast.LENGTH_LONG).show();
+            }
+        }
     }
+
+    public String getPath(Uri uri) {
+        Cursor cursor = getContentResolver().query(uri, null, null, null, null);
+        cursor.moveToFirst();
+        String document_id = cursor.getString(0);
+        document_id = document_id.substring(document_id.lastIndexOf(":") + 1);
+        cursor.close();
+        cursor = getContentResolver().query(
+                android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
+                null, MediaStore.Images.Media._ID + " = ? ", new String[]{document_id}, null);
+        cursor.moveToFirst();
+        String path = cursor.getString(cursor.getColumnIndex(MediaStore.Images.Media.DATA));
+        cursor.close();
+        return path;
+    }
+
+    public void sendData() {
+        if (!Config.haveNetworkConnection(this)) {
+            Config.showInternetDialog(this);
+            return;
+        }
+        //Toast.makeText(getApplicationContext(), "Video upload remain pleasw wait....", Toast.LENGTH_LONG).show();
+        //return;
+        try {
+            String uploadId = UUID.randomUUID().toString();
+            //Creating a multi part request
+            new MultipartUploadRequest(this, uploadId, Config.AJAX_URL + "signup.php")
+                    .addFileToUpload(backgroundimagePath, "img_banner_image") //Adding file
+                    .addParameter("type","update_img_video_banner")//Adding text parameter to the request
+                    .addParameter("process_type","android")
+                    .addParameter("userid",PrefManager.getLoginDetail(getApplicationContext(),"id"))
+                    //.setNotificationConfig(new UploadNotificationConfig())
+                    .setMaxRetries(2)
+                    .startUpload(); //Starting the upload
+            Intent intent = new Intent(getApplicationContext(), EditProfileActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            startActivity(intent);
+            Toast.makeText(this, "Update Profile Background Image is processing please wait", Toast.LENGTH_SHORT).show();
+            finish();
+        } catch (Exception exc) {
+            Toast.makeText(this, exc.getMessage(), Toast.LENGTH_SHORT).show();
+        }
+
+    }
+
     public void redirect(View v){
         Intent i_signup = new Intent(MyImageActivity.this,AddImageActivity.class);
         MyImageActivity.this.startActivity(i_signup);
@@ -216,6 +375,7 @@ public class MyImageActivity extends AppCompatActivity implements MyImageAdapter
 
                         SectionImageModel dm = new SectionImageModel();
                         dm.setHeaderTitle(item_name.get(aid));
+                        dm.setAlbemId(aid);
                         //ArrayList<MyImageModel> singleItem = new ArrayList<>();
                         ArrayList<MyImageModel> item = new ArrayList<>();
                         try{
@@ -280,8 +440,8 @@ public class MyImageActivity extends AppCompatActivity implements MyImageAdapter
                             Log.d("allsampledatav", allSampleData.toString());
                             //my_recycler_view.setHasFixedSize(true);
                             Log.d("allSampleDatas",""+allSampleData.size()+"--"+allSampleData.toString());
-                            adapterr = new MyImageVideoDataAdapter(getApplicationContext(), allSampleData,item_name);
-                            recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.VERTICAL, false));
+                            adapterr = new MyImageVideoDataAdapter(MyImageActivity.this, allSampleData,item_name);
+                            recyclerView.setLayoutManager(new LinearLayoutManager(MyImageActivity.this, LinearLayoutManager.VERTICAL, false));
                             recyclerView.setAdapter(adapterr);
 
                         }

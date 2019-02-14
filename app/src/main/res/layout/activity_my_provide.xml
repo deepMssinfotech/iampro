@@ -24,6 +24,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_marginBottom="20dp"
             android:orientation="vertical">
             <com.mssinfotech.iampro.co.common.IncludeHeader
                 android:layout_width="match_parent"
@@ -92,8 +93,9 @@
                 app:layout_constraintLeft_toLeftOf="parent"
                 android:nestedScrollingEnabled="false"
                 app:layout_constraintRight_toRightOf="parent"
+                android:layout_marginBottom="22dp"
                 app:layout_constraintTop_toTopOf="parent" />
-        </LinearLayout>
+                    </LinearLayout>
     </android.support.v4.widget.NestedScrollView>
     <com.mssinfotech.iampro.co.common.IncludeFooter
         android:id="@+id/footer"

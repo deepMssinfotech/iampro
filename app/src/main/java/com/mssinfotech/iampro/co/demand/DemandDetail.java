@@ -134,6 +134,8 @@ public class DemandDetail extends AppCompatActivity  implements CommentAdapter.I
                             String product_provide_name =responses.optString("user_name");
                             String product_provide_email =responses.optString("email");
                             String avatar=responses.optString("avatar");
+                            String image=responses.optString("image");
+                            String image_path=Config.OTHER_IMAGE_URL+image;
 
                             String other_image=responses.optString("other_image");
 
@@ -151,10 +153,8 @@ public class DemandDetail extends AppCompatActivity  implements CommentAdapter.I
                               //expandedImage
 
                             Glide.with(DemandDetail.this)
-                                    .load(other_image_path)
-                                    .apply(new RequestOptions()
-                                            .circleCrop().bitmapTransform(new CircleCrop())
-                                            .fitCenter())
+                                    .load(image_path)
+                                    .apply(Config.options_demand)
                                     .into(expandedImage);
 
                             Glide.with(DemandDetail.this)

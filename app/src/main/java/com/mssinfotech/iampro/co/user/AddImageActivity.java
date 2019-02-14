@@ -75,7 +75,7 @@ public class AddImageActivity extends AppCompatActivity {
     private Bitmap bitmap=null;
     private GalleryAdapter galleryAdapter;
     private LinearLayout categoryLayout,albumLayout;
-
+     ArrayList<Uri> mArrayUri = new ArrayList<>();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -119,12 +119,9 @@ public class AddImageActivity extends AppCompatActivity {
         //And finally ask for the permission
         ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, Config.STORAGE_PERMISSION_CODE);
     }
-
-
     //This method will be called when the user will tap on allow or deny
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-
         //Checking the request code of our request
         if (requestCode == Config.STORAGE_PERMISSION_CODE) {
 
@@ -156,7 +153,7 @@ public class AddImageActivity extends AppCompatActivity {
             // Get the Image from data
 
             String[] filePathColumn = { MediaStore.Images.Media.DATA };
-            imagesEncodedList = new ArrayList<String>();
+              imagesEncodedList = new ArrayList<String>();
             if(data.getData()!=null){
 
                 Uri mImageUri=data.getData();
@@ -170,15 +167,16 @@ public class AddImageActivity extends AppCompatActivity {
                         filePathColumn, null, null, null);
                 // Move to first row
                 cursor.moveToFirst();
-
+                  //cursor.moveToNext();
                 int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
                 imageEncoded  = cursor.getString(columnIndex);
                 cursor.close();
 
-                ArrayList<Uri> mArrayUri = new ArrayList<Uri>();
+                //ArrayList<Uri> mArrayUri = new ArrayList<>();
                 mArrayUri.add(mImageUri);
                 galleryAdapter = new GalleryAdapter(getApplicationContext(),mArrayUri);
                 gvGallery.setAdapter(galleryAdapter);
+                galleryAdapter.notifyDataSetChanged();
                 gvGallery.setVerticalSpacing(gvGallery.getHorizontalSpacing());
                 ViewGroup.MarginLayoutParams mlp = (ViewGroup.MarginLayoutParams) gvGallery
                         .getLayoutParams();
@@ -187,7 +185,8 @@ public class AddImageActivity extends AppCompatActivity {
             } else {
                 if (data.getClipData() != null) {
                     ClipData mClipData = data.getClipData();
-                    ArrayList<Uri> mArrayUri = new ArrayList<Uri>();
+                    //ArrayList<Uri> mArrayUri = new ArrayList<>();
+
                     for (int i = 0; i < mClipData.getItemCount(); i++) {
 
                         ClipData.Item item = mClipData.getItemAt(i);
@@ -213,6 +212,7 @@ public class AddImageActivity extends AppCompatActivity {
 
                         galleryAdapter = new GalleryAdapter(getApplicationContext(),mArrayUri);
                         gvGallery.setAdapter(galleryAdapter);
+                        galleryAdapter.notifyDataSetChanged();
                         gvGallery.setVerticalSpacing(gvGallery.getHorizontalSpacing());
                         ViewGroup.MarginLayoutParams mlp = (ViewGroup.MarginLayoutParams) gvGallery.getLayoutParams();
                         mlp.setMargins(0, gvGallery.getHorizontalSpacing(), 0, 0);
@@ -236,12 +236,12 @@ public class AddImageActivity extends AppCompatActivity {
         if (Validate.isNull(albumname) && utype.equalsIgnoreCase("new_album")) {
             resetError();
             tilalbumname.setErrorEnabled(true);
-            tilalbumname.setError("Enter Album Neme ");
+            tilalbumname.setError("Enter Album Name ");
             return ;
         } else if (Validate.isNull(imagename)) {
             resetError();
             tilimagename.setErrorEnabled(true);
-            tilimagename.setError("Enter Image  Neme");
+            tilimagename.setError("Enter Image  Name");
             return;
         } else if (Validate.isNull(imagedetail)) {
             resetError();
@@ -400,10 +400,8 @@ public class AddImageActivity extends AppCompatActivity {
 
                     }
                 });
-
         //Creating a request queue
         RequestQueue requestQueue = Volley.newRequestQueue(this);
-
         //Adding request to the queue
         requestQueue.add(stringRequest);
     }

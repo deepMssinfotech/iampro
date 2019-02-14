@@ -91,6 +91,7 @@
                         android:layout_weight="0.7"
                         android:isIndicator="false"
                         android:rating="4"
+                        android:numStars="5"
                         android:stepSize="0.3"/>
 
                 </LinearLayout>

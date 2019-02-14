@@ -14,6 +14,7 @@ public class SectionImageModel {
 
 
     private String headerTitle;
+    private String albemId;
     private ArrayList<MyImageModel> allItemsInSection;
 
 
@@ -34,7 +35,12 @@ public class SectionImageModel {
     public void setHeaderTitle(String headerTitle) {
         this.headerTitle = headerTitle;
     }
-
+    public void setAlbemId(String albemId) {
+        this.albemId=albemId;
+    }
+    public String getAlbemId() {
+        return albemId;
+    }
     public ArrayList<MyImageModel> getAllItemsInSection() {
         return allItemsInSection;
     }
