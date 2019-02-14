@@ -290,3 +290,4 @@ public class MyProductAdapter extends RecyclerView.Adapter<MyProductAdapter.View
          MyRequestQueue.add(MyStringRequest);
      }
 }
+

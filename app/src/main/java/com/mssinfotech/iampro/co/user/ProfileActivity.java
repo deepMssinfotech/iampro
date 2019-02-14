@@ -334,10 +334,13 @@ public class ProfileActivity extends AppCompatActivity implements AllFeedAdapter
         // Add JsonObjectRequest to the RequestQueue
         requestQueue.add(jsonObjectRequest);
     }
+
     private void parseJsonFeed(JSONObject response) {
         try {
             JSONArray feedArray = response.getJSONArray("data");
+
             for (int i = 0; i < feedArray.length(); i++) {
+
                 JSONObject feedObj = (JSONObject) feedArray.get(i);
                 FeedItem item = new FeedItem();
                 String image_path="";
@@ -365,18 +368,19 @@ public class ProfileActivity extends AppCompatActivity implements AllFeedAdapter
                 //item.setUrl(feedUrl);
                 feedItems.add(item);
             }
+
             // notify data changes to list adapater
         } catch (JSONException e) {
             e.printStackTrace();
         }
     }
+
     @Override
     public void onItemClick(FeedModel item) {
 
     }
     @Override
     public void onRefresh() {
-        FEED_START=0;
         getFeed(FEED_START);
         new Handler().postDelayed(new Runnable() {
             @Override public void run() {
