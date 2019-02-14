@@ -1,19 +1,17 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/tools"
-    xmlns:app2="http://schemas.android.com/apk/res-auto"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/ll_top"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical"
-    app:ignore="NamespaceTypo">
+    android:orientation="vertical">
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
         <android.support.v7.widget.AppCompatButton
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@drawable/chat_btn"
+            android:layout_height="40dp"
+            android:background="@drawable/btnchat_provide"
             android:layout_weight="1"
              android:onClick="chat"
             android:textColor="@color/white"
@@ -21,8 +19,8 @@
             android:text="@string/chat"/>
         <android.support.v7.widget.AppCompatButton
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@drawable/chat_btn"
+            android:layout_height="40dp"
+            android:background="@drawable/btnchat_provide"
             android:textColor="@color/white"
              android:onClick="favourite"
             android:layout_weight="1"
@@ -56,7 +54,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:text="Name"
-                    android:textSize="17dp"
+                    android:textSize="15dp"
                     android:textStyle="bold"
                     android:layout_weight="9"/>
 
@@ -67,7 +65,7 @@
                     android:text="dsfs"
                     android:layout_gravity="end"
                     android:gravity="end"
-                    android:textSize="14sp"
+                    android:textSize="12sp"
                     android:textStyle="bold"
                     android:layout_weight="9"/>
             </LinearLayout>
@@ -85,7 +83,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:text="Categories:"
-                    android:textSize="17dp"
+                    android:textSize="15dp"
                     android:textStyle="bold"
                     android:layout_weight="9"/>
 
@@ -94,7 +92,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:text=""
-                    android:textSize="14sp"
+                    android:textSize="12sp"
                     android:textStyle="bold"
                     android:layout_gravity="end"
                     android:gravity="end"
@@ -114,7 +112,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:text="Cost:"
-                    android:textSize="17dp"
+                    android:textSize="15dp"
                     android:textStyle="bold"
                     android:layout_weight="9"/>
 
@@ -125,7 +123,7 @@
                     android:text=""
                     android:layout_gravity="end"
                     android:gravity="end"
-                    android:textSize="14sp"
+                    android:textSize="12sp"
                     android:textStyle="bold"
                     android:layout_weight="9"/>
             </LinearLayout>
@@ -152,7 +150,7 @@
                 android:layout_height="wrap_content"
                 android:text="Provide Details:"
                 android:padding="10dp"
-                android:textSize="20dp"
+                android:textSize="18dp"
                 android:textStyle="bold" />
             <View
                 android:layout_width="match_parent"
@@ -169,7 +167,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:text="details"
-                    android:textSize="14dp"
+                    android:textSize="12dp"
                     android:textStyle="bold"
                     android:layout_weight="9"/>
 
@@ -197,8 +195,8 @@
                 android:layout_height="wrap_content"
                 android:text="Provide Provider Detail:"
                 android:padding="10dp"
-                android:textSize="20dp"
-                android:textStyle="bold" />
+                android:textSize="18dp"
+                android:textStyle="bold"/>
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
@@ -232,7 +230,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
-                        android:textSize="17sp"
+                        android:textSize="15sp"
                         android:text="@string/app_name"
                         android:padding="4dp"
                         android:textStyle="bold"/>
@@ -278,12 +276,14 @@
                  android:onClick="sendReview"
                 android:layout_marginBottom="20dp"
                 android:orientation="horizontal">
-                <ImageView
+                <android.support.v7.widget.AppCompatImageView
                     android:layout_width="63dp"
                     android:layout_height="63dp"
                     android:padding="13dp"
                     android:layout_gravity="left"
-                    app2:srcCompat="@drawable/ic_chat_black_24dp"/>
+                    app:srcCompat="@drawable/ic_chat_black_24dp"/>
+
+
                 <TextView
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
@@ -292,7 +292,7 @@
                     android:gravity="end"
                     android:padding="13dp"
                     android:layout_marginTop="10dp"
-                    android:textSize="17sp"
+                    android:textSize="15sp"
                     android:textStyle="bold"
                     android:layout_weight="9"/>
             </LinearLayout>
