@@ -11,6 +11,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.Toast;
 
 import com.android.volley.Request;
@@ -19,13 +20,18 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.Volley;
 import com.mssinfotech.iampro.co.R;
+import com.mssinfotech.iampro.co.adapter.MyImageVideoDataAdapter;
+import com.mssinfotech.iampro.co.adapter.MyVideoDataAdapter;
 import com.mssinfotech.iampro.co.adapter.RecyclerViewAdapter;
 import com.mssinfotech.iampro.co.adapter.RecyclerViewDataAdapter;
 import com.mssinfotech.iampro.co.adapter.VideoAdapter;
 import com.mssinfotech.iampro.co.model.DataModel;
+import com.mssinfotech.iampro.co.model.MyImageModel;
 import com.mssinfotech.iampro.co.model.SectionDataModel;
+import com.mssinfotech.iampro.co.model.SectionImageModel;
 import com.mssinfotech.iampro.co.model.SingleItemModel;
 import com.mssinfotech.iampro.co.common.Config;
+import com.mssinfotech.iampro.co.user.MyVideoActivity;
 import com.mssinfotech.iampro.co.utils.PrefManager;
 
 import org.json.JSONArray;
@@ -33,22 +39,26 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.TreeMap;
 
 public class VideoFragment extends Fragment implements VideoAdapter.ItemListener{
     ArrayList<DataModel> allSampleData=new ArrayList<>();
-    RecyclerView my_recycler_view;
+    RecyclerView my_recycler_view,recycler_view_load_more;
     VideoAdapter adapter;
     public static final String VIDEO_TYPE="video";
     int uid;
+    Button btn_load_more;
+    HashMap<String,String> item_name=new HashMap<>();
+    ArrayList<SectionImageModel> allSampleDatamore=new ArrayList<>();
+    MyVideoDataAdapter adapterr;
     public VideoFragment() {
         // Required empty public constructor
     }
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
     }
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -66,13 +76,20 @@ public class VideoFragment extends Fragment implements VideoAdapter.ItemListener
              uid= Integer.parseInt(PrefManager.getLoginDetail(getContext(),"id"));
             getVideo();
             my_recycler_view =view.findViewById(R.id.my_recycler_view);
+            recycler_view_load_more=view.findViewById(R.id.recycler_view_load_more);
+            btn_load_more=view.findViewById(R.id.btn_load_more);
+            btn_load_more.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    getAllAlbum();
+                    btn_load_more.setVisibility(View.GONE);
+                }
+            });
         }
     public void getVideo(){
-
         final String url = "https://www.iampro.co/api/app_service.php?type=all_item&name=video&uid="+uid+"&my_id="+uid;
         // Initialize a new RequestQueue instance
         RequestQueue requestQueue = Volley.newRequestQueue(getContext());
-
         // Initialize a new JsonArrayRequest instance
         JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(
                 Request.Method.GET,
@@ -170,5 +187,154 @@ public class VideoFragment extends Fragment implements VideoAdapter.ItemListener
     @Override
     public void onItemClick(DataModel item) {
         Toast.makeText(getContext(), item.getName()+ " is clicked", Toast.LENGTH_SHORT).show();
+    }
+
+    public void getAllAlbum(){
+        String url="https://www.iampro.co/api/app_service.php?type=getAlbemsListt&search_type=video&uid="+uid;
+        RequestQueue requestQueue = Volley.newRequestQueue(getContext());
+
+        JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(
+                Request.Method.GET,
+                url,
+                null,
+                new com.android.volley.Response.Listener<JSONArray>() {
+                    @Override
+                    public void onResponse(JSONArray response) {
+                        if(!item_name.isEmpty()){
+                            item_name.clear();
+                        }
+                        try{
+                            for(int i=0;i<response.length();i++){
+                                JSONObject student1 = response.getJSONObject(i);
+                                String name1=student1.optString("id");
+                                String album_name=student1.optString("album_name");
+                                //item_name.add(name1);
+                                item_name.put(name1,album_name);
+                            }
+                            Log.d("allsampledataname",item_name.toString());
+                            for (String data:item_name.keySet()){
+                                getVideo(data);
+                                Log.d("Keyset",""+data);
+                            }
+                        }
+                        catch (JSONException e){
+                            e.printStackTrace();
+                            Toast.makeText(getContext(), ""+e.getMessage(), Toast.LENGTH_SHORT).show();
+                            Log.d("catch_f",""+e.getMessage());
+                        }
+                    }
+                },
+                new com.android.volley.Response.ErrorListener(){
+                    @Override
+                    public void onErrorResponse(VolleyError error){
+                        Toast.makeText(getContext(), error.getMessage(), Toast.LENGTH_SHORT).show();
+                        Log.d("verror",""+error.getMessage());
+                    }
+                }
+        );
+        // Add JsonArrayRequest to the RequestQueue
+        requestQueue.add(jsonArrayRequest);
+        //getProvide();
+    }
+    public void getVideo(final String aid){
+        String url=Config.API_URL+"app_service.php?type=getMyAlbemsListt&search_type=video&uid="+uid+"&my_id="+uid+"&album_id="+aid;
+        // Initialize a new RequestQueue instance
+        RequestQueue requestQueue = Volley.newRequestQueue(getContext());
+        // Initialize a new JsonArrayRequest instance
+        JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(
+                Request.Method.GET,
+                url,
+                null,
+                new com.android.volley.Response.Listener<JSONArray>() {
+                    @Override
+                    public void onResponse(JSONArray response) {
+                        ArrayList<SingleItemModel> singleItem = new ArrayList<SingleItemModel>();
+                        SectionImageModel dm = new SectionImageModel();
+                        dm.setHeaderTitle(item_name.get(aid));
+                        dm.setAlbemId(aid);
+                        dm.setMore("loadmore");
+                        //ArrayList<MyImageModel> singleItem = new ArrayList<>();
+                        ArrayList<MyImageModel> item = new ArrayList<>();
+                        try{
+                            for(int i=0;i<response.length();i++){
+                                // Get current json object
+                                JSONObject student = response.getJSONObject(i);
+                                String name1=student.getString("name");
+                                //tv_category.setText(name1.toString());
+                                JSONArray jsonArrayPics=student.getJSONArray("pics");
+                                String added_byy=student.optString("added_by");
+                                Log.d("picssss",jsonArrayPics.toString());
+                                //JSONObject picss= jsonArrayPics.getJSONObject(0);
+                                //Log.d("picssss11",""+picss.toString());
+                                //String idd=picss.getString("albemid");
+                                //Log.d("picssss1",""+idd);
+                                for (int j=0;j<jsonArrayPics.length();j++){
+                                    JSONObject pics=jsonArrayPics.getJSONObject(j);
+                                    String id=pics.getString("id");
+
+                                    String albemid=pics.optString("albemid");
+                                    String name=pics.optString("name");
+                                    String category=pics.optString("category");
+
+                                    String albem_type=pics.optString("albem_type");
+                                    String imagev=pics.optString("image");
+                                    String imagee = imagev.substring(0, imagev.lastIndexOf("."));
+                                    String image=imagee+".jpg";
+                                    Log.d("imagebb",""+image);
+                                    String udate=pics.optString("udate");
+                                    String about_us=pics.optString("about_us");
+                                    String group_id=pics.optString("group_id");
+                                    String is_featured=pics.optString("is_featured");
+                                    String status=pics.optString("status");
+                                    String is_block=pics.optString("is_block");
+                                    String comments=pics.optString("comments");
+                                    String totallike=pics.optString("totallike");
+                                    String like_unlike=pics.optString("like_unlike");
+                                    String rating=pics.optString("rating");
+                                    String more="loadmore";
+                                    item.add(new MyImageModel(id,albemid,name,category,albem_type,image,udate,about_us,group_id,is_featured,status,is_block,comments,totallike,like_unlike,rating,added_byy,more));
+
+                                }
+                            }
+                            Log.d("bdm",singleItem.toString());
+                            // dm.setAllItemsInSection(singleItem);
+                            Log.d("adm",singleItem.toString());
+                            Log.d("allsampledatav",item.toString());
+                           /* adapter = new MyVideoAdapter(getApplicationContext(),item,MyVideoActivity.this);
+                            recyclerView.setAdapter(adapter);
+                            GridLayoutManager manager = new GridLayoutManager(getApplicationContext(), 2, GridLayoutManager.VERTICAL, false);
+                            recyclerView.setLayoutManager(manager);
+                            recyclerView.setNestedScrollingEnabled(false); */
+
+
+                            dm.setAllItemsInSection(item);
+                            Log.d("adm",item.toString());
+                            Log.d("dmm",dm.toString());
+                            allSampleDatamore.add(dm);
+                            Log.d("allsampledatav", allSampleDatamore.toString());
+                            //my_recycler_view.setHasFixedSize(true);
+                            Log.d("allSampleDatas",""+allSampleDatamore.size()+"--"+allSampleDatamore.toString());
+                            adapterr = new MyVideoDataAdapter(getContext(),allSampleDatamore,item_name);
+                            recycler_view_load_more.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
+                            recycler_view_load_more.setAdapter(adapterr);
+                        }
+                        catch (JSONException e){
+                            e.printStackTrace();
+                            Toast.makeText(getContext(), ""+e.getMessage(), Toast.LENGTH_SHORT).show();
+                            Log.d("catch_f",""+e.getMessage());
+                        }
+                    }
+                },
+                new com.android.volley.Response.ErrorListener(){
+                    @Override
+                    public void onErrorResponse(VolleyError error){
+                        Toast.makeText(getContext(), error.getMessage(), Toast.LENGTH_SHORT).show();
+                        Log.d("verror",""+error.getMessage());
+                    }
+                }
+        );
+        // Add JsonArrayRequest to the RequestQueue
+        requestQueue.add(jsonArrayRequest);
+        //getProvide();
     }
 }

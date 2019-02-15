@@ -6,24 +6,33 @@ package com.mssinfotech.iampro.co.model;
 
 public class MyImageModel {
     //id,added_by,name,category,albem_type,image,udate,about_us,group_id,is_featured,status,is_block,comments,totallike,like_unlike,rating,uid
-    String id;
-    String albemid;
-    String name;
-    String category;
-    String albem_type;
-    String image;
-    String udate;
-    String about_us;
-    String group_id;
-    String is_featured;
-    String status;
-    String is_block;
-    String comments;
-    String totallike;
-    String like_unlike;
-    String rating;
-    String uid;
+    private String id;
+    private String albemid;
+    private String name;
+    private String category;
+    private String albem_type;
+    private String image;
+    private String udate;
+    private String about_us;
+    private String group_id;
+    private String is_featured;
+    private String status;
+    private String is_block;
+    private String comments;
+    private String totallike;
+    private String like_unlike;
+    private String rating;
+    private String uid;
 
+    public String getMore() {
+        return more;
+    }
+
+    public void setMore(String more) {
+        this.more = more;
+    }
+
+    private String more;
     public String getId() {
         return id;
     }
@@ -177,5 +186,26 @@ public class MyImageModel {
         this.like_unlike = like_unlike;
         this.rating = rating;
         this.uid = uid;
+    }
+    //fragment load more
+    public MyImageModel(String id, String albemid, String name, String category, String albem_type, String image, String udate, String about_us, String group_id, String is_featured, String status, String is_block, String comments, String totallike, String like_unlike, String rating, String uid,String more) {
+        this.id = id;
+        this.albemid = albemid;
+        this.name = name;
+        this.category = category;
+        this.albem_type = albem_type;
+        this.image = image;
+        this.udate = udate;
+        this.about_us = about_us;
+        this.group_id = group_id;
+        this.is_featured = is_featured;
+        this.status = status;
+        this.is_block = is_block;
+        this.comments = comments;
+        this.totallike = totallike;
+        this.like_unlike = like_unlike;
+        this.rating = rating;
+        this.uid = uid;
+        this.more=more;
     }
 }

@@ -5,6 +5,8 @@ package com.mssinfotech.iampro.co.model;
  */
 
 public class ImageDetailModel {
+
+
     private int id;
     private String name;
     private String image;
@@ -14,6 +16,13 @@ public class ImageDetailModel {
     private int comments;
     private int totallike;
 
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
     public String getType() {
         return type;
     }

@@ -64,6 +64,9 @@ public class MyVideoDataAdapter extends RecyclerView.Adapter<MyVideoDataAdapter.
         Log.e(Config.TAG,sectionName);
         //Toast.makeText(mContext, "click event on more, "+sectionName , Toast.LENGTH_SHORT).show();
         itemRowHolder.itemTitle.setText(sectionName);
+        if(dataList.get(i).getMore().equalsIgnoreCase("loadmore")){
+            itemRowHolder.btnMore.setVisibility(View.INVISIBLE);
+        }
        /* if(sectionName.equalsIgnoreCase("Product")){
             Glide.with(mContext).load(R.drawable.latestproduct).into(itemRowHolder.itemTitle);
         }

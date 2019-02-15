@@ -181,7 +181,18 @@
                           android:id="@+id/ivLike"
                           android:layout_width="20dp"
                           android:layout_height="20dp"
+                          android:visibility="gone"
                           android:src="@drawable/like"/>
+
+                      <com.like.LikeButton
+                          app:like_drawable="@drawable/like_un"
+                          app:unlike_drawable="@drawable/like"
+                          app:icon_size="20dp"
+                          android:id="@+id/likeButton"
+                          android:layout_width="20dp"
+                          android:layout_marginRight="10dp"
+                          android:layout_height="20dp"/>
+
                       <TextView
                           android:id="@+id/tv_totallike"
                           android:layout_width="match_parent"

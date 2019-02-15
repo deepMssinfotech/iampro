@@ -11,13 +11,10 @@ import java.util.ArrayList;
  */
 public class SectionImageModel {
 
-
-
     private String headerTitle;
     private String albemId;
     private ArrayList<MyImageModel> allItemsInSection;
-
-
+    private String more;
     public SectionImageModel() {
 
     }
@@ -26,8 +23,6 @@ public class SectionImageModel {
         this.allItemsInSection = allItemsInSection;
     }
 
-
-
     public String getHeaderTitle() {
         return headerTitle;
     }
@@ -35,6 +30,7 @@ public class SectionImageModel {
     public void setHeaderTitle(String headerTitle) {
         this.headerTitle = headerTitle;
     }
+
     public void setAlbemId(String albemId) {
         this.albemId=albemId;
     }
@@ -49,5 +45,10 @@ public class SectionImageModel {
         this.allItemsInSection = allItemsInSection;
     }
 
-
+    public void setMore(String more) {
+        this.more =more;
+    }
+    public String getMore() {
+        return more;
+    }
 }

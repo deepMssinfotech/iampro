@@ -3,6 +3,7 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
 import android.graphics.Paint;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
@@ -28,9 +29,12 @@ import com.android.volley.toolbox.Volley;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.bitmap.CircleCrop;
 import com.bumptech.glide.request.RequestOptions;
+import com.like.LikeButton;
+import com.like.OnLikeListener;
 import com.mssinfotech.iampro.co.CommentActivity;
 import com.mssinfotech.iampro.co.R;
 import com.mssinfotech.iampro.co.common.Config;
+import com.mssinfotech.iampro.co.common.function;
 import com.mssinfotech.iampro.co.model.FeedModel;
 import com.mssinfotech.iampro.co.model.MyProductModel;
 import com.mssinfotech.iampro.co.product.ProductDetail;
@@ -58,10 +62,11 @@ public class MyProductAdapter extends RecyclerView.Adapter<MyProductAdapter.View
         mListener=itemListener;
     }
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-        ImageView  imageView,imageView_user,imageView_icon,iv_comments,image,iv_favourite,ivLike,iv_delete,iv_edit;
+        ImageView  imageView,imageView_user,imageView_icon,iv_comments,image,iv_favourite,iv_delete,iv_edit;
         VideoView videoView;
         TextView tv_name,uname,udate,tv_comments,tv_totallike,detail_name,tv_purchaseprice,tv_sellingprice;
          LinearLayout ll_comment;
+        LikeButton likeButton;
         RatingBar ratingBar;
         LinearLayout ll_showhide;
         MyProductModel item;
@@ -74,6 +79,7 @@ public class MyProductAdapter extends RecyclerView.Adapter<MyProductAdapter.View
             imageView_user=v.findViewById(R.id.imageView_user);
             imageView_icon=v.findViewById(R.id.imageView_icon);
             ll_comment=v.findViewById(R.id.ll_comment);
+            likeButton =v.findViewById(R.id.likeButton);
             iv_comments=v.findViewById(R.id.iv_comments);
             iv_favourite=v.findViewById(R.id.iv_favourite);
             iv_edit = v.findViewById(R.id.iv_edit);
@@ -81,7 +87,6 @@ public class MyProductAdapter extends RecyclerView.Adapter<MyProductAdapter.View
             iv_delete=v.findViewById(R.id.iv_delete);
             videoView=v.findViewById(R.id.videoView);
             ratingBar=v.findViewById(R.id.ratingBar);
-            ivLike=v.findViewById(R.id.ivLike);
             //udate=v.findViewById(R.id.udate);
             tv_comments=v.findViewById(R.id.tv_comments);
             tv_totallike=v.findViewById(R.id.tv_totallike);
@@ -124,12 +129,16 @@ public class MyProductAdapter extends RecyclerView.Adapter<MyProductAdapter.View
             if(PrefManager.isLogin(mContext))
                myid= PrefManager.getLoginDetail(mContext,"id");
             ratingBar.setRating(Float.parseFloat(String.valueOf(item.getRating())));
+            likeButton.setUnlikeDrawableRes(R.drawable.like);
+            likeButton.setLikeDrawableRes(R.drawable.like_un);
             uname.setText(item.getFullname());
             tv_name.setText(item.getName());
             //udate.setText(item.getUdate());
             tv_comments.setText(String.valueOf(item.getComments()));
             tv_totallike.setText(String.valueOf(item.getTotallike()));
             tv_purchaseprice.setText("Rs: "+String.valueOf(item.getpCost()));
+            likeButton.setUnlikeDrawableRes(R.drawable.like);
+            likeButton.setLikeDrawableRes(R.drawable.like_un);
             //tv_purchaseprice.setPaintFlags(tv_purchaseprice.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
             tv_sellingprice.setText("Rs: "+String.valueOf(item.getsCost()));
               if (myid.equalsIgnoreCase(String.valueOf(uid)) || uid==0 || String.valueOf(uid)=="" || String.valueOf(uid)==null) {
@@ -156,16 +165,35 @@ public class MyProductAdapter extends RecyclerView.Adapter<MyProductAdapter.View
         return new ViewHolder(view);
     }
     @Override
-    public void onBindViewHolder(ViewHolder Vholder, final int position) {
+    public void onBindViewHolder(final ViewHolder Vholder, final int position) {
         Vholder.setData(mValues.get(position));
         //ratingv,uidv,idv
         //final float ratingv
         final int uidv=mValues.get(position).getUid();
         final String idv=mValues.get(position).getPid();
+        Vholder.likeButton.setOnLikeListener(new OnLikeListener() {
+            @Override
+            public void liked(LikeButton likeButton) {
+                int newlike =Integer.parseInt(Vholder.tv_totallike.getText().toString())+1;
+                Vholder.tv_totallike.setTextColor(Color.RED);
+                Vholder.tv_totallike.setText(String.valueOf(newlike));
+                String url = Config.API_URL+"app_service.php?type=like_me&id="+String.valueOf(idv)+"&uid="+uidv+"&ptype=product";
+                Log.e(Config.TAG,url);
+                function.executeUrl(mContext,"get",url,null);
+            }
+            @Override
+            public void unLiked(LikeButton likeButton) {
+                int newlike = (int) Integer.parseInt( Vholder.tv_totallike.getText().toString())-1;
+                Vholder.tv_totallike.setTextColor(Color.BLACK);
+                Vholder.tv_totallike.setText(String.valueOf(newlike));
+                String url = Config.API_URL+"app_service.php?type=like_me&id="+String.valueOf(idv)+"&uid="+idv+"&ptype=product";
+                Log.e(Config.TAG,url);
+                function.executeUrl(mContext,"get",url,null);
+            }
+        });
         Vholder.iv_delete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
                 builder.setCancelable(true);
                 builder.setTitle("Delete it!"+mValues.get(position).getPid());
