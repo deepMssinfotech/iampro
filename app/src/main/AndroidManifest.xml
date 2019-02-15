@@ -169,7 +169,8 @@
             android:name=".provide.ProvideDetailActivity"
             android:theme="@style/AppTheme.NoActionBar"/>
         <activity android:name=".image.ImageDetail"/>
-        <activity android:name=".CommentActivity"/>
+        <activity android:name=".CommentActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
     </application>
 
 </manifest>
