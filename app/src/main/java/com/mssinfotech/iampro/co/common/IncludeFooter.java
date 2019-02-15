@@ -17,6 +17,7 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
+import com.bumptech.glide.Glide;
 import com.mssinfotech.iampro.co.CartActivity;
 import com.mssinfotech.iampro.co.HomeActivity;
 import com.mssinfotech.iampro.co.LoginActivity;
@@ -26,7 +27,6 @@ import com.mssinfotech.iampro.co.R;
 import com.mssinfotech.iampro.co.SearchActivity;
 import com.mssinfotech.iampro.co.user.ProfileActivity;
 import com.mssinfotech.iampro.co.utils.PrefManager;
-import com.squareup.picasso.Picasso;
 
 
 public class IncludeFooter  extends RelativeLayout {
@@ -55,12 +55,7 @@ public class IncludeFooter  extends RelativeLayout {
         if (PrefManager.isLogin(getContext())) {
             isLogin = true;
             String avatar = Config.AVATAR_URL + "250/250/" + PrefManager.getLoginDetail(getContext(), "img_url");
-            Picasso.get()
-                    .load(avatar)
-                    .placeholder(R.drawable.iampro)
-                    .error(R.drawable.image)
-                    .transform(new CircleTransform())
-                    .into((ImageView) this.findViewById(R.id.btn_menu_user));
+            Glide.with(getContext()).load(avatar).apply(Config.options_avatar).into((ImageView) this.findViewById(R.id.btn_menu_user));
         }
 
     }
