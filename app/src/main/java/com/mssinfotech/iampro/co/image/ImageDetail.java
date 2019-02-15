@@ -1,6 +1,7 @@
 package com.mssinfotech.iampro.co.image;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -18,6 +19,8 @@ import com.android.volley.RequestQueue;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.bitmap.CircleCrop;
 import com.bumptech.glide.request.RequestOptions;
+import com.like.LikeButton;
+import com.like.OnLikeListener;
 import com.mssinfotech.iampro.co.R;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
@@ -25,6 +28,7 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.mssinfotech.iampro.co.adapter.Img_Video_Details;
 import com.mssinfotech.iampro.co.common.Config;
+import com.mssinfotech.iampro.co.common.function;
 import com.mssinfotech.iampro.co.model.ImageDetailModel;
 import com.mssinfotech.iampro.co.user.ProfileActivity;
 
@@ -49,6 +53,7 @@ public class ImageDetail extends AppCompatActivity implements Img_Video_Details.
     public static final String IMAGE_TYPE="image";
     public static final String VIDEO_TYPE="video";
        Img_Video_Details adapter;
+        LikeButton likeButton;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -57,6 +62,11 @@ public class ImageDetail extends AppCompatActivity implements Img_Video_Details.
         tv_about_msg=findViewById(R.id.tv_about_msg);
         fullname=findViewById(R.id.fullname);
         udate=findViewById(R.id.udate);
+        likeButton = findViewById(R.id.likeButton);
+
+        likeButton.setUnlikeDrawableRes(R.drawable.like);
+        likeButton.setLikeDrawableRes(R.drawable.like_un);
+
         tv_comments=findViewById(R.id.tv_comments);
         tv_totallike=findViewById(R.id.tv_totallike);
         name=findViewById(R.id.name);
@@ -79,6 +89,26 @@ public class ImageDetail extends AppCompatActivity implements Img_Video_Details.
              getVideoDetail();
          }
 
+        likeButton.setOnLikeListener(new OnLikeListener() {
+            @Override
+            public void liked(LikeButton likeButton) {
+                int newlike = (int) Integer.parseInt(tv_totallike.getText().toString())+1;
+                tv_totallike.setTextColor(Color.RED);
+                tv_totallike.setText(String.valueOf(newlike));
+                String url = Config.API_URL+"app_service.php?type=like_me&id="+String.valueOf(id)+"&uid="+uid+"&ptype="+type;
+                Log.e(Config.TAG,url);
+                function.executeUrl(getApplicationContext(),"get",url,null);
+            }
+            @Override
+            public void unLiked(LikeButton likeButton) {
+                int newlike =Integer.parseInt(tv_totallike.getText().toString())-1;
+                tv_totallike.setTextColor(Color.BLACK);
+                tv_totallike.setText(String.valueOf(newlike));
+                String url = Config.API_URL+"app_service.php?type=like_me&id="+String.valueOf(id)+"&uid="+uid+"&ptype="+type;
+                Log.e(Config.TAG,url);
+                function.executeUrl(getApplicationContext(),"get",url,null);
+            }
+        });
     }
     protected void getImageDetail(){
         final String url="https://www.iampro.co/api/app_service.php?type=get_image_detail&id="+id+"&update_type="+type+"&uid="+uid+"&login_id="+uid+"&my_id="+uid;
@@ -94,7 +124,6 @@ public class ImageDetail extends AppCompatActivity implements Img_Video_Details.
                         // Process the JSON
                         try{
                             JSONObject responses=new JSONObject(response);
-
                             int id =responses.optInt("id");
                             int albemid =responses.optInt("albemid");
                             String namev =responses.optString("name");
@@ -173,6 +202,8 @@ public class ImageDetail extends AppCompatActivity implements Img_Video_Details.
                                   String fullnamee=jsonObjectUser.optString("fullname");
                                   String avataru=Config.AVATAR_URL+"250/250/"+jsonObjectUserr.optString("avatar");
                                   int uidd=jsonObjectUserr.optInt("id");
+
+
 
                                   myData.add(new ImageDetailModel(iid,namee,imagev,about_usv,like_unlikev,ratingv,commentsv,totallikev,uidd,fullnamee,avataru,udateee,category_namee,IMAGE_TYPE));
                               }

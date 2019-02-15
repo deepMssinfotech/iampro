@@ -1,5 +1,4 @@
 package com.mssinfotech.iampro.co.user;
-
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -57,9 +56,7 @@ import java.util.HashMap;
 import java.util.UUID;
 
 import de.hdodenhof.circleimageview.CircleImageView;
-
 public class MyVideoActivity extends AppCompatActivity implements MyVideoAdapter.ItemListener {
-
     ImageView userbackgroud;
     CircleImageView userimage;
     TextView username,tv_category;

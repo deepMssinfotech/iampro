@@ -5,6 +5,7 @@ package com.mssinfotech.iampro.co.adapter;
  */
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -19,6 +20,8 @@ import com.android.volley.toolbox.Volley;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.bitmap.CircleCrop;
 import com.bumptech.glide.request.RequestOptions;
+import com.like.LikeButton;
+import com.like.OnLikeListener;
 import com.mssinfotech.iampro.co.R;
 import android.view.ViewGroup;
 
@@ -31,6 +34,7 @@ import android.widget.Toast;
 import android.widget.VideoView;
 
 import com.mssinfotech.iampro.co.common.Config;
+import com.mssinfotech.iampro.co.common.function;
 import com.mssinfotech.iampro.co.image.ImageDetail;
 import com.mssinfotech.iampro.co.model.DataModel;
 import com.mssinfotech.iampro.co.model.ImageDetailModel;
@@ -58,6 +62,7 @@ public class Img_Video_Details extends RecyclerView.Adapter<Img_Video_Details.Vi
          VideoView videoView;
         RatingBar ratingBar;
         ImageDetailModel item;
+        LikeButton likeButton;
         public ViewHolder(View v) {
             super(v);
             v.setOnClickListener(this);
@@ -69,14 +74,12 @@ public class Img_Video_Details extends RecyclerView.Adapter<Img_Video_Details.Vi
             tv_totallike=v.findViewById(R.id.tv_totallike);
             name=v.findViewById(R.id.name);
             category=v.findViewById(R.id.category);
-
             ratingBar=v.findViewById(R.id.ratingBar);
-
             imageView_user=v.findViewById(R.id.imageView_user);
             imageView_icon=v.findViewById(R.id.imageView_icon);
             iv_comments=v.findViewById(R.id.iv_comments);
+            likeButton=v.findViewById(R.id.likeButton);
             image=v.findViewById(R.id.image);
-
             imageView_user.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -90,7 +93,6 @@ public class Img_Video_Details extends RecyclerView.Adapter<Img_Video_Details.Vi
         }
         public void setData(ImageDetailModel item) {
             this.item = item;
-
             //TextView fullname,udate,tv_comments,tv_totallike,name,category;
             //ImageView imageView_user,imageView_icon,iv_comments,image;
             //RatingBar ratingBar;
@@ -101,6 +103,8 @@ public class Img_Video_Details extends RecyclerView.Adapter<Img_Video_Details.Vi
             tv_totallike.setText(String.valueOf(item.getTotallike()));
              name.setText(item.getName());
               category.setText(String.valueOf(item.getCategory()));
+            likeButton.setUnlikeDrawableRes(R.drawable.like);
+            likeButton.setLikeDrawableRes(R.drawable.like_un);
 
             String avatar=item.getAvatar();
             String images=item.getImage();
@@ -174,11 +178,32 @@ public class Img_Video_Details extends RecyclerView.Adapter<Img_Video_Details.Vi
         return new ViewHolder(view);
     }
     @Override
-    public void onBindViewHolder(ViewHolder Vholder,int position) {
+    public void onBindViewHolder(final ViewHolder Vholder, int position) {
         Vholder.setData(mValues.get(position));
         //sendrating(float rating,int uid,int id)
-        final int uidv=mValues.get(position).getUid();
-        //final int idv=mValues.get(position).
+        final int uid=mValues.get(position).getUid();
+         final int id=mValues.get(position).getId();
+        final String type=mValues.get(position).getType();
+        Vholder.likeButton.setOnLikeListener(new OnLikeListener() {
+            @Override
+            public void liked(LikeButton likeButton) {
+                int newlike = (int) Integer.parseInt(Vholder.tv_totallike.getText().toString())+1;
+                Vholder.tv_totallike.setTextColor(Color.RED);
+                Vholder.tv_totallike.setText(String.valueOf(newlike));
+                String url = Config.API_URL+"app_service.php?type=like_me&id="+String.valueOf(id)+"&uid="+uid+"&ptype="+type;
+                Log.e(Config.TAG,url);
+                function.executeUrl(mContext,"get",url,null);
+            }
+            @Override
+            public void unLiked(LikeButton likeButton) {
+                int newlike =Integer.parseInt(Vholder.tv_totallike.getText().toString())-1;
+                Vholder.tv_totallike.setTextColor(Color.BLACK);
+                Vholder.tv_totallike.setText(String.valueOf(newlike));
+                String url = Config.API_URL+"app_service.php?type=like_me&id="+String.valueOf(id)+"&uid="+uid+"&ptype="+type;
+                Log.e(Config.TAG,url);
+                function.executeUrl(mContext,"get",url,null);
+            }
+        });
     }
     @Override
     public int getItemCount() {

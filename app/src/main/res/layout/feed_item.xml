@@ -134,6 +134,9 @@
          android:visibility="gone"
          android:layout_marginLeft="10dp"
          android:src="@drawable/baseline_favorite_border_white_18dp"/>
+
+
+
       <ImageView
           android:id="@+id/iv_buy"
           android:layout_width="30dp"
@@ -157,6 +160,7 @@
         android:padding="10dp"
         android:stepSize="0.3"/>
     <LinearLayout
+         android:id="@+id/ll_comment"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:padding="10dp"
@@ -191,8 +195,17 @@
       <ImageView
           android:id="@+id/ivLike"
           android:layout_width="22dp"
+          android:visibility="gone"
           android:layout_height="22dp"
           android:src="@drawable/like"/>
+
+        <com.like.LikeButton
+            app:like_drawable="@drawable/like_un"
+            app:unlike_drawable="@drawable/like"
+            app:icon_size="20dp"
+            android:id="@+id/likeButton"
+            android:layout_width="20dp"
+            android:layout_height="20dp"/>
       <TextView
           android:id="@+id/tv_totallike"
           android:layout_width="wrap_content"

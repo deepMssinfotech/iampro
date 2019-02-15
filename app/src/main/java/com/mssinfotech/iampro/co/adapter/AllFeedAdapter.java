@@ -3,6 +3,7 @@ package com.mssinfotech.iampro.co.adapter;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
+import android.graphics.Color;
 import android.net.Uri;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewCompat;
@@ -27,13 +28,17 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
+import com.like.LikeButton;
+import com.like.OnLikeListener;
 import com.mssinfotech.iampro.co.CartActivity;
+import com.mssinfotech.iampro.co.CommentActivity;
 import com.mssinfotech.iampro.co.R;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.bitmap.CircleCrop;
 import com.bumptech.glide.request.RequestOptions;
 import com.mssinfotech.iampro.co.common.Config;
+import com.mssinfotech.iampro.co.common.function;
 import com.mssinfotech.iampro.co.demand.DemandDetail;
 import com.mssinfotech.iampro.co.image.ImageDetail;
 import com.mssinfotech.iampro.co.model.FeedModel;
@@ -53,7 +58,6 @@ public class AllFeedAdapter extends RecyclerView.Adapter<AllFeedAdapter.ViewHold
     ArrayList<FeedModel> mValues;
     Context mContext;
     protected ItemListener mListener;
-
     public AllFeedAdapter(Context context, ArrayList<FeedModel> values, ItemListener itemListener) {
         mValues = values;
         mContext = context;
@@ -63,10 +67,10 @@ public class AllFeedAdapter extends RecyclerView.Adapter<AllFeedAdapter.ViewHold
         ImageView imageView_user,imageView_icon,iv_comments,image,iv_favourite,ivLike,iv_buy;
          VideoView videoView;
          TextView fullname,udate,tv_comments,tv_totallike,detail_name,purchese_cost,selling_cost;
+        LikeButton like_un;
         RatingBar ratingBar;
-         LinearLayout ll_showhide;
+         LinearLayout ll_showhide,ll_comment;
         FeedModel item;
-
          int id;
         //int uid;
         public ViewHolder(View v) {
@@ -80,10 +84,12 @@ public class AllFeedAdapter extends RecyclerView.Adapter<AllFeedAdapter.ViewHold
             image=v.findViewById(R.id.imageView);
              videoView=v.findViewById(R.id.videoView);
              ratingBar=v.findViewById(R.id.ratingBar);
-            ivLike=v.findViewById(R.id.ivLike);
+            ll_comment=v.findViewById(R.id.ll_comment);
+            //ivLike=v.findViewById(R.id.ivLike);
             fullname=v.findViewById(R.id.fullname);
             udate=v.findViewById(R.id.udate);
             tv_comments=v.findViewById(R.id.tv_comments);
+            like_un=v.findViewById(R.id.likeButton);
             tv_totallike=v.findViewById(R.id.tv_totallike);
             ll_showhide=v.findViewById(R.id.ll_showhide);
             detail_name=v.findViewById(R.id.detail_name);
@@ -103,6 +109,8 @@ public class AllFeedAdapter extends RecyclerView.Adapter<AllFeedAdapter.ViewHold
                udate.setText(item.getUdate());
             tv_comments.setText(String.valueOf(item.getComment()));
              tv_totallike.setText(String.valueOf(item.getLikes()));
+            like_un.setUnlikeDrawableRes(R.drawable.like);
+            like_un.setLikeDrawableRes(R.drawable.like_un);
             imageView_user.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -114,7 +122,7 @@ public class AllFeedAdapter extends RecyclerView.Adapter<AllFeedAdapter.ViewHold
             });
             tv_totallike.setText(String.valueOf(item.getLikes()));
             String sid=item.getShareId();
-            final ArrayList<String> alsid=(ArrayList<String>)Arrays.asList(sid.split(","));
+            //final ArrayList<String> alsid=(ArrayList<String>)Arrays.asList(sid.split(","));
             final String[] animalsArray=sid.split(",");
             image.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -291,22 +299,101 @@ public class AllFeedAdapter extends RecyclerView.Adapter<AllFeedAdapter.ViewHold
         return new ViewHolder(view);
     }
     @Override
-    public void onBindViewHolder(ViewHolder Vholder, int position) {
+    public void onBindViewHolder(final ViewHolder Vholder, int position) {
         Vholder.setData(mValues.get(position));
         final String type=mValues.get(position).getType();
         final int uid=mValues.get(position).getUid();
         final int id=mValues.get(position).getId();
+        String sid=mValues.get(position).getShareId();
+        final String[] animalsArray=sid.split(",");
         Vholder.ratingBar.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
 
             @Override
             public void onRatingChanged(RatingBar ratingBar, float rating,boolean fromUser) {
                 Toast.makeText(mContext,""+ratingBar.getRating(),Toast.LENGTH_LONG).show();
                 float ratingb=ratingBar.getRating();
-                sendrating(ratingb,uid,id);
+                sendrating(ratingb,uid,id,type);
             }
         });
+        Vholder.like_un.setOnLikeListener(new OnLikeListener() {
+            @Override
+            public void liked(LikeButton likeButton) {
+                int newlike=Integer.parseInt(Vholder.tv_totallike.getText().toString())+1;
+                Vholder.tv_totallike.setTextColor(Color.RED);
+                Vholder.tv_totallike.setText(String.valueOf(newlike));
+                String url = Config.API_URL+"app_service.php?type=like_me&id="+String.valueOf(animalsArray[0])+"&uid="+uid+"&ptype="+type;
+                Log.e(Config.TAG,url);
+                function.executeUrl(mContext,"get",url,null);
+            }
+            @Override
+            public void unLiked(LikeButton likeButton) {
+                int newlike = (int) Integer.parseInt(Vholder.tv_totallike.getText().toString())-1;
+                Vholder.tv_totallike.setTextColor(Color.BLACK);
+                Vholder.tv_totallike.setText(String.valueOf(newlike));
+                String url = Config.API_URL+"app_service.php?type=like_me&id="+String.valueOf(id)+"&uid="+uid+"&ptype="+type;
+                Log.e(Config.TAG,url);
+                function.executeUrl(mContext,"get",url,null);
+            }
+        });
+      Vholder.videoView.setOnClickListener(new View.OnClickListener() {
+          @Override
+          public void onClick(View v) {
+              Intent intent=new Intent(mContext,ImageDetail.class);
+              intent.putExtra("uid",uid);
+              intent.putExtra("id",Integer.parseInt(animalsArray[0]));
+              intent.putExtra("type","video");
+              mContext.startActivity(intent);
+          }
+      });
+          //Vholder.c
+        Vholder.ll_comment.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (type.equalsIgnoreCase("IMAGE"))
+                {
 
+                Intent intent = new Intent(mContext, CommentActivity.class);
+                intent.putExtra("type","feed_image");
+                intent.putExtra("id",String.valueOf(id));
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                 mContext.startActivity(intent);
+                }
+                else if (type.equalsIgnoreCase("VIDEO"))
+                {
 
+                    Intent intent = new Intent(mContext, CommentActivity.class);
+                    intent.putExtra("type","video");
+                    intent.putExtra("id",String.valueOf(id));
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    mContext.startActivity(intent);
+                }
+                else if (type.equalsIgnoreCase("PRODUCT"))
+                {
+
+                    Intent intent = new Intent(mContext, CommentActivity.class);
+                    intent.putExtra("type","product");
+                    intent.putExtra("id",String.valueOf(id));
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    mContext.startActivity(intent);
+                }
+                else if (type.equalsIgnoreCase("PROVIDE"))
+                {
+                    Intent intent = new Intent(mContext, CommentActivity.class);
+                    intent.putExtra("type","provide");
+                    intent.putExtra("id",String.valueOf(id));
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    mContext.startActivity(intent);
+                }
+                else if (type.equalsIgnoreCase("DEMAND"))
+                {
+                    Intent intent = new Intent(mContext, CommentActivity.class);
+                    intent.putExtra("type","demand");
+                    intent.putExtra("id",String.valueOf(id));
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    mContext.startActivity(intent);
+                }
+            }
+        });
     }
     @Override
     public int getItemCount() {
@@ -315,9 +402,8 @@ public class AllFeedAdapter extends RecyclerView.Adapter<AllFeedAdapter.ViewHold
     public interface ItemListener {
         void onItemClick(FeedModel item);
     }
-    public void sendrating(float rating,int uid,int id){
-        String urlv="https://www.iampro.co/api/app_service.php?type=rate_me&id="+id+"&uid="+uid+"&ptype=feed&total_rate="+rating;
-
+    public void sendrating(float rating,int uid,int id,String type){
+        String urlv="https://www.iampro.co/api/app_service.php?type=rate_me&id="+id+"&uid="+uid+"&ptype="+type+"&total_rate="+rating;
         RequestQueue requestQueue = Volley.newRequestQueue(mContext);
         // Initialize a new JsonObjectRequest instance
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(

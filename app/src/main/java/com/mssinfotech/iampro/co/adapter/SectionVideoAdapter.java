@@ -8,6 +8,7 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -32,9 +33,12 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.load.resource.bitmap.CircleCrop;
 import com.bumptech.glide.request.RequestOptions;
+import com.like.LikeButton;
+import com.like.OnLikeListener;
 import com.mssinfotech.iampro.co.CommentActivity;
 import com.mssinfotech.iampro.co.R;
 import com.mssinfotech.iampro.co.common.Config;
+import com.mssinfotech.iampro.co.common.function;
 import com.mssinfotech.iampro.co.demand.DemandDetail;
 import com.mssinfotech.iampro.co.image.ImageDetail;
 import com.mssinfotech.iampro.co.model.MyImageModel;
@@ -60,7 +64,6 @@ public class SectionVideoAdapter extends RecyclerView.Adapter<SectionVideoAdapte
     private ArrayList<MyImageModel> itemsList;
     private Context mContext;
     //private String uid,id;
-    ImageView ivLike;
     ArrayList<MyImageModel> mValues;
     HashSet<String> heading_name;
     protected MyImageAdapter.ItemListener mListener;
@@ -75,7 +78,7 @@ public class SectionVideoAdapter extends RecyclerView.Adapter<SectionVideoAdapte
         return mh;
     }
     @Override
-    public void onBindViewHolder(SingleItemRowHolder holder, final int i) {
+    public void onBindViewHolder(final SingleItemRowHolder holder, final int i) {
         MyImageModel singleItem = itemsList.get(i);
         Log.d("single_item",""+singleItem);
         //orgg
@@ -114,11 +117,41 @@ public class SectionVideoAdapter extends RecyclerView.Adapter<SectionVideoAdapte
 
 
         //ratingBar.setRating(Float.parseFloat(String.valueOf(item.getRating())));
+
+        if(itemsList.get(i).getMore().equalsIgnoreCase("loadmore")){
+            //holder.btnMore.setVisibility(View.GONE);
+            holder.iv_delete.setVisibility(View.GONE);
+            holder.iv_edit.setVisibility(View.GONE);
+        }
         holder.category.setText(singleItem.getCategory());
         holder.tv_name.setText(singleItem.getName());
         holder.udate.setText(singleItem.getUdate());
         holder.tv_comments.setText(String.valueOf(singleItem.getComments()));
         holder.tv_totallike.setText(String.valueOf(singleItem.getTotallike()));
+        holder.likeButton.setUnlikeDrawableRes(R.drawable.like);
+        holder.likeButton.setLikeDrawableRes(R.drawable.like_un);
+        holder.likeButton.setOnLikeListener(new OnLikeListener() {
+            @Override
+            public void liked(LikeButton likeButton) {
+                int newlike =Integer.parseInt(holder.tv_totallike.getText().toString())+1;
+                holder.tv_totallike.setTextColor(Color.RED);
+                holder.tv_totallike.setText(String.valueOf(newlike));
+                String url = Config.API_URL+"app_service.php?type=like_me&id="+String.valueOf(id)+"&uid="+uid+"&ptype=video";
+                Log.e(Config.TAG,url);
+                function.executeUrl(mContext,"get",url,null);
+            }
+            @Override
+            public void unLiked(LikeButton likeButton) {
+                int newlike = (int) Integer.parseInt(holder.tv_totallike.getText().toString())-1;
+                holder.tv_totallike.setTextColor(Color.BLACK);
+                holder.tv_totallike.setText(String.valueOf(newlike));
+                String url = Config.API_URL+"app_service.php?type=like_me&id="+String.valueOf(id)+"&uid="+id+"&ptype=video";
+                Log.e(Config.TAG,url);
+                function.executeUrl(mContext,"get",url,null);
+            }
+        });
+
+
         holder.ratingBar.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
 
             @Override
@@ -194,12 +227,13 @@ public class SectionVideoAdapter extends RecyclerView.Adapter<SectionVideoAdapte
         protected LinearLayout likelayout;
         //this.btnMore= view.findViewById(R.id.btnMore);
         //orginal
-        ImageView  imageView_user,imageView_icon,iv_comments,image,iv_favourite,ivLike,videoView,iv_delete,iv_edit;
+        ImageView  imageView_user,imageView_icon,iv_comments,image,iv_favourite,videoView,iv_delete,iv_edit;
         //VideoView videoView;
         TextView tv_name,category,udate,tv_comments,tv_totallike,detail_name;
         RatingBar ratingBar;
         LinearLayout ll_showhide,ll_comment;
         MyImageModel item;
+        LikeButton likeButton;
         public SingleItemRowHolder(View view) {
             super(view);
             //orgg
@@ -234,7 +268,7 @@ public class SectionVideoAdapter extends RecyclerView.Adapter<SectionVideoAdapte
             image=view.findViewById(R.id.imageView);
             videoView=view.findViewById(R.id.videoView);
             ratingBar=view.findViewById(R.id.ratingBar);
-            ivLike=view.findViewById(R.id.ivLike);
+            likeButton =view.findViewById(R.id.likeButton);
              udate=view.findViewById(R.id.udate);
             tv_comments=view.findViewById(R.id.tv_comments);
             tv_totallike=view.findViewById(R.id.tv_totallike);
