@@ -116,14 +116,9 @@
                 android:layout_height="2dp"
                 android:background="@color/trans_black"></View>
         </LinearLayout>
-
-        <ImageView android:id="@+id/imageView" android:layout_width="match_parent" android:layout_height="150dp" android:layout_marginTop="0dp" android:scaleType="fitXY" android:src="@drawable/profile_background" />
-
-        <VideoView
-            android:id="@+id/videoView"
-            android:layout_width="match_parent"
-            android:layout_height="150dp"
-            android:visibility="gone" />
+        <ImageView android:visibility="gone" android:id="@+id/imageView" android:layout_width="match_parent" android:layout_height="wrap_content" />
+        <technolifestyle.com.imageslider.FlipperLayout android:visibility="gone"  android:id="@+id/flipper_layout" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="0dp" android:scaleType="fitXY" android:src="@drawable/profile_background" />
+        <VideoView android:visibility="gone"  android:id="@+id/videoView" android:layout_width="match_parent" android:layout_height="wrap_content"/>
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -153,24 +148,28 @@
                 android:layout_weight="1"
                 android:src="@drawable/profile_box_buy"
                 android:visibility="gone" />
-
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center_horizontal"
+                android:orientation="horizontal"
+                android:padding="10dp">
             <RatingBar
                 android:id="@+id/ratingBar"
                 style="?android:ratingBarStyleSmall"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="7dp"
                 android:layout_weight="0.7"
                 android:isIndicator="false"
-                android:padding="10dp"
                 android:rating="4"
+                android:numStars="5"
                 android:stepSize="0.3" />
-
+            </LinearLayout>
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="7dp"
-                android:layout_weight="1"
+                android:layout_weight="0"
                 android:gravity="center_horizontal"
                 android:orientation="horizontal"
                 android:padding="10dp">
@@ -196,28 +195,28 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="end"
-                android:layout_marginTop="10dp"
                 android:layout_weight="1"
                 android:gravity="end"
                 android:orientation="horizontal"
                 android:padding="10dp">
 
-                <ImageView
-                    android:id="@+id/ivLike"
-                    android:layout_width="22dp"
-                    android:layout_height="22dp"
-                    android:src="@drawable/like" />
+                <com.like.LikeButton
+                    app:like_drawable="@drawable/like_un"
+                    app:unlike_drawable="@drawable/like"
+                    app:icon_size="20dp"
+                    android:id="@+id/likeButton"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp" />
 
                 <TextView
                     android:id="@+id/tv_totallike"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal"
-                    android:layout_marginStart="10dp"
-                    android:layout_marginLeft="10dp"
-                    android:text=""
-                    android:textSize="17sp"
-                    android:textStyle="bold" />
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginLeft="2dp"
+                    android:textSize="12sp"
+                    android:textStyle="bold"
+                    android:text="10"/>
             </LinearLayout>
         </LinearLayout>
 

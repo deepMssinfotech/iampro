@@ -45,7 +45,6 @@ public class SectionListDataAdapter extends RecyclerView.Adapter<SectionListData
     private ArrayList<SingleItemModel> itemsList;
     private Context mContext;
     public String uid;
-    public int id;
     public String utype;
     ImageView ivLike;
     public SectionListDataAdapter(Context context, ArrayList<SingleItemModel> itemsList) {
@@ -74,7 +73,7 @@ public class SectionListDataAdapter extends RecyclerView.Adapter<SectionListData
         }*/
         holder.user_name.setText(singleItem.getFullname());
         uid= PrefManager.getLoginDetail(mContext,"id");
-        id=singleItem.getId();
+        final int id=singleItem.getId();
         //user_image
         Glide.with(mContext)
                 .load(singleItem.getAvatar())
@@ -125,7 +124,8 @@ public class SectionListDataAdapter extends RecyclerView.Adapter<SectionListData
                 //Toast.makeText(mContext, utype+" clicked", Toast.LENGTH_SHORT).show();
             }
         });
-        if(PrefManager.getLoginDetail(mContext,"id")==null){
+        int my_uid=Integer.parseInt(uid);
+        if(my_uid==0){
             holder.likeButton.setEnabled(false);
         }
         if((singleItem.getIsliked())==1){
@@ -171,19 +171,26 @@ public class SectionListDataAdapter extends RecyclerView.Adapter<SectionListData
                  function.executeUrl(mContext,"get",url,null);
              }
          });
-        holder.iv_comments.setOnClickListener(CommnetOnClickListener);
-        holder.comments.setOnClickListener(CommnetOnClickListener);
+        holder.iv_comments.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent=new Intent(mContext, CommentActivity.class);
+                intent.putExtra("id",String.valueOf(id));
+                intent.putExtra("type",utype);
+                mContext.startActivity(intent);
+            }
+        });
+        holder.comments.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent=new Intent(mContext, CommentActivity.class);
+                intent.putExtra("id",String.valueOf(id));
+                intent.putExtra("type",utype);
+                mContext.startActivity(intent);
+            }
+        });
 
     }
-    private View.OnClickListener CommnetOnClickListener = new View.OnClickListener() {
-        public void onClick(View v) {
-            Intent intent=new Intent(mContext, CommentActivity.class);
-            intent.putExtra("id",String.valueOf(id));
-            intent.putExtra("type",utype);
-            intent.putExtra("uid",PrefManager.getLoginDetail(mContext,"id"));
-            mContext.startActivity(intent);
-        }
-    };
 
     @Override
     public int getItemCount() {

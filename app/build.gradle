@@ -4,7 +4,7 @@ android {
     compileSdkVersion 28
     defaultConfig {
         applicationId "com.mssinfotech.iampro.co"
-        minSdkVersion 16
+        minSdkVersion 17
         targetSdkVersion 28
         versionCode 1
         versionName "1.0"
@@ -53,5 +53,5 @@ dependencies {
     implementation 'com.felipecsl.asymmetricgridview:library:2.0.1'
     implementation 'com.github.jd-alexander:LikeButton:0.2.3'
     implementation 'net.gotev:uploadservice:2.1'
-    implementation 'com.github.JakeWharton:ViewPagerIndicator:2.4.1'
+    implementation 'com.github.therealshabi:AutoImageFlipper:v1.4.1'
 }
