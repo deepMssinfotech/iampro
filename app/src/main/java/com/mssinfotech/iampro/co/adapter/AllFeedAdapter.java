@@ -47,6 +47,8 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+
 public class AllFeedAdapter extends RecyclerView.Adapter<AllFeedAdapter.ViewHolder> {
     ArrayList<FeedModel> mValues;
     Context mContext;
@@ -111,13 +113,16 @@ public class AllFeedAdapter extends RecyclerView.Adapter<AllFeedAdapter.ViewHold
                 }
             });
             tv_totallike.setText(String.valueOf(item.getLikes()));
+            String sid=item.getShareId();
+            final ArrayList<String> alsid=(ArrayList<String>)Arrays.asList(sid.split(","));
+            final String[] animalsArray=sid.split(",");
             image.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     if (type.equalsIgnoreCase("IMAGE")){
                         Intent intent=new Intent(mContext,ImageDetail.class);
                         intent.putExtra("uid",Integer.parseInt(uid));
-                        intent.putExtra("id",Integer.parseInt(id));
+                        intent.putExtra("id",Integer.parseInt(animalsArray[0]));
                         intent.putExtra("type","image");
                         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                         mContext.startActivity(intent);
@@ -126,7 +131,7 @@ public class AllFeedAdapter extends RecyclerView.Adapter<AllFeedAdapter.ViewHold
                     else if (type.equalsIgnoreCase("VIDEO")){
                         Intent intent=new Intent(mContext,ImageDetail.class);
                         intent.putExtra("uid",Integer.parseInt(uid));
-                        intent.putExtra("id",id);
+                        intent.putExtra("id",Integer.parseInt(animalsArray[0]));
                         intent.putExtra("type","video");
                         mContext.startActivity(intent);
                     }
@@ -134,19 +139,19 @@ public class AllFeedAdapter extends RecyclerView.Adapter<AllFeedAdapter.ViewHold
                         Intent intent=new Intent(mContext, DemandDetail.class);
                         //intent.putExtra("id",String.valueOf(item.getPid()));
                         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                        intent.putExtra("pid",String.valueOf(id));
+                        intent.putExtra("pid",String.valueOf(animalsArray[0]));
                         intent.putExtra("uid",String.valueOf(uid));
                         mContext.startActivity(intent);
                     }
                     else if (type.equalsIgnoreCase("PROVIDE")){
                         Intent intent=new Intent(mContext,ProvideDetailActivity.class);
-                        intent.putExtra("pid",String.valueOf(id));
+                        intent.putExtra("pid",String.valueOf(animalsArray[0]));
                         intent.putExtra("uid",String.valueOf(uid));
                         mContext.startActivity(intent);
                     }
                     else if (type.equalsIgnoreCase("PRODUCT")){
                         Intent intent=new Intent(mContext, ProductDetail.class);
-                        intent.putExtra("pid",String.valueOf(id));
+                        intent.putExtra("pid",String.valueOf(animalsArray[0]));
                         intent.putExtra("uid",String.valueOf(uid));
                         mContext.startActivity(intent);
                     }
@@ -184,8 +189,8 @@ public class AllFeedAdapter extends RecyclerView.Adapter<AllFeedAdapter.ViewHold
                 videoView.setVideoURI(video);
 
                 MediaController mc = new MediaController(mContext);
-                videoView.setMediaController(mc);
-                videoView.start();
+                //videoView.setMediaController(mc);
+                //videoView.start();
             }
   if (type.equalsIgnoreCase("VIDEO")){
       ll_showhide.setVisibility(View.GONE);

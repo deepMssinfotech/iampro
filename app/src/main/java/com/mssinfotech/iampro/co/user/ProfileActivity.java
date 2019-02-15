@@ -13,6 +13,7 @@ import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -78,6 +79,7 @@ public class ProfileActivity extends AppCompatActivity implements AllFeedAdapter
     ArrayList<FeedModel> mValues=new ArrayList<>();
 
     SwipeRefreshLayout mSwipeRefreshLayout;
+    android.support.v7.widget.CardView ll_dashboard;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -86,6 +88,7 @@ public class ProfileActivity extends AppCompatActivity implements AllFeedAdapter
         Config.setLayoutName(getResources().getResourceEntryName(R.layout.activity_profile));
         intent = getIntent();
         fid = intent.getStringExtra("uid");
+        ll_dashboard=findViewById(R.id.ll_dashboard);
         username = findViewById(R.id.username);
         userimage = findViewById(R.id.userimage);
         userbackgroud = findViewById(R.id.userbackgroud);
@@ -109,9 +112,11 @@ public class ProfileActivity extends AppCompatActivity implements AllFeedAdapter
             Glide.with(this).load(avatar).into(userimage);
             PrefManager.updateUserData(this,null);
             fid=uid;
+            ll_dashboard.setVisibility(View.VISIBLE);
         }else{
             uid= fid;
             gteUsrDetail(fid);
+            ll_dashboard.setVisibility(View.INVISIBLE);
         }
         IncludeShortMenu includeShortMenu = findViewById(R.id.includeShortMenu);
         includeShortMenu.updateCounts(this,uid);
@@ -334,13 +339,10 @@ public class ProfileActivity extends AppCompatActivity implements AllFeedAdapter
         // Add JsonObjectRequest to the RequestQueue
         requestQueue.add(jsonObjectRequest);
     }
-
     private void parseJsonFeed(JSONObject response) {
         try {
             JSONArray feedArray = response.getJSONArray("data");
-
             for (int i = 0; i < feedArray.length(); i++) {
-
                 JSONObject feedObj = (JSONObject) feedArray.get(i);
                 FeedItem item = new FeedItem();
                 String image_path="";
@@ -368,19 +370,20 @@ public class ProfileActivity extends AppCompatActivity implements AllFeedAdapter
                 //item.setUrl(feedUrl);
                 feedItems.add(item);
             }
-
             // notify data changes to list adapater
         } catch (JSONException e) {
             e.printStackTrace();
         }
     }
-
     @Override
     public void onItemClick(FeedModel item) {
 
     }
     @Override
     public void onRefresh() {
+        FEED_START=0;
+        if(!mValues.isEmpty())
+        mValues.clear();
         getFeed(FEED_START);
         new Handler().postDelayed(new Runnable() {
             @Override public void run() {
@@ -393,4 +396,14 @@ public class ProfileActivity extends AppCompatActivity implements AllFeedAdapter
           FEED_START=FEED_START+FEED_LIMIT;
           getFeed(FEED_START);
       }
+     public void editprofile(View view){
+          Intent intent=new Intent(ProfileActivity.this,EditProfileActivity.class);
+         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+          startActivity(intent);
+     }
+     public void dashboard(View view){
+         Intent intent=new Intent(ProfileActivity.this,ProfileActivity.class);
+         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+         startActivity(intent);
+     }
 }
