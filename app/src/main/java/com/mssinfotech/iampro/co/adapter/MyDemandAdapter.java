@@ -99,14 +99,6 @@ public class MyDemandAdapter extends RecyclerView.Adapter<MyDemandAdapter.ViewHo
             detail_name=v.findViewById(R.id.detail_name);
             tv_sellingprice=v.findViewById(R.id.tv_sellingprice);
 
-            ll_comment.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                     Intent intent=new Intent(mContext, CommentActivity.class);
-                     intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                      mContext.startActivity(intent);
-                }
-            });
             iv_edit.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -250,6 +242,22 @@ public class MyDemandAdapter extends RecyclerView.Adapter<MyDemandAdapter.ViewHo
                 Toast.makeText(mContext,""+ratingBar.getRating(),Toast.LENGTH_LONG).show();
                  float ratingb=ratingBar.getRating();
                 sendrating(ratingBar.getRating(),uidv,Integer.parseInt(idv));
+            }
+        });
+
+        if(mValues.get(position).getMore().equalsIgnoreCase("loadmore")){
+            Vholder.iv_delete.setVisibility(View.GONE);
+            Vholder.iv_edit.setVisibility(View.GONE);
+        }
+
+        Vholder.ll_comment.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent=new Intent(mContext, CommentActivity.class);
+                intent.putExtra("type","demand");
+                intent.putExtra("id",String.valueOf(mValues.get(position).getPid()));
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                mContext.startActivity(intent);
             }
         });
     }

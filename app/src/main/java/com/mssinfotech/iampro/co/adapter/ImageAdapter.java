@@ -103,7 +103,7 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ViewHolder> 
             public void onClick(View v) {
                 Intent intent=new Intent(mContext, CommentActivity.class);
                 intent.putExtra("id",String.valueOf(item.getId()));
-                intent.putExtra("type","demand");
+                intent.putExtra("type","image");
                 intent.putExtra("uid",PrefManager.getLoginDetail(mContext,"id"));
                 mContext.startActivity(intent);
             }

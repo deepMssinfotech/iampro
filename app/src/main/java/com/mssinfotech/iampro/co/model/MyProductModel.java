@@ -5,14 +5,20 @@ package com.mssinfotech.iampro.co.model;
  */
 
 public class MyProductModel {
-    String name;
-    String image;
-    String udate;
-    String category;
-    int totallike;
-    int comments;
-    int sCost;
-
+    private String name;
+    private String image;
+    private String udate;
+    private String category;
+    private int totallike;
+    private int comments;
+    private int sCost;
+    private String more;
+    public String getMore() {
+        return more;
+    }
+    public void setMore(String more) {
+        this.more = more;
+    }
     public String getName() {
         return name;
     }
@@ -139,6 +145,24 @@ public class MyProductModel {
         this.uid=uid;
         this.pid=pid;
     }
+    //load more
+    public MyProductModel(String name,String image,String udate,String category,int totallike,int comments,int sCost,int pCost,float rating,int uid,String fullname,String userImage,String pid,String more){
+        this.name=name;
+        this.image=image;
+        this.udate=udate;
+        this.category=category;
+        this.totallike=totallike;
+        this.comments=comments;
+        this.sCost=sCost;
+        this.pCost=pCost;
+        this.rating=rating;
+        this.uid=uid;
+        this.fullname=fullname;
+        this.userImage=userImage;
+        this.uid=uid;
+        this.pid=pid;
+        this.more=more;
+    }
     //pdemand
     public MyProductModel(String name,String image,String udate,String category,int totallike,int comments,int sCost,float rating,int uid,String fullname,String userImage,String pid){
         this.name=name;
@@ -154,5 +178,22 @@ public class MyProductModel {
         this.userImage=userImage;
         this.uid=uid;
         this.pid=pid;
+    }
+     //load more
+    public MyProductModel(String name,String image,String udate,String category,int totallike,int comments,int sCost,float rating,int uid,String fullname,String userImage,String pid,String more){
+        this.name=name;
+        this.image=image;
+        this.udate=udate;
+        this.category=category;
+        this.totallike=totallike;
+        this.comments=comments;
+        this.sCost=sCost;
+        this.rating=rating;
+        this.uid=uid;
+        this.fullname=fullname;
+        this.userImage=userImage;
+        this.uid=uid;
+        this.pid=pid;
+        this.more=more;
     }
 }

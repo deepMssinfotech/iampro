@@ -215,6 +215,17 @@ public class SectionVideoAdapter extends RecyclerView.Adapter<SectionVideoAdapte
                 mContext.startActivity(intent);
             }
         });
+
+         holder.ll_comment.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent=new Intent(mContext, CommentActivity.class);
+                intent.putExtra("type","video");
+                intent.putExtra("id",String.valueOf(itemsList.get(i).getId()));
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                mContext.startActivity(intent);
+            }
+        });
     }
     @Override
     public int getItemCount() {
@@ -275,14 +286,7 @@ public class SectionVideoAdapter extends RecyclerView.Adapter<SectionVideoAdapte
             ll_showhide=view.findViewById(R.id.ll_showhide);
             category=view.findViewById(R.id.category);
             detail_name=view.findViewById(R.id.detail_name);
-            ll_comment.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Intent intent=new Intent(mContext, CommentActivity.class);
-                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                    mContext.startActivity(intent);
-                }
-            });
+
             view.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {

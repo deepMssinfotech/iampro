@@ -132,7 +132,7 @@ public class ProvideAdapter extends RecyclerView.Adapter<ProvideAdapter.ViewHold
             public void onClick(View v) {
                 Intent intent=new Intent(mContext, CommentActivity.class);
                 intent.putExtra("id",String.valueOf(item.getId()));
-                intent.putExtra("type","demand");
+                intent.putExtra("type","provide");
                 intent.putExtra("uid",PrefManager.getLoginDetail(mContext,"id"));
                 mContext.startActivity(intent);
             }

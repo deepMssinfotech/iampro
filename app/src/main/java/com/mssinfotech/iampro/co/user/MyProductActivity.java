@@ -192,8 +192,6 @@ public class MyProductActivity extends AppCompatActivity implements MyProductAda
                 }
             }
         });
-
-
     }
     public void prepareCart() {
         String uid=PrefManager.getLoginDetail(this,"id");
