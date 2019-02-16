@@ -140,22 +140,7 @@ public class DemandAdapter extends RecyclerView.Adapter<DemandAdapter.ViewHolder
                      return false;
                  }
              }); */
-            tv_comments.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Intent intent=new Intent(mContext, CommentActivity.class);
-                    intent.putExtra("id",String.valueOf(item.getUid()));
-                    mContext.startActivity(intent);
-                }
-            });
-            iv_comments.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Intent intent=new Intent(mContext, CommentActivity.class);
-                    intent.putExtra("id",String.valueOf(item.getUid()));
-                    mContext.startActivity(intent);
-                }
-            });
+
         }
         public void setData(DataModel item) {
             this.item = item;
@@ -319,8 +304,29 @@ public class DemandAdapter extends RecyclerView.Adapter<DemandAdapter.ViewHolder
         return new ViewHolder(view);
     }
     @Override
-    public void onBindViewHolder(ViewHolder Vholder, int position) {
+    public void onBindViewHolder(ViewHolder Vholder, final int position) {
         Vholder.setData(mValues.get(position));
+
+        Vholder.tv_comments.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent=new Intent(mContext, CommentActivity.class);
+                intent.putExtra("type","demand");
+                intent.putExtra("id",String.valueOf(mValues.get(position).getPid()));
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                mContext.startActivity(intent);
+            }
+        });
+        Vholder.iv_comments.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent=new Intent(mContext, CommentActivity.class);
+                intent.putExtra("type","demand");
+                intent.putExtra("id",String.valueOf(mValues.get(position).getPid()));
+                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                mContext.startActivity(intent);
+            }
+        });
     }
     @Override
     public int getItemCount() {

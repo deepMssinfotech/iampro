@@ -226,6 +226,22 @@ public class MyProvideAdapter extends RecyclerView.Adapter<MyProvideAdapter.View
                 sendrating(ratingBar.getRating(),uidv,Integer.parseInt(idv));
             }
         });
+
+         Vholder.ll_comment.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent=new Intent(mContext, CommentActivity.class);
+                intent.putExtra("type","provide");
+                intent.putExtra("id",String.valueOf(mValues.get(position).getPid()));
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                mContext.startActivity(intent);
+            }
+        });
+
+        if(mValues.get(position).getMore().equalsIgnoreCase("loadmore")){
+            Vholder.iv_delete.setVisibility(View.GONE);
+            Vholder.iv_edit.setVisibility(View.GONE);
+        }
     }
     @Override
     public int getItemCount() {

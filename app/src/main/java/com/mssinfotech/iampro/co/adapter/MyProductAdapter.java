@@ -95,14 +95,7 @@ public class MyProductAdapter extends RecyclerView.Adapter<MyProductAdapter.View
             detail_name=v.findViewById(R.id.detail_name);
             tv_purchaseprice=v.findViewById(R.id.tv_purchaseprice);
             tv_sellingprice=v.findViewById(R.id.tv_sellingprice);
-            ll_comment.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Intent intent=new Intent(mContext, CommentActivity.class);
-                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                    mContext.startActivity(intent);
-                }
-            });
+
             imageView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -171,6 +164,10 @@ public class MyProductAdapter extends RecyclerView.Adapter<MyProductAdapter.View
         //final float ratingv
         final int uidv=mValues.get(position).getUid();
         final String idv=mValues.get(position).getPid();
+        if(mValues.get(position).getMore().equalsIgnoreCase("loadmore")){
+            Vholder.iv_delete.setVisibility(View.GONE);
+            Vholder.iv_edit.setVisibility(View.GONE);
+        }
         Vholder.likeButton.setOnLikeListener(new OnLikeListener() {
             @Override
             public void liked(LikeButton likeButton) {
@@ -237,6 +234,16 @@ public class MyProductAdapter extends RecyclerView.Adapter<MyProductAdapter.View
             public void onRatingChanged(RatingBar ratingBar, float rating,boolean fromUser) {
                 Toast.makeText(mContext,""+ratingBar.getRating(),Toast.LENGTH_LONG).show();
                 sendrating(ratingBar.getRating(),uidv,Integer.parseInt(idv));
+            }
+        });
+        Vholder.ll_comment.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent=new Intent(mContext, CommentActivity.class);
+                 intent.putExtra("type","product");
+                  intent.putExtra("id",String.valueOf(mValues.get(position).getPid()));
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                mContext.startActivity(intent);
             }
         });
     }

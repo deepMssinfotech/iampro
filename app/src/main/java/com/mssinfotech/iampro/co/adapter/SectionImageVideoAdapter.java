@@ -105,6 +105,9 @@ public class SectionImageVideoAdapter extends RecyclerView.Adapter<SectionImageV
             @Override
             public void onClick(View v) {
                 Intent intent=new Intent(mContext, CommentActivity.class);
+                intent.putExtra("type","image");
+                intent.putExtra("id",id);
+
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 mContext.startActivity(intent);
             }

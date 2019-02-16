@@ -126,17 +126,15 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
             public void onClick(View v) {
                 Intent intent=new Intent(mContext, CommentActivity.class);
                 intent.putExtra("id",String.valueOf(item.getId()));
-                intent.putExtra("type","demand");
-                intent.putExtra("uid",PrefManager.getLoginDetail(mContext,"id"));
+                intent.putExtra("type","product");
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 mContext.startActivity(intent);
             }
         };
 
         public void rateMe(String id,String uid,float rating){
              String url="https://www.iampro.co/api/app_service.php?type=rate_me&id="+id+"&uid="+uid+"&ptype=product&total_rate="+rating;
-
              RequestQueue requestQueue = Volley.newRequestQueue(mContext);
-
              // Initialize a new JsonObjectRequest instance
              JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(
                      Request.Method.GET,
