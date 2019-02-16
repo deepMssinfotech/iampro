@@ -1,5 +1,6 @@
 package com.mssinfotech.iampro.co;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.net.Uri;
 import android.support.design.widget.Snackbar;
@@ -12,6 +13,7 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.MediaController;
+import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.VideoView;
@@ -32,7 +34,10 @@ import com.like.OnLikeListener;
 import com.mssinfotech.iampro.co.adapter.CommentAdapter;
 import com.mssinfotech.iampro.co.common.Config;
 import com.mssinfotech.iampro.co.common.function;
+import com.mssinfotech.iampro.co.demand.DemandDetail;
 import com.mssinfotech.iampro.co.model.Review;
+import com.mssinfotech.iampro.co.product.ProductDetail;
+import com.mssinfotech.iampro.co.provide.ProvideDetail;
 import com.mssinfotech.iampro.co.utils.PrefManager;
 
 import org.json.JSONArray;
@@ -55,12 +60,13 @@ import com.smarteist.autoimageslider.SliderView;
 
 public class CommentActivity extends AppCompatActivity implements CommentAdapter.ItemListener{
     EditText et_comment;
+    private RatingBar ratingBar;
     String user_id;
     private MediaController mediaController;
     ImageView imageView;
     FullscreenVideoView fullscreenVideoView;
     SliderLayout imageSlider;
-    TextView fullname,udate,tv_comments,tv_totallike;
+    TextView fullname,udate,tv_comments,tv_totallike,txtRatingValue;
     CircleImageView imageView_user,imageView_icon;
     String data_type,data_id;
     RecyclerView recycler_view_review;
@@ -88,6 +94,8 @@ public class CommentActivity extends AppCompatActivity implements CommentAdapter
         likeButton = findViewById(R.id.likeButton);
         fullscreenVideoView = findViewById(R.id.fullscreenVideoView);
         recycler_view_review=findViewById(R.id.recycler_view_review);
+        ratingBar = (RatingBar) findViewById(R.id.ratingBar);
+        txtRatingValue = (TextView) findViewById(R.id.txtRatingValue);
         if(data_type.equalsIgnoreCase("data_type")) {
             //getFeedDetail();
             //allFeedComment();
@@ -120,6 +128,23 @@ public class CommentActivity extends AppCompatActivity implements CommentAdapter
                             likeButton.setUnlikeDrawableRes(R.drawable.like);
                             likeButton.setLikeDrawableRes(R.drawable.like_un);
                             int my_uid=Integer.parseInt(user_id);
+                            Float total_rating = null;
+                            String rating = result.getString("average_rating");
+                            try {
+                                total_rating = new Float(rating);
+                            }
+                            catch (Exception ignore) {
+                                // We're ignoring potential exceptions for the example.
+                                // Cleaner solutions would treat NumberFormatException
+                                // and NullPointerExceptions here
+                            }
+                            txtRatingValue.setText("("+rating+")");
+                            ratingBar.setRating(total_rating);
+                            ratingBar.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
+                                public void onRatingChanged(RatingBar ratingBar, float rating, boolean fromUser) {
+                                    function.rateMe(getApplicationContext(),data_id,String.valueOf(user_id),rating,ratingBar);
+                                }
+                            });
                             if(my_uid==0){
                                 likeButton.setEnabled(false);
                             }
@@ -180,13 +205,8 @@ public class CommentActivity extends AppCompatActivity implements CommentAdapter
                                 Glide.with(getApplicationContext()).load(R.drawable.video_icon).into(imageView_icon);
                             }else if(data_type.equalsIgnoreCase("product")){
                                 imageSlider.setVisibility(View.VISIBLE);
-                                //imageView.setVisibility(View.VISIBLE);
                                 JSONArray other_image = result.getJSONArray("myother_img");
                                 String ImageHol = Config.URL_ROOT+"uploads/product/w/500/"+result.getString("image");
-                                /*Glide.with(getApplicationContext())
-                                        .load(ImageHol)
-                                        .apply(Config.options_image)
-                                        .into(imageView);*/
                                 imageSlider.setIndicatorAnimation(IndicatorAnimations.SWAP); //set indicator animation by using SliderLayout.IndicatorAnimations. :WORM or THIN_WORM or COLOR or DROP or FILL or NONE or SCALE or SCALE_DOWN or SLIDE and SWAP!!
                                 imageSlider.setSliderTransformAnimation(SliderAnimations.FADETRANSFORMATION);
                                 imageSlider.setScrollTimeInSec(5); //set scroll delay in seconds :
@@ -198,7 +218,11 @@ public class CommentActivity extends AppCompatActivity implements CommentAdapter
                                 sliderView1.setOnSliderClickListener(new SliderView.OnSliderClickListener() {
                                     @Override
                                     public void onSliderClick(SliderView sliderView) {
-                                        Toast.makeText(CommentActivity.this, "This is slider first", Toast.LENGTH_SHORT).show();
+                                        Intent intent=new Intent(CommentActivity.this, ProductDetail.class);
+                                        //intent.putExtra("id",String.valueOf(item.getPid()));
+                                        intent.putExtra("pid",String.valueOf(data_id));
+                                        intent.putExtra("uid",String.valueOf(user_id));
+                                        getApplicationContext().startActivity(intent);
                                     }
                                 });
 
@@ -215,7 +239,11 @@ public class CommentActivity extends AppCompatActivity implements CommentAdapter
                                         sliderView.setOnSliderClickListener(new SliderView.OnSliderClickListener() {
                                             @Override
                                             public void onSliderClick(SliderView sliderView) {
-                                                Toast.makeText(CommentActivity.this, "This is slider " + (finalI + 1), Toast.LENGTH_SHORT).show();
+                                                Intent intent=new Intent(CommentActivity.this, ProductDetail.class);
+                                                //intent.putExtra("id",String.valueOf(item.getPid()));
+                                                intent.putExtra("pid",String.valueOf(data_id));
+                                                intent.putExtra("uid",String.valueOf(user_id));
+                                                getApplicationContext().startActivity(intent);
                                             }
                                         });
 
@@ -223,24 +251,104 @@ public class CommentActivity extends AppCompatActivity implements CommentAdapter
                                         imageSlider.addSliderView(sliderView);
                                     }
                                 }
+                                Glide.with(getApplicationContext()).load(R.drawable.product_icon).into(imageView_icon);
                             }else if(data_type.equalsIgnoreCase("provide")){
-                                imageView.setVisibility(View.VISIBLE);
+                                imageSlider.setVisibility(View.VISIBLE);
                                 JSONArray other_image = result.getJSONArray("myother_img");
                                 String ImageHol = Config.URL_ROOT+"uploads/product/w/500/"+result.getString("image");
-                                Glide.with(getApplicationContext())
-                                        .load(ImageHol)
-                                        .apply(Config.options_image)
-                                        .into(imageView);
+                                imageSlider.setIndicatorAnimation(IndicatorAnimations.SWAP); //set indicator animation by using SliderLayout.IndicatorAnimations. :WORM or THIN_WORM or COLOR or DROP or FILL or NONE or SCALE or SCALE_DOWN or SLIDE and SWAP!!
+                                imageSlider.setSliderTransformAnimation(SliderAnimations.FADETRANSFORMATION);
+                                imageSlider.setScrollTimeInSec(5); //set scroll delay in seconds :
+                                Glide.with(getApplicationContext()).load(R.drawable.product_icon).into(imageView_icon);
+                                DefaultSliderView sliderView1 = new DefaultSliderView(CommentActivity.this);
+                                sliderView1.setImageUrl(ImageHol);
+                                sliderView1.setImageScaleType(ImageView.ScaleType.CENTER_CROP);
+                                //sliderView.setDescription("setDescription " + (i + 1));
+                                sliderView1.setOnSliderClickListener(new SliderView.OnSliderClickListener() {
+                                    @Override
+                                    public void onSliderClick(SliderView sliderView) {
+                                        Intent intent=new Intent(CommentActivity.this, ProvideDetail.class);
+                                        //intent.putExtra("id",String.valueOf(item.getPid()));
+                                        intent.putExtra("pid",String.valueOf(data_id));
+                                        intent.putExtra("uid",String.valueOf(user_id));
+                                        getApplicationContext().startActivity(intent);
+                                    }
+                                });
+
+                                //at last add this view in your layout :
+                                imageSlider.addSliderView(sliderView1);
+                                if(other_image.length()>0){
+                                    for(int i=0; i<other_image.length(); i++){
+                                        DefaultSliderView sliderView = new DefaultSliderView(CommentActivity.this);
+                                        sliderView.setImageUrl(Config.URL_ROOT+"uploads/product/w/500/"+other_image.getString(i));
+                                        Log.d(Config.TAG,Config.URL_ROOT+"uploads/product/w/500/"+other_image.getString(i));
+                                        sliderView.setImageScaleType(ImageView.ScaleType.CENTER_CROP);
+                                        //sliderView.setDescription("setDescription " + (i + 1));
+                                        final int finalI = i;
+                                        sliderView.setOnSliderClickListener(new SliderView.OnSliderClickListener() {
+                                            @Override
+                                            public void onSliderClick(SliderView sliderView) {
+                                                Intent intent=new Intent(CommentActivity.this, ProvideDetail.class);
+                                                //intent.putExtra("id",String.valueOf(item.getPid()));
+                                                intent.putExtra("pid",String.valueOf(data_id));
+                                                intent.putExtra("uid",String.valueOf(user_id));
+                                                getApplicationContext().startActivity(intent);
+                                            }
+                                        });
+
+                                        //at last add this view in your layout :
+                                        imageSlider.addSliderView(sliderView);
+                                    }
+                                }
                                 Glide.with(getApplicationContext()).load(R.drawable.provide_icon).into(imageView_icon);
                             }else if(data_type.equalsIgnoreCase("demand")){
-                                imageView.setVisibility(View.VISIBLE);
-
+                                imageSlider.setVisibility(View.VISIBLE);
                                 JSONArray other_image = result.getJSONArray("myother_img");
                                 String ImageHol = Config.URL_ROOT+"uploads/product/w/500/"+result.getString("image");
-                                Glide.with(getApplicationContext())
-                                        .load(ImageHol)
-                                        .apply(Config.options_image)
-                                        .into(imageView);
+                                imageSlider.setIndicatorAnimation(IndicatorAnimations.SWAP); //set indicator animation by using SliderLayout.IndicatorAnimations. :WORM or THIN_WORM or COLOR or DROP or FILL or NONE or SCALE or SCALE_DOWN or SLIDE and SWAP!!
+                                imageSlider.setSliderTransformAnimation(SliderAnimations.FADETRANSFORMATION);
+                                imageSlider.setScrollTimeInSec(5); //set scroll delay in seconds :
+                                Glide.with(getApplicationContext()).load(R.drawable.product_icon).into(imageView_icon);
+                                DefaultSliderView sliderView1 = new DefaultSliderView(CommentActivity.this);
+                                sliderView1.setImageUrl(ImageHol);
+                                sliderView1.setImageScaleType(ImageView.ScaleType.CENTER_CROP);
+                                //sliderView.setDescription("setDescription " + (i + 1));
+                                sliderView1.setOnSliderClickListener(new SliderView.OnSliderClickListener() {
+                                    @Override
+                                    public void onSliderClick(SliderView sliderView) {
+                                        Intent intent=new Intent(CommentActivity.this, DemandDetail.class);
+                                        //intent.putExtra("id",String.valueOf(item.getPid()));
+                                        intent.putExtra("pid",String.valueOf(data_id));
+                                        intent.putExtra("uid",String.valueOf(user_id));
+                                        getApplicationContext().startActivity(intent);
+                                    }
+                                });
+
+                                //at last add this view in your layout :
+                                imageSlider.addSliderView(sliderView1);
+                                if(other_image.length()>0){
+                                    for(int i=0; i<other_image.length(); i++){
+                                        DefaultSliderView sliderView = new DefaultSliderView(CommentActivity.this);
+                                        sliderView.setImageUrl(Config.URL_ROOT+"uploads/product/w/500/"+other_image.getString(i));
+                                        Log.d(Config.TAG,Config.URL_ROOT+"uploads/product/w/500/"+other_image.getString(i));
+                                        sliderView.setImageScaleType(ImageView.ScaleType.CENTER_CROP);
+                                        //sliderView.setDescription("setDescription " + (i + 1));
+                                        final int finalI = i;
+                                        sliderView.setOnSliderClickListener(new SliderView.OnSliderClickListener() {
+                                            @Override
+                                            public void onSliderClick(SliderView sliderView) {
+                                                Intent intent=new Intent(CommentActivity.this, DemandDetail.class);
+                                                //intent.putExtra("id",String.valueOf(item.getPid()));
+                                                intent.putExtra("pid",String.valueOf(data_id));
+                                                intent.putExtra("uid",String.valueOf(user_id));
+                                                getApplicationContext().startActivity(intent);
+                                            }
+                                        });
+
+                                        //at last add this view in your layout :
+                                        imageSlider.addSliderView(sliderView);
+                                    }
+                                }
                                 Glide.with(getApplicationContext()).load(R.drawable.demand_icon).into(imageView_icon);
                             }
                         } catch (JSONException e) {

@@ -176,19 +176,27 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:gravity="center_horizontal"
+                android:gravity="left"
                 android:orientation="horizontal"
                 android:padding="10dp">
-            <RatingBar
-                android:id="@+id/ratingBar"
-                style="?android:ratingBarStyleSmall"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="0.7"
-                android:isIndicator="false"
-                android:rating="4"
-                android:numStars="5"
-                android:stepSize="0.3" />
+                <RatingBar
+                    android:id="@+id/ratingBar"
+                    style="?android:ratingBarStyleSmall"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:rating="4"
+                    android:layout_gravity="center_horizontal"
+                    android:numStars="5"
+                    android:stepSize="0.5" />
+                <TextView
+                    android:layout_marginLeft="2dp"
+                    android:id="@+id/txtRatingValue"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="(4.5)"
+                    android:textSize="14sp"
+                    android:textStyle="bold"
+                    android:textAppearance="?android:attr/textAppearanceSmall" />
             </LinearLayout>
             <LinearLayout
                 android:layout_width="wrap_content"
@@ -209,7 +217,9 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="2dp"
                     android:text="15"
-                    android:textSize="14sp" />
+                    android:textSize="14sp"
+                    android:textStyle="bold"
+                    />
             </LinearLayout>
 
             <LinearLayout
