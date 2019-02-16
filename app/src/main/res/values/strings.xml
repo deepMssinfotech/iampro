@@ -52,7 +52,7 @@
 
     <string name="chat">CHAT</string>
     <string name="favourite">FAVOURITE</string>
-     <string name="currentpassword">Enter Current Password</string>
+    <string name="currentpassword">Enter Current Password</string>
     <string name="newpassword">Enter New Password</string>
     <string name="confirmpassword">Enter Confirm Password</string>
 </resources>

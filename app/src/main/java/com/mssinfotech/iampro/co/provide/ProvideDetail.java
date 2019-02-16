@@ -231,6 +231,7 @@ public class ProvideDetail extends AppCompatActivity implements CommentAdapter.I
         // Add JsonArrayRequest to the RequestQueue
         requestQueue.add(jsonArrayRequest);
     }
+
     public void sendReview(View view){
         // get prompts.xml view
         LayoutInflater li = LayoutInflater.from(ProvideDetail.this);

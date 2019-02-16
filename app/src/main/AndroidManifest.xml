@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="com.mssinfotech.iampro.co">
 
     <uses-permission android:name="android.permission.RECEIVE_SMS" />
@@ -28,7 +29,9 @@
         android:label="@string/app_name"
         android:roundIcon="@drawable/iampro"
         android:supportsRtl="true"
+
         android:theme="@style/AppTheme">
+        <activity android:name=".common.FullScreenVideoActivity"></activity>
         <activity
             android:name=".user.EditProfileActivity"
             android:label="@string/edit_profile" />
@@ -125,30 +128,30 @@
         <activity
             android:name=".user.MyImageActivity"
             android:label="My Image&apos;s"
-            android:theme="@style/AppTheme.NoActionBar"/>
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".user.MyVideoActivity"
             android:label="My Video&apos;s"
-            android:theme="@style/AppTheme.NoActionBar"/>
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".user.MyProductActivity"
             android:label="My Product&apos;s"
-            android:theme="@style/AppTheme.NoActionBar"/>
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".user.MyProvideActivity"
             android:label="My Provide&apos;s"
-            android:theme="@style/AppTheme.NoActionBar"/>
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".user.MyDemandActivity"
             android:label="My Demand&apos;s"
-            android:theme="@style/AppTheme.NoActionBar"/>
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".user.ProfileActivity"
-            android:theme="@style/AppTheme.NoActionBar"/>
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".SearchActivity"
             android:label="@string/search_title"
-            android:theme="@style/AppTheme.NoActionBar"/>
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".CartActivity"
             android:label="@string/cart_title" />
@@ -158,18 +161,19 @@
         <activity
             android:name=".MessageActivity"
             android:label="@string/message_title" />
-
         <activity
             android:name=".demand.DemandDetail"
-            android:theme="@style/AppTheme.NoActionBar"/>
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".product.ProductDetail"
-            android:theme="@style/AppTheme.NoActionBar"/>
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".provide.ProvideDetailActivity"
-            android:theme="@style/AppTheme.NoActionBar"/>
-        <activity android:name=".image.ImageDetail"/>
-        <activity android:name=".CommentActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".image.ImageDetail" />
+        <activity
+            android:name=".CommentActivity"
+            android:configChanges="orientation|screenSize"
             android:theme="@style/AppTheme.NoActionBar" />
     </application>
 
