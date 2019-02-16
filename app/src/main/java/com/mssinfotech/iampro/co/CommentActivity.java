@@ -79,7 +79,7 @@ public class CommentActivity extends AppCompatActivity implements CommentAdapter
         setContentView(R.layout.activity_comment);
         et_comment = findViewById(R.id.et_comment);
         if (PrefManager.isLogin(this)) {
-            user_id = PrefManager.getLoginDetail(this, "id");
+            user_id =PrefManager.getLoginDetail(this, "id");
         }
         data_type=getIntent().getExtras().getString("type");
         data_id=getIntent().getExtras().getString("id");
@@ -103,7 +103,6 @@ public class CommentActivity extends AppCompatActivity implements CommentAdapter
             getDetail();
             allComment(data_type);
         }
-
     }
     @Override
     public void onItemClick(Review item) {
@@ -203,7 +202,8 @@ public class CommentActivity extends AppCompatActivity implements CommentAdapter
                                         .portraitOrientation(PortraitOrientation.DEFAULT)
                                         .landscapeOrientation(LandscapeOrientation.DEFAULT);
                                 Glide.with(getApplicationContext()).load(R.drawable.video_icon).into(imageView_icon);
-                            }else if(data_type.equalsIgnoreCase("product")){
+                            }
+                            else if(data_type.equalsIgnoreCase("product")){
                                 imageSlider.setVisibility(View.VISIBLE);
                                 JSONArray other_image = result.getJSONArray("myother_img");
                                 String ImageHol = Config.URL_ROOT+"uploads/product/w/500/"+result.getString("image");
@@ -252,7 +252,8 @@ public class CommentActivity extends AppCompatActivity implements CommentAdapter
                                     }
                                 }
                                 Glide.with(getApplicationContext()).load(R.drawable.product_icon).into(imageView_icon);
-                            }else if(data_type.equalsIgnoreCase("provide")){
+                            }
+                            else if(data_type.equalsIgnoreCase("provide")){
                                 imageSlider.setVisibility(View.VISIBLE);
                                 JSONArray other_image = result.getJSONArray("myother_img");
                                 String ImageHol = Config.URL_ROOT+"uploads/product/w/500/"+result.getString("image");

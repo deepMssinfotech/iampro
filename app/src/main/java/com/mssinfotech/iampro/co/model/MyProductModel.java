@@ -13,6 +13,13 @@ public class MyProductModel {
     private int comments;
     private int sCost;
     private String more;
+    private int isLike;
+    public int getIsLike() {
+        return isLike;
+    }
+    public void setIsLike(int isLike) {
+        this.isLike = isLike;
+    }
     public String getMore() {
         return more;
     }
@@ -129,7 +136,7 @@ public class MyProductModel {
     String fullname;
     String userImage;
     String pid;
-    public MyProductModel(String name,String image,String udate,String category,int totallike,int comments,int sCost,int pCost,float rating,int uid,String fullname,String userImage,String pid){
+    public MyProductModel(String name,String image,String udate,String category,int totallike,int comments,int sCost,int pCost,float rating,int uid,String fullname,String userImage,String pid,int isLike){
         this.name=name;
         this.image=image;
         this.udate=udate;
@@ -144,9 +151,10 @@ public class MyProductModel {
         this.userImage=userImage;
         this.uid=uid;
         this.pid=pid;
+        this.isLike=isLike;
     }
     //load more
-    public MyProductModel(String name,String image,String udate,String category,int totallike,int comments,int sCost,int pCost,float rating,int uid,String fullname,String userImage,String pid,String more){
+    public MyProductModel(String name,String image,String udate,String category,int totallike,int comments,int sCost,int pCost,float rating,int uid,String fullname,String userImage,String pid,String more,int isLike){
         this.name=name;
         this.image=image;
         this.udate=udate;
@@ -162,9 +170,10 @@ public class MyProductModel {
         this.uid=uid;
         this.pid=pid;
         this.more=more;
+        this.isLike=isLike;
     }
     //pdemand
-    public MyProductModel(String name,String image,String udate,String category,int totallike,int comments,int sCost,float rating,int uid,String fullname,String userImage,String pid){
+    public MyProductModel(String name,String image,String udate,String category,int totallike,int comments,int sCost,float rating,int uid,String fullname,String userImage,String pid,int isLike){
         this.name=name;
         this.image=image;
         this.udate=udate;
@@ -178,9 +187,10 @@ public class MyProductModel {
         this.userImage=userImage;
         this.uid=uid;
         this.pid=pid;
+         this.isLike=isLike;
     }
      //load more
-    public MyProductModel(String name,String image,String udate,String category,int totallike,int comments,int sCost,float rating,int uid,String fullname,String userImage,String pid,String more){
+    public MyProductModel(String name,String image,String udate,String category,int totallike,int comments,int sCost,float rating,int uid,String fullname,String userImage,String pid,String more,int isLike){
         this.name=name;
         this.image=image;
         this.udate=udate;
@@ -195,5 +205,6 @@ public class MyProductModel {
         this.uid=uid;
         this.pid=pid;
         this.more=more;
+        this.isLike=isLike;
     }
 }

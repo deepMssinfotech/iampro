@@ -1,5 +1,6 @@
 package com.mssinfotech.iampro.co.user;
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
@@ -307,7 +308,6 @@ public class MyVideoActivity extends AppCompatActivity implements MyVideoAdapter
     public void getAllAlbum(){
         String url="https://www.iampro.co/api/app_service.php?type=getAlbemsListt&search_type=video&uid="+uid;
         RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
-
         JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(
                 Request.Method.GET,
                 url,

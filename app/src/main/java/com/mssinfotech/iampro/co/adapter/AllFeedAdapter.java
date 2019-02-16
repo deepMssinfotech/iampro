@@ -44,15 +44,25 @@ import com.mssinfotech.iampro.co.image.ImageDetail;
 import com.mssinfotech.iampro.co.model.FeedModel;
 import com.mssinfotech.iampro.co.model.ImageDetailModel;
 import com.mssinfotech.iampro.co.product.ProductDetail;
+import com.mssinfotech.iampro.co.provide.ProvideDetail;
 import com.mssinfotech.iampro.co.provide.ProvideDetailActivity;
 import com.mssinfotech.iampro.co.user.ProfileActivity;
 import com.mssinfotech.iampro.co.utils.PrefManager;
+import com.smarteist.autoimageslider.DefaultSliderView;
+import com.smarteist.autoimageslider.IndicatorAnimations;
+import com.smarteist.autoimageslider.SliderAnimations;
+import com.smarteist.autoimageslider.SliderLayout;
+import com.smarteist.autoimageslider.SliderView;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+
+import bg.devlabs.fullscreenvideoview.FullscreenVideoView;
+import bg.devlabs.fullscreenvideoview.orientation.LandscapeOrientation;
+import bg.devlabs.fullscreenvideoview.orientation.PortraitOrientation;
 
 public class AllFeedAdapter extends RecyclerView.Adapter<AllFeedAdapter.ViewHolder> {
     ArrayList<FeedModel> mValues;
@@ -71,6 +81,8 @@ public class AllFeedAdapter extends RecyclerView.Adapter<AllFeedAdapter.ViewHold
         RatingBar ratingBar;
          LinearLayout ll_showhide,ll_comment;
         FeedModel item;
+        FullscreenVideoView fullscreenVideoView;
+        SliderLayout imageSlider;
          int id;
         //int uid;
         public ViewHolder(View v) {
@@ -79,6 +91,8 @@ public class AllFeedAdapter extends RecyclerView.Adapter<AllFeedAdapter.ViewHold
             imageView_user=v.findViewById(R.id.imageView_user);
             imageView_icon=v.findViewById(R.id.imageView_icon);
             iv_comments=v.findViewById(R.id.iv_comments);
+            imageSlider =v.findViewById(R.id.imageSlider);
+            fullscreenVideoView =v.findViewById(R.id.fullscreenVideoView);
             iv_buy=v.findViewById(R.id.iv_buy);
             iv_favourite=v.findViewById(R.id.iv_favourite);
             image=v.findViewById(R.id.imageView);
@@ -299,15 +313,200 @@ public class AllFeedAdapter extends RecyclerView.Adapter<AllFeedAdapter.ViewHold
         return new ViewHolder(view);
     }
     @Override
-    public void onBindViewHolder(final ViewHolder Vholder, int position) {
+    public void onBindViewHolder(final ViewHolder Vholder, final int position) {
         Vholder.setData(mValues.get(position));
         final String type=mValues.get(position).getType();
         final int uid=mValues.get(position).getUid();
         final int id=mValues.get(position).getId();
         String sid=mValues.get(position).getShareId();
         final String[] animalsArray=sid.split(",");
-        Vholder.ratingBar.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
+        if(type.equalsIgnoreCase("image")){
+            Vholder.image.setVisibility(View.VISIBLE);
+            //String ImageHol=Config.URL_ROOT+"uploads/album/w/500/"+mValues.get(position).getImage();
+            String ImageHol=mValues.get(position).getFimage_path();
+            Glide.with(mContext)
+                    .load(ImageHol)
+                    .apply(Config.options_image)
+                    .into(Vholder.image);
+            Glide.with(mContext).load(R.drawable.image_icon).into(Vholder.imageView_icon);
+        }else if(type.equalsIgnoreCase("video")){
+            //videoView.setVisibility(View.VISIBLE);
+            Vholder.fullscreenVideoView.setVisibility(View.VISIBLE);
+            String ImageHol = Config.URL_ROOT+"uploads/video/"+mValues.get(position).getImage();
+                                /*videoView.setVideoPath(ImageHol);
+                                Log.d(Config.TAG, ImageHol);
+                                mediaController = new MediaController(CommentActivity.this);
+                                mediaController.setAnchorView(videoView);
+                                videoView.setMediaController(mediaController);
+                                videoView.requestFocus();
+                                videoView.start();*/
+            Vholder.fullscreenVideoView.videoUrl(ImageHol)
+                    .enableAutoStart()
+                    .addSeekBackwardButton()
+                    .addSeekForwardButton()
+                    .portraitOrientation(PortraitOrientation.DEFAULT)
+                    .landscapeOrientation(LandscapeOrientation.DEFAULT);
+            Glide.with(mContext).load(R.drawable.video_icon).into(Vholder.imageView_icon);
+        }
 
+        else if(type.equalsIgnoreCase("product")){
+            Vholder.imageSlider.setVisibility(View.VISIBLE);
+            Vholder.image.setVisibility(View.GONE);
+            //JSONArray other_image = result.getJSONArray("myother_img");
+            //String ImageHol = Config.URL_ROOT+"uploads/product/w/500/"+mValues.get(position).getImage();
+            String ImageHol = mValues.get(position).getFimage_path();
+            Vholder.imageSlider.setIndicatorAnimation(IndicatorAnimations.SWAP); //set indicator animation by using SliderLayout.IndicatorAnimations. :WORM or THIN_WORM or COLOR or DROP or FILL or NONE or SCALE or SCALE_DOWN or SLIDE and SWAP!!
+            Vholder.imageSlider.setSliderTransformAnimation(SliderAnimations.FADETRANSFORMATION);
+            Vholder.imageSlider.setScrollTimeInSec(5); //set scroll delay in seconds :
+            Glide.with(mContext).load(R.drawable.product_icon).into(Vholder.imageView_icon);
+            DefaultSliderView sliderView1 = new DefaultSliderView(mContext);
+            sliderView1.setImageUrl(ImageHol);
+            sliderView1.setImageScaleType(ImageView.ScaleType.CENTER_CROP);
+            //sliderView.setDescription("setDescription " + (i + 1));
+            sliderView1.setOnSliderClickListener(new SliderView.OnSliderClickListener() {
+                @Override
+                public void onSliderClick(SliderView sliderView) {
+                    Intent intent=new Intent(mContext, ProductDetail.class);
+                    //intent.putExtra("id",String.valueOf(item.getPid()));
+                    intent.putExtra("pid",String.valueOf(mValues.get(position).getId()));
+                    intent.putExtra("uid",String.valueOf(mValues.get(position).getUid()));
+                    mContext.startActivity(intent);
+                }
+            });
+
+            //at last add this view in your layout :  other_image.length()>0
+            Vholder.imageSlider.addSliderView(sliderView1);
+            if(mValues.get(position).getImageArray().size()>0){
+                for(int i=0; i<mValues.get(position).getImageArray().size(); i++){
+                    DefaultSliderView sliderView = new DefaultSliderView(mContext);
+                    sliderView.setImageUrl(Config.URL_ROOT+"uploads/product/w/500/"+mValues.get(position).getImageArray().get(i));
+                    Log.d("feed_product",Config.URL_ROOT+"uploads/product/w/500/"+mValues.get(position).getImageArray().get(i));
+                    Log.d("feed_arrayyy",""+mValues.get(position).getImageArray());
+                    sliderView.setImageScaleType(ImageView.ScaleType.CENTER_CROP);
+                    //sliderView.setDescription("setDescription " + (i + 1));
+                    final int finalI = i;
+                    sliderView.setOnSliderClickListener(new SliderView.OnSliderClickListener() {
+                        @Override
+                        public void onSliderClick(SliderView sliderView) {
+                            Intent intent=new Intent(mContext, ProductDetail.class);
+                            //intent.putExtra("id",String.valueOf(item.getPid()));
+                            intent.putExtra("pid",String.valueOf(mValues.get(position).getId()));
+                            intent.putExtra("uid",String.valueOf(mValues.get(position).getUid()));
+                            mContext.startActivity(intent);
+                        }
+                    });
+
+                    //at last add this view in your layout :
+                    Vholder.imageSlider.addSliderView(sliderView);
+                }
+            }
+            Glide.with(mContext).load(R.drawable.product_icon).into(Vholder.imageView_icon);
+        }
+
+        else if(type.equalsIgnoreCase("provide")){
+            Vholder.imageSlider.setVisibility(View.VISIBLE);
+            Vholder.image.setVisibility(View.GONE);
+            //JSONArray other_image = result.getJSONArray("myother_img");
+            //String ImageHol = Config.URL_ROOT+"uploads/product/w/500/"+mValues.get(position).getImageArray().get(position);
+            String ImageHol = mValues.get(position).getFimage_path();
+            Vholder.imageSlider.setIndicatorAnimation(IndicatorAnimations.SWAP); //set indicator animation by using SliderLayout.IndicatorAnimations. :WORM or THIN_WORM or COLOR or DROP or FILL or NONE or SCALE or SCALE_DOWN or SLIDE and SWAP!!
+            Vholder.imageSlider.setSliderTransformAnimation(SliderAnimations.FADETRANSFORMATION);
+            Vholder.imageSlider.setScrollTimeInSec(5); //set scroll delay in seconds :
+            Glide.with(mContext).load(R.drawable.product_icon).into(Vholder.imageView_icon);
+            DefaultSliderView sliderView1 = new DefaultSliderView(mContext);
+            sliderView1.setImageUrl(ImageHol);
+            sliderView1.setImageScaleType(ImageView.ScaleType.CENTER_CROP);
+            //sliderView.setDescription("setDescription " + (i + 1));
+            sliderView1.setOnSliderClickListener(new SliderView.OnSliderClickListener() {
+                @Override
+                public void onSliderClick(SliderView sliderView) {
+                    Intent intent=new Intent(mContext, ProvideDetail.class);
+                    //intent.putExtra("id",String.valueOf(item.getPid()));
+                    intent.putExtra("pid",String.valueOf(mValues.get(position).getId()));
+                    intent.putExtra("uid",String.valueOf(mValues.get(position).getUid()));
+                    mContext.startActivity(intent);
+                }
+            });
+
+            //at last add this view in your layout :
+            Vholder.imageSlider.addSliderView(sliderView1);
+            if(mValues.get(position).getImageArray().size()>0){
+                for(int i=0; i<mValues.get(position).getImageArray().size(); i++){
+                    DefaultSliderView sliderView = new DefaultSliderView(mContext);
+                    sliderView.setImageUrl(Config.URL_ROOT+"uploads/product/w/500/"+mValues.get(position).getImageArray().get(i));
+                    Log.d(Config.TAG,Config.URL_ROOT+"uploads/product/w/500/"+mValues.get(position).getImageArray().get(i));
+                    sliderView.setImageScaleType(ImageView.ScaleType.CENTER_CROP);
+                    //sliderView.setDescription("setDescription " + (i + 1));
+                    final int finalI = i;
+                    sliderView.setOnSliderClickListener(new SliderView.OnSliderClickListener() {
+                        @Override
+                        public void onSliderClick(SliderView sliderView) {
+                            Intent intent=new Intent(mContext, ProvideDetail.class);
+                            //intent.putExtra("id",String.valueOf(item.getPid()));
+                            intent.putExtra("pid",String.valueOf(mValues.get(position).getId()));
+                            intent.putExtra("uid",String.valueOf(mValues.get(position).getUid()));
+                            mContext.startActivity(intent);
+                        }
+                    });
+
+                    //at last add this view in your layout :
+                    Vholder.imageSlider.addSliderView(sliderView);
+                }
+            }
+            Glide.with(mContext).load(R.drawable.provide_icon).into(Vholder.imageView_icon);
+        }else if(type.equalsIgnoreCase("demand")){
+            Vholder.imageSlider.setVisibility(View.VISIBLE);
+            Vholder.image.setVisibility(View.GONE);
+            //JSONArray other_image = result.getJSONArray("myother_img");
+            //String ImageHol = Config.URL_ROOT+"uploads/product/w/500/"+result.getString("image");
+            String ImageHol = mValues.get(position).getFimage_path();
+            //mValues.get(position).getFimage_path()
+            Vholder.imageSlider.setIndicatorAnimation(IndicatorAnimations.SWAP); //set indicator animation by using SliderLayout.IndicatorAnimations. :WORM or THIN_WORM or COLOR or DROP or FILL or NONE or SCALE or SCALE_DOWN or SLIDE and SWAP!!
+            Vholder.imageSlider.setSliderTransformAnimation(SliderAnimations.FADETRANSFORMATION);
+            Vholder.imageSlider.setScrollTimeInSec(5); //set scroll delay in seconds :
+            Glide.with(mContext).load(R.drawable.product_icon).into(Vholder.imageView_icon);
+            DefaultSliderView sliderView1 = new DefaultSliderView(mContext);
+            sliderView1.setImageUrl(ImageHol);
+            sliderView1.setImageScaleType(ImageView.ScaleType.CENTER_CROP);
+            //sliderView.setDescription("setDescription " + (i + 1));
+            sliderView1.setOnSliderClickListener(new SliderView.OnSliderClickListener() {
+                @Override
+                public void onSliderClick(SliderView sliderView) {
+                    Intent intent=new Intent(mContext, DemandDetail.class);
+                    //intent.putExtra("id",String.valueOf(item.getPid()));
+                    intent.putExtra("pid",String.valueOf(mValues.get(position).getId()));
+                    intent.putExtra("uid",String.valueOf(mValues.get(position).getUid()));
+                    mContext.startActivity(intent);
+                }
+            });
+
+            //at last add this view in your layout :
+            Vholder.imageSlider.addSliderView(sliderView1);
+            if(mValues.get(position).getImageArray().size()>0){
+                for(int i=0; i<mValues.get(position).getImageArray().size(); i++){
+                    DefaultSliderView sliderView = new DefaultSliderView(mContext);
+                    sliderView.setImageUrl(Config.URL_ROOT+"uploads/product/w/500/"+mValues.get(position).getImageArray().get(i));
+                    Log.d(Config.TAG,Config.URL_ROOT+"uploads/product/w/500/"+mValues.get(position).getImageArray().get(i));
+                    sliderView.setImageScaleType(ImageView.ScaleType.CENTER_CROP);
+                    //sliderView.setDescription("setDescription " + (i + 1));
+                    final int finalI = i;
+                    sliderView.setOnSliderClickListener(new SliderView.OnSliderClickListener() {
+                        @Override
+                        public void onSliderClick(SliderView sliderView) {
+                            Intent intent=new Intent(mContext, DemandDetail.class);
+                            //intent.putExtra("id",String.valueOf(item.getPid()));
+                            intent.putExtra("pid",String.valueOf(mValues.get(position).getId()));
+                            intent.putExtra("uid",String.valueOf(mValues.get(position).getUid()));
+                            mContext.startActivity(intent);
+                        }
+                    });
+                    //at last add this view in your layout :
+                    Vholder.imageSlider.addSliderView(sliderView);
+                }
+            }
+            Glide.with(mContext).load(R.drawable.demand_icon).into(Vholder.imageView_icon);
+        }
+        Vholder.ratingBar.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
             @Override
             public void onRatingChanged(RatingBar ratingBar, float rating,boolean fromUser) {
                 Toast.makeText(mContext,""+ratingBar.getRating(),Toast.LENGTH_LONG).show();

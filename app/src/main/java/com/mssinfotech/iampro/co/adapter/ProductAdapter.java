@@ -30,6 +30,7 @@ import com.like.OnLikeListener;
 import com.mssinfotech.iampro.co.CommentActivity;
 import com.mssinfotech.iampro.co.R;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.RadioButton;
 
 /**
@@ -74,7 +75,6 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
     }
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         public TextView textView,tv_tlike,tv_comments,tv_daysago,tv_sprice,tv_pprice,uname;
-
         RatingBar ratingBar;
         public ImageView imageView,iv_comments;
         de.hdodenhof.circleimageview.CircleImageView userImage;
@@ -82,6 +82,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
         LikeButton likeButton;
         DataModel item;
         ImageView ivLike;
+        LinearLayout ll_comments;
         public ViewHolder(View v) {
             super(v);
             v.setOnClickListener(this);
@@ -93,6 +94,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
             //tv_comments
             tv_comments=v.findViewById(R.id.tv_comments);
             iv_comments=v.findViewById(R.id.iv_comments);
+            ll_comments=v.findViewById(R.id.ll_comments);
             tv_daysago=v.findViewById(R.id.tv_daysago);
             tv_sprice=v.findViewById(R.id.tv_sprice);
             tv_pprice=v.findViewById(R.id.tv_sprice);
@@ -118,11 +120,11 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
                     rateMe(item.getPid(),String.valueOf(item.getUid()),rating);
                 }
             });
-            tv_comments.setOnClickListener(CommnetOnClickListener);
-            iv_comments.setOnClickListener(CommnetOnClickListener);
+           //tv_comments.setOnClickListener(CommnetOnClickListener);
+            //iv_comments.setOnClickListener(CommnetOnClickListener);
 
         }
-        private View.OnClickListener CommnetOnClickListener = new View.OnClickListener() {
+        /* private View.OnClickListener CommnetOnClickListener = new View.OnClickListener() {
             public void onClick(View v) {
                 Intent intent=new Intent(mContext, CommentActivity.class);
                 intent.putExtra("id",String.valueOf(item.getId()));
@@ -130,7 +132,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 mContext.startActivity(intent);
             }
-        };
+        }; */
 
         public void rateMe(String id,String uid,float rating){
              String url="https://www.iampro.co/api/app_service.php?type=rate_me&id="+id+"&uid="+uid+"&ptype=product&total_rate="+rating;
@@ -288,8 +290,19 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
         return new ViewHolder(view);
     }
     @Override
-    public void onBindViewHolder(ViewHolder Vholder, int position) {
+    public void onBindViewHolder(ViewHolder Vholder, final int position) {
         Vholder.setData(mValues.get(position));
+         Vholder.ll_comments.setOnClickListener(new View.OnClickListener() {
+             @Override
+             public void onClick(View v) {
+                 Intent intent=new Intent(mContext, CommentActivity.class);
+                 intent.putExtra("id",String.valueOf(mValues.get(position).getPid()));
+                 intent.putExtra("type","product");
+                 intent.putExtra("uid",mValues.get(position).getUid());
+                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                 mContext.startActivity(intent);
+             }
+         });
     }
     @Override
     public int getItemCount() {

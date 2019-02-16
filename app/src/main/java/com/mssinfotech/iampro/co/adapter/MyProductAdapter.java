@@ -164,7 +164,18 @@ public class MyProductAdapter extends RecyclerView.Adapter<MyProductAdapter.View
         //final float ratingv
         final int uidv=mValues.get(position).getUid();
         final String idv=mValues.get(position).getPid();
-        if(mValues.get(position).getMore().equalsIgnoreCase("loadmore")){
+        int my_uid=uidv;
+        if(my_uid==0){
+            Vholder.likeButton.setEnabled(false);
+        }
+         if(mValues.get(position).getIsLike()==1){ //mValues.get(position).get
+            Vholder.likeButton.setLiked(true);
+            Vholder.tv_totallike.setTextColor(Color.RED);
+        }else{
+            Vholder.likeButton.setLiked(false);
+            Vholder.tv_totallike.setTextColor(Color.BLACK);
+        }
+        if(mValues.get(position).getMore()!=null && mValues.get(position).getMore().equalsIgnoreCase("loadmore")){
             Vholder.iv_delete.setVisibility(View.GONE);
             Vholder.iv_edit.setVisibility(View.GONE);
         }

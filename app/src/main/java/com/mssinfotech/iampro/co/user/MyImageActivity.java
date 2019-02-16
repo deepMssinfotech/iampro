@@ -1,6 +1,7 @@
 package com.mssinfotech.iampro.co.user;
 
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
@@ -316,7 +317,9 @@ public class MyImageActivity extends AppCompatActivity implements MyImageAdapter
     public void getAllAlbum(){
       String url="https://www.iampro.co/api/app_service.php?type=getAlbemsListt&search_type=image&uid="+uid;
         RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
-
+        final ProgressDialog pDialog = new ProgressDialog(MyImageActivity.this); //Your Activity.this
+        pDialog.setMessage("Loading...!");
+        pDialog.show();
         JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(
                 Request.Method.GET,
                 url,
@@ -324,6 +327,7 @@ public class MyImageActivity extends AppCompatActivity implements MyImageAdapter
                 new com.android.volley.Response.Listener<JSONArray>() {
                     @Override
                     public void onResponse(JSONArray response) {
+                        pDialog.dismiss();
                         if(!item_name.isEmpty()){
                             item_name.clear();
                         }
@@ -342,6 +346,7 @@ public class MyImageActivity extends AppCompatActivity implements MyImageAdapter
                              }
                         }
                         catch (JSONException e){
+                            pDialog.dismiss();
                             e.printStackTrace();
                             Toast.makeText(getApplicationContext(), ""+e.getMessage(), Toast.LENGTH_SHORT).show();
                             Log.d("catch_f",""+e.getMessage());
@@ -351,6 +356,7 @@ public class MyImageActivity extends AppCompatActivity implements MyImageAdapter
                 new com.android.volley.Response.ErrorListener(){
                     @Override
                     public void onErrorResponse(VolleyError error){
+                        pDialog.dismiss();
                         Toast.makeText(getApplicationContext(), error.getMessage(), Toast.LENGTH_SHORT).show();
                         Log.d("verror",""+error.getMessage());
                     }
@@ -365,6 +371,9 @@ public class MyImageActivity extends AppCompatActivity implements MyImageAdapter
          String url=Config.API_URL+"app_service.php?type=getMyAlbemsListt&search_type=image&uid="+uid+"&my_id="+uid+"&album_id="+aid;
         // Initialize a new RequestQueue instance
         RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
+        //final ProgressDialog pDialog = new ProgressDialog(getApplicationContext()); //Your Activity.this
+        //pDialog.setMessage("Loading...!");
+        //pDialog.show();
         JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(
                 Request.Method.GET,
                 url,
@@ -372,7 +381,7 @@ public class MyImageActivity extends AppCompatActivity implements MyImageAdapter
                 new com.android.volley.Response.Listener<JSONArray>() {
                     @Override
                     public void onResponse(JSONArray response) {
-
+                        //pDialog.dismiss();
                         SectionImageModel dm = new SectionImageModel();
                         dm.setHeaderTitle(item_name.get(aid));
                         dm.setAlbemId(aid);
@@ -446,6 +455,7 @@ public class MyImageActivity extends AppCompatActivity implements MyImageAdapter
 
                         }
                         catch (JSONException e){
+                            //pDialog.dismiss();
                             e.printStackTrace();
                             Toast.makeText(getApplicationContext(), ""+e.getMessage(), Toast.LENGTH_SHORT).show();
                             Log.d("catch_f",""+e.getMessage());
@@ -455,6 +465,7 @@ public class MyImageActivity extends AppCompatActivity implements MyImageAdapter
                 new com.android.volley.Response.ErrorListener(){
                     @Override
                     public void onErrorResponse(VolleyError error){
+                        //pDialog.dismiss();
                         Toast.makeText(getApplicationContext(), error.getMessage(), Toast.LENGTH_SHORT).show();
                         Log.d("verror",""+error.getMessage());
                     }
