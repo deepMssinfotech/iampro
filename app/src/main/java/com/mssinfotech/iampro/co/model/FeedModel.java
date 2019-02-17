@@ -16,6 +16,15 @@ public class FeedModel {
     private String fimage_path;
     private int comment;
 
+    public int getIs_favrait() {
+        return is_favrait;
+    }
+
+    public void setIs_favrait(int is_favrait) {
+        this.is_favrait = is_favrait;
+    }
+
+    private int is_favrait;
     public String getDetail_name() {
         return detail_name;
     }
@@ -45,7 +54,7 @@ public class FeedModel {
     private int selling_cost;
     private int purchese_cost;
 
-    public FeedModel(int id, String shareId, String fullname,int uid, String avatar_path, String udate, long timespam, String is_block, ArrayList<String> imageArray, String fimage_path, int comment, int likes, int mylikes, int all_rating, String type, int all_comment, int average_rating,String detail_name,int selling_cost,int purchese_cost) {
+    public FeedModel(int id, String shareId, String fullname,int uid, String avatar_path, String udate, long timespam, String is_block, ArrayList<String> imageArray, String fimage_path, int comment, int likes, int mylikes, int all_rating, String type, int all_comment, int average_rating,String detail_name,int selling_cost,int purchese_cost,int is_favrait) {
         this.id = id;
         this.shareId = shareId;
         this.fullname = fullname;
@@ -66,6 +75,7 @@ public class FeedModel {
         this.detail_name=detail_name;
         this.selling_cost=selling_cost;
         this.purchese_cost=purchese_cost;
+        this.is_favrait=is_favrait;
     }
 
     public FeedModel(int id, String shareId, String fullname,int uid, String avatar_path, String udate, long timespam, String is_block, ArrayList<String> imageArray, String fimage_path, int comment, int likes, int mylikes, int all_rating, String type, int all_comment, int average_rating) {

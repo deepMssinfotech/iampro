@@ -98,7 +98,6 @@ public class SectionImageVideoAdapter extends RecyclerView.Adapter<SectionImageV
             holder.likeButton.setLiked(false);
             holder.tv_totallike.setTextColor(Color.BLACK);
         }
-
        //if(singleItem.getRating()!="NAN" || singleItem.getRating().length()>0 || !(singleItem.getRating().equalsIgnoreCase("NAN")) || singleItem.getRating()!="" || !singleItem.getRating().equalsIgnoreCase("") || !singleItem.getRating().isEmpty())
         //holder.ratingBar.setRating(Float.parseFloat(String.valueOf(singleItem.getRating())));
         holder. category.setText(singleItem .getCategory());
