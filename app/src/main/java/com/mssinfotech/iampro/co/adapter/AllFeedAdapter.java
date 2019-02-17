@@ -304,16 +304,125 @@ public class AllFeedAdapter extends RecyclerView.Adapter<AllFeedAdapter.ViewHold
         final String type=mValues.get(position).getType();
         final int uid=mValues.get(position).getUid();
         final int id=mValues.get(position).getId();
+
+        String sidd=mValues.get(position).getShareId();
+        final String[] sharedId=sidd.split(",");
+
+        int my_uid=uid;
+        if(my_uid==0){
+            Vholder.like_un.setEnabled(false);
+        }
+        if(mValues.get(position).getMylikes()==1){
+            Vholder.like_un.setLiked(true);
+            Vholder.tv_totallike.setTextColor(Color.RED);
+        }else{
+            Vholder.like_un.setLiked(false);
+            Vholder.tv_totallike.setTextColor(Color.BLACK);
+        }
+
+        if (mValues.get(position).getIs_favrait()==1){
+            Vholder.favButton.setLiked(true);
+        }
+        else{
+            Vholder.favButton.setLiked(false);
+        }
+         Vholder.imageView_icon.setOnClickListener(new View.OnClickListener() {
+             @Override
+             public void onClick(View v) {
+                 if(type.equalsIgnoreCase("IMAGE")){
+                     Intent intent=new Intent(mContext,ImageDetail.class);
+                     intent.putExtra("uid",uid);
+                     intent.putExtra("id",Integer.parseInt(sharedId[0]));
+                     intent.putExtra("type","image");
+                     intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                     mContext.startActivity(intent);
+                     //Toast.makeText(mContext,"uid: "+uid+"-"+id,Toast.LENGTH_LONG).show();
+                 }
+                 else if(type.equalsIgnoreCase("VIDEO")){
+                     Intent intent=new Intent(mContext,ImageDetail.class);
+                     intent.putExtra("uid",uid);
+                     intent.putExtra("id",Integer.parseInt(sharedId[0]));
+                     intent.putExtra("type","video");
+                     mContext.startActivity(intent);
+                 }
+                 else if(type.equalsIgnoreCase("PRODUCT")){
+                     Intent intent=new Intent(mContext, ProductDetail.class);
+                     intent.putExtra("pid",String.valueOf(sharedId[0]));
+                     intent.putExtra("uid",String.valueOf(mValues.get(position).getUid()));
+                     mContext.startActivity(intent);
+                 }
+                 else if(type.equalsIgnoreCase("PROVIDE")){
+                     Intent intent=new Intent(mContext,ProvideDetailActivity.class);
+                     //intent.putExtra("id",String.valueOf(item.getPid()));
+                     intent.putExtra("pid",String.valueOf(sharedId[0]));
+                     intent.putExtra("uid",String.valueOf(mValues.get(position).getUid()));
+                     mContext.startActivity(intent);
+                 }
+                 else if(type.equalsIgnoreCase("DEMAND")){
+                     Intent intent=new Intent(mContext,DemandDetail.class);
+                     //intent.putExtra("id",String.valueOf(item.getPid()));
+                     intent.putExtra("pid",String.valueOf(sharedId[0]));
+                     intent.putExtra("uid",String.valueOf(mValues.get(position).getUid()));
+                     mContext.startActivity(intent);
+                 }
+             }
+         });
         String sid=mValues.get(position).getShareId();
         final String[] animalsArray=sid.split(",");
         if(type.equalsIgnoreCase("image")){
-            Vholder.image.setVisibility(View.VISIBLE);
+            //Vholder.image.setVisibility(View.VISIBLE);
             //String ImageHol=Config.URL_ROOT+"uploads/album/w/500/"+mValues.get(position).getImage();
             String ImageHol=mValues.get(position).getFimage_path();
             Glide.with(mContext)
                     .load(ImageHol)
                     .apply(Config.options_image)
                     .into(Vholder.image);
+
+            Vholder.imageSlider.setVisibility(View.VISIBLE);
+            Vholder.image.setVisibility(View.GONE);
+            //String ImageHol = Config.URL_ROOT+"uploads/product/w/500/"+mValues.get(position).getImage();
+            Vholder.imageSlider.setIndicatorAnimation(IndicatorAnimations.SWAP); //set indicator animation by using SliderLayout.IndicatorAnimations. :WORM or THIN_WORM or COLOR or DROP or FILL or NONE or SCALE or SCALE_DOWN or SLIDE and SWAP!!
+            Vholder.imageSlider.setSliderTransformAnimation(SliderAnimations.FADETRANSFORMATION);
+            Vholder.imageSlider.setScrollTimeInSec(5); //set scroll delay in seconds :
+            Glide.with(mContext).load(R.drawable.product_icon).into(Vholder.imageView_icon);
+            DefaultSliderView sliderView1 = new DefaultSliderView(mContext);
+            sliderView1.setImageUrl(ImageHol);
+            sliderView1.setImageScaleType(ImageView.ScaleType.CENTER_CROP);
+
+            sliderView1.setOnSliderClickListener(new SliderView.OnSliderClickListener() {
+                @Override
+                public void onSliderClick(SliderView sliderView) {
+
+                }
+            });
+
+            //at last add this view in your layout :  other_image.length()>0
+            Vholder.imageSlider.addSliderView(sliderView1);
+            if(mValues.get(position).getImageArray().size()>0){
+                for(int i=0; i<mValues.get(position).getImageArray().size(); i++){
+                    DefaultSliderView sliderView = new DefaultSliderView(mContext);
+                    sliderView.setImageUrl(Config.URL_ROOT+"uploads/album/w/500/"+mValues.get(position).getImageArray().get(i));
+                    Log.d("feed_product",Config.URL_ROOT+"uploads/album/w/500/"+mValues.get(position).getImageArray().get(i));
+                    Log.d("feed_arrayyy",""+mValues.get(position).getImageArray());
+                    sliderView.setImageScaleType(ImageView.ScaleType.CENTER_CROP);
+                    //sliderView.setDescription("setDescription " + (i + 1));
+                    final int finalI = i;
+                    sliderView.setOnSliderClickListener(new SliderView.OnSliderClickListener() {
+                        @Override
+                        public void onSliderClick(SliderView sliderView) {
+                            Intent intent=new Intent(mContext, ProductDetail.class);
+                            //intent.putExtra("id",String.valueOf(item.getPid()));
+                            intent.putExtra("pid",String.valueOf(mValues.get(position).getId()));
+                            intent.putExtra("uid",String.valueOf(mValues.get(position).getUid()));
+                            mContext.startActivity(intent);
+                        }
+                    });
+
+                    //at last add this view in your layout :
+                    Vholder.imageSlider.addSliderView(sliderView);
+                }
+            }
+
             Glide.with(mContext).load(R.drawable.image_icon).into(Vholder.imageView_icon);
         }else if(type.equalsIgnoreCase("video")){
             //videoView.setVisibility(View.VISIBLE);
@@ -338,7 +447,6 @@ public class AllFeedAdapter extends RecyclerView.Adapter<AllFeedAdapter.ViewHold
         else if(type.equalsIgnoreCase("product")){
             Vholder.imageSlider.setVisibility(View.VISIBLE);
             Vholder.image.setVisibility(View.GONE);
-            //JSONArray other_image = result.getJSONArray("myother_img");
             //String ImageHol = Config.URL_ROOT+"uploads/product/w/500/"+mValues.get(position).getImage();
             String ImageHol = mValues.get(position).getFimage_path();
             Vholder.imageSlider.setIndicatorAnimation(IndicatorAnimations.SWAP); //set indicator animation by using SliderLayout.IndicatorAnimations. :WORM or THIN_WORM or COLOR or DROP or FILL or NONE or SCALE or SCALE_DOWN or SLIDE and SWAP!!
@@ -527,24 +635,17 @@ public class AllFeedAdapter extends RecyclerView.Adapter<AllFeedAdapter.ViewHold
         Vholder.favButton.setOnLikeListener(new OnLikeListener() {
             @Override
             public void liked(LikeButton likeButton) {
-                int newlike=Integer.parseInt(Vholder.tv_totallike.getText().toString())+1;
-                Vholder.tv_totallike.setTextColor(Color.RED);
-                Vholder.tv_totallike.setText(String.valueOf(newlike));
-                String url = Config.API_URL+"app_service.php?type=like_me&id="+String.valueOf(animalsArray[0])+"&uid="+uid+"&ptype="+type;
-                Log.e(Config.TAG,url);
-                function.executeUrl(mContext,"get",url,null);
+                  String url = Config.API_URL+"app_service.php?type=provide_favo&pid="+String.valueOf(id)+"&uid="+uid+"&product_type="+type;
+                  Log.e(Config.TAG,url);
+                  function.executeUrl(mContext,"get",url,null);
             }
             @Override
             public void unLiked(LikeButton likeButton) {
-                int newlike = (int) Integer.parseInt(Vholder.tv_totallike.getText().toString())-1;
-                Vholder.tv_totallike.setTextColor(Color.BLACK);
-                Vholder.tv_totallike.setText(String.valueOf(newlike));
-                String url = Config.API_URL+"app_service.php?type=like_me&id="+String.valueOf(id)+"&uid="+uid+"&ptype="+type;
-                Log.e(Config.TAG,url);
-                function.executeUrl(mContext,"get",url,null);
+                 String url = Config.API_URL+"app_service.php?type=provide_favo&pid="+String.valueOf(id)+"&uid="+uid+"&product_type="+type;
+                 Log.e(Config.TAG,url);
+                 function.executeUrl(mContext,"get",url,null);
             }
         });
-
       Vholder.videoView.setOnClickListener(new View.OnClickListener() {
           @Override
           public void onClick(View v) {

@@ -39,14 +39,22 @@ import com.mssinfotech.iampro.co.common.Config;
 import com.mssinfotech.iampro.co.demand.DemandDetail;
 import com.mssinfotech.iampro.co.model.Review;
 import com.mssinfotech.iampro.co.product.ProductDetail;
+import com.mssinfotech.iampro.co.provide.ProvideDetail;
 import com.mssinfotech.iampro.co.user.ProfileActivity;
 import com.mssinfotech.iampro.co.utils.PrefManager;
+import com.smarteist.autoimageslider.DefaultSliderView;
+import com.smarteist.autoimageslider.IndicatorAnimations;
+import com.smarteist.autoimageslider.SliderAnimations;
+import com.smarteist.autoimageslider.SliderLayout;
+import com.smarteist.autoimageslider.SliderView;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+
+import bg.devlabs.fullscreenvideoview.FullscreenVideoView;
 
 import static com.mssinfotech.iampro.co.common.Config.AVATAR_URL;
 
@@ -61,6 +69,8 @@ public class DemandDetailActivity extends AppCompatActivity implements CommentAd
     ImageView expandedImage;
     ArrayList<Review> items=new ArrayList<>();
     CommentAdapter comment_adapter;
+    FullscreenVideoView fullscreenVideoView;
+    SliderLayout imageSlider;
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
@@ -78,6 +88,9 @@ public class DemandDetailActivity extends AppCompatActivity implements CommentAd
         tv_name=findViewById(R.id.tv_name);
         tv_categories=findViewById(R.id.tv_categories);
         tv_cost=findViewById(R.id.tv_cost);
+
+        imageSlider = findViewById(R.id.imageSlider);
+        fullscreenVideoView = findViewById(R.id.fullscreenVideoView);
         tv_provdetails=findViewById(R.id.tv_provdetails);
         tv_prod_prov_name=findViewById(R.id.tv_prod_prov_name);
         tv_prod_prov_email=findViewById(R.id.tv_prod_prov_email);
@@ -153,8 +166,57 @@ public class DemandDetailActivity extends AppCompatActivity implements CommentAd
                                             .circleCrop().bitmapTransform(new CircleCrop())
                                             .fitCenter())
                                     .into(user_image);
-                            //user_image
-                            // mTextView.append("\n\n");
+
+
+                            imageSlider.setVisibility(View.VISIBLE);
+                            JSONArray other_imagee=responses.getJSONArray("myother_img");
+                            // JSONArray other_image = result.getJSONArray("image_array");
+                            String ImageHol = Config.URL_ROOT+"uploads/product/w/500/"+responses.getString("image");
+                            imageSlider.setIndicatorAnimation(IndicatorAnimations.SWAP); //set indicator animation by using SliderLayout.IndicatorAnimations. :WORM or THIN_WORM or COLOR or DROP or FILL or NONE or SCALE or SCALE_DOWN or SLIDE and SWAP!!
+                            imageSlider.setSliderTransformAnimation(SliderAnimations.FADETRANSFORMATION);
+                            imageSlider.setScrollTimeInSec(5); //set scroll delay in seconds :
+                            //Glide.with(getApplicationContext()).load(R.drawable.product_icon).into(imageView_icon);
+                            DefaultSliderView sliderView1 = new DefaultSliderView(DemandDetailActivity.this);
+                            sliderView1.setImageUrl(ImageHol);
+                            sliderView1.setImageScaleType(ImageView.ScaleType.CENTER_CROP);
+                            //sliderView.setDescription("setDescription " + (i + 1));
+                            sliderView1.setOnSliderClickListener(new SliderView.OnSliderClickListener() {
+                                @Override
+                                public void onSliderClick(SliderView sliderView) {
+                                    //todo
+                                    /*
+                                     * all full screen view
+                                     * */
+                                }
+                            });
+
+                            //at last add this view in your layout :
+                            imageSlider.addSliderView(sliderView1);
+                            if(other_imagee.length()>0){
+                                for(int i=0; i<other_imagee.length(); i++){
+                                    DefaultSliderView sliderView = new DefaultSliderView(DemandDetailActivity.this);
+                                    sliderView.setImageUrl(Config.URL_ROOT+"uploads/product/w/500/"+other_imagee.getString(i));
+                                    Log.d("provide_detail",Config.URL_ROOT+"uploads/product/w/500/"+other_imagee.getString(i));
+                                    sliderView.setImageScaleType(ImageView.ScaleType.CENTER_CROP);
+                                    //sliderView.setDescription("setDescription " + (i + 1));
+                                    final int finalI = i;
+                                    sliderView.setOnSliderClickListener(new SliderView.OnSliderClickListener() {
+                                        @Override
+                                        public void onSliderClick(SliderView sliderView) {
+                                            //todo
+                                            /*
+                                            * all full screen view
+                                            * */
+                                        }
+                                    });
+
+                                    //at last add this view in your layout :
+                                    imageSlider.addSliderView(sliderView);
+                                }
+                            }
+
+
+
                         }catch (Exception e){
                             e.printStackTrace();
                             Toast.makeText(getApplicationContext(),e.getMessage(),Toast.LENGTH_LONG).show();

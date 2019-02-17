@@ -328,7 +328,7 @@ public class ProfileActivity extends AppCompatActivity implements AllFeedAdapter
                                       int all_comment = jsonObject.getInt("all_comment");
                                       int average_rating = jsonObject.getInt("average_rating");
                                       if (type.equalsIgnoreCase("PRODUCT") || type.equalsIgnoreCase("PROVIDE") || type.equalsIgnoreCase("DEMAND")) {
-                                            mValues.add(new FeedModel(id, shareid, fullname, uid, avatar_path, udate, timespam, is_block, imageArray, fimage_path, comment, likes, mylikes, all_rating, type, all_comment, average_rating,detail_name,selling_cost,purchese_cost));
+                                            mValues.add(new FeedModel(id, shareid, fullname, uid, avatar_path, udate, timespam, is_block, imageArray, fimage_path, comment, likes, mylikes, all_rating, type, all_comment, average_rating,detail_name,selling_cost,purchese_cost,is_favrait));
                                       } else{
                                             mValues.add(new FeedModel(id, shareid, fullname, uid, avatar_path, udate, timespam, is_block, imageArray, fimage_path, comment, likes, mylikes, all_rating, type, all_comment, average_rating));
                                       }
