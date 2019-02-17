@@ -2,10 +2,8 @@ package com.mssinfotech.iampro.co.common;
 
 import android.content.Context;
 import android.content.Intent;
-import android.provider.ContactsContract;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.RelativeLayout;
@@ -19,13 +17,11 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.mssinfotech.iampro.co.R;
 import com.mssinfotech.iampro.co.user.JoinFriendActivity;
-import com.mssinfotech.iampro.co.user.JoinedFriendsActivity;
 import com.mssinfotech.iampro.co.user.MyDemandActivity;
 import com.mssinfotech.iampro.co.user.MyImageActivity;
 import com.mssinfotech.iampro.co.user.MyProductActivity;
 import com.mssinfotech.iampro.co.user.MyProvideActivity;
 import com.mssinfotech.iampro.co.user.MyVideoActivity;
-import com.mssinfotech.iampro.co.utils.PrefManager;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -53,7 +49,7 @@ public class IncludeShortMenu  extends RelativeLayout {
     }
     public void updateCounts(Context context,String id){
         userProfileCount(context, id);
-        Toast.makeText(context, id,  Toast.LENGTH_LONG).show();
+        //Toast.makeText(context, id,  Toast.LENGTH_LONG).show();
     }
     public IncludeShortMenu(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);

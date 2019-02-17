@@ -1,5 +1,7 @@
 package com.mssinfotech.iampro.co.user;
 
+import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.Snackbar;
@@ -14,14 +16,19 @@ import android.support.v7.widget.helper.ItemTouchHelper;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
+import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.bumptech.glide.Glide;
 import com.mssinfotech.iampro.co.adapter.MyImageAdapter;
+import com.mssinfotech.iampro.co.common.IncludeShortMenu;
+import com.mssinfotech.iampro.co.common.PhotoFullPopupWindow;
 import com.mssinfotech.iampro.co.model.MyImageModel;
 import com.mssinfotech.iampro.co.model.SingleItemModel;
 import com.mssinfotech.iampro.co.user.JoinFriendActivity;
@@ -38,25 +45,71 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
-public class JoinFriendActivity extends AppCompatActivity implements JoinFriendItemTouchHelper.RecyclerItemTouchHelperListener {
 
+import de.hdodenhof.circleimageview.CircleImageView;
+
+public class JoinFriendActivity extends AppCompatActivity implements JoinFriendItemTouchHelper.RecyclerItemTouchHelperListener {
+    ImageView userbackgroud;
+    CircleImageView userimage;
+    TextView username,tv_category;
     private RecyclerView recyclerView;
     private List<JoinFriendItem> JoinFriendItemList;
     private JoinFriendAdapter mAdapter;
     private ConstraintLayout constraintLayout;
     private static String NOTIFY_URL  = "";
     private String URL_FEED = "",uid="";
+    Context context;
+    Intent intent;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_joinfriend);
+        intent = getIntent();
+        context = getApplicationContext();
         uid= PrefManager.getLoginDetail(this,"id");
         Config.setLayoutName(getResources().getResourceEntryName(R.layout.activity_joinfriend));
+        username = findViewById(R.id.username);
+        userimage = findViewById(R.id.userimage);
+        userbackgroud = findViewById(R.id.userbackgroud);
+        String id = intent.getStringExtra("uid");
+        uid= PrefManager.getLoginDetail(this,"id");
+        if(id == null || id.equals(uid)) {
+            String fname=PrefManager.getLoginDetail(this,"fname");
+            String lname=PrefManager.getLoginDetail(this,"lname");
+            String avatar=Config.AVATAR_URL+"250/250/"+PrefManager.getLoginDetail(this,"img_url");
+            String background=Config.AVATAR_URL+"h/250/"+PrefManager.getLoginDetail(this,"banner_image");
+            username.setText("My Friends");
+            Glide.with(this).load(background).apply(Config.options_background).into(userbackgroud);
+            Glide.with(this).load(avatar).apply(Config.options_avatar).into(userimage);
+            userbackgroud.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    new PhotoFullPopupWindow(context, R.layout.popup_photo_full, view, Config.AVATAR_URL+PrefManager.getLoginDetail(context,"banner_image"), null);
+                }
+            });
+            userimage.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    new PhotoFullPopupWindow(context, R.layout.popup_photo_full, view, Config.AVATAR_URL+PrefManager.getLoginDetail(context,"img_url"), null);
+                }
+            });
+            PrefManager.updateUserData(this,null);
+        }else{
+            uid= id;
+            gteUsrDetail(id);
+        }
+
+        IncludeShortMenu includeShortMenu = findViewById(R.id.includeShortMenu);
+        includeShortMenu.updateCounts(this,uid);
+        TextView myuid= includeShortMenu.findViewById(R.id.myuid);
+        myuid.setText(uid);
+        Intent i = new Intent();
+        Config.PREVIOUS_PAGE_TAG = i.getStringExtra(Config.PAGE_TAG);
+
         NOTIFY_URL  = Config.API_URL+"app_service.php?type=view_friend_list&id="+ PrefManager.getLoginDetail(this,"id")+"&my_id="+ PrefManager.getLoginDetail(this,"id")+"&status=2";
         recyclerView = findViewById(R.id.recycler_view);
         JoinFriendItemList = new ArrayList<JoinFriendItem>();
-       // mAdapter = new JoinFriendAdapter(this, JoinFriendItemList);
-
+        //mAdapter = new JoinFriendAdapter(this, JoinFriendItemList);
         constraintLayout = findViewById(R.id.constraintLayout);
         // adding item touch helper
         // only ItemTouchHelper.LEFT added to detect Right to Left swipe
@@ -68,6 +121,57 @@ public class JoinFriendActivity extends AppCompatActivity implements JoinFriendI
         prepareWhishList();
         getJoinedFriend();
     }
+
+    private void gteUsrDetail(String id){
+        String myurl = Config.API_URL + "ajax.php?type=friend_detail&id=" + id + "&uid=" + uid;
+        Log.d(Config.TAG, myurl);
+        StringRequest stringRequest = new StringRequest(myurl,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        JSONObject result = null;
+                        try {
+                            Log.d(Config.TAG, response);
+                            result = new JSONObject(response);
+                            String fname=result.optString("fname");
+                            String lname=result.optString("lname");
+                            final String avatarX=result.getString("avatar");
+                            final String backgroundX=result.getString("banner_image");
+                            username = findViewById(R.id.username);
+                            userimage = findViewById(R.id.userimage);
+                            userbackgroud = findViewById(R.id.userbackgroud);
+                            username.setText(fname +" "+lname+"'s Friends");
+                            Glide.with(getApplicationContext()).load(Config.AVATAR_URL+"h/250/"+backgroundX).apply(Config.options_background).into(userbackgroud);
+                            Glide.with(getApplicationContext()).load(Config.AVATAR_URL+"250/250/"+avatarX).apply(Config.options_avatar).into(userimage);
+                            userbackgroud.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View view) {
+                                    new PhotoFullPopupWindow(context, R.layout.popup_photo_full, view, Config.AVATAR_URL+backgroundX, null);
+                                }
+                            });
+                            userimage.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View view) {
+                                    new PhotoFullPopupWindow(context, R.layout.popup_photo_full, view, Config.AVATAR_URL+avatarX, null);
+                                }
+                            });
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Log.e(Config.TAG, error.toString());
+                    }
+                });
+        //Creating a request queue
+        RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
+        //Adding request to the queue
+        requestQueue.add(stringRequest);
+    }
+
     /**
      * method make volley network call and parses json
      */

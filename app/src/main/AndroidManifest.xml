@@ -36,9 +36,6 @@
             android:name=".user.EditProfileActivity"
             android:label="@string/edit_profile" />
         <activity
-            android:name=".user.JoinedFriendsActivity"
-            android:theme="@style/AppTheme.NoActionBar" />
-        <activity
             android:name=".user.JoinFriendActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
@@ -147,6 +144,7 @@
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".user.ProfileActivity"
+            android:configChanges="orientation|screenSize"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".SearchActivity"

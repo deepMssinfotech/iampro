@@ -2,6 +2,7 @@ package com.mssinfotech.iampro.co.user;
 
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
@@ -35,6 +36,7 @@ import com.mssinfotech.iampro.co.adapter.RecyclerViewDataAdapter;
 import com.mssinfotech.iampro.co.common.CircleTransform;
 import com.mssinfotech.iampro.co.common.Config;
 import com.mssinfotech.iampro.co.common.IncludeShortMenu;
+import com.mssinfotech.iampro.co.common.PhotoFullPopupWindow;
 import com.mssinfotech.iampro.co.model.MyImageModel;
 import com.mssinfotech.iampro.co.model.SectionDataModel;
 import com.mssinfotech.iampro.co.model.SectionImageModel;
@@ -76,15 +78,19 @@ public class MyImageActivity extends AppCompatActivity implements MyImageAdapter
     MyImageVideoDataAdapter adapterr;
     ImageView userbackgroud ,changeImage,changeBackground_Image ;
     private GalleryAdapter galleryAdapter;
+    Context context;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my_image);
         Config.setLayoutName(getResources().getResourceEntryName(R.layout.activity_my_image));
         intent = getIntent();
+        context = getApplicationContext();
         String id = intent.getStringExtra("uid");
         username = findViewById(R.id.username);
         userimage = findViewById(R.id.userimage);
+        changeImage = findViewById(R.id.changeImage);
+        changeBackground_Image = findViewById(R.id.changeBackground_Image);
         recyclerView=findViewById(R.id.recyclerView);
         tv_category=findViewById(R.id.tv_category);
         userbackgroud = findViewById(R.id.userbackgroud);
@@ -96,9 +102,21 @@ public class MyImageActivity extends AppCompatActivity implements MyImageAdapter
             String avatar=Config.BANNER_URL+"250/250/"+PrefManager.getLoginDetail(this,"profile_image_gallery");
             String background=Config.BANNER_URL+"h/250/"+PrefManager.getLoginDetail(this,"img_banner_image");
             username.setText("My Images");
-            Glide.with(this).load(background).apply(Config.options_background).into(userbackgroud);
+            Glide.with(this).load(background).apply(Config.options_image).into(userbackgroud);
             Glide.with(this).load(avatar).apply(Config.options_avatar).into(userimage);
+            userbackgroud.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    new PhotoFullPopupWindow(context, R.layout.popup_photo_full, view, Config.BANNER_URL+PrefManager.getLoginDetail(context,"img_banner_image"), null);
+                }
+            });
             userimage.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    new PhotoFullPopupWindow(context, R.layout.popup_photo_full, view, Config.BANNER_URL+PrefManager.getLoginDetail(context,"profile_image_gallery"), null);
+                }
+            });
+            changeImage.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     Intent intent=new Intent(MyImageActivity.this,ImageImageCroperActivity.class);
@@ -106,28 +124,17 @@ public class MyImageActivity extends AppCompatActivity implements MyImageAdapter
                     finish();
                 }
             });
+            changeBackground_Image.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    showPictureDialog();
+                }
+            });
         }else{
             uid= id;
             gteUsrDetail(id);
         }
 
-        changeImage = findViewById(R.id.changeImage);
-        changeImage.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent=new Intent(MyImageActivity.this,ProfileImageCroperActivity.class);
-                startActivity(intent);
-                //finish();
-            }
-        });
-
-        changeBackground_Image = findViewById(R.id.changeBackground_Image);
-        changeBackground_Image.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                showPictureDialog();
-            }
-        });
 
         IncludeShortMenu includeShortMenu = findViewById(R.id.includeShortMenu);
         includeShortMenu.updateCounts(this,uid);
@@ -154,14 +161,26 @@ public class MyImageActivity extends AppCompatActivity implements MyImageAdapter
                             result = new JSONObject(response);
                             String fname=result.optString("fname");
                             String lname=result.optString("lname");
-                            String avatar=Config.AVATAR_URL+"250/250/"+result.optString("profile_image_gallery");
-                            String background=Config.AVATAR_URL+"h/250/"+result.optString("img_banner_image");
+                            final String avatarX=result.getString("profile_image_gallery");
+                            final String backgroundX=result.getString("img_banner_image");
                             username = findViewById(R.id.username);
                             userimage = findViewById(R.id.userimage);
                             userbackgroud = findViewById(R.id.userbackgroud);
-                            username.setText(fname +" "+lname+"'s Images");
-                            Glide.with(getApplicationContext()).load(background).apply(Config.options_background).into(userbackgroud);
-                            Glide.with(getApplicationContext()).load(avatar).apply(Config.options_avatar).into(userimage);
+                            username.setText(fname +" "+lname+" Images");
+                            Glide.with(getApplicationContext()).load(Config.BANNER_URL+"h/250/"+backgroundX).apply(Config.options_image).into(userbackgroud);
+                            Glide.with(getApplicationContext()).load(Config.BANNER_URL+"250/250/"+avatarX).apply(Config.options_avatar).into(userimage);
+                            userbackgroud.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View view) {
+                                    new PhotoFullPopupWindow(context, R.layout.popup_photo_full, view, Config.BANNER_URL+backgroundX, null);
+                                }
+                            });
+                            userimage.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View view) {
+                                    new PhotoFullPopupWindow(context, R.layout.popup_photo_full, view, Config.BANNER_URL+avatarX, null);
+                                }
+                            });
 
                         } catch (JSONException e) {
                             e.printStackTrace();

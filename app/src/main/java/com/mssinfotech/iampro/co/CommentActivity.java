@@ -33,11 +33,18 @@ import com.like.LikeButton;
 import com.like.OnLikeListener;
 import com.mssinfotech.iampro.co.adapter.CommentAdapter;
 import com.mssinfotech.iampro.co.common.Config;
+import com.mssinfotech.iampro.co.common.PhotoFullPopupWindow;
 import com.mssinfotech.iampro.co.common.function;
 import com.mssinfotech.iampro.co.demand.DemandDetail;
 import com.mssinfotech.iampro.co.model.Review;
 import com.mssinfotech.iampro.co.product.ProductDetail;
 import com.mssinfotech.iampro.co.provide.ProvideDetail;
+import com.mssinfotech.iampro.co.user.MyDemandActivity;
+import com.mssinfotech.iampro.co.user.MyImageActivity;
+import com.mssinfotech.iampro.co.user.MyProductActivity;
+import com.mssinfotech.iampro.co.user.MyProvideActivity;
+import com.mssinfotech.iampro.co.user.MyVideoActivity;
+import com.mssinfotech.iampro.co.user.ProfileActivity;
 import com.mssinfotech.iampro.co.utils.PrefManager;
 
 import org.json.JSONArray;
@@ -118,17 +125,16 @@ public class CommentActivity extends AppCompatActivity implements CommentAdapter
                         JSONObject result = null;
                         try {
                             result = new JSONObject(response);
-                            JSONObject userDetail = result.getJSONObject("user_detail");
-                            Glide.with(getApplicationContext()).load(Config.AVATAR_URL+userDetail.getString("avatar")).apply(Config.options_image).into(imageView_user);
-                            fullname.setText(userDetail.getString("fullname"));
+                            Glide.with(getApplicationContext()).load(Config.AVATAR_URL+result.getString("avatar")).apply(Config.options_image).into(imageView_user);
+                            fullname.setText(result.getString("fullname"));
                             udate.setText(result.getString("udate"));
-                            tv_comments.setText(result.getString("comments"));
-                            tv_totallike.setText(result.getString("totallike"));
+                            tv_comments.setText(result.getString("comment"));
+                            tv_totallike.setText(result.getString("likes"));
                             likeButton.setUnlikeDrawableRes(R.drawable.like);
                             likeButton.setLikeDrawableRes(R.drawable.like_un);
                             int my_uid=Integer.parseInt(user_id);
                             Float total_rating = null;
-                            String rating = result.getString("average_rating");
+                            String rating = result.getString("all_rating");
                             try {
                                 total_rating = new Float(rating);
                             }
@@ -173,11 +179,18 @@ public class CommentActivity extends AppCompatActivity implements CommentAdapter
                                     function.executeUrl(getApplicationContext(),"get",url,null);
                                 }
                             });
-
+                            imageView_user.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View view) {
+                                    Intent intent=new Intent(getApplicationContext(), ProfileActivity.class);
+                                    intent.putExtra("uid",String.valueOf(user_id));
+                                    getApplicationContext().startActivity(intent);
+                                }
+                            });
 
                             imageSlider.setVisibility(View.VISIBLE);
                             JSONArray other_image = result.getJSONArray("image_array");
-                            String ImageHol = Config.URL_ROOT+"uploads/product/w/500/"+result.getString("first_image");
+                            final String ImageHol = Config.URL_ROOT+"uploads/album/w/500/"+result.getString("first_image");
                             imageSlider.setIndicatorAnimation(IndicatorAnimations.SWAP); //set indicator animation by using SliderLayout.IndicatorAnimations. :WORM or THIN_WORM or COLOR or DROP or FILL or NONE or SCALE or SCALE_DOWN or SLIDE and SWAP!!
                             imageSlider.setSliderTransformAnimation(SliderAnimations.FADETRANSFORMATION);
                             imageSlider.setScrollTimeInSec(5); //set scroll delay in seconds :
@@ -189,10 +202,7 @@ public class CommentActivity extends AppCompatActivity implements CommentAdapter
                             sliderView1.setOnSliderClickListener(new SliderView.OnSliderClickListener() {
                                 @Override
                                 public void onSliderClick(SliderView sliderView) {
-                                    //todo
-                                    /*
-                                     * all full screen view
-                                     * */
+                                    new PhotoFullPopupWindow(getApplication(), R.layout.popup_photo_full, fullname.getRootView(), ImageHol, null);
                                 }
                             });
 
@@ -201,18 +211,15 @@ public class CommentActivity extends AppCompatActivity implements CommentAdapter
                             if(other_image.length()>0){
                                 for(int i=0; i<other_image.length(); i++){
                                     DefaultSliderView sliderView = new DefaultSliderView(CommentActivity.this);
-                                    sliderView.setImageUrl(Config.URL_ROOT+"uploads/album/w/500/"+other_image.getString(i));
-                                    Log.d(Config.TAG,Config.URL_ROOT+"uploads/album/w/500/"+other_image.getString(i));
+                                    final String imgUrl=Config.URL_ROOT+"uploads/album/w/500/"+other_image.getString(i);
+                                    sliderView.setImageUrl(imgUrl);
                                     sliderView.setImageScaleType(ImageView.ScaleType.CENTER_CROP);
                                     //sliderView.setDescription("setDescription " + (i + 1));
                                     final int finalI = i;
                                     sliderView.setOnSliderClickListener(new SliderView.OnSliderClickListener() {
                                         @Override
                                         public void onSliderClick(SliderView sliderView) {
-                                            //todo
-                                            /*
-                                            * all full screen view
-                                            * */
+                                            new PhotoFullPopupWindow(getApplication(), R.layout.popup_photo_full, fullname.getRootView(), imgUrl, null);
                                         }
                                     });
 
@@ -220,9 +227,15 @@ public class CommentActivity extends AppCompatActivity implements CommentAdapter
                                     imageSlider.addSliderView(sliderView);
                                 }
                             }
-
-
                             Glide.with(getApplicationContext()).load(R.drawable.image_icon).into(imageView_icon);
+                            imageView_icon.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View view) {
+                                    Intent intent=new Intent(getApplicationContext(), MyImageActivity.class);
+                                    intent.putExtra("uid",String.valueOf(user_id));
+                                    getApplicationContext().startActivity(intent);
+                                }
+                            });
 
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -305,6 +318,14 @@ public class CommentActivity extends AppCompatActivity implements CommentAdapter
                                     function.executeUrl(getApplicationContext(),"get",url,null);
                                 }
                             });
+                            imageView_user.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View view) {
+                                    Intent intent=new Intent(getApplicationContext(), ProfileActivity.class);
+                                    intent.putExtra("uid",String.valueOf(user_id));
+                                    getApplicationContext().startActivity(intent);
+                                }
+                            });
                             if(data_type.equalsIgnoreCase("image")){
                                 imageView.setVisibility(View.VISIBLE);
                                 String ImageHol=Config.URL_ROOT+"uploads/album/w/500/"+result.getString("image");
@@ -313,6 +334,14 @@ public class CommentActivity extends AppCompatActivity implements CommentAdapter
                                         .apply(Config.options_image)
                                         .into(imageView);
                                 Glide.with(getApplicationContext()).load(R.drawable.image_icon).into(imageView_icon);
+                                imageView_icon.setOnClickListener(new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View view) {
+                                        Intent intent=new Intent(getApplicationContext(), MyImageActivity.class);
+                                        intent.putExtra("uid",String.valueOf(user_id));
+                                        getApplicationContext().startActivity(intent);
+                                    }
+                                });
                             }else if(data_type.equalsIgnoreCase("video")){
                                 //videoView.setVisibility(View.VISIBLE);
                                 fullscreenVideoView.setVisibility(View.VISIBLE);
@@ -331,6 +360,14 @@ public class CommentActivity extends AppCompatActivity implements CommentAdapter
                                         .portraitOrientation(PortraitOrientation.DEFAULT)
                                         .landscapeOrientation(LandscapeOrientation.DEFAULT);
                                 Glide.with(getApplicationContext()).load(R.drawable.video_icon).into(imageView_icon);
+                                imageView_icon.setOnClickListener(new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View view) {
+                                        Intent intent=new Intent(getApplicationContext(), MyVideoActivity.class);
+                                        intent.putExtra("uid",String.valueOf(user_id));
+                                        getApplicationContext().startActivity(intent);
+                                    }
+                                });
                             }
                             else if(data_type.equalsIgnoreCase("product")){
                                 imageSlider.setVisibility(View.VISIBLE);
@@ -381,6 +418,14 @@ public class CommentActivity extends AppCompatActivity implements CommentAdapter
                                     }
                                 }
                                 Glide.with(getApplicationContext()).load(R.drawable.product_icon).into(imageView_icon);
+                                imageView_icon.setOnClickListener(new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View view) {
+                                        Intent intent=new Intent(getApplicationContext(), MyProductActivity.class);
+                                        intent.putExtra("uid",String.valueOf(user_id));
+                                        getApplicationContext().startActivity(intent);
+                                    }
+                                });
                             }
                             else if(data_type.equalsIgnoreCase("provide")){
                                 imageSlider.setVisibility(View.VISIBLE);
@@ -431,6 +476,14 @@ public class CommentActivity extends AppCompatActivity implements CommentAdapter
                                     }
                                 }
                                 Glide.with(getApplicationContext()).load(R.drawable.provide_icon).into(imageView_icon);
+                                imageView_icon.setOnClickListener(new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View view) {
+                                        Intent intent=new Intent(getApplicationContext(), MyProvideActivity.class);
+                                        intent.putExtra("uid",String.valueOf(user_id));
+                                        getApplicationContext().startActivity(intent);
+                                    }
+                                });
                             }else if(data_type.equalsIgnoreCase("demand")){
                                 imageSlider.setVisibility(View.VISIBLE);
                                 JSONArray other_image = result.getJSONArray("myother_img");
@@ -480,6 +533,14 @@ public class CommentActivity extends AppCompatActivity implements CommentAdapter
                                     }
                                 }
                                 Glide.with(getApplicationContext()).load(R.drawable.demand_icon).into(imageView_icon);
+                                imageView_icon.setOnClickListener(new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View view) {
+                                        Intent intent=new Intent(getApplicationContext(), MyDemandActivity.class);
+                                        intent.putExtra("uid",String.valueOf(user_id));
+                                        getApplicationContext().startActivity(intent);
+                                    }
+                                });
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
