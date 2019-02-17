@@ -1,6 +1,7 @@
 package com.mssinfotech.iampro.co.user;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
@@ -38,6 +39,7 @@ import com.mssinfotech.iampro.co.adapter.MyVideoDataAdapter;
 import com.mssinfotech.iampro.co.common.CircleTransform;
 import com.mssinfotech.iampro.co.common.Config;
 import com.mssinfotech.iampro.co.common.IncludeShortMenu;
+import com.mssinfotech.iampro.co.common.PhotoFullPopupWindow;
 import com.mssinfotech.iampro.co.model.MyImageModel;
 import com.mssinfotech.iampro.co.model.MyProductModel;
 import com.mssinfotech.iampro.co.model.SectionImageModel;
@@ -73,12 +75,14 @@ public class MyVideoActivity extends AppCompatActivity implements MyVideoAdapter
     ArrayList<SectionImageModel> allSampleData=new ArrayList<>();
     MyVideoDataAdapter adapterr;
     ImageView changeImage,changeBackground_Image ;
+    Context context;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my_video);
         Config.setLayoutName(getResources().getResourceEntryName(R.layout.activity_my_video));
         intent = getIntent();
+        context = getApplicationContext();
         String id = intent.getStringExtra("uid");
         username = findViewById(R.id.username);
         userimage = findViewById(R.id.userimage);
@@ -86,23 +90,42 @@ public class MyVideoActivity extends AppCompatActivity implements MyVideoAdapter
         tv_category=findViewById(R.id.tv_category);
         userbackgroud = findViewById(R.id.userbackgroud);
         changeImage = findViewById(R.id.changeImage);
-
+        changeImage = findViewById(R.id.changeImage);
+        changeBackground_Image = findViewById(R.id.changeBackground_Image);
         uid= PrefManager.getLoginDetail(this,"id");
         if(id == null || id.equals(uid)) {
             String fname=PrefManager.getLoginDetail(this,"fname");
             String lname=PrefManager.getLoginDetail(this,"lname");
             String avatar=Config.BANNER_URL+"250/250/"+PrefManager.getLoginDetail(this,"profile_video_gallery");
             String background=Config.BANNER_URL+"h/250/"+PrefManager.getLoginDetail(this,"video_banner_image");
-            username.setText("My Video Gallery");
-            Glide.with(this).load(background).apply(Config.options_background).into(userbackgroud);
+            username.setText("My Videos");
+            Glide.with(this).load(background).apply(Config.options_video).into(userbackgroud);
             Glide.with(this).load(avatar).apply(Config.options_avatar).into(userimage);
-            username.setVisibility(View.VISIBLE);
-            username .setOnClickListener(new View.OnClickListener() {
+            userbackgroud.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Intent intent=new Intent(MyVideoActivity.this,VideoImageCroperActivity.class);
+                    new PhotoFullPopupWindow(context, R.layout.popup_photo_full, view, Config.BANNER_URL+PrefManager.getLoginDetail(context,"video_banner_image"), null);
+                }
+            });
+            userimage.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    new PhotoFullPopupWindow(context, R.layout.popup_photo_full, view, Config.BANNER_URL+PrefManager.getLoginDetail(context,"profile_video_gallery"), null);
+                }
+            });
+            changeImage.setVisibility(View.VISIBLE);
+            changeImage.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent intent=new Intent(MyVideoActivity.this,ProfileImageCroperActivity.class);
                     startActivity(intent);
-                    finish();
+                    //finish();
+                }
+            });
+            changeBackground_Image.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    showPictureDialog();
                 }
             });
         }else{
@@ -119,23 +142,6 @@ public class MyVideoActivity extends AppCompatActivity implements MyVideoAdapter
         //getVideo();
         getAllAlbum();
 
-        changeImage = findViewById(R.id.changeImage);
-        changeImage.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent=new Intent(MyVideoActivity.this,ProfileImageCroperActivity.class);
-                startActivity(intent);
-                //finish();
-            }
-        });
-
-        changeBackground_Image = findViewById(R.id.changeBackground_Image);
-        changeBackground_Image.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                showPictureDialog();
-            }
-        });
     }
     private void gteUsrDetail(String id){
         String myurl = Config.API_URL + "ajax.php?type=friend_detail&id=" + id + "&uid=" + uid;
@@ -150,14 +156,26 @@ public class MyVideoActivity extends AppCompatActivity implements MyVideoAdapter
                             result = new JSONObject(response);
                             String fname=result.optString("fname");
                             String lname=result.optString("lname");
-                            String avatar=Config.AVATAR_URL+"250/250/"+result.optString("profile_video_gallery");
-                            String background=Config.AVATAR_URL+"h/250/"+result.optString("video_banner_image");
+                            final String avatarX=result.getString("profile_video_gallery");
+                            final String backgroundX=result.getString("video_banner_image");
                             username = findViewById(R.id.username);
                             userimage = findViewById(R.id.userimage);
                             userbackgroud = findViewById(R.id.userbackgroud);
-                            username.setText(fname +" "+lname+"'s Video Gallery");
-                            Glide.with(getApplicationContext()).load(background).apply(Config.options_background).into(userbackgroud);
-                            Glide.with(getApplicationContext()).load(avatar).apply(Config.options_avatar).into(userimage);
+                            username.setText(fname +" "+lname+" Videos");
+                            Glide.with(getApplicationContext()).load(Config.BANNER_URL+"h/250/"+backgroundX).apply(Config.options_video).into(userbackgroud);
+                            Glide.with(getApplicationContext()).load(Config.BANNER_URL+"250/250/"+avatarX).apply(Config.options_avatar).into(userimage);
+                            userbackgroud.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View view) {
+                                    new PhotoFullPopupWindow(context, R.layout.popup_photo_full, view, Config.BANNER_URL+backgroundX, null);
+                                }
+                            });
+                            userimage.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View view) {
+                                    new PhotoFullPopupWindow(context, R.layout.popup_photo_full, view, Config.BANNER_URL+avatarX, null);
+                                }
+                            });
 
                         } catch (JSONException e) {
                             e.printStackTrace();

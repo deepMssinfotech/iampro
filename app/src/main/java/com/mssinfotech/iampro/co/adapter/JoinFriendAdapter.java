@@ -10,6 +10,7 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.mssinfotech.iampro.co.R;
+import com.mssinfotech.iampro.co.common.Config;
 import com.mssinfotech.iampro.co.data.JoinFriendItem;
 
 import java.util.List;
@@ -65,7 +66,7 @@ public class JoinFriendAdapter extends RecyclerView.Adapter<JoinFriendAdapter.My
         //holder.total_provide.setText(String.valueOf(item.getTotal_product_provide()));
         //holder.total_video.setText(String.valueOf(item.getTotal_video()));
         //holder.total_user.setText(String.valueOf(item.getTotal_friend()));
-        Glide.with(context).load(item.getAvatar()).into(holder.userimage);
+        Glide.with(context).load(item.getAvatar()).apply(Config.options_avatar).into(holder.userimage);
 
     }
 

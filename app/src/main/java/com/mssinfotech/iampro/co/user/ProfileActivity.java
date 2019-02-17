@@ -1,6 +1,7 @@
 package com.mssinfotech.iampro.co.user;
 
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Handler;
@@ -28,6 +29,7 @@ import com.mssinfotech.iampro.co.adapter.CommentAdapter;
 import com.mssinfotech.iampro.co.app.AppController;
 import com.mssinfotech.iampro.co.common.CircleTransform;
 import com.mssinfotech.iampro.co.common.IncludeShortMenu;
+import com.mssinfotech.iampro.co.common.PhotoFullPopupWindow;
 import com.mssinfotech.iampro.co.data.FeedItem;
 import com.mssinfotech.iampro.co.common.Config;
 import com.mssinfotech.iampro.co.model.FeedModel;
@@ -74,10 +76,10 @@ public class ProfileActivity extends AppCompatActivity implements AllFeedAdapter
     private LinearLayoutManager mLayoutManager;
     protected Handler handler;
     Intent intent;
-     RecyclerView vFeed;
-     AllFeedAdapter adapter;
+    RecyclerView vFeed;
+    AllFeedAdapter adapter;
     ArrayList<FeedModel> mValues=new ArrayList<>();
-
+    Context context;
     SwipeRefreshLayout mSwipeRefreshLayout;
     android.support.v7.widget.CardView ll_dashboard;
 
@@ -86,6 +88,7 @@ public class ProfileActivity extends AppCompatActivity implements AllFeedAdapter
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
         Config.setLayoutName(getResources().getResourceEntryName(R.layout.activity_profile));
+        context = getApplicationContext();
         intent = getIntent();
         fid = intent.getStringExtra("uid");
         ll_dashboard=findViewById(R.id.ll_dashboard);
@@ -108,8 +111,20 @@ public class ProfileActivity extends AppCompatActivity implements AllFeedAdapter
             String avatar=Config.AVATAR_URL+"250/250/"+PrefManager.getLoginDetail(this,"img_url");
             String background=Config.AVATAR_URL+"h/250/"+PrefManager.getLoginDetail(this,"banner_image");
             username.setText(fname +" "+lname);
-            Glide.with(this).load(background).into(userbackgroud);
-            Glide.with(this).load(avatar).into(userimage);
+            Glide.with(this).load(background).apply(Config.options_background).into(userbackgroud);
+            Glide.with(this).load(avatar).apply(Config.options_avatar).into(userimage);
+            userbackgroud.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    new PhotoFullPopupWindow(context, R.layout.popup_photo_full, view, Config.AVATAR_URL+PrefManager.getLoginDetail(context,"banner_image"), null);
+                }
+            });
+            userimage.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    new PhotoFullPopupWindow(context, R.layout.popup_photo_full, view, Config.AVATAR_URL+PrefManager.getLoginDetail(context,"img_url"), null);
+                }
+            });
             PrefManager.updateUserData(this,null);
             fid=uid;
             ll_dashboard.setVisibility(View.VISIBLE);
@@ -140,15 +155,26 @@ public class ProfileActivity extends AppCompatActivity implements AllFeedAdapter
                             result = new JSONObject(response);
                             String fname=result.getString("fname");
                             String lname=result.getString("lname");
-                            String avatar=Config.AVATAR_URL+"250/250/"+result.getString("avatar");
-                            String background=Config.AVATAR_URL+"h/250/"+result.getString("banner_image");
+                            final String avatarX=result.getString("avatar");
+                            final String backgroundX=result.getString("banner_image");
                             username = findViewById(R.id.username);
                             userimage = findViewById(R.id.userimage);
                             userbackgroud = findViewById(R.id.userbackgroud);
                             username.setText(fname +" "+lname);
-                            Glide.with(getApplicationContext()).load(background).into(userbackgroud);
-                            Glide.with(getApplicationContext()).load(avatar).into(userimage);
-
+                            Glide.with(getApplicationContext()).load(Config.AVATAR_URL+"h/250/"+backgroundX).apply(Config.options_background).into(userbackgroud);
+                            Glide.with(getApplicationContext()).load(Config.AVATAR_URL+"250/250/"+avatarX).apply(Config.options_avatar).into(userimage);
+                            userbackgroud.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View view) {
+                                    new PhotoFullPopupWindow(context, R.layout.popup_photo_full, view, Config.AVATAR_URL+backgroundX, null);
+                                }
+                            });
+                            userimage.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View view) {
+                                    new PhotoFullPopupWindow(context, R.layout.popup_photo_full, view, Config.AVATAR_URL+avatarX, null);
+                                }
+                            });
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }

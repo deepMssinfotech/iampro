@@ -1,5 +1,6 @@
 package com.mssinfotech.iampro.co.user;
 
+import android.content.Context;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -25,6 +26,7 @@ import com.mssinfotech.iampro.co.adapter.MyProvideAdapter;
 import com.mssinfotech.iampro.co.common.CircleTransform;
 import com.mssinfotech.iampro.co.common.Config;
 import com.mssinfotech.iampro.co.common.IncludeShortMenu;
+import com.mssinfotech.iampro.co.common.PhotoFullPopupWindow;
 import com.mssinfotech.iampro.co.model.MyProductModel;
 import com.mssinfotech.iampro.co.model.SectionDataModel;
 import com.mssinfotech.iampro.co.model.SingleItemModel;
@@ -49,12 +51,14 @@ public class MyProvideActivity extends AppCompatActivity implements MyProvideAda
     ArrayList<MyProductModel> item = new ArrayList<>();
     MyProvideAdapter adapter;
     RecyclerView recyclerView;
+    Context context;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my_provide);
         Config.setLayoutName(getResources().getResourceEntryName(R.layout.activity_my_provide));
         intent = getIntent();
+        context = getApplicationContext();
         String id = intent.getStringExtra("uid");
         username = findViewById(R.id.username);
         userimage = findViewById(R.id.userimage);
@@ -70,6 +74,18 @@ public class MyProvideActivity extends AppCompatActivity implements MyProvideAda
             username.setText("My Provide");
             Glide.with(this).load(background).apply(Config.options_background).into(userbackgroud);
             Glide.with(this).load(avatar).apply(Config.options_avatar).into(userimage);
+            userbackgroud.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    new PhotoFullPopupWindow(context, R.layout.popup_photo_full, view, Config.AVATAR_URL+PrefManager.getLoginDetail(context,"banner_image"), null);
+                }
+            });
+            userimage.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    new PhotoFullPopupWindow(context, R.layout.popup_photo_full, view, Config.AVATAR_URL+PrefManager.getLoginDetail(context,"img_url"), null);
+                }
+            });
             PrefManager.updateUserData(this,null);
         }else{
             uid= id;
@@ -96,15 +112,26 @@ public class MyProvideActivity extends AppCompatActivity implements MyProvideAda
                             result = new JSONObject(response);
                             String fname=result.optString("fname");
                             String lname=result.optString("lname");
-                            String avatar=Config.AVATAR_URL+"250/250/"+result.optString("avatar");
-                            String background=Config.AVATAR_URL+"h/250/"+result.optString("banner_image");
+                            final String avatarX=result.getString("avatar");
+                            final String backgroundX=result.getString("banner_image");
                             username = findViewById(R.id.username);
                             userimage = findViewById(R.id.userimage);
                             userbackgroud = findViewById(R.id.userbackgroud);
                             username.setText(fname +" "+lname+"'s Provide");
-                            Glide.with(getApplicationContext()).load(background).apply(Config.options_background).into(userbackgroud);
-                            Glide.with(getApplicationContext()).load(avatar).apply(Config.options_avatar).into(userimage);
-
+                            Glide.with(getApplicationContext()).load(Config.AVATAR_URL+"h/250/"+backgroundX).apply(Config.options_background).into(userbackgroud);
+                            Glide.with(getApplicationContext()).load(Config.AVATAR_URL+"250/250/"+avatarX).apply(Config.options_avatar).into(userimage);
+                            userbackgroud.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View view) {
+                                    new PhotoFullPopupWindow(context, R.layout.popup_photo_full, view, Config.AVATAR_URL+backgroundX, null);
+                                }
+                            });
+                            userimage.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View view) {
+                                    new PhotoFullPopupWindow(context, R.layout.popup_photo_full, view, Config.AVATAR_URL+avatarX, null);
+                                }
+                            });
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }

@@ -29,6 +29,7 @@
                         android:id="@+id/userbackgroud"
                         android:src="@drawable/profile_background"
                         android:layout_width="match_parent"
+                        android:scaleType="fitXY"
                         android:layout_height="match_parent" />
                     <de.hdodenhof.circleimageview.CircleImageView
                         android:id="@+id/userimage"
