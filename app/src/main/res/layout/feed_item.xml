@@ -159,6 +159,14 @@
          android:layout_marginLeft="10dp"
          android:src="@drawable/baseline_favorite_border_white_18dp"/>
 
+      <com.like.LikeButton
+          android:layout_gravity="left"
+          card_view:icon_type="heart"
+          app:icon_size="20dp"
+          android:id="@+id/favButton"
+           android:visibility="gone"
+          android:layout_width="20dp"
+          android:layout_height="20dp"/>
 
 
       <ImageView

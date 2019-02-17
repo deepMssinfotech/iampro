@@ -228,6 +228,7 @@ public class ProfileActivity extends AppCompatActivity implements AllFeedAdapter
                         try{
                               String feedTotal=response.getString("feedTotal");
                               String status=response.optString("status");
+                               int is_favrait=0;
                               if(status.equalsIgnoreCase("success")) {
                                   JSONArray jsonArray = response.getJSONArray("data");
                                   for (int i = 0; i < jsonArray.length(); i++) {
@@ -275,12 +276,14 @@ public class ProfileActivity extends AppCompatActivity implements AllFeedAdapter
                                           for (int j = 0; j < jsonArrayImage.length(); j++) {
                                               imageArray.add(jsonArrayImage.optString(j));
                                           }
+                                          is_favrait=jsonObject.getInt("is_favrait");
                                       }
                                       else  if (type.equalsIgnoreCase("DEMAND")) {
                                           JSONArray jsonArrayImage = jsonObject.getJSONArray("image_array");
                                           for (int j = 0; j < jsonArrayImage.length(); j++) {
                                               imageArray.add(jsonArrayImage.optString(j));
                                           }
+                                          is_favrait=jsonObject.getInt("is_favrait");
                                       }
                                       int comment = jsonObject.getInt("comment");
                                       int likes = jsonObject.getInt("likes");
