@@ -77,7 +77,7 @@ public class AllFeedAdapter extends RecyclerView.Adapter<AllFeedAdapter.ViewHold
         ImageView imageView_user,imageView_icon,iv_comments,image,iv_favourite,ivLike,iv_buy;
          VideoView videoView;
          TextView fullname,udate,tv_comments,tv_totallike,detail_name,purchese_cost,selling_cost;
-        LikeButton like_un;
+        LikeButton like_un,favButton;
         RatingBar ratingBar;
          LinearLayout ll_showhide,ll_comment;
         FeedModel item;
@@ -94,7 +94,7 @@ public class AllFeedAdapter extends RecyclerView.Adapter<AllFeedAdapter.ViewHold
             imageSlider =v.findViewById(R.id.imageSlider);
             fullscreenVideoView =v.findViewById(R.id.fullscreenVideoView);
             iv_buy=v.findViewById(R.id.iv_buy);
-            iv_favourite=v.findViewById(R.id.iv_favourite);
+            //iv_favourite=v.findViewById(R.id.iv_favourite);
             image=v.findViewById(R.id.imageView);
              videoView=v.findViewById(R.id.videoView);
              ratingBar=v.findViewById(R.id.ratingBar);
@@ -104,6 +104,7 @@ public class AllFeedAdapter extends RecyclerView.Adapter<AllFeedAdapter.ViewHold
             udate=v.findViewById(R.id.udate);
             tv_comments=v.findViewById(R.id.tv_comments);
             like_un=v.findViewById(R.id.likeButton);
+            favButton=v.findViewById(R.id.favButton);
             tv_totallike=v.findViewById(R.id.tv_totallike);
             ll_showhide=v.findViewById(R.id.ll_showhide);
             detail_name=v.findViewById(R.id.detail_name);
@@ -221,11 +222,7 @@ public class AllFeedAdapter extends RecyclerView.Adapter<AllFeedAdapter.ViewHold
               .load(R.drawable.video_icon)
               .apply(Config.options_product)
               .into(imageView_icon);
-                //Toast.makeText(mContext,"Type: "+type,Toast.LENGTH_LONG).show();
-      //Resources resources = mContext.getResources();
-      //imageView_icon.setImageDrawable(resources.getDrawable(R.drawable.video_icon));
 
-      //image.setImageDrawable(ContextCompat.getDrawable(mContext,R.drawable.video_icon));
             }
   else if (type.equalsIgnoreCase("IMAGE")){
       ll_showhide.setVisibility(View.GONE);
@@ -234,10 +231,7 @@ public class AllFeedAdapter extends RecyclerView.Adapter<AllFeedAdapter.ViewHold
               .load(R.drawable.image_icon)
               .apply(Config.options_avatar)
               .into(imageView_icon);
-                //Toast.makeText(mContext,"Type: "+type,Toast.LENGTH_LONG).show();
-      //Resources resources = mContext.getResources();
-      //imageView_icon.setImageDrawable(resources.getDrawable(R.drawable.image_icon));
-      //image.setImageDrawable(ContextCompat.getDrawable(mContext,R.drawable.image_icon));
+
             }
             else if (type.equalsIgnoreCase("PRODUCT")){
                   ll_showhide.setVisibility(View.VISIBLE);
@@ -263,10 +257,7 @@ public class AllFeedAdapter extends RecyclerView.Adapter<AllFeedAdapter.ViewHold
                   mContext.startActivity(intent);
            }
        });
-                //Toast.makeText(mContext,"Type: "+type,Toast.LENGTH_LONG).show();
-      //Resources resources = mContext.getResources();
-      //imageView_icon.setImageDrawable(resources.getDrawable(R.drawable.product_icon));
-      //image.setImageDrawable(ContextCompat.getDrawable(mContext,R.drawable.product_icon));
+
             }
             else if (type.equalsIgnoreCase("PROVIDE")){
               ll_showhide.setVisibility(View.VISIBLE);
@@ -279,7 +270,7 @@ public class AllFeedAdapter extends RecyclerView.Adapter<AllFeedAdapter.ViewHold
                  detail_name.setText(item.getDetail_name());
       purchese_cost.setText("");
       selling_cost.setText("Rs: "+String.valueOf(item.getSelling_cost()));
-      iv_favourite.setVisibility(View.VISIBLE);
+     // iv_favourite.setVisibility(View.VISIBLE);
             }
             else if (type.equalsIgnoreCase("DEMAND")){
                   ll_showhide.setVisibility(View.VISIBLE);
@@ -292,10 +283,7 @@ public class AllFeedAdapter extends RecyclerView.Adapter<AllFeedAdapter.ViewHold
       detail_name.setText(item.getDetail_name());
       purchese_cost.setText("");
       selling_cost.setText("Rs: "+String.valueOf(item.getSelling_cost()));
-     // Resources resources = mContext.getResources();
-      //imageView_icon.setImageDrawable(resources.getDrawable(R.drawable.demand_icon));
-      //image.setImageDrawable(ContextCompat.getDrawable(mContext,R.drawable.demand_icon));
-      iv_favourite.setVisibility(View.VISIBLE);
+      //iv_favourite.setVisibility(View.VISIBLE);
             }
         }
         @Override
@@ -304,8 +292,6 @@ public class AllFeedAdapter extends RecyclerView.Adapter<AllFeedAdapter.ViewHold
                 mListener.onItemClick(item);
             }
         }
-
-
     }
     @Override
     public AllFeedAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -406,6 +392,7 @@ public class AllFeedAdapter extends RecyclerView.Adapter<AllFeedAdapter.ViewHold
         else if(type.equalsIgnoreCase("provide")){
             Vholder.imageSlider.setVisibility(View.VISIBLE);
             Vholder.image.setVisibility(View.GONE);
+            Vholder.favButton.setVisibility(View.VISIBLE);
             //JSONArray other_image = result.getJSONArray("myother_img");
             //String ImageHol = Config.URL_ROOT+"uploads/product/w/500/"+mValues.get(position).getImageArray().get(position);
             String ImageHol = mValues.get(position).getFimage_path();
@@ -457,6 +444,7 @@ public class AllFeedAdapter extends RecyclerView.Adapter<AllFeedAdapter.ViewHold
         }else if(type.equalsIgnoreCase("demand")){
             Vholder.imageSlider.setVisibility(View.VISIBLE);
             Vholder.image.setVisibility(View.GONE);
+             Vholder.favButton.setVisibility(View.VISIBLE);
             //JSONArray other_image = result.getJSONArray("myother_img");
             //String ImageHol = Config.URL_ROOT+"uploads/product/w/500/"+result.getString("image");
             String ImageHol = mValues.get(position).getFimage_path();
@@ -534,6 +522,29 @@ public class AllFeedAdapter extends RecyclerView.Adapter<AllFeedAdapter.ViewHold
                 function.executeUrl(mContext,"get",url,null);
             }
         });
+
+        //
+        Vholder.favButton.setOnLikeListener(new OnLikeListener() {
+            @Override
+            public void liked(LikeButton likeButton) {
+                int newlike=Integer.parseInt(Vholder.tv_totallike.getText().toString())+1;
+                Vholder.tv_totallike.setTextColor(Color.RED);
+                Vholder.tv_totallike.setText(String.valueOf(newlike));
+                String url = Config.API_URL+"app_service.php?type=like_me&id="+String.valueOf(animalsArray[0])+"&uid="+uid+"&ptype="+type;
+                Log.e(Config.TAG,url);
+                function.executeUrl(mContext,"get",url,null);
+            }
+            @Override
+            public void unLiked(LikeButton likeButton) {
+                int newlike = (int) Integer.parseInt(Vholder.tv_totallike.getText().toString())-1;
+                Vholder.tv_totallike.setTextColor(Color.BLACK);
+                Vholder.tv_totallike.setText(String.valueOf(newlike));
+                String url = Config.API_URL+"app_service.php?type=like_me&id="+String.valueOf(id)+"&uid="+uid+"&ptype="+type;
+                Log.e(Config.TAG,url);
+                function.executeUrl(mContext,"get",url,null);
+            }
+        });
+
       Vholder.videoView.setOnClickListener(new View.OnClickListener() {
           @Override
           public void onClick(View v) {
