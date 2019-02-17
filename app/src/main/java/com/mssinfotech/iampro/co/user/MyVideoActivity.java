@@ -129,6 +129,7 @@ public class MyVideoActivity extends AppCompatActivity implements MyVideoAdapter
                 }
             });
         }else{
+            changeBackground_Image.setVisibility(View.GONE);
             changeImage.setVisibility(View.GONE);
             uid= id;
             gteUsrDetail(id);
