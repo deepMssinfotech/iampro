@@ -283,7 +283,7 @@ public class AllFeedAdapter extends RecyclerView.Adapter<AllFeedAdapter.ViewHold
       detail_name.setText(item.getDetail_name());
       purchese_cost.setText("");
       selling_cost.setText("Rs: "+String.valueOf(item.getSelling_cost()));
-      iv_favourite.setVisibility(View.VISIBLE);
+      //iv_favourite.setVisibility(View.VISIBLE);
             }
         }
         @Override
