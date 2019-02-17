@@ -1,4 +1,5 @@
 package com.mssinfotech.iampro.co.tab;
+import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -89,6 +90,9 @@ public class DemandFragment extends Fragment implements DemandAdapter.ItemListen
         final String url =Config.API_URL+"app_service.php?type=all_product_classified&uid="+uid+"&name=DEMAND&my_id="+uid;
         // Initialize a new RequestQueue instance
         RequestQueue requestQueue = Volley.newRequestQueue(getContext());
+        final ProgressDialog pDialog = new ProgressDialog(getContext()); //Your Activity.this
+        pDialog.setMessage("Loading...!");
+        pDialog.show();
         // Initialize a new JsonArrayRequest instance
         JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(
                 Request.Method.GET,
@@ -97,6 +101,7 @@ public class DemandFragment extends Fragment implements DemandAdapter.ItemListen
                 new com.android.volley.Response.Listener<JSONArray>() {
                     @Override
                     public void onResponse(JSONArray response) {
+                        pDialog.dismiss();
                         Log.d("responsef",response.toString());
                         SectionDataModel dm = new SectionDataModel();
                         dm.setHeaderTitle("Demand");
@@ -169,6 +174,7 @@ public class DemandFragment extends Fragment implements DemandAdapter.ItemListen
                             e.printStackTrace();
                             Toast.makeText(getContext(), ""+e.getMessage(), Toast.LENGTH_SHORT).show();
                             Log.d("catch_f",""+e.getMessage());
+                             pDialog.dismiss();
                         }
                     }
                 },
@@ -179,6 +185,7 @@ public class DemandFragment extends Fragment implements DemandAdapter.ItemListen
                         //Snackbar.make(getContext(),"Error...", Snackbar.LENGTH_LONG).show();
                         Toast.makeText(getContext(), error.getMessage(), Toast.LENGTH_SHORT).show();
                         Log.d("verror",error.getMessage());
+                         pDialog.dismiss();
                     }
                 }
         );
@@ -195,7 +202,9 @@ public class DemandFragment extends Fragment implements DemandAdapter.ItemListen
         String url=Config.API_URL+"app_service.php?type=getall_product&added_by="+uid+"&my_id="+uid+"&search_type=DEMAND";
         // Initialize a new RequestQueue instance
         RequestQueue requestQueue = Volley.newRequestQueue(getContext());
-
+        final ProgressDialog pDialog = new ProgressDialog(getContext()); //Your Activity.this
+        pDialog.setMessage("Loading...!");
+        pDialog.show();
         // Initialize a new JsonArrayRequest instance
         JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(
                 Request.Method.GET,
@@ -204,6 +213,7 @@ public class DemandFragment extends Fragment implements DemandAdapter.ItemListen
                 new com.android.volley.Response.Listener<JSONArray>() {
                     @Override
                     public void onResponse(JSONArray response) {
+                        pDialog.dismiss();
                         Log.d("responsef",response.toString());
                         SectionDataModel dm = new SectionDataModel();
                         dm.setHeaderTitle("Product");
@@ -234,7 +244,7 @@ public class DemandFragment extends Fragment implements DemandAdapter.ItemListen
                                 Log.d("pdata",""+name+""+categoryv+""+image+""+udate);
 
                                 // String daysago=student.getString("ago");
-
+                                   int like_unlike=student.optInt("like_unlike");
                                 String rating=String.valueOf(student.getInt("average_rating"));
                                 float ratingv=Float.parseFloat(rating);
 
@@ -251,7 +261,7 @@ public class DemandFragment extends Fragment implements DemandAdapter.ItemListen
                                 // singleItem.add(new SingleItemModel(name,image,udate));
                                 //allSampleData.add(new DataModel(name,image,udate,categoryv));
                                  String more="loadmore";
-                                item.add(new MyProductModel(name,image,udate,categoryv,totallike,comments,scost,ratingv,uid,fullname,avatar,idv,more));
+                                item.add(new MyProductModel(name,image,udate,categoryv,totallike,comments,scost,ratingv,uid,fullname,avatar,idv,more,like_unlike));
                             }
                             Log.d("bdm",singleItem.toString());
                             // dm.setAllItemsInSection(singleItem);
@@ -265,6 +275,7 @@ public class DemandFragment extends Fragment implements DemandAdapter.ItemListen
                             recycler_view_load_more.setLayoutManager(manager);
                         }
                         catch (JSONException e){
+                            pDialog.dismiss();
                             e.printStackTrace();
                             Toast.makeText(getContext(), ""+e.getMessage(), Toast.LENGTH_SHORT).show();
                             Log.d("catch_f",""+e.getMessage());
@@ -274,6 +285,7 @@ public class DemandFragment extends Fragment implements DemandAdapter.ItemListen
                 new com.android.volley.Response.ErrorListener(){
                     @Override
                     public void onErrorResponse(VolleyError error){
+                           pDialog.dismiss();
                         // Do something when error occurred
                         //Snackbar.make(getContext(),"Error...", Snackbar.LENGTH_LONG).show();
                         Toast.makeText(getContext(), error.getMessage(), Toast.LENGTH_SHORT).show();

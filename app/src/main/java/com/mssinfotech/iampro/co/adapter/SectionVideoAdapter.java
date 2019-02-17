@@ -114,11 +114,19 @@ public class SectionVideoAdapter extends RecyclerView.Adapter<SectionVideoAdapte
                         .circleCrop().bitmapTransform(new CircleCrop())
                         .fitCenter())
                 .into(holder.imageView); */
-
-
         //ratingBar.setRating(Float.parseFloat(String.valueOf(item.getRating())));
-
-        if(itemsList.get(i).getMore().equalsIgnoreCase("loadmore")){
+        int my_uid=Integer.parseInt(uidd);
+        if(my_uid==0){
+            holder.likeButton.setEnabled(false);
+        }
+        if(Integer.parseInt(itemsList.get(i).getLike_unlike())==1){
+            holder.likeButton.setLiked(true);
+            holder.tv_totallike.setTextColor(Color.RED);
+        }else{
+            holder.likeButton.setLiked(false);
+            holder.tv_totallike.setTextColor(Color.BLACK);
+        }
+        if(itemsList.get(i).getMore()!=null && itemsList.get(i).getMore().equalsIgnoreCase("loadmore")){
             //holder.btnMore.setVisibility(View.GONE);
             holder.iv_delete.setVisibility(View.GONE);
             holder.iv_edit.setVisibility(View.GONE);

@@ -64,7 +64,7 @@ public class MyImageVideoDataAdapter extends RecyclerView.Adapter<MyImageVideoDa
         //Toast.makeText(mContext, "click event on more, "+sectionName , Toast.LENGTH_SHORT).show();
        itemRowHolder.itemTitle.setText(sectionName);
         //more
-       if(dataList.get(i).getMore().equalsIgnoreCase("loadmore")){
+       if(dataList.get(i).getMore()!=null && dataList.get(i).getMore().equalsIgnoreCase("loadmore")){
            itemRowHolder.btnMore.setVisibility(View.INVISIBLE);
        }
        /* if(sectionName.equalsIgnoreCase("Product")){

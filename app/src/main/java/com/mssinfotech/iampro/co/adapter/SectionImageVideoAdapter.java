@@ -87,13 +87,25 @@ public class SectionImageVideoAdapter extends RecyclerView.Adapter<SectionImageV
         final String pid=singleItem.getId();
         final String uidv=itemsList.get(i).getUid();
 
+        int my_uid=Integer.parseInt(uidv);
+        if(my_uid==0){
+            holder.likeButton.setEnabled(false);
+        }
+        if(Integer.parseInt(itemsList.get(i).getLike_unlike())==1){
+            holder.likeButton.setLiked(true);
+            holder.tv_totallike.setTextColor(Color.RED);
+        }else{
+            holder.likeButton.setLiked(false);
+            holder.tv_totallike.setTextColor(Color.BLACK);
+        }
+
        //if(singleItem.getRating()!="NAN" || singleItem.getRating().length()>0 || !(singleItem.getRating().equalsIgnoreCase("NAN")) || singleItem.getRating()!="" || !singleItem.getRating().equalsIgnoreCase("") || !singleItem.getRating().isEmpty())
         //holder.ratingBar.setRating(Float.parseFloat(String.valueOf(singleItem.getRating())));
         holder. category.setText(singleItem .getCategory());
         holder.tv_name.setText(singleItem.getName());
         holder.udate.setText(singleItem.getUdate());
         holder.tv_comments.setText(String.valueOf(singleItem .getComments()));
-        if(itemsList.get(i).getMore().equalsIgnoreCase("loadmore")){
+        if(itemsList.get(i).getMore()!=null && itemsList.get(i).getMore().equalsIgnoreCase("loadmore")){
             //holder.btnMore.setVisibility(View.GONE);
             holder.iv_delete.setVisibility(View.GONE);
             holder.iv_edit.setVisibility(View.GONE);

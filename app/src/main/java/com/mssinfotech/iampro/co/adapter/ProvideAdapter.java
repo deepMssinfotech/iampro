@@ -30,6 +30,7 @@ import com.like.OnLikeListener;
 import com.mssinfotech.iampro.co.CommentActivity;
 import com.mssinfotech.iampro.co.R;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.RadioButton;
 
 /**
@@ -81,6 +82,7 @@ public class ProvideAdapter extends RecyclerView.Adapter<ProvideAdapter.ViewHold
         LikeButton likeButton;
         DataModel item;
         ImageView ivLike;
+         LinearLayout ll_coomentpd;
         public ViewHolder(View v) {
             super(v);
             v.setOnClickListener(this);
@@ -92,6 +94,7 @@ public class ProvideAdapter extends RecyclerView.Adapter<ProvideAdapter.ViewHold
             //tv_comments
             tv_comments=v.findViewById(R.id.tv_comments);
             iv_comments=v.findViewById(R.id.iv_comments);
+            ll_coomentpd=v.findViewById(R.id.ll_coomentpd);
             tv_daysago=v.findViewById(R.id.tv_daysago);
             tv_sprice=v.findViewById(R.id.tv_sprice);
             tv_pprice=v.findViewById(R.id.tv_sprice);
@@ -124,11 +127,11 @@ public class ProvideAdapter extends RecyclerView.Adapter<ProvideAdapter.ViewHold
                     rateMe(item.getPid(),String.valueOf(item.getUid()),rating);
                 }
             });
-            tv_comments.setOnClickListener(CommnetOnClickListener);
-            iv_comments.setOnClickListener(CommnetOnClickListener);
+            //tv_comments.setOnClickListener(CommnetOnClickListener);
+            //iv_comments.setOnClickListener(CommnetOnClickListener);
 
         }
-        private View.OnClickListener CommnetOnClickListener = new View.OnClickListener() {
+       /* private View.OnClickListener CommnetOnClickListener = new View.OnClickListener() {
             public void onClick(View v) {
                 Intent intent=new Intent(mContext, CommentActivity.class);
                 intent.putExtra("id",String.valueOf(item.getId()));
@@ -136,7 +139,7 @@ public class ProvideAdapter extends RecyclerView.Adapter<ProvideAdapter.ViewHold
                 intent.putExtra("uid",PrefManager.getLoginDetail(mContext,"id"));
                 mContext.startActivity(intent);
             }
-        };
+        }; */
         public void rateMe(String id,String uid,float rating){
             String url="https://www.iampro.co/api/app_service.php?type=rate_me&id="+id+"&uid="+uid+"&ptype=provide&total_rate="+rating;
 
@@ -289,8 +292,18 @@ public class ProvideAdapter extends RecyclerView.Adapter<ProvideAdapter.ViewHold
         return new ViewHolder(view);
     }
     @Override
-    public void onBindViewHolder(ViewHolder Vholder, int position) {
+    public void onBindViewHolder(ViewHolder Vholder, final int position) {
         Vholder.setData(mValues.get(position));
+         Vholder.ll_coomentpd.setOnClickListener(new View.OnClickListener() {
+             @Override
+             public void onClick(View v) {
+                 Intent intent=new Intent(mContext, CommentActivity.class);
+                 intent.putExtra("id",String.valueOf(mValues.get(position).getPid()));
+                 intent.putExtra("type","provide");
+                 intent.putExtra("uid",PrefManager.getLoginDetail(mContext,"id"));
+                 mContext.startActivity(intent);
+             }
+         });
     }
     @Override
     public int getItemCount() {

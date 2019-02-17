@@ -1,4 +1,5 @@
 package com.mssinfotech.iampro.co.tab;
+import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -85,7 +86,6 @@ public class HomeFragment extends Fragment implements UserDataAdapter.ItemListen
         super.onCreate(savedInstanceState);
         //createDummyData();
     }
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -143,6 +143,11 @@ public class HomeFragment extends Fragment implements UserDataAdapter.ItemListen
         // Initialize a new RequestQueue instance
         RequestQueue requestQueue = Volley.newRequestQueue(getContext());
 
+        //final ProgressDialog pDialog = new ProgressDialog(getContext()); //Your Activity.this
+        //pDialog.setMessage("Loading...!");
+        //pDialog.show();
+
+
         // Initialize a new JsonArrayRequest instance
         JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(
                 Request.Method.GET,
@@ -151,6 +156,7 @@ public class HomeFragment extends Fragment implements UserDataAdapter.ItemListen
                 new com.android.volley.Response.Listener<JSONArray>() {
                     @Override
                     public void onResponse(JSONArray response) {
+                       // pDialog.dismiss();
                         Log.d("responsef",response.toString());
                         SectionDataModel dm = new SectionDataModel();
                         dm.setHeaderTitle("Images");
@@ -220,6 +226,7 @@ public class HomeFragment extends Fragment implements UserDataAdapter.ItemListen
                             getVideo();
                         }
                         catch (JSONException e){
+                            //pDialog.dismiss();
                             e.printStackTrace();
                             Toast.makeText(getContext(), ""+e.getMessage(), Toast.LENGTH_SHORT).show();
                             Log.d("catch_f",""+e.getMessage());
@@ -229,6 +236,7 @@ public class HomeFragment extends Fragment implements UserDataAdapter.ItemListen
                 new com.android.volley.Response.ErrorListener(){
                     @Override
                     public void onErrorResponse(VolleyError error){
+                        //pDialog.dismiss();
                         // Do something when error occurred
                         //Snackbar.make(getContext(),"Error...", Snackbar.LENGTH_LONG).show();
                         Toast.makeText(getContext(), "verror"+error.getMessage(), Toast.LENGTH_SHORT).show();
@@ -254,6 +262,7 @@ public class HomeFragment extends Fragment implements UserDataAdapter.ItemListen
                 new com.android.volley.Response.Listener<JSONArray>() {
                     @Override
                     public void onResponse(JSONArray response) {
+                        //pDialog.dismiss();
                         Log.d("responsef",response.toString());
                         SectionDataModel dm = new SectionDataModel();
                         dm.setHeaderTitle("Video");
@@ -327,13 +336,10 @@ public class HomeFragment extends Fragment implements UserDataAdapter.ItemListen
         requestQueue.add(jsonArrayRequest);
         //getUser();
     }
-
-
     public void getUser(){
         final String url = "https://www.iampro.co/api/app_service.php?type=getSelectedUser&limit=15&uid="+uid+"&my_id="+uid;
         // Initialize a new RequestQueue instance
         RequestQueue requestQueue = Volley.newRequestQueue(getContext());
-
         // Initialize a new JsonArrayRequest instance
         JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(
                 Request.Method.GET,
@@ -417,7 +423,6 @@ public class HomeFragment extends Fragment implements UserDataAdapter.ItemListen
         final String url = "https://www.iampro.co/api/app_service.php?type=all_product&uid="+uid+"&name=product&my_id="+uid;
         // Initialize a new RequestQueue instance
         RequestQueue requestQueue = Volley.newRequestQueue(getContext());
-
         // Initialize a new JsonArrayRequest instance
         JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(
                 Request.Method.GET,
@@ -638,6 +643,7 @@ public class HomeFragment extends Fragment implements UserDataAdapter.ItemListen
                             my_recycler_view.setAdapter(adapterr);
                         }
                         catch (JSONException e){
+                            //pDialog.dismiss();
                             e.printStackTrace();
                             Toast.makeText(getContext(), ""+e.getMessage(), Toast.LENGTH_SHORT).show();
                             Log.d("catch_f",""+e.getMessage());
@@ -647,6 +653,7 @@ public class HomeFragment extends Fragment implements UserDataAdapter.ItemListen
                 new com.android.volley.Response.ErrorListener(){
                     @Override
                     public void onErrorResponse(VolleyError error){
+                         //pDialog.dismiss();
                         // Do something when error occurred
                         //Snackbar.make(getContext(),"Error...", Snackbar.LENGTH_LONG).show();
                         Toast.makeText(getContext(), "verror"+error.getMessage(), Toast.LENGTH_SHORT).show();
@@ -661,7 +668,7 @@ public class HomeFragment extends Fragment implements UserDataAdapter.ItemListen
 
     @Override
     public void onItemClick(UserModel item) {
-        Toast.makeText(getContext(), item.getName()+ " is clicked", Toast.LENGTH_SHORT).show();
+        //Toast.makeText(getContext(), item.getName()+ " is clicked", Toast.LENGTH_SHORT).show();
     }
 
 

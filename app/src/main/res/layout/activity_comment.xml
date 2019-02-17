@@ -126,12 +126,16 @@
             android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
-            <ImageView android:visibility="gone" android:id="@+id/imageView" android:layout_width="match_parent" android:layout_height="wrap_content" />
+            <ImageView
+                android:visibility="gone"
+                android:id="@+id/imageView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
             <bg.devlabs.fullscreenvideoview.FullscreenVideoView
                 android:visibility="gone"
                 android:id="@+id/fullscreenVideoView"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"/>
             <com.smarteist.autoimageslider.SliderLayout
                 android:visibility="gone"
             android:layout_width="match_parent"

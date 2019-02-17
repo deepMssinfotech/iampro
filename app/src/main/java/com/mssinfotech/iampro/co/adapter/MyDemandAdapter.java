@@ -171,6 +171,18 @@ public class MyDemandAdapter extends RecyclerView.Adapter<MyDemandAdapter.ViewHo
         final int uidv=mValues.get(position).getUid();
          final String idv=mValues.get(position).getPid();
 
+        int my_uid=uidv;
+        if(my_uid==0){
+            Vholder.likeButton.setEnabled(false);
+        }
+        if(mValues.get(position).getIsLike()==1){ //mValues.get(position).get
+            Vholder.likeButton.setLiked(true);
+            Vholder.tv_totallike.setTextColor(Color.RED);
+        }else{
+            Vholder.likeButton.setLiked(false);
+            Vholder.tv_totallike.setTextColor(Color.BLACK);
+        }
+
         Vholder.likeButton.setOnLikeListener(new OnLikeListener() {
             @Override
             public void liked(LikeButton likeButton) {
@@ -245,11 +257,10 @@ public class MyDemandAdapter extends RecyclerView.Adapter<MyDemandAdapter.ViewHo
             }
         });
 
-        if(mValues.get(position).getMore().equalsIgnoreCase("loadmore")){
+        if(mValues.get(position).getMore()!=null && mValues.get(position).getMore().equalsIgnoreCase("loadmore")){
             Vholder.iv_delete.setVisibility(View.GONE);
             Vholder.iv_edit.setVisibility(View.GONE);
         }
-
         Vholder.ll_comment.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

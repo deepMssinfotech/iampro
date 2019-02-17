@@ -256,12 +256,30 @@ public class ProfileActivity extends AppCompatActivity implements AllFeedAdapter
                                       if (type.equalsIgnoreCase("VIDEO")) {
                                           JSONArray jsonArrayImage = jsonObject.getJSONArray("video_array");
                                           for (int j = 0; j < jsonArrayImage.length(); j++) {
-                                              imageArray.add(jsonArrayImage.optString(i));
+                                              imageArray.add(jsonArrayImage.optString(j));
                                           }
-                                      } else {
+                                      } else  if (type.equalsIgnoreCase("IMAGE")) {
                                           JSONArray jsonArrayImage = jsonObject.getJSONArray("image_array");
                                           for (int j = 0; j < jsonArrayImage.length(); j++) {
-                                              imageArray.add(jsonArrayImage.optString(i));
+                                              imageArray.add(jsonArrayImage.optString(j));
+                                          }
+                                      }
+                                      else  if (type.equalsIgnoreCase("PRODUCT")) {
+                                          JSONArray jsonArrayImage = jsonObject.getJSONArray("image_array");
+                                          for (int j = 0; j < jsonArrayImage.length(); j++) {
+                                              imageArray.add(jsonArrayImage.optString(j));
+                                          }
+                                      }
+                                      else  if (type.equalsIgnoreCase("PROVIDE")) {
+                                          JSONArray jsonArrayImage = jsonObject.getJSONArray("image_array");
+                                          for (int j = 0; j < jsonArrayImage.length(); j++) {
+                                              imageArray.add(jsonArrayImage.optString(j));
+                                          }
+                                      }
+                                      else  if (type.equalsIgnoreCase("DEMAND")) {
+                                          JSONArray jsonArrayImage = jsonObject.getJSONArray("image_array");
+                                          for (int j = 0; j < jsonArrayImage.length(); j++) {
+                                              imageArray.add(jsonArrayImage.optString(j));
                                           }
                                       }
                                       int comment = jsonObject.getInt("comment");

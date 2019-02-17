@@ -149,6 +149,7 @@
                             android:text=""/>
                     </LinearLayout>
                     <LinearLayout
+                        android:id="@+id/ll_comments"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="7dp"

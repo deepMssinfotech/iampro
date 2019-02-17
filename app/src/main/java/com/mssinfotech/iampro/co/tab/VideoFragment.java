@@ -1,4 +1,5 @@
 package com.mssinfotech.iampro.co.tab;
+import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
@@ -90,6 +91,9 @@ public class VideoFragment extends Fragment implements VideoAdapter.ItemListener
         final String url = "https://www.iampro.co/api/app_service.php?type=all_item&name=video&uid="+uid+"&my_id="+uid;
         // Initialize a new RequestQueue instance
         RequestQueue requestQueue = Volley.newRequestQueue(getContext());
+        final ProgressDialog pDialog = new ProgressDialog(getContext()); //Your Activity.this
+        pDialog.setMessage("Loading...!");
+        pDialog.show();
         // Initialize a new JsonArrayRequest instance
         JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(
                 Request.Method.GET,
@@ -98,6 +102,7 @@ public class VideoFragment extends Fragment implements VideoAdapter.ItemListener
                 new com.android.volley.Response.Listener<JSONArray>() {
                     @Override
                     public void onResponse(JSONArray response) {
+                        pDialog.dismiss();
                         Log.d("responsef",response.toString());
                         SectionDataModel dm = new SectionDataModel();
                         dm.setHeaderTitle("Video ");
@@ -167,6 +172,7 @@ public class VideoFragment extends Fragment implements VideoAdapter.ItemListener
                             e.printStackTrace();
                             Toast.makeText(getContext(), ""+e.getMessage(), Toast.LENGTH_SHORT).show();
                             Log.d("catch_f",""+e.getMessage());
+                             pDialog.dismiss();
                         }
                     }
                 },
@@ -177,6 +183,7 @@ public class VideoFragment extends Fragment implements VideoAdapter.ItemListener
                         //Snackbar.make(getContext(),"Error...", Snackbar.LENGTH_LONG).show();
                         Toast.makeText(getContext(), "verror"+error.getMessage(), Toast.LENGTH_SHORT).show();
                         Log.d("verror",error.getMessage());
+                        pDialog.dismiss();
                     }
                 }
         );
@@ -193,6 +200,9 @@ public class VideoFragment extends Fragment implements VideoAdapter.ItemListener
         String url="https://www.iampro.co/api/app_service.php?type=getAlbemsListt&search_type=video&uid="+uid;
         RequestQueue requestQueue = Volley.newRequestQueue(getContext());
 
+        final ProgressDialog pDialog = new ProgressDialog(getContext()); //Your Activity.this
+        pDialog.setMessage("Loading...!");
+        pDialog.show();
         JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(
                 Request.Method.GET,
                 url,
@@ -200,6 +210,7 @@ public class VideoFragment extends Fragment implements VideoAdapter.ItemListener
                 new com.android.volley.Response.Listener<JSONArray>() {
                     @Override
                     public void onResponse(JSONArray response) {
+                        pDialog.dismiss();
                         if(!item_name.isEmpty()){
                             item_name.clear();
                         }
@@ -229,6 +240,7 @@ public class VideoFragment extends Fragment implements VideoAdapter.ItemListener
                     public void onErrorResponse(VolleyError error){
                         Toast.makeText(getContext(), error.getMessage(), Toast.LENGTH_SHORT).show();
                         Log.d("verror",""+error.getMessage());
+                         pDialog.dismiss();
                     }
                 }
         );
@@ -240,6 +252,9 @@ public class VideoFragment extends Fragment implements VideoAdapter.ItemListener
         String url=Config.API_URL+"app_service.php?type=getMyAlbemsListt&search_type=video&uid="+uid+"&my_id="+uid+"&album_id="+aid;
         // Initialize a new RequestQueue instance
         RequestQueue requestQueue = Volley.newRequestQueue(getContext());
+        final ProgressDialog pDialog = new ProgressDialog(getContext()); //Your Activity.this
+        pDialog.setMessage("Loading...!");
+        pDialog.show();
         // Initialize a new JsonArrayRequest instance
         JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(
                 Request.Method.GET,
@@ -248,6 +263,7 @@ public class VideoFragment extends Fragment implements VideoAdapter.ItemListener
                 new com.android.volley.Response.Listener<JSONArray>() {
                     @Override
                     public void onResponse(JSONArray response) {
+                        pDialog.dismiss();
                         ArrayList<SingleItemModel> singleItem = new ArrayList<SingleItemModel>();
                         SectionImageModel dm = new SectionImageModel();
                         dm.setHeaderTitle(item_name.get(aid));
@@ -322,6 +338,7 @@ public class VideoFragment extends Fragment implements VideoAdapter.ItemListener
                             e.printStackTrace();
                             Toast.makeText(getContext(), ""+e.getMessage(), Toast.LENGTH_SHORT).show();
                             Log.d("catch_f",""+e.getMessage());
+                            pDialog.dismiss();
                         }
                     }
                 },
@@ -330,6 +347,7 @@ public class VideoFragment extends Fragment implements VideoAdapter.ItemListener
                     public void onErrorResponse(VolleyError error){
                         Toast.makeText(getContext(), error.getMessage(), Toast.LENGTH_SHORT).show();
                         Log.d("verror",""+error.getMessage());
+                         pDialog.dismiss();
                     }
                 }
         );

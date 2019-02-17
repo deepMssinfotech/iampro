@@ -60,8 +60,21 @@
                         android:layout_marginTop="5dp"
                         android:lines="1"
                         android:layout_height="wrap_content"
+                        android:visibility="gone"
                         android:textColor="@color/black_trans80"
                         android:text="Iampro" />
+                    <RatingBar
+                        android:id="@+id/ratingBar"
+                        style="?android:ratingBarStyleSmall"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0"
+                        android:isIndicator="false"
+                        android:layout_marginTop="5dp"
+
+                        android:rating="4"
+                        android:numStars="5"
+                        android:stepSize="0.3"/>
                    <!-- <RatingBar
                         android:id="@+id/ratingBar"
                         style="?android:ratingBarStyleSmall"
@@ -129,16 +142,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="3dp"
                 android:orientation="horizontal">
-                <RatingBar
-                    android:id="@+id/ratingBar"
-                    style="?android:ratingBarStyleSmall"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="0"
-                    android:isIndicator="false"
-                    android:rating="4"
-                    android:numStars="5"
-                    android:stepSize="0.3"/>
+
                 <ImageView
                     android:id="@+id/iv_delete"
                     android:src="@drawable/delete"

@@ -84,6 +84,7 @@
                  android:layout_height="wrap_content"
                  android:layout_gravity="end"
                  android:gravity="end"
+                 android:background="@drawable/strikr_through"
                  android:padding="10dp"
                  android:layout_weight="0"
                  android:text="purchese_cost"/>
@@ -105,13 +106,36 @@
          </View>
      </LinearLayout>
 
-  <ImageView
+     <LinearLayout
+         android:background="@color/black"
+         android:padding="5dp"
+         android:orientation="vertical"
+         android:layout_width="match_parent"
+         android:layout_height="wrap_content">
+         <ImageView
+             android:visibility="gone"
+             android:id="@+id/imageView"
+             android:layout_width="match_parent"
+             android:layout_height="wrap_content"/>
+         <bg.devlabs.fullscreenvideoview.FullscreenVideoView
+             android:visibility="gone"
+             android:id="@+id/fullscreenVideoView"
+             android:layout_width="match_parent"
+             android:layout_height="wrap_content"/>
+         <com.smarteist.autoimageslider.SliderLayout
+             android:visibility="gone"
+             android:layout_width="match_parent"
+             android:layout_height="300dp"
+             android:layout_alignParentTop="true"
+             android:id="@+id/imageSlider"/>
+     </LinearLayout>
+  <!--<ImageView
       android:id="@+id/imageView"
       android:layout_width="match_parent"
       android:layout_marginTop="0dp"
       android:src="@drawable/profile_background"
       android:scaleType="fitXY"
-      android:layout_height="150dp"/>
+      android:layout_height="150dp"/>-->
       <VideoView
           android:id="@+id/videoView"
           android:layout_width="match_parent"

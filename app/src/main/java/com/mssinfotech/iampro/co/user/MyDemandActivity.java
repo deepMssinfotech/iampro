@@ -178,7 +178,7 @@ public class MyDemandActivity extends AppCompatActivity implements MyDemandAdapt
                                 Log.d("pdata",""+name+""+categoryv+""+image+""+udate);
 
                                 // String daysago=student.getString("ago");
-
+                                 int like_unlike=student.optInt("like_unlike");
                                 String rating=String.valueOf(student.getInt("average_rating"));
                                 float ratingv=Float.parseFloat(rating);
 
@@ -194,7 +194,7 @@ public class MyDemandActivity extends AppCompatActivity implements MyDemandAdapt
                                 //Toast.makeText(getContext(),"rrrresponse_enterrr:",Toast.LENGTH_LONG).show();
                                 // singleItem.add(new SingleItemModel(name,image,udate));
                                 //allSampleData.add(new DataModel(name,image,udate,categoryv));
-                                item.add(new MyProductModel(name,image,udate,categoryv,totallike,comments,scost,ratingv,uid,fullname,avatar,idv));
+                                item.add(new MyProductModel(name,image,udate,categoryv,totallike,comments,scost,ratingv,uid,fullname,avatar,idv,like_unlike));
                             }
                             Log.d("bdm",singleItem.toString());
                             // dm.setAllItemsInSection(singleItem);
