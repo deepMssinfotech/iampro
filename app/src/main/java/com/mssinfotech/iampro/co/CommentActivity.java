@@ -96,9 +96,9 @@ public class CommentActivity extends AppCompatActivity implements CommentAdapter
         recycler_view_review=findViewById(R.id.recycler_view_review);
         ratingBar = (RatingBar) findViewById(R.id.ratingBar);
         txtRatingValue = (TextView) findViewById(R.id.txtRatingValue);
-        if(data_type.equalsIgnoreCase("data_type")) {
-            //getFeedDetail();
-            //allFeedComment();
+        if(data_type.equalsIgnoreCase("feed_image")) {
+            getFeedDetail();
+            allComment("feed");
         }else{
             getDetail();
             allComment(data_type);
@@ -107,6 +107,138 @@ public class CommentActivity extends AppCompatActivity implements CommentAdapter
     @Override
     public void onItemClick(Review item) {
 
+    }
+    public void getFeedDetail(){
+        String myurl = Config.API_URL + "app_service.php?type=get_multi_image_video_detail&id="+data_id+"&update_type=image&uid="+user_id+"&login_id="+user_id+"&my_id="+user_id;
+        Log.d(Config.TAG, myurl);
+        StringRequest stringRequest = new StringRequest(myurl,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        JSONObject result = null;
+                        try {
+                            result = new JSONObject(response);
+                            JSONObject userDetail = result.getJSONObject("user_detail");
+                            Glide.with(getApplicationContext()).load(Config.AVATAR_URL+userDetail.getString("avatar")).apply(Config.options_image).into(imageView_user);
+                            fullname.setText(userDetail.getString("fullname"));
+                            udate.setText(result.getString("udate"));
+                            tv_comments.setText(result.getString("comments"));
+                            tv_totallike.setText(result.getString("totallike"));
+                            likeButton.setUnlikeDrawableRes(R.drawable.like);
+                            likeButton.setLikeDrawableRes(R.drawable.like_un);
+                            int my_uid=Integer.parseInt(user_id);
+                            Float total_rating = null;
+                            String rating = result.getString("average_rating");
+                            try {
+                                total_rating = new Float(rating);
+                            }
+                            catch (Exception ignore) {
+                            }
+                            txtRatingValue.setText("("+rating+")");
+                            ratingBar.setRating(total_rating);
+                            ratingBar.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
+                                public void onRatingChanged(RatingBar ratingBar, float rating, boolean fromUser) {
+                                    function.rateMe(getApplicationContext(),data_id,String.valueOf(user_id),rating,ratingBar);
+                                }
+                            });
+                            if(my_uid==0){
+                                likeButton.setEnabled(false);
+                            }
+                            int Isliked = result.getInt("like_unlike");
+                            if(Isliked==1){
+                                likeButton.setLiked(true);
+                                tv_totallike.setTextColor(Color.RED);
+                            }else{
+                                likeButton.setLiked(false);
+                                tv_totallike.setTextColor(Color.BLACK);
+                            }
+                            likeButton.setOnLikeListener(new OnLikeListener() {
+                                @Override
+                                public void liked(LikeButton likeButton) {
+                                    int newlike = (int) Integer.parseInt(tv_totallike.getText().toString())+1;
+                                    tv_totallike.setTextColor(Color.RED);
+                                    tv_totallike.setText(String.valueOf(newlike));
+                                    String url = Config.API_URL+"app_service.php?type=like_me&id="+String.valueOf(data_id)+"&uid="+user_id+"&ptype="+data_type;
+                                    Log.e(Config.TAG,url);
+                                    function.executeUrl(getApplicationContext(),"get",url,null);
+                                }
+
+                                @Override
+                                public void unLiked(LikeButton likeButton) {
+                                    int newlike = (int) Integer.parseInt(tv_totallike.getText().toString())-1;
+                                    tv_totallike.setTextColor(Color.BLACK);
+                                    tv_totallike.setText(String.valueOf(newlike));
+                                    String url = Config.API_URL+"app_service.php?type=like_me&id="+String.valueOf(data_id)+"&uid="+user_id+"&ptype="+data_type;
+                                    Log.e(Config.TAG,url);
+                                    function.executeUrl(getApplicationContext(),"get",url,null);
+                                }
+                            });
+
+
+                            imageSlider.setVisibility(View.VISIBLE);
+                            JSONArray other_image = result.getJSONArray("image_array");
+                            String ImageHol = Config.URL_ROOT+"uploads/product/w/500/"+result.getString("first_image");
+                            imageSlider.setIndicatorAnimation(IndicatorAnimations.SWAP); //set indicator animation by using SliderLayout.IndicatorAnimations. :WORM or THIN_WORM or COLOR or DROP or FILL or NONE or SCALE or SCALE_DOWN or SLIDE and SWAP!!
+                            imageSlider.setSliderTransformAnimation(SliderAnimations.FADETRANSFORMATION);
+                            imageSlider.setScrollTimeInSec(5); //set scroll delay in seconds :
+                            Glide.with(getApplicationContext()).load(R.drawable.product_icon).into(imageView_icon);
+                            DefaultSliderView sliderView1 = new DefaultSliderView(CommentActivity.this);
+                            sliderView1.setImageUrl(ImageHol);
+                            sliderView1.setImageScaleType(ImageView.ScaleType.CENTER_CROP);
+                            //sliderView.setDescription("setDescription " + (i + 1));
+                            sliderView1.setOnSliderClickListener(new SliderView.OnSliderClickListener() {
+                                @Override
+                                public void onSliderClick(SliderView sliderView) {
+                                    //todo
+                                    /*
+                                     * all full screen view
+                                     * */
+                                }
+                            });
+
+                            //at last add this view in your layout :
+                            imageSlider.addSliderView(sliderView1);
+                            if(other_image.length()>0){
+                                for(int i=0; i<other_image.length(); i++){
+                                    DefaultSliderView sliderView = new DefaultSliderView(CommentActivity.this);
+                                    sliderView.setImageUrl(Config.URL_ROOT+"uploads/album/w/500/"+other_image.getString(i));
+                                    Log.d(Config.TAG,Config.URL_ROOT+"uploads/album/w/500/"+other_image.getString(i));
+                                    sliderView.setImageScaleType(ImageView.ScaleType.CENTER_CROP);
+                                    //sliderView.setDescription("setDescription " + (i + 1));
+                                    final int finalI = i;
+                                    sliderView.setOnSliderClickListener(new SliderView.OnSliderClickListener() {
+                                        @Override
+                                        public void onSliderClick(SliderView sliderView) {
+                                            //todo
+                                            /*
+                                            * all full screen view
+                                            * */
+                                        }
+                                    });
+
+                                    //at last add this view in your layout :
+                                    imageSlider.addSliderView(sliderView);
+                                }
+                            }
+
+
+                            Glide.with(getApplicationContext()).load(R.drawable.image_icon).into(imageView_icon);
+
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Log.e(Config.TAG, error.toString());
+                    }
+                });
+        //Creating a request queue
+        RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
+        //Adding request to the queue
+        requestQueue.add(stringRequest);
     }
     public void getDetail(){
         String myurl = Config.API_URL + "app_service.php?type=get_image_detail&id="+data_id+"&update_type="+data_type+"&uid="+user_id+"&login_id="+user_id+"&my_id="+user_id;
@@ -133,9 +265,6 @@ public class CommentActivity extends AppCompatActivity implements CommentAdapter
                                 total_rating = new Float(rating);
                             }
                             catch (Exception ignore) {
-                                // We're ignoring potential exceptions for the example.
-                                // Cleaner solutions would treat NumberFormatException
-                                // and NullPointerExceptions here
                             }
                             txtRatingValue.setText("("+rating+")");
                             ratingBar.setRating(total_rating);
