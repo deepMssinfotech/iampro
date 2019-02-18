@@ -674,7 +674,7 @@ public class AllFeedAdapter extends RecyclerView.Adapter<AllFeedAdapter.ViewHold
 
                     Intent intent = new Intent(mContext, CommentActivity.class);
                     intent.putExtra("type","video");
-                    intent.putExtra("id",String.valueOf(id));
+                    intent.putExtra("pid",String.valueOf(id));
                     intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     mContext.startActivity(intent);
                 }
@@ -683,25 +683,28 @@ public class AllFeedAdapter extends RecyclerView.Adapter<AllFeedAdapter.ViewHold
 
                     Intent intent = new Intent(mContext, CommentActivity.class);
                     intent.putExtra("type","product");
-                    intent.putExtra("id",String.valueOf(id));
+                    intent.putExtra("pid",String.valueOf(id));
                     intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     mContext.startActivity(intent);
+                    Toast.makeText(mContext,"Product"+id,Toast.LENGTH_LONG).show();
                 }
                 else if (type.equalsIgnoreCase("PROVIDE"))
                 {
                     Intent intent = new Intent(mContext, CommentActivity.class);
                     intent.putExtra("type","provide");
-                    intent.putExtra("id",String.valueOf(id));
+                    intent.putExtra("pid",String.valueOf(id));
                     intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     mContext.startActivity(intent);
+                    Toast.makeText(mContext,"Provide"+id,Toast.LENGTH_LONG).show();
                 }
                 else if (type.equalsIgnoreCase("DEMAND"))
                 {
                     Intent intent = new Intent(mContext, CommentActivity.class);
                     intent.putExtra("type","demand");
-                    intent.putExtra("id",String.valueOf(id));
+                    intent.putExtra("pid",String.valueOf(id));
                     intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     mContext.startActivity(intent);
+                    Toast.makeText(mContext,"Demand"+id,Toast.LENGTH_LONG).show();
                 }
             }
         });
