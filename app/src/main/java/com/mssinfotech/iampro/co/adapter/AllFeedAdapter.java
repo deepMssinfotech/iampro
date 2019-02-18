@@ -46,6 +46,10 @@ import com.mssinfotech.iampro.co.model.ImageDetailModel;
 import com.mssinfotech.iampro.co.product.ProductDetail;
 import com.mssinfotech.iampro.co.provide.ProvideDetail;
 import com.mssinfotech.iampro.co.provide.ProvideDetailActivity;
+import com.mssinfotech.iampro.co.user.MyDemandActivity;
+import com.mssinfotech.iampro.co.user.MyImageActivity;
+import com.mssinfotech.iampro.co.user.MyProvideActivity;
+import com.mssinfotech.iampro.co.user.MyVideoActivity;
 import com.mssinfotech.iampro.co.user.ProfileActivity;
 import com.mssinfotech.iampro.co.utils.PrefManager;
 import com.smarteist.autoimageslider.DefaultSliderView;
@@ -308,7 +312,7 @@ public class AllFeedAdapter extends RecyclerView.Adapter<AllFeedAdapter.ViewHold
         String sidd=mValues.get(position).getShareId();
         final String[] sharedId=sidd.split(",");
 
-        int my_uid=uid;
+        int my_uid= Integer.parseInt(PrefManager.getLoginDetail(mContext,"id"));
         if(my_uid==0){
             Vholder.like_un.setEnabled(false);
         }
@@ -330,38 +334,29 @@ public class AllFeedAdapter extends RecyclerView.Adapter<AllFeedAdapter.ViewHold
              @Override
              public void onClick(View v) {
                  if(type.equalsIgnoreCase("IMAGE")){
-                     Intent intent=new Intent(mContext,ImageDetail.class);
+                     Intent intent=new Intent(mContext, MyImageActivity.class);
                      intent.putExtra("uid",uid);
-                     intent.putExtra("id",Integer.parseInt(sharedId[0]));
-                     intent.putExtra("type","image");
                      intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                      mContext.startActivity(intent);
                      //Toast.makeText(mContext,"uid: "+uid+"-"+id,Toast.LENGTH_LONG).show();
                  }
                  else if(type.equalsIgnoreCase("VIDEO")){
-                     Intent intent=new Intent(mContext,ImageDetail.class);
+                     Intent intent=new Intent(mContext, MyVideoActivity.class);
                      intent.putExtra("uid",uid);
-                     intent.putExtra("id",Integer.parseInt(sharedId[0]));
-                     intent.putExtra("type","video");
                      mContext.startActivity(intent);
                  }
                  else if(type.equalsIgnoreCase("PRODUCT")){
-                     Intent intent=new Intent(mContext, ProductDetail.class);
-                     intent.putExtra("pid",String.valueOf(sharedId[0]));
+                     Intent intent=new Intent(mContext, MyProvideActivity.class);
                      intent.putExtra("uid",String.valueOf(mValues.get(position).getUid()));
                      mContext.startActivity(intent);
                  }
                  else if(type.equalsIgnoreCase("PROVIDE")){
-                     Intent intent=new Intent(mContext,ProvideDetailActivity.class);
-                     //intent.putExtra("id",String.valueOf(item.getPid()));
-                     intent.putExtra("pid",String.valueOf(sharedId[0]));
+                     Intent intent=new Intent(mContext,MyProvideActivity.class);
                      intent.putExtra("uid",String.valueOf(mValues.get(position).getUid()));
                      mContext.startActivity(intent);
                  }
                  else if(type.equalsIgnoreCase("DEMAND")){
-                     Intent intent=new Intent(mContext,DemandDetail.class);
-                     //intent.putExtra("id",String.valueOf(item.getPid()));
-                     intent.putExtra("pid",String.valueOf(sharedId[0]));
+                     Intent intent=new Intent(mContext, MyDemandActivity.class);
                      intent.putExtra("uid",String.valueOf(mValues.get(position).getUid()));
                      mContext.startActivity(intent);
                  }
@@ -427,16 +422,11 @@ public class AllFeedAdapter extends RecyclerView.Adapter<AllFeedAdapter.ViewHold
         }else if(type.equalsIgnoreCase("video")){
             //videoView.setVisibility(View.VISIBLE);
             Vholder.fullscreenVideoView.setVisibility(View.VISIBLE);
-            String ImageHol = Config.URL_ROOT+"uploads/video/"+mValues.get(position).getImage();
-                                /*videoView.setVideoPath(ImageHol);
-                                Log.d(Config.TAG, ImageHol);
-                                mediaController = new MediaController(CommentActivity.this);
-                                mediaController.setAnchorView(videoView);
-                                videoView.setMediaController(mediaController);
-                                videoView.requestFocus();
-                                videoView.start();*/
+
+            String ImageHol = Config.URL_ROOT+"uploads/video/"+mValues.get(position).getFimage_path();
+            Log.d(Config.TAG+"video tag",ImageHol);
             Vholder.fullscreenVideoView.videoUrl(ImageHol)
-                    .enableAutoStart()
+                    //.enableAutoStart()
                     .addSeekBackwardButton()
                     .addSeekForwardButton()
                     .portraitOrientation(PortraitOrientation.DEFAULT)

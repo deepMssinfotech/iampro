@@ -89,6 +89,7 @@ public class ProfileActivity extends AppCompatActivity implements AllFeedAdapter
         setContentView(R.layout.activity_profile);
         Config.setLayoutName(getResources().getResourceEntryName(R.layout.activity_profile));
         context = getApplicationContext();
+        LinearLayout edit_layout = findViewById(R.id.edit_layout);
         intent = getIntent();
         fid = intent.getStringExtra("uid");
         ll_dashboard=findViewById(R.id.ll_dashboard);
@@ -123,6 +124,14 @@ public class ProfileActivity extends AppCompatActivity implements AllFeedAdapter
                 @Override
                 public void onClick(View view) {
                     new PhotoFullPopupWindow(context, R.layout.popup_photo_full, view, Config.AVATAR_URL+PrefManager.getLoginDetail(context,"img_url"), null);
+                }
+            });
+            edit_layout.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent intent=new Intent(ProfileActivity.this,EditProfileActivity.class);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    startActivity(intent);
                 }
             });
             PrefManager.updateUserData(this,null);
@@ -273,12 +282,12 @@ public class ProfileActivity extends AppCompatActivity implements AllFeedAdapter
                                       Long timespam = jsonObject.getLong("timespam");
                                       String is_block = jsonObject.getString("is_block");
                                       String type = jsonObject.getString("type");
-                                /* if (type.equalsIgnoreCase("PRODUCT") || type.equalsIgnoreCase("PROVIDE") || type.equalsIgnoreCase("DEMAND")) {
-                                     JSONObject jsonObjectdetail = jsonObject.getJSONObject("detail");
-                                     String detail_name = jsonObjectdetail.getString("name");
-                                     String selling_cost = jsonObjectdetail.getString("selling_cost");
-                                     String purchese_cost = jsonObjectdetail.getString("purchese_cost");
-                                 } */
+                                    /* if (type.equalsIgnoreCase("PRODUCT") || type.equalsIgnoreCase("PROVIDE") || type.equalsIgnoreCase("DEMAND")) {
+                                         JSONObject jsonObjectdetail = jsonObject.getJSONObject("detail");
+                                         String detail_name = jsonObjectdetail.getString("name");
+                                         String selling_cost = jsonObjectdetail.getString("selling_cost");
+                                         String purchese_cost = jsonObjectdetail.getString("purchese_cost");
+                                     } */
                                       ArrayList<String> imageArray = new ArrayList<>();
                                       if (type.equalsIgnoreCase("VIDEO")) {
                                           JSONArray jsonArrayImage = jsonObject.getJSONArray("video_array");
@@ -443,11 +452,6 @@ public class ProfileActivity extends AppCompatActivity implements AllFeedAdapter
           FEED_START=FEED_START+FEED_LIMIT;
           getFeed(FEED_START);
       }
-     public void editprofile(View view){
-          Intent intent=new Intent(ProfileActivity.this,EditProfileActivity.class);
-         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-          startActivity(intent);
-     }
      public void dashboard(View view){
          Intent intent=new Intent(ProfileActivity.this,ProfileActivity.class);
          intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
