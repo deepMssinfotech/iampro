@@ -131,6 +131,8 @@ public class MyImageActivity extends AppCompatActivity implements MyImageAdapter
                 }
             });
         }else{
+            changeBackground_Image.setVisibility(View.GONE);
+            changeImage.setVisibility(View.GONE);
             uid= id;
             gteUsrDetail(id);
         }
