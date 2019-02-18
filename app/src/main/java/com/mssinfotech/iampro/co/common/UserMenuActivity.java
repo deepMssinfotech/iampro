@@ -6,6 +6,7 @@ import android.net.Uri;
 import android.support.v4.app.DialogFragment;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -23,6 +24,7 @@ import com.mssinfotech.iampro.co.HomeActivity;
 import com.mssinfotech.iampro.co.IntroActivity;
 import com.mssinfotech.iampro.co.LoginActivity;
 import com.mssinfotech.iampro.co.MessageActivity;
+import com.mssinfotech.iampro.co.NotificationActivity;
 import com.mssinfotech.iampro.co.R;
 import com.mssinfotech.iampro.co.SearchActivity;
 import com.mssinfotech.iampro.co.SignupActivity;
@@ -97,12 +99,18 @@ public class UserMenuActivity  extends Fragment {
     };
     private View.OnClickListener changepasswordOnClickListener = new View.OnClickListener() {
         public void onClick(View v) {
-            //if(function.isSamePage("activity_change_password"))return;
-            Intent intent = new Intent(getContext(), ChangePasswordActivity.class);
-            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
-            getContext().startActivity(intent);
-            removeFragment();
+            AppCompatActivity activity = (AppCompatActivity) getContext();
+            ChangePasswordActivity changepasswordfragment = new ChangePasswordActivity();
+            Bundle args = new Bundle();
+            args.putString("name", "mragank");
+            changepasswordfragment.setArguments(args);
+            FragmentManager fragmentManager = activity.getSupportFragmentManager();
+
+            fragmentManager.beginTransaction()
+                    .replace(android.R.id.content, changepasswordfragment, null)
+                    .setCustomAnimations(R.anim.enter, R.anim.exit, R.anim.pop_enter, R.anim.pop_exit)
+                    .addToBackStack(null)
+                    .commit();
         }
     };
     private View.OnClickListener joinedfriendOnClickListener = new View.OnClickListener() {
@@ -182,11 +190,18 @@ public class UserMenuActivity  extends Fragment {
     };
     private View.OnClickListener mycartOnClickListener = new View.OnClickListener() {
         public void onClick(View v) {
-            //if(function.isSamePage("activity_cart"))return;
-            Intent intent = new Intent(getContext(), CartActivity.class);
-            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            getContext().startActivity(intent);
-            removeFragment();
+            AppCompatActivity activity = (AppCompatActivity) getContext();
+            CartActivity cartfragment = new CartActivity();
+            Bundle args = new Bundle();
+            args.putString("name", "mragank");
+            cartfragment.setArguments(args);
+            FragmentManager fragmentManager = activity.getSupportFragmentManager();
+
+            fragmentManager.beginTransaction()
+                    .replace(android.R.id.content, cartfragment, null)
+                    .setCustomAnimations(R.anim.enter, R.anim.exit, R.anim.pop_enter, R.anim.pop_exit)
+                    .addToBackStack(null)
+                    .commit();
         }
     };
     private View.OnClickListener mysellingOnClickListener = new View.OnClickListener() {
@@ -220,11 +235,18 @@ public class UserMenuActivity  extends Fragment {
     };
     private View.OnClickListener mywhishlistOnClickListener = new View.OnClickListener() {
         public void onClick(View v) {
-            //if(function.isSamePage("activity_my_whishlist"))return;
-            Intent intent = new Intent(getContext(), MyWhishlistActivity.class);
-            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            getContext().startActivity(intent);
-            removeFragment();
+            AppCompatActivity activity = (AppCompatActivity) getContext();
+            MyWhishlistActivity whishlistfragment = new MyWhishlistActivity();
+            Bundle args = new Bundle();
+            args.putString("name", "mragank");
+            whishlistfragment.setArguments(args);
+            FragmentManager fragmentManager = activity.getSupportFragmentManager();
+
+            fragmentManager.beginTransaction()
+                    .replace(android.R.id.content, whishlistfragment, null)
+                    .setCustomAnimations(R.anim.enter, R.anim.exit, R.anim.pop_enter, R.anim.pop_exit)
+                    .addToBackStack(null)
+                    .commit();
         }
     };
     private View.OnClickListener logoutOnClickListener = new View.OnClickListener() {

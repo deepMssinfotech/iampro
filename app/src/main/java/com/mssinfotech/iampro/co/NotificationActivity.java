@@ -1,8 +1,10 @@
 package com.mssinfotech.iampro.co;
 
+import android.app.ProgressDialog;
 import android.graphics.Color;
 import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -11,7 +13,9 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.Toast;
 
@@ -34,28 +38,32 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
-public class NotificationActivity extends AppCompatActivity implements NotificationItemTouchHelper.RecyclerItemTouchHelperListener {
+public class NotificationActivity extends Fragment implements NotificationItemTouchHelper.RecyclerItemTouchHelperListener {
 
     private RecyclerView recyclerView;
     private List<NotificationItem> NotificationItemList;
     private NotificationAdapter mAdapter;
     private ConstraintLayout constraintLayout;
     private static String NOTIFY_URL  = "";
+    View view;
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_notification);
-        Config.setLayoutName(getResources().getResourceEntryName(R.layout.activity_notification));
-        NOTIFY_URL  = Config.API_URL+"app_service.php?type=getall_notification&uid="+ PrefManager.getLoginDetail(this,"id");
-        recyclerView = findViewById(R.id.recycler_view);
+    public View onCreateView(LayoutInflater inflater, ViewGroup parent, Bundle savedInstanceState) {
+        // Defines the xml file for the fragment
+        return inflater.inflate(R.layout.activity_notification, parent, false);
+    }
+    @Override
+    public void onViewCreated(View v, Bundle savedInstanceState) {
+        view = v ;
+        NOTIFY_URL  = Config.API_URL+"app_service.php?type=getall_notification&uid="+ PrefManager.getLoginDetail(getContext(),"id");
+        recyclerView = view.findViewById(R.id.recycler_view);
         NotificationItemList = new ArrayList<NotificationItem>();
-        mAdapter = new NotificationAdapter(this, NotificationItemList);
-        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
+        mAdapter = new NotificationAdapter(getContext(), NotificationItemList);
+        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getContext());
         recyclerView.setLayoutManager(mLayoutManager);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
-        recyclerView.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
+        recyclerView.addItemDecoration(new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL));
         recyclerView.setAdapter(mAdapter);
-        constraintLayout = findViewById(R.id.constraintLayout);
+        constraintLayout = view.findViewById(R.id.constraintLayout);
         // adding item touch helper
         // only ItemTouchHelper.LEFT added to detect Right to Left swipe
         // if you want both Right -> Left and Left -> Right
@@ -64,29 +72,30 @@ public class NotificationActivity extends AppCompatActivity implements Notificat
         new ItemTouchHelper(itemTouchHelperCallback).attachToRecyclerView(recyclerView);
         // making http call and fetching menu json
         prepareWhishList();
-
-
     }
     /**
      * method make volley network call and parses json
      */
     private void prepareWhishList() {
-        //Log.d(Config.TAG,WHISH_LIST_URL);
+        final ProgressDialog loading = ProgressDialog.show(getContext(),"Processing...","Please wait...",false,false);
         JsonArrayRequest jsonReq = new JsonArrayRequest(Request.Method.GET,
                 NOTIFY_URL  , null, new Response.Listener<JSONArray>() {
 
             @Override
             public void onResponse(JSONArray response) {
                 if (response != null) {
+                    loading.dismiss();
                     parseJsonFeed(response);
                     mAdapter.notifyDataSetChanged();
                 }else{
-                    Toast.makeText(NotificationActivity.this, "Empty Record!", Toast.LENGTH_SHORT).show();
+                    loading.dismiss();
+                    Toast.makeText(getContext(), "Empty Record!", Toast.LENGTH_SHORT).show();
                 }
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
+                loading.dismiss();
                 Log.d(Config.TAG,"onErrorResponse 96 : "+error.getMessage());
             }
         });
@@ -138,7 +147,7 @@ public class NotificationActivity extends AppCompatActivity implements Notificat
                     NotificationItemList.add(item);
                 }
             }else{
-                ImageView no_rodr = findViewById(R.id.no_record_found);
+                ImageView no_rodr = view.findViewById(R.id.no_record_found);
                 no_rodr.setVisibility(View.VISIBLE);
             }
 
@@ -169,7 +178,7 @@ public class NotificationActivity extends AppCompatActivity implements Notificat
             // remove the item from recycler view
             mAdapter.removeItem(viewHolder.getAdapterPosition());
             String url=Config.API_URL+"app_service.php?type=delete_notification&id="+id.toString();
-            String responc = function.executeUrl(getApplicationContext(),"get",url,null);
+            String responc = function.executeUrl(getContext(),"get",url,null);
             Log.e(Config.TAG,"result : "+responc+"url - "+url);
             // showing snack bar with Undo option
             Snackbar snackbar = Snackbar.make(constraintLayout, "Notification removed ", Snackbar.LENGTH_LONG);

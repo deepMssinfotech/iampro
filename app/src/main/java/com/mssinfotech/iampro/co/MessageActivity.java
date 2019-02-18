@@ -4,6 +4,7 @@ import android.app.ProgressDialog;
 import android.graphics.Color;
 import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -12,7 +13,9 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.Toast;
 
@@ -38,35 +41,33 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MessageActivity extends AppCompatActivity implements MessageItemTouchHelper.RecyclerItemTouchHelperListener {
+public class MessageActivity extends Fragment implements MessageItemTouchHelper.RecyclerItemTouchHelperListener {
 
-        private RecyclerView recyclerView;
+    private RecyclerView recyclerView;
     private List<MessageItem> MessageItemList;
     private MessageAdapter mAdapter;
     private ConstraintLayout constraintLayout;
     private static String MESSAGE_URL  = "";
+    View view;
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_message);
-        Config.setLayoutName(getResources().getResourceEntryName(R.layout.activity_message));
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setHomeButtonEnabled(true);
-        getSupportActionBar().setTitle("My Message");
-        getSupportActionBar().setIcon(R.drawable.delete);
-        getSupportActionBar().setDisplayShowTitleEnabled(false);
-        getSupportActionBar().setDisplayShowTitleEnabled(true);
-        String uid=PrefManager.getLoginDetail(this,"id");
+    public View onCreateView(LayoutInflater inflater, ViewGroup parent, Bundle savedInstanceState) {
+        // Defines the xml file for the fragment
+        return inflater.inflate(R.layout.activity_message, parent, false);
+    }
+    @Override
+    public void onViewCreated(View v, Bundle savedInstanceState) {
+        view = v;
+        String uid=PrefManager.getLoginDetail(getContext(),"id");
         MESSAGE_URL  = Config.API_URL+"chat.php?type=nearuser&uid="+uid+"&my_id="+ uid;
-        recyclerView = findViewById(R.id.recycler_view);
+        recyclerView = view.findViewById(R.id.recycler_view);
         MessageItemList = new ArrayList<MessageItem>();
-        mAdapter = new MessageAdapter(this, MessageItemList);
-        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
+        mAdapter = new MessageAdapter(getContext(), MessageItemList);
+        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getContext());
         recyclerView.setLayoutManager(mLayoutManager);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
-        recyclerView.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
+        recyclerView.addItemDecoration(new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL));
         recyclerView.setAdapter(mAdapter);
-        constraintLayout = findViewById(R.id.constraintLayout);
+        constraintLayout = view.findViewById(R.id.constraintLayout);
         // making http call and fetching menu json
         ItemTouchHelper.SimpleCallback itemTouchHelperCallback = new MessageItemTouchHelper(0, ItemTouchHelper.LEFT, this);
         new ItemTouchHelper(itemTouchHelperCallback).attachToRecyclerView(recyclerView);
@@ -76,7 +77,7 @@ public class MessageActivity extends AppCompatActivity implements MessageItemTou
      * method make volley network call and parses json
      */
     private void prepareWhishList() {
-        final ProgressDialog loading = ProgressDialog.show(this,"Processing...","Please wait...",false,false);
+        final ProgressDialog loading = ProgressDialog.show(getContext(),"Processing...","Please wait...",false,false);
         StringRequest stringRequest = new StringRequest(Request.Method.GET,MESSAGE_URL,
                 new Response.Listener<String>() {
                     @Override
@@ -114,7 +115,7 @@ public class MessageActivity extends AppCompatActivity implements MessageItemTou
                     MessageItemList.add(item);
                 }
             }else{
-                ImageView no_rodr = findViewById(R.id.no_record_found);
+                ImageView no_rodr = view.findViewById(R.id.no_record_found);
                 no_rodr.setVisibility(View.VISIBLE);
             }
             // notify data changes to list adapater
@@ -141,8 +142,8 @@ public class MessageActivity extends AppCompatActivity implements MessageItemTou
 
                 // remove the item from recycler view
                 mAdapter.removeItem(viewHolder.getAdapterPosition());
-                String url=Config.API_URL+"chat.php?type=delete_my_chat&my_id="+PrefManager.getLoginDetail(this,"id")+"&id="+id.toString();
-                String responc = function.executeUrl(getApplicationContext(),"get",url,null);
+                String url=Config.API_URL+"chat.php?type=delete_my_chat&my_id="+PrefManager.getLoginDetail(getContext(),"id")+"&id="+id.toString();
+                String responc = function.executeUrl(getContext(),"get",url,null);
                 Log.e(Config.TAG,"result : "+responc+"url - "+url);
                 // showing snack bar with Undo option
                 Snackbar snackbar = Snackbar.make(constraintLayout, "All Chat Removed ", Snackbar.LENGTH_LONG);

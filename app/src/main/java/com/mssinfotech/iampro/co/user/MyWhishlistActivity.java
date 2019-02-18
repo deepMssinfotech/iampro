@@ -1,10 +1,12 @@
 package com.mssinfotech.iampro.co.user;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.DividerItemDecoration;
@@ -12,7 +14,9 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.Toast;
 
@@ -36,29 +40,33 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MyWhishlistActivity extends AppCompatActivity implements WhishListItemTouchHelper.RecyclerItemTouchHelperListener {
+public class MyWhishlistActivity extends Fragment implements WhishListItemTouchHelper.RecyclerItemTouchHelperListener {
 
     private RecyclerView recyclerView;
     private List<WhishListItem> whishListItemList;
     private WhishListAdapter mAdapter;
     private ConstraintLayout constraintLayout;
     private static String WHISH_LIST_URL = "";
+    View view;
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_my_whishlist);
-        Config.setLayoutName(getResources().getResourceEntryName(R.layout.activity_my_whishlist));
-        WHISH_LIST_URL  = Config.API_URL+"app_service.php?type=getall_wishlist&uid="+ PrefManager.getLoginDetail(this,"id");
-        recyclerView = findViewById(R.id.recycler_view);
+    public View onCreateView(LayoutInflater inflater, ViewGroup parent, Bundle savedInstanceState) {
+        // Defines the xml file for the fragment
+        return inflater.inflate(R.layout.activity_my_whishlist, parent, false);
+    }
+    @Override
+    public void onViewCreated(View v, Bundle savedInstanceState) {
+        view =v;
+        WHISH_LIST_URL  = Config.API_URL+"app_service.php?type=getall_wishlist&uid="+ PrefManager.getLoginDetail(getContext(),"id");
+        recyclerView = view.findViewById(R.id.recycler_view);
         //whishListItemList = new ArrayList<>();
         whishListItemList = new ArrayList<WhishListItem>();
-        mAdapter = new WhishListAdapter(this, whishListItemList);
-        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
+        mAdapter = new WhishListAdapter(getContext(), whishListItemList);
+        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getContext());
         recyclerView.setLayoutManager(mLayoutManager);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
-        recyclerView.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
+        recyclerView.addItemDecoration(new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL));
         recyclerView.setAdapter(mAdapter);
-        constraintLayout = findViewById(R.id.constraintLayout);
+        constraintLayout = view.findViewById(R.id.constraintLayout);
         // adding item touch helper
         // only ItemTouchHelper.LEFT added to detect Right to Left swipe
         // if you want both Right -> Left and Left -> Right
@@ -72,23 +80,12 @@ public class MyWhishlistActivity extends AppCompatActivity implements WhishListI
         // making http call and fetching menu json
         prepareWhishList();
     }
-    @Override
-    public void onBackPressed() {
-        //super.onBackPressed();
-        Intent i = new Intent();
-        i.putExtra(Config.PAGE_TAG, Config.PREVIOUS_PAGE_TAG);
-        setResult(RESULT_OK, i);
-        finish();
-    }
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        Toast.makeText(this, "mss popup"+resultCode+"--"+requestCode,  Toast.LENGTH_LONG).show();
-    }
     /**
      * method make volley network call and parses json
      */
     private void prepareWhishList() {
         //Log.d(Config.TAG,WHISH_LIST_URL);
+        final ProgressDialog loading = ProgressDialog.show(getContext(),"Processing...","Please wait...",false,false);
         JsonArrayRequest jsonReq = new JsonArrayRequest(Request.Method.GET,
                 WHISH_LIST_URL , null, new Response.Listener<JSONArray>() {
 
@@ -96,14 +93,18 @@ public class MyWhishlistActivity extends AppCompatActivity implements WhishListI
             public void onResponse(JSONArray response) {
                 //VolleyLog.d(Config.TAG, " Response : " + response.toString());
                 if (response != null) {
+                    loading.dismiss();
                     //Log.d(Config.TAG,response.toString());
                     parseJsonFeed(response);
                     mAdapter.notifyDataSetChanged();
+                }else{
+                    loading.dismiss();
                 }
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
+                loading.dismiss();
                 Log.d(Config.TAG,"onErrorResponse 96 : "+error.getMessage());
             }
         });
@@ -149,7 +150,7 @@ public class MyWhishlistActivity extends AppCompatActivity implements WhishListI
                     whishListItemList.add(item);
                 }
             }else{
-                ImageView no_rodr = findViewById(R.id.no_record_found);
+                ImageView no_rodr = view.findViewById(R.id.no_record_found);
                 no_rodr.setVisibility(View.VISIBLE);
             }
             // notify data changes to list adapater
@@ -179,7 +180,7 @@ public class MyWhishlistActivity extends AppCompatActivity implements WhishListI
             // remove the item from recycler view
             mAdapter.removeItem(viewHolder.getAdapterPosition());
             String url=Config.API_URL+"app_service.php?type=delete_wishlist&id="+id.toString();
-            String responc = function.executeUrl(getApplicationContext(),"get",url,null);
+            String responc = function.executeUrl(getContext(),"get",url,null);
             Log.e(Config.TAG,"result : "+responc);
             // showing snack bar with Undo option
             Snackbar snackbar = Snackbar.make(constraintLayout, name + " removed from whishlist!", Snackbar.LENGTH_LONG);
