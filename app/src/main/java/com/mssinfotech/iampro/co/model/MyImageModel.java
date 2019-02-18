@@ -24,6 +24,15 @@ public class MyImageModel {
     private String rating;
     private String uid;
 
+    public String getAvatar() {
+        return avatar;
+    }
+
+    public void setAvatar(String avatar) {
+        this.avatar = avatar;
+    }
+
+    private String avatar;
     public String getMore() {
         return more;
     }
@@ -207,5 +216,27 @@ public class MyImageModel {
         this.rating = rating;
         this.uid = uid;
         this.more=more;
+    }
+    //load more
+    public MyImageModel(String id, String albemid, String name, String category, String albem_type, String image, String udate, String about_us, String group_id, String is_featured, String status, String is_block, String comments, String totallike, String like_unlike, String rating, String uid,String more,String avatar) {
+        this.id = id;
+        this.albemid = albemid;
+        this.name = name;
+        this.category = category;
+        this.albem_type = albem_type;
+        this.image = image;
+        this.udate = udate;
+        this.about_us = about_us;
+        this.group_id = group_id;
+        this.is_featured = is_featured;
+        this.status = status;
+        this.is_block = is_block;
+        this.comments = comments;
+        this.totallike = totallike;
+        this.like_unlike = like_unlike;
+        this.rating = rating;
+        this.uid = uid;
+        this.more=more;
+        this.avatar=avatar;
     }
 }

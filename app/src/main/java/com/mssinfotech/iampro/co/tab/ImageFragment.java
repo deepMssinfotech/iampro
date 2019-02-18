@@ -194,7 +194,8 @@ public class ImageFragment extends Fragment implements ImageAdapter.ItemListener
 
     }
     public void getAllAlbum(){
-        String url="https://www.iampro.co/api/app_service.php?type=getAlbemsListt&search_type=image&uid="+uid;
+        //String url="https://www.iampro.co/api/app_service.php?type=getAlbemsListt&search_type=image&uid="+uid;
+         String url="https://www.iampro.co/api/app_service.php?type=search_all_items&search_type=IMAGE&category_type=&uid="+uid+"&my_id="+uid;
         RequestQueue requestQueue = Volley.newRequestQueue(getContext());
         final ProgressDialog pDialog = new ProgressDialog(getContext()); //Your Activity.this
         pDialog.setMessage("Loading...!");
@@ -213,14 +214,14 @@ public class ImageFragment extends Fragment implements ImageAdapter.ItemListener
                         try{
                             for(int i=0;i<response.length();i++){
                                 JSONObject student1 = response.getJSONObject(i);
-                                String name1=student1.optString("id");
-                                String album_name=student1.optString("album_name");
+                                String idd=student1.optString("id");
+                                String name=student1.optString("name");
                                 //item_name.add(name1);
-                                item_name.put(name1,album_name);
+                                item_name.put(name,idd);
                             }
                             Log.d("allsampledataname",item_name.toString());
-                            for (String data:item_name.keySet()){
-                                getImages(data);
+                            for (String data:item_name.keySet()) {
+                                getImagesMores(data);
                                 Log.d("Keyset",""+data);
                             }
                         }
@@ -245,12 +246,13 @@ public class ImageFragment extends Fragment implements ImageAdapter.ItemListener
         requestQueue.add(jsonArrayRequest);
         //getProvide();
     }
-    public void getImages(final String aid){
+    public void getImagesMore(final String cname){
         final ProgressDialog pDialog = new ProgressDialog(getContext()); //Your Activity.this
         pDialog.setMessage("Loading...!");
         pDialog.show();
         //String url=Config.API_URL+"app_service.php?type=getMyAlbemsListt&search_type=image&uid="+uid+"&my_id="+uid;
-        String url=Config.API_URL+"app_service.php?type=getMyAlbemsListt&search_type=image&uid="+uid+"&my_id="+uid+"&album_id="+aid;
+       // String url=Config.API_URL+"app_service.php?type=getMyAlbemsListt&search_type=image&uid="+uid+"&my_id="+uid+"&album_id="+aid;
+        String url="https://www.iampro.co/api/app_service.php?type=search_all_items&search_type=IMAGE&category="+cname+"persnol&search_data=&uid=&my_id=";
         // Initialize a new RequestQueue instance
         RequestQueue requestQueue = Volley.newRequestQueue(getContext());
         JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(
@@ -262,23 +264,25 @@ public class ImageFragment extends Fragment implements ImageAdapter.ItemListener
                     public void onResponse(JSONArray response) {
                         pDialog.dismiss();
                         SectionImageModel dm = new SectionImageModel();
-                        dm.setHeaderTitle(item_name.get(aid));
-                        dm.setAlbemId(aid);
+                        dm.setHeaderTitle(cname);
+                        dm.setAlbemId(item_name.get(cname));
                         dm.setMore("loadmore");
                         //ArrayList<MyImageModel> singleItem = new ArrayList<>();
-                        ArrayList<MyImageModel> item = new ArrayList<>();
+                         ArrayList<MyImageModel> item = new ArrayList<>();
+                        //DataModel
+
                         try{
                             for(int i=0;i<response.length();i++){
                                 // Get current json object
 
                                 JSONObject student = response.getJSONObject(i);
-                                String category1=student.getString("category");
+                                String category1=student.getString("category_type");
                                 String idd=student.optString("id");
-                                String added_byy=student.optString("added_by");
+                                //String added_byy=student.optString("added_by");
 
                                 String name1=student.optString("name");
 
-                                String atype=student.optString("atype");
+                                //String atype=student.optString("atype");
                                 //tv_category.setText(name1);
                                 //tv_category.setVisibility(View.GONE);
                                 JSONArray jsonArrayPics=student.getJSONArray("pics");
@@ -305,7 +309,7 @@ public class ImageFragment extends Fragment implements ImageAdapter.ItemListener
                                     String like_unlike=pics.optString("like_unlike");
                                     String rating=pics.optString("rating");
                                      String more="loadmore";
-                                    item.add(new MyImageModel(id,albemid,name,category,albem_type,image,udate,about_us,group_id,is_featured,status,is_block,comments,totallike,like_unlike,rating,added_byy,more));
+                                    item.add(new MyImageModel(id,albemid,name,category,albem_type,image,udate,about_us,group_id,is_featured,status,is_block,comments,totallike,like_unlike,rating,name,more));
                                     //singleItem.add(new SingleItemModel(Integer.parseInt(id), name,image,udate,rating,Integer.parseInt(totallike),Integer.parseInt(comments),Integer.parseInt(uid),name,image,"image"));
 
                                 }
@@ -337,6 +341,129 @@ public class ImageFragment extends Fragment implements ImageAdapter.ItemListener
                         catch (JSONException e){
                             e.printStackTrace();
                              pDialog.dismiss();
+                            Toast.makeText(getContext(), ""+e.getMessage(),Toast.LENGTH_SHORT).show();
+                            Log.d("catch_f",""+e.getMessage());
+                        }
+                    }
+                },
+                new com.android.volley.Response.ErrorListener(){
+                    @Override
+                    public void onErrorResponse(VolleyError error){
+                        Toast.makeText(getContext(), error.getMessage(), Toast.LENGTH_SHORT).show();
+                        pDialog.dismiss();
+                        Log.d("verror",""+error.getMessage());
+                    }
+                }
+        );
+        // Add JsonArrayRequest to the RequestQueue
+        requestQueue.add(jsonArrayRequest);
+        //getProvide();
+    }
+
+    public void getImagesMores(final String cname){
+        final ProgressDialog pDialog = new ProgressDialog(getContext()); //Your Activity.this
+        pDialog.setMessage("Loading...!");
+        pDialog.show();
+        //String url=Config.API_URL+"app_service.php?type=getMyAlbemsListt&search_type=image&uid="+uid+"&my_id="+uid;
+        // String url=Config.API_URL+"app_service.php?type=getMyAlbemsListt&search_type=image&uid="+uid+"&my_id="+uid+"&album_id="+aid;
+        String url="https://www.iampro.co/api/app_service.php?type=search_all_items&search_type=IMAGE&category="+cname+"persnol&search_data=&uid=&my_id=";
+        // Initialize a new RequestQueue instance
+        RequestQueue requestQueue = Volley.newRequestQueue(getContext());
+        JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(
+                Request.Method.GET,
+                url,
+                null,
+                new com.android.volley.Response.Listener<JSONArray>() {
+                    @Override
+                    public void onResponse(JSONArray response) {
+                        pDialog.dismiss();
+                        SectionImageModel dm = new SectionImageModel();
+                        dm.setHeaderTitle(cname);
+                        dm.setAlbemId(item_name.get(cname));
+                        dm.setMore("loadmore");
+                        //ArrayList<MyImageModel> singleItem = new ArrayList<>();
+                               ArrayList<MyImageModel> item = new ArrayList<>();
+                        //ArrayList<DataModel> item = new ArrayList<>();
+                        try{
+                            for(int i=0;i<response.length();i++){
+                                // Get current json object
+
+                                JSONObject student = response.getJSONObject(i);
+                                String category1=student.getString("category_type");
+                                String idd=student.optString("id");
+                                //String added_byy=student.optString("added_by");
+                                String name1=student.optString("name");
+                                //String atype=student.optString("atype");
+                                //tv_category.setText(name1);
+                                //tv_category.setVisibility(View.GONE);
+                                JSONArray jsonArrayPics=student.getJSONArray("img_detail");
+                                Log.d("picssss",jsonArrayPics.toString());
+
+                                for (int j=0;j<jsonArrayPics.length();j++){
+                                    JSONObject pics=jsonArrayPics.getJSONObject(j);
+                                     int id=pics.optInt("id");
+
+                                    int albemid=pics.optInt("albemid");
+                                    String name=pics.optString("name");
+                                    String category=pics.optString("category");
+                                    int albem_type=pics.optInt("albem_type");
+
+                                    String image=pics.optString("image");
+                                    String udate=pics.optString("udate");
+                                    String about_us=pics.optString("about_us");
+
+                                    int group_id=pics.optInt("group_id");
+
+                                     int is_featured=pics.optInt("is_featured");
+                                    //status
+                                     int status=pics.optInt("status");
+                                     int totallike=pics.optInt("totallike");
+                                     int comments=pics.optInt("comments");
+                                      int like_unlike=pics.optInt("like_unlike");
+                                    String rating=pics.optString("rating");
+                                    String is_block=pics.optString("is_block");
+
+                                    JSONObject userDetail=student.getJSONObject("user_detail");
+                                    int user_id=userDetail.optInt("id");
+
+                                     String username=userDetail.optString("username");
+                                     String avatar=userDetail.optString("avatar");
+                                     String email=userDetail.optString("email");
+                                      String mobile=userDetail.optString("mobile");
+                                       String about_me=userDetail.optString("about_me");
+                                       String country=userDetail.optString("country");
+                                       String state=userDetail.optString("state");
+                                       String city=userDetail.optString("city");
+                                        String gender=userDetail.optString("gender");
+                                        String dob=userDetail.optString("dob");
+                                        String categoryy=userDetail.optString("category");
+                                        String is_featuredd=userDetail.optString("is_featured");
+                                        String fullname=userDetail.optString("fullname");
+
+                                    String more="loadmore";
+     item.add(new MyImageModel(String.valueOf(id),String.valueOf(albemid),name,category,String.valueOf(albem_type),image,udate,about_us,String.valueOf(group_id),String.valueOf(is_featured),String.valueOf(status),is_block,String.valueOf(comments),String.valueOf(totallike),String.valueOf(like_unlike),rating,fullname,more,avatar));
+     //item.add(new DataModel(name,image,udate,category,totallike,like_unlike,comments,udate,Float.parseFloat(rating),uid,fullname,avatar,id,IMAGE_TYPE));
+
+                                }
+                            }
+                            Log.d("allsampledatav",item.toString());
+
+                            dm.setAllItemsInSection(item);
+                            Log.d("adm",item.toString());
+                            Log.d("dmm",dm.toString());
+                            allSampleDatamore.add(dm);
+                            Log.d("allsampledatav", allSampleDatamore.toString());
+                            //my_recycler_view.setHasFixedSize(true);
+                            Log.d("allSampleDatas",""+allSampleDatamore.size()+"--"+allSampleDatamore.toString());
+                            TreeMap<String,String> item_loadmore=new TreeMap<>();
+                             item_loadmore.put("loadmore","loadmore");
+                            adapterr = new MyImageVideoDataAdapter(getContext(), allSampleDatamore,item_loadmore);
+                            recycler_view_load_more.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
+                            recycler_view_load_more.setAdapter(adapterr);
+                        }
+                        catch (JSONException e){
+                            e.printStackTrace();
+                            pDialog.dismiss();
                             Toast.makeText(getContext(), ""+e.getMessage(),Toast.LENGTH_SHORT).show();
                             Log.d("catch_f",""+e.getMessage());
                         }

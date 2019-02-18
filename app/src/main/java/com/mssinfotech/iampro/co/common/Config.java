@@ -56,6 +56,7 @@ public class Config
     public static String PREVIOUS_PAGE_TAG = null;
     private static final float BITMAP_SCALE = 0.4f;
     private static final int BLUR_RADIUS = 8;
+    public static final boolean SHOW_LOGS = true;
 
     public static RequestOptions options_avatar = new RequestOptions()
             .centerCrop()

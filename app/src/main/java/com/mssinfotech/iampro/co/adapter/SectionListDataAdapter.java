@@ -44,7 +44,7 @@ public class SectionListDataAdapter extends RecyclerView.Adapter<SectionListData
 
     private ArrayList<SingleItemModel> itemsList;
     private Context mContext;
-    public String uid;
+    public String uid="0";
     public String utype;
     ImageView ivLike;
     public SectionListDataAdapter(Context context, ArrayList<SingleItemModel> itemsList) {
@@ -124,16 +124,18 @@ public class SectionListDataAdapter extends RecyclerView.Adapter<SectionListData
                 //Toast.makeText(mContext, utype+" clicked", Toast.LENGTH_SHORT).show();
             }
         });
-        int my_uid=Integer.parseInt(uid);
-        if(my_uid==0){
-            holder.likeButton.setEnabled(false);
-        }
-        if((singleItem.getIsliked())==1){
-            holder.likeButton.setLiked(true);
-            holder.totallike.setTextColor(Color.RED);
-        }else{
-            holder.likeButton.setLiked(false);
-            holder.totallike.setTextColor(Color.BLACK);
+        if(PrefManager.isLogin(mContext)) {
+            int my_uid = Integer.parseInt(uid);
+            if (my_uid == 0) {
+                holder.likeButton.setEnabled(false);
+            }
+            if ((singleItem.getIsliked()) == 1) {
+                holder.likeButton.setLiked(true);
+                holder.totallike.setTextColor(Color.RED);
+            } else {
+                holder.likeButton.setLiked(false);
+                holder.totallike.setTextColor(Color.BLACK);
+            }
         }
          holder.user_image.setOnClickListener(new View.OnClickListener() {
              @Override

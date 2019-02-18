@@ -76,7 +76,7 @@ public class MyImageVideoDataAdapter extends RecyclerView.Adapter<MyImageVideoDa
         } */
         //SectionListDataAdapter itemListDataAdapter = new SectionListDataAdapter(mContext, singleSectionItems);
 
-        SectionImageVideoAdapter itemListDataAdapter = new SectionImageVideoAdapter(mContext, singleSectionItems);
+        SectionImageVideoAdapter itemListDataAdapter = new SectionImageVideoAdapter(mContext, singleSectionItems,item_name);
 
 
         itemRowHolder.recycler_view_list.setHasFixedSize(true);

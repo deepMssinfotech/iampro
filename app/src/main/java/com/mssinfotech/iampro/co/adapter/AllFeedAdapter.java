@@ -14,6 +14,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AbsListView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.MediaController;
@@ -87,6 +88,7 @@ public class AllFeedAdapter extends RecyclerView.Adapter<AllFeedAdapter.ViewHold
         FeedModel item;
         FullscreenVideoView fullscreenVideoView;
         SliderLayout imageSlider;
+        private View currentFocusedLayout, oldFocusedLayout;
          int id;
         //int uid;
         public ViewHolder(View v) {
@@ -697,6 +699,8 @@ public class AllFeedAdapter extends RecyclerView.Adapter<AllFeedAdapter.ViewHold
                 }
             }
         });
+
+
     }
     @Override
     public int getItemCount() {
