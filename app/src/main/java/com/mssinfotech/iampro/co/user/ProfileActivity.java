@@ -13,10 +13,12 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
+import android.widget.AbsListView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.VideoView;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -82,7 +84,7 @@ public class ProfileActivity extends AppCompatActivity implements AllFeedAdapter
     Context context;
     SwipeRefreshLayout mSwipeRefreshLayout;
     android.support.v7.widget.CardView ll_dashboard;
-
+    private View currentFocusedLayout, oldFocusedLayout;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -147,6 +149,40 @@ public class ProfileActivity extends AppCompatActivity implements AllFeedAdapter
         TextView myuid= includeShortMenu.findViewById(R.id.myuid);
         myuid.setText(uid);
         getFeed(FEED_START);
+
+        vFeed.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(RecyclerView recyclerView,int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+
+                Toast.makeText(getApplicationContext(),"Scroll1",Toast.LENGTH_LONG).show();
+                if (newState == AbsListView.OnScrollListener.SCROLL_STATE_IDLE) {
+                    Toast.makeText(getApplicationContext(),"Scroll",Toast.LENGTH_LONG).show();
+                    //get the recyclerview position which is completely visible and first
+                    int positionView = ((LinearLayoutManager)vFeed.getLayoutManager()).findFirstCompletelyVisibleItemPosition();
+                    Log.i("VISISBLE",   ""+positionView);
+                    if (positionView >= 0) {
+                        if (oldFocusedLayout != null) {
+                            //Stop the previous video playback after new scroll
+                            //VideoView vv_dashboard = (VideoView) oldFocusedLayout.findViewById(R.id.vv_dashboard);
+                            //vv_dashboard.stopPlayback();
+                            Toast.makeText(getApplicationContext(),mValues.get(positionView)+"",Toast.LENGTH_LONG).show();
+                        }
+
+
+                        currentFocusedLayout = ((LinearLayoutManager) vFeed.getLayoutManager()).findViewByPosition(positionView);
+                        //VideoView vv_dashboard = (VideoView) currentFocusedLayout.findViewById(R.id.vv_dashboard);
+                        //to play video of selected recylerview, videosData is an array-list which is send to recyclerview adapter to fill the view. Here we getting that specific video which is displayed through recyclerview.
+                        //playVideo(mValues.get(positionView));
+                        Toast.makeText(getApplicationContext(),mValues.get(positionView)+"",Toast.LENGTH_LONG).show();
+                        oldFocusedLayout = currentFocusedLayout;
+                    }
+                }
+
+            }
+
+        });
+
     }
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         Toast.makeText(this, "mss popup",  Toast.LENGTH_LONG).show();

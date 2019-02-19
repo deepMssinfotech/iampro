@@ -55,5 +55,6 @@
     <string name="currentpassword">Enter Current Password</string>
     <string name="newpassword">Enter New Password</string>
     <string name="confirmpassword">Enter Confirm Password</string>
+    <string name="udashboard">User Dashboard</string>
 </resources>
 

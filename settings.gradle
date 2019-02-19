@@ -1,1 +1,3 @@
-include ':app'
+include ':app', ':list-visibility-utils', ':video-player-manager'
+project(':list-visibility-utils').projectDir = new File('VideoPlayerManager-master/list-visibility-utils')
+project(':video-player-manager').projectDir = new File('VideoPlayerManager-master/video-player-manager')

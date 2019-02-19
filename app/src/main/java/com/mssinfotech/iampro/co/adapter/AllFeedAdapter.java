@@ -14,6 +14,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AbsListView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.MediaController;
@@ -87,6 +88,7 @@ public class AllFeedAdapter extends RecyclerView.Adapter<AllFeedAdapter.ViewHold
         FeedModel item;
         FullscreenVideoView fullscreenVideoView;
         SliderLayout imageSlider;
+        private View currentFocusedLayout, oldFocusedLayout;
          int id;
         //int uid;
         public ViewHolder(View v) {
@@ -655,7 +657,7 @@ public class AllFeedAdapter extends RecyclerView.Adapter<AllFeedAdapter.ViewHold
 
                 Intent intent = new Intent(mContext, CommentActivity.class);
                 intent.putExtra("type","feed_image");
-                intent.putExtra("id",String.valueOf(id));
+                intent.putExtra("id",String.valueOf(sharedId[0]));
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                  mContext.startActivity(intent);
                 }
@@ -664,37 +666,41 @@ public class AllFeedAdapter extends RecyclerView.Adapter<AllFeedAdapter.ViewHold
 
                     Intent intent = new Intent(mContext, CommentActivity.class);
                     intent.putExtra("type","video");
-                    intent.putExtra("id",String.valueOf(id));
+                    intent.putExtra("id",String.valueOf(sharedId[0]));
                     intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     mContext.startActivity(intent);
                 }
                 else if (type.equalsIgnoreCase("PRODUCT"))
                 {
-
                     Intent intent = new Intent(mContext, CommentActivity.class);
                     intent.putExtra("type","product");
-                    intent.putExtra("id",String.valueOf(id));
+                    intent.putExtra("id",String.valueOf(sharedId[0]));
                     intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     mContext.startActivity(intent);
+                   // Toast.makeText(mContext,"Product"+id,Toast.LENGTH_LONG).show();
                 }
                 else if (type.equalsIgnoreCase("PROVIDE"))
                 {
                     Intent intent = new Intent(mContext, CommentActivity.class);
                     intent.putExtra("type","provide");
-                    intent.putExtra("id",String.valueOf(id));
+                    intent.putExtra("id",String.valueOf(sharedId[0]));
                     intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     mContext.startActivity(intent);
+                    //Toast.makeText(mContext,"Provide"+id,Toast.LENGTH_LONG).show();
                 }
                 else if (type.equalsIgnoreCase("DEMAND"))
                 {
                     Intent intent = new Intent(mContext, CommentActivity.class);
                     intent.putExtra("type","demand");
-                    intent.putExtra("id",String.valueOf(id));
+                    intent.putExtra("id",String.valueOf(sharedId[0]));
                     intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     mContext.startActivity(intent);
+                    //Toast.makeText(mContext,"Demand"+id,Toast.LENGTH_LONG).show();
                 }
             }
         });
+
+
     }
     @Override
     public int getItemCount() {

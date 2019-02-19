@@ -59,6 +59,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
+import java.util.TreeMap;
 
 public class SectionImageVideoAdapter extends RecyclerView.Adapter<SectionImageVideoAdapter.SingleItemRowHolder>  {
     private ArrayList<MyImageModel> itemsList;
@@ -67,15 +68,23 @@ public class SectionImageVideoAdapter extends RecyclerView.Adapter<SectionImageV
     ArrayList<MyImageModel> mValues;
     HashSet<String> heading_name;
     protected MyImageAdapter.ItemListener mListener;
-    public SectionImageVideoAdapter(Context context, ArrayList<MyImageModel> itemsList)  {
-        this.itemsList = itemsList;
-        this.mContext = context;
+     TreeMap<String,String> item_type;
+    public SectionImageVideoAdapter(Context context, ArrayList<MyImageModel> itemsList,TreeMap<String,String> item_type)  {
+        this.itemsList=itemsList;
+        this.mContext=context;
+        this.item_type=item_type;
     }
     @Override
     public SingleItemRowHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
-        View v = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.item_image_row, null);
-        SingleItemRowHolder mh = new SingleItemRowHolder(v);
-        return mh;
+         if(item_type.get("loadmore").equalsIgnoreCase("loadmore")){
+             View v = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.item_image_row, null);
+             SingleItemRowHolder mh = new SingleItemRowHolder(v);
+             return mh;
+         }else {
+             View v = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.item_image_row, null);
+             SingleItemRowHolder mh = new SingleItemRowHolder(v);
+             return mh;
+          }
     }
     @Override
     public void onBindViewHolder(final SingleItemRowHolder holder, final int i) {
@@ -98,6 +107,15 @@ public class SectionImageVideoAdapter extends RecyclerView.Adapter<SectionImageV
             holder.likeButton.setLiked(false);
             holder.tv_totallike.setTextColor(Color.BLACK);
         }
+
+         if(itemsList.get(i).getMore().equalsIgnoreCase("loadmore")){
+            holder.user_image.setVisibility(View.VISIBLE);
+             Glide.with(mContext)
+                     .load(Config.ALBUM_URL+singleItem.getAvatar())
+                     .apply(Config.options_avatar)
+                     .into(holder.user_image);
+             holder.category.setText(itemsList.get(i).getName());
+         }
        //if(singleItem.getRating()!="NAN" || singleItem.getRating().length()>0 || !(singleItem.getRating().equalsIgnoreCase("NAN")) || singleItem.getRating()!="" || !singleItem.getRating().equalsIgnoreCase("") || !singleItem.getRating().isEmpty())
         //holder.ratingBar.setRating(Float.parseFloat(String.valueOf(singleItem.getRating())));
         holder. category.setText(singleItem .getCategory());
@@ -256,6 +274,7 @@ public class SectionImageVideoAdapter extends RecyclerView.Adapter<SectionImageV
              udate=view.findViewById(R.id.udate);
             tv_comments=view.findViewById(R.id.tv_comments);
             tv_totallike=view.findViewById(R.id.tv_totallike);
+            user_image=view.findViewById(R.id.user_image);
             ll_showhide=view.findViewById(R.id.ll_showhide);
             category=view.findViewById(R.id.category);
             detail_name=view.findViewById(R.id.detail_name);
