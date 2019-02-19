@@ -195,7 +195,8 @@ public class ImageFragment extends Fragment implements ImageAdapter.ItemListener
     }
     public void getAllAlbum(){
         //String url="https://www.iampro.co/api/app_service.php?type=getAlbemsListt&search_type=image&uid="+uid;
-         String url="https://www.iampro.co/api/app_service.php?type=search_all_items&search_type=IMAGE&category_type=&uid="+uid+"&my_id="+uid;
+         //String url="https://www.iampro.co/api/app_service.php?type=search_all_items&search_type=IMAGE&category_type=&uid="+uid+"&my_id="+uid;
+          String url="https://www.iampro.co/api/app_service.php?type=get_category&name=IMAGE";
         RequestQueue requestQueue = Volley.newRequestQueue(getContext());
         final ProgressDialog pDialog = new ProgressDialog(getContext()); //Your Activity.this
         pDialog.setMessage("Loading...!");
@@ -216,13 +217,22 @@ public class ImageFragment extends Fragment implements ImageAdapter.ItemListener
                                 JSONObject student1 = response.getJSONObject(i);
                                 String idd=student1.optString("id");
                                 String name=student1.optString("name");
+                                int product_count=student1.optInt("product_count");
+                                 int status=student1.optInt("status");
                                 //item_name.add(name1);
-                                item_name.put(name,idd);
+                                if(product_count>0) {
+                                    item_name.put(name,idd);
+                                }
+                                else{
+                                    //return;
+                                }
                             }
-                            Log.d("allsampledataname",item_name.toString());
+                            Log.d("allsampledatanameee",item_name.toString());
                             for (String data:item_name.keySet()) {
+                                Log.d("Valueset",""+item_name.values().toString());
                                 getImagesMores(data);
                                 Log.d("Keyset",""+data);
+
                             }
                         }
                         catch (JSONException e){
@@ -366,7 +376,7 @@ public class ImageFragment extends Fragment implements ImageAdapter.ItemListener
         pDialog.show();
         //String url=Config.API_URL+"app_service.php?type=getMyAlbemsListt&search_type=image&uid="+uid+"&my_id="+uid;
         // String url=Config.API_URL+"app_service.php?type=getMyAlbemsListt&search_type=image&uid="+uid+"&my_id="+uid+"&album_id="+aid;
-        String url="https://www.iampro.co/api/app_service.php?type=search_all_items&search_type=IMAGE&category="+cname+"persnol&search_data=&uid=&my_id=";
+        String url="https://www.iampro.co/api/app_service.php?type=search_all_items&search_type=IMAGE&category="+cname+"&search_data=&uid="+uid+"&my_id="+uid;
         // Initialize a new RequestQueue instance
         RequestQueue requestQueue = Volley.newRequestQueue(getContext());
         JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(
@@ -423,7 +433,7 @@ public class ImageFragment extends Fragment implements ImageAdapter.ItemListener
                                     String rating=pics.optString("rating");
                                     String is_block=pics.optString("is_block");
 
-                                    JSONObject userDetail=student.getJSONObject("user_detail");
+                                    JSONObject userDetail=pics.getJSONObject("user_detail");
                                     int user_id=userDetail.optInt("id");
 
                                      String username=userDetail.optString("username");
@@ -441,7 +451,7 @@ public class ImageFragment extends Fragment implements ImageAdapter.ItemListener
                                         String fullname=userDetail.optString("fullname");
 
                                     String more="loadmore";
-     item.add(new MyImageModel(String.valueOf(id),String.valueOf(albemid),name,category,String.valueOf(albem_type),image,udate,about_us,String.valueOf(group_id),String.valueOf(is_featured),String.valueOf(status),is_block,String.valueOf(comments),String.valueOf(totallike),String.valueOf(like_unlike),rating,fullname,more,avatar));
+     item.add(new MyImageModel(String.valueOf(id),String.valueOf(albemid),name,category,String.valueOf(albem_type),image,udate,about_us,String.valueOf(group_id),String.valueOf(is_featured),String.valueOf(status),is_block,String.valueOf(comments),String.valueOf(totallike),String.valueOf(like_unlike),rating,String.valueOf(user_id),more,avatar,fullname));
      //item.add(new DataModel(name,image,udate,category,totallike,like_unlike,comments,udate,Float.parseFloat(rating),uid,fullname,avatar,id,IMAGE_TYPE));
 
                                 }

@@ -59,6 +59,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
+import java.util.TreeMap;
 
 public class SectionVideoAdapter extends RecyclerView.Adapter<SectionVideoAdapter.SingleItemRowHolder> {
     private ArrayList<MyImageModel> itemsList;
@@ -66,10 +67,12 @@ public class SectionVideoAdapter extends RecyclerView.Adapter<SectionVideoAdapte
     //private String uid,id;
     ArrayList<MyImageModel> mValues;
     HashSet<String> heading_name;
+    HashMap<String,String> item_name;
     protected MyImageAdapter.ItemListener mListener;
-    public SectionVideoAdapter(Context context, ArrayList<MyImageModel> itemsList) {
+    public SectionVideoAdapter(Context context, ArrayList<MyImageModel> itemsList,HashMap<String,String> item_name) {
         this.itemsList = itemsList;
         this.mContext = context;
+        this.item_name=item_name;
     }
     @Override
     public SingleItemRowHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
@@ -115,6 +118,17 @@ public class SectionVideoAdapter extends RecyclerView.Adapter<SectionVideoAdapte
                         .fitCenter())
                 .into(holder.imageView); */
         //ratingBar.setRating(Float.parseFloat(String.valueOf(item.getRating())));
+
+        if(itemsList.get(i).getMore().equalsIgnoreCase("loadmore")){
+            holder.user_image.setVisibility(View.VISIBLE);
+            Glide.with(mContext)
+                    .load(Config.ALBUM_URL+singleItem.getAvatar())
+                    .apply(Config.options_avatar)
+                    .into(holder.user_image);
+            holder.category.setText(itemsList.get(i).getFullname());
+            holder.ratingBar.setRating(Float.parseFloat(itemsList.get(i).getRating()));
+        }
+
         int my_uid=Integer.parseInt(uidd);
         if(my_uid==0){
             holder.likeButton.setEnabled(false);

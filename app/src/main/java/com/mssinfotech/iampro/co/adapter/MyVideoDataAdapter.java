@@ -36,6 +36,7 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.TreeMap;
 
 public class MyVideoDataAdapter extends RecyclerView.Adapter<MyVideoDataAdapter.ItemRowHolder> {
 
@@ -76,7 +77,7 @@ public class MyVideoDataAdapter extends RecyclerView.Adapter<MyVideoDataAdapter.
         } */
         //SectionListDataAdapter itemListDataAdapter = new SectionListDataAdapter(mContext, singleSectionItems);
 
-        SectionVideoAdapter itemListDataAdapter = new SectionVideoAdapter(mContext, singleSectionItems);
+        SectionVideoAdapter itemListDataAdapter = new SectionVideoAdapter(mContext, singleSectionItems,item_name);
 
 
         itemRowHolder.recycler_view_list.setHasFixedSize(true);

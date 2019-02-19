@@ -53,6 +53,7 @@
                             android:layout_width="25dp"
                             android:layout_height="25dp"
                             android:visibility="gone"
+                            android:layout_marginRight="4dp"
                             app:civ_border_width="1dp"
                             android:src="@drawable/iampro"
                             app:civ_border_color="#FF000000"/>
@@ -63,8 +64,6 @@
                             android:layout_height="wrap_content"
                             android:text="Iampro"/>
                     </LinearLayout>
-
-
                     <TextView
                         android:id="@+id/udate"
                         android:layout_width="wrap_content"

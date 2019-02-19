@@ -197,7 +197,8 @@ public class VideoFragment extends Fragment implements VideoAdapter.ItemListener
     }
 
     public void getAllAlbum(){
-        String url="https://www.iampro.co/api/app_service.php?type=getAlbemsListt&search_type=video&uid="+uid;
+        //String url="https://www.iampro.co/api/app_service.php?type=getAlbemsListt&search_type=video&uid="+uid;
+        String url="https://www.iampro.co/api/app_service.php?type=get_category&name=VIDEO&uid="+uid;
         RequestQueue requestQueue = Volley.newRequestQueue(getContext());
 
         final ProgressDialog pDialog = new ProgressDialog(getContext()); //Your Activity.this
@@ -217,14 +218,23 @@ public class VideoFragment extends Fragment implements VideoAdapter.ItemListener
                         try{
                             for(int i=0;i<response.length();i++){
                                 JSONObject student1 = response.getJSONObject(i);
-                                String name1=student1.optString("id");
-                                String album_name=student1.optString("album_name");
+                                 int id=student1.optInt("id");
+                                String name=student1.optString("name");
+                                int product_count=student1.optInt("product_count");
                                 //item_name.add(name1);
-                                item_name.put(name1,album_name);
+                                //item_name.put(name1,album_name)
+                                 if(product_count>0) {
+                                     item_name.put(name, String.valueOf(id));
+                                     Toast.makeText(getContext(),""+product_count,Toast.LENGTH_LONG).show();
+                                 }
+                                 else{
+
+                                 }
                             }
                             Log.d("allsampledataname",item_name.toString());
                             for (String data:item_name.keySet()){
-                                getVideo(data);
+                                //getVideo(data);
+                                getVideoMores(data);
                                 Log.d("Keyset",""+data);
                             }
                         }
@@ -348,6 +358,133 @@ public class VideoFragment extends Fragment implements VideoAdapter.ItemListener
                         Toast.makeText(getContext(), error.getMessage(), Toast.LENGTH_SHORT).show();
                         Log.d("verror",""+error.getMessage());
                          pDialog.dismiss();
+                    }
+                }
+        );
+        // Add JsonArrayRequest to the RequestQueue
+        requestQueue.add(jsonArrayRequest);
+        //getProvide();
+    }
+
+    public void getVideoMores(final String cname){
+        final ProgressDialog pDialog = new ProgressDialog(getContext()); //Your Activity.this
+        pDialog.setMessage("Loading...!");
+        pDialog.show();
+        //String url=Config.API_URL+"app_service.php?type=getMyAlbemsListt&search_type=image&uid="+uid+"&my_id="+uid;
+        // String url=Config.API_URL+"app_service.php?type=getMyAlbemsListt&search_type=image&uid="+uid+"&my_id="+uid+"&album_id="+aid;
+        String url="https://www.iampro.co/api/app_service.php?type=search_all_items&search_type=VIDEO&category="+cname+"&search_data=&uid="+uid+"&my_id="+uid;
+        // Initialize a new RequestQueue instance
+        RequestQueue requestQueue = Volley.newRequestQueue(getContext());
+        JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(
+                Request.Method.GET,
+                url,
+                null,
+                new com.android.volley.Response.Listener<JSONArray>() {
+                    @Override
+                    public void onResponse(JSONArray response) {
+                        pDialog.dismiss();
+                        SectionImageModel dm = new SectionImageModel();
+                        dm.setHeaderTitle(cname);
+                        dm.setAlbemId(item_name.get(cname));
+                        dm.setMore("loadmore");
+                        //ArrayList<MyImageModel> singleItem = new ArrayList<>();
+                        ArrayList<MyImageModel> item = new ArrayList<>();
+                        //ArrayList<DataModel> item = new ArrayList<>();
+                        try{
+                            for(int i=0;i<response.length();i++){
+                                // Get current json object
+
+                                JSONObject student = response.getJSONObject(i);
+                                String category1=student.getString("category_type");
+                                String idd=student.optString("id");
+                                //String added_byy=student.optString("added_by");
+                                String name1=student.optString("name");
+                                //String atype=student.optString("atype");
+                                //tv_category.setText(name1);
+                                //tv_category.setVisibility(View.GONE);
+                                JSONArray jsonArrayPics=student.getJSONArray("img_detail");
+                                Log.d("picssss",jsonArrayPics.toString());
+
+                                for (int j=0;j<jsonArrayPics.length();j++){
+                                    JSONObject pics=jsonArrayPics.getJSONObject(j);
+                                    int id=pics.optInt("id");
+
+                                    int albemid=pics.optInt("albemid");
+                                    String name=pics.optString("name");
+                                    String category=pics.optString("category");
+                                    int albem_type=pics.optInt("albem_type");
+
+                                    String image=pics.optString("image");
+                                    String udate=pics.optString("udate");
+                                    String about_us=pics.optString("about_us");
+
+                                    int group_id=pics.optInt("group_id");
+
+                                    int is_featured=pics.optInt("is_featured");
+                                    //status
+                                    int status=pics.optInt("status");
+                                    int totallike=pics.optInt("totallike");
+                                    int comments=pics.optInt("comments");
+                                    int like_unlike=pics.optInt("like_unlike");
+                                    String rating=pics.optString("rating");
+                                    String is_block=pics.optString("is_block");
+
+                                    JSONObject userDetail=pics.getJSONObject("user_detail");
+                                    int user_id=userDetail.optInt("id");
+
+                                    String username=userDetail.optString("username");
+                                    String avatar=userDetail.optString("avatar");
+                                    String email=userDetail.optString("email");
+                                    String mobile=userDetail.optString("mobile");
+                                    String about_me=userDetail.optString("about_me");
+                                    String country=userDetail.optString("country");
+                                    String state=userDetail.optString("state");
+                                    String city=userDetail.optString("city");
+                                    String gender=userDetail.optString("gender");
+                                    String dob=userDetail.optString("dob");
+                                    String categoryy=userDetail.optString("category");
+                                    String is_featuredd=userDetail.optString("is_featured");
+                                    String fullname=userDetail.optString("fullname");
+
+                                    String more="loadmore";
+                                    item.add(new MyImageModel(String.valueOf(id),String.valueOf(albemid),name,category,String.valueOf(albem_type),image,udate,about_us,String.valueOf(group_id),String.valueOf(is_featured),String.valueOf(status),is_block,String.valueOf(comments),String.valueOf(totallike),String.valueOf(like_unlike),rating,String.valueOf(user_id),more,avatar,fullname));
+                                    //item.add(new DataModel(name,image,udate,category,totallike,like_unlike,comments,udate,Float.parseFloat(rating),uid,fullname,avatar,id,IMAGE_TYPE));
+
+                                }
+                            }
+                            Log.d("allsampledatav",item.toString());
+
+                            dm.setAllItemsInSection(item);
+                            Log.d("adm",item.toString());
+                            Log.d("dmm",dm.toString());
+                            allSampleDatamore.add(dm);
+                            Log.d("allsampledatav", allSampleDatamore.toString());
+                            //my_recycler_view.setHasFixedSize(true);
+                            Log.d("allSampleDatas",""+allSampleDatamore.size()+"--"+allSampleDatamore.toString());
+                            HashMap<String,String> item_loadmore=new HashMap<>();
+                            item_loadmore.put("loadmore","loadmore");
+                            //adapterr = new MyImageVideoDataAdapter(getContext(), allSampleDatamore,item_loadmore);
+                            //recycler_view_load_more.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
+                            //recycler_view_load_more.setAdapter(adapterr);
+
+                            adapterr = new MyVideoDataAdapter(getContext(),allSampleDatamore,item_loadmore);
+                            recycler_view_load_more.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
+                            recycler_view_load_more.setAdapter(adapterr);
+                        }
+                        catch (JSONException e){
+                            e.printStackTrace();
+                            pDialog.dismiss();
+                            Toast.makeText(getContext(), ""+e.getMessage(),Toast.LENGTH_SHORT).show();
+                            Log.d("catch_f",""+e.getMessage());
+                        }
+                    }
+                },
+                new com.android.volley.Response.ErrorListener(){
+                    @Override
+                    public void onErrorResponse(VolleyError error){
+                        Toast.makeText(getContext(), error.getMessage(), Toast.LENGTH_SHORT).show();
+                        pDialog.dismiss();
+                        Log.d("verror",""+error.getMessage());
                     }
                 }
         );
