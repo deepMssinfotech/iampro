@@ -111,26 +111,40 @@ public class UserMenuActivity  extends Fragment {
                     .setCustomAnimations(R.anim.enter, R.anim.exit, R.anim.pop_enter, R.anim.pop_exit)
                     .addToBackStack(null)
                     .commit();
+            removeFragment();
         }
     };
     private View.OnClickListener joinedfriendOnClickListener = new View.OnClickListener() {
         public void onClick(View v) {
+            AppCompatActivity activity = (AppCompatActivity) getContext();
+            JoinFriendActivity joinfriendfragment = new JoinFriendActivity();
+            Bundle args = new Bundle();
+            args.putString("name", "mragank");
+            joinfriendfragment.setArguments(args);
+            FragmentManager fragmentManager = activity.getSupportFragmentManager();
 
-            if(function.isSamePage("activity_joined_friends"))return;
-            Intent intent = new Intent(getContext(), JoinFriendActivity.class);
-
-            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
-            getContext().startActivity(intent);
+            fragmentManager.beginTransaction()
+                    .replace(android.R.id.content, joinfriendfragment, null)
+                    .setCustomAnimations(R.anim.enter, R.anim.exit, R.anim.pop_enter, R.anim.pop_exit)
+                    .addToBackStack(null)
+                    .commit();
             removeFragment();
         }
     };
     private View.OnClickListener friendrequestOnClickListener = new View.OnClickListener() {
         public void onClick(View v) {
-            //if(function.isSamePage("activity_friend_request"))return;
-            Intent intent = new Intent(getContext(), FriendRequestActivity.class);
-            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            getContext().startActivity(intent);
+            AppCompatActivity activity = (AppCompatActivity) getContext();
+            FriendRequestActivity friendrequestfragment = new FriendRequestActivity();
+            Bundle args = new Bundle();
+            args.putString("name", "mragank");
+            friendrequestfragment.setArguments(args);
+            FragmentManager fragmentManager = activity.getSupportFragmentManager();
+
+            fragmentManager.beginTransaction()
+                    .replace(android.R.id.content, friendrequestfragment, null)
+                    .setCustomAnimations(R.anim.enter, R.anim.exit, R.anim.pop_enter, R.anim.pop_exit)
+                    .addToBackStack(null)
+                    .commit();
             removeFragment();
         }
     };
@@ -181,10 +195,18 @@ public class UserMenuActivity  extends Fragment {
     };
     private View.OnClickListener mymessageOnClickListener = new View.OnClickListener() {
         public void onClick(View v) {
-            //if(function.isSamePage("activity_message"))return;
-            Intent intent = new Intent(getContext(), MessageActivity.class);
-            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            getContext().startActivity(intent);
+            AppCompatActivity activity = (AppCompatActivity) getContext();
+            MessageActivity messagefragment = new MessageActivity();
+            Bundle args = new Bundle();
+            args.putString("name", "mragank");
+            messagefragment.setArguments(args);
+            FragmentManager fragmentManager = activity.getSupportFragmentManager();
+
+            fragmentManager.beginTransaction()
+                    .replace(android.R.id.content, messagefragment, null)
+                    .setCustomAnimations(R.anim.enter, R.anim.exit, R.anim.pop_enter, R.anim.pop_exit)
+                    .addToBackStack(null)
+                    .commit();
             removeFragment();
         }
     };
@@ -202,23 +224,40 @@ public class UserMenuActivity  extends Fragment {
                     .setCustomAnimations(R.anim.enter, R.anim.exit, R.anim.pop_enter, R.anim.pop_exit)
                     .addToBackStack(null)
                     .commit();
+            removeFragment();
         }
     };
     private View.OnClickListener mysellingOnClickListener = new View.OnClickListener() {
         public void onClick(View v) {
-            //if(function.isSamePage("activity_my_selling"))return;
-            Intent intent = new Intent(getContext(), MySellingActivity.class);
-            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            getContext().startActivity(intent);
+            AppCompatActivity activity = (AppCompatActivity) getContext();
+            MySellingActivity mysellingfragment = new MySellingActivity();
+            Bundle args = new Bundle();
+            args.putString("name", "mragank");
+            mysellingfragment.setArguments(args);
+            FragmentManager fragmentManager = activity.getSupportFragmentManager();
+
+            fragmentManager.beginTransaction()
+                    .replace(android.R.id.content, mysellingfragment, null)
+                    .setCustomAnimations(R.anim.enter, R.anim.exit, R.anim.pop_enter, R.anim.pop_exit)
+                    .addToBackStack(null)
+                    .commit();
             removeFragment();
         }
     };
     private View.OnClickListener mypurchaseOnClickListener = new View.OnClickListener() {
         public void onClick(View v) {
-            //if(function.isSamePage("activity_my_purchase"))return;
-            Intent intent = new Intent(getContext(), MyPurchsaeActivity.class);
-            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            getContext().startActivity(intent);
+            AppCompatActivity activity = (AppCompatActivity) getContext();
+            MyPurchsaeActivity mypurchasefragment = new MyPurchsaeActivity();
+            Bundle args = new Bundle();
+            args.putString("name", "mragank");
+            mypurchasefragment.setArguments(args);
+            FragmentManager fragmentManager = activity.getSupportFragmentManager();
+
+            fragmentManager.beginTransaction()
+                    .replace(android.R.id.content, mypurchasefragment, null)
+                    .setCustomAnimations(R.anim.enter, R.anim.exit, R.anim.pop_enter, R.anim.pop_exit)
+                    .addToBackStack(null)
+                    .commit();
             removeFragment();
         }
     };
@@ -247,6 +286,7 @@ public class UserMenuActivity  extends Fragment {
                     .setCustomAnimations(R.anim.enter, R.anim.exit, R.anim.pop_enter, R.anim.pop_exit)
                     .addToBackStack(null)
                     .commit();
+            removeFragment();
         }
     };
     private View.OnClickListener logoutOnClickListener = new View.OnClickListener() {

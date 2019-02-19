@@ -9,9 +9,7 @@ import android.os.Build;
 import android.view.Display;
 import android.view.WindowManager;
 
-import com.volokh.danylo.video_player_manager.Config;
-import com.volokh.danylo.video_player_manager.utils.Logger;
-
+import com.mssinfotech.iampro.co.common.Config;
 /**
  * Created by froger_mcs on 05.11.14.
  */
@@ -51,7 +49,7 @@ public class Utils {
         ConnectivityManager cm = (ConnectivityManager) ctx.getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo ni = cm.getActiveNetworkInfo();
         isNetworkConnected = ni != null;
-        if(SHOW_LOGS) Logger.v(TAG, "isNetworkConnected, " + isNetworkConnected);
+        //if(SHOW_LOGS) Logger.v(TAG, "isNetworkConnected, " + isNetworkConnected);
         return isNetworkConnected;
     }
 }

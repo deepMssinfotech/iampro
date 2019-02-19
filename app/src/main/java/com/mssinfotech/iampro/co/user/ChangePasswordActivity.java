@@ -73,7 +73,6 @@ public class ChangePasswordActivity extends Fragment {
                 Config.showInternetDialog(getContext());
                 return;
             }
-
             final String url = Config.AJAX_URL + "signup.php";
             //tv.setText(String.valueOf(randomNumber));
             final ProgressDialog loading = ProgressDialog.show(getContext(), "Processing...", "Please wait...", false, false);

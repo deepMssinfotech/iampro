@@ -1,17 +1,24 @@
 package com.mssinfotech.iampro.co.user;
 
+import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 
 import com.mssinfotech.iampro.co.R;
 import com.mssinfotech.iampro.co.common.Config;
 
-public class MySellingActivity extends AppCompatActivity {
-
+public class MySellingActivity extends Fragment {
+    View view;
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_my_selling);
-        Config.setLayoutName(getResources().getResourceEntryName(R.layout.activity_my_selling));
+    public View onCreateView(LayoutInflater inflater, ViewGroup parent, Bundle savedInstanceState) {
+        // Defines the xml file for the fragment
+        return inflater.inflate(R.layout.activity_my_selling, parent, false);
+    }
+    @Override
+    public void onViewCreated(View v, Bundle savedInstanceState) {
+        view = v;
     }
 }

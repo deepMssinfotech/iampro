@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -14,7 +15,9 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -48,7 +51,7 @@ import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
-public class JoinFriendActivity extends AppCompatActivity implements JoinFriendItemTouchHelper.RecyclerItemTouchHelperListener {
+public class JoinFriendActivity extends Fragment implements JoinFriendItemTouchHelper.RecyclerItemTouchHelperListener {
     ImageView userbackgroud;
     CircleImageView userimage;
     TextView username,tv_category;
@@ -56,28 +59,32 @@ public class JoinFriendActivity extends AppCompatActivity implements JoinFriendI
     private List<JoinFriendItem> JoinFriendItemList;
     private JoinFriendAdapter mAdapter;
     private ConstraintLayout constraintLayout;
-    private static String NOTIFY_URL  = "";
-    private String URL_FEED = "",uid="";
+    private static String NOTIFY_URL = "";
+    private String URL_FEED = "",uid = "";
     Context context;
     Intent intent;
+    View view;
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_joinfriend);
-        intent = getIntent();
-        context = getApplicationContext();
-        uid= PrefManager.getLoginDetail(this,"id");
+    public View onCreateView(LayoutInflater inflater, ViewGroup parent, Bundle savedInstanceState) {
+        // Defines the xml file for the fragment
+        return inflater.inflate(R.layout.activity_joinfriend, parent, false);
+    }
+    @Override
+    public void onViewCreated(View v, Bundle savedInstanceState) {
+        view = v;
+        context = getContext();
+        uid= PrefManager.getLoginDetail(getContext(),"id");
         Config.setLayoutName(getResources().getResourceEntryName(R.layout.activity_joinfriend));
-        username = findViewById(R.id.username);
-        userimage = findViewById(R.id.userimage);
-        userbackgroud = findViewById(R.id.userbackgroud);
+        username = view.findViewById(R.id.username);
+        userimage = view.findViewById(R.id.userimage);
+        userbackgroud = view.findViewById(R.id.userbackgroud);
         String id = intent.getStringExtra("uid");
-        uid= PrefManager.getLoginDetail(this,"id");
+        uid= PrefManager.getLoginDetail(getContext(),"id");
         if(id == null || id.equals(uid)) {
-            String fname=PrefManager.getLoginDetail(this,"fname");
-            String lname=PrefManager.getLoginDetail(this,"lname");
-            String avatar=Config.AVATAR_URL+"250/250/"+PrefManager.getLoginDetail(this,"img_url");
-            String background=Config.AVATAR_URL+"h/250/"+PrefManager.getLoginDetail(this,"banner_image");
+            String fname=PrefManager.getLoginDetail(getContext(),"fname");
+            String lname=PrefManager.getLoginDetail(getContext(),"lname");
+            String avatar=Config.AVATAR_URL+"250/250/"+PrefManager.getLoginDetail(getContext(),"img_url");
+            String background=Config.AVATAR_URL+"h/250/"+PrefManager.getLoginDetail(getContext(),"banner_image");
             username.setText("My Friends");
             Glide.with(this).load(background).apply(Config.options_background).into(userbackgroud);
             Glide.with(this).load(avatar).apply(Config.options_avatar).into(userimage);
@@ -93,24 +100,24 @@ public class JoinFriendActivity extends AppCompatActivity implements JoinFriendI
                     new PhotoFullPopupWindow(context, R.layout.popup_photo_full, view, Config.AVATAR_URL+PrefManager.getLoginDetail(context,"img_url"), null);
                 }
             });
-            PrefManager.updateUserData(this,null);
+            PrefManager.updateUserData(getContext(),null);
         }else{
             uid= id;
             gteUsrDetail(id);
         }
 
-        IncludeShortMenu includeShortMenu = findViewById(R.id.includeShortMenu);
-        includeShortMenu.updateCounts(this,uid);
+        IncludeShortMenu includeShortMenu = view.findViewById(R.id.includeShortMenu);
+        includeShortMenu.updateCounts(getContext(),uid);
         TextView myuid= includeShortMenu.findViewById(R.id.myuid);
         myuid.setText(uid);
         Intent i = new Intent();
         Config.PREVIOUS_PAGE_TAG = i.getStringExtra(Config.PAGE_TAG);
 
-        NOTIFY_URL  = Config.API_URL+"app_service.php?type=view_friend_list&id="+ PrefManager.getLoginDetail(this,"id")+"&my_id="+ PrefManager.getLoginDetail(this,"id")+"&status=2";
-        recyclerView = findViewById(R.id.recycler_view);
+        NOTIFY_URL  = Config.API_URL+"app_service.php?type=view_friend_list&id="+ PrefManager.getLoginDetail(getContext(),"id")+"&my_id="+ PrefManager.getLoginDetail(getContext(),"id")+"&status=2";
+        recyclerView = view.findViewById(R.id.recycler_view);
         JoinFriendItemList = new ArrayList<JoinFriendItem>();
         //mAdapter = new JoinFriendAdapter(this, JoinFriendItemList);
-        constraintLayout = findViewById(R.id.constraintLayout);
+        constraintLayout = view.findViewById(R.id.constraintLayout);
         // adding item touch helper
         // only ItemTouchHelper.LEFT added to detect Right to Left swipe
         // if you want both Right -> Left and Left -> Right
@@ -137,12 +144,12 @@ public class JoinFriendActivity extends AppCompatActivity implements JoinFriendI
                             String lname=result.optString("lname");
                             final String avatarX=result.getString("avatar");
                             final String backgroundX=result.getString("banner_image");
-                            username = findViewById(R.id.username);
-                            userimage = findViewById(R.id.userimage);
-                            userbackgroud = findViewById(R.id.userbackgroud);
+                            username = view.findViewById(R.id.username);
+                            userimage = view.findViewById(R.id.userimage);
+                            userbackgroud = view.findViewById(R.id.userbackgroud);
                             username.setText(fname +" "+lname+"'s Friends");
-                            Glide.with(getApplicationContext()).load(Config.AVATAR_URL+"h/250/"+backgroundX).apply(Config.options_background).into(userbackgroud);
-                            Glide.with(getApplicationContext()).load(Config.AVATAR_URL+"250/250/"+avatarX).apply(Config.options_avatar).into(userimage);
+                            Glide.with(getContext()).load(Config.AVATAR_URL+"h/250/"+backgroundX).apply(Config.options_background).into(userbackgroud);
+                            Glide.with(getContext()).load(Config.AVATAR_URL+"250/250/"+avatarX).apply(Config.options_avatar).into(userimage);
                             userbackgroud.setOnClickListener(new View.OnClickListener() {
                                 @Override
                                 public void onClick(View view) {
@@ -167,7 +174,7 @@ public class JoinFriendActivity extends AppCompatActivity implements JoinFriendI
                     }
                 });
         //Creating a request queue
-        RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
+        RequestQueue requestQueue = Volley.newRequestQueue(getContext());
         //Adding request to the queue
         requestQueue.add(stringRequest);
     }
@@ -186,7 +193,7 @@ public class JoinFriendActivity extends AppCompatActivity implements JoinFriendI
                     parseJsonFeed(response);
                    // mAdapter.notifyDataSetChanged();
                 }else{
-                    Toast.makeText(JoinFriendActivity.this, "Empty Record!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getContext(), "Empty Record!", Toast.LENGTH_SHORT).show();
                 }
             }
         }, new Response.ErrorListener() {
@@ -228,7 +235,7 @@ public class JoinFriendActivity extends AppCompatActivity implements JoinFriendI
                     JoinFriendItemList.add(item);
                 }
             }else{
-                ImageView no_rodr = findViewById(R.id.no_record_found);
+                ImageView no_rodr = view.findViewById(R.id.no_record_found);
                 no_rodr.setVisibility(View.VISIBLE);
             }
 
@@ -255,7 +262,7 @@ public class JoinFriendActivity extends AppCompatActivity implements JoinFriendI
             // remove the item from recycler view
             mAdapter.removeItem(viewHolder.getAdapterPosition());
             String url=Config.API_URL+"app_service.php?type=delete_friend&id="+Friendid.toString()+"&tid="+id.toString();
-            String responc = function.executeUrl(getApplicationContext(),"get",url,null);
+            String responc = function.executeUrl(getContext(),"get",url,null);
             Log.e(Config.TAG,"result : "+responc+"url - "+url);
             // showing snack bar with Undo option
             Snackbar snackbar = Snackbar.make(constraintLayout, "Notification removed ", Snackbar.LENGTH_LONG);
@@ -274,7 +281,7 @@ public class JoinFriendActivity extends AppCompatActivity implements JoinFriendI
     public void getJoinedFriend(){
         String url="https://www.iampro.co/api/app_service.php?type=view_friend_list&id="+uid+"&status=2&uid="+uid+"&my_id="+uid;
         // Initialize a new RequestQueue instance
-        RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
+        RequestQueue requestQueue = Volley.newRequestQueue(getContext());
 
         // Initialize a new JsonArrayRequest instance
         JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(
@@ -305,18 +312,18 @@ public class JoinFriendActivity extends AppCompatActivity implements JoinFriendI
                             // dm.setAllItemsInSection(singleItem);
                             Log.d("adm",singleItem.toString());
                             Log.d("allsampledatav",JoinFriendItemList.toString());
-                             mAdapter= new JoinFriendAdapter(getApplicationContext(),JoinFriendItemList);
+                             mAdapter= new JoinFriendAdapter(getContext(),JoinFriendItemList);
 
-                            RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
+                            RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getContext());
                             recyclerView.setLayoutManager(mLayoutManager);
                             recyclerView.setItemAnimator(new DefaultItemAnimator());
-                            recyclerView.addItemDecoration(new DividerItemDecoration(getApplicationContext(),DividerItemDecoration.VERTICAL));
+                            recyclerView.addItemDecoration(new DividerItemDecoration(getContext(),DividerItemDecoration.VERTICAL));
                             recyclerView.setAdapter(mAdapter);
                             recyclerView.setNestedScrollingEnabled(false);
                         }
                         catch (JSONException e){
                             e.printStackTrace();
-                            Toast.makeText(getApplicationContext(), ""+e.getMessage(), Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getContext(), ""+e.getMessage(), Toast.LENGTH_SHORT).show();
                             Log.d("catch_f",""+e.getMessage());
                         }
                     }
@@ -324,7 +331,7 @@ public class JoinFriendActivity extends AppCompatActivity implements JoinFriendI
                 new com.android.volley.Response.ErrorListener(){
                     @Override
                     public void onErrorResponse(VolleyError error){
-                        Toast.makeText(getApplicationContext(), error.getMessage(), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getContext(), error.getMessage(), Toast.LENGTH_SHORT).show();
                         Log.d("verror",""+error.getMessage());
                     }
                 }

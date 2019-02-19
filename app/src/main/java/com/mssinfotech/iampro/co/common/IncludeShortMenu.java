@@ -2,7 +2,10 @@ package com.mssinfotech.iampro.co.common;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.app.FragmentManager;
+import android.support.v7.app.AppCompatActivity;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -79,11 +82,18 @@ public class IncludeShortMenu  extends RelativeLayout {
     };
     private OnClickListener userOnClickListener = new OnClickListener() {
         public void onClick(View v) {
-            Intent intent = new Intent(getContext(), JoinFriendActivity.class);
-            intent.putExtra(Config.PAGE_TAG,"activity_joined_friends");
-            intent.putExtra("uid",tvs.getText().toString());
-            getContext().startActivity(intent);
-            if(function.isSamePage("activity_joined_friends"))function.finishFunction(getContext());
+            AppCompatActivity activity = (AppCompatActivity) getContext();
+            JoinFriendActivity joinfriendfragment = new JoinFriendActivity();
+            Bundle args = new Bundle();
+            args.putString("uid", tvs.getText().toString());
+            joinfriendfragment.setArguments(args);
+            FragmentManager fragmentManager = activity.getSupportFragmentManager();
+
+            fragmentManager.beginTransaction()
+                    .replace(android.R.id.content, joinfriendfragment, null)
+                    .setCustomAnimations(R.anim.enter, R.anim.exit, R.anim.pop_enter, R.anim.pop_exit)
+                    .addToBackStack(null)
+                    .commit();
         }
     };
     private OnClickListener productOnClickListener = new OnClickListener() {
