@@ -76,15 +76,16 @@ public class SectionImageVideoAdapter extends RecyclerView.Adapter<SectionImageV
     }
     @Override
     public SingleItemRowHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
-         if(item_type.get("loadmore").equalsIgnoreCase("loadmore")){
+         //if(item_type.get("loadmore").equalsIgnoreCase("loadmore")){
              View v = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.item_image_row, null);
              SingleItemRowHolder mh = new SingleItemRowHolder(v);
              return mh;
-         }else {
+
+        /* }else {
              View v = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.item_image_row, null);
              SingleItemRowHolder mh = new SingleItemRowHolder(v);
              return mh;
-          }
+          } */
     }
     @Override
     public void onBindViewHolder(final SingleItemRowHolder holder, final int i) {
@@ -95,7 +96,7 @@ public class SectionImageVideoAdapter extends RecyclerView.Adapter<SectionImageV
         final String id=singleItem.getId();
         final String pid=singleItem.getId();
         final String uidv=itemsList.get(i).getUid();
-
+        holder. category.setText(singleItem .getCategory());
         int my_uid=Integer.parseInt(uidv);
         if(my_uid==0){
             holder.likeButton.setEnabled(false);
@@ -114,11 +115,12 @@ public class SectionImageVideoAdapter extends RecyclerView.Adapter<SectionImageV
                      .load(Config.ALBUM_URL+singleItem.getAvatar())
                      .apply(Config.options_avatar)
                      .into(holder.user_image);
-             holder.category.setText(itemsList.get(i).getName());
+             holder.category.setText(itemsList.get(i).getFullname());
+             holder.ratingBar.setRating(Float.parseFloat(itemsList.get(i).getRating()));
          }
-       //if(singleItem.getRating()!="NAN" || singleItem.getRating().length()>0 || !(singleItem.getRating().equalsIgnoreCase("NAN")) || singleItem.getRating()!="" || !singleItem.getRating().equalsIgnoreCase("") || !singleItem.getRating().isEmpty())
-        //holder.ratingBar.setRating(Float.parseFloat(String.valueOf(singleItem.getRating())));
-        holder. category.setText(singleItem .getCategory());
+       if(singleItem.getRating()!="NAN" || singleItem.getRating().length()>0 || !(singleItem.getRating().equalsIgnoreCase("NAN")) || singleItem.getRating()!="" || !singleItem.getRating().equalsIgnoreCase("") || !singleItem.getRating().isEmpty())
+        holder.ratingBar.setRating(Float.parseFloat(String.valueOf(singleItem.getRating())));
+
         holder.tv_name.setText(singleItem.getName());
         holder.udate.setText(singleItem.getUdate());
         holder.tv_comments.setText(String.valueOf(singleItem .getComments()));
