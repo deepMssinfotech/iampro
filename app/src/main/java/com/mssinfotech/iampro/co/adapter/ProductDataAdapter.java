@@ -3,7 +3,6 @@ package com.mssinfotech.iampro.co.adapter;
 /**
  * Created by mssinfotech on 15/01/19.
  */
-
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -18,7 +17,6 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
-
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -39,44 +37,20 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.TreeMap;
-public class MyImageVideoDataAdapter extends RecyclerView.Adapter<MyImageVideoDataAdapter.ItemRowHolder> {
+public class ProductDataAdapter extends RecyclerView.Adapter<ProductDataAdapter.ItemRowHolder> {
     private ArrayList<SectionImageModel> dataList;
     private Context mContext;
     TreeMap<String,String> item_name;
-    String type="image";
-    public MyImageVideoDataAdapter(Context context, ArrayList<SectionImageModel> dataList,TreeMap<String,String> item_name) {
+    public ProductDataAdapter(Context context, ArrayList<SectionImageModel> dataList,TreeMap<String,String> item_name) {
         this.dataList = dataList;
         this.mContext = context;
         this.item_name=item_name;
-    }
-    public MyImageVideoDataAdapter(Context context, ArrayList<SectionImageModel> dataList,TreeMap<String,String> item_name,String type) {
-        this.dataList = dataList;
-        this.mContext = context;
-        this.item_name=item_name;
-         this.type=type;
     }
     @Override
     public ItemRowHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
-        if(type.equalsIgnoreCase("product")){
-            View v = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.list_item_product, null);
-            ItemRowHolder mh = new ItemRowHolder(v);
-            return mh;
-        }
-        else if(type.equalsIgnoreCase("provide")){
-            View v = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.list_item_provide, null);
-            ItemRowHolder mh = new ItemRowHolder(v);
-            return mh;
-        }
-        else if(type.equalsIgnoreCase("demand")){
-            View v = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.list_item_demand, null);
-            ItemRowHolder mh = new ItemRowHolder(v);
-            return mh;
-        }
-        else{
-            View v = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.list_item_img_video, null);
-            ItemRowHolder mh = new ItemRowHolder(v);
-            return mh;
-        }
+        View v = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.list_item_img_video, null);
+        ItemRowHolder mh = new ItemRowHolder(v);
+        return mh;
     }
     @Override
     public void onBindViewHolder(ItemRowHolder itemRowHolder, int i) {
@@ -86,11 +60,11 @@ public class MyImageVideoDataAdapter extends RecyclerView.Adapter<MyImageVideoDa
         final ArrayList singleSectionItems = dataList.get(i).getAllItemsInSection();
         Log.e(Config.TAG,sectionName);
         //Toast.makeText(mContext, "click event on more, "+sectionName , Toast.LENGTH_SHORT).show();
-       itemRowHolder.itemTitle.setText(sectionName);
+        itemRowHolder.itemTitle.setText(sectionName);
         //more
-       if(dataList.get(i).getMore()!=null && dataList.get(i).getMore().equalsIgnoreCase("loadmore")){
-           itemRowHolder.btnMore.setVisibility(View.INVISIBLE);
-       }
+        if(dataList.get(i).getMore()!=null && dataList.get(i).getMore().equalsIgnoreCase("loadmore")){
+            itemRowHolder.btnMore.setVisibility(View.INVISIBLE);
+        }
        /* if(sectionName.equalsIgnoreCase("Product")){
             Glide.with(mContext).load(R.drawable.latestproduct).into(itemRowHolder.itemTitle);
         }
@@ -100,7 +74,7 @@ public class MyImageVideoDataAdapter extends RecyclerView.Adapter<MyImageVideoDa
         } */
         //SectionListDataAdapter itemListDataAdapter = new SectionListDataAdapter(mContext, singleSectionItems);
 
-        SectionImageVideoAdapter itemListDataAdapter = new SectionImageVideoAdapter(mContext, singleSectionItems,item_name,type);
+        SectionProductAdapter itemListDataAdapter = new SectionProductAdapter(mContext, singleSectionItems,item_name);
 
 
         itemRowHolder.recycler_view_list.setHasFixedSize(true);
@@ -149,38 +123,38 @@ public class MyImageVideoDataAdapter extends RecyclerView.Adapter<MyImageVideoDa
                 .error(R.drawable.bg)
                 .into(feedListRowHolder.thumbView);*/
     }
-     private void deleteAlbum(String albumId){
-              String url="https://www.iampro.co/api/app_service.php?type=delete_album&id="+Integer.parseInt(albumId)+"&album_type=1";
-             //String url="https://www.iampro.co/ajax/profile.php?type=deleteAlbemimage&id="+Integer.parseInt(pid);
-             RequestQueue MyRequestQueue = Volley.newRequestQueue(mContext);
-             StringRequest MyStringRequest = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
-                 @Override
-                 public void onResponse(String response) {
-                     try {
-                         JSONObject jsonObject = new JSONObject(response);
-                         String status=jsonObject.optString("status");
-                         String msg=jsonObject.getString("msg");
-                         if(status.equalsIgnoreCase("success")){
-                             Toast.makeText(mContext,"Deleted successfully"+" "+msg,Toast.LENGTH_LONG).show();
-                         }
-                     }
-                     catch (JSONException ex){
-                         Toast.makeText(mContext,""+ex.getMessage(),Toast.LENGTH_LONG).show();
-                     }
-                 }
-             }, new Response.ErrorListener() {
-                 @Override
-                 public void onErrorResponse(VolleyError error) {
-                     //This code is executed if there is an error.
-                 }
-             }) {
-                 protected Map<String, String> getParams() {
-                     Map<String, String> MyData = new HashMap<>();
-                     return MyData;
-                 }
-             };
-             MyRequestQueue.add(MyStringRequest);
-     }
+    private void deleteAlbum(String albumId){
+        String url="https://www.iampro.co/api/app_service.php?type=delete_album&id="+Integer.parseInt(albumId)+"&album_type=3";
+        //String url="https://www.iampro.co/ajax/profile.php?type=deleteAlbemimage&id="+Integer.parseInt(pid);
+        RequestQueue MyRequestQueue = Volley.newRequestQueue(mContext);
+        StringRequest MyStringRequest = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                try {
+                    JSONObject jsonObject = new JSONObject(response);
+                    String status=jsonObject.optString("status");
+                    String msg=jsonObject.getString("msg");
+                    if(status.equalsIgnoreCase("success")){
+                        Toast.makeText(mContext,"Deleted successfully"+" "+msg,Toast.LENGTH_LONG).show();
+                    }
+                }
+                catch (JSONException ex){
+                    Toast.makeText(mContext,""+ex.getMessage(),Toast.LENGTH_LONG).show();
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                //This code is executed if there is an error.
+            }
+        }) {
+            protected Map<String, String> getParams() {
+                Map<String, String> MyData = new HashMap<>();
+                return MyData;
+            }
+        };
+        MyRequestQueue.add(MyStringRequest);
+    }
     @Override
     public int getItemCount() {
         return (null != dataList ? dataList.size() : 0);
@@ -196,7 +170,7 @@ public class MyImageVideoDataAdapter extends RecyclerView.Adapter<MyImageVideoDa
         protected de.hdodenhof.circleimageview.CircleImageView btnMore,user_image;
 
         public ItemRowHolder(View view) {
-             super(view);
+            super(view);
             this.itemTitle = view.findViewById(R.id.itemTitle);
             this.recycler_view_list = view.findViewById(R.id.recycler_view_list);
             this.btnMore= view.findViewById(R.id.btnMore);

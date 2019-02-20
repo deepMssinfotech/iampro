@@ -61,52 +61,31 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.TreeMap;
 
-public class SectionImageVideoAdapter extends RecyclerView.Adapter<SectionImageVideoAdapter.SingleItemRowHolder>  {
+public class SectionProductAdapter extends RecyclerView.Adapter<SectionProductAdapter.SingleItemRowHolder>  {
     private ArrayList<MyImageModel> itemsList;
     private Context mContext;
     //private String uid,id;
     ArrayList<MyImageModel> mValues;
     HashSet<String> heading_name;
     protected MyImageAdapter.ItemListener mListener;
-     TreeMap<String,String> item_type;
-      String type="image";
-    public SectionImageVideoAdapter(Context context, ArrayList<MyImageModel> itemsList,TreeMap<String,String> item_type)  {
+    TreeMap<String,String> item_type;
+    public SectionProductAdapter(Context context, ArrayList<MyImageModel> itemsList,TreeMap<String,String> item_type)  {
         this.itemsList=itemsList;
         this.mContext=context;
         this.item_type=item_type;
     }
-     public SectionImageVideoAdapter(Context context, ArrayList<MyImageModel> itemsList,TreeMap<String,String> item_type,String type)  {
-        this.itemsList=itemsList;
-        this.mContext=context;
-        this.item_type=item_type;
-        this.type=type;
-     }
     @Override
     public SingleItemRowHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
-         //if(item_type.get("loadmore").equalsIgnoreCase("loadmore")){
-           /*if(type.equalsIgnoreCase("product")){
-               View v = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.item_product_row, null);
-               SingleItemRowHolder mh = new SingleItemRowHolder(v);
-               return mh;
-           }
-           else  if(type.equalsIgnoreCase("provide")){
-               View v = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.item_provide_row, null);
-               SingleItemRowHolder mh = new SingleItemRowHolder(v);
-               return mh;
-           }
-           else  if(type.equalsIgnoreCase("demand")){
-               View v = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.item_demand_row, null);
-               SingleItemRowHolder mh = new SingleItemRowHolder(v);
-               return mh;
-           }
-            else{
-               View v = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.item_image_row, null);
-               SingleItemRowHolder mh = new SingleItemRowHolder(v);
-               return mh;
-           }*/
+        //if(item_type.get("loadmore").equalsIgnoreCase("loadmore")){
         View v = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.item_image_row, null);
         SingleItemRowHolder mh = new SingleItemRowHolder(v);
         return mh;
+
+        /* }else {
+             View v = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.item_image_row, null);
+             SingleItemRowHolder mh = new SingleItemRowHolder(v);
+             return mh;
+          } */
     }
     @Override
     public void onBindViewHolder(final SingleItemRowHolder holder, final int i) {
@@ -130,19 +109,17 @@ public class SectionImageVideoAdapter extends RecyclerView.Adapter<SectionImageV
             holder.tv_totallike.setTextColor(Color.BLACK);
         }
 
-         if(itemsList.get(i).getMore().equalsIgnoreCase("loadmore")){
+        if(itemsList.get(i).getMore().equalsIgnoreCase("loadmore")){
             holder.user_image.setVisibility(View.VISIBLE);
-             Glide.with(mContext)
-                     .load(Config.ALBUM_URL+singleItem.getAvatar())
-                     .apply(Config.options_avatar)
-                     .into(holder.user_image);
-             holder.category.setText(itemsList.get(i).getFullname());
-             //holder.ratingBar.setRating(Float.parseFloat(itemsList.get(i).getRating()));
-         }
-
-       //if(singleItem.getRating()!="NAN" || singleItem.getRating().length()>0 || !(singleItem.getRating().equalsIgnoreCase("NAN")) || singleItem.getRating()!="" || !singleItem.getRating().equalsIgnoreCase("")
-        // || !singleItem.getRating().isEmpty())
-        //holder.ratingBar.setRating(Float.parseFloat(String.valueOf(singleItem.getRating())));
+            Glide.with(mContext)
+                    .load(Config.ALBUM_URL+singleItem.getAvatar())
+                    .apply(Config.options_avatar)
+                    .into(holder.user_image);
+            holder.category.setText(itemsList.get(i).getFullname());
+            holder.ratingBar.setRating(Float.parseFloat(itemsList.get(i).getRating()));
+        }
+        if(singleItem.getRating()!="NAN" || singleItem.getRating().length()>0 || !(singleItem.getRating().equalsIgnoreCase("NAN")) || singleItem.getRating()!="" || !singleItem.getRating().equalsIgnoreCase("") || !singleItem.getRating().isEmpty())
+            holder.ratingBar.setRating(Float.parseFloat(String.valueOf(singleItem.getRating())));
 
         holder.tv_name.setText(singleItem.getName());
         holder.udate.setText(singleItem.getUdate());
@@ -201,30 +178,10 @@ public class SectionImageVideoAdapter extends RecyclerView.Adapter<SectionImageV
             }
         });
 
-        if(type.equalsIgnoreCase("product")){
-            Glide.with(mContext)
-                    .load(Config.OTHER_IMAGE_URL+singleItem.getImage())
-                    .apply(Config.options_avatar)
-                    .into(holder.imageView);
-        }
-        else if(type.equalsIgnoreCase("provide")){
-            Glide.with(mContext)
-                    .load(Config.OTHER_IMAGE_URL+singleItem.getImage())
-                    .apply(Config.options_avatar)
-                    .into(holder.imageView);
-        }
-        else if(type.equalsIgnoreCase("demand")){
-            Glide.with(mContext)
-                    .load(Config.OTHER_IMAGE_URL+singleItem.getImage())
-                    .apply(Config.options_avatar)
-                    .into(holder.imageView);
-        }
-        else{
-            Glide.with(mContext)
-                    .load(Config.ALBUM_URL+singleItem.getImage())
-                    .apply(Config.options_avatar)
-                    .into(holder.imageView);
-        }
+        Glide.with(mContext)
+                .load(Config.ALBUM_URL+singleItem.getImage())
+                .apply(Config.options_avatar)
+                .into(holder.imageView);
 
         holder.iv_delete.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -265,20 +222,10 @@ public class SectionImageVideoAdapter extends RecyclerView.Adapter<SectionImageV
 
             @Override
             public void onRatingChanged(RatingBar ratingBar, float rating,boolean fromUser) {
-               Toast.makeText(mContext,""+ratingBar.getRating(),Toast.LENGTH_LONG).show();
+                Toast.makeText(mContext,""+ratingBar.getRating(),Toast.LENGTH_LONG).show();
                 sendrating(ratingBar.getRating(),Integer.parseInt(uidv),Integer.parseInt(id));
             }
         });
-
-        if(type.equalsIgnoreCase("product")){
-
-        }
-        else if(type.equalsIgnoreCase("provide")){
-
-        }
-         else if(type.equalsIgnoreCase("demand")){
-
-        }
     }
     @Override
     public int getItemCount() {
@@ -326,7 +273,7 @@ public class SectionImageVideoAdapter extends RecyclerView.Adapter<SectionImageV
             image=view.findViewById(R.id.imageView);
             videoView=view.findViewById(R.id.videoView);
             ratingBar=view.findViewById(R.id.ratingBar);
-             udate=view.findViewById(R.id.udate);
+            udate=view.findViewById(R.id.udate);
             tv_comments=view.findViewById(R.id.tv_comments);
             tv_totallike=view.findViewById(R.id.tv_totallike);
             user_image=view.findViewById(R.id.user_image);
