@@ -20,6 +20,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.Volley;
 import com.mssinfotech.iampro.co.R;
+import com.mssinfotech.iampro.co.adapter.MyImageVideoDataAdapter;
 import com.mssinfotech.iampro.co.adapter.MyProductAdapter;
 import com.mssinfotech.iampro.co.adapter.MyVideoDataAdapter;
 import com.mssinfotech.iampro.co.adapter.ProductAdapter;
@@ -50,9 +51,12 @@ public class ProductFragment extends Fragment implements ProductAdapter.ItemList
     ProductAdapter adapter_product;
     int uid;
     Button btn_load_more;
-    ArrayList<MyProductModel> item = new ArrayList<>();
-    MyProductAdapter adapterr;
+    ArrayList<MyImageModel> item = new ArrayList<>();
+    //MyProductAdapter adapterr;
+     MyImageVideoDataAdapter adapterr;
     TreeMap<String,String> item_name=new TreeMap<>();
+     ArrayList<SectionImageModel> allSampleDatamore=new ArrayList<>();
+
     public ProductFragment() {
         // Required empty public constructor
     }
@@ -92,8 +96,9 @@ public class ProductFragment extends Fragment implements ProductAdapter.ItemList
             @Override
             public void onClick(View v) {
                 //getProductmore();
+                //recycler_view_load_more.setVisibility(View.VISIBLE);
                 getAllAlbum();
-                Toast.makeText(getContext(),"loadmore",Toast.LENGTH_LONG).show();
+                //Toast.makeText(getContext(),"loadmore",Toast.LENGTH_LONG).show();
                 btn_load_more.setVisibility(View.GONE);
             }
         });
@@ -117,6 +122,12 @@ public class ProductFragment extends Fragment implements ProductAdapter.ItemList
                         if(!item_name.isEmpty()){
                             item_name.clear();
                         }
+                        if(!item.isEmpty()){
+                            item.clear();
+                        }
+                        if(!allSampleData.isEmpty()){
+                            allSampleData.clear();
+                        }
                         try{
                             for(int i=0;i<response.length();i++){
                                 JSONObject student1 = response.getJSONObject(i);
@@ -127,7 +138,7 @@ public class ProductFragment extends Fragment implements ProductAdapter.ItemList
                                 //item_name.put(name1,album_name)
                                 if(product_count>0) {
                                     item_name.put(name, String.valueOf(id));
-                                    Toast.makeText(getContext(),""+product_count,Toast.LENGTH_LONG).show();
+                                    //Toast.makeText(getContext(),""+product_count,Toast.LENGTH_LONG).show();
                                 }
                                 else{
 
@@ -277,7 +288,7 @@ public class ProductFragment extends Fragment implements ProductAdapter.ItemList
     public void onItemClick(DataModel item) {
         //Toast.makeText(getContext(), item.getName() + " is clicked", Toast.LENGTH_SHORT).show();
     }
-    public void getProductmore(){
+   /* public void getProductmore(){
         String url=Config.API_URL+"app_service.php?type=getall_product&added_by="+uid+"&my_id="+uid+"&search_type=PRODUCT";
         // Initialize a new RequestQueue instance
         RequestQueue requestQueue = Volley.newRequestQueue(getContext());
@@ -380,7 +391,7 @@ public class ProductFragment extends Fragment implements ProductAdapter.ItemList
         // Add JsonArrayRequest to the RequestQueue
         requestQueue.add(jsonArrayRequest);
         //getProvide();
-    }
+    } */
 
     @Override
     public void onItemClick(MyProductModel item) {
@@ -393,7 +404,7 @@ public class ProductFragment extends Fragment implements ProductAdapter.ItemList
         pDialog.show();
         //String url=Config.API_URL+"app_service.php?type=getMyAlbemsListt&search_type=image&uid="+uid+"&my_id="+uid;
         // String url=Config.API_URL+"app_service.php?type=getMyAlbemsListt&search_type=image&uid="+uid+"&my_id="+uid+"&album_id="+aid;
-        String url="https://www.iampro.co/api/app_service.php?type=search_all_items&search_type=VIDEO&category="+cname+"&search_data=&uid="+uid+"&my_id="+uid;
+        String url="https://www.iampro.co/api/app_service.php?type=search_all_items&search_type=PRODUCT&category="+cname+"&search_data=&uid="+uid+"&my_id="+uid;
         // Initialize a new RequestQueue instance
         RequestQueue requestQueue = Volley.newRequestQueue(getContext());
         JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(
@@ -409,8 +420,8 @@ public class ProductFragment extends Fragment implements ProductAdapter.ItemList
                         dm.setAlbemId(item_name.get(cname));
                         dm.setMore("loadmore");
                         //ArrayList<MyImageModel> singleItem = new ArrayList<>();
-                        ArrayList<MyProductModel> item = new ArrayList<>();
-                        //ArrayList<DataModel> item = new ArrayList<>();
+                        //ArrayList<MyProductModel> item = new ArrayList<>();
+                        ArrayList<MyImageModel> item = new ArrayList<>();
                         try{
                             for(int i=0;i<response.length();i++){
                                 // Get current json object
@@ -447,7 +458,7 @@ public class ProductFragment extends Fragment implements ProductAdapter.ItemList
                                     int totallike=pics.optInt("totallike");
                                     int comments=pics.optInt("comments");
                                     int like_unlike=pics.optInt("like_unlike");
-                                    String rating=pics.optString("rating");
+                                    //String rating=pics.optString("rating");
                                     String is_block=pics.optString("is_block");
 
                                     JSONObject userDetail=pics.getJSONObject("user_detail");
@@ -469,38 +480,30 @@ public class ProductFragment extends Fragment implements ProductAdapter.ItemList
                                       //selling_cost
                                      int scost=userDetail.optInt("selling_cost");
                                     int pcost=userDetail.optInt("purchese_cost");
-                                    String ratingv=userDetail.getString("avg_rating");
+                                    //String ratingv=userDetail.getString("avg_rating");
+                                    String rating="4";
                                     String more="loadmore";
                                     //item.add(new MyImageModel(String.valueOf(id),String.valueOf(albemid),name,category,String.valueOf(albem_type),image,udate,about_us,String.valueOf(group_id),String.valueOf(is_featured),String.valueOf(status),is_block,String.valueOf(comments),String.valueOf(totallike),String.valueOf(like_unlike),rating,String.valueOf(user_id),more,avatar,fullname));
                                     //item.add(new DataModel(name,image,udate,category,totallike,like_unlike,comments,udate,Float.parseFloat(rating),uid,fullname,avatar,id,IMAGE_TYPE));
-                                    item.add(new MyProductModel(name,image,udate,categoryy,totallike,comments,scost,pcost,Float.parseFloat(ratingv),uid,fullname,avatar,String.valueOf(user_id),more,like_unlike));
+                                    //item.add(new MyImageModel(name,image,udate,categoryy,totallike,comments,scost,pcost,Float.parseFloat(ratingv),uid,fullname,avatar,String.valueOf(user_id),more,like_unlike));
+                                    item.add(new MyImageModel(String.valueOf(id),String.valueOf(albemid),name,category,String.valueOf(albem_type),image,udate,about_us,String.valueOf(group_id),String.valueOf(is_featured),String.valueOf(status),is_block,String.valueOf(comments),String.valueOf(totallike),String.valueOf(like_unlike),rating,String.valueOf(user_id),more,avatar,fullname));
 
                                 }
                             }
-                            Log.d("allsampledatav",item.toString());
-
-                            ////dm.setAllItemsInSection(item);
-                            Log.d("adm",item.toString());
-                            Log.d("dmm",dm.toString());
-                            ////allSampleDatamore.add(dm);
-                            ////Log.d("allsampledatav", allSampleDatamore.toString());
+                             Log.d("allsampledatav",item.toString());
+                             dm.setAllItemsInSection(item);
+                             Log.d("adm",item.toString());
+                             Log.d("dmm",dm.toString());
+                            allSampleDatamore.add(dm);
+                            Log.d("allsampledatav", allSampleDatamore.toString());
                             //my_recycler_view.setHasFixedSize(true);
-                            ////Log.d("allSampleDatas",""+allSampleDatamore.size()+"--"+allSampleDatamore.toString());
-                            HashMap<String,String> item_loadmore=new HashMap<>();
+                            Log.d("allSampleDatas",""+allSampleDatamore.size()+"--"+allSampleDatamore.toString());
+                            TreeMap<String,String> item_loadmore=new TreeMap<>();
                             item_loadmore.put("loadmore","loadmore");
-                            //adapterr = new MyImageVideoDataAdapter(getContext(), allSampleDatamore,item_loadmore);
-                            //recycler_view_load_more.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
-                            //recycler_view_load_more.setAdapter(adapterr);
-
-                            //adapterr = new MyVideoDataAdapter(getContext(),allSampleDatamore,item_loadmore);
-                            //recycler_view_load_more.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
-                            //recycler_view_load_more.setAdapter(adapterr);
-
-                            adapterr = new MyProductAdapter(getContext(),item,ProductFragment.this);
-
+                             String type="product";
+                           adapterr = new MyImageVideoDataAdapter(getContext(), allSampleDatamore,item_loadmore,type);
+                           recycler_view_load_more.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
                             recycler_view_load_more.setAdapter(adapterr);
-                            GridLayoutManager manager = new GridLayoutManager(getContext(), 2, GridLayoutManager.VERTICAL, false);
-                            recycler_view_load_more.setLayoutManager(manager);
                         }
                         catch (JSONException e){
                             e.printStackTrace();

@@ -129,8 +129,12 @@ public class MyDemandAdapter extends RecyclerView.Adapter<MyDemandAdapter.ViewHo
             this.item = item;
             uid=item.getUid();
             pid=item.getPid();
-            if(PrefManager.isLogin(mContext))
+            if(PrefManager.isLogin(mContext)){
                 myid= PrefManager.getLoginDetail(mContext,"id");
+                }
+                else {
+                myid=String.valueOf(uid);
+            }
             ratingBar.setRating(Float.parseFloat(String.valueOf(item.getRating())));
             uname.setText(item.getFullname());
             tv_name.setText(item.getName());

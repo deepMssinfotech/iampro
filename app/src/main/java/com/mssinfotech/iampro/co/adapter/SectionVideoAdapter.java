@@ -119,7 +119,7 @@ public class SectionVideoAdapter extends RecyclerView.Adapter<SectionVideoAdapte
                 .into(holder.imageView); */
         //ratingBar.setRating(Float.parseFloat(String.valueOf(item.getRating())));
 
-        if(itemsList.get(i).getMore().equalsIgnoreCase("loadmore")){
+       /* if(itemsList.get(i).getMore().equalsIgnoreCase("loadmore")){
             holder.user_image.setVisibility(View.VISIBLE);
             Glide.with(mContext)
                     .load(Config.ALBUM_URL+singleItem.getAvatar())
@@ -127,7 +127,7 @@ public class SectionVideoAdapter extends RecyclerView.Adapter<SectionVideoAdapte
                     .into(holder.user_image);
             holder.category.setText(itemsList.get(i).getFullname());
             holder.ratingBar.setRating(Float.parseFloat(itemsList.get(i).getRating()));
-        }
+        } */
 
         int my_uid=Integer.parseInt(uidd);
         if(my_uid==0){
@@ -140,14 +140,22 @@ public class SectionVideoAdapter extends RecyclerView.Adapter<SectionVideoAdapte
             holder.likeButton.setLiked(false);
             holder.tv_totallike.setTextColor(Color.BLACK);
         }
+        holder.category.setText(singleItem.getCategory());
+        holder.tv_name.setText(singleItem.getName());
         if(itemsList.get(i).getMore()!=null && itemsList.get(i).getMore().equalsIgnoreCase("loadmore")){
             //holder.btnMore.setVisibility(View.GONE);
             holder.iv_delete.setVisibility(View.GONE);
             holder.iv_edit.setVisibility(View.GONE);
+            holder.user_image.setVisibility(View.VISIBLE);
+            Glide.with(mContext)
+                    .load(Config.ALBUM_URL+singleItem.getAvatar())
+                    .apply(Config.options_avatar)
+                    .into(holder.user_image);
+            holder.category.setText(itemsList.get(i).getFullname());
+            holder.ratingBar.setRating(Float.parseFloat(itemsList.get(i).getRating()));
         }
-        holder.category.setText(singleItem.getCategory());
-        holder.tv_name.setText(singleItem.getName());
-        holder.udate.setText(singleItem.getUdate());
+
+       // holder.udate.setText(singleItem.getUdate());
         holder.tv_comments.setText(String.valueOf(singleItem.getComments()));
         holder.tv_totallike.setText(String.valueOf(singleItem.getTotallike()));
         holder.likeButton.setUnlikeDrawableRes(R.drawable.like);
@@ -256,7 +264,7 @@ public class SectionVideoAdapter extends RecyclerView.Adapter<SectionVideoAdapte
     public class SingleItemRowHolder extends RecyclerView.ViewHolder {
         protected TextView tvTitle,totallike,comments,daysago,user_name;
         protected ImageView itemImage;
-        protected de.hdodenhof.circleimageview.CircleImageView btnMore,user_image;
+        public de.hdodenhof.circleimageview.CircleImageView btnMore,user_image;
         protected LinearLayout likelayout;
         //this.btnMore= view.findViewById(R.id.btnMore);
         //orginal
@@ -300,6 +308,7 @@ public class SectionVideoAdapter extends RecyclerView.Adapter<SectionVideoAdapte
 
             image=view.findViewById(R.id.imageView);
             videoView=view.findViewById(R.id.videoView);
+            user_image=view.findViewById(R.id.user_image);
             ratingBar=view.findViewById(R.id.ratingBar);
             likeButton =view.findViewById(R.id.likeButton);
              udate=view.findViewById(R.id.udate);

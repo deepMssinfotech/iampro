@@ -225,7 +225,7 @@ public class VideoFragment extends Fragment implements VideoAdapter.ItemListener
                                 //item_name.put(name1,album_name)
                                  if(product_count>0) {
                                      item_name.put(name, String.valueOf(id));
-                                     Toast.makeText(getContext(),""+product_count,Toast.LENGTH_LONG).show();
+                                     //Toast.makeText(getContext(),""+product_count,Toast.LENGTH_LONG).show();
                                  }
                                  else{
 

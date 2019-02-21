@@ -100,4 +100,18 @@ public class UserDataAdapter extends RecyclerView.Adapter<UserDataAdapter.ViewHo
     public interface ItemListener {
         void onItemClick(UserModel item);
     }
+
+    public void removeItem(int position) {
+        mValues.remove(position);
+        // notify the item removed by position
+        // to perform recycler view delete animations
+        // NOTE: don't call notifyDataSetChanged()
+        notifyItemRemoved(position);
+    }
+
+    public void restoreItem(UserModel item, int position) {
+        mValues.add(position, item);
+        // notify item added by position
+        notifyItemInserted(position);
+    }
 }

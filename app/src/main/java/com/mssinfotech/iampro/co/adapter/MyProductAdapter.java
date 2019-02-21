@@ -119,8 +119,12 @@ public class MyProductAdapter extends RecyclerView.Adapter<MyProductAdapter.View
             this.item = item;
             uid=item.getUid();
             final String pid=item.getPid();
-            if(PrefManager.isLogin(mContext))
+            if(PrefManager.isLogin(mContext)){
                myid= PrefManager.getLoginDetail(mContext,"id");
+               }
+               else{
+                myid=String.valueOf(uid);
+            }
             ratingBar.setRating(Float.parseFloat(String.valueOf(item.getRating())));
             likeButton.setUnlikeDrawableRes(R.drawable.like);
             likeButton.setLikeDrawableRes(R.drawable.like_un);
