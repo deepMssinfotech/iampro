@@ -53,6 +53,7 @@ public class VideoFragment extends Fragment implements VideoAdapter.ItemListener
     HashMap<String,String> item_name=new HashMap<>();
     ArrayList<SectionImageModel> allSampleDatamore=new ArrayList<>();
     MyVideoDataAdapter adapterr;
+
     public VideoFragment() {
         // Required empty public constructor
     }
@@ -428,7 +429,7 @@ public class VideoFragment extends Fragment implements VideoAdapter.ItemListener
                                     int like_unlike=pics.optInt("like_unlike");
                                     String rating=pics.optString("rating");
                                     String is_block=pics.optString("is_block");
-
+                                     String v_image=pics.optString("v_image");
                                     JSONObject userDetail=pics.getJSONObject("user_detail");
                                     int user_id=userDetail.optInt("id");
 
@@ -447,7 +448,7 @@ public class VideoFragment extends Fragment implements VideoAdapter.ItemListener
                                     String fullname=userDetail.optString("fullname");
 
                                     String more="loadmore";
-                                    item.add(new MyImageModel(String.valueOf(id),String.valueOf(albemid),name,category,String.valueOf(albem_type),image,udate,about_us,String.valueOf(group_id),String.valueOf(is_featured),String.valueOf(status),is_block,String.valueOf(comments),String.valueOf(totallike),String.valueOf(like_unlike),rating,String.valueOf(user_id),more,avatar,fullname));
+                                    item.add(new MyImageModel(String.valueOf(id),String.valueOf(albemid),name,category,String.valueOf(albem_type),image,udate,about_us,String.valueOf(group_id),String.valueOf(is_featured),String.valueOf(status),is_block,String.valueOf(comments),String.valueOf(totallike),String.valueOf(like_unlike),rating,String.valueOf(user_id),more,avatar,fullname,v_image,"video"));
                                     //item.add(new DataModel(name,image,udate,category,totallike,like_unlike,comments,udate,Float.parseFloat(rating),uid,fullname,avatar,id,IMAGE_TYPE));
 
                                 }

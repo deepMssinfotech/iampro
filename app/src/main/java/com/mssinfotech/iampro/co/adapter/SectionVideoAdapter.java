@@ -87,6 +87,8 @@ public class SectionVideoAdapter extends RecyclerView.Adapter<SectionVideoAdapte
         //orgg
          //String uid,id;
         //final String uid=singleItem .getUid();
+
+        //if (PrefManager.isLogin(mContext))
         final String uid= PrefManager.getLoginDetail(mContext,"id");
 
         final String id=singleItem .getId();
@@ -148,11 +150,18 @@ public class SectionVideoAdapter extends RecyclerView.Adapter<SectionVideoAdapte
             holder.iv_edit.setVisibility(View.GONE);
             holder.user_image.setVisibility(View.VISIBLE);
             Glide.with(mContext)
-                    .load(Config.ALBUM_URL+singleItem.getAvatar())
-                    .apply(Config.options_avatar)
+                    .load(Config.AVATAR_URL+singleItem.getAvatar())
+                    .apply(Config.options_video)
                     .into(holder.user_image);
             holder.category.setText(itemsList.get(i).getFullname());
             holder.ratingBar.setRating(Float.parseFloat(itemsList.get(i).getRating()));
+            //holder.image.
+
+           Glide.with(mContext)
+                    .load(Config.V_URL+itemsList.get(i).getV_image())
+                    .apply(Config.options_video)
+                    .into(holder.videoView);
+           Toast.makeText(mContext,"vimage",Toast.LENGTH_LONG).show();
         }
 
        // holder.udate.setText(singleItem.getUdate());
@@ -196,7 +205,7 @@ public class SectionVideoAdapter extends RecyclerView.Adapter<SectionVideoAdapte
             public void onClick(View v) {
                 Intent intent=new Intent(mContext,ImageDetail.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                intent.putExtra("uid",Integer.parseInt(uid));
+                intent.putExtra("uid",Integer.parseInt(uidd));
                 intent.putExtra("id",Integer.parseInt(id));
                 intent.putExtra("type","video");
                 mContext.startActivity(intent);
@@ -206,7 +215,7 @@ public class SectionVideoAdapter extends RecyclerView.Adapter<SectionVideoAdapte
         // videoView.setVideoPath(Config.V_URL+item.getImage());
 
         Glide.with(mContext)
-                .load(Config.V_URL+singleItem.getImage())
+                .load(Config.V_URL+singleItem.getV_image())
                 .apply(Config.options_video)
                 .into(holder.videoView);
 
@@ -256,6 +265,16 @@ public class SectionVideoAdapter extends RecyclerView.Adapter<SectionVideoAdapte
                 mContext.startActivity(intent);
             }
         });
+         holder.user_image.setOnClickListener(new View.OnClickListener() {
+             @Override
+             public void onClick(View v) {
+                  Intent intentUser=new Intent(mContext,ProfileActivity.class);
+                   intentUser.putExtra("uid",uidd);
+                   intentUser.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    mContext.startActivity(intentUser);
+             }
+         });
+
     }
     @Override
     public int getItemCount() {
@@ -268,7 +287,7 @@ public class SectionVideoAdapter extends RecyclerView.Adapter<SectionVideoAdapte
         protected LinearLayout likelayout;
         //this.btnMore= view.findViewById(R.id.btnMore);
         //orginal
-        ImageView  imageView_user,imageView_icon,iv_comments,image,iv_favourite,videoView,iv_delete,iv_edit;
+        ImageView  imageView_user,imageView_icon,iv_comments,image,iv_favourite,videoView,iv_delete,iv_edit,imageView;
         //VideoView videoView;
         TextView tv_name,category,udate,tv_comments,tv_totallike,detail_name;
         RatingBar ratingBar;
@@ -307,7 +326,7 @@ public class SectionVideoAdapter extends RecyclerView.Adapter<SectionVideoAdapte
             iv_edit=view.findViewById(R.id.iv_edit);
 
             image=view.findViewById(R.id.imageView);
-            videoView=view.findViewById(R.id.videoView);
+           // videoView=view.findViewById(R.id.videoView);
             user_image=view.findViewById(R.id.user_image);
             ratingBar=view.findViewById(R.id.ratingBar);
             likeButton =view.findViewById(R.id.likeButton);

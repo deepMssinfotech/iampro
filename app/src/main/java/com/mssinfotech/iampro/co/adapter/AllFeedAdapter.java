@@ -313,8 +313,9 @@ public class AllFeedAdapter extends RecyclerView.Adapter<AllFeedAdapter.ViewHold
 
         String sidd=mValues.get(position).getShareId();
         final String[] sharedId=sidd.split(",");
-
-        int my_uid= Integer.parseInt(PrefManager.getLoginDetail(mContext,"id"));
+        int my_uid=mValues.get(position).getUid();
+         if(PrefManager.isLogin(mContext))
+         my_uid= Integer.parseInt(PrefManager.getLoginDetail(mContext,"id"));
         if(my_uid==0){
             Vholder.like_un.setEnabled(false);
         }

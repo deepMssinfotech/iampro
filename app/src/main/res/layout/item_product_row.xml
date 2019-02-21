@@ -48,13 +48,40 @@
                     android:layout_weight="1"
                     android:orientation="vertical">
 
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+                        <de.hdodenhof.circleimageview.CircleImageView
+                            android:id="@+id/user_image"
+                            android:layout_width="25dp"
+                            android:layout_height="25dp"
+                            android:visibility="gone"
+                            android:layout_marginRight="4dp"
+                            app:civ_border_width="1dp"
+                            android:src="@drawable/iampro"
+                            app:civ_border_color="#FF000000"/>
+                        <TextView
+                            android:id="@+id/category"
+                            android:layout_width="wrap_content"
+                            android:lines="1"
+                            android:layout_height="wrap_content"
+                            android:text=""/>
+                        <TextView
+                            android:id="@+id/udate"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:visibility="gone"/>
                         <TextView
                             android:id="@+id/uname"
                             android:layout_width="wrap_content"
                             android:lines="1"
                             android:layout_height="wrap_content"
-                            android:text="Iampro"
+                            android:text=""
                             />
+                    </LinearLayout>
+
+
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
@@ -65,6 +92,7 @@
                                 android:layout_width="wrap_content"
                                  android:background="@drawable/strikr_through"
                                 android:layout_height="wrap_content"
+                                android:textColor="@color/red"
                                 android:lines="1"
                                 android:textSize="12dp"
                                 android:text="Rs "

@@ -68,7 +68,7 @@ import com.smarteist.autoimageslider.SliderView;
 public class CommentActivity extends AppCompatActivity implements CommentAdapter.ItemListener{
     EditText et_comment;
     private RatingBar ratingBar;
-    String user_id;
+    String user_id="0";
     private MediaController mediaController;
     ImageView imageView;
     FullscreenVideoView fullscreenVideoView;

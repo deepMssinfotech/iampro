@@ -84,7 +84,7 @@ public class SectionImageVideoAdapter extends RecyclerView.Adapter<SectionImageV
     @Override
     public SingleItemRowHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
          //if(item_type.get("loadmore").equalsIgnoreCase("loadmore")){
-           /*if(type.equalsIgnoreCase("product")){
+           if(type.equalsIgnoreCase("product")){
                View v = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.item_product_row, null);
                SingleItemRowHolder mh = new SingleItemRowHolder(v);
                return mh;
@@ -103,10 +103,10 @@ public class SectionImageVideoAdapter extends RecyclerView.Adapter<SectionImageV
                View v = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.item_image_row, null);
                SingleItemRowHolder mh = new SingleItemRowHolder(v);
                return mh;
-           }*/
-        View v = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.item_image_row, null);
+           }
+       /* View v = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.item_image_row, null);
         SingleItemRowHolder mh = new SingleItemRowHolder(v);
-        return mh;
+        return mh; */
     }
     @Override
     public void onBindViewHolder(final SingleItemRowHolder holder, final int i) {
@@ -130,8 +130,8 @@ public class SectionImageVideoAdapter extends RecyclerView.Adapter<SectionImageV
             holder.tv_totallike.setTextColor(Color.BLACK);
         }
 
-         if(itemsList.get(i).getMore().equalsIgnoreCase("loadmore")){
-            holder.user_image.setVisibility(View.VISIBLE);
+        if(itemsList.get(i).getMore().equalsIgnoreCase("loadmore")){
+            //holder.user_image.setVisibility(View.VISIBLE);
              Glide.with(mContext)
                      .load(Config.ALBUM_URL+singleItem.getAvatar())
                      .apply(Config.options_avatar)
@@ -158,8 +158,9 @@ public class SectionImageVideoAdapter extends RecyclerView.Adapter<SectionImageV
         holder.ll_comment.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent=new Intent(mContext, CommentActivity.class);
-                intent.putExtra("type","image");
+
+                Intent intent=new Intent(mContext,CommentActivity.class);
+                intent.putExtra("type",type);
                 intent.putExtra("id",id);
 
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -191,39 +192,102 @@ public class SectionImageVideoAdapter extends RecyclerView.Adapter<SectionImageV
         holder.imageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent=new Intent(mContext,ImageDetail.class);
-                intent.putExtra("uid",Integer.parseInt(uid));
-                intent.putExtra("id",Integer.parseInt(id));
-                intent.putExtra("type","image");
-                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                mContext.startActivity(intent);
-                Log.d("uid_idvideo",""+uid+" "+id);
+                if (type.equalsIgnoreCase("product")){
+                    Intent intent=new Intent(mContext, ProductDetail.class);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    intent.putExtra("pid",String.valueOf(mValues.get(i).getId()));
+                    intent.putExtra("uid",String.valueOf(mValues.get(i).getUid()));
+                    mContext.startActivity(intent);
+                }
+                else if (type.equalsIgnoreCase("provide")){
+                    Intent intent=new Intent(mContext, ProvideDetailActivity.class);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    intent.putExtra("pid",String.valueOf(mValues.get(i).getId()));
+                    intent.putExtra("uid",String.valueOf(mValues.get(i).getUid()));
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    mContext.startActivity(intent);
+                }
+                else if (type.equalsIgnoreCase("demand")){
+                    Intent intent=new Intent(mContext, DemandDetail.class);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    intent.putExtra("pid",String.valueOf(mValues.get(i).getId()));
+                    intent.putExtra("uid",String.valueOf(mValues.get(i).getUid()));
+                    mContext.startActivity(intent);
+                }
+                 else {
+                    Intent intent = new Intent(mContext, ImageDetail.class);
+                    intent.putExtra("uid", Integer.parseInt(uid));
+                    intent.putExtra("id", Integer.parseInt(id));
+                    intent.putExtra("type", "image");
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    mContext.startActivity(intent);
+                    Log.d("uid_idvideo", "" + uid + " " + id);
+                        }
+
             }
         });
 
         if(type.equalsIgnoreCase("product")){
+            holder.user_image.setVisibility(View.VISIBLE);
             Glide.with(mContext)
                     .load(Config.OTHER_IMAGE_URL+singleItem.getImage())
-                    .apply(Config.options_avatar)
+                    .apply(Config.options_product)
                     .into(holder.imageView);
+
+            Glide.with(mContext)
+                    .load(Config.AVATAR_URL+singleItem.getAvatar())
+                    .apply(Config.options_product)
+                    .into(holder.user_image);
+
+            holder.category.setVisibility(View.VISIBLE);
+            holder.tv_sellingprice.setVisibility(View.VISIBLE);
+             holder.tv_purchaseprice.setVisibility(View.VISIBLE);
+             holder.category.setText(itemsList.get(i).getFullname());
+            holder.tv_sellingprice.setText("Rs:"+itemsList.get(i).getScost());
+            holder.tv_purchaseprice.setText("Rs:"+itemsList.get(i).getPcost());
         }
-        else if(type.equalsIgnoreCase("provide")){
-            Glide.with(mContext)
+         else if(type.equalsIgnoreCase("provide")){
+             holder.user_image.setVisibility(View.VISIBLE);
+             Glide.with(mContext)
                     .load(Config.OTHER_IMAGE_URL+singleItem.getImage())
-                    .apply(Config.options_avatar)
+                    .apply(Config.options_provide)
                     .into(holder.imageView);
+
+             Glide.with(mContext)
+                    .load(Config.AVATAR_URL+singleItem.getAvatar())
+                    .apply(Config.options_product)
+                    .into(holder.user_image);
+
+            holder.category.setText(itemsList.get(i).getFullname());
+            holder.tv_sellingprice.setText("Rs:"+"\t"+itemsList.get(i).getScost());
         }
-        else if(type.equalsIgnoreCase("demand")){
+         else if(type.equalsIgnoreCase("demand")){
+             holder.user_image.setVisibility(View.VISIBLE);
             Glide.with(mContext)
                     .load(Config.OTHER_IMAGE_URL+singleItem.getImage())
-                    .apply(Config.options_avatar)
+                    .apply(Config.options_demand)
                     .into(holder.imageView);
+
+            Glide.with(mContext)
+                    .load(Config.AVATAR_URL+singleItem.getAvatar())
+                    .apply(Config.options_product)
+                    .into(holder.user_image);
+
+             holder.category.setText(itemsList.get(i).getFullname());
+             holder.tv_sellingprice.setText("Rs:"+"\t"+itemsList.get(i).getScost());
+
         }
         else{
+
+            holder.user_image.setVisibility(View.VISIBLE);
             Glide.with(mContext)
                     .load(Config.ALBUM_URL+singleItem.getImage())
                     .apply(Config.options_avatar)
                     .into(holder.imageView);
+            Glide.with(mContext)
+                    .load(Config.AVATAR_URL+singleItem.getAvatar())
+                    .apply(Config.options_product)
+                    .into(holder.user_image);
         }
 
         holder.iv_delete.setOnClickListener(new View.OnClickListener() {
@@ -265,20 +329,36 @@ public class SectionImageVideoAdapter extends RecyclerView.Adapter<SectionImageV
 
             @Override
             public void onRatingChanged(RatingBar ratingBar, float rating,boolean fromUser) {
-               Toast.makeText(mContext,""+ratingBar.getRating(),Toast.LENGTH_LONG).show();
+               //Toast.makeText(mContext,""+ratingBar.getRating(),Toast.LENGTH_LONG).show();
                 sendrating(ratingBar.getRating(),Integer.parseInt(uidv),Integer.parseInt(id));
             }
         });
 
-        if(type.equalsIgnoreCase("product")){
-
+        /* if(type.equalsIgnoreCase("product")){
+           holder.category.setText(mValues.get(i).getFullname());
+           //holder.tv_sellingprice.setText(mValues.get(i).);
+              holder.tv_purchaseprice.setText(mValues.get(i).);
         }
         else if(type.equalsIgnoreCase("provide")){
-
+            holder.category.setText(mValues.get(i).getFullname());
+            //holder.tv_sellingprice.setText(mValues.get(i).);
         }
          else if(type.equalsIgnoreCase("demand")){
-
-        }
+            holder.category.setText(mValues.get(i).getFullname());
+           // holder.tv_sellingprice.setText(mValues.get(i).);
+        } */
+        //if(type.equalsIgnoreCase("product") || type.equalsIgnoreCase("provide") || type.equalsIgnoreCase("demand")){
+            holder.user_image.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                     Intent intent=new Intent(mContext,ProfileActivity.class);
+                     intent.putExtra("uid",String.valueOf(itemsList.get(i).getUid()));
+                     intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                      mContext.startActivity(intent);
+                      Toast.makeText(mContext,""+itemsList.get(i).getUid(),Toast.LENGTH_LONG).show();
+                }
+            });
+      //  }
     }
     @Override
     public int getItemCount() {
@@ -294,7 +374,7 @@ public class SectionImageVideoAdapter extends RecyclerView.Adapter<SectionImageV
         //orginal
         ImageView  imageView,imageView_user,imageView_icon,iv_comments,image,iv_favourite,iv_delete,iv_edit;
         VideoView videoView;
-        TextView tv_name,category,udate,tv_comments,tv_totallike,detail_name;
+        TextView tv_name,category,udate,tv_comments,tv_totallike,detail_name,tv_purchaseprice,tv_sellingprice;
         RatingBar ratingBar;
         LinearLayout ll_showhide,ll_comment;
         MyImageModel item;
@@ -312,9 +392,25 @@ public class SectionImageVideoAdapter extends RecyclerView.Adapter<SectionImageV
 
             //orgg
             imageView=view.findViewById(R.id.imageView);
+
+
             tv_name=view.findViewById(R.id.tv_name);
             imageView_user=view.findViewById(R.id.imageView_user);
+            user_image= view.findViewById(R.id.imageView_user);
             imageView_icon=view.findViewById(R.id.imageView_icon);
+             if(type.equalsIgnoreCase("product")){
+                 tv_purchaseprice=view.findViewById(R.id.tv_purchaseprice);
+                  tv_sellingprice=view.findViewById(R.id.tv_sellingprice);
+                 //user_image=view.findViewById(R.id.user_image);
+              }
+              else if(type.equalsIgnoreCase("provide")){
+                 tv_sellingprice=view.findViewById(R.id.tv_sellingprice);
+                 //user_image=view.findViewById(R.id.user_image);
+               }
+              else if(type.equalsIgnoreCase("demand")){
+                 tv_sellingprice=view.findViewById(R.id.tv_sellingprice);
+                 //user_image=view.findViewById(R.id.user_image);
+              }
             ll_comment=view.findViewById(R.id.ll_comment);
             likeButton =view.findViewById(R.id.likeButton);
             iv_comments=view.findViewById(R.id.iv_comments);
@@ -322,14 +418,14 @@ public class SectionImageVideoAdapter extends RecyclerView.Adapter<SectionImageV
 
             iv_edit=view.findViewById(R.id.iv_edit);
             iv_delete=view.findViewById(R.id.iv_delete);
-
+            user_image=view.findViewById(R.id.user_image);
             image=view.findViewById(R.id.imageView);
             videoView=view.findViewById(R.id.videoView);
             ratingBar=view.findViewById(R.id.ratingBar);
              udate=view.findViewById(R.id.udate);
             tv_comments=view.findViewById(R.id.tv_comments);
             tv_totallike=view.findViewById(R.id.tv_totallike);
-            user_image=view.findViewById(R.id.user_image);
+
             ll_showhide=view.findViewById(R.id.ll_showhide);
             category=view.findViewById(R.id.category);
             detail_name=view.findViewById(R.id.detail_name);

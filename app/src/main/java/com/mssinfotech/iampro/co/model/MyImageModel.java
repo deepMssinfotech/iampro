@@ -23,7 +23,35 @@ public class MyImageModel {
     private String like_unlike;
     private String rating;
     private String uid;
-     private String fullname;
+    private String fullname;
+    private String scost,pcost;
+    private String v_image;
+    public String getV_image() {
+        return v_image;
+    }
+
+    public void setV_image(String v_image) {
+        this.v_image = v_image;
+    }
+
+
+    public String getScost() {
+        return scost;
+    }
+
+    public void setScost(String scost) {
+        this.scost = scost;
+    }
+
+    public String getPcost() {
+        return pcost;
+    }
+
+    public void setPcost(String pcost) {
+        this.pcost = pcost;
+    }
+
+
     public String getFullname() {
         return fullname;
     }
@@ -241,5 +269,79 @@ public class MyImageModel {
         this.more=more;
         this.avatar=avatar;
          this.fullname=fullname;
+    }
+    //load more
+    public MyImageModel(String id, String albemid, String name, String category, String albem_type, String image, String udate, String about_us, String group_id, String is_featured, String status, String is_block, String comments, String totallike, String like_unlike, String rating, String uid,String more,String avatar,String fullname,String pcost,String scost) {
+        this.id = id;
+        this.albemid = albemid;
+        this.name = name;
+        this.category = category;
+        this.albem_type = albem_type;
+        this.image = image;
+        this.udate = udate;
+        this.about_us = about_us;
+        this.group_id = group_id;
+        this.is_featured = is_featured;
+        this.status = status;
+        this.is_block = is_block;
+        this.comments = comments;
+        this.totallike = totallike;
+        this.like_unlike = like_unlike;
+        this.rating = rating;
+        this.uid = uid;
+        this.more=more;
+        this.avatar=avatar;
+        this.fullname=fullname;
+        this.pcost=pcost;
+        this.scost=scost;
+    }
+    //load more
+    public MyImageModel(String id, String albemid, String name, String category, String albem_type, String image, String udate, String about_us, String group_id, String is_featured, String status, String is_block, String comments, String totallike, String like_unlike, String rating, String uid,String more,String avatar,String fullname,String scost) {
+        this.id = id;
+        this.albemid = albemid;
+        this.name = name;
+        this.category = category;
+        this.albem_type = albem_type;
+        this.image = image;
+        this.udate = udate;
+        this.about_us = about_us;
+        this.group_id = group_id;
+        this.is_featured = is_featured;
+        this.status = status;
+        this.is_block = is_block;
+        this.comments = comments;
+        this.totallike = totallike;
+        this.like_unlike = like_unlike;
+        this.rating = rating;
+        this.uid = uid;
+        this.more=more;
+        this.avatar=avatar;
+        this.fullname=fullname;
+        this.scost=scost;
+    }
+    //  video more
+    public MyImageModel(String id, String albemid, String name, String category, String albem_type, String image, String udate, String about_us, String group_id, String is_featured, String status, String is_block, String comments, String totallike, String like_unlike, String rating, String uid,String more,String avatar,String fullname,String scost,String v_image,String type) {
+        this.id = id;
+        this.albemid = albemid;
+        this.name = name;
+        this.category = category;
+        this.albem_type = albem_type;
+        this.image = image;
+        this.udate = udate;
+        this.about_us = about_us;
+        this.group_id = group_id;
+        this.is_featured = is_featured;
+        this.status = status;
+        this.is_block = is_block;
+        this.comments = comments;
+        this.totallike = totallike;
+        this.like_unlike = like_unlike;
+        this.rating = rating;
+        this.uid = uid;
+        this.more=more;
+        this.avatar=avatar;
+        this.fullname=fullname;
+        this.scost=scost;
+        this.v_image=v_image;
     }
 }
