@@ -3,6 +3,7 @@ package com.mssinfotech.iampro.co.adapter;
 /**
  * Created by mssinfotech on 18/01/19.
  */
+import android.content.Intent;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -21,6 +22,8 @@ import android.view.ViewGroup;
 import android.content.Context;
 import android.widget.TextView;
 import com.mssinfotech.iampro.co.model.UserModel;
+import com.mssinfotech.iampro.co.user.ProfileActivity;
+
 import java.util.ArrayList;
 public class UserDataAdapter extends RecyclerView.Adapter<UserDataAdapter.ViewHolder> {
     ArrayList<UserModel> mValues;
@@ -87,16 +90,24 @@ public class UserDataAdapter extends RecyclerView.Adapter<UserDataAdapter.ViewHo
     }
 
     @Override
-    public void onBindViewHolder(ViewHolder Vholder, int position) {
+    public void onBindViewHolder(ViewHolder Vholder, final int position) {
         Vholder.setData(mValues.get(position));
+         Vholder.imageView.setOnClickListener(new View.OnClickListener() {
+             @Override
+             public void onClick(View v) {
+                 Intent intent=new Intent(mContext, ProfileActivity.class);
+                  intent.putExtra("uid",String.valueOf(mValues.get(position).getId()));
+                   intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                  mContext.startActivity(intent);
 
+
+             }
+         });
     }
     @Override
     public int getItemCount() {
-
         return mValues.size();
     }
-
     public interface ItemListener {
         void onItemClick(UserModel item);
     }

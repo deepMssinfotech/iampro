@@ -1,18 +1,22 @@
 package com.mssinfotech.iampro.co.tab;
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.helper.ItemTouchHelper;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.android.volley.Request;
@@ -48,6 +52,7 @@ public class UserFragment extends Fragment implements UserDataAdapter.ItemListen
     //ArrayList<SectionDataModel> allSampleData=new ArrayList<>();
     ArrayList<UserModel> allSampleData=new ArrayList<>();
     RecyclerView my_recycler_view,recycler_view_load_more;
+    LinearLayout ll;
      UserDataAdapter adapter;
       Button btn_load_more;
      int uid;
@@ -88,6 +93,7 @@ public class UserFragment extends Fragment implements UserDataAdapter.ItemListen
         getUser(15);
         my_recycler_view =view.findViewById(R.id.my_recycler_view);
         recycler_view_load_more=view.findViewById(R.id.recycler_view_load_more);
+        ll=view.findViewById(R.id.ll);
           btn_load_more=view.findViewById(R.id.btn_load_more);
         btn_load_more.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -374,6 +380,10 @@ public class UserFragment extends Fragment implements UserDataAdapter.ItemListen
                             LinearLayoutManager manager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
                             my_recycler_view.setLayoutManager(manager);
 
+                            ItemTouchHelper.SimpleCallback itemTouchHelperCallback = new UserItemTouchHelper(0, ItemTouchHelper.LEFT,UserFragment.this);
+                            new ItemTouchHelper(itemTouchHelperCallback).attachToRecyclerView(recycler_view_load_more);
+
+
                         }
                         catch (JSONException e){
                             e.printStackTrace();
@@ -422,12 +432,12 @@ public class UserFragment extends Fragment implements UserDataAdapter.ItemListen
                         SectionDataModel dm = new SectionDataModel();
                         dm.setHeaderTitle("User");
                         ArrayList<SingleItemModel> singleItem = new ArrayList<SingleItemModel>();
-                        if(!singleItem.isEmpty()){
+                       /* if(!singleItem.isEmpty()){
                             singleItem.clear();
                         }
                         if(!allSampleData.isEmpty()){
                             allSampleData.clear();
-                        }
+                        } */
                         try{
                             for(int i=0;i<response.length();i++){
                                 // Get current json object
@@ -474,8 +484,8 @@ public class UserFragment extends Fragment implements UserDataAdapter.ItemListen
         //recycler_view_load_more.setItemAnimator(new DefaultItemAnimator());
         //recyclerView.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
 
-       //ItemTouchHelper.SimpleCallback itemTouchHelperCallback = new UserItemTouchHelper(0, ItemTouchHelper.LEFT, this);
-       // new ItemTouchHelper(itemTouchHelperCallback).attachToRecyclerView(recycler_view_load_more);
+         ItemTouchHelper.SimpleCallback itemTouchHelperCallback = new UserItemTouchHelper(0, ItemTouchHelper.LEFT,UserFragment.this);
+                 new ItemTouchHelper(itemTouchHelperCallback).attachToRecyclerView(recycler_view_load_more);
 
 
         }
@@ -499,26 +509,22 @@ public class UserFragment extends Fragment implements UserDataAdapter.ItemListen
         // Add JsonArrayRequest to the RequestQueue
         requestQueue.add(jsonArrayRequest);
     }
-    @Override
-    public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction, int position) {
 
-
-    }
-/*@Override
-public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction, int position) {
-        if (viewHolder instanceof CartListAdapter.MyViewHolder) {
+       @Override
+        public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction, int position) {
+        if (viewHolder instanceof UserDataAdapter.ViewHolder) {
         // get the removed item name to display it in snack bar
         String name =allSampleData.get(viewHolder.getAdapterPosition()).getName();
 
-// backup of removed item for undo purpose
-final Item deletedItem =allSampleData.get(viewHolder.getAdapterPosition());
-final int deletedIndex = viewHolder.getAdapterPosition();
+        // backup of removed item for undo purpose
+       final UserModel deletedItem =allSampleData.get(viewHolder.getAdapterPosition());
+        final int deletedIndex = viewHolder.getAdapterPosition();
 
         // remove the item from recycler view
         adapter.removeItem(viewHolder.getAdapterPosition());
 
         // showing snack bar with Undo option
-        Snackbar snackbar = Snackbar.make(coordinatorLayout, name + " removed from cart!", Snackbar.LENGTH_LONG);
+        Snackbar snackbar = Snackbar.make(ll, name + " removed from cart!", Snackbar.LENGTH_LONG);
 
         snackbar.setAction("UNDO", new View.OnClickListener() {
 @Override
@@ -531,7 +537,7 @@ public void onClick(View view) {
         snackbar.setActionTextColor(Color.YELLOW);
         snackbar.show();
         }
-        } */
+        }
 
 
         }
