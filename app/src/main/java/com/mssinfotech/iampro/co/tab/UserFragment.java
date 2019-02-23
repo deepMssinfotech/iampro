@@ -1,12 +1,19 @@
 package com.mssinfotech.iampro.co.tab;
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.Paint;
+import android.graphics.RectF;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -64,6 +71,12 @@ public class UserFragment extends Fragment implements UserDataAdapter.ItemListen
     MyImageVideoDataAdapter adapterr;
     TreeMap<String,String> item_name=new TreeMap<>();
     ArrayList<SectionImageModel> allSampleDatamore=new ArrayList<>();
+
+
+    private View view;
+    private boolean add = false;
+    private Paint p = new Paint();
+
     public UserFragment() {
         // Required empty public constructor
     }
@@ -108,6 +121,8 @@ public class UserFragment extends Fragment implements UserDataAdapter.ItemListen
 
             }
         });
+
+        initSwipe();
     }
     /*public void getAllAlbum(){
         //String url="https://www.iampro.co/api/app_service.php?type=getAlbemsListt&search_type=video&uid="+uid;
@@ -380,9 +395,8 @@ public class UserFragment extends Fragment implements UserDataAdapter.ItemListen
                             LinearLayoutManager manager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
                             my_recycler_view.setLayoutManager(manager);
 
-                            ItemTouchHelper.SimpleCallback itemTouchHelperCallback = new UserItemTouchHelper(0, ItemTouchHelper.LEFT,UserFragment.this);
-                            new ItemTouchHelper(itemTouchHelperCallback).attachToRecyclerView(recycler_view_load_more);
-
+                            //ItemTouchHelper.SimpleCallback itemTouchHelperCallback = new UserItemTouchHelper(0, ItemTouchHelper.LEFT,UserFragment.this);
+                            //new ItemTouchHelper(itemTouchHelperCallback).attachToRecyclerView(recycler_view_load_more);
 
                         }
                         catch (JSONException e){
@@ -475,20 +489,19 @@ public class UserFragment extends Fragment implements UserDataAdapter.ItemListen
 
 
                             adapter = new UserDataAdapter(getContext(), allSampleData,UserFragment.this);
-                            recycler_view_load_more.setAdapter(adapter);
+                            my_recycler_view.setAdapter(adapter);
 
                             LinearLayoutManager manager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
-                            recycler_view_load_more.setLayoutManager(manager);
+                            my_recycler_view.setLayoutManager(manager);
                              adapter.notifyDataSetChanged();
 
-        //recycler_view_load_more.setItemAnimator(new DefaultItemAnimator());
-        //recyclerView.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
+                            my_recycler_view.setItemAnimator(new DefaultItemAnimator());
+                             my_recycler_view.addItemDecoration(new DividerItemDecoration(getContext(),DividerItemDecoration.VERTICAL));
 
-         ItemTouchHelper.SimpleCallback itemTouchHelperCallback = new UserItemTouchHelper(0, ItemTouchHelper.LEFT,UserFragment.this);
-                 new ItemTouchHelper(itemTouchHelperCallback).attachToRecyclerView(recycler_view_load_more);
+                      ItemTouchHelper.SimpleCallback itemTouchHelperCallback = new UserItemTouchHelper(0, ItemTouchHelper.LEFT,UserFragment.this);
+                      new ItemTouchHelper(itemTouchHelperCallback).attachToRecyclerView(recycler_view_load_more);
 
-
-        }
+                         }
                         catch (JSONException e){
                             e.printStackTrace();
                             Toast.makeText(getContext(), ""+e.getMessage(), Toast.LENGTH_SHORT).show();
@@ -512,6 +525,7 @@ public class UserFragment extends Fragment implements UserDataAdapter.ItemListen
 
        @Override
         public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction, int position) {
+        Toast.makeText(getContext(),"swiped",Toast.LENGTH_LONG).show();
         if (viewHolder instanceof UserDataAdapter.ViewHolder) {
         // get the removed item name to display it in snack bar
         String name =allSampleData.get(viewHolder.getAdapterPosition()).getName();
@@ -524,11 +538,11 @@ public class UserFragment extends Fragment implements UserDataAdapter.ItemListen
         adapter.removeItem(viewHolder.getAdapterPosition());
 
         // showing snack bar with Undo option
-        Snackbar snackbar = Snackbar.make(ll, name + " removed from cart!", Snackbar.LENGTH_LONG);
+        Snackbar snackbar = Snackbar.make(ll, name + " removed from list!", Snackbar.LENGTH_LONG);
 
         snackbar.setAction("UNDO", new View.OnClickListener() {
-@Override
-public void onClick(View view) {
+   @Override
+   public void onClick(View view) {
 
         // undo is selected, restore the deleted item
         adapter.restoreItem(deletedItem, deletedIndex);
@@ -539,5 +553,68 @@ public void onClick(View view) {
         }
         }
 
+    private void initSwipe(){
+        ItemTouchHelper.SimpleCallback simpleItemTouchCallback = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
+
+            @Override
+            public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, RecyclerView.ViewHolder target) {
+                return false;
+            }
+
+            @Override
+            public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
+                int position = viewHolder.getAdapterPosition();
+
+                if (direction == ItemTouchHelper.LEFT){
+                   // adapter.removeItem(position);
+                    Toast.makeText(getContext(),"left",Toast.LENGTH_LONG).show();
+                } else {
+                   /* removeView();
+                    edit_position = position;
+                    alertDialog.setTitle("Edit Country");
+                    et_country.setText(countries.get(position));
+                    alertDialog.show(); */
+
+                    Toast.makeText(getContext(),"left",Toast.LENGTH_LONG).show();
+
+                }
+            }
+            @Override
+            public void onChildDraw(Canvas c, RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, float dX, float dY, int actionState, boolean isCurrentlyActive) {
+
+                Bitmap icon;
+                if(actionState == ItemTouchHelper.ACTION_STATE_SWIPE){
+
+                    View itemView = viewHolder.itemView;
+                    float height = (float) itemView.getBottom() - (float) itemView.getTop();
+                    float width = height / 3;
+
+                    if(dX > 0){
+                        p.setColor(Color.parseColor("#388E3C"));
+                        RectF background = new RectF((float) itemView.getLeft(), (float) itemView.getTop(), dX,(float) itemView.getBottom());
+                        c.drawRect(background,p);
+                        icon = BitmapFactory.decodeResource(getResources(), R.drawable.ic_edit_white_24dp);
+                        RectF icon_dest = new RectF((float) itemView.getLeft() + width ,(float) itemView.getTop() + width,(float) itemView.getLeft()+ 2*width,(float)itemView.getBottom() - width);
+                        c.drawBitmap(icon,null,icon_dest,p);
+                    } else {
+                        p.setColor(Color.parseColor("#D32F2F"));
+                        RectF background = new RectF((float) itemView.getRight() + dX, (float) itemView.getTop(),(float) itemView.getRight(), (float) itemView.getBottom());
+                        c.drawRect(background,p);
+                        icon = BitmapFactory.decodeResource(getResources(), R.drawable.ic_delete_white);
+                        RectF icon_dest = new RectF((float) itemView.getRight() - 2*width ,(float) itemView.getTop() + width,(float) itemView.getRight() - width,(float)itemView.getBottom() - width);
+                        c.drawBitmap(icon,null,icon_dest,p);
+                    }
+                }
+                super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive);
+            }
+        };
+        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(simpleItemTouchCallback);
+        itemTouchHelper.attachToRecyclerView(my_recycler_view);
+    }
+    private void removeView(){
+        if(view.getParent()!=null) {
+            ((ViewGroup) view.getParent()).removeView(view);
+        }
+    }
 
         }

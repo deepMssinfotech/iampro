@@ -84,4 +84,39 @@
 
     <color name="primary">#673AB7</color>
 
+    <color name="grey_50">#FAFAFA</color>
+    <color name="grey_100">#F5F5F5</color>
+    <color name="grey_200">#EEEEEE</color>
+
+    <color name="grey_400">#BDBDBD</color>
+
+    <color name="grey_600">#757575</color>
+    <color name="grey_700">#616161</color>
+    <color name="grey_800">#424242</color>
+    <color name="grey_900">#212121</color>
+
+    <!--may be change-->
+    <color name="list_divider">#E0E0E0</color>
+    <color name="bg_bubble_self">#FF9100</color>
+    <color name="list_row_start_color">#F0F4C3</color>
+    <color name="list_row_end_color">#76FF03</color>
+
+    <color name="list_row_hover_end_color">#9E9D24</color>
+    <color name="list_row_hover_start_color">#795548</color>
+
+    <color name="cyan_50">#E0F7FA</color>
+    <color name="cyan_100">#B2EBF2</color>
+    <color name="cyan_200">#80DEEA</color>
+    <color name="cyan_300">#4DD0E1</color>
+    <color name="cyan_400">#26C6DA</color>
+    <color name="cyan_500">#00BCD4</color>
+    <color name="cyan_600">#00ACC1</color>
+    <color name="cyan_700">#0097A7</color>
+    <color name="cyan_800">#00838F</color>
+    <color name="cyan_900">#006064</color>
+    <color name="cyan_A100">#84FFFF</color>
+    <color name="cyan_A200">#18FFFF</color>
+    <color name="cyan_A400">#00E5FF</color>
+    <color name="cyan_A700">#00B8D4</color>
+
 </resources>

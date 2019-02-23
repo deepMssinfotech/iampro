@@ -151,13 +151,53 @@ public class SectionImageVideoAdapter extends RecyclerView.Adapter<SectionImageV
         holder.ll_comment.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+             if(type.equalsIgnoreCase("image")) {
+                 Intent intent = new Intent(mContext, CommentActivity.class);
+                 intent.putExtra("type", type);
+                 intent.putExtra("id", id);
 
-                Intent intent=new Intent(mContext,CommentActivity.class);
-                intent.putExtra("type",type);
-                intent.putExtra("id",id);
+                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                 mContext.startActivity(intent);
+             }
+             else if(type.equalsIgnoreCase("video")) {
+                 Intent intent = new Intent(mContext, CommentActivity.class);
+                 intent.putExtra("type","video");
+                 intent.putExtra("id", id);
 
-                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                mContext.startActivity(intent);
+                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                 mContext.startActivity(intent);
+             }
+             else if(type.equalsIgnoreCase("product")) {
+                 Intent intent = new Intent(mContext, CommentActivity.class);
+                 intent.putExtra("type","product");
+                 intent.putExtra("id", id);
+
+                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                 mContext.startActivity(intent);
+             }
+             else if(type.equalsIgnoreCase("provide")) {
+                 Intent intent = new Intent(mContext, CommentActivity.class);
+                 intent.putExtra("type","provide");
+                 intent.putExtra("id", id);
+
+                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                 mContext.startActivity(intent);
+             }
+             else if(type.equalsIgnoreCase("demand")) {
+                 Intent intent = new Intent(mContext, CommentActivity.class);
+                 intent.putExtra("type", "demand");
+                 intent.putExtra("id", id);
+
+                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                 mContext.startActivity(intent);
+             }
+             else{
+                 Intent intent = new Intent(mContext, CommentActivity.class);
+                 intent.putExtra("type", "image");
+                 intent.putExtra("id", id);
+                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                 mContext.startActivity(intent);
+             }
             }
         });
         holder.likeButton.setOnLikeListener(new OnLikeListener() {
@@ -190,6 +230,7 @@ public class SectionImageVideoAdapter extends RecyclerView.Adapter<SectionImageV
                     intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     intent.putExtra("pid",String.valueOf(mValues.get(i).getId()));
                     intent.putExtra("uid",String.valueOf(mValues.get(i).getUid()));
+                    intent.putExtra("type", "product");
                     mContext.startActivity(intent);
                 }
                 else if (type.equalsIgnoreCase("provide")){
@@ -197,6 +238,7 @@ public class SectionImageVideoAdapter extends RecyclerView.Adapter<SectionImageV
                     intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     intent.putExtra("pid",String.valueOf(mValues.get(i).getId()));
                     intent.putExtra("uid",String.valueOf(mValues.get(i).getUid()));
+                    intent.putExtra("type", "provide");
                     intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     mContext.startActivity(intent);
                 }
@@ -205,6 +247,7 @@ public class SectionImageVideoAdapter extends RecyclerView.Adapter<SectionImageV
                     intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     intent.putExtra("pid",String.valueOf(mValues.get(i).getId()));
                     intent.putExtra("uid",String.valueOf(mValues.get(i).getUid()));
+                    intent.putExtra("type", "demand");
                     mContext.startActivity(intent);
                 }
                  else {

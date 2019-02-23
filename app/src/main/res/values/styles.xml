@@ -60,4 +60,10 @@
         <item name="android:windowBackground">@android:color/background_light</item>
     </style>
 
+    <style name="AppTheme.NoActionBar.Splash">
+
+        <item name="android:windowBackground">@drawable/firebase_chat_splash</item>
+
+    </style>
+
 </resources>
