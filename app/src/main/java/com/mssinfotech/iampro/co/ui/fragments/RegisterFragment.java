@@ -24,6 +24,7 @@ import com.mssinfotech.iampro.co.core.registration.RegisterPresenter;
 import com.mssinfotech.iampro.co.core.users.add.AddUserContract;
 import com.mssinfotech.iampro.co.core.users.add.AddUserPresenter;
 import com.mssinfotech.iampro.co.ui.activities.UserListingActivity;
+import com.mssinfotech.iampro.co.utils.PrefManager;
 
 /**
  * Author: Kartik Sharma
@@ -77,7 +78,13 @@ public class RegisterFragment extends Fragment implements View.OnClickListener, 
         mProgressDialog.setTitle(getString(R.string.loading));
         mProgressDialog.setMessage(getString(R.string.please_wait));
         mProgressDialog.setIndeterminate(true);
-
+        if(PrefManager.isLogin(getContext())) {
+            String emailId = PrefManager.getLoginDetail(getContext(), "email");
+            String password = "123456";
+            mRegisterPresenter.register(getActivity(), emailId, password);
+            mProgressDialog.show();
+        }
+        mBtnRegister.setVisibility(View.GONE);
         mBtnRegister.setOnClickListener(this);
     }
 

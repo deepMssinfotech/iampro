@@ -20,6 +20,7 @@ import com.mssinfotech.iampro.co.core.login.LoginContract;
 import com.mssinfotech.iampro.co.core.login.LoginPresenter;
 import com.mssinfotech.iampro.co.ui.activities.RegisterActivity;
 import com.mssinfotech.iampro.co.ui.activities.UserListingActivity;
+import com.mssinfotech.iampro.co.utils.PrefManager;
 //import com.mssinfotech.attendance.core.login.LoginContract;
 //import com.mssinfotech.attendance.core.login.LoginPresenter;
 //import com.mssinfotech.attendance.ui.activities.RegisterActivity;
@@ -74,7 +75,14 @@ public class LoginFragment extends Fragment implements View.OnClickListener, Log
         mProgressDialog.setTitle(getString(R.string.loading));
         mProgressDialog.setMessage(getString(R.string.please_wait));
         mProgressDialog.setIndeterminate(true);
-
+       if(PrefManager.isLogin(getContext())) {
+           String emailId=PrefManager.getLoginDetail(getContext(),"email");
+           String password="123456";
+           mLoginPresenter.login(getActivity(), emailId, password);
+           mProgressDialog.show();
+           mBtnLogin.setVisibility(View.GONE);
+           mBtnRegister.setVisibility(View.GONE);
+       }
         mBtnLogin.setOnClickListener(this);
         mBtnRegister.setOnClickListener(this);
 

@@ -25,6 +25,7 @@ import com.mssinfotech.iampro.co.MessageActivity;
 import com.mssinfotech.iampro.co.NotificationActivity;
 import com.mssinfotech.iampro.co.R;
 import com.mssinfotech.iampro.co.SearchActivity;
+import com.mssinfotech.iampro.co.ui.activities.SplashActivity;
 import com.mssinfotech.iampro.co.user.ProfileActivity;
 import com.mssinfotech.iampro.co.utils.PrefManager;
 
@@ -144,6 +145,9 @@ public class IncludeFooter  extends RelativeLayout {
                     .setCustomAnimations(R.anim.enter, R.anim.exit, R.anim.pop_enter, R.anim.pop_exit)
                     .addToBackStack(null)
                     .commit();
+              /*Intent intent=new Intent(getContext(), SplashActivity.class);
+                getContext().startActivity(intent); */
+
         }
     };
     private OnClickListener userOnClickListener = new OnClickListener() {

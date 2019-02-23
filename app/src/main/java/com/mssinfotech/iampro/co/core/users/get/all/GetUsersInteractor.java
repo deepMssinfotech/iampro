@@ -46,14 +46,12 @@ public class GetUsersInteractor implements GetUsersContract.Interactor {
                 }
                 mOnGetAllUsersListener.onGetAllUsersSuccess(users);
             }
-
             @Override
             public void onCancelled(DatabaseError databaseError) {
                 mOnGetAllUsersListener.onGetAllUsersFailure(databaseError.getMessage());
             }
         });
     }
-
     @Override
     public void getChatUsersFromFirebase() {
         /*FirebaseDatabase.getInstance().getReference().child(Constants.ARG_CHAT_ROOMS).addListenerForSingleValueEvent(new ValueEventListener() {

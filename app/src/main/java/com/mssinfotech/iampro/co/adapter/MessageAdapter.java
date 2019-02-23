@@ -1,14 +1,18 @@
 package com.mssinfotech.iampro.co.adapter;
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.mssinfotech.iampro.co.ChatToUser;
 import com.mssinfotech.iampro.co.R;
 import com.mssinfotech.iampro.co.data.MessageItem;
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -23,6 +27,7 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MyViewHo
         public TextView count_chat;
         public RelativeLayout viewBackground, viewForeground;
         public CircleImageView user_image;
+        FrameLayout message_item;
         public MyViewHolder(View view) {
             super(view);
             //product_name = view.findViewById(R.id.product_name);
@@ -34,6 +39,7 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MyViewHo
             detail = view.findViewById(R.id.detail);
             title = view.findViewById(R.id.title);
             time = view.findViewById(R.id.time);
+            message_item=view.findViewById(R.id.message_item);
         }
     }
 
@@ -61,6 +67,21 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MyViewHo
             holder.count_chat.setVisibility(View.GONE);
         }
         Glide.with(context).load(item.getavatar()).into(holder.user_image);
+
+        holder.detail.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(context,"detail",Toast.LENGTH_LONG).show();
+            }
+        });
+        holder.message_item.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent=new Intent(context, ChatToUser.class);
+                 intent.putExtra("id",notifyList.get(position).getid().toString());
+                 context.startActivity(intent);
+            }
+        });
     }
 
     @Override
