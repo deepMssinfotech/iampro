@@ -130,7 +130,7 @@
             android:theme="@style/AppTheme.NoActionBar" />
 
         <activity
-            android:name=".demand.DemandDetail"
+            android:name=".demand.DemandDetailActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".product.ProductDetail"

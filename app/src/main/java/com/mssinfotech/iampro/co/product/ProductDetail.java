@@ -4,19 +4,15 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.design.widget.CollapsingToolbarLayout;
-import android.support.design.widget.Snackbar;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
-import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -31,18 +27,14 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.resource.bitmap.CircleCrop;
-import com.bumptech.glide.request.RequestOptions;
 import com.mssinfotech.iampro.co.CartActivity;
 import com.mssinfotech.iampro.co.CommentActivity;
-import com.mssinfotech.iampro.co.MessageActivity;
 import com.mssinfotech.iampro.co.R;
 import com.mssinfotech.iampro.co.adapter.CommentAdapter;
 import com.mssinfotech.iampro.co.common.Config;
-import com.mssinfotech.iampro.co.demand.DemandDetail;
+import com.mssinfotech.iampro.co.common.PhotoFullPopupWindow;
+import com.mssinfotech.iampro.co.common.function;
 import com.mssinfotech.iampro.co.model.Review;
-import com.mssinfotech.iampro.co.provide.ProvideDetail;
-import com.mssinfotech.iampro.co.provide.ProvideDetailActivity;
 import com.mssinfotech.iampro.co.user.ProfileActivity;
 import com.mssinfotech.iampro.co.utils.PrefManager;
 import com.smarteist.autoimageslider.DefaultSliderView;
@@ -74,7 +66,7 @@ public class ProductDetail extends AppCompatActivity implements CommentAdapter.I
 
     FullscreenVideoView fullscreenVideoView;
     SliderLayout imageSlider;
-
+    String product_id,product_price;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         //Remove title bar
@@ -103,14 +95,13 @@ public class ProductDetail extends AppCompatActivity implements CommentAdapter.I
             @Override
             public void onClick(View v) {
                 Toast.makeText(ProductDetail.this, "uid:" + uid, Toast.LENGTH_LONG).show();
-
                 Intent intent = new Intent(ProductDetail.this, ProfileActivity.class);
                 intent.putExtra("uid", String.valueOf(uid));
                 ProductDetail.this.startActivity(intent);
             }
         });
         getProductDetail();
-        getProductReview();
+        //getProductReview();
     }
 
     protected void getProductDetail() {
@@ -136,7 +127,7 @@ public class ProductDetail extends AppCompatActivity implements CommentAdapter.I
                             String name = responses.optString("name");
                             String category = responses.optString("category");
                             String cost = "INR:" + " " + responses.optString("selling_cost") + " Rs";
-
+                            product_price = responses.optString("selling_cost");
                             String product_details = responses.optString("detail");
                             String product_provide_name = responses.optString("user_name");
                             //JSONArray myother_img=responses.getJSONArray("myother_img");
@@ -164,15 +155,14 @@ public class ProductDetail extends AppCompatActivity implements CommentAdapter.I
 
                             Glide.with(ProductDetail.this)
                                     .load(avatar_path)
-                                    .apply(new RequestOptions()
-                                            .circleCrop().bitmapTransform(new CircleCrop())
-                                            .fitCenter())
+                                    .apply(Config.options_avatar)
                                     .into(user_image);
 
                             imageSlider.setVisibility(View.VISIBLE);
                             JSONArray other_imagee=responses.getJSONArray("myother_img");
                            // JSONArray other_image = result.getJSONArray("image_array");
                             String ImageHol = Config.URL_ROOT+"uploads/product/w/500/"+responses.getString("image");
+                            final String ImageHolFull = Config.URL_ROOT+"uploads/product/"+responses.getString("image");
                             imageSlider.setIndicatorAnimation(IndicatorAnimations.SWAP); //set indicator animation by using SliderLayout.IndicatorAnimations. :WORM or THIN_WORM or COLOR or DROP or FILL or NONE or SCALE or SCALE_DOWN or SLIDE and SWAP!!
                             imageSlider.setSliderTransformAnimation(SliderAnimations.FADETRANSFORMATION);
                             imageSlider.setScrollTimeInSec(5); //set scroll delay in seconds :
@@ -184,10 +174,7 @@ public class ProductDetail extends AppCompatActivity implements CommentAdapter.I
                             sliderView1.setOnSliderClickListener(new SliderView.OnSliderClickListener() {
                                 @Override
                                 public void onSliderClick(SliderView sliderView) {
-                                    //todo
-                                    /*
-                                     * all full screen view
-                                     * */
+                                    new PhotoFullPopupWindow(getApplication(), R.layout.popup_photo_full, tv_cost.getRootView(), ImageHolFull, null);
                                 }
                             });
 
@@ -197,17 +184,14 @@ public class ProductDetail extends AppCompatActivity implements CommentAdapter.I
                                 for(int i=0; i<other_imagee.length(); i++){
                                     DefaultSliderView sliderView = new DefaultSliderView(ProductDetail.this);
                                     sliderView.setImageUrl(Config.URL_ROOT+"uploads/product/w/500/"+other_imagee.getString(i));
-                                    Log.d(Config.TAG,Config.URL_ROOT+"uploads/product/w/500/"+other_imagee.getString(i));
+                                    final String myImage = Config.URL_ROOT+"uploads/product/"+other_imagee.getString(i);
                                     sliderView.setImageScaleType(ImageView.ScaleType.CENTER_CROP);
                                     //sliderView.setDescription("setDescription " + (i + 1));
                                     final int finalI = i;
                                     sliderView.setOnSliderClickListener(new SliderView.OnSliderClickListener() {
                                         @Override
                                         public void onSliderClick(SliderView sliderView) {
-                                            //todo
-                                            /*
-                                            * all full screen view
-                                            * */
+                                            new PhotoFullPopupWindow(getApplication(), R.layout.popup_photo_full, tv_cost.getRootView(), myImage, null);
                                         }
                                     });
 
@@ -292,108 +276,38 @@ public class ProductDetail extends AppCompatActivity implements CommentAdapter.I
         // Add JsonArrayRequest to the RequestQueue
         requestQueue.add(jsonArrayRequest);
     }
-
-    public void sendReview(View view) {
-        // get prompts.xml view
-        LayoutInflater li = LayoutInflater.from(ProductDetail.this);
-        View promptsView = li.inflate(R.layout.prompts_review, null);
-
-        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
-                ProductDetail.this);
-
-        // set prompts.xml to alertdialog builder
-        alertDialogBuilder.setView(promptsView);
-
-        final EditText userInput = promptsView
-                .findViewById(R.id.editTextReview);
-
-        // set dialog message
-        alertDialogBuilder
-                .setCancelable(false)
-                .setPositiveButton("OK",
-                        new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int id) {
-                                // get user input and set it to result
-                                // edit text
-                                // result.setText(userInput.getText());
-                                Toast.makeText(getApplicationContext(), userInput.getText(), Toast.LENGTH_LONG).show();
-                                saveReview(userInput.getText().toString().trim());
-                                getProductReview();
-                            }
-                        })
-                .setNegativeButton("Cancel",
-                        new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int id) {
-                                dialog.cancel();
-                            }
-                        });
-
-        // create alert dialog
-        AlertDialog alertDialog = alertDialogBuilder.create();
-
-        // show it
-        alertDialog.show();
+    public void CommentClick(View view){
+        Intent intent=new Intent(this, CommentActivity.class);
+        intent.putExtra("type","product");
+        intent.putExtra("id",String.valueOf(pid));
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        this.startActivity(intent);
     }
-
-    public void saveReview(String message) {
-        String url = "https://www.iampro.co/api/app_service.php?type=product_review&data_id=" + pid + "&comment=" + message + "&id=" + uid + "&data_type=product";
-        //id: 693
-        //data_type: demand
-        // Initialize a new RequestQueue instance
-        RequestQueue requestQueue = Volley.newRequestQueue(ProductDetail.this);
-
-        // Initialize a new JsonObjectRequest instance
-        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(
-                Request.Method.GET,
-                url,
-                null,
-                new Response.Listener<JSONObject>() {
-                    @Override
-                    public void onResponse(JSONObject response) {
-                        // Do something with response
-                        //mTextView.setText(response.toString());
-
-                        // Process the JSON
-                        try {
-                            String msg = response.optString("msg");
-                            Toast.makeText(getApplicationContext(), msg, Toast.LENGTH_LONG).show();
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                            Toast.makeText(ProductDetail.this, e.getMessage(), Toast.LENGTH_LONG).show();
-                        }
-                    }
-                },
-                new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        // Do something when error occurred
-                        Toast.makeText(ProductDetail.this, error.getMessage(), Toast.LENGTH_LONG).show();
-                    }
-                }
-        );
-        // Add JsonObjectRequest to the RequestQueue
-        requestQueue.add(jsonObjectRequest);
+    public void MyAddToCart(View view){
+        if (PrefManager.isLogin(ProductDetail.this)) {
+            function.addtocart(getApplicationContext(), pid, "1", product_price);
+            Toast.makeText(ProductDetail.this, "Product has been added to cart...", Toast.LENGTH_LONG).show();
+        } else {
+            Toast.makeText(ProductDetail.this, "First Login and try again...", Toast.LENGTH_LONG).show();
+        }
     }
-
     public void buyNow(View view) {
         if (PrefManager.isLogin(ProductDetail.this)) {
-            Intent intent = new Intent(ProductDetail.this, CartActivity.class);
-            startActivity(intent);
+            function.addtocart(getApplicationContext(), pid, "1", product_price);
+
+            CartActivity cartfragment = new CartActivity();
+            FragmentManager fragmentManager = this.getSupportFragmentManager();
+            fragmentManager.beginTransaction()
+                    .replace(android.R.id.content, cartfragment, null)
+                    .setCustomAnimations(R.anim.enter, R.anim.exit, R.anim.pop_enter, R.anim.pop_exit)
+                    .addToBackStack(null)
+                    .commit();
         } else {
             Toast.makeText(ProductDetail.this, "First Login and try again...", Toast.LENGTH_LONG).show();
         }
-
     }
 
-    public void addToCart(View view) {
-        if (PrefManager.isLogin(ProductDetail.this)) {
-            Intent intent = new Intent(ProductDetail.this, CartActivity.class);
-            startActivity(intent);
-        } else {
-            Toast.makeText(ProductDetail.this, "First Login and try again...", Toast.LENGTH_LONG).show();
-            return;
-        }
-    }
+
 
     @Override
     public void onItemClick(Review item) {

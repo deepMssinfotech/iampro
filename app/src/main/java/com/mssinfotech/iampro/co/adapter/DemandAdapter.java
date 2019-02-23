@@ -4,16 +4,11 @@ package com.mssinfotech.iampro.co.adapter;
  * Created by mssinfotech on 21/01/19.
  */
 
-import android.arch.lifecycle.ViewModel;
 import android.content.Intent;
-import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 
 import com.android.volley.Request;
@@ -28,7 +23,6 @@ import com.bumptech.glide.request.RequestOptions;
 import com.mssinfotech.iampro.co.CommentActivity;
 import com.mssinfotech.iampro.co.R;
 import android.view.ViewGroup;
-import android.widget.RadioButton;
 
 /**
  * Demonstrates the use of {@link RecyclerView} with a {@link LinearLayoutManager} and a
@@ -36,10 +30,6 @@ import android.widget.RadioButton;
  */
 import android.content.Context;
 import android.graphics.Color;
-import android.support.v7.widget.RecyclerView;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.RelativeLayout;
@@ -47,7 +37,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.mssinfotech.iampro.co.common.Config;
-import com.mssinfotech.iampro.co.demand.DemandDetail;
+import com.mssinfotech.iampro.co.demand.DemandDetailActivity;
 import com.mssinfotech.iampro.co.model.DataModel;
 import com.mssinfotech.iampro.co.user.ProfileActivity;
 import com.mssinfotech.iampro.co.utils.PrefManager;
@@ -101,7 +91,7 @@ public class DemandAdapter extends RecyclerView.Adapter<DemandAdapter.ViewHolder
                 @Override
                 public void onClick(View v) {
                     //Toast.makeText(mContext, "Demand clicked"+item.getName()+"\n"+item.getUid(), Toast.LENGTH_SHORT).show();
-                     Intent intent=new Intent(mContext, DemandDetail.class);
+                     Intent intent=new Intent(mContext, DemandDetailActivity.class);
                      //intent.putExtra("id",String.valueOf(item.getPid()));
                     intent.putExtra("pid",String.valueOf(item.getPid()));
                     intent.putExtra("uid",String.valueOf(item.getUid()));

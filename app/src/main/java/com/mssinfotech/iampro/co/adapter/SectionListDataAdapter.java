@@ -15,11 +15,9 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.load.resource.bitmap.CircleCrop;
 import com.bumptech.glide.request.RequestOptions;
 import com.like.LikeButton;
@@ -28,15 +26,13 @@ import com.mssinfotech.iampro.co.CommentActivity;
 import com.mssinfotech.iampro.co.R;
 import com.mssinfotech.iampro.co.common.Config;
 import com.mssinfotech.iampro.co.common.function;
-import com.mssinfotech.iampro.co.demand.DemandDetail;
+import com.mssinfotech.iampro.co.demand.DemandDetailActivity;
 import com.mssinfotech.iampro.co.image.ImageDetail;
 import com.mssinfotech.iampro.co.model.SingleItemModel;
 import com.mssinfotech.iampro.co.product.ProductDetail;
 import com.mssinfotech.iampro.co.provide.ProvideDetailActivity;
-import com.mssinfotech.iampro.co.user.MyProvideActivity;
 import com.mssinfotech.iampro.co.user.ProfileActivity;
 import com.mssinfotech.iampro.co.utils.PrefManager;
-import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
@@ -116,7 +112,7 @@ public class SectionListDataAdapter extends RecyclerView.Adapter<SectionListData
                     intent.putExtra("uid",String.valueOf(uid));
                     mContext.startActivity(intent);
                 }else if(utype.equals("demand")){
-                    Intent intent=new Intent(mContext, DemandDetail.class);
+                    Intent intent=new Intent(mContext, DemandDetailActivity.class);
                     //intent.putExtra("id",String.valueOf(item.getPid()));
                     intent.putExtra("pid",String.valueOf(id));
                     intent.putExtra("uid",String.valueOf(uid));

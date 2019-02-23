@@ -1,31 +1,88 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:card_view="http://schemas.android.com/tools"
     android:id="@+id/ll_top"
+    android:background="#ff6400"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="match_parent"
     android:orientation="vertical">
     <LinearLayout
+        android:layout_margin="10dp"
+        android:gravity="center"
+        android:layout_gravity="center"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
-        <android.support.v7.widget.AppCompatButton
+        <LinearLayout
+            android:orientation="vertical"
             android:layout_width="wrap_content"
-            android:layout_height="40dp"
-            android:background="@drawable/btnchat_demand"
-            android:textColor="@color/white"
-            android:onClick="chat"
-            android:layout_weight="1"
-            android:layout_margin="13dp"
-            android:text="@string/chat"/>
-        <android.support.v7.widget.AppCompatButton
+            android:layout_height="wrap_content">
+            <LinearLayout
+                android:background="@drawable/img_circle_placeholder"
+                android:layout_width="100dp"
+                android:layout_margin="5dp"
+                android:onClick="chat"
+                android:layout_height="100dp">
+                <ImageView
+                    android:layout_margin="20dp"
+                    android:src="@drawable/message"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+            </LinearLayout>
+            <TextView
+                android:textColor="#ffffff"
+                android:gravity="center"
+                android:text="Chat"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+        </LinearLayout>
+        <LinearLayout
+            android:orientation="vertical"
             android:layout_width="wrap_content"
-            android:layout_height="40dp"
-            android:textColor="@color/white"
-            android:background="@drawable/btnchat_demand"
-            android:onClick="favourite"
-            android:layout_weight="1"
-            android:layout_margin="13dp"
-            android:text="@string/favourite"/>
+            android:layout_height="wrap_content">
+            <LinearLayout
+                android:background="@drawable/img_circle_placeholder"
+                android:layout_width="100dp"
+                android:layout_margin="5dp"
+                android:layout_height="100dp">
+                <com.like.LikeButton
+                    android:layout_margin="20dp"
+                    card_view:icon_type="heart"
+                    app:icon_size="50dp"
+                    android:id="@+id/favButton"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+            </LinearLayout>
+            <TextView
+                android:textColor="#ffffff"
+                android:gravity="center"
+                android:text="Favourite"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+        </LinearLayout>
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+            <LinearLayout
+                android:background="@drawable/img_circle_placeholder"
+                android:layout_width="100dp"
+                android:onClick="CommentClick"
+                android:layout_margin="5dp"
+                android:layout_height="100dp">
+                <ImageView
+                    android:layout_margin="20dp"
+                    android:src="@drawable/comment"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+            </LinearLayout>
+            <TextView
+            android:textColor="#ffffff"
+            android:gravity="center"
+            android:text="Comment"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+        </LinearLayout>
     </LinearLayout>
 
     <android.support.v7.widget.CardView
@@ -260,6 +317,7 @@
         card_view:cardCornerRadius="10dp"
         android:layout_marginBottom="20dp"
         card_view:cardElevation="5dp"
+        android:visibility="gone"
         card_view:cardUseCompatPadding="true">
 
         <LinearLayout
@@ -282,16 +340,7 @@
                     android:layout_width="63dp"
                     android:layout_height="63dp"
                     android:padding="13dp"
-                    android:layout_gravity="left"
-                    app:srcCompat="@drawable/ic_chat_black_24dp"/>
-                <!-- <TextView
-                     android:id="@+id/tv_costss"
-                     android:layout_width="0dp"
-                     android:layout_height="wrap_content"
-                     android:text="Cost:"
-                     android:textSize="17dp"
-                     android:textStyle="bold"
-                     android:layout_weight="9"/> -->
+                    android:layout_gravity="left"/>
 
                 <TextView
                     android:layout_width="0dp"
