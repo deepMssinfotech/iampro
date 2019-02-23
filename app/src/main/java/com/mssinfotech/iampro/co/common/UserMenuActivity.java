@@ -59,13 +59,7 @@ public class UserMenuActivity  extends Fragment {
     }
 
     public void removeFragment(){
-        AppCompatActivity activity = (AppCompatActivity) getContext();
-        UserMenuActivity userMenufragment = new UserMenuActivity();
-        android.support.v4.app.FragmentManager fragmentManager = activity.getSupportFragmentManager();
-        android.support.v4.app.FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.remove(userMenufragment);
-        fragmentTransaction.commit();
-        function.finishFunction(getContext());
+        //getActivity().finish();
     }
     private View.OnClickListener dashboardOnClickListener = new View.OnClickListener() {
         public void onClick(View v) {
@@ -99,15 +93,9 @@ public class UserMenuActivity  extends Fragment {
     };
     private View.OnClickListener changepasswordOnClickListener = new View.OnClickListener() {
         public void onClick(View v) {
-            AppCompatActivity activity = (AppCompatActivity) getContext();
-            ChangePasswordActivity changepasswordfragment = new ChangePasswordActivity();
-            Bundle args = new Bundle();
-            args.putString("name", "mragank");
-            changepasswordfragment.setArguments(args);
-            FragmentManager fragmentManager = activity.getSupportFragmentManager();
-
-            fragmentManager.beginTransaction()
-                    .replace(android.R.id.content, changepasswordfragment, null)
+            ChangePasswordActivity nextFrag= new ChangePasswordActivity();
+            getActivity().getSupportFragmentManager().beginTransaction()
+                    .replace(android.R.id.content, nextFrag, null)
                     .setCustomAnimations(R.anim.enter, R.anim.exit, R.anim.pop_enter, R.anim.pop_exit)
                     .addToBackStack(null)
                     .commit();
@@ -116,15 +104,9 @@ public class UserMenuActivity  extends Fragment {
     };
     private View.OnClickListener joinedfriendOnClickListener = new View.OnClickListener() {
         public void onClick(View v) {
-            AppCompatActivity activity = (AppCompatActivity) getContext();
-            JoinFriendActivity joinfriendfragment = new JoinFriendActivity();
-            Bundle args = new Bundle();
-            args.putString("name", "mragank");
-            joinfriendfragment.setArguments(args);
-            FragmentManager fragmentManager = activity.getSupportFragmentManager();
-
-            fragmentManager.beginTransaction()
-                    .replace(android.R.id.content, joinfriendfragment, null)
+            JoinFriendActivity nextFrag = new JoinFriendActivity();
+            getActivity().getSupportFragmentManager().beginTransaction()
+                    .replace(android.R.id.content, nextFrag, null)
                     .setCustomAnimations(R.anim.enter, R.anim.exit, R.anim.pop_enter, R.anim.pop_exit)
                     .addToBackStack(null)
                     .commit();
@@ -133,15 +115,9 @@ public class UserMenuActivity  extends Fragment {
     };
     private View.OnClickListener friendrequestOnClickListener = new View.OnClickListener() {
         public void onClick(View v) {
-            AppCompatActivity activity = (AppCompatActivity) getContext();
-            FriendRequestActivity friendrequestfragment = new FriendRequestActivity();
-            Bundle args = new Bundle();
-            args.putString("name", "mragank");
-            friendrequestfragment.setArguments(args);
-            FragmentManager fragmentManager = activity.getSupportFragmentManager();
-
-            fragmentManager.beginTransaction()
-                    .replace(android.R.id.content, friendrequestfragment, null)
+            FriendRequestActivity nextFrag = new FriendRequestActivity();
+            getActivity().getSupportFragmentManager().beginTransaction()
+                    .replace(android.R.id.content, nextFrag, null)
                     .setCustomAnimations(R.anim.enter, R.anim.exit, R.anim.pop_enter, R.anim.pop_exit)
                     .addToBackStack(null)
                     .commit();
@@ -195,15 +171,9 @@ public class UserMenuActivity  extends Fragment {
     };
     private View.OnClickListener mymessageOnClickListener = new View.OnClickListener() {
         public void onClick(View v) {
-            AppCompatActivity activity = (AppCompatActivity) getContext();
-            MessageActivity messagefragment = new MessageActivity();
-            Bundle args = new Bundle();
-            args.putString("name", "mragank");
-            messagefragment.setArguments(args);
-            FragmentManager fragmentManager = activity.getSupportFragmentManager();
-
-            fragmentManager.beginTransaction()
-                    .replace(android.R.id.content, messagefragment, null)
+            MessageActivity nextFrag = new MessageActivity();
+            getActivity().getSupportFragmentManager().beginTransaction()
+                    .replace(android.R.id.content, nextFrag, null)
                     .setCustomAnimations(R.anim.enter, R.anim.exit, R.anim.pop_enter, R.anim.pop_exit)
                     .addToBackStack(null)
                     .commit();
@@ -212,15 +182,9 @@ public class UserMenuActivity  extends Fragment {
     };
     private View.OnClickListener mycartOnClickListener = new View.OnClickListener() {
         public void onClick(View v) {
-            AppCompatActivity activity = (AppCompatActivity) getContext();
-            CartActivity cartfragment = new CartActivity();
-            Bundle args = new Bundle();
-            args.putString("name", "mragank");
-            cartfragment.setArguments(args);
-            FragmentManager fragmentManager = activity.getSupportFragmentManager();
-
-            fragmentManager.beginTransaction()
-                    .replace(android.R.id.content, cartfragment, null)
+            CartActivity nextFrag = new CartActivity();
+            getActivity().getSupportFragmentManager().beginTransaction()
+                    .replace(android.R.id.content, nextFrag, null)
                     .setCustomAnimations(R.anim.enter, R.anim.exit, R.anim.pop_enter, R.anim.pop_exit)
                     .addToBackStack(null)
                     .commit();
@@ -229,15 +193,9 @@ public class UserMenuActivity  extends Fragment {
     };
     private View.OnClickListener mysellingOnClickListener = new View.OnClickListener() {
         public void onClick(View v) {
-            AppCompatActivity activity = (AppCompatActivity) getContext();
-            MySellingActivity mysellingfragment = new MySellingActivity();
-            Bundle args = new Bundle();
-            args.putString("name", "mragank");
-            mysellingfragment.setArguments(args);
-            FragmentManager fragmentManager = activity.getSupportFragmentManager();
-
-            fragmentManager.beginTransaction()
-                    .replace(android.R.id.content, mysellingfragment, null)
+            MySellingActivity nextFrag = new MySellingActivity();
+            getActivity().getSupportFragmentManager().beginTransaction()
+                    .replace(android.R.id.content, nextFrag, null)
                     .setCustomAnimations(R.anim.enter, R.anim.exit, R.anim.pop_enter, R.anim.pop_exit)
                     .addToBackStack(null)
                     .commit();
@@ -246,15 +204,9 @@ public class UserMenuActivity  extends Fragment {
     };
     private View.OnClickListener mypurchaseOnClickListener = new View.OnClickListener() {
         public void onClick(View v) {
-            AppCompatActivity activity = (AppCompatActivity) getContext();
-            MyPurchsaeActivity mypurchasefragment = new MyPurchsaeActivity();
-            Bundle args = new Bundle();
-            args.putString("name", "mragank");
-            mypurchasefragment.setArguments(args);
-            FragmentManager fragmentManager = activity.getSupportFragmentManager();
-
-            fragmentManager.beginTransaction()
-                    .replace(android.R.id.content, mypurchasefragment, null)
+            MyPurchsaeActivity nextFrag = new MyPurchsaeActivity();
+            getActivity().getSupportFragmentManager().beginTransaction()
+                    .replace(android.R.id.content, nextFrag, null)
                     .setCustomAnimations(R.anim.enter, R.anim.exit, R.anim.pop_enter, R.anim.pop_exit)
                     .addToBackStack(null)
                     .commit();
@@ -274,15 +226,9 @@ public class UserMenuActivity  extends Fragment {
     };
     private View.OnClickListener mywhishlistOnClickListener = new View.OnClickListener() {
         public void onClick(View v) {
-            AppCompatActivity activity = (AppCompatActivity) getContext();
-            MyWhishlistActivity whishlistfragment = new MyWhishlistActivity();
-            Bundle args = new Bundle();
-            args.putString("name", "mragank");
-            whishlistfragment.setArguments(args);
-            FragmentManager fragmentManager = activity.getSupportFragmentManager();
-
-            fragmentManager.beginTransaction()
-                    .replace(android.R.id.content, whishlistfragment, null)
+            MyWhishlistActivity nextFrag = new MyWhishlistActivity();
+            getActivity().getSupportFragmentManager().beginTransaction()
+                    .replace(android.R.id.content, nextFrag, null)
                     .setCustomAnimations(R.anim.enter, R.anim.exit, R.anim.pop_enter, R.anim.pop_exit)
                     .addToBackStack(null)
                     .commit();
@@ -355,6 +301,7 @@ public class UserMenuActivity  extends Fragment {
         Config.count_whishlist = view.findViewById(R.id.count_whishlist);
         Config.count_friend_request = view.findViewById(R.id.count_friend_request);
         Config.count_cart = view.findViewById(R.id.count_cart);
+        Config.count_message = view.findViewById(R.id.count_message);
         TextView username = view.findViewById(R.id.username);
         if(PrefManager.isLogin(getContext())) {
             menu_btn_dashboard = view.findViewById(R.id.menu_btn_dashboard);

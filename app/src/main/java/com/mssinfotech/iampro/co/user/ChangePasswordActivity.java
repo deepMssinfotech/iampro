@@ -1,6 +1,7 @@
 package com.mssinfotech.iampro.co.user;
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.support.design.widget.TextInputEditText;
 import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
@@ -32,7 +33,7 @@ import java.util.Map;
 
 public class ChangePasswordActivity extends Fragment {
     TextInputLayout til_current_pass, til_new_pass, til_conform_pass;
-    EditText et_currpass, et_newpass, et_confpass;
+    TextInputEditText et_currpass, et_newpass, et_confpass;
     String currpass, newpass, confpass, id;
     Button btn_cpassword;
     View view;
@@ -89,15 +90,11 @@ public class ChangePasswordActivity extends Fragment {
                                 String status = result.getString("status");
                                 String msg = result.getString("msg");
                                 if (status.equals("success")) {
-                                    //Intent intent = new Intent(getContext(), ProfileActivity.class);
+                                    Intent intent = new Intent(getContext(), ProfileActivity.class);
                                     //intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                                     Toast.makeText(getContext(),"Password Update Successfully", Toast.LENGTH_LONG).show();
-                                    //startActivity(intent);
-                                    Fragment currentFragment = getActivity().getSupportFragmentManager().findFragmentById(R.id.container);
-                                    FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
-                                    fragmentTransaction.detach(currentFragment);
-                                    fragmentTransaction.attach(currentFragment);
-                                    fragmentTransaction.commit();
+                                    startActivity(intent);
+                                    getActivity().finish();
                                 } else {
                                     Toast.makeText(getContext(), msg, Toast.LENGTH_LONG).show();
                                 }
@@ -143,6 +140,8 @@ public class ChangePasswordActivity extends Fragment {
 
         if (currpass.equalsIgnoreCase("")) {
             if (!til_current_pass.isErrorEnabled()) {
+                til_new_pass.setErrorEnabled(false);
+                til_conform_pass.setErrorEnabled(false);
                 til_current_pass.setErrorEnabled(true);
             }
             til_current_pass.setError("Please enter Old Password");
@@ -150,6 +149,7 @@ public class ChangePasswordActivity extends Fragment {
         } else if (newpass.equalsIgnoreCase("")) {
             if (!til_new_pass.isErrorEnabled()) {
                 til_current_pass.setErrorEnabled(false);
+                til_conform_pass.setErrorEnabled(false);
                 til_new_pass.setErrorEnabled(true);
             }
             til_new_pass.setError("Please enter New Password");
@@ -157,6 +157,7 @@ public class ChangePasswordActivity extends Fragment {
         } else if (confpass.equalsIgnoreCase("")) {
             if (!til_conform_pass.isErrorEnabled()) {
                 til_new_pass.setErrorEnabled(false);
+                til_current_pass.setErrorEnabled(false);
                 til_conform_pass.setErrorEnabled(true);
             }
             til_conform_pass.setError("Please enter Conform Password");
@@ -164,11 +165,17 @@ public class ChangePasswordActivity extends Fragment {
         } else if (!confpass.equalsIgnoreCase(newpass)) {
             if (!til_conform_pass.isErrorEnabled()) {
                 til_new_pass.setErrorEnabled(false);
+                til_current_pass.setErrorEnabled(false);
                 til_conform_pass.setErrorEnabled(true);
             }
             til_conform_pass.setError("New Password And Conform Password must be same");
             return false;
         } else if (confpass.length() < 4) {
+            if (!til_conform_pass.isErrorEnabled()) {
+                til_new_pass.setErrorEnabled(false);
+                til_current_pass.setErrorEnabled(false);
+                til_conform_pass.setErrorEnabled(true);
+            }
             til_conform_pass.setError("Password must contant minimum one number and one charecter and minimum length of password  5");
             return false;
         } else {

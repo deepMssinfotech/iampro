@@ -46,7 +46,7 @@ public class Config
     public static final String MEDIA_URL="https://www.iampro.co/uploads/media/";
     public static final String ALBUM_URL="https://www.iampro.co/uploads/album/w/500/";
     public static final String IP_ADDRESS="";
-    public static TextView count_chat = null, count_notify = null, count_cart=null, count_whishlist = null, count_friend_request = null;
+    public static TextView count_chat = null, count_notify = null, count_cart = null, count_message = null , count_whishlist = null, count_friend_request = null;
     public static final String IMAGE_DIRECTORY = "/iampro/image";
     public static final String VIDEO_DIRECTORY = "/iampro/video";
     public static final Integer GALLERY = 1, CAMERA = 2, PICK_IMAGE_MULTIPLE = 3;
@@ -369,6 +369,7 @@ public class Config
                                     if (count_chat != null) count_chat.setText(result.getString("chatcount"));
                                     if(count_notify != null) count_notify.setText(result.getString("my_notification"));
                                     if(count_cart != null) count_cart.setText(result.getString("cart_count"));
+                                    if(count_message != null) count_message.setText(result.getString("chatcount"));
                                     if(count_whishlist != null) count_whishlist.setText(result.getString("my_wishlist"));
                                     if(count_friend_request != null) count_friend_request.setText(result.getString("panding_friend"));
                                 } catch (JSONException e) {

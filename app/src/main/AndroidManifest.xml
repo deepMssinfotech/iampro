@@ -36,26 +36,8 @@
             android:name=".user.EditProfileActivity"
             android:label="@string/edit_profile" />
         <activity
-            android:name=".user.JoinFriendActivity"
-            android:theme="@style/AppTheme.NoActionBar" />
-        <activity
             android:name=".user.ProfileImageCroperActivity"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity
-            android:name=".user.FriendRequestActivity"
-            android:label="@string/friend_request" />
-        <activity
-            android:name=".user.MyWhishlistActivity"
-            android:label="@string/whishlist_title" />
-        <activity
-            android:name=".user.MyPurchsaeActivity"
-            android:label="@string/my_purchase" />
-        <activity
-            android:name=".user.MySellingActivity"
-            android:label="@string/my_sell" />
-        <activity
-            android:name=".user.ChangePasswordActivity"
-            android:label="@string/change_password" />
 
         <service
             android:name=".services.ScheduledService"
@@ -146,19 +128,7 @@
             android:name=".user.ProfileActivity"
             android:configChanges="orientation|screenSize"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity
-            android:name=".SearchActivity"
-            android:label="@string/search_title"
-            android:theme="@style/AppTheme.NoActionBar" />
-        <activity
-            android:name=".CartActivity"
-            android:label="@string/cart_title" />
-        <activity
-            android:name=".NotificationActivity"
-            android:label="@string/notifications_title" />
-        <activity
-            android:name=".MessageActivity"
-            android:label="@string/message_title" />
+
         <activity
             android:name=".demand.DemandDetail"
             android:theme="@style/AppTheme.NoActionBar" />
