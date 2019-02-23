@@ -39,7 +39,6 @@ import com.mssinfotech.iampro.co.CommentActivity;
 import com.mssinfotech.iampro.co.R;
 import com.mssinfotech.iampro.co.common.Config;
 import com.mssinfotech.iampro.co.common.function;
-import com.mssinfotech.iampro.co.demand.DemandDetail;
 import com.mssinfotech.iampro.co.image.ImageDetail;
 import com.mssinfotech.iampro.co.model.MyImageModel;
 import com.mssinfotech.iampro.co.model.SingleItemModel;

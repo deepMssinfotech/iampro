@@ -24,6 +24,7 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.mssinfotech.iampro.co.data.CategoryItem;
+import com.mssinfotech.iampro.co.utils.PrefManager;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -42,6 +43,11 @@ public class function {
             return true;
         }
         return false;
+    }
+    public static void addtocart(Context context,String id,String qty,String price){
+        String url = "https://www.iampro.co/api/cart.php?type=addtocart&p_type=product&pid="+id+"&qty="+qty+"&price="+price+"&uid="+ PrefManager.getLoginDetail(context,"id") +"&ip_address="+ Config.IP_ADDRESS;
+        Log.d(Config.TAG+"cart",url);
+        function.executeUrl(context,"get", url, null);
     }
     public static String executeUrl(final Context context, String type, String url, final Map<String, String> params){
         //final ProgressDialog loading = ProgressDialog.show(context,"Processing...","Please wait...",false,false);

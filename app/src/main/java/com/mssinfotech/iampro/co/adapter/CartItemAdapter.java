@@ -79,8 +79,7 @@ public class CartItemAdapter extends RecyclerView.Adapter<CartItemAdapter.MyView
                     String price=item.getselling_cost();
                     Integer qty= Integer.valueOf(item.getqty())+1;
                     Integer id = Integer.valueOf(item.id);
-                    String url = "https://www.iampro.co/api/cart.php?type=update_cart&id="+id.toString()+"&qty="+qty.toString()+"&price="+price+"&uid="+ PrefManager.getLoginDetail(itemView.getContext(),"id") +"&ip_address="+ Config.IP_ADDRESS;
-                    function.executeUrl(itemView.getContext(),"get", url, null);
+                    function.addtocart(itemView.getContext(),id.toString(),qty.toString(),price);
                     //TextView cart_product_quantity = v.getRootView().findViewById(R.id.cart_product_quantity_tv);
                     //cart_product_quantity.setText(qty);
                     notifyItemChanged(position);

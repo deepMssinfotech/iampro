@@ -30,27 +30,20 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.engine.DiskCacheStrategy;
-import com.bumptech.glide.load.resource.bitmap.CircleCrop;
-import com.bumptech.glide.request.RequestOptions;
 import com.like.LikeButton;
 import com.like.OnLikeListener;
 import com.mssinfotech.iampro.co.CommentActivity;
 import com.mssinfotech.iampro.co.R;
 import com.mssinfotech.iampro.co.common.Config;
 import com.mssinfotech.iampro.co.common.function;
-import com.mssinfotech.iampro.co.demand.DemandDetail;
+import com.mssinfotech.iampro.co.demand.DemandDetailActivity;
 import com.mssinfotech.iampro.co.image.ImageDetail;
 import com.mssinfotech.iampro.co.model.MyImageModel;
-import com.mssinfotech.iampro.co.model.SingleItemModel;
 import com.mssinfotech.iampro.co.product.ProductDetail;
 import com.mssinfotech.iampro.co.provide.ProvideDetailActivity;
 import com.mssinfotech.iampro.co.user.AddImageActivity;
-import com.mssinfotech.iampro.co.user.AddProvideActivity;
-import com.mssinfotech.iampro.co.user.MyProvideActivity;
 import com.mssinfotech.iampro.co.user.ProfileActivity;
 import com.mssinfotech.iampro.co.utils.PrefManager;
-import com.squareup.picasso.Picasso;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -250,7 +243,7 @@ public class SectionImageVideoAdapter extends RecyclerView.Adapter<SectionImageV
                     mContext.startActivity(intent);
                 }
                 else if (type.equalsIgnoreCase("demand")){
-                    Intent intent=new Intent(mContext, DemandDetail.class);
+                    Intent intent=new Intent(mContext, DemandDetailActivity.class);
                     intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     intent.putExtra("pid",String.valueOf(mValues.get(i).getId()));
                     intent.putExtra("uid",String.valueOf(mValues.get(i).getUid()));
