@@ -51,6 +51,7 @@
             </RelativeLayout>
         <LinearLayout
             android:id="@+id/nonuser_menu"
+            android:visibility="gone"
             android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
@@ -393,7 +394,7 @@
                         android:layout_marginLeft="40dp"
                         android:text="0"
                         android:textColor="#ffffff"
-                        android:textSize="10dp"
+                        android:textSize="8dp"
                         android:gravity="center"
                         android:layout_width="25dp"
                         android:layout_height="25dp" />
@@ -536,6 +537,17 @@
                         android:layout_margin="@dimen/menu_img_margin"
                         android:padding="@dimen/menu_img_padding"
                         android:src="@drawable/message_icon"/>
+                    <TextView
+                        android:background="@drawable/notify_circle_red"
+                        android:id="@+id/count_message"
+                        android:layout_marginLeft="40dp"
+                        android:text="0"
+                        android:textColor="#ffffff"
+                        android:textSize="10dp"
+                        android:gravity="center"
+                        android:layout_width="25dp"
+                        android:layout_height="25dp" />
+
                     <TextView
                         android:textSize="12dp"
                         android:layout_below="@+id/menu_btn_mymessage"

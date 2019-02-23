@@ -1,11 +1,16 @@
 package com.mssinfotech.iampro.co.user;
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.support.design.widget.TextInputEditText;
 import android.support.design.widget.TextInputLayout;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -26,26 +31,28 @@ import org.json.JSONObject;
 import java.util.Hashtable;
 import java.util.Map;
 
-public class ChangePasswordActivity extends AppCompatActivity {
+public class ChangePasswordActivity extends Fragment {
     TextInputLayout til_current_pass, til_new_pass, til_conform_pass;
-    EditText et_currpass, et_newpass, et_confpass;
+    TextInputEditText et_currpass, et_newpass, et_confpass;
     String currpass, newpass, confpass, id;
     Button btn_cpassword;
-
+    View view;
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_change_password);
-        Config.setLayoutName(getResources().getResourceEntryName(R.layout.activity_change_password));
+    public View onCreateView(LayoutInflater inflater, ViewGroup parent, Bundle savedInstanceState) {
+        // Defines the xml file for the fragment
+        return inflater.inflate(R.layout.activity_change_password, parent, false);
+    }
+    @Override
+    public void onViewCreated(View v, Bundle savedInstanceState) {
+        view =v;
+        til_current_pass = view.findViewById(R.id.til_current_pass);
+        til_new_pass = view.findViewById(R.id.til_new_pass);
+        til_conform_pass = view.findViewById(R.id.til_conform_pass);
 
-        til_current_pass = findViewById(R.id.til_current_pass);
-        til_new_pass = findViewById(R.id.til_new_pass);
-        til_conform_pass = findViewById(R.id.til_conform_pass);
-
-        btn_cpassword = findViewById(R.id.btn_cpassword);
-        et_currpass = findViewById(R.id.et_currpass);
-        et_newpass = findViewById(R.id.et_newpass);
-        et_confpass = findViewById(R.id.et_confpass);
+        btn_cpassword = view.findViewById(R.id.btn_cpassword);
+        et_currpass = view.findViewById(R.id.et_currpass);
+        et_newpass = view.findViewById(R.id.et_newpass);
+        et_confpass = view.findViewById(R.id.et_confpass);
 
         btn_cpassword.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -55,23 +62,21 @@ public class ChangePasswordActivity extends AppCompatActivity {
         });
     }
 
-
     public void changePassword() {
         currpass = et_currpass.getText().toString();
         newpass = et_newpass.getText().toString();
         confpass = et_confpass.getText().toString();
         Log.d("cPass",currpass+""+newpass+""+confpass);
-        id = PrefManager.getLoginDetail(this, "id");
+        id = PrefManager.getLoginDetail(getContext(), "id");
 
         if (validatenpassword()) {
-            if (!Config.haveNetworkConnection(this)) {
-                Config.showInternetDialog(this);
+            if (!Config.haveNetworkConnection(getContext())) {
+                Config.showInternetDialog(getContext());
                 return;
             }
-
             final String url = Config.AJAX_URL + "signup.php";
             //tv.setText(String.valueOf(randomNumber));
-            final ProgressDialog loading = ProgressDialog.show(this, "Processing...", "Please wait...", false, false);
+            final ProgressDialog loading = ProgressDialog.show(getContext(), "Processing...", "Please wait...", false, false);
             final StringRequest stringRequest = new StringRequest(Request.Method.POST, url,
                     new Response.Listener<String>() {
                         @Override
@@ -85,18 +90,17 @@ public class ChangePasswordActivity extends AppCompatActivity {
                                 String status = result.getString("status");
                                 String msg = result.getString("msg");
                                 if (status.equals("success")) {
-
-                                    Intent intent = new Intent(getApplicationContext(), ProfileActivity.class);
-                                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                                    //Toast.makeText("Password Update Successfully").show();
+                                    Intent intent = new Intent(getContext(), ProfileActivity.class);
+                                    //intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                    Toast.makeText(getContext(),"Password Update Successfully", Toast.LENGTH_LONG).show();
                                     startActivity(intent);
-                                    finish();
+                                    getActivity().finish();
                                 } else {
-                                    Toast.makeText(ChangePasswordActivity.this, msg, Toast.LENGTH_LONG).show();
+                                    Toast.makeText(getContext(), msg, Toast.LENGTH_LONG).show();
                                 }
                             } catch (JSONException e) {
                                 e.printStackTrace();
-                                Toast.makeText(ChangePasswordActivity.this,""+e.getMessage(), Toast.LENGTH_LONG).show();
+                                Toast.makeText(getContext(),""+e.getMessage(), Toast.LENGTH_LONG).show();
                             }
                         }
                     },
@@ -106,7 +110,7 @@ public class ChangePasswordActivity extends AppCompatActivity {
                             //Dismissing the progress dialog
                             loading.dismiss();
                             Log.d("error", volleyError.getMessage() + "--" + url.toString());
-                            Toast.makeText(getApplicationContext(), volleyError.getMessage(), Toast.LENGTH_LONG).show();
+                            Toast.makeText(getContext(), volleyError.getMessage(), Toast.LENGTH_LONG).show();
                         }
                     }) {
                 @Override
@@ -126,7 +130,7 @@ public class ChangePasswordActivity extends AppCompatActivity {
                 }
             };
             //Creating a Request Queue
-            RequestQueue requestQueue = Volley.newRequestQueue(this);
+            RequestQueue requestQueue = Volley.newRequestQueue(getContext());
 
             requestQueue.add(stringRequest);
         }
@@ -136,6 +140,8 @@ public class ChangePasswordActivity extends AppCompatActivity {
 
         if (currpass.equalsIgnoreCase("")) {
             if (!til_current_pass.isErrorEnabled()) {
+                til_new_pass.setErrorEnabled(false);
+                til_conform_pass.setErrorEnabled(false);
                 til_current_pass.setErrorEnabled(true);
             }
             til_current_pass.setError("Please enter Old Password");
@@ -143,6 +149,7 @@ public class ChangePasswordActivity extends AppCompatActivity {
         } else if (newpass.equalsIgnoreCase("")) {
             if (!til_new_pass.isErrorEnabled()) {
                 til_current_pass.setErrorEnabled(false);
+                til_conform_pass.setErrorEnabled(false);
                 til_new_pass.setErrorEnabled(true);
             }
             til_new_pass.setError("Please enter New Password");
@@ -150,6 +157,7 @@ public class ChangePasswordActivity extends AppCompatActivity {
         } else if (confpass.equalsIgnoreCase("")) {
             if (!til_conform_pass.isErrorEnabled()) {
                 til_new_pass.setErrorEnabled(false);
+                til_current_pass.setErrorEnabled(false);
                 til_conform_pass.setErrorEnabled(true);
             }
             til_conform_pass.setError("Please enter Conform Password");
@@ -157,11 +165,17 @@ public class ChangePasswordActivity extends AppCompatActivity {
         } else if (!confpass.equalsIgnoreCase(newpass)) {
             if (!til_conform_pass.isErrorEnabled()) {
                 til_new_pass.setErrorEnabled(false);
+                til_current_pass.setErrorEnabled(false);
                 til_conform_pass.setErrorEnabled(true);
             }
             til_conform_pass.setError("New Password And Conform Password must be same");
             return false;
         } else if (confpass.length() < 4) {
+            if (!til_conform_pass.isErrorEnabled()) {
+                til_new_pass.setErrorEnabled(false);
+                til_current_pass.setErrorEnabled(false);
+                til_conform_pass.setErrorEnabled(true);
+            }
             til_conform_pass.setError("Password must contant minimum one number and one charecter and minimum length of password  5");
             return false;
         } else {

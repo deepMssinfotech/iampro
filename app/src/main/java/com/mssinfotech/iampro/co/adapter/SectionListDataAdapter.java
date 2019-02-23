@@ -74,6 +74,7 @@ public class SectionListDataAdapter extends RecyclerView.Adapter<SectionListData
         holder.user_name.setText(singleItem.getFullname());
         uid= PrefManager.getLoginDetail(mContext,"id");
         final int id=singleItem.getId();
+        final int added_by=singleItem.getUid();
         //user_image
         Glide.with(mContext)
                 .load(singleItem.getAvatar())
@@ -137,13 +138,12 @@ public class SectionListDataAdapter extends RecyclerView.Adapter<SectionListData
                 holder.totallike.setTextColor(Color.BLACK);
             }
         }
-         holder.user_image.setOnClickListener(new View.OnClickListener() {
+        holder.user_image.setOnClickListener(new View.OnClickListener() {
              @Override
              public void onClick(View v) {
-                 Toast.makeText(mContext, "Uid:"+String.valueOf(uid), Toast.LENGTH_SHORT).show();
                  Intent intent=new Intent(mContext, ProfileActivity.class);
-                  intent.putExtra("uid",String.valueOf(uid));
-                  mContext.startActivity(intent);
+                 intent.putExtra("uid",String.valueOf(added_by));
+                 mContext.startActivity(intent);
              }
          });
          holder.likelayout.setOnClickListener(new View.OnClickListener() {

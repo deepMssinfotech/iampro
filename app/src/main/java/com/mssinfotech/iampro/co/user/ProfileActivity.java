@@ -1,6 +1,7 @@
 package com.mssinfotech.iampro.co.user;
 
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -9,6 +10,7 @@ import android.support.v4.view.ViewCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -83,8 +85,9 @@ public class ProfileActivity extends AppCompatActivity implements AllFeedAdapter
     ArrayList<FeedModel> mValues=new ArrayList<>();
     Context context;
     SwipeRefreshLayout mSwipeRefreshLayout;
-    android.support.v7.widget.CardView ll_dashboard;
     private View currentFocusedLayout, oldFocusedLayout;
+    CardView userDetail_Layout,ll_dashboard;
+    TextView tv_name,tv_dob,tv_categories,tv_email,tv_gender,tv_address,tv_city,tv_state,tv_country;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -93,6 +96,7 @@ public class ProfileActivity extends AppCompatActivity implements AllFeedAdapter
         context = getApplicationContext();
         LinearLayout edit_layout = findViewById(R.id.edit_layout);
         intent = getIntent();
+        userDetail_Layout = findViewById(R.id.userDetail_Layout);
         fid = intent.getStringExtra("uid");
         ll_dashboard=findViewById(R.id.ll_dashboard);
         username = findViewById(R.id.username);
@@ -105,6 +109,16 @@ public class ProfileActivity extends AppCompatActivity implements AllFeedAdapter
                 android.R.color.holo_green_light,
                 android.R.color.holo_orange_light,
                 android.R.color.holo_red_light);
+
+        tv_name=findViewById(R.id.tv_name);
+        tv_dob=findViewById(R.id.tv_dob);
+        tv_categories=findViewById(R.id.tv_categories);
+        tv_email=findViewById(R.id.tv_email);
+        tv_gender=findViewById(R.id.tv_gender);
+        tv_address=findViewById(R.id.tv_address);
+        tv_city=findViewById(R.id.tv_city);
+        tv_state=findViewById(R.id.tv_state);
+        tv_country=findViewById(R.id.tv_country);
 
         vFeed=findViewById(R.id.rvFeed);
         uid= PrefManager.getLoginDetail(this,"id");
@@ -137,6 +151,16 @@ public class ProfileActivity extends AppCompatActivity implements AllFeedAdapter
                 }
             });
             PrefManager.updateUserData(this,null);
+            tv_name.setText(fname+" "+lname);
+            tv_dob.setText(PrefManager.getLoginDetail(this,"dob"));
+            tv_categories.setText(PrefManager.getLoginDetail(this,"category"));
+            tv_email.setText(PrefManager.getLoginDetail(this,"email"));
+            tv_gender.setText(PrefManager.getLoginDetail(this,"gender"));
+            tv_address.setText(PrefManager.getLoginDetail(this,"address"));
+            tv_city.setText(PrefManager.getLoginDetail(this,"city"));
+            tv_state.setText(PrefManager.getLoginDetail(this,"state"));
+            tv_country.setText(PrefManager.getLoginDetail(this,"country"));
+            userDetail_Layout.setVisibility(View.GONE);
             fid=uid;
             ll_dashboard.setVisibility(View.VISIBLE);
         }else{
@@ -220,6 +244,16 @@ public class ProfileActivity extends AppCompatActivity implements AllFeedAdapter
                                     new PhotoFullPopupWindow(context, R.layout.popup_photo_full, view, Config.AVATAR_URL+avatarX, null);
                                 }
                             });
+                            tv_name.setText(fname+" "+lname);
+                            tv_dob.setText(result.getString("dob"));
+                            tv_categories.setText(result.getString("category"));
+                            tv_email.setText(result.getString("email"));
+                            tv_gender.setText(result.getString("gender"));
+                            tv_address.setText(result.getString("address"));
+                            tv_city.setText(result.getString("city"));
+                            tv_state.setText(result.getString("state"));
+                            tv_country.setText(result.getString("country"));
+                            userDetail_Layout.setVisibility(View.VISIBLE);
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
@@ -280,6 +314,7 @@ public class ProfileActivity extends AppCompatActivity implements AllFeedAdapter
     }
 
     public void getFeed(int start){
+        final ProgressDialog loading = ProgressDialog.show(this,"Processing...","Please wait...",false,false);
         URL_FEED = Config.API_URL+ "feed_service.php?type=AllFeeds&start="+start+"&limit="+FEED_LIMIT+"&fid=" +fid+ "&uid=" +uid+ "&my_id=" +uid;
         Log.e(Config.TAG,URL_FEED);
         RequestQueue requestQueue = Volley.newRequestQueue(ProfileActivity.this);
@@ -413,8 +448,10 @@ public class ProfileActivity extends AppCompatActivity implements AllFeedAdapter
                             //String msg=response.optString("msg");
                            // Toast.makeText(getApplicationContext(),msg,Toast.LENGTH_LONG).show();
                               }
+                              loading.dismiss();
                         }
                         catch (Exception e){
+                            loading.dismiss();
                             e.printStackTrace();
                             Toast.makeText(ProfileActivity.this,e.getMessage(),Toast.LENGTH_LONG).show();
                         }
@@ -423,6 +460,7 @@ public class ProfileActivity extends AppCompatActivity implements AllFeedAdapter
                 new Response.ErrorListener(){
                     @Override
                     public void onErrorResponse(VolleyError error){
+                        loading.dismiss();
                         // Do something when error occurred
                         Toast.makeText(ProfileActivity.this,error.getMessage(),Toast.LENGTH_LONG).show();
                     }
@@ -489,8 +527,10 @@ public class ProfileActivity extends AppCompatActivity implements AllFeedAdapter
           getFeed(FEED_START);
       }
      public void dashboard(View view){
-         Intent intent=new Intent(ProfileActivity.this,ProfileActivity.class);
-         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-         startActivity(intent);
+         if (userDetail_Layout.getVisibility() == View.VISIBLE) {
+             userDetail_Layout.setVisibility(View.GONE);
+         } else {
+             userDetail_Layout.setVisibility(View.VISIBLE);
+         }
      }
 }

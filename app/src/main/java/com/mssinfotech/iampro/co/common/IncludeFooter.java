@@ -78,17 +78,34 @@ public class IncludeFooter  extends RelativeLayout {
     };
     private OnClickListener searchOnClickListener = new OnClickListener() {
         public void onClick(View v) {
-            Intent intent = new Intent(getContext(), SearchActivity.class);
-            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            getContext().startActivity(intent);
-            if(function.isSamePage("activity_search"))
-                function.finishFunction(getContext());
+            AppCompatActivity activity = (AppCompatActivity) getContext();
+            SearchActivity searchfragment = new SearchActivity();
+            Bundle args = new Bundle();
+            args.putString("name", "mragank");
+            searchfragment.setArguments(args);
+            FragmentManager fragmentManager = activity.getSupportFragmentManager();
+
+            fragmentManager.beginTransaction()
+                    .replace(android.R.id.content, searchfragment, null)
+                    .setCustomAnimations(R.anim.enter, R.anim.exit, R.anim.pop_enter, R.anim.pop_exit)
+                    .addToBackStack(null)
+                    .commit();
         }
     };
     private OnClickListener cartOnClickListener = new OnClickListener() {
         public void onClick(View v) {
-            getContext().startActivity(new Intent(getContext(), CartActivity.class));
-            if(function.isSamePage("activity_cart"))function.finishFunction(getContext());
+            AppCompatActivity activity = (AppCompatActivity) getContext();
+            CartActivity cartfragment = new CartActivity();
+            Bundle args = new Bundle();
+            args.putString("name", "mragank");
+            cartfragment.setArguments(args);
+            FragmentManager fragmentManager = activity.getSupportFragmentManager();
+
+            fragmentManager.beginTransaction()
+                    .replace(android.R.id.content, cartfragment, null)
+                    .setCustomAnimations(R.anim.enter, R.anim.exit, R.anim.pop_enter, R.anim.pop_exit)
+                    .addToBackStack(null)
+                    .commit();
         }
     };
     private OnClickListener iamproOnClickListener = new OnClickListener() {
@@ -99,14 +116,34 @@ public class IncludeFooter  extends RelativeLayout {
     };
     private OnClickListener noticeOnClickListener = new OnClickListener() {
         public void onClick(View v) {
-            getContext().startActivity(new Intent(getContext(), NotificationActivity.class));
-            if(function.isSamePage("activity_notification"))function.finishFunction(getContext());
+            AppCompatActivity activity = (AppCompatActivity) getContext();
+            NotificationActivity notificationfragment = new NotificationActivity();
+            Bundle args = new Bundle();
+            args.putString("name", "mragank");
+            notificationfragment.setArguments(args);
+            FragmentManager fragmentManager = activity.getSupportFragmentManager();
+
+            fragmentManager.beginTransaction()
+                    .replace(android.R.id.content, notificationfragment, null)
+                    .setCustomAnimations(R.anim.enter, R.anim.exit, R.anim.pop_enter, R.anim.pop_exit)
+                    .addToBackStack(null)
+                    .commit();
         }
     };
     private OnClickListener messageOnClickListener = new OnClickListener() {
         public void onClick(View v) {
-            getContext().startActivity(new Intent(getContext(), MessageActivity.class));
-            if(function.isSamePage("activity_message"))function.finishFunction(getContext());
+            AppCompatActivity activity = (AppCompatActivity) getContext();
+            MessageActivity messagefragment = new MessageActivity();
+            Bundle args = new Bundle();
+            args.putString("name", "mragank");
+            messagefragment.setArguments(args);
+            FragmentManager fragmentManager = activity.getSupportFragmentManager();
+
+            fragmentManager.beginTransaction()
+                    .replace(android.R.id.content, messagefragment, null)
+                    .setCustomAnimations(R.anim.enter, R.anim.exit, R.anim.pop_enter, R.anim.pop_exit)
+                    .addToBackStack(null)
+                    .commit();
         }
     };
     private OnClickListener userOnClickListener = new OnClickListener() {

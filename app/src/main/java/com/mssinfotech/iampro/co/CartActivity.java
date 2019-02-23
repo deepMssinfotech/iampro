@@ -10,6 +10,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.DividerItemDecoration;
@@ -19,6 +21,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
@@ -39,7 +42,7 @@ import com.mssinfotech.iampro.co.utils.PrefManager;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-public class CartActivity extends AppCompatActivity {
+public class CartActivity extends Fragment {
     private static final String TAG = "ShoppingCartActivity";
     private static String CART_URL  = "";
     private CartItemAdapter mAdapter;
@@ -49,32 +52,35 @@ public class CartActivity extends AppCompatActivity {
     TextView tvTotalPrice;
     private RecyclerView recyclerView;
     private List<CartItem> CartItemList;
+    View view;
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_cart);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setHomeButtonEnabled(true);
-        //getSupportActionBar().setTitle("Cart App");
-        getSupportActionBar().setIcon(R.drawable.delete);
-
-        //getSupportActionBar().setDisplayShowTitleEnabled(false);
-        //getSupportActionBar().setDisplayShowTitleEnabled(true);
-        CART_URL  = Config.API_URL+"cart.php?type=refreshCart&uid="+ PrefManager.getLoginDetail(this,"id")+"&ip_address="+Config.IP_ADDRESS;
-        recyclerView = findViewById(R.id.recycler_view);
-        tvTotalPrice = findViewById(R.id.tvTotalPrice);
+    public View onCreateView(LayoutInflater inflater, ViewGroup parent, Bundle savedInstanceState) {
+        // Defines the xml file for the fragment
+        return inflater.inflate(R.layout.activity_cart, parent, false);
+    }
+    @Override
+    public void onViewCreated(View v, Bundle savedInstanceState) {
+        view = v;
+        CART_URL  = Config.API_URL+"cart.php?type=refreshCart&uid="+ PrefManager.getLoginDetail(getContext(),"id")+"&ip_address="+Config.IP_ADDRESS;
+        recyclerView = view.findViewById(R.id.recycler_view);
+        tvTotalPrice = view.findViewById(R.id.tvTotalPrice);
         CartItemList = new ArrayList<CartItem>();
-        mAdapter = new CartItemAdapter(this, CartItemList);
-        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
+        mAdapter = new CartItemAdapter(getContext(), CartItemList);
+        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getContext());
         recyclerView.setLayoutManager(mLayoutManager);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
-        recyclerView.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
+        recyclerView.addItemDecoration(new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL));
         recyclerView.setAdapter(mAdapter);
         prepareCart();
     }
-
+    public void refreshFregment(){
+        //Fragment frg = null;
+        //AppCompatActivity activity = (AppCompatActivity) getContext();
+        FragmentTransaction ft = getFragmentManager().beginTransaction();
+        ft.detach(this).attach(this).commit();
+    }
     public void prepareCart() {
-        final ProgressDialog loading = ProgressDialog.show(this,"Processing...","Please wait...",false,false);
+        final ProgressDialog loading = ProgressDialog.show(getContext(),"Processing...","Please wait...",false,false);
         StringRequest stringRequest = new StringRequest(Request.Method.GET,CART_URL,
                 new Response.Listener<String>() {
                     @Override
@@ -121,7 +127,7 @@ public class CartActivity extends AppCompatActivity {
                     CartItemList.add(item);
                 }
             }else{
-                ImageView no_rodr = findViewById(R.id.no_record_found);
+                ImageView no_rodr = view.findViewById(R.id.no_record_found);
                 no_rodr.setVisibility(View.VISIBLE);
             }
             // notify data changes to list adapater

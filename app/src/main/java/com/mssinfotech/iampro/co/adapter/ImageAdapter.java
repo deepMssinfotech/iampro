@@ -151,8 +151,6 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ViewHolder> 
             userImage.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Toast.makeText(mContext,"uid:"+uid,Toast.LENGTH_LONG).show();
-
                     Intent intent=new Intent(mContext, ProfileActivity.class);
                     intent.putExtra("uid",String.valueOf(uid));
                     mContext.startActivity(intent);

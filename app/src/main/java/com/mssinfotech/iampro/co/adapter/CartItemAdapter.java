@@ -1,5 +1,9 @@
 package com.mssinfotech.iampro.co.adapter;
 import android.content.Context;
+import android.os.Bundle;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,9 +20,12 @@ import com.mssinfotech.iampro.co.common.Config;
 import com.mssinfotech.iampro.co.common.function;
 import com.mssinfotech.iampro.co.data.CartItem;
 import com.mssinfotech.iampro.co.data.NotificationItem;
+import com.mssinfotech.iampro.co.user.ChangePasswordActivity;
 import com.mssinfotech.iampro.co.utils.PrefManager;
 
 import java.util.List;
+
+import static java.security.AccessController.getContext;
 
 public class CartItemAdapter extends RecyclerView.Adapter<CartItemAdapter.MyViewHolder> {
     private Context context;
@@ -49,14 +56,18 @@ public class CartItemAdapter extends RecyclerView.Adapter<CartItemAdapter.MyView
                     Integer qty= Integer.valueOf(item.getqty())-1;
                     Integer id = Integer.valueOf(item.id);
                     String url = "https://www.iampro.co/api/cart.php?type=update_cart&id="+id.toString()+"&qty="+qty.toString()+"&price="+price+"&uid="+ PrefManager.getLoginDetail(itemView.getContext(),"id") +"&ip_address="+ Config.IP_ADDRESS;
-                    function.executeUrl(itemView.getContext(),"get", url, null);
                     //Toast.makeText(itemView.getContext(), id.toString()+"--"+qty.toString()+"-Position:" + Integer.toString(getPosition()), Toast.LENGTH_SHORT).show();
                     if(qty==0){
                         removeItem(position);
+                        url = "https://www.iampro.co/api/cart.php?type=delete_cart_item&id="+id.toString();
+                    }else{
+
                     }
-                    TextView cart_product_quantity = v.getRootView().findViewById(R.id.cart_product_quantity_tv);
-                    cart_product_quantity.setText(qty);
+                    function.executeUrl(itemView.getContext(),"get", url, null);
+                    //TextView cart_product_quantity = v.getRootView().findViewById(R.id.cart_product_quantity_tv);
+                    //cart_product_quantity.setText(qty);
                     notifyItemChanged(position);
+
                 }
             });
             cart_plus_img = view.findViewById(R.id.cart_plus_img);
@@ -70,10 +81,9 @@ public class CartItemAdapter extends RecyclerView.Adapter<CartItemAdapter.MyView
                     Integer id = Integer.valueOf(item.id);
                     String url = "https://www.iampro.co/api/cart.php?type=update_cart&id="+id.toString()+"&qty="+qty.toString()+"&price="+price+"&uid="+ PrefManager.getLoginDetail(itemView.getContext(),"id") +"&ip_address="+ Config.IP_ADDRESS;
                     function.executeUrl(itemView.getContext(),"get", url, null);
-                    TextView cart_product_quantity = v.getRootView().findViewById(R.id.cart_product_quantity_tv);
-                    cart_product_quantity.setText(qty);
+                    //TextView cart_product_quantity = v.getRootView().findViewById(R.id.cart_product_quantity_tv);
+                    //cart_product_quantity.setText(qty);
                     notifyItemChanged(position);
-
                 }
             });
         }

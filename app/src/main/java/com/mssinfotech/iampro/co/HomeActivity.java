@@ -68,27 +68,4 @@ public class HomeActivity extends AppCompatActivity {
         //adapter.addFragment(new TestFragment(), "TestFragment");
         viewPager.setAdapter(adapter);
     }
-    @Override
-    public void onBackPressed() {
-        if (Config.doubleBackToExitPressedOnce) {
-            super.onBackPressed();
-            finish();
-            android.os.Process.killProcess(android.os.Process.myPid());
-            return;
-        }
-
-        this.getFragmentManager().popBackStack();
-
-        Config.doubleBackToExitPressedOnce = true;
-        Toast.makeText(this, "Please click BACK again to exit", Toast.LENGTH_SHORT).show();
-
-        new Handler().postDelayed(new Runnable() {
-
-            @Override
-            public void run() {
-                Config.doubleBackToExitPressedOnce = false;
-            }
-        }, 2000);
-    }
-
 }

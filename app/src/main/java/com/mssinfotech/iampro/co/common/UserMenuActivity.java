@@ -6,6 +6,7 @@ import android.net.Uri;
 import android.support.v4.app.DialogFragment;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -23,6 +24,7 @@ import com.mssinfotech.iampro.co.HomeActivity;
 import com.mssinfotech.iampro.co.IntroActivity;
 import com.mssinfotech.iampro.co.LoginActivity;
 import com.mssinfotech.iampro.co.MessageActivity;
+import com.mssinfotech.iampro.co.NotificationActivity;
 import com.mssinfotech.iampro.co.R;
 import com.mssinfotech.iampro.co.SearchActivity;
 import com.mssinfotech.iampro.co.SignupActivity;
@@ -57,13 +59,7 @@ public class UserMenuActivity  extends Fragment {
     }
 
     public void removeFragment(){
-        AppCompatActivity activity = (AppCompatActivity) getContext();
-        UserMenuActivity userMenufragment = new UserMenuActivity();
-        android.support.v4.app.FragmentManager fragmentManager = activity.getSupportFragmentManager();
-        android.support.v4.app.FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.remove(userMenufragment);
-        fragmentTransaction.commit();
-        function.finishFunction(getContext());
+        //getActivity().finish();
     }
     private View.OnClickListener dashboardOnClickListener = new View.OnClickListener() {
         public void onClick(View v) {
@@ -97,32 +93,34 @@ public class UserMenuActivity  extends Fragment {
     };
     private View.OnClickListener changepasswordOnClickListener = new View.OnClickListener() {
         public void onClick(View v) {
-            //if(function.isSamePage("activity_change_password"))return;
-            Intent intent = new Intent(getContext(), ChangePasswordActivity.class);
-            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
-            getContext().startActivity(intent);
+            ChangePasswordActivity nextFrag= new ChangePasswordActivity();
+            getActivity().getSupportFragmentManager().beginTransaction()
+                    .replace(android.R.id.content, nextFrag, null)
+                    .setCustomAnimations(R.anim.enter, R.anim.exit, R.anim.pop_enter, R.anim.pop_exit)
+                    .addToBackStack(null)
+                    .commit();
             removeFragment();
         }
     };
     private View.OnClickListener joinedfriendOnClickListener = new View.OnClickListener() {
         public void onClick(View v) {
-
-            if(function.isSamePage("activity_joined_friends"))return;
-            Intent intent = new Intent(getContext(), JoinFriendActivity.class);
-
-            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
-            getContext().startActivity(intent);
+            JoinFriendActivity nextFrag = new JoinFriendActivity();
+            getActivity().getSupportFragmentManager().beginTransaction()
+                    .replace(android.R.id.content, nextFrag, null)
+                    .setCustomAnimations(R.anim.enter, R.anim.exit, R.anim.pop_enter, R.anim.pop_exit)
+                    .addToBackStack(null)
+                    .commit();
             removeFragment();
         }
     };
     private View.OnClickListener friendrequestOnClickListener = new View.OnClickListener() {
         public void onClick(View v) {
-            //if(function.isSamePage("activity_friend_request"))return;
-            Intent intent = new Intent(getContext(), FriendRequestActivity.class);
-            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            getContext().startActivity(intent);
+            FriendRequestActivity nextFrag = new FriendRequestActivity();
+            getActivity().getSupportFragmentManager().beginTransaction()
+                    .replace(android.R.id.content, nextFrag, null)
+                    .setCustomAnimations(R.anim.enter, R.anim.exit, R.anim.pop_enter, R.anim.pop_exit)
+                    .addToBackStack(null)
+                    .commit();
             removeFragment();
         }
     };
@@ -173,37 +171,45 @@ public class UserMenuActivity  extends Fragment {
     };
     private View.OnClickListener mymessageOnClickListener = new View.OnClickListener() {
         public void onClick(View v) {
-            //if(function.isSamePage("activity_message"))return;
-            Intent intent = new Intent(getContext(), MessageActivity.class);
-            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            getContext().startActivity(intent);
+            MessageActivity nextFrag = new MessageActivity();
+            getActivity().getSupportFragmentManager().beginTransaction()
+                    .replace(android.R.id.content, nextFrag, null)
+                    .setCustomAnimations(R.anim.enter, R.anim.exit, R.anim.pop_enter, R.anim.pop_exit)
+                    .addToBackStack(null)
+                    .commit();
             removeFragment();
         }
     };
     private View.OnClickListener mycartOnClickListener = new View.OnClickListener() {
         public void onClick(View v) {
-            //if(function.isSamePage("activity_cart"))return;
-            Intent intent = new Intent(getContext(), CartActivity.class);
-            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            getContext().startActivity(intent);
+            CartActivity nextFrag = new CartActivity();
+            getActivity().getSupportFragmentManager().beginTransaction()
+                    .replace(android.R.id.content, nextFrag, null)
+                    .setCustomAnimations(R.anim.enter, R.anim.exit, R.anim.pop_enter, R.anim.pop_exit)
+                    .addToBackStack(null)
+                    .commit();
             removeFragment();
         }
     };
     private View.OnClickListener mysellingOnClickListener = new View.OnClickListener() {
         public void onClick(View v) {
-            //if(function.isSamePage("activity_my_selling"))return;
-            Intent intent = new Intent(getContext(), MySellingActivity.class);
-            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            getContext().startActivity(intent);
+            MySellingActivity nextFrag = new MySellingActivity();
+            getActivity().getSupportFragmentManager().beginTransaction()
+                    .replace(android.R.id.content, nextFrag, null)
+                    .setCustomAnimations(R.anim.enter, R.anim.exit, R.anim.pop_enter, R.anim.pop_exit)
+                    .addToBackStack(null)
+                    .commit();
             removeFragment();
         }
     };
     private View.OnClickListener mypurchaseOnClickListener = new View.OnClickListener() {
         public void onClick(View v) {
-            //if(function.isSamePage("activity_my_purchase"))return;
-            Intent intent = new Intent(getContext(), MyPurchsaeActivity.class);
-            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            getContext().startActivity(intent);
+            MyPurchsaeActivity nextFrag = new MyPurchsaeActivity();
+            getActivity().getSupportFragmentManager().beginTransaction()
+                    .replace(android.R.id.content, nextFrag, null)
+                    .setCustomAnimations(R.anim.enter, R.anim.exit, R.anim.pop_enter, R.anim.pop_exit)
+                    .addToBackStack(null)
+                    .commit();
             removeFragment();
         }
     };
@@ -220,10 +226,12 @@ public class UserMenuActivity  extends Fragment {
     };
     private View.OnClickListener mywhishlistOnClickListener = new View.OnClickListener() {
         public void onClick(View v) {
-            //if(function.isSamePage("activity_my_whishlist"))return;
-            Intent intent = new Intent(getContext(), MyWhishlistActivity.class);
-            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            getContext().startActivity(intent);
+            MyWhishlistActivity nextFrag = new MyWhishlistActivity();
+            getActivity().getSupportFragmentManager().beginTransaction()
+                    .replace(android.R.id.content, nextFrag, null)
+                    .setCustomAnimations(R.anim.enter, R.anim.exit, R.anim.pop_enter, R.anim.pop_exit)
+                    .addToBackStack(null)
+                    .commit();
             removeFragment();
         }
     };
@@ -293,6 +301,7 @@ public class UserMenuActivity  extends Fragment {
         Config.count_whishlist = view.findViewById(R.id.count_whishlist);
         Config.count_friend_request = view.findViewById(R.id.count_friend_request);
         Config.count_cart = view.findViewById(R.id.count_cart);
+        Config.count_message = view.findViewById(R.id.count_message);
         TextView username = view.findViewById(R.id.username);
         if(PrefManager.isLogin(getContext())) {
             menu_btn_dashboard = view.findViewById(R.id.menu_btn_dashboard);
