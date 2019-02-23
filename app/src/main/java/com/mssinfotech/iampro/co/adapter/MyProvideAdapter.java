@@ -93,14 +93,14 @@ public class MyProvideAdapter extends RecyclerView.Adapter<MyProvideAdapter.View
             detail_name=v.findViewById(R.id.detail_name);
             tv_sellingprice=v.findViewById(R.id.tv_sellingprice);
 
-            ll_comment.setOnClickListener(new View.OnClickListener() {
+           /* ll_comment.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     Intent intent=new Intent(mContext, CommentActivity.class);
                     intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     mContext.startActivity(intent);
                 }
-            });
+            }); */
 
 
             imageView.setOnClickListener(new View.OnClickListener() {
