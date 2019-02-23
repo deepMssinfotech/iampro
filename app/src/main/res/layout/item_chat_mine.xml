@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="?android:attr/selectableItemBackground"
+    android:clickable="true"
+    android:gravity="center_vertical"
+    android:paddingRight="7dp"
+    android:paddingTop="2dp">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/chat_rounded_rect_bg"
+        android:id="@+id/text_view_chat_message"
+        android:layout_marginLeft="10dp"
+
+        android:maxWidth="280dp"
+        android:layout_marginStart="14dp"
+        android:layout_marginRight="10dp"
+        android:padding="7dp"
+        android:layout_toLeftOf="@dimen/text_view_user_alphabet"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_toStartOf="@dimen/text_view_user_alphabet"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:textColor="@color/grey_100"
+        android:text="notice" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/circle_accent"
+        android:id="@+id/text_view_user_alphabet"
+        android:gravity="center"
+        android:maxEms="1"
+        android:textAllCaps="true"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textColor="@color/grey_100"
+        android:layout_toLeftOf="@+id/text_view_chat_message"
+        android:textStyle="bold"
+
+        android:text="a" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text=""
+        android:layout_below="@+id/text_view_chat_message"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="10dp"
+        android:id="@+id/text_view_user_time"
+        />
+</RelativeLayout>
