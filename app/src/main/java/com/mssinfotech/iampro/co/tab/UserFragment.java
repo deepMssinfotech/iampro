@@ -25,6 +25,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
@@ -75,6 +76,7 @@ public class UserFragment extends Fragment implements UserDataAdapter.ItemListen
     TreeMap<String,String> item_name=new TreeMap<>();
     ArrayList<SectionImageModel> allSampleDatamore=new ArrayList<>();
 
+     ImageView luser_iv;
 
     private View view;
     private boolean add = false;
@@ -111,6 +113,9 @@ public class UserFragment extends Fragment implements UserDataAdapter.ItemListen
         recycler_view_load_more=view.findViewById(R.id.recycler_view_load_more);
         ll=view.findViewById(R.id.ll);
           btn_load_more=view.findViewById(R.id.btn_load_more);
+
+        luser_iv=view.findViewById(R.id.luser_iv);
+               luser_iv.setBackground(getContext().getResources().getDrawable(R.drawable.user));
         btn_load_more.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

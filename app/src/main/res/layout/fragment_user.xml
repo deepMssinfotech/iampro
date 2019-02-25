@@ -13,17 +13,18 @@
         android:background="?attr/colorPrimary"
         android:elevation="8dp"
         android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
-        app:popupTheme="@style/ThemeOverlay.AppCompat.Light" /> -->
+        app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
+          android:src="@drawable/user"-->
 
 
     <ImageView
+         android:id="@+id/luser_iv"
         android:layout_width="130dp"
         android:layout_height="34dp"
          android:layout_marginStart="0dp"
          android:layout_marginLeft="0dp"
            android:layout_marginTop="10dp"
         android:layout_marginBottom="10dp"
-        android:src="@drawable/user"
         android:padding="0dp"/>
 
     <!--<android.support.v7.widget.RecyclerView

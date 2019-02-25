@@ -149,8 +149,10 @@ public class SectionImageVideoAdapter extends RecyclerView.Adapter<SectionImageV
             holder.iv_edit.setVisibility(View.GONE);
         }
         holder.tv_totallike.setText(String.valueOf(singleItem .getTotallike()));
-        holder.likeButton.setUnlikeDrawableRes(R.drawable.like);
-        holder.likeButton.setLikeDrawableRes(R.drawable.like_un);
+        //holder.likeButton.setUnlikeDrawableRes(R.drawable.like);
+        holder.likeButton.setUnlikeDrawable(mContext.getResources().getDrawable(R.drawable.like));
+        //holder.likeButton.setLikeDrawableRes(R.drawable.like_un);
+        holder.likeButton.setLikeDrawable(mContext.getResources().getDrawable(R.drawable.like_un));
         holder.ll_comment.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

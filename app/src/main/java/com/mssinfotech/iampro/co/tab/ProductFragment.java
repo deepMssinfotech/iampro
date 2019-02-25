@@ -12,6 +12,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.android.volley.Request;
@@ -56,7 +57,7 @@ public class ProductFragment extends Fragment implements ProductAdapter.ItemList
      MyImageVideoDataAdapter adapterr;
     TreeMap<String,String> item_name=new TreeMap<>();
      ArrayList<SectionImageModel> allSampleDatamore=new ArrayList<>();
-
+      ImageView lproduct_iv;
     public ProductFragment() {
         // Required empty public constructor
     }
@@ -92,6 +93,8 @@ public class ProductFragment extends Fragment implements ProductAdapter.ItemList
         my_recycler_view =view.findViewById(R.id.my_recycler_view);
         recycler_view_load_more=view.findViewById(R.id.recycler_view_load_more);
         btn_load_more=view.findViewById(R.id.btn_load_more);
+          lproduct_iv=view.findViewById(R.id.lproduct_iv);
+        lproduct_iv.setBackground(getContext().getResources().getDrawable(R.drawable.latestproduct));
         btn_load_more.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

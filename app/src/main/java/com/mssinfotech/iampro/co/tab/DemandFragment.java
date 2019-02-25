@@ -12,6 +12,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.android.volley.DefaultRetryPolicy;
@@ -56,6 +57,7 @@ public class DemandFragment extends Fragment implements DemandAdapter.ItemListen
     MyImageVideoDataAdapter adapterr;
     TreeMap<String,String> item_name=new TreeMap<>();
     ArrayList<SectionImageModel> allSampleDatamore=new ArrayList<>();
+     ImageView ldemand_iv;
 
     public DemandFragment() {
         // Required empty public constructor
@@ -74,10 +76,10 @@ public class DemandFragment extends Fragment implements DemandAdapter.ItemListen
         return view;
     }
     @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState)   {
         super.onViewCreated(view, savedInstanceState);
         //createDummyData();
-        if (PrefManager.isLogin(getContext())) {
+        if (PrefManager.isLogin(getContext()))  {
             String id = PrefManager.getLoginDetail(getContext(), "id");
             uid = Integer.parseInt(id);
         }
@@ -86,6 +88,8 @@ public class DemandFragment extends Fragment implements DemandAdapter.ItemListen
         recycler_view_load_more= view.findViewById(R.id.recycler_view_load_more);
         //view.findViewById(R.id.title_tv).setTooltipText("Demand");
         btn_load_more=view.findViewById(R.id.btn_load_more);
+        ldemand_iv=view.findViewById(R.id.ldemand_iv);
+         ldemand_iv.setBackground(getContext().getResources().getDrawable(R.drawable.latestdemand));
         btn_load_more.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

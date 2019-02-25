@@ -12,6 +12,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.android.volley.Request;
@@ -57,7 +58,7 @@ public class ProvideFragment extends Fragment implements ProvideAdapter.ItemList
     MyImageVideoDataAdapter adapterr;
     TreeMap<String,String> item_name=new TreeMap<>();
     ArrayList<SectionImageModel> allSampleDatamore=new ArrayList<>();
-
+     ImageView lprovide_iv;
     public ProvideFragment() {
         // Required empty public constructor
     }
@@ -90,6 +91,8 @@ public class ProvideFragment extends Fragment implements ProvideAdapter.ItemList
         my_recycler_view =view.findViewById(R.id.my_recycler_view);
         recycler_view_load_more=view.findViewById(R.id.recycler_view_load_more);
         btn_load_more=view.findViewById(R.id.btn_load_more);
+        lprovide_iv=view.findViewById(R.id.lprovide_iv);
+        lprovide_iv.setBackground(getContext().getResources().getDrawable(R.drawable.latestprovide));
         btn_load_more.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
