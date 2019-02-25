@@ -14,6 +14,7 @@ import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -289,10 +290,8 @@ public class AddImageActivity extends AppCompatActivity {
 
                             Toast.makeText(getApplicationContext(),""+msgg,Toast.LENGTH_LONG).show();
                             if (status.equalsIgnoreCase("success")){
-                                String urlv=jsonObject.getString("url");
-                                Intent intent=new Intent(getApplicationContext(),MyImageActivity.class);
-                                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                                startActivity(intent);
+                                MyImageActivity fragment = new MyImageActivity();
+                                function.loadFragment(AddImageActivity.this,fragment,null);
                                 finish();
                             }
                         }

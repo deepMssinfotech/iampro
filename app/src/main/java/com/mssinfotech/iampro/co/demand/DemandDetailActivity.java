@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.design.widget.CollapsingToolbarLayout;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -102,11 +103,10 @@ public class DemandDetailActivity extends AppCompatActivity implements CommentAd
         user_image.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(DemandDetailActivity.this,"uid:"+uid,Toast.LENGTH_LONG).show();
-
-                Intent intent=new Intent(DemandDetailActivity.this, ProfileActivity.class);
-                intent.putExtra("uid",String.valueOf(uid));
-                DemandDetailActivity.this.startActivity(intent);
+                ProfileActivity fragment = new ProfileActivity();
+                Bundle args = new Bundle();
+                args.putString("uid", String.valueOf(uid));
+                function.loadFragment(DemandDetailActivity.this,fragment,args);
             }
         });
         getDemandDetail();

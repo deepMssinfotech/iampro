@@ -63,67 +63,50 @@ public class IncludeShortMenu  extends RelativeLayout {
     }
     private OnClickListener imageOnClickListener = new OnClickListener() {
         public void onClick(View v) {
-
-            Intent intent = new Intent(getContext(), MyImageActivity.class);
-            intent.putExtra(Config.PAGE_TAG,"activity_my_image");
-            intent.putExtra("uid",tvs.getText().toString());
-            getContext().startActivity(intent);
-            if(function.isSamePage("activity_my_image"))function.finishFunction(getContext());
+            MyImageActivity fragment = new MyImageActivity();
+            Bundle args = new Bundle();
+            args.putString("uid", tvs.getText().toString());
+            function.loadFragment(getContext(),fragment,args);
         }
     };
     private OnClickListener videoOnClickListener = new OnClickListener() {
         public void onClick(View v) {
-            Intent intent = new Intent(getContext(), MyVideoActivity.class);
-            intent.putExtra(Config.PAGE_TAG,"activity_my_video");
-            intent.putExtra("uid",tvs.getText().toString());
-            getContext().startActivity(intent);
-            if(function.isSamePage("activity_my_video"))function.finishFunction(getContext());
+            MyVideoActivity fragment = new MyVideoActivity();
+            Bundle args = new Bundle();
+            args.putString("uid", tvs.getText().toString());
+            function.loadFragment(getContext(),fragment,args);
         }
     };
     private OnClickListener userOnClickListener = new OnClickListener() {
         public void onClick(View v) {
-            AppCompatActivity activity = (AppCompatActivity) getContext();
-            JoinFriendActivity joinfriendfragment = new JoinFriendActivity();
+            JoinFriendActivity fragment = new JoinFriendActivity();
             Bundle args = new Bundle();
             args.putString("uid", tvs.getText().toString());
-            joinfriendfragment.setArguments(args);
-            FragmentManager fragmentManager = activity.getSupportFragmentManager();
-
-            fragmentManager.beginTransaction()
-                    .replace(android.R.id.content, joinfriendfragment, null)
-                    .setCustomAnimations(R.anim.enter, R.anim.exit, R.anim.pop_enter, R.anim.pop_exit)
-                    .addToBackStack(null)
-                    .commit();
+            function.loadFragment(getContext(),fragment,args);
         }
     };
     private OnClickListener productOnClickListener = new OnClickListener() {
         public void onClick(View v) {
-
-            Intent intent = new Intent(getContext(), MyProductActivity.class);
-            intent.putExtra(Config.PAGE_TAG,"activity_my_product");
-            intent.putExtra("uid",tvs.getText().toString());
-            getContext().startActivity(intent);
-            if(function.isSamePage("activity_my_product"))function.finishFunction(getContext());
+            MyProductActivity fragment = new MyProductActivity();
+            Bundle args = new Bundle();
+            args.putString("uid", tvs.getText().toString());
+            function.loadFragment(getContext(),fragment,args);
         }
     };
     private OnClickListener provideOnClickListener = new OnClickListener() {
         public void onClick(View v) {
-
-            Intent intent = new Intent(getContext(), MyProvideActivity.class);
-            intent.putExtra(Config.PAGE_TAG,"activity_my_provide");
-            intent.putExtra(" ",tvs.getText().toString());
-            getContext().startActivity(intent);
-            if(function.isSamePage("activity_my_provide"))function.finishFunction(getContext());
+            MyProvideActivity fragment = new MyProvideActivity();
+            Bundle args = new Bundle();
+            args.putString("uid", tvs.getText().toString());
+            function.loadFragment(getContext(),fragment,args);
         }
     };
     private OnClickListener demandOnClickListener = new OnClickListener() {
         public void onClick(View v) {
-
-            Intent intent = new Intent(getContext(), MyDemandActivity.class);
-            intent.putExtra(Config.PAGE_TAG,"activity_my_demand");
-            intent.putExtra("uid",tvs.getText().toString());
-            getContext().startActivity(intent);
-            if(function.isSamePage("activity_my_demand"))function.finishFunction(getContext());
+            MyDemandActivity fragment = new MyDemandActivity();
+            Bundle args = new Bundle();
+            args.putString("uid", tvs.getText().toString());
+            function.loadFragment(getContext(),fragment,args);
         }
     };
     public void userProfileCount(Context context, String uid){

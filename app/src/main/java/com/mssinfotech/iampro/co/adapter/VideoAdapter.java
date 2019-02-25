@@ -9,6 +9,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -97,11 +99,12 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.ViewHolder> 
             imageView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Intent intent = new Intent(mContext, ImageDetail.class);
-                    intent.putExtra("uid", uid);
-                    intent.putExtra("id", id);
-                    intent.putExtra("type", "video");
-                    mContext.startActivity(intent);
+                    ImageDetail fragment = new ImageDetail();
+                    Bundle args = new Bundle();
+                    args.putString("id", String.valueOf(id));
+                    args.putString("type", "video");
+                    args.putString("uid", String.valueOf(uid));
+                    function.loadFragment(mContext,fragment,args);
                 }
             });
         }
@@ -156,10 +159,10 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.ViewHolder> 
             userImage.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Toast.makeText(mContext,"uid:"+uid,Toast.LENGTH_LONG).show();
-                    Intent intent=new Intent(mContext, ProfileActivity.class);
-                    intent.putExtra("uid",String.valueOf(uid));
-                    mContext.startActivity(intent);
+                    ProfileActivity fragment = new ProfileActivity();
+                    Bundle args = new Bundle();
+                    args.putString("uid", String.valueOf(uid));
+                    function.loadFragment(mContext,fragment,args);
                 }
             });
             likeButton.setUnlikeDrawableRes(R.drawable.like);

@@ -24,6 +24,7 @@ import android.os.StrictMode;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Display;
 import android.view.View;
@@ -207,8 +208,9 @@ public class ProfileImageCroperActivity  extends AppCompatActivity implements IP
     }
 
     public void redirect(){
-        Intent intent=new Intent(getApplicationContext(),EditProfileActivity.class);
-        startActivity(intent);
+        AppCompatActivity activity = (AppCompatActivity) ProfileImageCroperActivity.this;
+        EditProfileActivity fragment = new EditProfileActivity();
+        function.loadFragment(ProfileImageCroperActivity.this,fragment,null);
         finish();
     }
     @Override

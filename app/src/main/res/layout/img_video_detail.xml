@@ -22,13 +22,11 @@
         android:orientation="horizontal">
         <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/imageView_user"
-            android:layout_width="51dp"
-            android:layout_height="51dp"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
             android:padding="10dp"
             android:layout_gravity="center"
-            android:src="@drawable/iampro"
-            app:civ_border_width="1dp"
-            app:civ_border_color="#FF000000"/>
+            android:src="@drawable/iampro"/>
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -53,9 +51,7 @@
             android:layout_height="60dp"
             android:padding="10dp"
             android:layout_gravity="center"
-            android:src="@drawable/iampro"
-            app:civ_border_width="1dp"
-            app:civ_border_color="#FF000000"/>
+            android:src="@drawable/iampro"/>
     </LinearLayout>
     <LinearLayout
         android:layout_width="match_parent"
@@ -88,7 +84,6 @@
         android:id="@+id/image"
         android:layout_width="match_parent"
         android:layout_height="250dp"
-        android:layout_margin="10dp"
         android:background="@color/black"
         android:src="@drawable/iampro"/>
     <VideoView
@@ -100,26 +95,28 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/trans_black"
-        android:layout_marginTop="20dp"
         android:orientation="horizontal">
-        <RatingBar
-            android:id="@+id/ratingBar"
-            style="?android:ratingBarStyleSmall"
+        <LinearLayout
+            android:layout_weight="1"
             android:layout_width="wrap_content"
-            android:layout_marginTop="7dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="0"
-            android:numStars="5"
-            android:isIndicator="false"
-            android:rating="5"
-            android:padding="10dp"
-            android:stepSize="0.5"/>
+            android:layout_height="match_parent">
+            <RatingBar
+                android:id="@+id/ratingBar"
+                style="?android:ratingBarStyleSmall"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:rating="5"
+                android:layout_gravity="center"
+                android:padding="10dp"
+                android:numStars="5"
+                android:stepSize="0.1"
+                android:isIndicator="true"
+                />
+        </LinearLayout>
         <LinearLayout
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:padding="10dp"
-            android:gravity="center_horizontal"
-            android:layout_marginTop="7dp"
+            android:layout_height="match_parent"
+            android:gravity="center"
             android:layout_weight="1"
             android:orientation="horizontal">
             <ImageView
@@ -129,12 +126,10 @@
                 android:src="@drawable/comment"/>
             <TextView
                 android:id="@+id/tv_comments"
-                android:layout_marginLeft="10dp"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="left"
-                android:textSize="17sp"
-                android:text=""/>
+                android:textSize="12sp"
+                android:text="0"/>
         </LinearLayout>
         <LinearLayout
             android:layout_width="wrap_content"
@@ -160,9 +155,9 @@
                 android:layout_marginStart="10dp"
                 android:layout_marginLeft="10dp"
                 android:layout_gravity="center_horizontal"
-                android:textSize="17sp"
+                android:textSize="12sp"
                 android:textStyle="bold"
-                android:text=""/>
+                android:text="10"/>
         </LinearLayout>
     </LinearLayout>
 </LinearLayout>

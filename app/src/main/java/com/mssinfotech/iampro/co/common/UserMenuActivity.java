@@ -74,142 +74,101 @@ public class UserMenuActivity  extends Fragment {
     private View.OnClickListener myprofileOnClickListener = new View.OnClickListener() {
         public void onClick(View v) {
             //if(function.isSamePage("activity_profile"))return;
-            Intent intent = new Intent(getContext(), ProfileActivity.class);
-            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
-            getContext().startActivity(intent);
+            ProfileActivity fragment = new ProfileActivity();
+            function.loadFragment(getContext(),fragment,null);
             removeFragment();
         }
     };
     private View.OnClickListener editprofileOnClickListener = new View.OnClickListener() {
         public void onClick(View v) {
             //if(function.isSamePage("activity_edit_profile"))return;
-            Intent intent = new Intent(getContext(), EditProfileActivity.class);
-            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
-            getContext().startActivity(intent);
+            EditProfileActivity fragment = new EditProfileActivity();
+            function.loadFragment(getContext(),fragment,null);
             removeFragment();
         }
     };
     private View.OnClickListener changepasswordOnClickListener = new View.OnClickListener() {
         public void onClick(View v) {
-            ChangePasswordActivity nextFrag= new ChangePasswordActivity();
-            getActivity().getSupportFragmentManager().beginTransaction()
-                    .replace(android.R.id.content, nextFrag, null)
-                    .setCustomAnimations(R.anim.enter, R.anim.exit, R.anim.pop_enter, R.anim.pop_exit)
-                    .addToBackStack(null)
-                    .commit();
+            ChangePasswordActivity fragment= new ChangePasswordActivity();
+            function.loadFragment(getContext(),fragment,null);
             removeFragment();
         }
     };
     private View.OnClickListener joinedfriendOnClickListener = new View.OnClickListener() {
         public void onClick(View v) {
-            JoinFriendActivity nextFrag = new JoinFriendActivity();
-            getActivity().getSupportFragmentManager().beginTransaction()
-                    .replace(android.R.id.content, nextFrag, null)
-                    .setCustomAnimations(R.anim.enter, R.anim.exit, R.anim.pop_enter, R.anim.pop_exit)
-                    .addToBackStack(null)
-                    .commit();
+            JoinFriendActivity fragment = new JoinFriendActivity();
+            function.loadFragment(getContext(),fragment,null);
             removeFragment();
         }
     };
     private View.OnClickListener friendrequestOnClickListener = new View.OnClickListener() {
         public void onClick(View v) {
-            FriendRequestActivity nextFrag = new FriendRequestActivity();
-            getActivity().getSupportFragmentManager().beginTransaction()
-                    .replace(android.R.id.content, nextFrag, null)
-                    .setCustomAnimations(R.anim.enter, R.anim.exit, R.anim.pop_enter, R.anim.pop_exit)
-                    .addToBackStack(null)
-                    .commit();
+            FriendRequestActivity fragment = new FriendRequestActivity();
+            function.loadFragment(getContext(),fragment,null);
             removeFragment();
         }
     };
     private View.OnClickListener myphotoOnClickListener = new View.OnClickListener() {
         public void onClick(View v) {
             //if(function.isSamePage("activity_my_image"))return;
-            Intent intent = new Intent(getContext(), MyImageActivity.class);
-            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            getContext().startActivity(intent);
+            MyImageActivity fragment = new MyImageActivity();
+            function.loadFragment(getContext(),fragment,null);
             removeFragment();
         }
     };
     private View.OnClickListener myvideoOnClickListener = new View.OnClickListener() {
         public void onClick(View v) {
-            //if(function.isSamePage("activity_my_video"))return;
-            Intent intent = new Intent(getContext(), MyVideoActivity.class);
-            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            getContext().startActivity(intent);
+            MyVideoActivity fragment = new MyVideoActivity();
+            function.loadFragment(getContext(),fragment,null);
             removeFragment();
         }
     };
     private View.OnClickListener myproductOnClickListener = new View.OnClickListener() {
         public void onClick(View v) {
-            //if(function.isSamePage("activity_my_product"))return;
-            Intent intent = new Intent(getContext(), MyProductActivity.class);
-            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            getContext().startActivity(intent);
+            MyProductActivity fragment = new MyProductActivity();
+            function.loadFragment(getContext(),fragment,null);
             removeFragment();
         }
     };
     private View.OnClickListener myprovideOnClickListener = new View.OnClickListener() {
         public void onClick(View v) {
-            //if(function.isSamePage("activity_my_provide"))return;
-            Intent intent = new Intent(getContext(), MyProvideActivity.class);
-            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            getContext().startActivity(intent);
+            MyProvideActivity fragment = new MyProvideActivity();
+            function.loadFragment(getContext(),fragment,null);
             removeFragment();
         }
     };
     private View.OnClickListener demandOnClickListener = new View.OnClickListener() {
         public void onClick(View v) {
-            //if(function.isSamePage("activity_my_demand"))return;
-            Intent intent = new Intent(getContext(), MyDemandActivity.class);
-            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            getContext().startActivity(intent);
+            MyDemandActivity fragment = new MyDemandActivity();
+            function.loadFragment(getContext(),fragment,null);
             removeFragment();
         }
     };
     private View.OnClickListener mymessageOnClickListener = new View.OnClickListener() {
         public void onClick(View v) {
-            MessageActivity nextFrag = new MessageActivity();
-            getActivity().getSupportFragmentManager().beginTransaction()
-                    .replace(android.R.id.content, nextFrag, null)
-                    .setCustomAnimations(R.anim.enter, R.anim.exit, R.anim.pop_enter, R.anim.pop_exit)
-                    .addToBackStack(null)
-                    .commit();
+            MessageActivity fragment = new MessageActivity();
+            function.loadFragment(getContext(),fragment,null);
             removeFragment();
         }
     };
     private View.OnClickListener mycartOnClickListener = new View.OnClickListener() {
         public void onClick(View v) {
-            CartActivity nextFrag = new CartActivity();
-            getActivity().getSupportFragmentManager().beginTransaction()
-                    .replace(android.R.id.content, nextFrag, null)
-                    .setCustomAnimations(R.anim.enter, R.anim.exit, R.anim.pop_enter, R.anim.pop_exit)
-                    .addToBackStack(null)
-                    .commit();
+            CartActivity fragment = new CartActivity();
+            function.loadFragment(getContext(),fragment,null);
             removeFragment();
         }
     };
     private View.OnClickListener mysellingOnClickListener = new View.OnClickListener() {
         public void onClick(View v) {
-            MySellingActivity nextFrag = new MySellingActivity();
-            getActivity().getSupportFragmentManager().beginTransaction()
-                    .replace(android.R.id.content, nextFrag, null)
-                    .setCustomAnimations(R.anim.enter, R.anim.exit, R.anim.pop_enter, R.anim.pop_exit)
-                    .addToBackStack(null)
-                    .commit();
+            MySellingActivity fragment = new MySellingActivity();
+            function.loadFragment(getContext(),fragment,null);
             removeFragment();
         }
     };
     private View.OnClickListener mypurchaseOnClickListener = new View.OnClickListener() {
         public void onClick(View v) {
-            MyPurchsaeActivity nextFrag = new MyPurchsaeActivity();
-            getActivity().getSupportFragmentManager().beginTransaction()
-                    .replace(android.R.id.content, nextFrag, null)
-                    .setCustomAnimations(R.anim.enter, R.anim.exit, R.anim.pop_enter, R.anim.pop_exit)
-                    .addToBackStack(null)
-                    .commit();
+            MyPurchsaeActivity fragment = new MyPurchsaeActivity();
+            function.loadFragment(getContext(),fragment,null);
             removeFragment();
         }
     };
@@ -226,12 +185,8 @@ public class UserMenuActivity  extends Fragment {
     };
     private View.OnClickListener mywhishlistOnClickListener = new View.OnClickListener() {
         public void onClick(View v) {
-            MyWhishlistActivity nextFrag = new MyWhishlistActivity();
-            getActivity().getSupportFragmentManager().beginTransaction()
-                    .replace(android.R.id.content, nextFrag, null)
-                    .setCustomAnimations(R.anim.enter, R.anim.exit, R.anim.pop_enter, R.anim.pop_exit)
-                    .addToBackStack(null)
-                    .commit();
+            MyWhishlistActivity fragment = new MyWhishlistActivity();
+            function.loadFragment(getContext(),fragment,null);
             removeFragment();
         }
     };
@@ -241,6 +196,7 @@ public class UserMenuActivity  extends Fragment {
             Intent intent = new Intent(getContext(), HomeActivity.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             getContext().startActivity(intent);
+            getActivity().finish();
             removeFragment();
         }
     };
@@ -264,10 +220,8 @@ public class UserMenuActivity  extends Fragment {
     };
     private View.OnClickListener searchOnClickListener = new View.OnClickListener() {
         public void onClick(View v) {
-            //if(function.isSamePage("activity_my_whishlist"))return;
-            Intent intent = new Intent(getContext(), SearchActivity.class);
-            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            getContext().startActivity(intent);
+            SearchActivity fragment = new SearchActivity();
+            function.loadFragment(getContext(),fragment,null);
             removeFragment();
         }
     };

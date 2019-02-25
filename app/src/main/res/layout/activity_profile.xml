@@ -4,6 +4,7 @@
     android:id="@+id/swiperefresh"
     android:layout_width="match_parent"
     android:scrollbars="none"
+    android:background="@color/white"
     android:layout_height="wrap_content">
 <RelativeLayout
     xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -134,13 +135,81 @@
                             android:layout_height="match_parent">
                             <TextView
                                 android:layout_width="wrap_content"
+                                android:id="@+id/tv_detail"
                                 android:layout_height="wrap_content"
                                 android:layout_alignParentBottom="true"
                                 android:layout_alignParentEnd="true"
                                 android:layout_gravity="center_vertical"
                                 android:layout_weight="0"
-                                android:onClick="dashboard"
                                 android:text="My Detail"
+                                android:textColor="@color/black" />
+                        </LinearLayout>
+                    </LinearLayout>
+                </android.support.v7.widget.CardView>
+                <android.support.v7.widget.CardView
+                    android:visibility="gone"
+                    xmlns:android="http://schemas.android.com/apk/res/android"
+                    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+                    android:id="@+id/ll_frienddashboard"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:background="@color/trans_black"
+                    app:layout_anchor="@+id/rvFeed"
+                    android:layout_marginBottom="13dp"
+                    app:layout_anchorGravity="top"
+                    android:layout_gravity="top|center_horizontal"
+                    card_view:cardUseCompatPadding="true">
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center_vertical"
+                        android:background="@color/trans_black"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal">
+                        <LinearLayout
+                            android:layout_weight="1"
+                            android:orientation="horizontal"
+                            android:gravity="center_horizontal"
+                            android:layout_gravity="center_horizontal"
+                            android:layout_width="match_parent"
+                            android:background="@drawable/image_color"
+                            android:layout_height="match_parent">
+                            <ImageView
+                                android:layout_gravity="center_vertical"
+                                android:layout_width="20dp"
+                                android:layout_height="20dp"
+                                app:srcCompat="@drawable/edit_profile"/>
+                            <TextView
+                                android:layout_gravity="center_vertical"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:textColor="@color/black"
+                                android:id="@+id/friend_request"
+                                android:text="Add To Friend"/>
+                        </LinearLayout>
+                        <LinearLayout
+                            android:id="@+id/chat_layout"
+                            android:layout_weight="1"
+                            android:background="@drawable/demand_color"
+                            android:gravity="center_horizontal"
+                            android:layout_gravity="center_horizontal"
+                            android:orientation="horizontal"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent">
+                            <ImageView
+                                android:layout_gravity="center_vertical"
+                                android:layout_width="20dp"
+                                android:layout_height="20dp"
+                                app:srcCompat="@drawable/message"/>
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:id="@+id/tv_message"
+                                android:layout_alignParentBottom="true"
+                                android:layout_alignParentEnd="true"
+                                android:layout_gravity="center_vertical"
+                                android:layout_weight="0"
+                                android:text="Message"
                                 android:textColor="@color/black" />
                         </LinearLayout>
                     </LinearLayout>
@@ -430,18 +499,6 @@
                         android:layout_width="match_parent"
                         android:layout_marginBottom="100dp"
                         android:layout_height="match_parent"/>
-
-                    <!--  android:scrollbars="none"   app:layout_behavior="@string/appbar_scrolling_view_behavior"  -->
-                    <Button
-                        android:layout_width="wrap_content"
-                        android:layout_height="40dp"
-                         android:textColor="@color/white"
-                        android:gravity="center_vertical"
-                        android:onClick="loadMore"
-                        android:layout_gravity="bottom|center"
-                        android:background="@drawable/product_load_more"
-                        android:layout_marginBottom="50dp"
-                        android:text="load More"/>
 
                 </android.support.design.widget.CoordinatorLayout>
 

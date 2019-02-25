@@ -1,6 +1,9 @@
 package com.mssinfotech.iampro.co.adapter;
 
 import android.content.Intent;
+import android.os.Bundle;
+import android.support.v4.app.FragmentManager;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -22,6 +25,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.mssinfotech.iampro.co.common.Config;
+import com.mssinfotech.iampro.co.common.function;
 import com.mssinfotech.iampro.co.model.Review;
 import com.mssinfotech.iampro.co.user.ProfileActivity;
 
@@ -56,11 +60,10 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHold
             user_reviewimage.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Toast.makeText(mContext,"uid:"+uid,Toast.LENGTH_LONG).show();
-
-                    Intent intent=new Intent(mContext, ProfileActivity.class);
-                    intent.putExtra("uid",String.valueOf(uid));
-                    mContext.startActivity(intent);
+                    ProfileActivity fragment = new ProfileActivity();
+                    Bundle args = new Bundle();
+                    args.putString("uid", String.valueOf(uid));
+                    function.loadFragment(mContext,fragment,args);
                 }
             });
 

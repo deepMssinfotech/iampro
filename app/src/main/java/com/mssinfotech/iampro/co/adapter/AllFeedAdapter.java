@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.net.Uri;
+import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
@@ -11,13 +12,13 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.MediaController;
 import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
-import android.widget.VideoView;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -43,6 +44,7 @@ import com.mssinfotech.iampro.co.product.ProductDetail;
 import com.mssinfotech.iampro.co.provide.ProvideDetailActivity;
 import com.mssinfotech.iampro.co.user.MyDemandActivity;
 import com.mssinfotech.iampro.co.user.MyImageActivity;
+import com.mssinfotech.iampro.co.user.MyProductActivity;
 import com.mssinfotech.iampro.co.user.MyProvideActivity;
 import com.mssinfotech.iampro.co.user.MyVideoActivity;
 import com.mssinfotech.iampro.co.user.ProfileActivity;
@@ -72,13 +74,14 @@ public class AllFeedAdapter extends RecyclerView.Adapter<AllFeedAdapter.ViewHold
     }
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         ImageView imageView_user, imageView_icon, iv_comments, image, iv_favourite, ivLike, iv_buy;
-        VideoView videoView;
         TextView fullname, udate, tv_comments, tv_totallike, detail_name, purchese_cost, selling_cost;
         LikeButton like_un, favButton;
         RatingBar ratingBar;
         LinearLayout ll_showhide, ll_comment;
         FeedModel item;
         FullscreenVideoView fullscreenVideoView;
+        ImageView videoImage;
+        FrameLayout videoLayout;
         SliderLayout imageSlider;
         private View currentFocusedLayout, oldFocusedLayout;
         int id;
@@ -92,10 +95,11 @@ public class AllFeedAdapter extends RecyclerView.Adapter<AllFeedAdapter.ViewHold
             iv_comments = v.findViewById(R.id.iv_comments);
             imageSlider = v.findViewById(R.id.imageSlider);
             fullscreenVideoView = v.findViewById(R.id.fullscreenVideoView);
+            videoImage = (ImageView) v.findViewById(R.id.videoImage);
+            videoLayout = v.findViewById(R.id.videoLayout);
             iv_buy = v.findViewById(R.id.iv_buy);
             //iv_favourite=v.findViewById(R.id.iv_favourite);
             image = v.findViewById(R.id.imageView);
-            videoView = v.findViewById(R.id.videoView);
             ratingBar = v.findViewById(R.id.ratingBar);
             ll_comment = v.findViewById(R.id.ll_comment);
             //ivLike=v.findViewById(R.id.ivLike);
@@ -129,10 +133,10 @@ public class AllFeedAdapter extends RecyclerView.Adapter<AllFeedAdapter.ViewHold
             imageView_user.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Intent intent = new Intent(mContext, ProfileActivity.class);
-                    intent.putExtra("uid", uid);
-                    mContext.startActivity(intent);
-                    Toast.makeText(mContext, "uid: " + uid, Toast.LENGTH_LONG).show();
+                    ProfileActivity fragment = new ProfileActivity();
+                    Bundle args = new Bundle();
+                    args.putString("uid", String.valueOf(uid));
+                    function.loadFragment(mContext,fragment,args);
                 }
             });
             tv_totallike.setText(String.valueOf(item.getLikes()));
@@ -142,21 +146,7 @@ public class AllFeedAdapter extends RecyclerView.Adapter<AllFeedAdapter.ViewHold
             image.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if (type.equalsIgnoreCase("IMAGE")) {
-                        Intent intent = new Intent(mContext, ImageDetail.class);
-                        intent.putExtra("uid", Integer.parseInt(uid));
-                        intent.putExtra("id", Integer.parseInt(animalsArray[0]));
-                        intent.putExtra("type", "image");
-                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                        mContext.startActivity(intent);
-                        Toast.makeText(mContext, "uid: " + uid + "-" + id, Toast.LENGTH_LONG).show();
-                    } else if (type.equalsIgnoreCase("VIDEO")) {
-                        Intent intent = new Intent(mContext, ImageDetail.class);
-                        intent.putExtra("uid", Integer.parseInt(uid));
-                        intent.putExtra("id", Integer.parseInt(animalsArray[0]));
-                        intent.putExtra("type", "video");
-                        mContext.startActivity(intent);
-                    } else if (type.equalsIgnoreCase("DEMAND")) {
+                    if (type.equalsIgnoreCase("DEMAND")) {
                         Intent intent = new Intent(mContext, DemandDetailActivity.class);
                         //intent.putExtra("id",String.valueOf(item.getPid()));
                         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -174,11 +164,6 @@ public class AllFeedAdapter extends RecyclerView.Adapter<AllFeedAdapter.ViewHold
                         intent.putExtra("uid", String.valueOf(uid));
                         mContext.startActivity(intent);
                     }
-
-                    // Intent intent=new Intent(mContext,ProfileActivity.class);
-                    //intent.putExtra("uid",uid);
-                    // mContext.startActivity(intent);
-                    // Toast.makeText(mContext,"uid: "+uid,Toast.LENGTH_LONG).show();
                 }
             });
 
@@ -192,19 +177,15 @@ public class AllFeedAdapter extends RecyclerView.Adapter<AllFeedAdapter.ViewHold
             Log.d("image_setdata", "" + item.getFimage_path());
             //String type=item.getType();
             if (!type.equalsIgnoreCase("VIDEO")) {
-                videoView.setVisibility(View.GONE);
                 image.setVisibility(View.VISIBLE);
                 Glide.with(mContext)
                         .load(item.getFimage_path())
                         .apply(Config.options_avatar)
                         .into(image);
             } else {
-                videoView.setVisibility(View.VISIBLE);
                 image.setVisibility(View.GONE);
-                videoView.setVideoPath(item.getFimage_path());
                 //videoView.start();
                 Uri video = Uri.parse(item.getFimage_path());
-                videoView.setVideoURI(video);
                 //MediaController mc = new MediaController(mContext);
                 //videoView.setMediaController(mc);
                 //videoView.start();
@@ -241,14 +222,8 @@ public class AllFeedAdapter extends RecyclerView.Adapter<AllFeedAdapter.ViewHold
                     @Override
                     public void onClick(View v) {
                         function.addtocart(mContext, animalsArray[0], "1", selling_cost.toString());
-                        AppCompatActivity activity = (AppCompatActivity) mContext;
-                        CartActivity cartfragment = new CartActivity();
-                        FragmentManager fragmentManager = activity.getSupportFragmentManager();
-                        fragmentManager.beginTransaction()
-                                .replace(android.R.id.content, cartfragment, null)
-                                .setCustomAnimations(R.anim.enter, R.anim.exit, R.anim.pop_enter, R.anim.pop_exit)
-                                .addToBackStack(null)
-                                .commit();
+                        CartActivity fragment = new CartActivity();
+                        function.loadFragment(mContext,fragment,null);
                     }
                 });
             } else if (type.equalsIgnoreCase("PROVIDE")) {
@@ -322,27 +297,30 @@ public class AllFeedAdapter extends RecyclerView.Adapter<AllFeedAdapter.ViewHold
             @Override
             public void onClick(View v) {
                 if (type.equalsIgnoreCase("IMAGE")) {
-                    Intent intent = new Intent(mContext, MyImageActivity.class);
-                    intent.putExtra("uid", uid);
-                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                    mContext.startActivity(intent);
-                    //Toast.makeText(mContext,"uid: "+uid+"-"+id,Toast.LENGTH_LONG).show();
+                    MyImageActivity fragment = new MyImageActivity();
+                    Bundle args = new Bundle();
+                    args.putString("uid", String.valueOf(uid));
+                    function.loadFragment(mContext,fragment,args);
                 } else if (type.equalsIgnoreCase("VIDEO")) {
-                    Intent intent = new Intent(mContext, MyVideoActivity.class);
-                    intent.putExtra("uid", uid);
-                    mContext.startActivity(intent);
+                    MyVideoActivity fragment = new MyVideoActivity();
+                    Bundle args = new Bundle();
+                    args.putString("uid", String.valueOf(uid));
+                    function.loadFragment(mContext,fragment,args);
                 } else if (type.equalsIgnoreCase("PRODUCT")) {
-                    Intent intent = new Intent(mContext, MyProvideActivity.class);
-                    intent.putExtra("uid", String.valueOf(mValues.get(position).getUid()));
-                    mContext.startActivity(intent);
+                    MyProductActivity fragment = new MyProductActivity();
+                    Bundle args = new Bundle();
+                    args.putString("uid", String.valueOf(uid));
+                    function.loadFragment(mContext,fragment,args);
                 } else if (type.equalsIgnoreCase("PROVIDE")) {
-                    Intent intent = new Intent(mContext, MyProvideActivity.class);
-                    intent.putExtra("uid", String.valueOf(mValues.get(position).getUid()));
-                    mContext.startActivity(intent);
+                    MyProvideActivity fragment = new MyProvideActivity();
+                    Bundle args = new Bundle();
+                    args.putString("uid", String.valueOf(uid));
+                    function.loadFragment(mContext,fragment,args);
                 } else if (type.equalsIgnoreCase("DEMAND")) {
-                    Intent intent = new Intent(mContext, MyDemandActivity.class);
-                    intent.putExtra("uid", String.valueOf(mValues.get(position).getUid()));
-                    mContext.startActivity(intent);
+                    MyDemandActivity fragment = new MyDemandActivity();
+                    Bundle args = new Bundle();
+                    args.putString("uid", String.valueOf(uid));
+                    function.loadFragment(mContext,fragment,args);
                 }
             }
         });
@@ -364,42 +342,25 @@ public class AllFeedAdapter extends RecyclerView.Adapter<AllFeedAdapter.ViewHold
             Vholder.imageSlider.setSliderTransformAnimation(SliderAnimations.FADETRANSFORMATION);
             Vholder.imageSlider.setScrollTimeInSec(5); //set scroll delay in seconds :
             Glide.with(mContext).load(R.drawable.product_icon).into(Vholder.imageView_icon);
-            DefaultSliderView sliderView1 = new DefaultSliderView(mContext);
-            sliderView1.setImageUrl(ImageHol);
-            sliderView1.setImageScaleType(ImageView.ScaleType.CENTER_CROP);
-
-            sliderView1.setOnSliderClickListener(new SliderView.OnSliderClickListener() {
-                @Override
-                public void onSliderClick(SliderView sliderView) {
-                    Intent intent = new Intent(mContext, ImageDetail.class);
-                    //intent.putExtra("id",String.valueOf(item.getPid()));
-                    intent.putExtra("id", String.valueOf(mValues.get(position).getId()));
-                    intent.putExtra("type", "image");
-                    intent.putExtra("uid", String.valueOf(mValues.get(position).getUid()));
-                    mContext.startActivity(intent);
-                }
-            });
-
-            //at last add this view in your layout :  other_image.length()>0
-            Vholder.imageSlider.addSliderView(sliderView1);
+            String shared_id = mValues.get(position).getShareId();
+            final String[] sidArray = shared_id.split(",");
             if (mValues.get(position).getImageArray().size() > 0) {
                 for (int i = 0; i < mValues.get(position).getImageArray().size(); i++) {
                     DefaultSliderView sliderView = new DefaultSliderView(mContext);
                     sliderView.setImageUrl(Config.URL_ROOT + "uploads/album/w/500/" + mValues.get(position).getImageArray().get(i));
-                    //Log.d("feed_product", Config.URL_ROOT + "uploads/album/w/500/" + mValues.get(position).getImageArray().get(i));
-                    //Log.d("feed_arrayyy", "" + mValues.get(position).getImageArray());
                     sliderView.setImageScaleType(ImageView.ScaleType.CENTER_CROP);
-                    //sliderView.setDescription("setDescription " + (i + 1));
                     final int finalI = i;
+                    sliderView.setDescription("setDescription " + sidArray[finalI]);
                     sliderView.setOnSliderClickListener(new SliderView.OnSliderClickListener() {
                         @Override
                         public void onSliderClick(SliderView sliderView) {
-                            Intent intent = new Intent(mContext, ImageDetail.class);
-                            //intent.putExtra("id",String.valueOf(item.getPid()));
-                            intent.putExtra("id", String.valueOf(mValues.get(position).getId()));
-                            intent.putExtra("type", "image");
-                            intent.putExtra("uid", String.valueOf(mValues.get(position).getUid()));
-                            mContext.startActivity(intent);
+                            ImageDetail fragment = new ImageDetail();
+                            Bundle args = new Bundle();
+                            args.putString("id", sidArray[finalI]);
+                            args.putString("type", "image");
+                            args.putString("uid", String.valueOf(mValues.get(position).getUid()));
+                            fragment.setArguments(args);
+                            function.loadFragment(mContext,fragment,args);
                         }
                     });
 
@@ -410,22 +371,24 @@ public class AllFeedAdapter extends RecyclerView.Adapter<AllFeedAdapter.ViewHold
 
             Glide.with(mContext).load(R.drawable.image_icon).into(Vholder.imageView_icon);
         } else if (type.equalsIgnoreCase("video")) {
-            //videoView.setVisibility(View.VISIBLE);
-            Vholder.image.setVisibility(View.VISIBLE);
-            Vholder.fullscreenVideoView.setVisibility(View.GONE);
-            /*String ImageHol = Config.URL_ROOT + "uploads/video/" + mValues.get(position).getFimage_path();
+            Vholder.image.setVisibility(View.GONE);
+            Vholder.videoLayout.setVisibility(View.GONE);
+            Vholder.fullscreenVideoView.setVisibility(View.VISIBLE);
+            String ImageHol = Config.URL_ROOT + "uploads/video/" + mValues.get(position).getFimage_path();
             Log.d(Config.TAG + "video tag", ImageHol);
-            Vholder.fullscreenVideoView.videoUrl(ImageHol)
+            Vholder.fullscreenVideoView.videoUrl(mValues.get(position).getFimage_path())
                     //.enableAutoStart()
+                    .fastForwardSeconds(5)
+                    .rewindSeconds(5)
                     .addSeekBackwardButton()
                     .addSeekForwardButton()
                     .portraitOrientation(PortraitOrientation.DEFAULT)
                     .landscapeOrientation(LandscapeOrientation.DEFAULT);
-            */
-            String imgsVideo[] = (mValues.get(position).getFimage_path()).split(",");
+            /*
+            String imgsVideo[] = (mValues.get(position).getFimage_path()).split(".");
             String ImageHol = Config.URL_ROOT + "uploads/v_image/" + imgsVideo[0]+".jpg";
-            Log.d(Config.TAG + "video tag", ImageHol);
-            Glide.with(mContext).load(ImageHol).into(Vholder.image);
+            Log.d(Config.TAG + "video tag", ImageHol) ;
+            Glide.with(mContext).load(ImageHol).into(Vholder.videoImage);*/
             Glide.with(mContext).load(R.drawable.video_icon).into(Vholder.imageView_icon);
         } else if (type.equalsIgnoreCase("product")) {
             Vholder.imageSlider.setVisibility(View.VISIBLE);

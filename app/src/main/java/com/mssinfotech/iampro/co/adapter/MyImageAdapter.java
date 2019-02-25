@@ -1,7 +1,10 @@
 package com.mssinfotech.iampro.co.adapter;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.v4.app.FragmentManager;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -20,6 +23,7 @@ import com.bumptech.glide.load.resource.bitmap.CircleCrop;
 import com.bumptech.glide.request.RequestOptions;
 import com.mssinfotech.iampro.co.R;
 import com.mssinfotech.iampro.co.common.Config;
+import com.mssinfotech.iampro.co.common.function;
 import com.mssinfotech.iampro.co.image.ImageDetail;
 import com.mssinfotech.iampro.co.model.FeedModel;
 import com.mssinfotech.iampro.co.model.MyImageModel;
@@ -60,7 +64,6 @@ public class MyImageAdapter extends RecyclerView.Adapter<MyImageAdapter.ViewHold
             image=v.findViewById(R.id.imageView);
             videoView=v.findViewById(R.id.videoView);
             ratingBar=v.findViewById(R.id.ratingBar);
-            ivLike=v.findViewById(R.id.ivLike);
              //udate=v.findViewById(R.id.udate);
             tv_comments=v.findViewById(R.id.tv_comments);
             tv_totallike=v.findViewById(R.id.tv_totallike);
@@ -82,11 +85,12 @@ public class MyImageAdapter extends RecyclerView.Adapter<MyImageAdapter.ViewHold
             imageView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Intent intent=new Intent(mContext,ImageDetail.class);
-                    intent.putExtra("uid",uid);
-                    intent.putExtra("id",id);
-                    intent.putExtra("type","image");
-                    mContext.startActivity(intent);
+                    ImageDetail fragment = new ImageDetail();
+                    Bundle args = new Bundle();
+                    args.putString("id", id);
+                    args.putString("type", "image");
+                    args.putString("uid", uid);
+                    function.loadFragment(mContext,fragment,args);
                 }
             });
 

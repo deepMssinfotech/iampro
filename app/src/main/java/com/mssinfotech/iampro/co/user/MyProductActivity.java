@@ -6,13 +6,16 @@ import android.content.Intent;
 import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -54,13 +57,13 @@ import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
-public class MyProductActivity extends AppCompatActivity implements MyProductAdapter.ItemListener {
+public class MyProductActivity extends Fragment implements MyProductAdapter.ItemListener {
     private List<MyProductItem> MyProductItemList;
 
     ImageView userbackgroud;
     CircleImageView userimage;
     TextView username;
-    private String uid="";
+    private String uid="",id;
     RecyclerView recyclerView;
     MyProductAdapter mAdapter;
     ArrayList<String> rowsArrayList = new ArrayList<>();
@@ -69,23 +72,33 @@ public class MyProductActivity extends AppCompatActivity implements MyProductAda
     ArrayList<MyProductModel> item = new ArrayList<>();
     MyProductAdapter adapter;
     Context context;
+    View view;
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_my_product);
-        Config.setLayoutName(getResources().getResourceEntryName(R.layout.activity_my_product));
-        intent = getIntent();
-        context = getApplicationContext();
-        String id = intent.getStringExtra("uid");
-        username = findViewById(R.id.username);
-        userimage = findViewById(R.id.userimage);
-        userbackgroud = findViewById(R.id.userbackgroud);
-        uid= PrefManager.getLoginDetail(this,"id");
+    public View onCreateView(LayoutInflater inflater, ViewGroup parent, Bundle savedInstanceState) {
+        // Defines the xml file for the fragment
+        return inflater.inflate(R.layout.activity_my_product, parent, false);
+    }
+    @Override
+    public void onViewCreated(View v, Bundle savedInstanceState) {
+        view = v;
+        context = getContext();
+        intent = getActivity().getIntent();
+        Bundle args = getArguments();
+        //fid = getArguments().getString("uid");
+        if (args != null && args.containsKey("uid")) {
+            id = args.getString("uid").toString();
+        }else {
+            id = intent.getStringExtra("uid");
+        }
+        username = view.findViewById(R.id.username);
+        userimage = view.findViewById(R.id.userimage);
+        userbackgroud = view.findViewById(R.id.userbackgroud);
+        uid= PrefManager.getLoginDetail(context,"id");
         if(id == null || id.equals(uid)) {
-            String fname=PrefManager.getLoginDetail(this,"fname");
-            String lname=PrefManager.getLoginDetail(this,"lname");
-            String avatar=Config.AVATAR_URL+"250/250/"+PrefManager.getLoginDetail(this,"img_url");
-            String background=Config.AVATAR_URL+"h/250/"+PrefManager.getLoginDetail(this,"banner_image");
+            String fname=PrefManager.getLoginDetail(context,"fname");
+            String lname=PrefManager.getLoginDetail(context,"lname");
+            String avatar=Config.AVATAR_URL+"250/250/"+PrefManager.getLoginDetail(context,"img_url");
+            String background=Config.AVATAR_URL+"h/250/"+PrefManager.getLoginDetail(context,"banner_image");
             userbackgroud.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -99,15 +112,15 @@ public class MyProductActivity extends AppCompatActivity implements MyProductAda
                 }
             });
             username.setText("My Product");
-            Glide.with(this).load(background).apply(Config.options_background).into(userbackgroud);
-            Glide.with(this).load(avatar).apply(Config.options_avatar).into(userimage);
-            PrefManager.updateUserData(this,null);
+            Glide.with(context).load(background).apply(Config.options_background).into(userbackgroud);
+            Glide.with(context).load(avatar).apply(Config.options_avatar).into(userimage);
+            PrefManager.updateUserData(context,null);
         }else{
             uid= id;
             gteUsrDetail(id);
         }
-        IncludeShortMenu includeShortMenu = findViewById(R.id.includeShortMenu);
-        includeShortMenu.updateCounts(this,uid);
+        IncludeShortMenu includeShortMenu = view.findViewById(R.id.includeShortMenu);
+        includeShortMenu.updateCounts(context,uid);
         TextView myuid= includeShortMenu.findViewById(R.id.myuid);
         myuid.setText(uid);
         Intent i = new Intent();
@@ -120,7 +133,7 @@ public class MyProductActivity extends AppCompatActivity implements MyProductAda
                 MyProductActivity.this.startActivity(i_signup);
             }
         });*/
-        recyclerView = findViewById(R.id.recyclerView);
+        recyclerView = view.findViewById(R.id.recyclerView);
         //initAdapter();
         initScrollListener();
         getProduct();
@@ -140,12 +153,12 @@ public class MyProductActivity extends AppCompatActivity implements MyProductAda
                             String lname=result.getString("lname");
                             final String avatarX=result.getString("avatar");
                             final String backgroundX=result.getString("banner_image");
-                            username = findViewById(R.id.username);
-                            userimage = findViewById(R.id.userimage);
-                            userbackgroud = findViewById(R.id.userbackgroud);
+                            username = view.findViewById(R.id.username);
+                            userimage = view.findViewById(R.id.userimage);
+                            userbackgroud = view.findViewById(R.id.userbackgroud);
                             username.setText(fname +" "+lname+"'s Products");
-                            Glide.with(getApplicationContext()).load(Config.AVATAR_URL+"h/250/"+backgroundX).apply(Config.options_background).into(userbackgroud);
-                            Glide.with(getApplicationContext()).load(Config.AVATAR_URL+"250/250/"+avatarX).apply(Config.options_avatar).into(userimage);
+                            Glide.with(context).load(Config.AVATAR_URL+"h/250/"+backgroundX).apply(Config.options_background).into(userbackgroud);
+                            Glide.with(context).load(Config.AVATAR_URL+"250/250/"+avatarX).apply(Config.options_avatar).into(userimage);
                             userbackgroud.setOnClickListener(new View.OnClickListener() {
                                 @Override
                                 public void onClick(View view) {
@@ -171,28 +184,15 @@ public class MyProductActivity extends AppCompatActivity implements MyProductAda
                     }
                 });
         //Creating a request queue
-        RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
+        RequestQueue requestQueue = Volley.newRequestQueue(context);
         //Adding request to the queue
         requestQueue.add(stringRequest);
     }
-    @Override
-    public void onBackPressed() {
-        //super.onBackPressed();
-        Intent i = new Intent();
-        i.putExtra(Config.PAGE_TAG, Config.PREVIOUS_PAGE_TAG);
-        setResult(RESULT_OK, i);
-        finish();
-    }
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        Toast.makeText(this, "mss popup"+resultCode+"--"+requestCode,  Toast.LENGTH_LONG).show();
-    }
     public void redirect(View v){
-        Intent i_signup = new Intent(MyProductActivity.this,AddProductActivity.class);
+        Intent i_signup = new Intent(context,AddProductActivity.class);
         MyProductActivity.this.startActivity(i_signup);
     }
     private void initAdapter() {
-
         //mAdapter = new MyProductAdapter(rowsArrayList);
         //recyclerView.setAdapter(mAdapter);
     }
@@ -221,9 +221,9 @@ public class MyProductActivity extends AppCompatActivity implements MyProductAda
         });
     }
     public void prepareCart() {
-        String uid=PrefManager.getLoginDetail(this,"id");
+        String uid=PrefManager.getLoginDetail(context,"id");
         String MY_PRODUCT_URL = Config.API_URL+"app_service.php?type=getall_product&added_by="+uid+"&my_id="+uid+"&search_type=PRODUCT";
-        final ProgressDialog loading = ProgressDialog.show(this,"Processing...","Please wait...",false,false);
+        final ProgressDialog loading = ProgressDialog.show(context,"Processing...","Please wait...",false,false);
         StringRequest stringRequest = new StringRequest(Request.Method.GET,MY_PRODUCT_URL,
                 new Response.Listener<String>() {
                     @Override
@@ -264,7 +264,7 @@ public class MyProductActivity extends AppCompatActivity implements MyProductAda
                     MyProductItemList.add(item);
                 }
             }else{
-                ImageView no_rodr = findViewById(R.id.no_record_found);
+                ImageView no_rodr = view.findViewById(R.id.no_record_found);
                 no_rodr.setVisibility(View.VISIBLE);
             }
             // notify data changes to list adapater
@@ -277,7 +277,7 @@ public class MyProductActivity extends AppCompatActivity implements MyProductAda
     public void getProduct(){
          String url=Config.API_URL+"app_service.php?type=getall_product&added_by="+uid+"&my_id="+uid+"&search_type=PRODUCT";
         // Initialize a new RequestQueue instance
-        RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
+        RequestQueue requestQueue = Volley.newRequestQueue(context);
 
         // Initialize a new JsonArrayRequest instance
         JsonArrayRequest jsonArrayRequest= new JsonArrayRequest(
@@ -342,16 +342,16 @@ public class MyProductActivity extends AppCompatActivity implements MyProductAda
                             Log.d("dmm",dm.toString());
                             //allSampleData.add(dm);
                             Log.d("allsampledatav",item.toString());
-                            adapter = new MyProductAdapter(MyProductActivity.this,item,MyProductActivity.this);
+                            adapter = new MyProductAdapter(context,item,MyProductActivity.this);
 
                             recyclerView.setAdapter(adapter);
-                            GridLayoutManager manager = new GridLayoutManager(getApplicationContext(), 2, GridLayoutManager.VERTICAL, false);
+                            GridLayoutManager manager = new GridLayoutManager(context, 2, GridLayoutManager.VERTICAL, false);
                             recyclerView.setLayoutManager(manager);
 
                         }
                         catch (JSONException e){
                             e.printStackTrace();
-                            Toast.makeText(getApplicationContext(), ""+e.getMessage(), Toast.LENGTH_SHORT).show();
+                            Toast.makeText(context, ""+e.getMessage(), Toast.LENGTH_SHORT).show();
                             Log.d("catch_f",""+e.getMessage());
                         }
                     }
@@ -361,7 +361,7 @@ public class MyProductActivity extends AppCompatActivity implements MyProductAda
                     public void onErrorResponse(VolleyError error){
                         // Do something when error occurred
                         //Snackbar.make(getContext(),"Error...", Snackbar.LENGTH_LONG).show();
-                        Toast.makeText(getApplicationContext(), error.getMessage(), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(context, error.getMessage(), Toast.LENGTH_SHORT).show();
                         Log.d("verror",""+error.getMessage());
                     }
                 }
@@ -372,7 +372,7 @@ public class MyProductActivity extends AppCompatActivity implements MyProductAda
     }
     @Override
     public void onItemClick(MyProductModel items) {
-       Toast.makeText(getApplicationContext(),""+items.getPid(),Toast.LENGTH_LONG).show();
+       Toast.makeText(context,""+items.getPid(),Toast.LENGTH_LONG).show();
 
     }
 }

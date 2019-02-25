@@ -376,9 +376,8 @@ public class AddProductActivity extends AppCompatActivity {
                                 etsellingcost.setText(" ");
                                 etproductdetail.setText(" ");
 
-                                Intent intent=new Intent(getApplicationContext(),MyProductActivity.class);
-                                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                                startActivity(intent);
+                                MyProductActivity fragment = new MyProductActivity();
+                                function.loadFragment(AddProductActivity.this,fragment,null);
                                 finish();
                             }
                         }
@@ -449,9 +448,8 @@ public class AddProductActivity extends AppCompatActivity {
                                 etsellingcost.setText(" ");
                                 etproductdetail.setText(" ");
 
-                                Intent intent=new Intent(getApplicationContext(),MyProductActivity.class);
-                                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                                startActivity(intent);
+                                MyProductActivity fragment = new MyProductActivity();
+                                function.loadFragment(AddProductActivity.this,fragment,null);
                                 finish();
                             }
                         }

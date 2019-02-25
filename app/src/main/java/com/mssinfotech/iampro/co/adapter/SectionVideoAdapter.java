@@ -9,6 +9,9 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
+import android.os.Bundle;
+import android.support.v4.app.FragmentManager;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -104,11 +107,13 @@ public class SectionVideoAdapter extends RecyclerView.Adapter<SectionVideoAdapte
         holder.imageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent=new Intent(mContext,ImageDetail.class);
-                intent.putExtra("uid",uid);
-                intent.putExtra("id",id);
-                intent.putExtra("type","image");
-                mContext.startActivity(intent);
+               AppCompatActivity activity = (AppCompatActivity) mContext;
+                            ImageDetail fragment = new ImageDetail();
+                            Bundle args = new Bundle();
+                            args.putString("id", id);
+                            args.putString("type", "image");
+                            args.putString("uid", uid);
+                            function.loadFragment(mContext,fragment,args);
             }
         });
 
@@ -202,17 +207,14 @@ public class SectionVideoAdapter extends RecyclerView.Adapter<SectionVideoAdapte
         holder.videoView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent=new Intent(mContext,ImageDetail.class);
-                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                intent.putExtra("uid",Integer.parseInt(uidd));
-                intent.putExtra("id",Integer.parseInt(id));
-                intent.putExtra("type","video");
-                mContext.startActivity(intent);
-               // Toast.makeText(mContext,"uid: "+uid,Toast.LENGTH_LONG).show();
+                ImageDetail fragment = new ImageDetail();
+                Bundle args = new Bundle();
+                args.putString("id", id);
+                args.putString("type", "video");
+                args.putString("uid", uidd);
+                function.loadFragment(mContext,fragment,args);
             }
         });
-        // videoView.setVideoPath(Config.V_URL+item.getImage());
-
         Glide.with(mContext)
                 .load(Config.V_URL+singleItem.getV_image())
                 .apply(Config.options_video)
@@ -267,10 +269,11 @@ public class SectionVideoAdapter extends RecyclerView.Adapter<SectionVideoAdapte
          holder.user_image.setOnClickListener(new View.OnClickListener() {
              @Override
              public void onClick(View v) {
-                  Intent intentUser=new Intent(mContext,ProfileActivity.class);
-                   intentUser.putExtra("uid",uidd);
-                   intentUser.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                    mContext.startActivity(intentUser);
+                 ProfileActivity fragment = new ProfileActivity();
+                 Bundle args = new Bundle();
+                 args.putString("uid", String.valueOf(uidd));
+                 function.loadFragment(mContext,fragment,args);
+
              }
          });
 

@@ -9,6 +9,11 @@ import android.content.Intent;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.net.Uri;
+import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.widget.ArrayAdapter;
 import android.widget.RatingBar;
@@ -43,6 +48,19 @@ public class function {
             return true;
         }
         return false;
+    }
+    public static void loadFragment(Context context, Fragment fragment, Bundle args) {
+        // create a FragmentManager
+        AppCompatActivity activity = (AppCompatActivity) context;
+        FragmentManager fm = activity.getSupportFragmentManager(); //getFragmentManager();
+        // create a FragmentTransaction to begin the transaction and replace the Fragment
+        if(args != null){
+            fragment.setArguments(args);
+        }
+        FragmentTransaction fragmentTransaction = fm.beginTransaction();
+        // replace the FrameLayout with new Fragment
+        fragmentTransaction.replace(android.R.id.content, fragment);
+        fragmentTransaction.commit(); // save the changes
     }
     public static void addtocart(Context context,String id,String qty,String price){
         String url = "https://www.iampro.co/api/cart.php?type=addtocart&p_type=product&pid="+id+"&qty="+qty+"&price="+price+"&uid="+ PrefManager.getLoginDetail(context,"id") +"&ip_address="+ Config.IP_ADDRESS;

@@ -12,6 +12,8 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.GridLayoutManager;
@@ -38,6 +40,7 @@ import com.mssinfotech.iampro.co.adapter.RecyclerViewDataAdapter;
 import com.mssinfotech.iampro.co.adapter.UserDataAdapter;
 
 import com.mssinfotech.iampro.co.adapter.UserItemTouchHelper;
+import com.mssinfotech.iampro.co.common.function;
 import com.mssinfotech.iampro.co.model.DataModel;
 import com.mssinfotech.iampro.co.model.MyImageModel;
 import com.mssinfotech.iampro.co.model.SectionDataModel;
@@ -422,10 +425,11 @@ public class UserFragment extends Fragment implements UserDataAdapter.ItemListen
     }
     @Override
     public void onItemClick(UserModel item) {
-        Toast.makeText(getContext(), item.getName()+ " is clicked", Toast.LENGTH_SHORT).show();
-        Intent intent=new Intent(getContext(), ProfileActivity.class);
-        intent.putExtra("uid",uid);
-        startActivity(intent);
+        ProfileActivity fragment = new ProfileActivity();
+        Bundle args = new Bundle();
+        args.putString("uid", String.valueOf(uid));
+        function.loadFragment(getContext(),fragment,args);
+
     }
 
     public void getUserMores(int start_limit,int end_limit){

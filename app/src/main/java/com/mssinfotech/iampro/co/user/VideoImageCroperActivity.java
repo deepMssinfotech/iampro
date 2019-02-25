@@ -24,6 +24,7 @@ import android.os.StrictMode;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Display;
 import android.view.View;
@@ -207,8 +208,8 @@ public class VideoImageCroperActivity extends AppCompatActivity implements IProf
     }
 
     public void redirect(){
-        Intent intent=new Intent(getApplicationContext(),MyVideoActivity.class);
-        startActivity(intent);
+        MyVideoActivity fragment = new MyVideoActivity();
+        function.loadFragment(VideoImageCroperActivity.this,fragment,null);
         finish();
     }
     @Override

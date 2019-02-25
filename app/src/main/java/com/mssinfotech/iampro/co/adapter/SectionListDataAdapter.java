@@ -7,6 +7,9 @@ package com.mssinfotech.iampro.co.adapter;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
+import android.os.Bundle;
+import android.support.v4.app.FragmentManager;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -94,11 +97,13 @@ public class SectionListDataAdapter extends RecyclerView.Adapter<SectionListData
             @Override
             public void onClick(View v) {
                 if(utype.equals("image") || utype.equals("video")) {
-                    Intent intent = new Intent(mContext, ImageDetail.class);
-                    intent.putExtra("uid", uid);
-                    intent.putExtra("id", id);
-                    intent.putExtra("type", utype);
-                    mContext.startActivity(intent);
+                    ImageDetail fragment = new ImageDetail();
+                    Bundle args = new Bundle();
+                    args.putString("id", String.valueOf(id));
+                    args.putString("type", utype);
+                    args.putString("uid", uid);
+                    function.loadFragment(mContext,fragment,args);
+
                 }else if(utype.equals("product")){
                     Intent intent=new Intent(mContext, ProductDetail.class);
                     //intent.putExtra("id",String.valueOf(item.getPid()));
@@ -137,9 +142,11 @@ public class SectionListDataAdapter extends RecyclerView.Adapter<SectionListData
         holder.user_image.setOnClickListener(new View.OnClickListener() {
              @Override
              public void onClick(View v) {
-                 Intent intent=new Intent(mContext, ProfileActivity.class);
-                 intent.putExtra("uid",String.valueOf(added_by));
-                 mContext.startActivity(intent);
+                 ProfileActivity fragment = new ProfileActivity();
+                 Bundle bundle = new Bundle();
+                 bundle.putString("uid", String.valueOf(added_by));
+                 function.loadFragment(mContext,fragment,bundle);
+
              }
          });
          holder.likelayout.setOnClickListener(new View.OnClickListener() {

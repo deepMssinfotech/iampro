@@ -3,6 +3,7 @@ package com.mssinfotech.iampro.co;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Handler;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -15,6 +16,7 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.mssinfotech.iampro.co.common.CircleTransform;
+import com.mssinfotech.iampro.co.common.function;
 import com.mssinfotech.iampro.co.services.ScheduledService;
 import com.mssinfotech.iampro.co.user.ProfileActivity;
 import com.mssinfotech.iampro.co.common.Config;
@@ -73,14 +75,14 @@ public class WelcomeActivity extends AppCompatActivity implements View.OnClickLi
                 //WelcomeActivity.this.finish();
                 break;
             case R.id.imguser:
-                Intent i_user = new Intent(WelcomeActivity.this,ProfileActivity.class);
-                WelcomeActivity.this.startActivity(i_user);
-                WelcomeActivity.this.finish();
+                ProfileActivity fragment = new ProfileActivity();
+                function.loadFragment(WelcomeActivity.this,fragment, null);
                 break;
             default:
                 break;
         }
     }
+    /*
     @Override
     public void onBackPressed() {
         if (Config.doubleBackToExitPressedOnce) {
@@ -88,7 +90,6 @@ public class WelcomeActivity extends AppCompatActivity implements View.OnClickLi
             finish();
             return;
         }
-
         Config.doubleBackToExitPressedOnce = true;
         Toast.makeText(this, "Please click BACK again to exit", Toast.LENGTH_SHORT).show();
 
@@ -100,5 +101,5 @@ public class WelcomeActivity extends AppCompatActivity implements View.OnClickLi
             }
         }, 2000);
     }
-
+    */
 }

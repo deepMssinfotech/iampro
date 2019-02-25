@@ -363,9 +363,8 @@ public class AddDemandActivity extends AppCompatActivity {
                                 etsellingcost.setText(" ");
                                 etdemanddetail.setText(" ");
 
-                                Intent intent=new Intent(getApplicationContext(),MyDemandActivity.class);
-                                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                                startActivity(intent);
+                                MyDemandActivity fragment = new MyDemandActivity();
+                                function.loadFragment(AddDemandActivity.this,fragment,null);
                                 finish();
                             }
                         }
@@ -435,10 +434,9 @@ public class AddDemandActivity extends AppCompatActivity {
                                 etsellingcost.setText(" ");
                                 etdemanddetail.setText(" ");
 
-                                // Intent intent=new Intent(getApplicationContext(),MyDemandActivity.class);
-                                // intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                                //startActivity(intent);
-                                //finish();
+                                MyDemandActivity fragment = new MyDemandActivity();
+                                function.loadFragment(AddDemandActivity.this,fragment,null);
+                                finish();
                             }
                         }
                         catch(JSONException e)

@@ -2,6 +2,7 @@ package com.mssinfotech.iampro.co.provide;
 
 import android.content.Intent;
 import android.support.design.widget.CollapsingToolbarLayout;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
@@ -91,10 +92,10 @@ public class ProvideDetailActivity extends AppCompatActivity implements CommentA
         user_image.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(ProvideDetailActivity.this,"uid:"+uid,Toast.LENGTH_LONG).show();
-                Intent intent=new Intent(ProvideDetailActivity.this, ProfileActivity.class);
-                intent.putExtra("uid",String.valueOf(uid));
-                ProvideDetailActivity.this.startActivity(intent);
+                ProfileActivity fragment = new ProfileActivity();
+                Bundle args = new Bundle();
+                args.putString("uid", String.valueOf(uid));
+                function.loadFragment(ProvideDetailActivity.this,fragment,args);
             }
         });
         getProvideDetail();
