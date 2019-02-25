@@ -620,6 +620,8 @@ public class CommentActivity extends AppCompatActivity implements CommentAdapter
                     public void onResponse(JSONObject response) {
                         String msg=response.optString("msg");
                         Toast.makeText(getApplicationContext(),""+msg,Toast.LENGTH_LONG).show();
+                         et_comment.setText("");
+                         allComment(data_type);
 
                     }
                 },

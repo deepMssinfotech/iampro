@@ -90,5 +90,7 @@
     <string name="are_you_sure">Are you sure ?</string>
     <string name="cancel">Cancel</string>
     <string name="action_gchat">Group Chat</string>
+
+    <string name="message">Message</string>
 </resources>
 
