@@ -63,54 +63,30 @@ public class IncludeShortMenu  extends RelativeLayout {
     }
     private OnClickListener imageOnClickListener = new OnClickListener() {
         public void onClick(View v) {
-            AppCompatActivity activity = (AppCompatActivity) getContext();
             MyImageActivity fragment = new MyImageActivity();
             Bundle args = new Bundle();
             args.putString("uid", tvs.getText().toString());
-            fragment.setArguments(args);
-            FragmentManager fragmentManager = activity.getSupportFragmentManager();
-            fragmentManager.beginTransaction()
-                    .replace(android.R.id.content, fragment, null)
-                    .setCustomAnimations(R.anim.enter, R.anim.exit, R.anim.pop_enter, R.anim.pop_exit)
-                    .addToBackStack(null)
-                    .commit();
+            function.loadFragment(getContext(),fragment,args);
         }
     };
     private OnClickListener videoOnClickListener = new OnClickListener() {
         public void onClick(View v) {
-            AppCompatActivity activity = (AppCompatActivity) getContext();
             MyVideoActivity fragment = new MyVideoActivity();
             Bundle args = new Bundle();
             args.putString("uid", tvs.getText().toString());
-            fragment.setArguments(args);
-            FragmentManager fragmentManager = activity.getSupportFragmentManager();
-
-            fragmentManager.beginTransaction()
-                    .replace(android.R.id.content, fragment, null)
-                    .setCustomAnimations(R.anim.enter, R.anim.exit, R.anim.pop_enter, R.anim.pop_exit)
-                    .addToBackStack(null)
-                    .commit();
+            function.loadFragment(getContext(),fragment,args);
         }
     };
     private OnClickListener userOnClickListener = new OnClickListener() {
         public void onClick(View v) {
-            AppCompatActivity activity = (AppCompatActivity) getContext();
-            JoinFriendActivity joinfriendfragment = new JoinFriendActivity();
+            JoinFriendActivity fragment = new JoinFriendActivity();
             Bundle args = new Bundle();
             args.putString("uid", tvs.getText().toString());
-            joinfriendfragment.setArguments(args);
-            FragmentManager fragmentManager = activity.getSupportFragmentManager();
-
-            fragmentManager.beginTransaction()
-                    .replace(android.R.id.content, joinfriendfragment, null)
-                    .setCustomAnimations(R.anim.enter, R.anim.exit, R.anim.pop_enter, R.anim.pop_exit)
-                    .addToBackStack(null)
-                    .commit();
+            function.loadFragment(getContext(),fragment,args);
         }
     };
     private OnClickListener productOnClickListener = new OnClickListener() {
         public void onClick(View v) {
-
             Intent intent = new Intent(getContext(), MyProductActivity.class);
             intent.putExtra(Config.PAGE_TAG,"activity_my_product");
             intent.putExtra("uid",tvs.getText().toString());

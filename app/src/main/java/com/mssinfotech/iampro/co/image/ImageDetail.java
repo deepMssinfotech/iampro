@@ -205,33 +205,19 @@ public class ImageDetail extends Fragment implements Img_Video_Details.ItemListe
                             imageView_user.setOnClickListener(new View.OnClickListener() {
                                 @Override
                                 public void onClick(View v) {
-                                    AppCompatActivity activity = (AppCompatActivity) context;
                                     ProfileActivity fragment = new ProfileActivity();
                                     Bundle args = new Bundle();
                                     args.putString("uid", String.valueOf(uid));
-                                    fragment.setArguments(args);
-                                    FragmentManager fragmentManager = activity.getSupportFragmentManager();
-                                    fragmentManager.beginTransaction()
-                                            .replace(android.R.id.content, fragment, null)
-                                            .setCustomAnimations(R.anim.enter, R.anim.exit, R.anim.pop_enter, R.anim.pop_exit)
-                                            .addToBackStack(null)
-                                            .commit();
+                                    function.loadFragment(context,fragment,args);
                                 }
                             });
                             imageView_icon.setOnClickListener(new View.OnClickListener() {
                                 @Override
                                 public void onClick(View view) {
-                                    AppCompatActivity activity = (AppCompatActivity) getContext();
                                     MyImageActivity fragment = new MyImageActivity();
                                     Bundle args = new Bundle();
                                     args.putString("uid", added_by);
-                                    fragment.setArguments(args);
-                                    FragmentManager fragmentManager = activity.getSupportFragmentManager();
-                                    fragmentManager.beginTransaction()
-                                            .replace(android.R.id.content, fragment, null)
-                                            .setCustomAnimations(R.anim.enter, R.anim.exit, R.anim.pop_enter, R.anim.pop_exit)
-                                            .addToBackStack(null)
-                                            .commit();
+                                    function.loadFragment(context,fragment,args);
                                 }
                             });
                             JSONArray group_image = responses.getJSONArray("group_image");
@@ -346,17 +332,10 @@ public class ImageDetail extends Fragment implements Img_Video_Details.ItemListe
                             imageView_icon.setOnClickListener(new View.OnClickListener() {
                                 @Override
                                 public void onClick(View view) {
-                                    AppCompatActivity activity = (AppCompatActivity) getContext();
                                     MyVideoActivity fragment = new MyVideoActivity();
                                     Bundle args = new Bundle();
                                     args.putString("uid", added_by);
-                                    fragment.setArguments(args);
-                                    FragmentManager fragmentManager = activity.getSupportFragmentManager();
-                                    fragmentManager.beginTransaction()
-                                            .replace(android.R.id.content, fragment, null)
-                                            .setCustomAnimations(R.anim.enter, R.anim.exit, R.anim.pop_enter, R.anim.pop_exit)
-                                            .addToBackStack(null)
-                                            .commit();
+                                    function.loadFragment(context,fragment,args);
                                 }
                             });
                             Glide.with(ImageDetail.this)

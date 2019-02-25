@@ -23,6 +23,7 @@ import com.bumptech.glide.load.resource.bitmap.CircleCrop;
 import com.bumptech.glide.request.RequestOptions;
 import com.mssinfotech.iampro.co.R;
 import com.mssinfotech.iampro.co.common.Config;
+import com.mssinfotech.iampro.co.common.function;
 import com.mssinfotech.iampro.co.image.ImageDetail;
 import com.mssinfotech.iampro.co.model.FeedModel;
 import com.mssinfotech.iampro.co.model.MyImageModel;
@@ -84,20 +85,12 @@ public class MyImageAdapter extends RecyclerView.Adapter<MyImageAdapter.ViewHold
             imageView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    AppCompatActivity activity = (AppCompatActivity) mContext;
                     ImageDetail fragment = new ImageDetail();
                     Bundle args = new Bundle();
                     args.putString("id", id);
                     args.putString("type", "image");
                     args.putString("uid", uid);
-                    fragment.setArguments(args);
-                    FragmentManager fragmentManager = activity.getSupportFragmentManager();
-
-                    fragmentManager.beginTransaction()
-                            .replace(android.R.id.content, fragment, null)
-                            .setCustomAnimations(R.anim.enter, R.anim.exit, R.anim.pop_enter, R.anim.pop_exit)
-                            .addToBackStack(null)
-                            .commit();
+                    function.loadFragment(mContext,fragment,args);
                 }
             });
 

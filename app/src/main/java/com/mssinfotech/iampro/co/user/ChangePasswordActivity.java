@@ -24,6 +24,7 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.mssinfotech.iampro.co.R;
 import com.mssinfotech.iampro.co.common.Config;
+import com.mssinfotech.iampro.co.common.function;
 import com.mssinfotech.iampro.co.utils.PrefManager;
 
 import org.json.JSONException;
@@ -91,14 +92,8 @@ public class ChangePasswordActivity extends Fragment {
                                 String status = result.getString("status");
                                 String msg = result.getString("msg");
                                 if (status.equals("success")) {
-                                    AppCompatActivity activity = (AppCompatActivity) getContext();
                                     ProfileActivity fragment = new ProfileActivity();
-                                    FragmentManager fragmentManager = activity.getSupportFragmentManager();
-                                    fragmentManager.beginTransaction()
-                                            .replace(android.R.id.content, fragment, null)
-                                            .setCustomAnimations(R.anim.enter, R.anim.exit, R.anim.pop_enter, R.anim.pop_exit)
-                                            .addToBackStack(null)
-                                            .commit();
+                                    function.loadFragment(getContext(),fragment,null);
                                 } else {
                                     Toast.makeText(getContext(), msg, Toast.LENGTH_LONG).show();
                                 }

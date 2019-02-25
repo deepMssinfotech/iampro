@@ -97,19 +97,12 @@ public class SectionListDataAdapter extends RecyclerView.Adapter<SectionListData
             @Override
             public void onClick(View v) {
                 if(utype.equals("image") || utype.equals("video")) {
-                    AppCompatActivity activity = (AppCompatActivity) mContext;
                     ImageDetail fragment = new ImageDetail();
                     Bundle args = new Bundle();
                     args.putString("id", String.valueOf(id));
                     args.putString("type", utype);
                     args.putString("uid", uid);
-                    fragment.setArguments(args);
-                    FragmentManager fragmentManager = activity.getSupportFragmentManager();
-                    fragmentManager.beginTransaction()
-                            .replace(android.R.id.content, fragment, null)
-                            .setCustomAnimations(R.anim.enter, R.anim.exit, R.anim.pop_enter, R.anim.pop_exit)
-                            .addToBackStack(null)
-                            .commit();
+                    function.loadFragment(mContext,fragment,args);
 
                 }else if(utype.equals("product")){
                     Intent intent=new Intent(mContext, ProductDetail.class);
@@ -149,18 +142,10 @@ public class SectionListDataAdapter extends RecyclerView.Adapter<SectionListData
         holder.user_image.setOnClickListener(new View.OnClickListener() {
              @Override
              public void onClick(View v) {
-                 Log.d(Config.TAG,added_by+" addedby");
-                 AppCompatActivity activity = (AppCompatActivity) mContext;
                  ProfileActivity fragment = new ProfileActivity();
                  Bundle bundle = new Bundle();
                  bundle.putString("uid", String.valueOf(added_by));
-                 fragment.setArguments(bundle);
-                 FragmentManager fragmentManager = activity.getSupportFragmentManager();
-                 fragmentManager.beginTransaction()
-                         .replace(android.R.id.content, fragment, null)
-                         .setCustomAnimations(R.anim.enter, R.anim.exit, R.anim.pop_enter, R.anim.pop_exit)
-                         .addToBackStack(null)
-                         .commit();
+                 function.loadFragment(mContext,fragment,bundle);
 
              }
          });

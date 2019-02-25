@@ -60,53 +60,24 @@ public class IncludeFooter  extends RelativeLayout {
         }
 
     }
-
     private OnClickListener moreOnClickListener = new OnClickListener() {
         public void onClick(View v) {
-            AppCompatActivity activity = (AppCompatActivity) getContext();
-            UserMenuActivity userMenufragment = new UserMenuActivity();
+            UserMenuActivity fragment= new UserMenuActivity();
             Bundle args = new Bundle();
             args.putString("name", "mragank");
-            userMenufragment.setArguments(args);
-            FragmentManager fragmentManager = activity.getSupportFragmentManager();
-
-            fragmentManager.beginTransaction()
-                .replace(android.R.id.content, userMenufragment, null)
-                .setCustomAnimations(R.anim.enter, R.anim.exit, R.anim.pop_enter, R.anim.pop_exit)
-                .addToBackStack(null)
-                .commit();
+            function.loadFragment(getContext(),fragment,args);
         }
     };
     private OnClickListener searchOnClickListener = new OnClickListener() {
         public void onClick(View v) {
-            AppCompatActivity activity = (AppCompatActivity) getContext();
-            SearchActivity searchfragment = new SearchActivity();
-            Bundle args = new Bundle();
-            args.putString("name", "mragank");
-            searchfragment.setArguments(args);
-            FragmentManager fragmentManager = activity.getSupportFragmentManager();
-
-            fragmentManager.beginTransaction()
-                    .replace(android.R.id.content, searchfragment, null)
-                    .setCustomAnimations(R.anim.enter, R.anim.exit, R.anim.pop_enter, R.anim.pop_exit)
-                    .addToBackStack(null)
-                    .commit();
+            SearchActivity fragment = new SearchActivity();
+            function.loadFragment(getContext(),fragment,null);
         }
     };
     private OnClickListener cartOnClickListener = new OnClickListener() {
         public void onClick(View v) {
-            AppCompatActivity activity = (AppCompatActivity) getContext();
-            CartActivity cartfragment = new CartActivity();
-            Bundle args = new Bundle();
-            args.putString("name", "mragank");
-            cartfragment.setArguments(args);
-            FragmentManager fragmentManager = activity.getSupportFragmentManager();
-
-            fragmentManager.beginTransaction()
-                    .replace(android.R.id.content, cartfragment, null)
-                    .setCustomAnimations(R.anim.enter, R.anim.exit, R.anim.pop_enter, R.anim.pop_exit)
-                    .addToBackStack(null)
-                    .commit();
+            CartActivity fragment = new CartActivity();
+            function.loadFragment(getContext(),fragment,null);
         }
     };
     private OnClickListener iamproOnClickListener = new OnClickListener() {
@@ -117,50 +88,21 @@ public class IncludeFooter  extends RelativeLayout {
     };
     private OnClickListener noticeOnClickListener = new OnClickListener() {
         public void onClick(View v) {
-            AppCompatActivity activity = (AppCompatActivity) getContext();
-            NotificationActivity notificationfragment = new NotificationActivity();
-            Bundle args = new Bundle();
-            args.putString("name", "mragank");
-            notificationfragment.setArguments(args);
-            FragmentManager fragmentManager = activity.getSupportFragmentManager();
-
-            fragmentManager.beginTransaction()
-                    .replace(android.R.id.content, notificationfragment, null)
-                    .setCustomAnimations(R.anim.enter, R.anim.exit, R.anim.pop_enter, R.anim.pop_exit)
-                    .addToBackStack(null)
-                    .commit();
+            NotificationActivity fragment = new NotificationActivity();
+            function.loadFragment(getContext(),fragment,null);
         }
     };
     private OnClickListener messageOnClickListener = new OnClickListener() {
         public void onClick(View v) {
-            AppCompatActivity activity = (AppCompatActivity) getContext();
-            MessageActivity messagefragment = new MessageActivity();
-            Bundle args = new Bundle();
-            args.putString("name", "mragank");
-            messagefragment.setArguments(args);
-            FragmentManager fragmentManager = activity.getSupportFragmentManager();
-
-            fragmentManager.beginTransaction()
-                    .replace(android.R.id.content, messagefragment, null)
-                    .setCustomAnimations(R.anim.enter, R.anim.exit, R.anim.pop_enter, R.anim.pop_exit)
-                    .addToBackStack(null)
-                    .commit();
-              /*Intent intent=new Intent(getContext(), SplashActivity.class);
-                getContext().startActivity(intent); */
-
+            MessageActivity fragment = new MessageActivity();
+            function.loadFragment(getContext(),fragment,null);
         }
     };
     private OnClickListener userOnClickListener = new OnClickListener() {
         public void onClick(View v) {
             if(isLogin) {
-                AppCompatActivity activity = (AppCompatActivity) getContext();
                 ProfileActivity fragment = new ProfileActivity();
-                FragmentManager fragmentManager = activity.getSupportFragmentManager();
-                fragmentManager.beginTransaction()
-                        .replace(android.R.id.content, fragment, null)
-                        .setCustomAnimations(R.anim.enter, R.anim.exit, R.anim.pop_enter, R.anim.pop_exit)
-                        .addToBackStack(null)
-                        .commit();
+                function.loadFragment(getContext(),fragment,null);
             }else
                 getContext().startActivity(new Intent(getContext(), LoginActivity.class));
         }

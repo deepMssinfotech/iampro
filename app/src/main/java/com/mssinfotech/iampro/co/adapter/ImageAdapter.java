@@ -90,20 +90,12 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ViewHolder> 
             imageView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    AppCompatActivity activity = (AppCompatActivity) mContext;
                     ImageDetail fragment = new ImageDetail();
                     Bundle args = new Bundle();
                     args.putString("id", String.valueOf(id));
                     args.putString("type", "image");
                     args.putString("uid", String.valueOf(uid));
-                    fragment.setArguments(args);
-                    FragmentManager fragmentManager = activity.getSupportFragmentManager();
-
-                    fragmentManager.beginTransaction()
-                            .replace(android.R.id.content, fragment, null)
-                            .setCustomAnimations(R.anim.enter, R.anim.exit, R.anim.pop_enter, R.anim.pop_exit)
-                            .addToBackStack(null)
-                            .commit();
+                    function.loadFragment(mContext,fragment,args);
                 }
             });
             tv_comments.setOnClickListener(CommnetOnClickListener);
@@ -162,18 +154,10 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ViewHolder> 
             userImage.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    AppCompatActivity activity = (AppCompatActivity) mContext;
                     ProfileActivity fragment = new ProfileActivity();
                     Bundle args = new Bundle();
                     args.putString("uid", String.valueOf(uid));
-                    fragment.setArguments(args);
-                    FragmentManager fragmentManager = activity.getSupportFragmentManager();
-
-                    fragmentManager.beginTransaction()
-                            .replace(android.R.id.content, fragment, null)
-                            .setCustomAnimations(R.anim.enter, R.anim.exit, R.anim.pop_enter, R.anim.pop_exit)
-                            .addToBackStack(null)
-                            .commit();
+                    function.loadFragment(mContext,fragment,args);
                 }
             });
             likeButton.setUnlikeDrawableRes(R.drawable.like);

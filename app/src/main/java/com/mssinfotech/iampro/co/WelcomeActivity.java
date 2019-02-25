@@ -16,6 +16,7 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.mssinfotech.iampro.co.common.CircleTransform;
+import com.mssinfotech.iampro.co.common.function;
 import com.mssinfotech.iampro.co.services.ScheduledService;
 import com.mssinfotech.iampro.co.user.ProfileActivity;
 import com.mssinfotech.iampro.co.common.Config;
@@ -74,13 +75,8 @@ public class WelcomeActivity extends AppCompatActivity implements View.OnClickLi
                 //WelcomeActivity.this.finish();
                 break;
             case R.id.imguser:
-                AppCompatActivity activity = (AppCompatActivity) WelcomeActivity.this;
                 ProfileActivity fragment = new ProfileActivity();
-                FragmentManager fragmentManager = activity.getSupportFragmentManager();
-                fragmentManager.beginTransaction()
-                        .replace(android.R.id.content, fragment, null)
-                        .setCustomAnimations(R.anim.enter, R.anim.exit, R.anim.pop_enter, R.anim.pop_exit)
-                        .commit();
+                function.loadFragment(WelcomeActivity.this,fragment, null);
                 break;
             default:
                 break;
@@ -93,7 +89,6 @@ public class WelcomeActivity extends AppCompatActivity implements View.OnClickLi
             finish();
             return;
         }
-
         Config.doubleBackToExitPressedOnce = true;
         Toast.makeText(this, "Please click BACK again to exit", Toast.LENGTH_SHORT).show();
 

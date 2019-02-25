@@ -132,18 +132,10 @@ public class AllFeedAdapter extends RecyclerView.Adapter<AllFeedAdapter.ViewHold
             imageView_user.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    AppCompatActivity activity = (AppCompatActivity) mContext;
                     ProfileActivity fragment = new ProfileActivity();
                     Bundle args = new Bundle();
                     args.putString("uid", String.valueOf(uid));
-                    fragment.setArguments(args);
-                    FragmentManager fragmentManager = activity.getSupportFragmentManager();
-
-                    fragmentManager.beginTransaction()
-                            .replace(android.R.id.content, fragment, null)
-                            .setCustomAnimations(R.anim.enter, R.anim.exit, R.anim.pop_enter, R.anim.pop_exit)
-                            .addToBackStack(null)
-                            .commit();
+                    function.loadFragment(mContext,fragment,args);
                 }
             });
             tv_totallike.setText(String.valueOf(item.getLikes()));
@@ -229,14 +221,8 @@ public class AllFeedAdapter extends RecyclerView.Adapter<AllFeedAdapter.ViewHold
                     @Override
                     public void onClick(View v) {
                         function.addtocart(mContext, animalsArray[0], "1", selling_cost.toString());
-                        AppCompatActivity activity = (AppCompatActivity) mContext;
-                        CartActivity cartfragment = new CartActivity();
-                        FragmentManager fragmentManager = activity.getSupportFragmentManager();
-                        fragmentManager.beginTransaction()
-                                .replace(android.R.id.content, cartfragment, null)
-                                .setCustomAnimations(R.anim.enter, R.anim.exit, R.anim.pop_enter, R.anim.pop_exit)
-                                .addToBackStack(null)
-                                .commit();
+                        CartActivity fragment = new CartActivity();
+                        function.loadFragment(mContext,fragment,null);
                     }
                 });
             } else if (type.equalsIgnoreCase("PROVIDE")) {
@@ -310,31 +296,15 @@ public class AllFeedAdapter extends RecyclerView.Adapter<AllFeedAdapter.ViewHold
             @Override
             public void onClick(View v) {
                 if (type.equalsIgnoreCase("IMAGE")) {
-                    AppCompatActivity activity = (AppCompatActivity) mContext;
                     MyImageActivity fragment = new MyImageActivity();
                     Bundle args = new Bundle();
                     args.putString("uid", String.valueOf(uid));
-                    fragment.setArguments(args);
-                    FragmentManager fragmentManager = activity.getSupportFragmentManager();
-
-                    fragmentManager.beginTransaction()
-                            .replace(android.R.id.content, fragment, null)
-                            .setCustomAnimations(R.anim.enter, R.anim.exit, R.anim.pop_enter, R.anim.pop_exit)
-                            .addToBackStack(null)
-                            .commit();
+                    function.loadFragment(mContext,fragment,args);
                 } else if (type.equalsIgnoreCase("VIDEO")) {
-                    AppCompatActivity activity = (AppCompatActivity) mContext;
                     MyVideoActivity fragment = new MyVideoActivity();
                     Bundle args = new Bundle();
                     args.putString("uid", String.valueOf(uid));
-                    fragment.setArguments(args);
-                    FragmentManager fragmentManager = activity.getSupportFragmentManager();
-
-                    fragmentManager.beginTransaction()
-                            .replace(android.R.id.content, fragment, null)
-                            .setCustomAnimations(R.anim.enter, R.anim.exit, R.anim.pop_enter, R.anim.pop_exit)
-                            .addToBackStack(null)
-                            .commit();
+                    function.loadFragment(mContext,fragment,args);
                 } else if (type.equalsIgnoreCase("PRODUCT")) {
                     Intent intent = new Intent(mContext, MyProvideActivity.class);
                     intent.putExtra("uid", String.valueOf(mValues.get(position).getUid()));
@@ -380,20 +350,13 @@ public class AllFeedAdapter extends RecyclerView.Adapter<AllFeedAdapter.ViewHold
                     sliderView.setOnSliderClickListener(new SliderView.OnSliderClickListener() {
                         @Override
                         public void onSliderClick(SliderView sliderView) {
-                            AppCompatActivity activity = (AppCompatActivity) mContext;
                             ImageDetail fragment = new ImageDetail();
                             Bundle args = new Bundle();
                             args.putString("id", sidArray[finalI]);
                             args.putString("type", "image");
                             args.putString("uid", String.valueOf(mValues.get(position).getUid()));
                             fragment.setArguments(args);
-                            FragmentManager fragmentManager = activity.getSupportFragmentManager();
-
-                            fragmentManager.beginTransaction()
-                                    .replace(android.R.id.content, fragment, null)
-                                    .setCustomAnimations(R.anim.enter, R.anim.exit, R.anim.pop_enter, R.anim.pop_exit)
-                                    .addToBackStack(null)
-                                    .commit();
+                            function.loadFragment(mContext,fragment,args);
                         }
                     });
 

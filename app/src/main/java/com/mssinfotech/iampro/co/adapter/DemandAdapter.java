@@ -40,6 +40,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.mssinfotech.iampro.co.common.Config;
+import com.mssinfotech.iampro.co.common.function;
 import com.mssinfotech.iampro.co.demand.DemandDetailActivity;
 import com.mssinfotech.iampro.co.model.DataModel;
 import com.mssinfotech.iampro.co.user.ProfileActivity;
@@ -107,18 +108,10 @@ public class DemandAdapter extends RecyclerView.Adapter<DemandAdapter.ViewHolder
             userImage.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    AppCompatActivity activity = (AppCompatActivity) mContext;
                     ProfileActivity fragment = new ProfileActivity();
                     Bundle args = new Bundle();
                     args.putString("uid", String.valueOf(item.getUid()));
-                    fragment.setArguments(args);
-                    FragmentManager fragmentManager = activity.getSupportFragmentManager();
-
-                    fragmentManager.beginTransaction()
-                            .replace(android.R.id.content, fragment, null)
-                            .setCustomAnimations(R.anim.enter, R.anim.exit, R.anim.pop_enter, R.anim.pop_exit)
-                            .addToBackStack(null)
-                            .commit();
+                    function.loadFragment(mContext,fragment,args);
                 }
             });
             ratingBar.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {

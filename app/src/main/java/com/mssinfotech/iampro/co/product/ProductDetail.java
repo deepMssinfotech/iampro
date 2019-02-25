@@ -94,18 +94,10 @@ public class ProductDetail extends AppCompatActivity implements CommentAdapter.I
         user_image.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                AppCompatActivity activity = (AppCompatActivity) ProductDetail.this;
                 ProfileActivity fragment = new ProfileActivity();
                 Bundle args = new Bundle();
                 args.putString("uid", String.valueOf(uid));
-                fragment.setArguments(args);
-                FragmentManager fragmentManager = activity.getSupportFragmentManager();
-
-                fragmentManager.beginTransaction()
-                        .replace(android.R.id.content, fragment, null)
-                        .setCustomAnimations(R.anim.enter, R.anim.exit, R.anim.pop_enter, R.anim.pop_exit)
-                        .addToBackStack(null)
-                        .commit();
+                function.loadFragment(ProductDetail.this,fragment,args);
             }
         });
         getProductDetail();
@@ -302,14 +294,8 @@ public class ProductDetail extends AppCompatActivity implements CommentAdapter.I
     public void buyNow(View view) {
         if (PrefManager.isLogin(ProductDetail.this)) {
             function.addtocart(getApplicationContext(), pid, "1", product_price);
-
-            CartActivity cartfragment = new CartActivity();
-            FragmentManager fragmentManager = this.getSupportFragmentManager();
-            fragmentManager.beginTransaction()
-                    .replace(android.R.id.content, cartfragment, null)
-                    .setCustomAnimations(R.anim.enter, R.anim.exit, R.anim.pop_enter, R.anim.pop_exit)
-                    .addToBackStack(null)
-                    .commit();
+            CartActivity fragment = new CartActivity();
+            function.loadFragment(ProductDetail.this,fragment,null);
         } else {
             Toast.makeText(ProductDetail.this, "First Login and try again...", Toast.LENGTH_LONG).show();
         }

@@ -44,6 +44,7 @@ import com.mssinfotech.iampro.co.common.CircleTransform;
 import com.mssinfotech.iampro.co.common.Config;
 import com.mssinfotech.iampro.co.common.IncludeShortMenu;
 import com.mssinfotech.iampro.co.common.PhotoFullPopupWindow;
+import com.mssinfotech.iampro.co.common.function;
 import com.mssinfotech.iampro.co.model.MyImageModel;
 import com.mssinfotech.iampro.co.model.MyProductModel;
 import com.mssinfotech.iampro.co.model.SectionImageModel;
@@ -322,15 +323,8 @@ public class MyVideoActivity extends Fragment implements MyVideoAdapter.ItemList
                     //.setNotificationConfig(new UploadNotificationConfig())
                     .setMaxRetries(2)
                     .startUpload(); //Starting the upload
-            AppCompatActivity activity = (AppCompatActivity) context;
             ProfileActivity fragment = new ProfileActivity();
-            FragmentManager fragmentManager = activity.getSupportFragmentManager();
-
-            fragmentManager.beginTransaction()
-                    .replace(android.R.id.content, fragment, null)
-                    .setCustomAnimations(R.anim.enter, R.anim.exit, R.anim.pop_enter, R.anim.pop_exit)
-                    .addToBackStack(null)
-                    .commit();
+            function.loadFragment(context,fragment,null);
             Toast.makeText(context, "Update Profile Background Image is processing please wait", Toast.LENGTH_SHORT).show();
             getActivity().finish();
         } catch (Exception exc) {

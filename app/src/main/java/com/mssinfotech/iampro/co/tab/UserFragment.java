@@ -40,6 +40,7 @@ import com.mssinfotech.iampro.co.adapter.RecyclerViewDataAdapter;
 import com.mssinfotech.iampro.co.adapter.UserDataAdapter;
 
 import com.mssinfotech.iampro.co.adapter.UserItemTouchHelper;
+import com.mssinfotech.iampro.co.common.function;
 import com.mssinfotech.iampro.co.model.DataModel;
 import com.mssinfotech.iampro.co.model.MyImageModel;
 import com.mssinfotech.iampro.co.model.SectionDataModel;
@@ -424,19 +425,10 @@ public class UserFragment extends Fragment implements UserDataAdapter.ItemListen
     }
     @Override
     public void onItemClick(UserModel item) {
-        AppCompatActivity activity = (AppCompatActivity) getContext();
         ProfileActivity fragment = new ProfileActivity();
-        FragmentManager fragmentManager = activity.getSupportFragmentManager();
-
         Bundle args = new Bundle();
         args.putString("uid", String.valueOf(uid));
-        fragment.setArguments(args);
-
-        fragmentManager.beginTransaction()
-                .replace(android.R.id.content, fragment, null)
-                .setCustomAnimations(R.anim.enter, R.anim.exit, R.anim.pop_enter, R.anim.pop_exit)
-                .addToBackStack(null)
-                .commit();
+        function.loadFragment(getContext(),fragment,args);
 
     }
 

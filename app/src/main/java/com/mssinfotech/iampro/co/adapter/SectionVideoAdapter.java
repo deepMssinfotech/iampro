@@ -113,13 +113,7 @@ public class SectionVideoAdapter extends RecyclerView.Adapter<SectionVideoAdapte
                             args.putString("id", id);
                             args.putString("type", "image");
                             args.putString("uid", uid);
-                            fragment.setArguments(args);
-                            FragmentManager fragmentManager = activity.getSupportFragmentManager();
-                            fragmentManager.beginTransaction()
-                                    .replace(android.R.id.content, fragment, null)
-                                    .setCustomAnimations(R.anim.enter, R.anim.exit, R.anim.pop_enter, R.anim.pop_exit)
-                                    .addToBackStack(null)
-                                    .commit();
+                            function.loadFragment(mContext,fragment,args);
             }
         });
 
@@ -213,20 +207,12 @@ public class SectionVideoAdapter extends RecyclerView.Adapter<SectionVideoAdapte
         holder.videoView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                AppCompatActivity activity = (AppCompatActivity) mContext;
                 ImageDetail fragment = new ImageDetail();
                 Bundle args = new Bundle();
                 args.putString("id", id);
                 args.putString("type", "video");
                 args.putString("uid", uidd);
-                fragment.setArguments(args);
-                FragmentManager fragmentManager = activity.getSupportFragmentManager();
-
-                fragmentManager.beginTransaction()
-                        .replace(android.R.id.content, fragment, null)
-                        .setCustomAnimations(R.anim.enter, R.anim.exit, R.anim.pop_enter, R.anim.pop_exit)
-                        .addToBackStack(null)
-                        .commit();
+                function.loadFragment(mContext,fragment,args);
             }
         });
         Glide.with(mContext)
@@ -283,18 +269,10 @@ public class SectionVideoAdapter extends RecyclerView.Adapter<SectionVideoAdapte
          holder.user_image.setOnClickListener(new View.OnClickListener() {
              @Override
              public void onClick(View v) {
-                 AppCompatActivity activity = (AppCompatActivity) mContext;
                  ProfileActivity fragment = new ProfileActivity();
                  Bundle args = new Bundle();
                  args.putString("uid", String.valueOf(uidd));
-                 fragment.setArguments(args);
-                 FragmentManager fragmentManager = activity.getSupportFragmentManager();
-
-                 fragmentManager.beginTransaction()
-                         .replace(android.R.id.content, fragment, null)
-                         .setCustomAnimations(R.anim.enter, R.anim.exit, R.anim.pop_enter, R.anim.pop_exit)
-                         .addToBackStack(null)
-                         .commit();
+                 function.loadFragment(mContext,fragment,args);
 
              }
          });

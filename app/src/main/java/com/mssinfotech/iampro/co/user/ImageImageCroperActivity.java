@@ -210,13 +210,7 @@ public class ImageImageCroperActivity extends AppCompatActivity implements IProf
     public void redirect(){
         AppCompatActivity activity = (AppCompatActivity) getApplicationContext();
         MyImageActivity fragment = new MyImageActivity();
-        FragmentManager fragmentManager = activity.getSupportFragmentManager();
-
-        fragmentManager.beginTransaction()
-                .replace(android.R.id.content, fragment, null)
-                .setCustomAnimations(R.anim.enter, R.anim.exit, R.anim.pop_enter, R.anim.pop_exit)
-                .addToBackStack(null)
-                .commit();
+        function.loadFragment(ImageImageCroperActivity.this,fragment,null);
         finish();
     }
     @Override

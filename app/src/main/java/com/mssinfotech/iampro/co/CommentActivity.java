@@ -223,18 +223,10 @@ public class CommentActivity extends AppCompatActivity implements CommentAdapter
                             imageView_icon.setOnClickListener(new View.OnClickListener() {
                                 @Override
                                 public void onClick(View view) {
-                                    AppCompatActivity activity = (AppCompatActivity) CommentActivity.this;
                                     MyImageActivity fragment = new MyImageActivity();
                                     Bundle args = new Bundle();
                                     args.putString("uid", String.valueOf(user_id));
-                                    fragment.setArguments(args);
-                                    FragmentManager fragmentManager = activity.getSupportFragmentManager();
-
-                                    fragmentManager.beginTransaction()
-                                            .replace(android.R.id.content, fragment, null)
-                                            .setCustomAnimations(R.anim.enter, R.anim.exit, R.anim.pop_enter, R.anim.pop_exit)
-                                            .addToBackStack(null)
-                                            .commit();
+                                    function.loadFragment(CommentActivity.this,fragment,args);
                                 }
                             });
 
@@ -323,18 +315,10 @@ public class CommentActivity extends AppCompatActivity implements CommentAdapter
                             imageView_user.setOnClickListener(new View.OnClickListener() {
                                 @Override
                                 public void onClick(View view) {
-                                    AppCompatActivity activity = (AppCompatActivity) CommentActivity.this;
                                     ProfileActivity fragment = new ProfileActivity();
                                     Bundle args = new Bundle();
                                     args.putString("uid", added_user_id);
-                                    fragment.setArguments(args);
-                                    FragmentManager fragmentManager = activity.getSupportFragmentManager();
-
-                                    fragmentManager.beginTransaction()
-                                            .replace(android.R.id.content, fragment, null)
-                                            .setCustomAnimations(R.anim.enter, R.anim.exit, R.anim.pop_enter, R.anim.pop_exit)
-                                            .addToBackStack(null)
-                                            .commit();
+                                    function.loadFragment(CommentActivity.this,fragment,args);
                                 }
                             });
                             if(data_type.equalsIgnoreCase("image")){
@@ -348,18 +332,10 @@ public class CommentActivity extends AppCompatActivity implements CommentAdapter
                                 imageView_icon.setOnClickListener(new View.OnClickListener() {
                                     @Override
                                     public void onClick(View view) {
-                                        AppCompatActivity activity = (AppCompatActivity) CommentActivity.this;
                                         MyImageActivity fragment = new MyImageActivity();
                                         Bundle args = new Bundle();
                                         args.putString("uid", String.valueOf(added_user_id));
-                                        fragment.setArguments(args);
-                                        FragmentManager fragmentManager = activity.getSupportFragmentManager();
-
-                                        fragmentManager.beginTransaction()
-                                                .replace(android.R.id.content, fragment, null)
-                                                .setCustomAnimations(R.anim.enter, R.anim.exit, R.anim.pop_enter, R.anim.pop_exit)
-                                                .addToBackStack(null)
-                                                .commit();
+                                        function.loadFragment(CommentActivity.this,fragment,args);
                                     }
                                 });
                             }else if(data_type.equalsIgnoreCase("video")){
@@ -383,18 +359,10 @@ public class CommentActivity extends AppCompatActivity implements CommentAdapter
                                 imageView_icon.setOnClickListener(new View.OnClickListener() {
                                     @Override
                                     public void onClick(View view) {
-                                        AppCompatActivity activity = (AppCompatActivity) CommentActivity.this;
                                         MyVideoActivity fragment = new MyVideoActivity();
                                         Bundle args = new Bundle();
                                         args.putString("uid", String.valueOf(user_id));
-                                        fragment.setArguments(args);
-                                        FragmentManager fragmentManager = activity.getSupportFragmentManager();
-
-                                        fragmentManager.beginTransaction()
-                                                .replace(android.R.id.content, fragment, null)
-                                                .setCustomAnimations(R.anim.enter, R.anim.exit, R.anim.pop_enter, R.anim.pop_exit)
-                                                .addToBackStack(null)
-                                                .commit();
+                                        function.loadFragment(CommentActivity.this,fragment,args);
                                     }
                                 });
                             }

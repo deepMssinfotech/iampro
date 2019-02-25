@@ -88,18 +88,10 @@ public class Img_Video_Details extends RecyclerView.Adapter<Img_Video_Details.Vi
             imageView_user.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    AppCompatActivity activity = (AppCompatActivity) mContext;
                     ProfileActivity fragment = new ProfileActivity();
                     Bundle args = new Bundle();
                     args.putString("uid", String.valueOf(uid));
-                    fragment.setArguments(args);
-                    FragmentManager fragmentManager = activity.getSupportFragmentManager();
-
-                    fragmentManager.beginTransaction()
-                            .replace(android.R.id.content, fragment, null)
-                            .setCustomAnimations(R.anim.enter, R.anim.exit, R.anim.pop_enter, R.anim.pop_exit)
-                            .addToBackStack(null)
-                            .commit();
+                    function.loadFragment(mContext,fragment,args);
                 }
             });
            videoView=v.findViewById(R.id.video);
@@ -148,17 +140,10 @@ public class Img_Video_Details extends RecyclerView.Adapter<Img_Video_Details.Vi
                imageView_icon.setOnClickListener(new View.OnClickListener() {
                    @Override
                    public void onClick(View view) {
-                       AppCompatActivity activity = (AppCompatActivity) mContext;
                        MyImageActivity fragment = new MyImageActivity();
                        Bundle args = new Bundle();
                        args.putString("uid", String.valueOf(added_by_id));
-                       fragment.setArguments(args);
-                       FragmentManager fragmentManager = activity.getSupportFragmentManager();
-                       fragmentManager.beginTransaction()
-                               .replace(android.R.id.content, fragment, null)
-                               .setCustomAnimations(R.anim.enter, R.anim.exit, R.anim.pop_enter, R.anim.pop_exit)
-                               .addToBackStack(null)
-                               .commit();
+                       function.loadFragment(mContext,fragment,args);
                    }
                });
 
@@ -174,17 +159,10 @@ public class Img_Video_Details extends RecyclerView.Adapter<Img_Video_Details.Vi
                imageView_icon.setOnClickListener(new View.OnClickListener() {
                    @Override
                    public void onClick(View view) {
-                       AppCompatActivity activity = (AppCompatActivity) mContext;
                        MyVideoActivity fragment = new MyVideoActivity();
                        Bundle args = new Bundle();
                        args.putString("uid", String.valueOf(added_by_id));
-                       fragment.setArguments(args);
-                       FragmentManager fragmentManager = activity.getSupportFragmentManager();
-                       fragmentManager.beginTransaction()
-                               .replace(android.R.id.content, fragment, null)
-                               .setCustomAnimations(R.anim.enter, R.anim.exit, R.anim.pop_enter, R.anim.pop_exit)
-                               .addToBackStack(null)
-                               .commit();
+                       function.loadFragment(mContext,fragment,args);
                    }
                });
                Glide.with(mContext)
@@ -197,18 +175,10 @@ public class Img_Video_Details extends RecyclerView.Adapter<Img_Video_Details.Vi
                imageView_user.setOnClickListener(new View.OnClickListener() {
                    @Override
                    public void onClick(View v) {
-                       AppCompatActivity activity = (AppCompatActivity) mContext;
                        ProfileActivity fragment = new ProfileActivity();
                        Bundle args = new Bundle();
                        args.putString("uid", String.valueOf(uid));
-                       fragment.setArguments(args);
-                       FragmentManager fragmentManager = activity.getSupportFragmentManager();
-
-                       fragmentManager.beginTransaction()
-                               .replace(android.R.id.content, fragment, null)
-                               .setCustomAnimations(R.anim.enter, R.anim.exit, R.anim.pop_enter, R.anim.pop_exit)
-                               .addToBackStack(null)
-                               .commit();
+                       function.loadFragment(mContext,fragment,args);
                    }
                });
 

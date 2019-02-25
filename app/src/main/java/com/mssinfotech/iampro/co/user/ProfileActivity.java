@@ -168,14 +168,8 @@ public class ProfileActivity extends Fragment implements AllFeedAdapter.ItemList
             edit_layout.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    AppCompatActivity activity = (AppCompatActivity) getContext();
                     EditProfileActivity fragment = new EditProfileActivity();
-                    FragmentManager fragmentManager = activity.getSupportFragmentManager();
-                    fragmentManager.beginTransaction()
-                            .replace(android.R.id.content, fragment, null)
-                            .setCustomAnimations(R.anim.enter, R.anim.exit, R.anim.pop_enter, R.anim.pop_exit)
-                            .addToBackStack(null)
-                            .commit();
+                    function.loadFragment(context,fragment,null);
                 }
             });
             PrefManager.updateUserData(context,null);

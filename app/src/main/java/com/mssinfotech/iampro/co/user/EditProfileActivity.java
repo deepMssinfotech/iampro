@@ -245,14 +245,8 @@ public class EditProfileActivity extends Fragment {
                             //String urlv=jsonObject.getString("url");
                             Toast.makeText(context,""+msgg,Toast.LENGTH_LONG).show();
                             if (status.equalsIgnoreCase("success")){
-                                AppCompatActivity activity = (AppCompatActivity) context;
                                 ProfileActivity fragment = new ProfileActivity();
-                                FragmentManager fragmentManager = activity.getSupportFragmentManager();
-                                fragmentManager.beginTransaction()
-                                        .replace(android.R.id.content, fragment, null)
-                                        .setCustomAnimations(R.anim.enter, R.anim.exit, R.anim.pop_enter, R.anim.pop_exit)
-                                        .addToBackStack(null)
-                                        .commit();
+                                function.loadFragment(context,fragment,null);
                             }
                         }
                         catch(JSONException e)
@@ -489,14 +483,8 @@ public class EditProfileActivity extends Fragment {
                     //.setNotificationConfig(new UploadNotificationConfig())
                     .setMaxRetries(2)
                     .startUpload(); //Starting the upload
-            AppCompatActivity activity = (AppCompatActivity) getContext();
             ProfileActivity fragment = new ProfileActivity();
-            FragmentManager fragmentManager = activity.getSupportFragmentManager();
-            fragmentManager.beginTransaction()
-                    .replace(android.R.id.content, fragment, null)
-                    .setCustomAnimations(R.anim.enter, R.anim.exit, R.anim.pop_enter, R.anim.pop_exit)
-                    .addToBackStack(null)
-                    .commit();
+            function.loadFragment(context,fragment,null);
             getActivity().finish();
         } catch (Exception exc) {
             Toast.makeText(context, exc.getMessage(), Toast.LENGTH_SHORT).show();

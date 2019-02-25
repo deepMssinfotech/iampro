@@ -24,6 +24,8 @@ import android.view.ViewGroup;
  */
 import android.content.Context;
 import android.widget.TextView;
+
+import com.mssinfotech.iampro.co.common.function;
 import com.mssinfotech.iampro.co.model.UserModel;
 import com.mssinfotech.iampro.co.user.ProfileActivity;
 
@@ -98,18 +100,10 @@ public class UserDataAdapter extends RecyclerView.Adapter<UserDataAdapter.ViewHo
          Vholder.imageView.setOnClickListener(new View.OnClickListener() {
              @Override
              public void onClick(View v) {
-                 AppCompatActivity activity = (AppCompatActivity) mContext;
                  ProfileActivity fragment = new ProfileActivity();
                  Bundle args = new Bundle();
                  args.putString("uid", String.valueOf(mValues.get(position).getId()));
-                 fragment.setArguments(args);
-                 FragmentManager fragmentManager = activity.getSupportFragmentManager();
-
-                 fragmentManager.beginTransaction()
-                         .replace(android.R.id.content, fragment, null)
-                         .setCustomAnimations(R.anim.enter, R.anim.exit, R.anim.pop_enter, R.anim.pop_exit)
-                         .addToBackStack(null)
-                         .commit();
+                 function.loadFragment(mContext,fragment,args);
 
              }
          });

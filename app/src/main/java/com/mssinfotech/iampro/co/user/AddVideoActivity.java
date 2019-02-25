@@ -352,15 +352,8 @@ public class AddVideoActivity extends AppCompatActivity {
                     //.setNotificationConfig(new UploadNotificationConfig())
                     .setMaxRetries(2)
                     .startUpload(); //Starting the upload
-            AppCompatActivity activity = (AppCompatActivity) getApplicationContext();
             MyVideoActivity fragment = new MyVideoActivity();
-            FragmentManager fragmentManager = activity.getSupportFragmentManager();
-
-            fragmentManager.beginTransaction()
-                    .replace(android.R.id.content, fragment, null)
-                    .setCustomAnimations(R.anim.enter, R.anim.exit, R.anim.pop_enter, R.anim.pop_exit)
-                    .addToBackStack(null)
-                    .commit();
+            function.loadFragment(AddVideoActivity.this,fragment,null);
             finish();
         } catch (Exception exc) {
             Toast.makeText(this, exc.getMessage(), Toast.LENGTH_SHORT).show();
