@@ -418,9 +418,8 @@ public class CommentActivity extends AppCompatActivity implements CommentAdapter
                                 imageView_icon.setOnClickListener(new View.OnClickListener() {
                                     @Override
                                     public void onClick(View view) {
-                                        Intent intent=new Intent(getApplicationContext(), MyProductActivity.class);
-                                        intent.putExtra("uid",String.valueOf(user_id));
-                                        getApplicationContext().startActivity(intent);
+                                        MyProductActivity fragment = new MyProductActivity();
+                                        function.loadFragment(CommentActivity.this,fragment,null);
                                     }
                                 });
                             }
@@ -476,9 +475,10 @@ public class CommentActivity extends AppCompatActivity implements CommentAdapter
                                 imageView_icon.setOnClickListener(new View.OnClickListener() {
                                     @Override
                                     public void onClick(View view) {
-                                        Intent intent=new Intent(getApplicationContext(), MyProvideActivity.class);
-                                        intent.putExtra("uid",String.valueOf(user_id));
-                                        getApplicationContext().startActivity(intent);
+                                        MyProvideActivity fragment = new MyProvideActivity();
+                                        Bundle args = new Bundle();
+                                        args.putString("uid",String.valueOf(user_id));
+                                        function.loadFragment(CommentActivity.this,fragment,args);
                                     }
                                 });
                             }else if(data_type.equalsIgnoreCase("demand")){
@@ -533,9 +533,10 @@ public class CommentActivity extends AppCompatActivity implements CommentAdapter
                                 imageView_icon.setOnClickListener(new View.OnClickListener() {
                                     @Override
                                     public void onClick(View view) {
-                                        Intent intent=new Intent(getApplicationContext(), MyDemandActivity.class);
-                                        intent.putExtra("uid",String.valueOf(user_id));
-                                        getApplicationContext().startActivity(intent);
+                                        MyDemandActivity fragment = new MyDemandActivity();
+                                        Bundle args = new Bundle();
+                                        args.putString("uid",String.valueOf(user_id));
+                                        function.loadFragment(CommentActivity.this,fragment,args);
                                     }
                                 });
                             }

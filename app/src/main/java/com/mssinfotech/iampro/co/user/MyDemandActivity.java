@@ -2,12 +2,15 @@ package com.mssinfotech.iampro.co.user;
 
 import android.content.Context;
 import android.content.Intent;
+import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -38,39 +41,50 @@ import java.util.ArrayList;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
-public class MyDemandActivity extends AppCompatActivity implements MyDemandAdapter.ItemListener{
+public class MyDemandActivity extends Fragment implements MyDemandAdapter.ItemListener{
 
     ImageView userbackgroud;
     CircleImageView userimage;
     TextView username,tv_category;
-    private String uid="";
+    private String uid="", id="";
     Intent intent;
     ArrayList<MyProductModel> item = new ArrayList<>();
     MyDemandAdapter adapter;
     RecyclerView recyclerView;
     Context context;
+    View view;
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_my_demand);
-        Config.setLayoutName(getResources().getResourceEntryName(R.layout.activity_my_demand));
-        intent = getIntent();
-        context = getApplicationContext();
-        String id = intent.getStringExtra("uid");
-        username = findViewById(R.id.username);
-        userimage = findViewById(R.id.userimage);
-        recyclerView = findViewById(R.id.recyclerView);
-        tv_category=findViewById(R.id.tv_category);
-        userbackgroud = findViewById(R.id.userbackgroud);
-        uid= PrefManager.getLoginDetail(this,"id");
+    public View onCreateView(LayoutInflater inflater, ViewGroup parent, Bundle savedInstanceState) {
+        // Defines the xml file for the fragment
+        return inflater.inflate(R.layout.activity_my_demand, parent, false);
+    }
+    @Override
+    public void onViewCreated(View v, Bundle savedInstanceState) {
+        view = v;
+        context = getContext();
+        intent = getActivity().getIntent();
+        Bundle args = getArguments();
+        //fid = getArguments().getString("uid");
+        if (args != null && args.containsKey("uid")) {
+            id = args.getString("uid").toString();
+        }else {
+            id = intent.getStringExtra("uid");
+        }
+
+        username = view.findViewById(R.id.username);
+        userimage = view.findViewById(R.id.userimage);
+        recyclerView = view.findViewById(R.id.recyclerView);
+        tv_category=view.findViewById(R.id.tv_category);
+        userbackgroud = view.findViewById(R.id.userbackgroud);
+        uid= PrefManager.getLoginDetail(context,"id");
         if(id == null || id.equals(uid)){
-            String fname=PrefManager.getLoginDetail(this,"fname");
-            String lname=PrefManager.getLoginDetail(this,"lname");
-            String avatar=Config.AVATAR_URL+"250/250/"+PrefManager.getLoginDetail(this,"img_url");
-            String background=Config.AVATAR_URL+"h/250/"+PrefManager.getLoginDetail(this,"banner_image");
+            String fname=PrefManager.getLoginDetail(context,"fname");
+            String lname=PrefManager.getLoginDetail(context,"lname");
+            String avatar=Config.AVATAR_URL+"250/250/"+PrefManager.getLoginDetail(context,"img_url");
+            String background=Config.AVATAR_URL+"h/250/"+PrefManager.getLoginDetail(context,"banner_image");
             username.setText("My Demand");
-            Glide.with(this).load(background).apply(Config.options_background).into(userbackgroud);
-            Glide.with(this).load(avatar).apply(Config.options_avatar).into(userimage);
+            Glide.with(context).load(background).apply(Config.options_background).into(userbackgroud);
+            Glide.with(context).load(avatar).apply(Config.options_avatar).into(userimage);
             userbackgroud.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -83,13 +97,13 @@ public class MyDemandActivity extends AppCompatActivity implements MyDemandAdapt
                     new PhotoFullPopupWindow(context, R.layout.popup_photo_full, view, Config.AVATAR_URL+PrefManager.getLoginDetail(context,"img_url"), null);
                 }
             });
-            PrefManager.updateUserData(this,null);
+            PrefManager.updateUserData(context,null);
         }else{
             uid= id;
             gteUsrDetail(id);
         }
-        IncludeShortMenu includeShortMenu = findViewById(R.id.includeShortMenu);
-        includeShortMenu.updateCounts(this,uid);
+        IncludeShortMenu includeShortMenu = view.findViewById(R.id.includeShortMenu);
+        includeShortMenu.updateCounts(context,uid);
         TextView myuid= includeShortMenu.findViewById(R.id.myuid);
         myuid.setText(uid);
         Intent i = new Intent();
@@ -111,12 +125,12 @@ public class MyDemandActivity extends AppCompatActivity implements MyDemandAdapt
                             String lname=result.optString("lname");
                             final String avatarX=result.getString("avatar");
                             final String backgroundX=result.getString("banner_image");
-                            username = findViewById(R.id.username);
-                            userimage = findViewById(R.id.userimage);
-                            userbackgroud = findViewById(R.id.userbackgroud);
+                            username = view.findViewById(R.id.username);
+                            userimage = view.findViewById(R.id.userimage);
+                            userbackgroud = view.findViewById(R.id.userbackgroud);
                             username.setText(fname +" "+lname+"'s Demand");
-                            Glide.with(getApplicationContext()).load(Config.AVATAR_URL+"h/250/"+backgroundX).apply(Config.options_background).into(userbackgroud);
-                            Glide.with(getApplicationContext()).load(Config.AVATAR_URL+"250/250/"+avatarX).apply(Config.options_avatar).into(userimage);
+                            Glide.with(context).load(Config.AVATAR_URL+"h/250/"+backgroundX).apply(Config.options_background).into(userbackgroud);
+                            Glide.with(context).load(Config.AVATAR_URL+"250/250/"+avatarX).apply(Config.options_avatar).into(userimage);
                             userbackgroud.setOnClickListener(new View.OnClickListener() {
                                 @Override
                                 public void onClick(View view) {
@@ -142,31 +156,19 @@ public class MyDemandActivity extends AppCompatActivity implements MyDemandAdapt
                     }
                 });
         //Creating a request queue
-        RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
+        RequestQueue requestQueue = Volley.newRequestQueue(context);
         //Adding request to the queue
         requestQueue.add(stringRequest);
     }
-    @Override
-    public void onBackPressed() {
-        //super.onBackPressed();
-        Intent i = new Intent();
-        i.putExtra(Config.PAGE_TAG, Config.PREVIOUS_PAGE_TAG);
-        setResult(RESULT_OK, i);
-        finish();
-    }
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        Toast.makeText(this, "mss popup"+resultCode+"--"+requestCode,  Toast.LENGTH_LONG).show();
-    }
     public void redirect(View v){
-        Intent i_signup = new Intent(MyDemandActivity.this,AddDemandActivity.class);
+        Intent i_signup = new Intent(context,AddDemandActivity.class);
         MyDemandActivity.this.startActivity(i_signup);
     }
 
     public void getDemand(){
         String url=Config.API_URL+"app_service.php?type=getall_product&added_by="+uid+"&my_id="+uid+"&search_type=DEMAND";
         // Initialize a new RequestQueue instance
-        RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
+        RequestQueue requestQueue = Volley.newRequestQueue(context);
 
         // Initialize a new JsonArrayRequest instance
         JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(
@@ -230,14 +232,14 @@ public class MyDemandActivity extends AppCompatActivity implements MyDemandAdapt
                             Log.d("dmm",dm.toString());
                             //allSampleData.add(dm);
                             Log.d("allsampledatav",item.toString());
-                            adapter = new MyDemandAdapter(MyDemandActivity.this,item,MyDemandActivity.this);
+                            adapter = new MyDemandAdapter(context,item,MyDemandActivity.this);
                             recyclerView.setAdapter(adapter);
-                            GridLayoutManager manager = new GridLayoutManager(MyDemandActivity.this, 2, GridLayoutManager.VERTICAL, false);
+                            GridLayoutManager manager = new GridLayoutManager(context, 2, GridLayoutManager.VERTICAL, false);
                             recyclerView.setLayoutManager(manager);
                         }
                         catch (JSONException e){
                             e.printStackTrace();
-                            Toast.makeText(getApplicationContext(), ""+e.getMessage(), Toast.LENGTH_SHORT).show();
+                            Toast.makeText(context, ""+e.getMessage(), Toast.LENGTH_SHORT).show();
                             Log.d("catch_f",""+e.getMessage());
                         }
                     }
@@ -247,7 +249,7 @@ public class MyDemandActivity extends AppCompatActivity implements MyDemandAdapt
                     public void onErrorResponse(VolleyError error){
                         // Do something when error occurred
                         //Snackbar.make(getContext(),"Error...", Snackbar.LENGTH_LONG).show();
-                        Toast.makeText(getApplicationContext(), error.getMessage(), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(context, error.getMessage(), Toast.LENGTH_SHORT).show();
                         Log.d("verror",""+error.getMessage());
                     }
                 }

@@ -125,28 +125,22 @@ public class UserMenuActivity  extends Fragment {
     };
     private View.OnClickListener myproductOnClickListener = new View.OnClickListener() {
         public void onClick(View v) {
-            //if(function.isSamePage("activity_my_product"))return;
-            Intent intent = new Intent(getContext(), MyProductActivity.class);
-            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            getContext().startActivity(intent);
+            MyProductActivity fragment = new MyProductActivity();
+            function.loadFragment(getContext(),fragment,null);
             removeFragment();
         }
     };
     private View.OnClickListener myprovideOnClickListener = new View.OnClickListener() {
         public void onClick(View v) {
-            //if(function.isSamePage("activity_my_provide"))return;
-            Intent intent = new Intent(getContext(), MyProvideActivity.class);
-            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            getContext().startActivity(intent);
+            MyProvideActivity fragment = new MyProvideActivity();
+            function.loadFragment(getContext(),fragment,null);
             removeFragment();
         }
     };
     private View.OnClickListener demandOnClickListener = new View.OnClickListener() {
         public void onClick(View v) {
-            //if(function.isSamePage("activity_my_demand"))return;
-            Intent intent = new Intent(getContext(), MyDemandActivity.class);
-            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            getContext().startActivity(intent);
+            MyDemandActivity fragment = new MyDemandActivity();
+            function.loadFragment(getContext(),fragment,null);
             removeFragment();
         }
     };

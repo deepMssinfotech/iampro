@@ -366,9 +366,8 @@ public class AddProvideActivity extends AppCompatActivity {
                                 etsellingcost.setText(" ");
                                 etprovidedetail.setText(" ");
 
-                                Intent intent=new Intent(getApplicationContext(),MyProvideActivity.class);
-                                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                                startActivity(intent);
+                                MyProvideActivity fragment = new MyProvideActivity();
+                                function.loadFragment(AddProvideActivity.this,fragment,null);
                                 finish();
                             }
                         }
@@ -438,10 +437,9 @@ public class AddProvideActivity extends AppCompatActivity {
                                 etsellingcost.setText(" ");
                                 etprovidedetail.setText(" ");
 
-                                 Intent intent=new Intent(getApplicationContext(),MyProvideActivity.class);
-                                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                                 startActivity(intent);
-                                 finish();
+                                MyProvideActivity fragment = new MyProvideActivity();
+                                function.loadFragment(AddProvideActivity.this,fragment,null);
+                                finish();
                             }
                         }
                         catch(JSONException e)

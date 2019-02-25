@@ -44,6 +44,7 @@ import com.mssinfotech.iampro.co.product.ProductDetail;
 import com.mssinfotech.iampro.co.provide.ProvideDetailActivity;
 import com.mssinfotech.iampro.co.user.MyDemandActivity;
 import com.mssinfotech.iampro.co.user.MyImageActivity;
+import com.mssinfotech.iampro.co.user.MyProductActivity;
 import com.mssinfotech.iampro.co.user.MyProvideActivity;
 import com.mssinfotech.iampro.co.user.MyVideoActivity;
 import com.mssinfotech.iampro.co.user.ProfileActivity;
@@ -306,17 +307,20 @@ public class AllFeedAdapter extends RecyclerView.Adapter<AllFeedAdapter.ViewHold
                     args.putString("uid", String.valueOf(uid));
                     function.loadFragment(mContext,fragment,args);
                 } else if (type.equalsIgnoreCase("PRODUCT")) {
-                    Intent intent = new Intent(mContext, MyProvideActivity.class);
-                    intent.putExtra("uid", String.valueOf(mValues.get(position).getUid()));
-                    mContext.startActivity(intent);
+                    MyProductActivity fragment = new MyProductActivity();
+                    Bundle args = new Bundle();
+                    args.putString("uid", String.valueOf(uid));
+                    function.loadFragment(mContext,fragment,args);
                 } else if (type.equalsIgnoreCase("PROVIDE")) {
-                    Intent intent = new Intent(mContext, MyProvideActivity.class);
-                    intent.putExtra("uid", String.valueOf(mValues.get(position).getUid()));
-                    mContext.startActivity(intent);
+                    MyProvideActivity fragment = new MyProvideActivity();
+                    Bundle args = new Bundle();
+                    args.putString("uid", String.valueOf(uid));
+                    function.loadFragment(mContext,fragment,args);
                 } else if (type.equalsIgnoreCase("DEMAND")) {
-                    Intent intent = new Intent(mContext, MyDemandActivity.class);
-                    intent.putExtra("uid", String.valueOf(mValues.get(position).getUid()));
-                    mContext.startActivity(intent);
+                    MyDemandActivity fragment = new MyDemandActivity();
+                    Bundle args = new Bundle();
+                    args.putString("uid", String.valueOf(uid));
+                    function.loadFragment(mContext,fragment,args);
                 }
             }
         });

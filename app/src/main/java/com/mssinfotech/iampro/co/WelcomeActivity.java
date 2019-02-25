@@ -82,6 +82,7 @@ public class WelcomeActivity extends AppCompatActivity implements View.OnClickLi
                 break;
         }
     }
+    /*
     @Override
     public void onBackPressed() {
         if (Config.doubleBackToExitPressedOnce) {
@@ -100,5 +101,5 @@ public class WelcomeActivity extends AppCompatActivity implements View.OnClickLi
             }
         }, 2000);
     }
-
+    */
 }

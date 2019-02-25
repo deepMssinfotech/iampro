@@ -87,31 +87,26 @@ public class IncludeShortMenu  extends RelativeLayout {
     };
     private OnClickListener productOnClickListener = new OnClickListener() {
         public void onClick(View v) {
-            Intent intent = new Intent(getContext(), MyProductActivity.class);
-            intent.putExtra(Config.PAGE_TAG,"activity_my_product");
-            intent.putExtra("uid",tvs.getText().toString());
-            getContext().startActivity(intent);
-            if(function.isSamePage("activity_my_product"))function.finishFunction(getContext());
+            MyProductActivity fragment = new MyProductActivity();
+            Bundle args = new Bundle();
+            args.putString("uid", tvs.getText().toString());
+            function.loadFragment(getContext(),fragment,args);
         }
     };
     private OnClickListener provideOnClickListener = new OnClickListener() {
         public void onClick(View v) {
-
-            Intent intent = new Intent(getContext(), MyProvideActivity.class);
-            intent.putExtra(Config.PAGE_TAG,"activity_my_provide");
-            intent.putExtra(" ",tvs.getText().toString());
-            getContext().startActivity(intent);
-            if(function.isSamePage("activity_my_provide"))function.finishFunction(getContext());
+            MyProvideActivity fragment = new MyProvideActivity();
+            Bundle args = new Bundle();
+            args.putString("uid", tvs.getText().toString());
+            function.loadFragment(getContext(),fragment,args);
         }
     };
     private OnClickListener demandOnClickListener = new OnClickListener() {
         public void onClick(View v) {
-
-            Intent intent = new Intent(getContext(), MyDemandActivity.class);
-            intent.putExtra(Config.PAGE_TAG,"activity_my_demand");
-            intent.putExtra("uid",tvs.getText().toString());
-            getContext().startActivity(intent);
-            if(function.isSamePage("activity_my_demand"))function.finishFunction(getContext());
+            MyDemandActivity fragment = new MyDemandActivity();
+            Bundle args = new Bundle();
+            args.putString("uid", tvs.getText().toString());
+            function.loadFragment(getContext(),fragment,args);
         }
     };
     public void userProfileCount(Context context, String uid){
