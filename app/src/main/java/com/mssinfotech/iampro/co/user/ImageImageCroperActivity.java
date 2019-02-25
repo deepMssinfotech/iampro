@@ -24,6 +24,7 @@ import android.os.StrictMode;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Display;
 import android.view.View;
@@ -207,8 +208,15 @@ public class ImageImageCroperActivity extends AppCompatActivity implements IProf
     }
 
     public void redirect(){
-        Intent intent=new Intent(getApplicationContext(),MyImageActivity.class);
-        startActivity(intent);
+        AppCompatActivity activity = (AppCompatActivity) getApplicationContext();
+        MyImageActivity fragment = new MyImageActivity();
+        FragmentManager fragmentManager = activity.getSupportFragmentManager();
+
+        fragmentManager.beginTransaction()
+                .replace(android.R.id.content, fragment, null)
+                .setCustomAnimations(R.anim.enter, R.anim.exit, R.anim.pop_enter, R.anim.pop_exit)
+                .addToBackStack(null)
+                .commit();
         finish();
     }
     @Override

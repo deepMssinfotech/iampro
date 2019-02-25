@@ -63,21 +63,33 @@ public class IncludeShortMenu  extends RelativeLayout {
     }
     private OnClickListener imageOnClickListener = new OnClickListener() {
         public void onClick(View v) {
-
-            Intent intent = new Intent(getContext(), MyImageActivity.class);
-            intent.putExtra(Config.PAGE_TAG,"activity_my_image");
-            intent.putExtra("uid",tvs.getText().toString());
-            getContext().startActivity(intent);
-            if(function.isSamePage("activity_my_image"))function.finishFunction(getContext());
+            AppCompatActivity activity = (AppCompatActivity) getContext();
+            MyImageActivity fragment = new MyImageActivity();
+            Bundle args = new Bundle();
+            args.putString("uid", tvs.getText().toString());
+            fragment.setArguments(args);
+            FragmentManager fragmentManager = activity.getSupportFragmentManager();
+            fragmentManager.beginTransaction()
+                    .replace(android.R.id.content, fragment, null)
+                    .setCustomAnimations(R.anim.enter, R.anim.exit, R.anim.pop_enter, R.anim.pop_exit)
+                    .addToBackStack(null)
+                    .commit();
         }
     };
     private OnClickListener videoOnClickListener = new OnClickListener() {
         public void onClick(View v) {
-            Intent intent = new Intent(getContext(), MyVideoActivity.class);
-            intent.putExtra(Config.PAGE_TAG,"activity_my_video");
-            intent.putExtra("uid",tvs.getText().toString());
-            getContext().startActivity(intent);
-            if(function.isSamePage("activity_my_video"))function.finishFunction(getContext());
+            AppCompatActivity activity = (AppCompatActivity) getContext();
+            MyVideoActivity fragment = new MyVideoActivity();
+            Bundle args = new Bundle();
+            args.putString("uid", tvs.getText().toString());
+            fragment.setArguments(args);
+            FragmentManager fragmentManager = activity.getSupportFragmentManager();
+
+            fragmentManager.beginTransaction()
+                    .replace(android.R.id.content, fragment, null)
+                    .setCustomAnimations(R.anim.enter, R.anim.exit, R.anim.pop_enter, R.anim.pop_exit)
+                    .addToBackStack(null)
+                    .commit();
         }
     };
     private OnClickListener userOnClickListener = new OnClickListener() {

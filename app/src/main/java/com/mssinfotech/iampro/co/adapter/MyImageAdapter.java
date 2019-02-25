@@ -1,7 +1,10 @@
 package com.mssinfotech.iampro.co.adapter;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.v4.app.FragmentManager;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -60,7 +63,6 @@ public class MyImageAdapter extends RecyclerView.Adapter<MyImageAdapter.ViewHold
             image=v.findViewById(R.id.imageView);
             videoView=v.findViewById(R.id.videoView);
             ratingBar=v.findViewById(R.id.ratingBar);
-            ivLike=v.findViewById(R.id.ivLike);
              //udate=v.findViewById(R.id.udate);
             tv_comments=v.findViewById(R.id.tv_comments);
             tv_totallike=v.findViewById(R.id.tv_totallike);
@@ -82,11 +84,20 @@ public class MyImageAdapter extends RecyclerView.Adapter<MyImageAdapter.ViewHold
             imageView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Intent intent=new Intent(mContext,ImageDetail.class);
-                    intent.putExtra("uid",uid);
-                    intent.putExtra("id",id);
-                    intent.putExtra("type","image");
-                    mContext.startActivity(intent);
+                    AppCompatActivity activity = (AppCompatActivity) mContext;
+                    ImageDetail fragment = new ImageDetail();
+                    Bundle args = new Bundle();
+                    args.putString("id", id);
+                    args.putString("type", "image");
+                    args.putString("uid", uid);
+                    fragment.setArguments(args);
+                    FragmentManager fragmentManager = activity.getSupportFragmentManager();
+
+                    fragmentManager.beginTransaction()
+                            .replace(android.R.id.content, fragment, null)
+                            .setCustomAnimations(R.anim.enter, R.anim.exit, R.anim.pop_enter, R.anim.pop_exit)
+                            .addToBackStack(null)
+                            .commit();
                 }
             });
 

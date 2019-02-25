@@ -22,6 +22,7 @@ import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -351,10 +352,15 @@ public class AddVideoActivity extends AppCompatActivity {
                     //.setNotificationConfig(new UploadNotificationConfig())
                     .setMaxRetries(2)
                     .startUpload(); //Starting the upload
-            Intent intent = new Intent(getApplicationContext(), MyVideoActivity.class);
-            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-            startActivity(intent);
-            Toast.makeText(this, "Video Uploade is processing please wait", Toast.LENGTH_SHORT).show();
+            AppCompatActivity activity = (AppCompatActivity) getApplicationContext();
+            MyVideoActivity fragment = new MyVideoActivity();
+            FragmentManager fragmentManager = activity.getSupportFragmentManager();
+
+            fragmentManager.beginTransaction()
+                    .replace(android.R.id.content, fragment, null)
+                    .setCustomAnimations(R.anim.enter, R.anim.exit, R.anim.pop_enter, R.anim.pop_exit)
+                    .addToBackStack(null)
+                    .commit();
             finish();
         } catch (Exception exc) {
             Toast.makeText(this, exc.getMessage(), Toast.LENGTH_SHORT).show();

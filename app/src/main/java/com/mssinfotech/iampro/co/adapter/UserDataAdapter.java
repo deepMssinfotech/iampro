@@ -4,6 +4,9 @@ package com.mssinfotech.iampro.co.adapter;
  * Created by mssinfotech on 18/01/19.
  */
 import android.content.Intent;
+import android.os.Bundle;
+import android.support.v4.app.FragmentManager;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -95,11 +98,18 @@ public class UserDataAdapter extends RecyclerView.Adapter<UserDataAdapter.ViewHo
          Vholder.imageView.setOnClickListener(new View.OnClickListener() {
              @Override
              public void onClick(View v) {
-                 Intent intent=new Intent(mContext, ProfileActivity.class);
-                  intent.putExtra("uid",String.valueOf(mValues.get(position).getId()));
-                   intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                  mContext.startActivity(intent);
+                 AppCompatActivity activity = (AppCompatActivity) mContext;
+                 ProfileActivity fragment = new ProfileActivity();
+                 Bundle args = new Bundle();
+                 args.putString("uid", String.valueOf(mValues.get(position).getId()));
+                 fragment.setArguments(args);
+                 FragmentManager fragmentManager = activity.getSupportFragmentManager();
 
+                 fragmentManager.beginTransaction()
+                         .replace(android.R.id.content, fragment, null)
+                         .setCustomAnimations(R.anim.enter, R.anim.exit, R.anim.pop_enter, R.anim.pop_exit)
+                         .addToBackStack(null)
+                         .commit();
 
              }
          });

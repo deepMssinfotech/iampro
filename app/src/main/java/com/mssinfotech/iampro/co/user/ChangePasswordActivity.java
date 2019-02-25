@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.support.design.widget.TextInputEditText;
 import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -90,11 +91,14 @@ public class ChangePasswordActivity extends Fragment {
                                 String status = result.getString("status");
                                 String msg = result.getString("msg");
                                 if (status.equals("success")) {
-                                    Intent intent = new Intent(getContext(), ProfileActivity.class);
-                                    //intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                                    Toast.makeText(getContext(),"Password Update Successfully", Toast.LENGTH_LONG).show();
-                                    startActivity(intent);
-                                    getActivity().finish();
+                                    AppCompatActivity activity = (AppCompatActivity) getContext();
+                                    ProfileActivity fragment = new ProfileActivity();
+                                    FragmentManager fragmentManager = activity.getSupportFragmentManager();
+                                    fragmentManager.beginTransaction()
+                                            .replace(android.R.id.content, fragment, null)
+                                            .setCustomAnimations(R.anim.enter, R.anim.exit, R.anim.pop_enter, R.anim.pop_exit)
+                                            .addToBackStack(null)
+                                            .commit();
                                 } else {
                                     Toast.makeText(getContext(), msg, Toast.LENGTH_LONG).show();
                                 }

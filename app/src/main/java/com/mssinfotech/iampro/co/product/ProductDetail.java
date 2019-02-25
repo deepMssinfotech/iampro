@@ -90,14 +90,22 @@ public class ProductDetail extends AppCompatActivity implements CommentAdapter.I
         recycler_view_review_product = findViewById(R.id.recycler_view_review_product);
 
         pid = getIntent().getExtras().getString("pid");
-        uid = getIntent().getExtras().getString("uid");
+        //uid = getIntent().getExtras().getString("uid");
         user_image.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(ProductDetail.this, "uid:" + uid, Toast.LENGTH_LONG).show();
-                Intent intent = new Intent(ProductDetail.this, ProfileActivity.class);
-                intent.putExtra("uid", String.valueOf(uid));
-                ProductDetail.this.startActivity(intent);
+                AppCompatActivity activity = (AppCompatActivity) ProductDetail.this;
+                ProfileActivity fragment = new ProfileActivity();
+                Bundle args = new Bundle();
+                args.putString("uid", String.valueOf(uid));
+                fragment.setArguments(args);
+                FragmentManager fragmentManager = activity.getSupportFragmentManager();
+
+                fragmentManager.beginTransaction()
+                        .replace(android.R.id.content, fragment, null)
+                        .setCustomAnimations(R.anim.enter, R.anim.exit, R.anim.pop_enter, R.anim.pop_exit)
+                        .addToBackStack(null)
+                        .commit();
             }
         });
         getProductDetail();
@@ -131,7 +139,7 @@ public class ProductDetail extends AppCompatActivity implements CommentAdapter.I
                             String product_details = responses.optString("detail");
                             String product_provide_name = responses.optString("user_name");
                             //JSONArray myother_img=responses.getJSONArray("myother_img");
-
+                            uid = responses.getString("added_by");
                             String product_provide_email = responses.optString("email");
                             String avatar = responses.optString("avatar");
                             String avatar_path = AVATAR_URL + avatar;

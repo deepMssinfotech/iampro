@@ -38,6 +38,7 @@ import com.mssinfotech.iampro.co.common.Config;
 import com.mssinfotech.iampro.co.common.function;
 import com.mssinfotech.iampro.co.image.ImageDetail;
 import com.mssinfotech.iampro.co.model.MyImageModel;
+import com.mssinfotech.iampro.co.product.ProductDetail;
 import com.mssinfotech.iampro.co.user.AddImageActivity;
 import com.mssinfotech.iampro.co.utils.PrefManager;
 
@@ -157,19 +158,16 @@ public class SectionProductAdapter extends RecyclerView.Adapter<SectionProductAd
         holder.imageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent=new Intent(mContext,ImageDetail.class);
-                intent.putExtra("uid",Integer.parseInt(uid));
+                Intent intent=new Intent(mContext, ProductDetail.class);
                 intent.putExtra("id",Integer.parseInt(id));
-                intent.putExtra("type","image");
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 mContext.startActivity(intent);
-                Log.d("uid_idvideo",""+uid+" "+id);
             }
         });
 
         Glide.with(mContext)
                 .load(Config.ALBUM_URL+singleItem.getImage())
-                .apply(Config.options_avatar)
+                .apply(Config.options_product)
                 .into(holder.imageView);
 
         holder.iv_delete.setOnClickListener(new View.OnClickListener() {

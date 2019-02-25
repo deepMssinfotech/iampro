@@ -14,11 +14,15 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.provider.MediaStore;
 import android.support.design.widget.TextInputEditText;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Base64;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -70,9 +74,10 @@ import java.util.UUID;
 import de.hdodenhof.circleimageview.CircleImageView;
 import javax.net.ssl.HttpsURLConnection;
 
+import static android.app.Activity.RESULT_CANCELED;
 import static com.mssinfotech.iampro.co.common.ImageProcess.getStringImage;
 
-public class EditProfileActivity extends AppCompatActivity {
+public class EditProfileActivity extends Fragment {
     public  static int CAMERA_CAPTURE_IMAGE_REQUEST_CODE=100;
     public static int CAMERA_CAPTURE_PICK_IMAGE_REQUEST=200;
     Bitmap bitmap; TextView tvlayouttype;
@@ -100,41 +105,45 @@ public class EditProfileActivity extends AppCompatActivity {
     public String idv, usenamev, fnamev, avatar;
     public String backgroundimagePath="";
     String simg_path=null,full_simg_path,banner_imagep,fbanner_imagep;
-    Context context=EditProfileActivity.this;
-    ImageView view;
+    Context context;
     TextInputEditText category,first_name,last_name,contact_no,email,dob,identity_type,identity_no,about_me,tag_line,address_tag,city,state,country;
     String uid,fname,background,banner_img;
     TextView username;
     ImageView userbackgroud,changeImage,changeBackground_Image;
     Spinner spprofession;
     private GalleryAdapter galleryAdapter;
+    View view;
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_edit_profile);
-        Config.setLayoutName(getResources().getResourceEntryName(R.layout.activity_edit_profile));
-        fname=PrefManager.getLoginDetail(this,"fname");
-        uid=PrefManager.getLoginDetail(this,"id");
-        avatar = Config.AVATAR_URL+"250/250/"+PrefManager.getLoginDetail(this,"img_url");
-        background=Config.AVATAR_URL+"h/250/"+PrefManager.getLoginDetail(this,"banner_image");
-        username = findViewById(R.id.username);
-        userimage = findViewById(R.id.userimage);
-        userbackgroud = findViewById(R.id.userbackgroud);
-        tvlayouttype = findViewById(R.id.tvlayouttype);
-        username.setText(PrefManager.getLoginDetail(this,"fname") +" "+PrefManager.getLoginDetail(this,"lname"));
-        Glide.with(this).load(background).apply(Config.options_background).into(userbackgroud);
-        Glide.with(this).load(avatar).apply(Config.options_avatar).into(userimage);
-        changeImage = findViewById(R.id.changeImage);
+    public View onCreateView(LayoutInflater inflater, ViewGroup parent, Bundle savedInstanceState) {
+        // Defines the xml file for the fragment
+        return inflater.inflate(R.layout.activity_edit_profile, parent, false);
+    }
+    @Override
+    public void onViewCreated(View v, Bundle savedInstanceState) {
+        view = v;
+        context = getContext();
+        fname=PrefManager.getLoginDetail(context,"fname");
+        uid=PrefManager.getLoginDetail(context,"id");
+        avatar = Config.AVATAR_URL+"250/250/"+PrefManager.getLoginDetail(context,"img_url");
+        background=Config.AVATAR_URL+"h/250/"+PrefManager.getLoginDetail(context,"banner_image");
+        username = view.findViewById(R.id.username);
+        userimage = view.findViewById(R.id.userimage);
+        userbackgroud = view.findViewById(R.id.userbackgroud);
+        tvlayouttype = view.findViewById(R.id.tvlayouttype);
+        username.setText(PrefManager.getLoginDetail(context,"fname") +" "+PrefManager.getLoginDetail(context,"lname"));
+        Glide.with(context).load(background).apply(Config.options_background).into(userbackgroud);
+        Glide.with(context).load(avatar).apply(Config.options_avatar).into(userimage);
+        changeImage = view.findViewById(R.id.changeImage);
         changeImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent=new Intent(EditProfileActivity.this,ProfileImageCroperActivity.class);
+                Intent intent=new Intent(context,ProfileImageCroperActivity.class);
                 startActivity(intent);
                 //finish();
             }
         });
 
-        changeBackground_Image = findViewById(R.id.changeBackground_Image);
+        changeBackground_Image = view.findViewById(R.id.changeBackground_Image);
         changeBackground_Image.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -142,24 +151,24 @@ public class EditProfileActivity extends AppCompatActivity {
             }
         });
 
-        spprofession = findViewById(R.id.spprofession);
-        function.getData(EditProfileActivity.this, this, spprofession, "FRIEND");
-        first_name= findViewById(R.id.first_name);
-        last_name= findViewById(R.id.last_name);
-        contact_no= findViewById(R.id.contact_no);
-        email= findViewById(R.id.email);
-        dob= findViewById(R.id.dob);
-        identity_type= findViewById(R.id.identity_type);
-        identity_no= findViewById(R.id.identity_no);
-        about_me= findViewById(R.id.about_me);
-        tag_line= findViewById(R.id.tag_line);
-        address_tag= findViewById(R.id.address_tag);
-        city= findViewById(R.id.city);
-        state= findViewById(R.id.state);
-        country=findViewById(R.id.country);
+        spprofession = view.findViewById(R.id.spprofession);
+        function.getData(getActivity(), context, spprofession, "FRIEND");
+        first_name= view.findViewById(R.id.first_name);
+        last_name= view.findViewById(R.id.last_name);
+        contact_no= view.findViewById(R.id.contact_no);
+        email= view.findViewById(R.id.email);
+        dob= view.findViewById(R.id.dob);
+        identity_type= view.findViewById(R.id.identity_type);
+        identity_no= view.findViewById(R.id.identity_no);
+        about_me= view.findViewById(R.id.about_me);
+        tag_line= view.findViewById(R.id.tag_line);
+        address_tag= view.findViewById(R.id.address_tag);
+        city= view.findViewById(R.id.city);
+        state= view.findViewById(R.id.state);
+        country=view.findViewById(R.id.country);
 
         getData();
-        PrefManager.updateUserData(this,null);
+        PrefManager.updateUserData(context,null);
     }
     public void SaveForm(View v)
     {
@@ -168,7 +177,7 @@ public class EditProfileActivity extends AppCompatActivity {
             return;
         }
         String emailv=email.getText().toString();
-        final ProgressDialog loading = ProgressDialog.show(this,"Processing...","Please wait...",false,false);
+        final ProgressDialog loading = ProgressDialog.show(context,"Processing...","Please wait...",false,false);
         StringRequest stringRequest = new StringRequest(Request.Method.GET,Config.API_URL+"ajax.php?type=checkemail&email="+emailv+"&uid="+idv,
                 new Response.Listener<String>() {
                     @Override
@@ -183,8 +192,8 @@ public class EditProfileActivity extends AppCompatActivity {
                             JSONObject jsonObject = new JSONObject(s);
                             String status=jsonObject.getString("status");
                             String msgg=jsonObject.getString("msg");
-                            PrefManager.updateUserData(getApplicationContext(),null);
-                            Toast.makeText(getApplicationContext(),""+msgg,Toast.LENGTH_LONG).show();
+                            PrefManager.updateUserData(context,null);
+                            Toast.makeText(context,""+msgg,Toast.LENGTH_LONG).show();
                             if (status.equalsIgnoreCase("success")){
                                 updateProfile();
                             }
@@ -193,7 +202,7 @@ public class EditProfileActivity extends AppCompatActivity {
                         {
                             loading.dismiss();
                             Log.d("JSoNExceptionv",e.getMessage());
-                            Toast.makeText(getApplicationContext(),e.getMessage(),Toast.LENGTH_LONG).show();
+                            Toast.makeText(context,e.getMessage(),Toast.LENGTH_LONG).show();
                         }
                     }
                 },
@@ -202,23 +211,23 @@ public class EditProfileActivity extends AppCompatActivity {
                     public void onErrorResponse(VolleyError volleyError) {
                         //Dismissing the progress dialog
                         loading.dismiss();
-                        Toast.makeText(getApplicationContext(),volleyError.getMessage(),Toast.LENGTH_LONG).show();
+                        Toast.makeText(context,volleyError.getMessage(),Toast.LENGTH_LONG).show();
                     }
                 });
         //Creating a Request Queue
-        RequestQueue requestQueue = Volley.newRequestQueue(this);
+        RequestQueue requestQueue = Volley.newRequestQueue(context);
 
         //Adding request to the queue
         requestQueue.add(stringRequest);
     }
 
     public void updateProfile(){
-        String idv=PrefManager.getLoginDetail(this,"id");
+        String idv=PrefManager.getLoginDetail(context,"id");
         if (!isInternetOn())  {
             showInternetDialog();
             return;
         }
-        final ProgressDialog loading =ProgressDialog.show(this,"Processing...","Please wait...",false,false);
+        final ProgressDialog loading =ProgressDialog.show(context,"Processing...","Please wait...",false,false);
         StringRequest stringRequest = new StringRequest(Request.Method.GET,Config.AJAX_URL+"signup.php?type=update_profile&uid="+idv+"&fname="+first_name.getText()+"&lname="+last_name.getText()+"&mobile="+contact_no.getText()+"&email="+email.getText()+"&dob="+dob.getText()+"&identity_type="+identity_type.getText()+"&identity_number="+identity_no.getText()+"&about_me="+about_me.getText()+"&tag_line="+tag_line.getText()+"&address="+address_tag.getText()+"&city="+city.getText()+"&state="+state.getText()+"&country="+country.getText(),
                 new Response.Listener<String>() {
                     @Override
@@ -234,18 +243,23 @@ public class EditProfileActivity extends AppCompatActivity {
                             String status=jsonObject.getString("status");
                             String msgg=jsonObject.getString("msg");
                             //String urlv=jsonObject.getString("url");
-                            Toast.makeText(getApplicationContext(),""+msgg,Toast.LENGTH_LONG).show();
+                            Toast.makeText(context,""+msgg,Toast.LENGTH_LONG).show();
                             if (status.equalsIgnoreCase("success")){
-                                Intent intent=new Intent(getApplicationContext(),ProfileActivity.class);
-                                startActivity(intent);
-                                finish();
+                                AppCompatActivity activity = (AppCompatActivity) context;
+                                ProfileActivity fragment = new ProfileActivity();
+                                FragmentManager fragmentManager = activity.getSupportFragmentManager();
+                                fragmentManager.beginTransaction()
+                                        .replace(android.R.id.content, fragment, null)
+                                        .setCustomAnimations(R.anim.enter, R.anim.exit, R.anim.pop_enter, R.anim.pop_exit)
+                                        .addToBackStack(null)
+                                        .commit();
                             }
                         }
                         catch(JSONException e)
                         {
                             loading.dismiss();
                             Log.d("JSoNExceptionv",e.getMessage());
-                            Toast.makeText(getApplicationContext(),e.getMessage(),Toast.LENGTH_LONG).show();
+                            Toast.makeText(context,e.getMessage(),Toast.LENGTH_LONG).show();
                         }
                     }
                 },
@@ -254,11 +268,11 @@ public class EditProfileActivity extends AppCompatActivity {
                     public void onErrorResponse(VolleyError volleyError) {
                         //Dismissing the progress dialog
                         loading.dismiss();
-                        Toast.makeText(getApplicationContext(),volleyError.getMessage(),Toast.LENGTH_LONG).show();
+                        Toast.makeText(context,volleyError.getMessage(),Toast.LENGTH_LONG).show();
                     }
                 });
         //Creating a Request Queue
-        RequestQueue requestQueue = Volley.newRequestQueue(this);
+        RequestQueue requestQueue = Volley.newRequestQueue(context);
 
         //Adding request to the queue
         requestQueue.add(stringRequest);
@@ -267,7 +281,7 @@ public class EditProfileActivity extends AppCompatActivity {
 
         // get Connectivity Manager object to check connection
         ConnectivityManager connec =
-                (ConnectivityManager)getSystemService(getBaseContext().CONNECTIVITY_SERVICE);
+                (ConnectivityManager)context.getSystemService(context.CONNECTIVITY_SERVICE);
 
         // Check for network connections
         if (connec.getNetworkInfo(0).getState() == android.net.NetworkInfo.State.CONNECTED ||
@@ -284,8 +298,8 @@ public class EditProfileActivity extends AppCompatActivity {
     }
     public void getData(){
 
-        String url=Config.API_URL+"ajax.php?type=get_users_all_detail&uid="+PrefManager.getLoginDetail(this,"id");
-        final ProgressDialog loading = ProgressDialog.show(this,"Processing...","Please wait...",false,false);
+        String url=Config.API_URL+"ajax.php?type=get_users_all_detail&uid="+PrefManager.getLoginDetail(context,"id");
+        final ProgressDialog loading = ProgressDialog.show(context,"Processing...","Please wait...",false,false);
         StringRequest stringRequest = new StringRequest(Request.Method.GET,url,
                 new Response.Listener<String>() {
                     @Override
@@ -327,7 +341,7 @@ public class EditProfileActivity extends AppCompatActivity {
                         {
                             loading.dismiss();
                             Log.d("JSoNExceptionv",e.getMessage());
-                            Toast.makeText(getApplicationContext(),e.getMessage(),Toast.LENGTH_LONG).show();
+                            Toast.makeText(context,e.getMessage(),Toast.LENGTH_LONG).show();
                         }
                     }
                 }, new Response.ErrorListener() {
@@ -339,13 +353,13 @@ public class EditProfileActivity extends AppCompatActivity {
             }
         });
         //Creating a request queue
-        RequestQueue requestQueue = Volley.newRequestQueue(this);
+        RequestQueue requestQueue = Volley.newRequestQueue(context);
         //Adding request to the queue
         requestQueue.add(stringRequest);
     }
     public void showInternetDialog()
     {
-        new AlertDialog.Builder(EditProfileActivity.this)
+        new AlertDialog.Builder(context)
                 .setTitle("You are offline!")
                 .setMessage("Check your network connectivity and try again...")
                 .setCancelable(false)
@@ -358,7 +372,7 @@ public class EditProfileActivity extends AppCompatActivity {
 
     }
     private boolean isDeviceSupportCamera() {
-        if (getApplicationContext().getPackageManager().hasSystemFeature(
+        if (context.getPackageManager().hasSystemFeature(
                 PackageManager.FEATURE_CAMERA)) {
             // this device has a camera
             return true;
@@ -369,12 +383,12 @@ public class EditProfileActivity extends AppCompatActivity {
     }
 
     public String getPath(Uri uri) {
-        Cursor cursor = getContentResolver().query(uri, null, null, null, null);
+        Cursor cursor = context.getContentResolver().query(uri, null, null, null, null);
         cursor.moveToFirst();
         String document_id = cursor.getString(0);
         document_id = document_id.substring(document_id.lastIndexOf(":") + 1);
         cursor.close();
-        cursor = getContentResolver().query(
+        cursor = context.getContentResolver().query(
                 android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
                 null, MediaStore.Images.Media._ID + " = ? ", new String[]{document_id}, null);
         cursor.moveToFirst();
@@ -385,7 +399,7 @@ public class EditProfileActivity extends AppCompatActivity {
     //image uploading
 
     private void showPictureDialog(){
-        AlertDialog.Builder pictureDialog = new AlertDialog.Builder(this);
+        AlertDialog.Builder pictureDialog = new AlertDialog.Builder(context);
         pictureDialog.setTitle("Select Action");
         String[] pictureDialogItems = {
                 "Photo Gallery",
@@ -422,21 +436,21 @@ public class EditProfileActivity extends AppCompatActivity {
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
 
         super.onActivityResult(requestCode, resultCode, data);
-        if (resultCode == this.RESULT_CANCELED) {
+        if (resultCode == RESULT_CANCELED) {
             return;
         }
         if (requestCode == GALLERY) {
             if (data != null) {
                 Uri contentURI = data.getData();
                 try {
-                    FixBitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), contentURI);
+                    FixBitmap = MediaStore.Images.Media.getBitmap(context.getContentResolver(), contentURI);
                     userbackgroud.setImageBitmap(FixBitmap);
                     backgroundimagePath = getPath(contentURI);
                     //UploadImageOnServerButton.setVisibility(View.VISIBLE);
                     sendData();
                 } catch (IOException e) {
                     e.printStackTrace();
-                    Toast.makeText(EditProfileActivity.this, "Failed!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(context, "Failed!", Toast.LENGTH_SHORT).show();
                 }
             }
         } else if (requestCode == CAMERA) {
@@ -452,14 +466,14 @@ public class EditProfileActivity extends AppCompatActivity {
                 //Toast.makeText(ShadiRegistrationPart5.this, "Image Saved!", Toast.LENGTH_SHORT).show();
             }
             catch (Exception e){
-                Toast.makeText(getApplicationContext(),e.getMessage(),Toast.LENGTH_LONG).show();
+                Toast.makeText(context,e.getMessage(),Toast.LENGTH_LONG).show();
             }
         }
     }
 
     public void sendData() {
-        if (!Config.haveNetworkConnection(this)) {
-            Config.showInternetDialog(this);
+        if (!Config.haveNetworkConnection(context)) {
+            Config.showInternetDialog(context);
             return;
         }
         //Toast.makeText(getApplicationContext(), "Video upload remain pleasw wait....", Toast.LENGTH_LONG).show();
@@ -467,21 +481,25 @@ public class EditProfileActivity extends AppCompatActivity {
         try {
             String uploadId = UUID.randomUUID().toString();
             //Creating a multi part request
-            new MultipartUploadRequest(this, uploadId, Config.AJAX_URL + "signup.php")
+            new MultipartUploadRequest(context, uploadId, Config.AJAX_URL + "signup.php")
                     .addFileToUpload(backgroundimagePath, "banner_img") //Adding file
                     .addParameter("type","banner_img")//Adding text parameter to the request
                     .addParameter("process_type","android")
-                    .addParameter("userid",PrefManager.getLoginDetail(getApplicationContext(),"id"))
+                    .addParameter("userid",PrefManager.getLoginDetail(context,"id"))
                     //.setNotificationConfig(new UploadNotificationConfig())
                     .setMaxRetries(2)
                     .startUpload(); //Starting the upload
-            Intent intent = new Intent(getApplicationContext(), EditProfileActivity.class);
-            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-            startActivity(intent);
-            Toast.makeText(this, "Update Profile Background Image is processing please wait", Toast.LENGTH_SHORT).show();
-            finish();
+            AppCompatActivity activity = (AppCompatActivity) getContext();
+            ProfileActivity fragment = new ProfileActivity();
+            FragmentManager fragmentManager = activity.getSupportFragmentManager();
+            fragmentManager.beginTransaction()
+                    .replace(android.R.id.content, fragment, null)
+                    .setCustomAnimations(R.anim.enter, R.anim.exit, R.anim.pop_enter, R.anim.pop_exit)
+                    .addToBackStack(null)
+                    .commit();
+            getActivity().finish();
         } catch (Exception exc) {
-            Toast.makeText(this, exc.getMessage(), Toast.LENGTH_SHORT).show();
+            Toast.makeText(context, exc.getMessage(), Toast.LENGTH_SHORT).show();
         }
 
     }
@@ -495,7 +513,7 @@ public class EditProfileActivity extends AppCompatActivity {
             }
             else {
 
-                Toast.makeText(EditProfileActivity.this, "Unable to use Camera..Please Allow us to use Camera", Toast.LENGTH_LONG).show();
+                Toast.makeText(context, "Unable to use Camera..Please Allow us to use Camera", Toast.LENGTH_LONG).show();
 
             }
         }

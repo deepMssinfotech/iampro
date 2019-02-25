@@ -9,6 +9,9 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
+import android.os.Bundle;
+import android.support.v4.app.FragmentManager;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -123,7 +126,7 @@ public class SectionImageVideoAdapter extends RecyclerView.Adapter<SectionImageV
             holder.tv_totallike.setTextColor(Color.BLACK);
         }
 
-        if(itemsList.get(i).getMore().equalsIgnoreCase("loadmore")){
+        //if(itemsList.get(i).getMore().equalsIgnoreCase("loadmore")){
             //holder.user_image.setVisibility(View.VISIBLE);
              Glide.with(mContext)
                      .load(Config.ALBUM_URL+singleItem.getAvatar())
@@ -131,7 +134,7 @@ public class SectionImageVideoAdapter extends RecyclerView.Adapter<SectionImageV
                      .into(holder.user_image);
              holder.category.setText(itemsList.get(i).getFullname());
              //holder.ratingBar.setRating(Float.parseFloat(itemsList.get(i).getRating()));
-         }
+         //}
 
        //if(singleItem.getRating()!="NAN" || singleItem.getRating().length()>0 || !(singleItem.getRating().equalsIgnoreCase("NAN")) || singleItem.getRating()!="" || !singleItem.getRating().equalsIgnoreCase("")
         // || !singleItem.getRating().isEmpty())
@@ -250,15 +253,22 @@ public class SectionImageVideoAdapter extends RecyclerView.Adapter<SectionImageV
                     intent.putExtra("type", "demand");
                     mContext.startActivity(intent);
                 }
-                 else {
-                    Intent intent = new Intent(mContext, ImageDetail.class);
-                    intent.putExtra("uid", Integer.parseInt(uid));
-                    intent.putExtra("id", Integer.parseInt(id));
-                    intent.putExtra("type", "image");
-                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                    mContext.startActivity(intent);
-                    Log.d("uid_idvideo", "" + uid + " " + id);
-                        }
+                else {
+                    AppCompatActivity activity = (AppCompatActivity) mContext;
+                    ImageDetail fragment = new ImageDetail();
+                    Bundle args = new Bundle();
+                    args.putString("id", id);
+                    args.putString("type", String.valueOf(type.equalsIgnoreCase("demand")));
+                    args.putString("uid", uid);
+                    fragment.setArguments(args);
+                    FragmentManager fragmentManager = activity.getSupportFragmentManager();
+
+                    fragmentManager.beginTransaction()
+                            .replace(android.R.id.content, fragment, null)
+                            .setCustomAnimations(R.anim.enter, R.anim.exit, R.anim.pop_enter, R.anim.pop_exit)
+                            .addToBackStack(null)
+                            .commit();
+                }
 
             }
         });
@@ -318,11 +328,11 @@ public class SectionImageVideoAdapter extends RecyclerView.Adapter<SectionImageV
             holder.user_image.setVisibility(View.VISIBLE);
             Glide.with(mContext)
                     .load(Config.ALBUM_URL+singleItem.getImage())
-                    .apply(Config.options_avatar)
+                    .apply(Config.options_product)
                     .into(holder.imageView);
             Glide.with(mContext)
                     .load(Config.AVATAR_URL+singleItem.getAvatar())
-                    .apply(Config.options_product)
+                    .apply(Config.options_avatar)
                     .into(holder.user_image);
         }
 
@@ -370,28 +380,20 @@ public class SectionImageVideoAdapter extends RecyclerView.Adapter<SectionImageV
             }
         });
 
-        /* if(type.equalsIgnoreCase("product")){
-           holder.category.setText(mValues.get(i).getFullname());
-           //holder.tv_sellingprice.setText(mValues.get(i).);
-              holder.tv_purchaseprice.setText(mValues.get(i).);
-        }
-        else if(type.equalsIgnoreCase("provide")){
-            holder.category.setText(mValues.get(i).getFullname());
-            //holder.tv_sellingprice.setText(mValues.get(i).);
-        }
-         else if(type.equalsIgnoreCase("demand")){
-            holder.category.setText(mValues.get(i).getFullname());
-           // holder.tv_sellingprice.setText(mValues.get(i).);
-        } */
-        //if(type.equalsIgnoreCase("product") || type.equalsIgnoreCase("provide") || type.equalsIgnoreCase("demand")){
-            holder.user_image.setOnClickListener(new View.OnClickListener() {
+        holder.user_image.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                     Intent intent=new Intent(mContext,ProfileActivity.class);
-                     intent.putExtra("uid",String.valueOf(itemsList.get(i).getUid()));
-                     intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                      mContext.startActivity(intent);
-                      Toast.makeText(mContext,""+itemsList.get(i).getUid(),Toast.LENGTH_LONG).show();
+                    AppCompatActivity activity = (AppCompatActivity) mContext;
+                    ProfileActivity fragment = new ProfileActivity();
+                    Bundle args = new Bundle();
+                    args.putString("uid", String.valueOf(String.valueOf(itemsList.get(i).getUid())));
+                    fragment.setArguments(args);
+                    FragmentManager fragmentManager = activity.getSupportFragmentManager();
+
+                    fragmentManager.beginTransaction()
+                            .replace(android.R.id.content, fragment, null)
+                            .setCustomAnimations(R.anim.enter, R.anim.exit, R.anim.pop_enter, R.anim.pop_exit)
+                            .commit();
                 }
             });
       //  }

@@ -9,13 +9,17 @@ import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.provider.MediaStore;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -60,11 +64,13 @@ import java.util.UUID;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
-public class MyImageActivity extends AppCompatActivity implements MyImageAdapter.ItemListener {
+import static android.app.Activity.RESULT_CANCELED;
+
+public class MyImageActivity extends Fragment implements MyImageAdapter.ItemListener {
 
     CircleImageView userimage;
     TextView username,tv_category;
-    private String URL_FEED = "",uid="";
+    private String URL_FEED = "",uid="", id="";
     Intent intent;
      RecyclerView recyclerView;
     MyImageAdapter adapter;
@@ -79,28 +85,38 @@ public class MyImageActivity extends AppCompatActivity implements MyImageAdapter
     ImageView userbackgroud ,changeImage,changeBackground_Image ;
     private GalleryAdapter galleryAdapter;
     Context context;
+    View view;
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_my_image);
-        Config.setLayoutName(getResources().getResourceEntryName(R.layout.activity_my_image));
-        intent = getIntent();
-        context = getApplicationContext();
-        String id = intent.getStringExtra("uid");
-        username = findViewById(R.id.username);
-        userimage = findViewById(R.id.userimage);
-        changeImage = findViewById(R.id.changeImage);
-        changeBackground_Image = findViewById(R.id.changeBackground_Image);
-        recyclerView=findViewById(R.id.recyclerView);
-        tv_category=findViewById(R.id.tv_category);
-        userbackgroud = findViewById(R.id.userbackgroud);
+    public View onCreateView(LayoutInflater inflater, ViewGroup parent, Bundle savedInstanceState) {
+        // Defines the xml file for the fragment
+        return inflater.inflate(R.layout.activity_my_image, parent, false);
+    }
+    @Override
+    public void onViewCreated(View v, Bundle savedInstanceState) {
+        view = v;
+        context = getContext();
+        intent = getActivity().getIntent();
+        Bundle args = getArguments();
+        //fid = getArguments().getString("uid");
+        if (args != null && args.containsKey("uid")) {
+            id = args.getString("uid").toString();
+        }else {
+            id = intent.getStringExtra("uid");
+        }
+        username = view.findViewById(R.id.username);
+        userimage = view.findViewById(R.id.userimage);
+        changeImage = view.findViewById(R.id.changeImage);
+        changeBackground_Image = view.findViewById(R.id.changeBackground_Image);
+        recyclerView=view.findViewById(R.id.recyclerView);
+        tv_category=view.findViewById(R.id.tv_category);
+        userbackgroud = view.findViewById(R.id.userbackgroud);
 
-        uid= PrefManager.getLoginDetail(this,"id");
+        uid= PrefManager.getLoginDetail(context,"id");
         if(id == null || id.equals(uid)) {
-            String fname=PrefManager.getLoginDetail(this,"fname");
-            String lname=PrefManager.getLoginDetail(this,"lname");
-            String avatar=Config.BANNER_URL+"250/250/"+PrefManager.getLoginDetail(this,"profile_image_gallery");
-            String background=Config.BANNER_URL+"h/250/"+PrefManager.getLoginDetail(this,"img_banner_image");
+            String fname=PrefManager.getLoginDetail(context,"fname");
+            String lname=PrefManager.getLoginDetail(context,"lname");
+            String avatar=Config.BANNER_URL+"250/250/"+PrefManager.getLoginDetail(context,"profile_image_gallery");
+            String background=Config.BANNER_URL+"h/250/"+PrefManager.getLoginDetail(context,"img_banner_image");
             username.setText("My Images");
             Glide.with(this).load(background).apply(Config.options_image).into(userbackgroud);
             Glide.with(this).load(avatar).apply(Config.options_avatar).into(userimage);
@@ -119,9 +135,9 @@ public class MyImageActivity extends AppCompatActivity implements MyImageAdapter
             changeImage.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Intent intent=new Intent(MyImageActivity.this,ImageImageCroperActivity.class);
+                    Intent intent=new Intent(context,ImageImageCroperActivity.class);
                     startActivity(intent);
-                    finish();
+                    getActivity().finish();
                 }
             });
             changeBackground_Image.setOnClickListener(new View.OnClickListener() {
@@ -138,8 +154,8 @@ public class MyImageActivity extends AppCompatActivity implements MyImageAdapter
         }
 
 
-        IncludeShortMenu includeShortMenu = findViewById(R.id.includeShortMenu);
-        includeShortMenu.updateCounts(this,uid);
+        IncludeShortMenu includeShortMenu = view.findViewById(R.id.includeShortMenu);
+        includeShortMenu.updateCounts(context,uid);
         TextView myuid= includeShortMenu.findViewById(R.id.myuid);
         myuid.setText(uid);
         Intent i = new Intent();
@@ -165,12 +181,12 @@ public class MyImageActivity extends AppCompatActivity implements MyImageAdapter
                             String lname=result.optString("lname");
                             final String avatarX=result.getString("profile_image_gallery");
                             final String backgroundX=result.getString("img_banner_image");
-                            username = findViewById(R.id.username);
-                            userimage = findViewById(R.id.userimage);
-                            userbackgroud = findViewById(R.id.userbackgroud);
+                            username = view.findViewById(R.id.username);
+                            userimage = view.findViewById(R.id.userimage);
+                            userbackgroud = view.findViewById(R.id.userbackgroud);
                             username.setText(fname +" "+lname+" Images");
-                            Glide.with(getApplicationContext()).load(Config.BANNER_URL+"h/250/"+backgroundX).apply(Config.options_image).into(userbackgroud);
-                            Glide.with(getApplicationContext()).load(Config.BANNER_URL+"250/250/"+avatarX).apply(Config.options_avatar).into(userimage);
+                            Glide.with(context).load(Config.BANNER_URL+"h/250/"+backgroundX).apply(Config.options_image).into(userbackgroud);
+                            Glide.with(context).load(Config.BANNER_URL+"250/250/"+avatarX).apply(Config.options_avatar).into(userimage);
                             userbackgroud.setOnClickListener(new View.OnClickListener() {
                                 @Override
                                 public void onClick(View view) {
@@ -196,13 +212,13 @@ public class MyImageActivity extends AppCompatActivity implements MyImageAdapter
                     }
                 });
         //Creating a request queue
-        RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
+        RequestQueue requestQueue = Volley.newRequestQueue(context);
         //Adding request to the queue
         requestQueue.add(stringRequest);
     }
 
     private void showPictureDialog(){
-        AlertDialog.Builder pictureDialog = new AlertDialog.Builder(this);
+        AlertDialog.Builder pictureDialog = new AlertDialog.Builder(context);
         pictureDialog.setTitle("Select Action");
         String[] pictureDialogItems = {
                 "Photo Gallery",
@@ -235,38 +251,24 @@ public class MyImageActivity extends AppCompatActivity implements MyImageAdapter
         startActivityForResult(intent, CAMERA);
     }
 
-
-    @Override
-    public void onBackPressed() {
-        //super.onBackPressed();
-        Intent i = new Intent();
-        i.putExtra(Config.PAGE_TAG, Config.PREVIOUS_PAGE_TAG);
-        setResult(RESULT_OK, i);
-        finish();
-    }
-   // protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-       // super.onActivityResult(requestCode, resultCode, data);
-       // Toast.makeText(this, "mss popup"+resultCode+"--"+requestCode,  Toast.LENGTH_LONG).show();
-    //}
-
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
 
         super.onActivityResult(requestCode, resultCode, data);
-        if (resultCode == this.RESULT_CANCELED) {
+        if (resultCode == RESULT_CANCELED) {
             return;
         }
         if (requestCode == GALLERY) {
             if (data != null) {
                 Uri contentURI = data.getData();
                 try {
-                    FixBitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), contentURI);
+                    FixBitmap = MediaStore.Images.Media.getBitmap(context.getContentResolver(), contentURI);
                     userbackgroud.setImageBitmap(FixBitmap);
                     backgroundimagePath = getPath(contentURI);
                     //UploadImageOnServerButton.setVisibility(View.VISIBLE);
                     sendData();
                 } catch (IOException e) {
                     e.printStackTrace();
-                    Toast.makeText(MyImageActivity.this, "Failed!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(context, "Failed!", Toast.LENGTH_SHORT).show();
                 }
             }
         } else if (requestCode == CAMERA) {
@@ -282,18 +284,18 @@ public class MyImageActivity extends AppCompatActivity implements MyImageAdapter
                 //Toast.makeText(ShadiRegistrationPart5.this, "Image Saved!", Toast.LENGTH_SHORT).show();
             }
             catch (Exception e){
-                Toast.makeText(getApplicationContext(),e.getMessage(),Toast.LENGTH_LONG).show();
+                Toast.makeText(context,e.getMessage(),Toast.LENGTH_LONG).show();
             }
         }
     }
 
     public String getPath(Uri uri) {
-        Cursor cursor = getContentResolver().query(uri, null, null, null, null);
+        Cursor cursor = context.getContentResolver().query(uri, null, null, null, null);
         cursor.moveToFirst();
         String document_id = cursor.getString(0);
         document_id = document_id.substring(document_id.lastIndexOf(":") + 1);
         cursor.close();
-        cursor = getContentResolver().query(
+        cursor = context.getContentResolver().query(
                 android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
                 null, MediaStore.Images.Media._ID + " = ? ", new String[]{document_id}, null);
         cursor.moveToFirst();
@@ -303,8 +305,8 @@ public class MyImageActivity extends AppCompatActivity implements MyImageAdapter
     }
 
     public void sendData() {
-        if (!Config.haveNetworkConnection(this)) {
-            Config.showInternetDialog(this);
+        if (!Config.haveNetworkConnection(context)) {
+            Config.showInternetDialog(context);
             return;
         }
         //Toast.makeText(getApplicationContext(), "Video upload remain pleasw wait....", Toast.LENGTH_LONG).show();
@@ -312,33 +314,39 @@ public class MyImageActivity extends AppCompatActivity implements MyImageAdapter
         try {
             String uploadId = UUID.randomUUID().toString();
             //Creating a multi part request
-            new MultipartUploadRequest(this, uploadId, Config.AJAX_URL + "signup.php")
+            new MultipartUploadRequest(context, uploadId, Config.AJAX_URL + "signup.php")
                     .addFileToUpload(backgroundimagePath, "img_banner_image") //Adding file
                     .addParameter("type","update_img_video_banner")//Adding text parameter to the request
                     .addParameter("process_type","android")
-                    .addParameter("userid",PrefManager.getLoginDetail(getApplicationContext(),"id"))
+                    .addParameter("userid",PrefManager.getLoginDetail(context,"id"))
                     //.setNotificationConfig(new UploadNotificationConfig())
                     .setMaxRetries(2)
                     .startUpload(); //Starting the upload
-            Intent intent = new Intent(getApplicationContext(), EditProfileActivity.class);
-            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-            startActivity(intent);
-            Toast.makeText(this, "Update Profile Background Image is processing please wait", Toast.LENGTH_SHORT).show();
-            finish();
+            AppCompatActivity activity = (AppCompatActivity) context;
+            ProfileActivity fragment = new ProfileActivity();
+            FragmentManager fragmentManager = activity.getSupportFragmentManager();
+
+            fragmentManager.beginTransaction()
+                    .replace(android.R.id.content, fragment, null)
+                    .setCustomAnimations(R.anim.enter, R.anim.exit, R.anim.pop_enter, R.anim.pop_exit)
+                    .addToBackStack(null)
+                    .commit();
+            Toast.makeText(context, "Update Profile Background Image is processing please wait", Toast.LENGTH_SHORT).show();
+            getActivity().finish();
         } catch (Exception exc) {
-            Toast.makeText(this, exc.getMessage(), Toast.LENGTH_SHORT).show();
+            Toast.makeText(context, exc.getMessage(), Toast.LENGTH_SHORT).show();
         }
 
     }
 
     public void redirect(View v){
-        Intent i_signup = new Intent(MyImageActivity.this,AddImageActivity.class);
+        Intent i_signup = new Intent(context,AddImageActivity.class);
         MyImageActivity.this.startActivity(i_signup);
     }
     public void getAllAlbum(){
       String url="https://www.iampro.co/api/app_service.php?type=getAlbemsListt&search_type=image&uid="+uid;
-        RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
-        final ProgressDialog pDialog = new ProgressDialog(MyImageActivity.this); //Your Activity.this
+        RequestQueue requestQueue = Volley.newRequestQueue(context);
+        final ProgressDialog pDialog = new ProgressDialog(context); //Your Activity.this
         pDialog.setMessage("Loading...!");
         pDialog.show();
         JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(
@@ -369,7 +377,7 @@ public class MyImageActivity extends AppCompatActivity implements MyImageAdapter
                         catch (JSONException e){
                             pDialog.dismiss();
                             e.printStackTrace();
-                            Toast.makeText(getApplicationContext(), ""+e.getMessage(), Toast.LENGTH_SHORT).show();
+                            Toast.makeText(context, ""+e.getMessage(), Toast.LENGTH_SHORT).show();
                             Log.d("catch_f",""+e.getMessage());
                         }
                     }
@@ -378,7 +386,7 @@ public class MyImageActivity extends AppCompatActivity implements MyImageAdapter
                     @Override
                     public void onErrorResponse(VolleyError error){
                         pDialog.dismiss();
-                        Toast.makeText(getApplicationContext(), error.getMessage(), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(context, error.getMessage(), Toast.LENGTH_SHORT).show();
                         Log.d("verror",""+error.getMessage());
                     }
                 }
@@ -391,7 +399,7 @@ public class MyImageActivity extends AppCompatActivity implements MyImageAdapter
          //String url=Config.API_URL+"app_service.php?type=getMyAlbemsListt&search_type=image&uid="+uid+"&my_id="+uid;
          String url=Config.API_URL+"app_service.php?type=getMyAlbemsListt&search_type=image&uid="+uid+"&my_id="+uid+"&album_id="+aid;
         // Initialize a new RequestQueue instance
-        RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
+        RequestQueue requestQueue = Volley.newRequestQueue(context);
         //final ProgressDialog pDialog = new ProgressDialog(getApplicationContext()); //Your Activity.this
         //pDialog.setMessage("Loading...!");
         //pDialog.show();
@@ -470,15 +478,15 @@ public class MyImageActivity extends AppCompatActivity implements MyImageAdapter
                             Log.d("allsampledatav", allSampleData.toString());
                             //my_recycler_view.setHasFixedSize(true);
                             Log.d("allSampleDatas",""+allSampleData.size()+"--"+allSampleData.toString());
-                            adapterr = new MyImageVideoDataAdapter(MyImageActivity.this, allSampleData,item_name);
-                            recyclerView.setLayoutManager(new LinearLayoutManager(MyImageActivity.this, LinearLayoutManager.VERTICAL, false));
+                            adapterr = new MyImageVideoDataAdapter(context, allSampleData,item_name);
+                            recyclerView.setLayoutManager(new LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false));
                             recyclerView.setAdapter(adapterr);
 
                         }
                         catch (JSONException e){
                             //pDialog.dismiss();
                             e.printStackTrace();
-                            Toast.makeText(getApplicationContext(), ""+e.getMessage(), Toast.LENGTH_SHORT).show();
+                            Toast.makeText(context, ""+e.getMessage(), Toast.LENGTH_SHORT).show();
                             Log.d("catch_f",""+e.getMessage());
                         }
                     }
@@ -487,7 +495,7 @@ public class MyImageActivity extends AppCompatActivity implements MyImageAdapter
                     @Override
                     public void onErrorResponse(VolleyError error){
                         //pDialog.dismiss();
-                        Toast.makeText(getApplicationContext(), error.getMessage(), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(context, error.getMessage(), Toast.LENGTH_SHORT).show();
                         Log.d("verror",""+error.getMessage());
                     }
                 }

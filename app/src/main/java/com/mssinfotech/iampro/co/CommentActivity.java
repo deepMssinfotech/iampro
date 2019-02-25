@@ -2,6 +2,7 @@ package com.mssinfotech.iampro.co;
 
 import android.content.Intent;
 import android.graphics.Color;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -175,9 +176,7 @@ public class CommentActivity extends AppCompatActivity implements CommentAdapter
                             imageView_user.setOnClickListener(new View.OnClickListener() {
                                 @Override
                                 public void onClick(View view) {
-                                    Intent intent=new Intent(getApplicationContext(), ProfileActivity.class);
-                                    intent.putExtra("uid",String.valueOf(user_id));
-                                    getApplicationContext().startActivity(intent);
+
                                 }
                             });
 
@@ -224,9 +223,18 @@ public class CommentActivity extends AppCompatActivity implements CommentAdapter
                             imageView_icon.setOnClickListener(new View.OnClickListener() {
                                 @Override
                                 public void onClick(View view) {
-                                    Intent intent=new Intent(getApplicationContext(), MyImageActivity.class);
-                                    intent.putExtra("uid",String.valueOf(user_id));
-                                    getApplicationContext().startActivity(intent);
+                                    AppCompatActivity activity = (AppCompatActivity) CommentActivity.this;
+                                    MyImageActivity fragment = new MyImageActivity();
+                                    Bundle args = new Bundle();
+                                    args.putString("uid", String.valueOf(user_id));
+                                    fragment.setArguments(args);
+                                    FragmentManager fragmentManager = activity.getSupportFragmentManager();
+
+                                    fragmentManager.beginTransaction()
+                                            .replace(android.R.id.content, fragment, null)
+                                            .setCustomAnimations(R.anim.enter, R.anim.exit, R.anim.pop_enter, R.anim.pop_exit)
+                                            .addToBackStack(null)
+                                            .commit();
                                 }
                             });
 
@@ -263,6 +271,7 @@ public class CommentActivity extends AppCompatActivity implements CommentAdapter
                             tv_comments.setText(result.getString("comments"));
                             tv_totallike.setText(result.getString("totallike"));
                             likeButton.setUnlikeDrawableRes(R.drawable.like);
+                            final String added_user_id=userDetail.getString("id");
                             likeButton.setLikeDrawableRes(R.drawable.like_un);
                             int my_uid=Integer.parseInt(user_id);
                             Float total_rating = null;
@@ -270,7 +279,7 @@ public class CommentActivity extends AppCompatActivity implements CommentAdapter
                             try {
                                 total_rating = new Float(rating);
                             }
-                            catch (Exception ignore) {
+                                catch (Exception ignore) {
                             }
                             txtRatingValue.setText("("+rating+")");
                             ratingBar.setRating(total_rating);
@@ -314,9 +323,18 @@ public class CommentActivity extends AppCompatActivity implements CommentAdapter
                             imageView_user.setOnClickListener(new View.OnClickListener() {
                                 @Override
                                 public void onClick(View view) {
-                                    Intent intent=new Intent(getApplicationContext(), ProfileActivity.class);
-                                    intent.putExtra("uid",String.valueOf(user_id));
-                                    getApplicationContext().startActivity(intent);
+                                    AppCompatActivity activity = (AppCompatActivity) CommentActivity.this;
+                                    ProfileActivity fragment = new ProfileActivity();
+                                    Bundle args = new Bundle();
+                                    args.putString("uid", added_user_id);
+                                    fragment.setArguments(args);
+                                    FragmentManager fragmentManager = activity.getSupportFragmentManager();
+
+                                    fragmentManager.beginTransaction()
+                                            .replace(android.R.id.content, fragment, null)
+                                            .setCustomAnimations(R.anim.enter, R.anim.exit, R.anim.pop_enter, R.anim.pop_exit)
+                                            .addToBackStack(null)
+                                            .commit();
                                 }
                             });
                             if(data_type.equalsIgnoreCase("image")){
@@ -330,9 +348,18 @@ public class CommentActivity extends AppCompatActivity implements CommentAdapter
                                 imageView_icon.setOnClickListener(new View.OnClickListener() {
                                     @Override
                                     public void onClick(View view) {
-                                        Intent intent=new Intent(getApplicationContext(), MyImageActivity.class);
-                                        intent.putExtra("uid",String.valueOf(user_id));
-                                        getApplicationContext().startActivity(intent);
+                                        AppCompatActivity activity = (AppCompatActivity) CommentActivity.this;
+                                        MyImageActivity fragment = new MyImageActivity();
+                                        Bundle args = new Bundle();
+                                        args.putString("uid", String.valueOf(added_user_id));
+                                        fragment.setArguments(args);
+                                        FragmentManager fragmentManager = activity.getSupportFragmentManager();
+
+                                        fragmentManager.beginTransaction()
+                                                .replace(android.R.id.content, fragment, null)
+                                                .setCustomAnimations(R.anim.enter, R.anim.exit, R.anim.pop_enter, R.anim.pop_exit)
+                                                .addToBackStack(null)
+                                                .commit();
                                     }
                                 });
                             }else if(data_type.equalsIgnoreCase("video")){
@@ -356,9 +383,18 @@ public class CommentActivity extends AppCompatActivity implements CommentAdapter
                                 imageView_icon.setOnClickListener(new View.OnClickListener() {
                                     @Override
                                     public void onClick(View view) {
-                                        Intent intent=new Intent(getApplicationContext(), MyVideoActivity.class);
-                                        intent.putExtra("uid",String.valueOf(user_id));
-                                        getApplicationContext().startActivity(intent);
+                                        AppCompatActivity activity = (AppCompatActivity) CommentActivity.this;
+                                        MyVideoActivity fragment = new MyVideoActivity();
+                                        Bundle args = new Bundle();
+                                        args.putString("uid", String.valueOf(user_id));
+                                        fragment.setArguments(args);
+                                        FragmentManager fragmentManager = activity.getSupportFragmentManager();
+
+                                        fragmentManager.beginTransaction()
+                                                .replace(android.R.id.content, fragment, null)
+                                                .setCustomAnimations(R.anim.enter, R.anim.exit, R.anim.pop_enter, R.anim.pop_exit)
+                                                .addToBackStack(null)
+                                                .commit();
                                     }
                                 });
                             }

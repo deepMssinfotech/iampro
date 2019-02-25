@@ -5,6 +5,9 @@ package com.mssinfotech.iampro.co.adapter;
  */
 
 import android.content.Intent;
+import android.os.Bundle;
+import android.support.v4.app.FragmentManager;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -76,7 +79,6 @@ public class ProvideAdapter extends RecyclerView.Adapter<ProvideAdapter.ViewHold
             v.setOnClickListener(this);
             textView = (TextView) v.findViewById(R.id.textView);
             imageView = (ImageView) v.findViewById(R.id.imageView);
-            ivLike=v.findViewById(R.id.ivLike);
             tv_tlike=v.findViewById(R.id.tv_totallike);
             likeButton = v.findViewById(R.id.likeButton);
             //tv_comments
@@ -225,11 +227,17 @@ public class ProvideAdapter extends RecyclerView.Adapter<ProvideAdapter.ViewHold
             userImage.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Toast.makeText(mContext,"uid:"+uid,Toast.LENGTH_LONG).show();
-
-                    Intent intent=new Intent(mContext, ProfileActivity.class);
-                    intent.putExtra("uid",String.valueOf(uid));
-                    mContext.startActivity(intent);
+                    AppCompatActivity activity = (AppCompatActivity) mContext;
+                    ProfileActivity fragment = new ProfileActivity();
+                    Bundle args = new Bundle();
+                    args.putString("uid", String.valueOf(uid));
+                    fragment.setArguments(args);
+                    FragmentManager fragmentManager = activity.getSupportFragmentManager();
+                    fragmentManager.beginTransaction()
+                            .replace(android.R.id.content, fragment, null)
+                            .setCustomAnimations(R.anim.enter, R.anim.exit, R.anim.pop_enter, R.anim.pop_exit)
+                            .addToBackStack(null)
+                            .commit();
                 }
             });
             likeButton.setUnlikeDrawableRes(R.drawable.like);

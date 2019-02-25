@@ -9,6 +9,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -88,11 +90,20 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ViewHolder> 
             imageView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Intent intent=new Intent(mContext,ImageDetail.class);
-                      intent.putExtra("uid",uid);
-                    intent.putExtra("id",id);
-                     intent.putExtra("type","image");
-                     mContext.startActivity(intent);
+                    AppCompatActivity activity = (AppCompatActivity) mContext;
+                    ImageDetail fragment = new ImageDetail();
+                    Bundle args = new Bundle();
+                    args.putString("id", String.valueOf(id));
+                    args.putString("type", "image");
+                    args.putString("uid", String.valueOf(uid));
+                    fragment.setArguments(args);
+                    FragmentManager fragmentManager = activity.getSupportFragmentManager();
+
+                    fragmentManager.beginTransaction()
+                            .replace(android.R.id.content, fragment, null)
+                            .setCustomAnimations(R.anim.enter, R.anim.exit, R.anim.pop_enter, R.anim.pop_exit)
+                            .addToBackStack(null)
+                            .commit();
                 }
             });
             tv_comments.setOnClickListener(CommnetOnClickListener);
@@ -151,9 +162,18 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ViewHolder> 
             userImage.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Intent intent=new Intent(mContext, ProfileActivity.class);
-                    intent.putExtra("uid",String.valueOf(uid));
-                    mContext.startActivity(intent);
+                    AppCompatActivity activity = (AppCompatActivity) mContext;
+                    ProfileActivity fragment = new ProfileActivity();
+                    Bundle args = new Bundle();
+                    args.putString("uid", String.valueOf(uid));
+                    fragment.setArguments(args);
+                    FragmentManager fragmentManager = activity.getSupportFragmentManager();
+
+                    fragmentManager.beginTransaction()
+                            .replace(android.R.id.content, fragment, null)
+                            .setCustomAnimations(R.anim.enter, R.anim.exit, R.anim.pop_enter, R.anim.pop_exit)
+                            .addToBackStack(null)
+                            .commit();
                 }
             });
             likeButton.setUnlikeDrawableRes(R.drawable.like);

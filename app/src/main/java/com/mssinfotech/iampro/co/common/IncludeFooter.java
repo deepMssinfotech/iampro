@@ -153,8 +153,14 @@ public class IncludeFooter  extends RelativeLayout {
     private OnClickListener userOnClickListener = new OnClickListener() {
         public void onClick(View v) {
             if(isLogin) {
-                getContext().startActivity(new Intent(getContext(), ProfileActivity.class));
-                if(function.isSamePage("activity_profile"))function.finishFunction(getContext());
+                AppCompatActivity activity = (AppCompatActivity) getContext();
+                ProfileActivity fragment = new ProfileActivity();
+                FragmentManager fragmentManager = activity.getSupportFragmentManager();
+                fragmentManager.beginTransaction()
+                        .replace(android.R.id.content, fragment, null)
+                        .setCustomAnimations(R.anim.enter, R.anim.exit, R.anim.pop_enter, R.anim.pop_exit)
+                        .addToBackStack(null)
+                        .commit();
             }else
                 getContext().startActivity(new Intent(getContext(), LoginActivity.class));
         }

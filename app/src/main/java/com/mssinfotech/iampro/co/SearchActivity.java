@@ -47,13 +47,13 @@ public class SearchActivity extends Fragment implements AdapterView.OnItemSelect
     }
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
-        llRvContent = view.findViewById(R.id.llRvContent);
+        //llRvContent = view.findViewById(R.id.llRvContent);
         btnSearch = view.findViewById(R.id.btnSearch);
         etSearchData = view.findViewById(R.id.etSearchData);
         tvTitle = view.findViewById(R.id.tvTitle);
-        ibtnBack = view.findViewById(R.id.ibtnBack);
-        ibtnFilter = view.findViewById(R.id.ibtnFilter);
-        rvContent = view.findViewById(R.id.rvContent);
+        //ibtnBack = view.findViewById(R.id.ibtnBack);
+        //ibtnFilter = view.findViewById(R.id.ibtnFilter);
+        //rvContent = view.findViewById(R.id.rvContent);
         list.add("IMAGE");
         list.add("VIDEO");
         list.add("FRIEND");

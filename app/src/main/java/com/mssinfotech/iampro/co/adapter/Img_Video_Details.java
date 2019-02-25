@@ -6,6 +6,9 @@ package com.mssinfotech.iampro.co.adapter;
 
 import android.content.Intent;
 import android.graphics.Color;
+import android.os.Bundle;
+import android.support.v4.app.FragmentManager;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -38,6 +41,8 @@ import com.mssinfotech.iampro.co.common.function;
 import com.mssinfotech.iampro.co.image.ImageDetail;
 import com.mssinfotech.iampro.co.model.DataModel;
 import com.mssinfotech.iampro.co.model.ImageDetailModel;
+import com.mssinfotech.iampro.co.user.MyImageActivity;
+import com.mssinfotech.iampro.co.user.MyVideoActivity;
 import com.mssinfotech.iampro.co.user.ProfileActivity;
 
 import org.json.JSONObject;
@@ -83,15 +88,23 @@ public class Img_Video_Details extends RecyclerView.Adapter<Img_Video_Details.Vi
             imageView_user.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                   // Toast.makeText(mContext, "Image clicked", Toast.LENGTH_SHORT).show();
-                    Intent intent=new Intent(mContext,ProfileActivity.class);
-                    intent.putExtra("uid",uid);
-                    mContext.startActivity(intent);
+                    AppCompatActivity activity = (AppCompatActivity) mContext;
+                    ProfileActivity fragment = new ProfileActivity();
+                    Bundle args = new Bundle();
+                    args.putString("uid", String.valueOf(uid));
+                    fragment.setArguments(args);
+                    FragmentManager fragmentManager = activity.getSupportFragmentManager();
+
+                    fragmentManager.beginTransaction()
+                            .replace(android.R.id.content, fragment, null)
+                            .setCustomAnimations(R.anim.enter, R.anim.exit, R.anim.pop_enter, R.anim.pop_exit)
+                            .addToBackStack(null)
+                            .commit();
                 }
             });
            videoView=v.findViewById(R.id.video);
         }
-        public void setData(ImageDetailModel item) {
+        public void setData(final ImageDetailModel item) {
             this.item = item;
             //TextView fullname,udate,tv_comments,tv_totallike,name,category;
             //ImageView imageView_user,imageView_icon,iv_comments,image;
@@ -124,16 +137,30 @@ public class Img_Video_Details extends RecyclerView.Adapter<Img_Video_Details.Vi
                 image.setVisibility(View.VISIBLE);
                Glide.with(mContext)
                        .load(images)
-                       .apply(new RequestOptions()
-                               .centerCrop()
-                               .fitCenter())
+                       .apply(Config.options_image)
                        .into(image);
 
                Glide.with(mContext)
                        .load(R.drawable.image_icon)
                        .apply(Config.options_avatar)
                        .into(imageView_icon);
-
+               final int added_by_id = item.getUid();
+               imageView_icon.setOnClickListener(new View.OnClickListener() {
+                   @Override
+                   public void onClick(View view) {
+                       AppCompatActivity activity = (AppCompatActivity) mContext;
+                       MyImageActivity fragment = new MyImageActivity();
+                       Bundle args = new Bundle();
+                       args.putString("uid", String.valueOf(added_by_id));
+                       fragment.setArguments(args);
+                       FragmentManager fragmentManager = activity.getSupportFragmentManager();
+                       fragmentManager.beginTransaction()
+                               .replace(android.R.id.content, fragment, null)
+                               .setCustomAnimations(R.anim.enter, R.anim.exit, R.anim.pop_enter, R.anim.pop_exit)
+                               .addToBackStack(null)
+                               .commit();
+                   }
+               });
 
                //imageView_icon.setImageResource(R.drawable.image_icon);
            }
@@ -143,7 +170,23 @@ public class Img_Video_Details extends RecyclerView.Adapter<Img_Video_Details.Vi
 
                videoView.setVideoPath(item.getImage());
                //videoView.start();
-
+               final int added_by_id = item.getUid();
+               imageView_icon.setOnClickListener(new View.OnClickListener() {
+                   @Override
+                   public void onClick(View view) {
+                       AppCompatActivity activity = (AppCompatActivity) mContext;
+                       MyVideoActivity fragment = new MyVideoActivity();
+                       Bundle args = new Bundle();
+                       args.putString("uid", String.valueOf(added_by_id));
+                       fragment.setArguments(args);
+                       FragmentManager fragmentManager = activity.getSupportFragmentManager();
+                       fragmentManager.beginTransaction()
+                               .replace(android.R.id.content, fragment, null)
+                               .setCustomAnimations(R.anim.enter, R.anim.exit, R.anim.pop_enter, R.anim.pop_exit)
+                               .addToBackStack(null)
+                               .commit();
+                   }
+               });
                Glide.with(mContext)
                        .load(R.drawable.video_icon)
                        .apply(Config.options_video)
@@ -154,12 +197,18 @@ public class Img_Video_Details extends RecyclerView.Adapter<Img_Video_Details.Vi
                imageView_user.setOnClickListener(new View.OnClickListener() {
                    @Override
                    public void onClick(View v) {
-                       Toast.makeText(mContext, "uid:" + uid, Toast.LENGTH_LONG).show();
+                       AppCompatActivity activity = (AppCompatActivity) mContext;
+                       ProfileActivity fragment = new ProfileActivity();
+                       Bundle args = new Bundle();
+                       args.putString("uid", String.valueOf(uid));
+                       fragment.setArguments(args);
+                       FragmentManager fragmentManager = activity.getSupportFragmentManager();
 
-                       Intent intent = new Intent(mContext, ProfileActivity.class);
-                       intent.putExtra("uid", String.valueOf(uid));
-                       intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                       mContext.startActivity(intent);
+                       fragmentManager.beginTransaction()
+                               .replace(android.R.id.content, fragment, null)
+                               .setCustomAnimations(R.anim.enter, R.anim.exit, R.anim.pop_enter, R.anim.pop_exit)
+                               .addToBackStack(null)
+                               .commit();
                    }
                });
 
@@ -211,46 +260,5 @@ public class Img_Video_Details extends RecyclerView.Adapter<Img_Video_Details.Vi
     }
     public interface ItemListener {
         void onItemClick(ImageDetailModel item);
-    }
-
-
-    public void sendrating(float rating,int uid,int id){
-        String urlv="https://www.iampro.co/api/app_service.php?type=rate_me&id="+id+"&uid="+uid+"&ptype=image&total_rate="+rating;
-
-        RequestQueue requestQueue = Volley.newRequestQueue(mContext);
-        // Initialize a new JsonObjectRequest instance
-        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(
-                Request.Method.GET,
-                urlv,
-                null,
-                new Response.Listener<JSONObject>() {
-                    @Override
-                    public void onResponse(JSONObject response) {
-                        Log.d("Prod_detaili_profile",""+response);
-                        try{
-                            String status=response.optString("status");
-                            String msgv=response.optString("msg");
-                            if(status.equalsIgnoreCase("success")) {
-                                Toast.makeText(mContext,""+msgv,Toast.LENGTH_LONG).show();
-                            }
-                            else{
-                                Toast.makeText(mContext,""+msgv,Toast.LENGTH_LONG).show();
-                            }
-                        }
-                        catch (Exception e){
-                            e.printStackTrace();
-                            Toast.makeText(mContext,e.getMessage(),Toast.LENGTH_LONG).show();
-                        }
-                    }
-                },
-                new Response.ErrorListener(){
-                    @Override
-                    public void onErrorResponse(VolleyError error){
-                        Toast.makeText(mContext,error.getMessage(),Toast.LENGTH_LONG).show();
-                    }
-                }
-        );
-        requestQueue.add(jsonObjectRequest);
-
     }
 }

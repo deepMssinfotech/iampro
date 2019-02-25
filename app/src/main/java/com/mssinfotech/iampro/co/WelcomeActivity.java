@@ -3,6 +3,7 @@ package com.mssinfotech.iampro.co;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Handler;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -73,9 +74,13 @@ public class WelcomeActivity extends AppCompatActivity implements View.OnClickLi
                 //WelcomeActivity.this.finish();
                 break;
             case R.id.imguser:
-                Intent i_user = new Intent(WelcomeActivity.this,ProfileActivity.class);
-                WelcomeActivity.this.startActivity(i_user);
-                WelcomeActivity.this.finish();
+                AppCompatActivity activity = (AppCompatActivity) WelcomeActivity.this;
+                ProfileActivity fragment = new ProfileActivity();
+                FragmentManager fragmentManager = activity.getSupportFragmentManager();
+                fragmentManager.beginTransaction()
+                        .replace(android.R.id.content, fragment, null)
+                        .setCustomAnimations(R.anim.enter, R.anim.exit, R.anim.pop_enter, R.anim.pop_exit)
+                        .commit();
                 break;
             default:
                 break;

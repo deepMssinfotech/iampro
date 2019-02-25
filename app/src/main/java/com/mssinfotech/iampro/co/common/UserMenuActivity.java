@@ -74,21 +74,27 @@ public class UserMenuActivity  extends Fragment {
     private View.OnClickListener myprofileOnClickListener = new View.OnClickListener() {
         public void onClick(View v) {
             //if(function.isSamePage("activity_profile"))return;
-            Intent intent = new Intent(getContext(), ProfileActivity.class);
-            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
-            getContext().startActivity(intent);
-            removeFragment();
+            AppCompatActivity activity = (AppCompatActivity) getContext();
+            ProfileActivity fragment = new ProfileActivity();
+            FragmentManager fragmentManager = activity.getSupportFragmentManager();
+            fragmentManager.beginTransaction()
+                    .replace(android.R.id.content, fragment, null)
+                    .setCustomAnimations(R.anim.enter, R.anim.exit, R.anim.pop_enter, R.anim.pop_exit)
+                    .addToBackStack(null)
+                    .commit();
         }
     };
     private View.OnClickListener editprofileOnClickListener = new View.OnClickListener() {
         public void onClick(View v) {
             //if(function.isSamePage("activity_edit_profile"))return;
-            Intent intent = new Intent(getContext(), EditProfileActivity.class);
-            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
-            getContext().startActivity(intent);
-            removeFragment();
+            AppCompatActivity activity = (AppCompatActivity) getContext();
+            EditProfileActivity fragment = new EditProfileActivity();
+            FragmentManager fragmentManager = activity.getSupportFragmentManager();
+            fragmentManager.beginTransaction()
+                    .replace(android.R.id.content, fragment, null)
+                    .setCustomAnimations(R.anim.enter, R.anim.exit, R.anim.pop_enter, R.anim.pop_exit)
+                    .addToBackStack(null)
+                    .commit();
         }
     };
     private View.OnClickListener changepasswordOnClickListener = new View.OnClickListener() {
@@ -127,19 +133,26 @@ public class UserMenuActivity  extends Fragment {
     private View.OnClickListener myphotoOnClickListener = new View.OnClickListener() {
         public void onClick(View v) {
             //if(function.isSamePage("activity_my_image"))return;
-            Intent intent = new Intent(getContext(), MyImageActivity.class);
-            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            getContext().startActivity(intent);
-            removeFragment();
+            AppCompatActivity activity = (AppCompatActivity) getContext();
+            MyImageActivity fragment = new MyImageActivity();
+            FragmentManager fragmentManager = activity.getSupportFragmentManager();
+            fragmentManager.beginTransaction()
+                    .replace(android.R.id.content, fragment, null)
+                    .setCustomAnimations(R.anim.enter, R.anim.exit, R.anim.pop_enter, R.anim.pop_exit)
+                    .addToBackStack(null)
+                    .commit();
         }
     };
     private View.OnClickListener myvideoOnClickListener = new View.OnClickListener() {
         public void onClick(View v) {
-            //if(function.isSamePage("activity_my_video"))return;
-            Intent intent = new Intent(getContext(), MyVideoActivity.class);
-            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            getContext().startActivity(intent);
-            removeFragment();
+            AppCompatActivity activity = (AppCompatActivity) getContext();
+            MyVideoActivity fragment = new MyVideoActivity();
+            FragmentManager fragmentManager = activity.getSupportFragmentManager();
+            fragmentManager.beginTransaction()
+                    .replace(android.R.id.content, fragment, null)
+                    .setCustomAnimations(R.anim.enter, R.anim.exit, R.anim.pop_enter, R.anim.pop_exit)
+                    .addToBackStack(null)
+                    .commit();
         }
     };
     private View.OnClickListener myproductOnClickListener = new View.OnClickListener() {
