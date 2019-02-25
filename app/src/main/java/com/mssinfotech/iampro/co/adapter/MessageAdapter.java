@@ -71,7 +71,7 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MyViewHo
         holder.detail.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(context,"detail",Toast.LENGTH_LONG).show();
+                //Toast.makeText(context,"detail",Toast.LENGTH_LONG).show();
             }
         });
         holder.message_item.setOnClickListener(new View.OnClickListener() {

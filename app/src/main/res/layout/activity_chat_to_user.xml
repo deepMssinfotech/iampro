@@ -44,7 +44,6 @@
         android:gravity="bottom"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:weightSum="0"
         android:layout_weight="0">
         <EditText
             android:layout_weight="1"
@@ -59,13 +58,11 @@
             android:maxWidth="20dp"
             android:maxHeight="50dp"
             android:scrollbarAlwaysDrawVerticalTrack="true"/>
-        <ImageView
+        <ImageButton
             android:id="@+id/btnSend"
             android:layout_width="40dp"
             android:layout_height="35dp"
-            app:srcCompat="@drawable/choice"
-            android:layout_alignParentRight="true"
-            android:onClick="sendComment"
+           android:background="@drawable/choices"
             android:layout_gravity="right"/>
 
     </LinearLayout>

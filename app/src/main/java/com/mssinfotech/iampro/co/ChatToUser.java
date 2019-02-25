@@ -47,7 +47,7 @@ public class ChatToUser extends AppCompatActivity implements UserChatAdapter.Ite
   ArrayList<String> item_name=new ArrayList<>();
    RecyclerView recycler_view_chat;
    EditText et_chat;
-    ImageView btnSend;
+    ImageButton btnSend;
     ArrayList<ChatList> allSampleDatamore=new ArrayList<>();
     UserChatAdapter adapter;
     String myid;

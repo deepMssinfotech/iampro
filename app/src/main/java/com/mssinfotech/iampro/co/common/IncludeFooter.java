@@ -16,6 +16,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.mssinfotech.iampro.co.CartActivity;
@@ -133,21 +134,26 @@ public class IncludeFooter  extends RelativeLayout {
     };
     private OnClickListener messageOnClickListener = new OnClickListener() {
         public void onClick(View v) {
-            AppCompatActivity activity = (AppCompatActivity) getContext();
-            MessageActivity messagefragment = new MessageActivity();
-            Bundle args = new Bundle();
-            args.putString("name", "mragank");
-            messagefragment.setArguments(args);
-            FragmentManager fragmentManager = activity.getSupportFragmentManager();
+            if(isLogin) {
+                AppCompatActivity activity = (AppCompatActivity) getContext();
+                MessageActivity messagefragment = new MessageActivity();
+                Bundle args = new Bundle();
+                args.putString("name", "mragank");
+                messagefragment.setArguments(args);
+                FragmentManager fragmentManager = activity.getSupportFragmentManager();
 
-            fragmentManager.beginTransaction()
-                    .replace(android.R.id.content, messagefragment, null)
-                    .setCustomAnimations(R.anim.enter, R.anim.exit, R.anim.pop_enter, R.anim.pop_exit)
-                    .addToBackStack(null)
-                    .commit();
+                fragmentManager.beginTransaction()
+                        .replace(android.R.id.content, messagefragment, null)
+                        .setCustomAnimations(R.anim.enter, R.anim.exit, R.anim.pop_enter, R.anim.pop_exit)
+                        .addToBackStack(null)
+                        .commit();
               /*Intent intent=new Intent(getContext(), SplashActivity.class);
                 getContext().startActivity(intent); */
-
+            }
+             else{
+                Toast.makeText(getContext(),"Login First then try again...",Toast.LENGTH_LONG).show();
+                return;
+            }
         }
     };
     private OnClickListener userOnClickListener = new OnClickListener() {
