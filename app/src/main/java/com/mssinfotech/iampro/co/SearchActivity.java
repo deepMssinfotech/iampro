@@ -1,5 +1,6 @@
 package com.mssinfotech.iampro.co;
 
+import android.content.Intent;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
@@ -73,6 +74,11 @@ public class SearchActivity extends Fragment implements AdapterView.OnItemSelect
                 String SearchCat = spnrCategory.getSelectedItem().toString();
                 String SearchData = etSearchData.getText().toString();
                 Toast.makeText(getContext(), "Clicked on: " + SearchType + " " + SearchCat + " " +SearchData, Toast.LENGTH_SHORT).show();
+                Intent intent=new Intent(getContext(),SearchedActivity.class);
+                intent.putExtra("SearchType",SearchType);
+                intent.putExtra("SearchCat",SearchCat);
+                intent.putExtra("SearchData",SearchData);
+                  startActivity(intent);
             }
         });
     }
@@ -81,11 +87,8 @@ public class SearchActivity extends Fragment implements AdapterView.OnItemSelect
         function.getData(getActivity(), getContext(), spnrCategory, list.get(position));
         //Toast.makeText(getApplicationContext(), "Clicked on: " + list.get(position), Toast.LENGTH_SHORT).show();
     }
-
     @Override
     public void onNothingSelected(AdapterView<?> adapterView) {
 
     }
-
-
 }

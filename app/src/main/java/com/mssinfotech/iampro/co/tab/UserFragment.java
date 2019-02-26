@@ -115,7 +115,7 @@ public class UserFragment extends Fragment implements UserDataAdapter.ItemListen
           btn_load_more=view.findViewById(R.id.btn_load_more);
 
         luser_iv=view.findViewById(R.id.luser_iv);
-               luser_iv.setBackground(getContext().getResources().getDrawable(R.drawable.user));
+               //luser_iv.setBackground(getContext().getResources().getDrawable(R.drawable.user));
         btn_load_more.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

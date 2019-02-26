@@ -39,6 +39,8 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.TreeMap;
@@ -371,10 +373,19 @@ public class VideoFragment extends Fragment implements VideoAdapter.ItemListener
         final ProgressDialog pDialog = new ProgressDialog(getContext()); //Your Activity.this
         pDialog.setMessage("Loading...!");
         pDialog.show();
-        //String url=Config.API_URL+"app_service.php?type=getMyAlbemsListt&search_type=image&uid="+uid+"&my_id="+uid;
-        // String url=Config.API_URL+"app_service.php?type=getMyAlbemsListt&search_type=image&uid="+uid+"&my_id="+uid+"&album_id="+aid;
-        String url="https://www.iampro.co/api/app_service.php?type=search_all_items&search_type=VIDEO&category="+cname+"&search_data=&uid="+uid+"&my_id="+uid;
-        // Initialize a new RequestQueue instance
+        String url=null;
+        try {
+            String query = URLEncoder.encode(cname, "utf-8");
+            //String url=Config.API_URL+"app_service.php?type=getMyAlbemsListt&search_type=image&uid="+uid+"&my_id="+uid;
+            // String url=Config.API_URL+"app_service.php?type=getMyAlbemsListt&search_type=image&uid="+uid+"&my_id="+uid+"&album_id="+aid;
+          url = "https://www.iampro.co/api/app_service.php?type=search_all_items&search_type=VIDEO&category=" + query+ "&search_data=&uid=" + uid + "&my_id=" + uid;
+            // Initialize a new RequestQueue instance
+        }
+        catch (UnsupportedEncodingException e){
+            e.printStackTrace();
+            url = "https://www.iampro.co/api/app_service.php?type=search_all_items&search_type=VIDEO&category=" +cname+ "&search_data=&uid=" + uid + "&my_id=" + uid;
+
+        }
         RequestQueue requestQueue = Volley.newRequestQueue(getContext());
         JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(
                 Request.Method.GET,
@@ -446,15 +457,12 @@ public class VideoFragment extends Fragment implements VideoAdapter.ItemListener
                                     String categoryy=userDetail.optString("category");
                                     String is_featuredd=userDetail.optString("is_featured");
                                     String fullname=userDetail.optString("fullname");
-
                                     String more="loadmore";
                                     item.add(new MyImageModel(String.valueOf(id),String.valueOf(albemid),name,category,String.valueOf(albem_type),image,udate,about_us,String.valueOf(group_id),String.valueOf(is_featured),String.valueOf(status),is_block,String.valueOf(comments),String.valueOf(totallike),String.valueOf(like_unlike),rating,String.valueOf(user_id),more,avatar,fullname,v_image,"video"));
                                     //item.add(new DataModel(name,image,udate,category,totallike,like_unlike,comments,udate,Float.parseFloat(rating),uid,fullname,avatar,id,IMAGE_TYPE));
-
                                 }
                             }
                             Log.d("allsampledatav",item.toString());
-
                             dm.setAllItemsInSection(item);
                             Log.d("adm",item.toString());
                             Log.d("dmm",dm.toString());
@@ -467,7 +475,6 @@ public class VideoFragment extends Fragment implements VideoAdapter.ItemListener
                             //adapterr = new MyImageVideoDataAdapter(getContext(), allSampleDatamore,item_loadmore);
                             //recycler_view_load_more.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
                             //recycler_view_load_more.setAdapter(adapterr);
-
                             adapterr = new MyVideoDataAdapter(getContext(),allSampleDatamore,item_loadmore);
                             recycler_view_load_more.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
                             recycler_view_load_more.setAdapter(adapterr);

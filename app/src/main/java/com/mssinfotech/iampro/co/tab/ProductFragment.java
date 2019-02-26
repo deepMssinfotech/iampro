@@ -41,6 +41,8 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.TreeMap;
@@ -94,7 +96,7 @@ public class ProductFragment extends Fragment implements ProductAdapter.ItemList
         recycler_view_load_more=view.findViewById(R.id.recycler_view_load_more);
         btn_load_more=view.findViewById(R.id.btn_load_more);
           lproduct_iv=view.findViewById(R.id.lproduct_iv);
-        lproduct_iv.setBackground(getContext().getResources().getDrawable(R.drawable.latestproduct));
+        //lproduct_iv.setBackground(getContext().getResources().getDrawable(R.drawable.latestproduct));
         btn_load_more.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -405,10 +407,20 @@ public class ProductFragment extends Fragment implements ProductAdapter.ItemList
         final ProgressDialog pDialog = new ProgressDialog(getContext()); //Your Activity.this
         pDialog.setMessage("Loading...!");
         pDialog.show();
+        String url=null;
+         try {
+             String query = URLEncoder.encode(cname, "utf-8");
+
         //String url=Config.API_URL+"app_service.php?type=getMyAlbemsListt&search_type=image&uid="+uid+"&my_id="+uid;
         // String url=Config.API_URL+"app_service.php?type=getMyAlbemsListt&search_type=image&uid="+uid+"&my_id="+uid+"&album_id="+aid;
-        String url="https://www.iampro.co/api/app_service.php?type=search_all_items&search_type=PRODUCT&category="+cname+"&search_data=&uid="+uid+"&my_id="+uid;
-        // Initialize a new RequestQueue instance
+          url="https://www.iampro.co/api/app_service.php?type=search_all_items&search_type=PRODUCT&category="+query+"&search_data=&uid="+uid+"&my_id="+uid;
+         }
+        catch (UnsupportedEncodingException e){
+             e.printStackTrace();
+            url="https://www.iampro.co/api/app_service.php?type=search_all_items&search_type=PRODUCT&category="+cname+"&search_data=&uid="+uid+"&my_id="+uid;
+
+        }
+         // Initialize a new RequestQueue instance
         RequestQueue requestQueue = Volley.newRequestQueue(getContext());
         JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(
                 Request.Method.GET,

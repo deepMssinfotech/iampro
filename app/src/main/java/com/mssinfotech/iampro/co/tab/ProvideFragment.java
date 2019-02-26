@@ -41,6 +41,8 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.TreeMap;
@@ -92,7 +94,7 @@ public class ProvideFragment extends Fragment implements ProvideAdapter.ItemList
         recycler_view_load_more=view.findViewById(R.id.recycler_view_load_more);
         btn_load_more=view.findViewById(R.id.btn_load_more);
         lprovide_iv=view.findViewById(R.id.lprovide_iv);
-        lprovide_iv.setBackground(getContext().getResources().getDrawable(R.drawable.latestprovide));
+      //  lprovide_iv.setBackground(getContext().getResources().getDrawable(R.drawable.latestprovide));
         btn_load_more.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -500,10 +502,20 @@ public class ProvideFragment extends Fragment implements ProvideAdapter.ItemList
         final ProgressDialog pDialog = new ProgressDialog(getContext()); //Your Activity.this
         pDialog.setMessage("Loading...!");
         pDialog.show();
-        //String url=Config.API_URL+"app_service.php?type=getMyAlbemsListt&search_type=image&uid="+uid+"&my_id="+uid;
-        // String url=Config.API_URL+"app_service.php?type=getMyAlbemsListt&search_type=image&uid="+uid+"&my_id="+uid+"&album_id="+aid;
-        String url="https://www.iampro.co/api/app_service.php?type=search_all_items&search_type=PROVIDE&category="+cname+"&search_data=&uid="+uid+"&my_id="+uid;
-        // Initialize a new RequestQueue instance
+        String url=null;
+        try {
+            String query = URLEncoder.encode(cname, "utf-8");
+
+            //String url=Config.API_URL+"app_service.php?type=getMyAlbemsListt&search_type=image&uid="+uid+"&my_id="+uid;
+            // String url=Config.API_URL+"app_service.php?type=getMyAlbemsListt&search_type=image&uid="+uid+"&my_id="+uid+"&album_id="+aid;
+             url = "https://www.iampro.co/api/app_service.php?type=search_all_items&search_type=PROVIDE&category=" + query+ "&search_data=&uid=" + uid + "&my_id=" + uid;
+            // Initialize a new RequestQueue instance
+        }
+        catch (UnsupportedEncodingException e){
+            e.printStackTrace();
+            url = "https://www.iampro.co/api/app_service.php?type=search_all_items&search_type=PROVIDE&category=" + cname+ "&search_data=&uid=" + uid + "&my_id=" + uid;
+
+        }
         RequestQueue requestQueue = Volley.newRequestQueue(getContext());
         JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(
                 Request.Method.GET,
