@@ -53,6 +53,8 @@ public class CartActivity extends Fragment {
     private RecyclerView recyclerView;
     private List<CartItem> CartItemList;
     View view;
+    //ProgressDialog loading = ProgressDialog.show(getContext(),"Processing...","Please wait...",false,false);
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup parent, Bundle savedInstanceState) {
         // Defines the xml file for the fragment
@@ -65,12 +67,7 @@ public class CartActivity extends Fragment {
         recyclerView = view.findViewById(R.id.recycler_view);
         tvTotalPrice = view.findViewById(R.id.tvTotalPrice);
         CartItemList = new ArrayList<CartItem>();
-        mAdapter = new CartItemAdapter(getContext(), CartItemList);
-        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getContext());
-        recyclerView.setLayoutManager(mLayoutManager);
-        recyclerView.setItemAnimator(new DefaultItemAnimator());
-        recyclerView.addItemDecoration(new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL));
-        recyclerView.setAdapter(mAdapter);
+
         prepareCart();
     }
     public void refreshFregment(){
@@ -80,19 +77,19 @@ public class CartActivity extends Fragment {
         ft.detach(this).attach(this).commit();
     }
     public void prepareCart() {
-        final ProgressDialog loading = ProgressDialog.show(getContext(),"Processing...","Please wait...",false,false);
-        StringRequest stringRequest = new StringRequest(Request.Method.GET,CART_URL,
+        //loading.show();
+         StringRequest stringRequest = new StringRequest(Request.Method.GET,CART_URL,
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-                        loading.dismiss();
+                        //loading.dismiss();
                         parseJsonFeed(response);
                         mAdapter.notifyDataSetChanged();
                     }
                 }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                loading.dismiss();
+                //loading.dismiss();
                 Config.ResponceResult = error.getMessage();
                 Log.d(Config.TAG,"error : "+error.getMessage());
             }
@@ -131,9 +128,19 @@ public class CartActivity extends Fragment {
                 no_rodr.setVisibility(View.VISIBLE);
             }
             // notify data changes to list adapater
+
+            mAdapter = new CartItemAdapter(getContext(), CartItemList);
+            RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getContext());
+            recyclerView.setLayoutManager(mLayoutManager);
+            recyclerView.setItemAnimator(new DefaultItemAnimator());
+            recyclerView.addItemDecoration(new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL));
+            recyclerView.setAdapter(mAdapter);
+             mAdapter.notifyDataSetChanged();
         } catch (JSONException e) {
             Log.d(Config.TAG,"printStackTrace 167" + e.getMessage() + "  Error Message");
             e.printStackTrace();
         }
     }
+
+
 }

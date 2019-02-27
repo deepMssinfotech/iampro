@@ -152,7 +152,9 @@
             android:label="Login"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".ChatToUser" />
-        <activity android:name=".SearchedActivity"></activity>
+        <!--<activity android:name=".user.ProfileActivity"
+            android:label="Profile"/> -->
+        <activity android:name=".SearchedActivity"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
-
 </manifest>

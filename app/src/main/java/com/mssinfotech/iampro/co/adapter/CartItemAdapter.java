@@ -1,10 +1,12 @@
 package com.mssinfotech.iampro.co.adapter;
 import android.content.Context;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,6 +15,12 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.Volley;
 import com.bumptech.glide.Glide;
 import com.mssinfotech.iampro.co.CartActivity;
 import com.mssinfotech.iampro.co.R;
@@ -22,6 +30,8 @@ import com.mssinfotech.iampro.co.data.CartItem;
 import com.mssinfotech.iampro.co.data.NotificationItem;
 import com.mssinfotech.iampro.co.user.ChangePasswordActivity;
 import com.mssinfotech.iampro.co.utils.PrefManager;
+
+import org.json.JSONObject;
 
 import java.util.List;
 
@@ -47,44 +57,9 @@ public class CartItemAdapter extends RecyclerView.Adapter<CartItemAdapter.MyView
             from_name = view.findViewById(R.id.from_name);
             cart_product_quantity_tv = view.findViewById(R.id.cart_product_quantity_tv);
             cart_minus_img = view.findViewById(R.id.cart_minus_img);
-            cart_minus_img.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Integer position=getPosition();
-                    final CartItem item = notifyList.get(position);
-                    String price=item.getselling_cost();
-                    Integer qty= Integer.valueOf(item.getqty())-1;
-                    Integer id = Integer.valueOf(item.id);
-                    String url = "https://www.iampro.co/api/cart.php?type=update_cart&id="+id.toString()+"&qty="+qty.toString()+"&price="+price+"&uid="+ PrefManager.getLoginDetail(itemView.getContext(),"id") +"&ip_address="+ Config.IP_ADDRESS;
-                    //Toast.makeText(itemView.getContext(), id.toString()+"--"+qty.toString()+"-Position:" + Integer.toString(getPosition()), Toast.LENGTH_SHORT).show();
-                    if(qty==0){
-                        removeItem(position);
-                        url = "https://www.iampro.co/api/cart.php?type=delete_cart_item&id="+id.toString();
-                    }else{
 
-                    }
-                    function.executeUrl(itemView.getContext(),"get", url, null);
-                    //TextView cart_product_quantity = v.getRootView().findViewById(R.id.cart_product_quantity_tv);
-                    //cart_product_quantity.setText(qty);
-                    notifyItemChanged(position);
-
-                }
-            });
             cart_plus_img = view.findViewById(R.id.cart_plus_img);
-            cart_plus_img.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Integer position=getPosition();
-                    final CartItem item = notifyList.get(position);
-                    String price=item.getselling_cost();
-                    Integer qty= Integer.valueOf(item.getqty())+1;
-                    Integer id = Integer.valueOf(item.id);
-                    function.addtocart(itemView.getContext(),id.toString(),qty.toString(),price);
-                    //TextView cart_product_quantity = v.getRootView().findViewById(R.id.cart_product_quantity_tv);
-                    //cart_product_quantity.setText(qty);
-                    notifyItemChanged(position);
-                }
-            });
+
         }
         @Override
         public void onClick(View v) {
@@ -106,13 +81,94 @@ public class CartItemAdapter extends RecyclerView.Adapter<CartItemAdapter.MyView
     }
 
     @Override
-    public void onBindViewHolder(MyViewHolder holder, final int position) {
+    public void onBindViewHolder(final MyViewHolder holder, int position) {
         final CartItem item = notifyList.get(position);
+        final int positions=position;
         holder.plist_price_text.setText("₹ " +item.getselling_cost());
         holder.from_name.setText(item.getp_nane());
         holder.cart_product_quantity_tv.setText(item.getqty());
         Glide.with(context).load(item.getp_image()).into(holder.list_image);
         holder.product_id.setText(item.getid().toString());
+
+        holder.cart_plus_img.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //Integer position=getPosition();
+                final CartItem item = notifyList.get(positions);
+                String price=item.getselling_cost();
+                Integer qty= Integer.valueOf(item.getqty())+1;
+                Integer id = Integer.valueOf(item.id);
+                notifyList.get(positions).setqty(String.valueOf(qty));
+
+
+
+                Log.d("cartitem_count",String.valueOf(qty));
+                addtocart(context,String.valueOf(id),String.valueOf(qty),price);
+                //TextView cart_product_quantity = v.getRootView().findViewById(R.id.cart_product_quantity_tv);
+                //cart_product_quantity.setText(qty);
+                //notifyItemChanged(position);
+                 //notifyDataSetChanged();
+                refreshCart(PrefManager.getLoginDetail(context,"id"));
+                 AppCompatActivity activity = (AppCompatActivity)context;
+                CartActivity fragment = new CartActivity();
+                Bundle args = new Bundle();
+                args.putString("name", "mragank");
+                //((AppCompatActivity) context).finish();
+                 //removeFragment(context,fragment,args);
+                loadFragment(context,fragment,args);
+                //((AppCompatActivity) context).finish();
+
+
+                holder.plist_price_text.setText("₹ " +item.getselling_cost());
+                holder.from_name.setText(item.getp_nane());
+                holder.cart_product_quantity_tv.setText(item.getqty());
+                Glide.with(context).load(item.getp_image()).into(holder.list_image);
+                holder.product_id.setText(item.getid().toString());
+            }
+        });
+        holder.cart_minus_img.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                final CartItem item = notifyList.get(positions);
+                String price=item.getselling_cost();
+                Integer qty= Integer.valueOf(item.getqty())-1;
+                Integer id = Integer.valueOf(item.id);
+                Log.d("cartitem_countm",String.valueOf(qty));
+                String url = "https://www.iampro.co/api/cart.php?type=update_cart&id="+id.toString()+"&qty="+qty.toString()+"&price="+price+"&uid="+ PrefManager.getLoginDetail(context,"id") +"&ip_address="+ Config.IP_ADDRESS;
+                //Toast.makeText(itemView.getContext(), id.toString()+"--"+qty.toString()+"-Position:" + Integer.toString(getPosition()), Toast.LENGTH_SHORT).show();
+                if(qty==0){
+                    removeItem(positions);
+                    url = "https://www.iampro.co/api/cart.php?type=delete_cart_item&id="+id.toString();
+                }else{
+
+                }
+                //function.executeUrl(context,"get", url, null);
+                notifyList.get(positions).setqty(String.valueOf(qty));
+                removeFromCart(url);
+
+                refreshCart(PrefManager.getLoginDetail(context,"id"));
+                //TextView cart_product_quantity = v.getRootView().findViewById(R.id.cart_product_quantity_tv);
+                //cart_product_quantity.setText(qty);
+                //notifyItemChanged(position);
+                //notifyDataSetChanged();
+                AppCompatActivity activity = (AppCompatActivity)context;
+                CartActivity fragment = new CartActivity();
+                Bundle args = new Bundle();
+                args.putString("name", "mragank");
+                //removeFragment(context,fragment,args);
+                loadFragment(context,fragment,args);
+                 //((AppCompatActivity) context).finish();
+
+                holder.plist_price_text.setText("₹ " +item.getselling_cost());
+                holder.from_name.setText(item.getp_nane());
+                holder.cart_product_quantity_tv.setText(item.getqty());
+                Glide.with(context).load(item.getp_image()).into(holder.list_image);
+                holder.product_id.setText(item.getid().toString());
+
+                fragment.prepareCart();
+
+            }
+        });
     }
 
     @Override
@@ -128,5 +184,136 @@ public class CartItemAdapter extends RecyclerView.Adapter<CartItemAdapter.MyView
     public void restoreItem(CartItem item, int position) {
         notifyList.add(position, item);
         notifyItemInserted(position);
+    }
+    public  void addtocart(final Context context, String pid, String qty, String price){
+        String url = "https://www.iampro.co/api/cart.php?type=addtocart&p_type=product&pid="+pid+"&qty="+qty+"&price="+price+"&uid="+ PrefManager.getLoginDetail(context,"id") +"&ip_address="+ Config.IP_ADDRESS;
+        Log.d(Config.TAG+"cart",url);
+        //function.executeUrl(context,"get", url, null);
+        RequestQueue requestQueue = Volley.newRequestQueue(context);
+        // Initialize a new JsonObjectRequest instance
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(
+                Request.Method.GET,
+                url,
+                null,
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        try{
+                            String status=response.optString("status");
+
+                           // Toast.makeText(context,status,Toast.LENGTH_LONG).show();
+                        }
+                        catch (Exception e){
+                            e.printStackTrace();
+                            Toast.makeText(context,e.getMessage(),Toast.LENGTH_LONG).show();
+                        }
+                    }
+                },
+                new Response.ErrorListener(){
+                    @Override
+                    public void onErrorResponse(VolleyError error){
+                        // Do something when error occurred
+                        Toast.makeText(context,error.getMessage(),Toast.LENGTH_LONG).show();
+                    }
+                }
+        );
+        // Add JsonObjectRequest to the RequestQueue
+        requestQueue.add(jsonObjectRequest);
+    }
+    public void removeFromCart(String url){
+        RequestQueue requestQueue = Volley.newRequestQueue(context);
+        // Initialize a new JsonObjectRequest instance
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(
+                Request.Method.GET,
+                url,
+                null,
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        try{
+                            String status=response.optString("status");
+
+                            //Toast.makeText(context,status,Toast.LENGTH_LONG).show();
+                        }
+                        catch (Exception e){
+                            e.printStackTrace();
+                            Toast.makeText(context,e.getMessage(),Toast.LENGTH_LONG).show();
+                        }
+                    }
+                },
+                new Response.ErrorListener(){
+                    @Override
+                    public void onErrorResponse(VolleyError error){
+                        // Do something when error occurred
+                        Toast.makeText(context,error.getMessage(),Toast.LENGTH_LONG).show();
+                    }
+                }
+        );
+        // Add JsonObjectRequest to the RequestQueue
+        requestQueue.add(jsonObjectRequest);
+    }
+    public void loadFragment(Context context, Fragment fragment, Bundle args) {
+        // create a FragmentManager
+        AppCompatActivity activity = (AppCompatActivity) context;
+        FragmentManager fm = activity.getSupportFragmentManager(); //getFragmentManager();
+        // create a FragmentTransaction to begin the transaction and replace the Fragment
+        if(args != null){
+            fragment.setArguments(args);
+        }
+        FragmentTransaction fragmentTransaction = fm.beginTransaction();
+        // replace the FrameLayout with new Fragment
+        //fragmentTransaction.add(android.R.id.content, fragment);
+
+        fragmentTransaction.detach(fragment);
+        fragmentTransaction.attach(fragment);
+        //fragmentTransaction.add(android.R.id.content, fragment);
+        //fragmentTransaction.addToBackStack(null);
+        fragmentTransaction.commit(); // save the changes
+    }
+    public void removeFragment(Context context, Fragment fragment, Bundle args){
+        AppCompatActivity activity = (AppCompatActivity) context;
+        FragmentManager fm = activity.getSupportFragmentManager(); //getFragmentManager();
+        // create a FragmentTransaction to begin the transaction and replace the Fragment
+        if(args != null){
+            fragment.setArguments(args);
+        }
+        FragmentTransaction fragmentTransaction = fm.beginTransaction();
+        // replace the FrameLayout with new Fragment
+        fragmentTransaction.remove(fragment);
+
+        fragmentTransaction.commit(); // save the changes
+    }
+    public void refreshCart(String uid){
+         String url="https://www.iampro.co/api/cart.php?type=refreshCart&uid="+uid+"&ip_address="+Config.IP_ADDRESS;
+        RequestQueue requestQueue = Volley.newRequestQueue(context);
+        // Initialize a new JsonObjectRequest instance
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(
+                Request.Method.GET,
+                url,
+                null,
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        try{
+                            String status=response.optString("status");
+
+                            //Toast.makeText(context,status,Toast.LENGTH_LONG).show();
+                        }
+                        catch (Exception e){
+                            e.printStackTrace();
+                            Toast.makeText(context,e.getMessage(),Toast.LENGTH_LONG).show();
+                        }
+                    }
+                },
+                new Response.ErrorListener(){
+                    @Override
+                    public void onErrorResponse(VolleyError error){
+                        // Do something when error occurred
+                        Toast.makeText(context,error.getMessage(),Toast.LENGTH_LONG).show();
+                    }
+                }
+        );
+        // Add JsonObjectRequest to the RequestQueue
+        requestQueue.add(jsonObjectRequest);
     }
 }

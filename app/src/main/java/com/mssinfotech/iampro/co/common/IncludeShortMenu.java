@@ -28,18 +28,19 @@ import com.mssinfotech.iampro.co.user.MyVideoActivity;
 
 import org.json.JSONException;
 import org.json.JSONObject;
-
 public class IncludeShortMenu  extends RelativeLayout {
     private LayoutInflater inflater;
     TextView tvs;
     private boolean isLogin = false;
     public IncludeShortMenu(Context context){
         super(context);
-        init(null);
+          init(null);
     }
     public IncludeShortMenu(Context context, AttributeSet attrs) {
         super(context, attrs);
         init(attrs);
+        if (context==null)
+            context=getContext();
         inflater = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         inflater.inflate(R.layout.include_short_menu, this, true);
         (this.findViewById(R.id.img_image)).setOnClickListener(imageOnClickListener);

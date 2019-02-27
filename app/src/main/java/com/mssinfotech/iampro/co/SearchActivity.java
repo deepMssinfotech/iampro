@@ -73,7 +73,7 @@ public class SearchActivity extends Fragment implements AdapterView.OnItemSelect
                 String SearchType = spnrSearchType.getSelectedItem().toString();
                 String SearchCat = spnrCategory.getSelectedItem().toString();
                 String SearchData = etSearchData.getText().toString();
-                Toast.makeText(getContext(), "Clicked on: " + SearchType + " " + SearchCat + " " +SearchData, Toast.LENGTH_SHORT).show();
+                //Toast.makeText(getContext(), "Clicked on: " + SearchType + " " + SearchCat + " " +SearchData, Toast.LENGTH_SHORT).show();
                 Intent intent=new Intent(getContext(),SearchedActivity.class);
                 intent.putExtra("SearchType",SearchType);
                 intent.putExtra("SearchCat",SearchCat);

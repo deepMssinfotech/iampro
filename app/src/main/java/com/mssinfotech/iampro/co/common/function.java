@@ -59,11 +59,13 @@ public class function {
         }
         FragmentTransaction fragmentTransaction = fm.beginTransaction();
         // replace the FrameLayout with new Fragment
-        fragmentTransaction.replace(android.R.id.content, fragment);
+        fragmentTransaction.add(android.R.id.content, fragment);
+        fragmentTransaction.addToBackStack(null);
         fragmentTransaction.commit(); // save the changes
     }
-    public static void addtocart(Context context,String id,String qty,String price){
-        String url = "https://www.iampro.co/api/cart.php?type=addtocart&p_type=product&pid="+id+"&qty="+qty+"&price="+price+"&uid="+ PrefManager.getLoginDetail(context,"id") +"&ip_address="+ Config.IP_ADDRESS;
+
+    public static void addtocart(Context context,String pid,String qty,String price){
+        String url = "https://www.iampro.co/api/cart.php?type=addtocart&p_type=product&pid="+pid+"&qty="+qty+"&price="+price+"&uid="+ PrefManager.getLoginDetail(context,"id") +"&ip_address="+ Config.IP_ADDRESS;
         Log.d(Config.TAG+"cart",url);
         function.executeUrl(context,"get", url, null);
     }

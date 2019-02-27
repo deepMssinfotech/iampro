@@ -53,9 +53,9 @@ public class SearchedActivity extends AppCompatActivity {
         getSearchedItem();
     }
     public void getSearchedItem(){
-       // final ProgressDialog pDialog = new ProgressDialog(getApplicationContext()); //Your Activity.this
-       // pDialog.setMessage("Loading...!");
-       // pDialog.show();
+        final ProgressDialog pDialog = new ProgressDialog(SearchedActivity.this); //Your Activity.this
+        pDialog.setMessage("Loading...!");
+        pDialog.show();
         String url=null;
         try {
             String query = URLEncoder.encode(SearchCat,"utf-8");
@@ -78,7 +78,7 @@ public class SearchedActivity extends AppCompatActivity {
                 new com.android.volley.Response.Listener<JSONArray>() {
                     @Override
                     public void onResponse(JSONArray response) {
-                       // pDialog.dismiss();
+                       pDialog.dismiss();
                         SectionImageModel dm = new SectionImageModel();
                         dm.setHeaderTitle(SearchCat);
                         dm.setAlbemId(item_name.get(SearchCat));
@@ -165,7 +165,7 @@ public class SearchedActivity extends AppCompatActivity {
                         }
                         catch (JSONException e){
                             e.printStackTrace();
-                            //pDialog.dismiss();
+                            pDialog.dismiss();
                             Toast.makeText(getApplicationContext(), ""+e.getMessage(),Toast.LENGTH_SHORT).show();
                             Log.d("catch_f",""+e.getMessage());
                         }
@@ -175,7 +175,7 @@ public class SearchedActivity extends AppCompatActivity {
                     @Override
                     public void onErrorResponse(VolleyError error){
                         Toast.makeText(getApplicationContext(), error.getMessage(), Toast.LENGTH_SHORT).show();
-                        //pDialog.dismiss();
+                        pDialog.dismiss();
                         Log.d("verror",""+error.getMessage());
                     }
                 }

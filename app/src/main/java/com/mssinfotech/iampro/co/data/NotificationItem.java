@@ -2,7 +2,53 @@ package com.mssinfotech.iampro.co.data;
 
 public class NotificationItem {
     private int id;
-    private String product_name, product_image, user_name, user_image,udate,notify_type,product_type,detail;
+    private String product_name;
+    private String product_image;
+    private String user_name;
+    private String user_image;
+    private String udate;
+    private String notify_type;
+    private String product_type;
+    private String detail;
+
+    public String getAlbemId() {
+        return albemId;
+    }
+
+    public void setAlbemId(String albemId) {
+        this.albemId = albemId;
+    }
+
+    private String albemId;
+
+    public String getPid() {
+        return pid;
+    }
+
+    public void setPid(String pid) {
+        this.pid = pid;
+    }
+
+    private String pid;
+    public String getUid() {
+        return uid;
+    }
+
+    public void setUid(String uid) {
+        this.uid = uid;
+    }
+
+    private String uid;
+
+    public String getP_type() {
+        return p_type;
+    }
+
+    public void setP_type(String p_type) {
+        this.p_type = p_type;
+    }
+
+    private String p_type;
     private static final long serialVersionUID = 1L;
     public NotificationItem() {
     }

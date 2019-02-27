@@ -136,11 +136,16 @@ public class NotificationActivity extends Fragment implements NotificationItemTo
                     String user_image = Config.AVATAR_URL + "80/80/" + notifi_user_detail.getString("avatar");
 
                     item.setId(feedObj.getInt("id"));
+                     item.setPid(product_detail.getString("id"));
+                     //item.setAlbemId(product_detail.getString("albemid"));
                     item.setDetail(notifi_user_detail.getString("fullname") + " " + feedObj.getString("n_type") + " on your " + feed_type);
+                     item.setUid(notifi_user_detail.getString("id"));
                     item.setUser_image(user_image);
                     item.setProduct_image(image_path);
                     Log.d(Config.TAG, "image :" + image_path + "--" + user_image);
                     item.setNotify_type(feedObj.getString("n_type"));
+                     item.setP_type(feedObj.getString("p_type"));
+
                     item.setUdate(feedObj.getString("ndate"));
                     item.setUser_name(notifi_user_detail.getString("fullname"));
                     item.setProduct_name(product_detail.getString("name"));
