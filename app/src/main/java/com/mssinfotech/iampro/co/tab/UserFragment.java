@@ -14,6 +14,7 @@ import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.content.res.AppCompatResources;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.GridLayoutManager;
@@ -112,6 +113,9 @@ public class UserFragment extends Fragment implements UserDataAdapter.ItemListen
         my_recycler_view =view.findViewById(R.id.my_recycler_view);
         recycler_view_load_more=view.findViewById(R.id.recycler_view_load_more);
         ll=view.findViewById(R.id.ll);
+        luser_iv=view.findViewById(R.id.luser_iv);
+        luser_iv.setVisibility(View.VISIBLE);
+        luser_iv.setBackground(AppCompatResources.getDrawable(getContext(),R.drawable.user));
           btn_load_more=view.findViewById(R.id.btn_load_more);
 
         luser_iv=view.findViewById(R.id.luser_iv);

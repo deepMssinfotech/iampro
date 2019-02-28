@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.content.res.AppCompatResources;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -97,6 +98,8 @@ public class ProductFragment extends Fragment implements ProductAdapter.ItemList
         btn_load_more=view.findViewById(R.id.btn_load_more);
           lproduct_iv=view.findViewById(R.id.lproduct_iv);
         //lproduct_iv.setBackground(getContext().getResources().getDrawable(R.drawable.latestproduct));
+        lproduct_iv.setVisibility(View.VISIBLE);
+        lproduct_iv.setBackground(AppCompatResources.getDrawable(getContext(),R.drawable.latestproduct));
         btn_load_more.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

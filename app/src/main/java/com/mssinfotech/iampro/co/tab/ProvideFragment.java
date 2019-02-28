@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.content.res.AppCompatResources;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -95,6 +96,8 @@ public class ProvideFragment extends Fragment implements ProvideAdapter.ItemList
         btn_load_more=view.findViewById(R.id.btn_load_more);
         lprovide_iv=view.findViewById(R.id.lprovide_iv);
       //  lprovide_iv.setBackground(getContext().getResources().getDrawable(R.drawable.latestprovide));
+          lprovide_iv.setVisibility(View.VISIBLE);
+          lprovide_iv.setBackground(AppCompatResources.getDrawable(getContext(),R.drawable.latestprovide));
         btn_load_more.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

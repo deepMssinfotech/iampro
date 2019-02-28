@@ -261,6 +261,16 @@ public class MyProductAdapter extends RecyclerView.Adapter<MyProductAdapter.View
                 mContext.startActivity(intent);
             }
         });
+
+
+        if(!PrefManager.getLoginDetail(mContext,"id").equalsIgnoreCase(String.valueOf(mValues.get(position).getUid()))){
+            Vholder.iv_delete.setVisibility(View.GONE);
+            Vholder.iv_edit.setVisibility(View.GONE);
+        }
+        else{
+            Vholder.iv_delete.setVisibility(View.VISIBLE);
+            Vholder.iv_edit.setVisibility(View.VISIBLE);
+        }
     }
     @Override
     public int getItemCount() {

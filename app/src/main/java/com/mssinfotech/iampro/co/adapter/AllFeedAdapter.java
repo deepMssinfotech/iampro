@@ -7,6 +7,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.AppCompatImageView;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -62,6 +63,7 @@ import java.util.ArrayList;
 import bg.devlabs.fullscreenvideoview.FullscreenVideoView;
 import bg.devlabs.fullscreenvideoview.orientation.LandscapeOrientation;
 import bg.devlabs.fullscreenvideoview.orientation.PortraitOrientation;
+import de.hdodenhof.circleimageview.CircleImageView;
 
 public class AllFeedAdapter extends RecyclerView.Adapter<AllFeedAdapter.ViewHolder> {
     ArrayList<FeedModel> mValues;
@@ -73,14 +75,16 @@ public class AllFeedAdapter extends RecyclerView.Adapter<AllFeedAdapter.ViewHold
         mListener=itemListener;
     }
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-        ImageView imageView_user, imageView_icon, iv_comments, image, iv_favourite, ivLike, iv_buy;
+        AppCompatImageView iv_comments, image, iv_favourite, ivLike;
         TextView fullname, udate, tv_comments, tv_totallike, detail_name, purchese_cost, selling_cost;
         LikeButton like_un, favButton;
+        ImageView iv_buy;
         RatingBar ratingBar;
         LinearLayout ll_showhide, ll_comment;
         FeedModel item;
         FullscreenVideoView fullscreenVideoView;
-        ImageView videoImage;
+        CircleImageView imageView_user,imageView_icon;
+        android.support.v7.widget.AppCompatImageView videoImage;
         FrameLayout videoLayout;
         SliderLayout imageSlider;
         private View currentFocusedLayout, oldFocusedLayout;
@@ -95,7 +99,7 @@ public class AllFeedAdapter extends RecyclerView.Adapter<AllFeedAdapter.ViewHold
             iv_comments = v.findViewById(R.id.iv_comments);
             imageSlider = v.findViewById(R.id.imageSlider);
             fullscreenVideoView = v.findViewById(R.id.fullscreenVideoView);
-            videoImage = (ImageView) v.findViewById(R.id.videoImage);
+            videoImage = v.findViewById(R.id.videoImage);
             videoLayout = v.findViewById(R.id.videoLayout);
             iv_buy = v.findViewById(R.id.iv_buy);
             //iv_favourite=v.findViewById(R.id.iv_favourite);
@@ -252,7 +256,6 @@ public class AllFeedAdapter extends RecyclerView.Adapter<AllFeedAdapter.ViewHold
                 //iv_favourite.setVisibility(View.VISIBLE);
             }
         }
-
         @Override
         public void onClick(View view) {
             if (mListener != null) {

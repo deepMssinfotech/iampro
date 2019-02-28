@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.content.res.AppCompatResources;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
@@ -14,6 +15,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.android.volley.Request;
@@ -55,7 +57,7 @@ public class ImageFragment extends Fragment implements ImageAdapter.ItemListener
     TreeMap<String,String> item_name = new TreeMap<>();
     ArrayList<SectionImageModel> allSampleDatamore=new ArrayList<>();
     MyImageVideoDataAdapter adapterr;
-
+      ImageView limage_iv;
     public ImageFragment() {
         // Required empty public constructor
     }
@@ -79,6 +81,9 @@ public class ImageFragment extends Fragment implements ImageAdapter.ItemListener
         my_recycler_view =view.findViewById(R.id.my_recycler_view);
         recycler_view_load_more=view.findViewById(R.id.recycler_view_load_more);
         btn_load_more=view.findViewById(R.id.btn_load_more);
+        limage_iv=view.findViewById(R.id.limage_iv);
+        limage_iv.setVisibility(View.VISIBLE);
+        limage_iv.setBackground(AppCompatResources.getDrawable(getContext(),R.drawable.latestphotos));
         btn_load_more.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

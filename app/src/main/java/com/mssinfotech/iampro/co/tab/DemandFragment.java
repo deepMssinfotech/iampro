@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.content.res.AppCompatResources;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -93,6 +94,8 @@ public class DemandFragment extends Fragment implements DemandAdapter.ItemListen
         btn_load_more=view.findViewById(R.id.btn_load_more);
         ldemand_iv=view.findViewById(R.id.ldemand_iv);
        //  ldemand_iv.setBackground(getContext().getResources().getDrawable(R.drawable.latestdemand));
+         ldemand_iv.setVisibility(View.VISIBLE);
+          ldemand_iv.setBackground(AppCompatResources.getDrawable(getContext(),R.drawable.latestdemand));
         btn_load_more.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

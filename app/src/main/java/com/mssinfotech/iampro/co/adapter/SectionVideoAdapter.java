@@ -277,6 +277,14 @@ public class SectionVideoAdapter extends RecyclerView.Adapter<SectionVideoAdapte
              }
          });
 
+        if(!PrefManager.getLoginDetail(mContext,"id").equalsIgnoreCase(itemsList.get(i).getUid().toString())){
+            holder.iv_delete.setVisibility(View.GONE);
+            holder.iv_edit.setVisibility(View.GONE);
+        }
+        else{
+            holder.iv_delete.setVisibility(View.VISIBLE);
+            holder.iv_edit.setVisibility(View.VISIBLE);
+        }
     }
     @Override
     public int getItemCount() {

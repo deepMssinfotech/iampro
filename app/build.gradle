@@ -4,6 +4,7 @@ android {
     compileSdkVersion 28
     buildToolsVersion '28.0.3'
     defaultConfig {
+        vectorDrawables.useSupportLibrary = true
         applicationId "com.mssinfotech.iampro.co"
         minSdkVersion 19
         multiDexEnabled true
