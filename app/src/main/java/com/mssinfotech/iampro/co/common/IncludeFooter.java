@@ -114,8 +114,11 @@ public class IncludeFooter  extends RelativeLayout {
             if(isLogin) {
                 ProfileActivity fragment = new ProfileActivity();
                 function.loadFragment(getContext(),fragment,null);
-            }else
-                getContext().startActivity(new Intent(getContext(), LoginActivity.class));
+            }else{
+                LoginActivity fragment = new LoginActivity();
+                function.loadFragment(getContext(),fragment,null);
+            }
+            //getContext().startActivity(new Intent(getContext(), LoginActivity.class));
         }
     };
 

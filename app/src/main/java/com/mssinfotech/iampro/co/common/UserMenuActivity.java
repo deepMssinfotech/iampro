@@ -203,18 +203,16 @@ public class UserMenuActivity  extends Fragment {
     private View.OnClickListener loginOnClickListener = new View.OnClickListener() {
         public void onClick(View v) {
             //if(function.isSamePage("activity_login"))return;
-            Intent intent = new Intent(getContext(), LoginActivity.class);
-            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            getContext().startActivity(intent);
+            LoginActivity fragment = new LoginActivity();
+            function.loadFragment(getContext(),fragment,null);
             removeFragment();
         }
     };
     private View.OnClickListener registerOnClickListener = new View.OnClickListener() {
         public void onClick(View v) {
             //if(function.isSamePage("activity_register"))return;
-            Intent intent = new Intent(getContext(), SignupActivity.class);
-            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            getContext().startActivity(intent);
+            SignupActivity fragment = new SignupActivity();
+            function.loadFragment(getContext(),fragment,null);
             removeFragment();
         }
     };

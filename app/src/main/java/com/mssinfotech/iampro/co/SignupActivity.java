@@ -1,12 +1,16 @@
 package com.mssinfotech.iampro.co;
 
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.support.design.widget.TextInputLayout;
+import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
@@ -27,7 +31,7 @@ import java.util.Hashtable;
 import java.util.Map;
 import java.util.Random;
 
-public class SignupActivity extends AppCompatActivity  implements View.OnClickListener{
+public class SignupActivity extends Fragment implements View.OnClickListener{
     TextView btnLogin;
     private Button btnRegister;
     private Spinner spprofession;
@@ -35,36 +39,43 @@ public class SignupActivity extends AppCompatActivity  implements View.OnClickLi
     private EditText etLastname,etMobile,etEmail,etFirstname;
     Random r = new Random();
     public static int randomNumber;
+    View view;
+    Context context;
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_signup);
-        btnLogin = findViewById(R.id.btnLogin);
+    public View onCreateView(LayoutInflater inflater, ViewGroup parent, Bundle savedInstanceState) {
+        // Defines the xml file for the fragment
+        return inflater.inflate(R.layout.activity_signup, parent, false);
+    }
+    @Override
+    public void onViewCreated(View v, Bundle savedInstanceState) {
+        context = getContext();
+        view = v;
+        btnLogin = view.findViewById(R.id.btnLogin);
         btnLogin.setOnClickListener(this);
-        btnRegister = findViewById(R.id.btnRegister);
+        btnRegister = view.findViewById(R.id.btnRegister);
         btnRegister.setOnClickListener(this);
-        tilFirstname = findViewById(R.id.tilFirstname);
-        tilLastname = findViewById(R.id.tilLastName);
+        tilFirstname = view.findViewById(R.id.tilFirstname);
+        tilLastname = view.findViewById(R.id.tilLastName);
 
-        tilMobile = findViewById(R.id.tilMobile);
-        tilEmail = findViewById(R.id.tilEmail);
+        tilMobile = view.findViewById(R.id.tilMobile);
+        tilEmail = view.findViewById(R.id.tilEmail);
 
 
-        etFirstname = findViewById(R.id.etFirstname);
-        etLastname =findViewById(R.id.etLastname);
-        spprofession=findViewById(R.id.spprofession);
+        etFirstname = view.findViewById(R.id.etFirstname);
+        etLastname =view.findViewById(R.id.etLastname);
+        spprofession=view.findViewById(R.id.spprofession);
 
-        etMobile =findViewById(R.id.etMobile);
-        etEmail =findViewById(R.id.etEmail);
+        etMobile =view.findViewById(R.id.etMobile);
+        etEmail =view.findViewById(R.id.etEmail);
 
-        function.getData(SignupActivity.this, this, spprofession, "FRIEND");
+        function.getData(getActivity(), context, spprofession, "FRIEND");
     }
     @Override
     public void onClick(View v) {
         switch (v.getId() /*to get clicked view id**/) {
             case R.id.btnLogin:
-                Intent i_login = new Intent(SignupActivity.this, LoginActivity.class);
-                SignupActivity.this.startActivity(i_login);
+                LoginActivity fragment = new LoginActivity();
+                function.loadFragment(context,fragment,null);
                 break;
             case R.id.btnRegister:
                 Log.d("btnRegister","btnRegister");
@@ -85,14 +96,14 @@ public class SignupActivity extends AppCompatActivity  implements View.OnClickLi
         }
     }
     public void sendOtp(){
-        if (!Config.haveNetworkConnection(this)){
-            Config.showInternetDialog(this);
+        if (!Config.haveNetworkConnection(context)){
+            Config.showInternetDialog(context);
             return;
         }
          randomNumber = r.nextInt(10000);
         final String url=Config.API_URL+"ajax.php";
         //tv.setText(String.valueOf(randomNumber));
-        final ProgressDialog loading = ProgressDialog.show(this,"Processing...","Please wait...",false,false);
+        final ProgressDialog loading = ProgressDialog.show(context,"Processing...","Please wait...",false,false);
         StringRequest stringRequest = new StringRequest(Request.Method.POST,url,
                 new Response.Listener<String>() {
                     @Override
@@ -103,7 +114,7 @@ public class SignupActivity extends AppCompatActivity  implements View.OnClickLi
                         //Toast.makeText(LoginActivity.this, s , Toast.LENGTH_LONG).show();
                         Log.d("Lresponse",""+s);
 
-                        Intent intent=new Intent(getApplicationContext(),OtpRegistrationActivity.class);
+                        Intent intent=new Intent(context,OtpRegistrationActivity.class);
                         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                         intent.putExtra("otp",String.valueOf(randomNumber));
                         intent.putExtra("fname",etFirstname.getText().toString().trim());
@@ -113,7 +124,7 @@ public class SignupActivity extends AppCompatActivity  implements View.OnClickLi
                         intent.putExtra("category",spprofession.getSelectedItem().toString().trim());
 
                         startActivity(intent);
-                        finish();
+                        getActivity().finish();
 
                     }
                 },
@@ -123,7 +134,7 @@ public class SignupActivity extends AppCompatActivity  implements View.OnClickLi
                         //Dismissing the progress dialog
                         loading.dismiss();
                         Log.d("error",volleyError.getMessage()+"--" + url.toString());
-                        Toast.makeText(getApplicationContext(),volleyError.getMessage(),Toast.LENGTH_LONG).show();
+                        Toast.makeText(context,volleyError.getMessage(),Toast.LENGTH_LONG).show();
                     }
                 }){
             @Override
@@ -141,7 +152,7 @@ public class SignupActivity extends AppCompatActivity  implements View.OnClickLi
             }
         };
         //Creating a Request Queue
-        RequestQueue requestQueue = Volley.newRequestQueue(this);
+        RequestQueue requestQueue = Volley.newRequestQueue(context);
 
         //Adding request to the queue
         requestQueue.add(stringRequest);

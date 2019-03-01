@@ -5,10 +5,13 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.support.design.widget.TextInputLayout;
+import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
@@ -32,26 +35,34 @@ import org.json.JSONObject;
 import java.util.Hashtable;
 import java.util.Map;
 
-public class LoginActivity extends AppCompatActivity{
+public class LoginActivity extends Fragment {
 
     TextView btnforgetPassword;
     Button btnprocess;
     TextInputLayout tilemail,tilpassword;
     EditText etemail,etpassword;
+    View view;
+    Context context;
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup parent, Bundle savedInstanceState) {
+        // Defines the xml file for the fragment
+        return inflater.inflate(R.layout.activity_login, parent, false);
+    }
+    @Override
+    public void onViewCreated(View v, Bundle savedInstanceState) {
+        view = v;
+        context = getContext();
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_login);
 
-        tilemail = findViewById(R.id.tilemail);
-        etemail = findViewById(R.id.etemail);
+        tilemail = view.findViewById(R.id.tilemail);
+        etemail = view.findViewById(R.id.etemail);
 
-        tilpassword = findViewById(R.id.tilpassword);
-        etpassword = findViewById(R.id.etpassword);
+        tilpassword = view.findViewById(R.id.tilpassword);
+        etpassword = view.findViewById(R.id.etpassword);
 
     }
     public void redirect(View v){
-        Intent i_login = new Intent(LoginActivity.this, ForgetActivity.class);
+        Intent i_login = new Intent(context, ForgetActivity.class);
         LoginActivity.this.startActivity(i_login);
     }
     public void processLogin(View v){
@@ -73,21 +84,20 @@ public class LoginActivity extends AppCompatActivity{
         }
     }
     private void hideKeyboard() {
-        View view = getCurrentFocus();
         if (view != null) {
-            ((InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE)).
+            ((InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE)).
                     hideSoftInputFromWindow(view.getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
         }
     }
     public void sendData(final String unamee,final String passwordd)
     {
 
-        if (!Config.haveNetworkConnection(this)){
-            Config.showInternetDialog(this);
+        if (!Config.haveNetworkConnection(context)){
+            Config.showInternetDialog(context);
             return;
         }
 
-        final ProgressDialog loading = ProgressDialog.show(this,"Processing...","Please wait...",false,false);
+        final ProgressDialog loading = ProgressDialog.show(context,"Processing...","Please wait...",false,false);
         StringRequest stringRequest = new StringRequest(Request.Method.POST,Config.AJAX_URL+"signup.php",
                 new Response.Listener<String>() {
                     @Override
@@ -104,7 +114,7 @@ public class LoginActivity extends AppCompatActivity{
                             String msgg=jsonObject.getString("msg");
 
 
-                            Toast.makeText(getApplicationContext(),""+msgg,Toast.LENGTH_LONG).show();
+                            Toast.makeText(context.getApplicationContext(),""+msgg,Toast.LENGTH_LONG).show();
                             if (status.equalsIgnoreCase("success")){
                                 //String urlv=jsonObject.getString("url");
                                 String avatarv=jsonObject.getString("avatar");
@@ -126,11 +136,11 @@ public class LoginActivity extends AppCompatActivity{
                                 etemail.setText(" ");
                                 etpassword.setText(" ");
 
-                                Intent intent=new Intent(getApplicationContext(),WelcomeActivity.class);
+                                Intent intent=new Intent(context.getApplicationContext(),WelcomeActivity.class);
                                 intent.addCategory(Intent.CATEGORY_HOME);
                                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                                 startActivity(intent);
-                                finish();
+                                getActivity().finish();
                                 loading.dismiss();
                             }
                             else{
@@ -141,7 +151,7 @@ public class LoginActivity extends AppCompatActivity{
                         {
                             loading.dismiss();
                             Log.d("JSoNExceptionv",e.getMessage());
-                            Toast.makeText(getApplicationContext(),e.getMessage(),Toast.LENGTH_LONG).show();
+                            Toast.makeText(context.getApplicationContext(),e.getMessage(),Toast.LENGTH_LONG).show();
                         }
                     }
                 },
@@ -150,7 +160,7 @@ public class LoginActivity extends AppCompatActivity{
                     public void onErrorResponse(VolleyError volleyError) {
                         //Dismissing the progress dialog
                         loading.dismiss();
-                        Toast.makeText(getApplicationContext(),volleyError.getMessage(),Toast.LENGTH_LONG).show();
+                        Toast.makeText(context.getApplicationContext(),volleyError.getMessage(),Toast.LENGTH_LONG).show();
                     }
                 }){
             @Override
@@ -164,12 +174,12 @@ public class LoginActivity extends AppCompatActivity{
             }
         };
         //Creating a Request Queue
-        RequestQueue requestQueue = Volley.newRequestQueue(this);
+        RequestQueue requestQueue = Volley.newRequestQueue(context);
 
         //Adding request to the queue
         requestQueue.add(stringRequest);
     }
     private void saveLoginDetails(String username, String password,String img_url,String id,String mobile,String fname,String lname,String email,String banner_imagev, String img_banner_image, String video_banner_image, String profile_image_gallery, String profile_video_gallery) {
-        new PrefManager(this).saveLoginDetails(username, password,img_url,id,mobile,fname,lname,email,banner_imagev,img_banner_image,  video_banner_image,  profile_image_gallery,  profile_video_gallery);
+        new PrefManager(context).saveLoginDetails(username, password,img_url,id,mobile,fname,lname,email,banner_imagev,img_banner_image,  video_banner_image,  profile_image_gallery,  profile_video_gallery);
     }
 }
