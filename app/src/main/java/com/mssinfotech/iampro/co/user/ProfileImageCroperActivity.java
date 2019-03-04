@@ -208,8 +208,8 @@ public class ProfileImageCroperActivity  extends AppCompatActivity implements IP
     }
 
     public void redirect(){
-        AppCompatActivity activity = (AppCompatActivity) ProfileImageCroperActivity.this;
-        EditProfileActivity fragment = new EditProfileActivity();
+        AppCompatActivity activity=(AppCompatActivity)ProfileImageCroperActivity.this;
+        EditProfileActivity fragment=new EditProfileActivity();
         function.loadFragment(ProfileImageCroperActivity.this,fragment,null);
         finish();
     }
@@ -614,11 +614,8 @@ public class ProfileImageCroperActivity  extends AppCompatActivity implements IP
             case R.id.cancel:
                 finishBack();
                 break;
-
-
         }
     }
-
 
     void finishBack(boolean status) {
         Intent returnIntent = new Intent();
@@ -626,11 +623,9 @@ public class ProfileImageCroperActivity  extends AppCompatActivity implements IP
         setResult(Activity.RESULT_OK, returnIntent);
         finish();
     }
-
     void finishBack() {
         Intent returnIntent = new Intent();
         setResult(Activity.RESULT_CANCELED, returnIntent);
         finish();
     }
-
 }

@@ -15,22 +15,26 @@ public class SectionImageModel {
     private String albemId;
     private ArrayList<MyImageModel> allItemsInSection;
     private String more;
-    public SectionImageModel() {
+     private String addedBy;
+    public String getAddedBy() {
+        return addedBy;
+    }
+    public void setAddedBy(String addedBy) {
+        this.addedBy = addedBy;
+    }
+    public SectionImageModel(){
 
     }
     public SectionImageModel(String headerTitle, ArrayList<MyImageModel> allItemsInSection) {
         this.headerTitle = headerTitle;
         this.allItemsInSection = allItemsInSection;
     }
-
     public String getHeaderTitle() {
         return headerTitle;
     }
-
     public void setHeaderTitle(String headerTitle) {
         this.headerTitle = headerTitle;
     }
-
     public void setAlbemId(String albemId) {
         this.albemId=albemId;
     }

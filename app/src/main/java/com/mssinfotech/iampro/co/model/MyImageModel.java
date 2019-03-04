@@ -25,7 +25,8 @@ public class MyImageModel {
     private String uid;
     private String fullname;
     private String scost,pcost;
-    private String v_image;
+     public String v_image;
+    private String type;
     public String getV_image() {
         return v_image;
     }
@@ -319,7 +320,33 @@ public class MyImageModel {
         this.fullname=fullname;
         this.scost=scost;
     }
+    //load more
+    //
+    public MyImageModel(String id, String albemid, String name, String category, String albem_type, String image, String udate, String about_us, String group_id, String is_featured, String status, String is_block, String comments, String totallike, String like_unlike, String rating, String uid,String more,String avatar,String fullname,String v_image,String type,int mores) {
+        this.id = id;
+        this.albemid = albemid;
+        this.name = name;
+        this.category = category;
+        this.albem_type = albem_type;
+        this.image = image;
+        this.udate = udate;
+        this.about_us = about_us;
+        this.group_id = group_id;
+        this.is_featured = is_featured;
+        this.status = status;
+        this.is_block = is_block;
+        this.comments = comments;
+        this.totallike = totallike;
+        this.like_unlike = like_unlike;
+        this.rating = rating;
+        this.uid = uid;
+        this.more=more;
+        this.avatar=avatar;
+        this.fullname=fullname;
+        this.v_image=v_image;
+    }
     //  video more
+    //String.valueOf(id),String.valueOf(albemid),name,category,String.valueOf(albem_type),image,udate,about_us,String.valueOf(group_id),String.valueOf(is_featured),String.valueOf(status),is_block,String.valueOf(comments),String.valueOf(totallike),String.valueOf(like_unlike),rating,String.valueOf(user_id),more,avatar,fullname,v_image,"video","more")
     public MyImageModel(String id, String albemid, String name, String category, String albem_type, String image, String udate, String about_us, String group_id, String is_featured, String status, String is_block, String comments, String totallike, String like_unlike, String rating, String uid,String more,String avatar,String fullname,String scost,String v_image,String type) {
         this.id = id;
         this.albemid = albemid;
@@ -343,5 +370,6 @@ public class MyImageModel {
         this.fullname=fullname;
         this.scost=scost;
         this.v_image=v_image;
+        this.type=type;
     }
 }

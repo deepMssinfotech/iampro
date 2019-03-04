@@ -290,6 +290,7 @@ public class MyProductActivity extends Fragment implements MyProductAdapter.Item
                         Log.d("responsef",response.toString());
                         SectionDataModel dm = new SectionDataModel();
                         dm.setHeaderTitle("Product");
+                         dm.setAddedBy(id);
                         ArrayList<SingleItemModel> singleItem = new ArrayList<SingleItemModel>();
                         if(!singleItem.isEmpty()){
                             singleItem.clear();

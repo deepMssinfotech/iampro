@@ -7,6 +7,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.content.res.AppCompatResources;
 import android.support.v7.widget.AppCompatImageView;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -132,8 +133,10 @@ public class AllFeedAdapter extends RecyclerView.Adapter<AllFeedAdapter.ViewHold
             udate.setText(item.getUdate());
             tv_comments.setText(String.valueOf(item.getComment()));
             tv_totallike.setText(String.valueOf(item.getLikes()));
-            like_un.setUnlikeDrawableRes(R.drawable.like);
-            like_un.setLikeDrawableRes(R.drawable.like_un);
+             //like_un.setUnlikeDrawableRes(R.drawable.like);
+             like_un.setUnlikeDrawable(AppCompatResources.getDrawable(mContext,R.drawable.like));
+            //like_un.setLikeDrawableRes(R.drawable.like_un);
+             like_un.setLikeDrawable(AppCompatResources.getDrawable(mContext,R.drawable.like_un));
             imageView_user.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {

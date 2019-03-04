@@ -181,6 +181,7 @@ public class MyDemandActivity extends Fragment implements MyDemandAdapter.ItemLi
                         Log.d("responsef",response.toString());
                         SectionDataModel dm = new SectionDataModel();
                         dm.setHeaderTitle("Product");
+                        dm.setAddedBy(id);
                         ArrayList<SingleItemModel> singleItem = new ArrayList<SingleItemModel>();
                         if(!singleItem.isEmpty()){
                             singleItem.clear();

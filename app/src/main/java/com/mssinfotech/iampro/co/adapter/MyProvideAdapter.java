@@ -167,6 +167,7 @@ public class MyProvideAdapter extends RecyclerView.Adapter<MyProvideAdapter.View
         final int uidv=mValues.get(position).getUid();
         final String idv=mValues.get(position).getPid();
 
+
         int my_uid=uidv;
         if(my_uid==0){
             Vholder.likeButton.setEnabled(false);

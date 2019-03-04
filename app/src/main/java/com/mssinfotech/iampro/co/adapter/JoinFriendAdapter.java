@@ -1,5 +1,7 @@
 package com.mssinfotech.iampro.co.adapter;
 import android.content.Context;
+import android.content.Intent;
+import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,7 +13,9 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.mssinfotech.iampro.co.R;
 import com.mssinfotech.iampro.co.common.Config;
+import com.mssinfotech.iampro.co.common.function;
 import com.mssinfotech.iampro.co.data.JoinFriendItem;
+import com.mssinfotech.iampro.co.user.ProfileActivity;
 
 import java.util.List;
 
@@ -67,7 +71,19 @@ public class JoinFriendAdapter extends RecyclerView.Adapter<JoinFriendAdapter.My
         //holder.total_video.setText(String.valueOf(item.getTotal_video()));
         //holder.total_user.setText(String.valueOf(item.getTotal_friend()));
         Glide.with(context).load(item.getAvatar()).apply(Config.options_avatar).into(holder.userimage);
+         holder. userimage.setOnClickListener(new View.OnClickListener() {
+             @Override
+             public void onClick(View v) {
+                 /*Intent intent=new Intent(context, ProfileActivity.class);
+                  intent.putExtra("uid",notifyList.get(position).getUser_id());
+                   context.startActivity(intent);*/
 
+                 ProfileActivity fragment = new ProfileActivity();
+                 Bundle args = new Bundle();
+                 args.putString("uid",String.valueOf(notifyList.get(position).getUser_id()));
+                 function.loadFragment(context,fragment,args);
+             }
+         });
     }
 
     @Override

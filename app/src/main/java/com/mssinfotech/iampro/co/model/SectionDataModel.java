@@ -24,8 +24,13 @@ public class SectionDataModel {
         this.headerTitle = headerTitle;
         this.allItemsInSection = allItemsInSection;
     }
-
-
+    private String addedBy;
+    public String getAddedBy() {
+        return addedBy;
+    }
+    public void setAddedBy(String addedBy) {
+        this.addedBy = addedBy;
+    }
 
     public String getHeaderTitle() {
         return headerTitle;

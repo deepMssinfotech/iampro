@@ -31,6 +31,7 @@ import com.mssinfotech.iampro.co.R;
 import com.mssinfotech.iampro.co.common.Config;
 import com.mssinfotech.iampro.co.model.SectionDataModel;
 import com.mssinfotech.iampro.co.model.SectionImageModel;
+import com.mssinfotech.iampro.co.utils.PrefManager;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -84,6 +85,7 @@ public class MyImageVideoDataAdapter extends RecyclerView.Adapter<MyImageVideoDa
         final String sectionName = dataList.get(i).getHeaderTitle();
         final String albumId = dataList.get(i).getAlbemId();
         final ArrayList singleSectionItems = dataList.get(i).getAllItemsInSection();
+        final String singleSectionAddedBy = dataList.get(i).getAddedBy();
         Log.e(Config.TAG,sectionName);
         //Toast.makeText(mContext, "click event on more, "+sectionName , Toast.LENGTH_SHORT).show();
        itemRowHolder.itemTitle.setText(sectionName);
@@ -91,6 +93,10 @@ public class MyImageVideoDataAdapter extends RecyclerView.Adapter<MyImageVideoDa
        if(dataList.get(i).getMore()!=null && dataList.get(i).getMore().equalsIgnoreCase("loadmore")){
            itemRowHolder.btnMore.setVisibility(View.INVISIBLE);
        }
+       else  if(!(singleSectionAddedBy.toString().equalsIgnoreCase(PrefManager.getLoginDetail(mContext,"id")))){
+           itemRowHolder.btnMore.setVisibility(View.INVISIBLE);
+       }
+         //if(singleSectionItems.get(i))
        /* if(sectionName.equalsIgnoreCase("Product")){
             Glide.with(mContext).load(R.drawable.latestproduct).into(itemRowHolder.itemTitle);
         }

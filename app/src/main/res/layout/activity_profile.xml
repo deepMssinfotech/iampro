@@ -80,8 +80,6 @@
                     android:id="@+id/includeShortMenu"
                     android:layout_width="match_parent"
                     android:layout_height="85dp">
-
-
                 </com.mssinfotech.iampro.co.common.IncludeShortMenu>
 
                 <android.support.v7.widget.CardView
@@ -497,7 +495,7 @@
                     <android.support.v7.widget.RecyclerView
                         android:id="@+id/rvFeed"
                         android:layout_width="match_parent"
-                        android:layout_marginBottom="100dp"
+                        android:layout_marginBottom="70dp"
                         android:layout_height="match_parent"/>
 
                 </android.support.design.widget.CoordinatorLayout>

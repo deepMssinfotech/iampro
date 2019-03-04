@@ -162,10 +162,11 @@ public class SectionVideoAdapter extends RecyclerView.Adapter<SectionVideoAdapte
             //holder.image.
 
            Glide.with(mContext)
-                    .load(Config.V_URL+itemsList.get(i).getV_image())
+                    .load(Config.V_URL+itemsList.get(i).getImage())
                     .apply(Config.options_video)
                     .into(holder.videoView);
-           Toast.makeText(mContext,"vimage",Toast.LENGTH_LONG).show();
+           //Toast.makeText(mContext,"vimage",Toast.LENGTH_LONG).show();
+            Log.d("vimagee_path",Config.V_URL+itemsList.get(i).getV_image());
         }
 
        // holder.udate.setText(singleItem.getUdate());

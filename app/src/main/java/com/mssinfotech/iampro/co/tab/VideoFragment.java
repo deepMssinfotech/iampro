@@ -85,7 +85,7 @@ public class VideoFragment extends Fragment implements VideoAdapter.ItemListener
             recycler_view_load_more=view.findViewById(R.id.recycler_view_load_more);
             lvideo_iv=view.findViewById(R.id.lvideo_iv);
             lvideo_iv.setVisibility(View.VISIBLE);
-            lvideo_iv.setBackground(AppCompatResources.getDrawable(getContext(),R.drawable.latestproduct));
+            lvideo_iv.setBackground(AppCompatResources.getDrawable(getContext(),R.drawable.latestvideo));
             btn_load_more=view.findViewById(R.id.btn_load_more);
             btn_load_more.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -406,6 +406,7 @@ public class VideoFragment extends Fragment implements VideoAdapter.ItemListener
                         dm.setMore("loadmore");
                         //ArrayList<MyImageModel> singleItem = new ArrayList<>();
                         ArrayList<MyImageModel> item = new ArrayList<>();
+                         //MyImageModel imageModel=new MyImageModel();
                         //ArrayList<DataModel> item = new ArrayList<>();
                         try{
                             for(int i=0;i<response.length();i++){
@@ -445,7 +446,9 @@ public class VideoFragment extends Fragment implements VideoAdapter.ItemListener
                                     int like_unlike=pics.optInt("like_unlike");
                                     String rating=pics.optString("rating");
                                     String is_block=pics.optString("is_block");
-                                     String v_image=pics.optString("v_image");
+                                    String v_image=pics.optString("v_image");
+                                     Log.d("VV_image",""+v_image);
+
                                     JSONObject userDetail=pics.getJSONObject("user_detail");
                                     int user_id=userDetail.optInt("id");
 
@@ -463,7 +466,7 @@ public class VideoFragment extends Fragment implements VideoAdapter.ItemListener
                                     String is_featuredd=userDetail.optString("is_featured");
                                     String fullname=userDetail.optString("fullname");
                                     String more="loadmore";
-                                    item.add(new MyImageModel(String.valueOf(id),String.valueOf(albemid),name,category,String.valueOf(albem_type),image,udate,about_us,String.valueOf(group_id),String.valueOf(is_featured),String.valueOf(status),is_block,String.valueOf(comments),String.valueOf(totallike),String.valueOf(like_unlike),rating,String.valueOf(user_id),more,avatar,fullname,v_image,"video"));
+                                    item.add(new MyImageModel(String.valueOf(id),String.valueOf(albemid),name,category,String.valueOf(albem_type),image,udate,about_us,String.valueOf(group_id),String.valueOf(is_featured),String.valueOf(status),is_block,String.valueOf(comments),String.valueOf(totallike),String.valueOf(like_unlike),rating,String.valueOf(user_id),more,avatar,fullname,v_image,"video",1));
                                     //item.add(new DataModel(name,image,udate,category,totallike,like_unlike,comments,udate,Float.parseFloat(rating),uid,fullname,avatar,id,IMAGE_TYPE));
                                 }
                             }

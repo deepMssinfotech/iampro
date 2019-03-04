@@ -94,7 +94,6 @@ public class WelcomeActivity extends AppCompatActivity implements View.OnClickLi
         Toast.makeText(this, "Please click BACK again to exit", Toast.LENGTH_SHORT).show();
 
         new Handler().postDelayed(new Runnable() {
-
             @Override
             public void run() {
                 Config.doubleBackToExitPressedOnce = false;

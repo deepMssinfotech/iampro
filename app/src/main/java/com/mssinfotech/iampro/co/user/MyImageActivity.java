@@ -1,5 +1,6 @@
 package com.mssinfotech.iampro.co.user;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -11,6 +12,7 @@ import android.net.Uri;
 import android.provider.MediaStore;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
@@ -55,6 +57,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -87,6 +90,9 @@ public class MyImageActivity extends Fragment implements MyImageAdapter.ItemList
     private GalleryAdapter galleryAdapter;
     Context context;
     View view;
+     public static final int REQUEST_IMAGE = 100;
+
+    public static String imageType;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup parent, Bundle savedInstanceState) {
         // Defines the xml file for the fragment
@@ -136,24 +142,28 @@ public class MyImageActivity extends Fragment implements MyImageAdapter.ItemList
             changeImage.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Intent intent=new Intent(context,ImageImageCroperActivity.class);
+                    /*Intent intent=new Intent(context,ImageImageCroperActivity.class);
                     startActivity(intent);
-                    getActivity().finish();
+                    getActivity().finish(); */
+                     imageType="userImage";
+                    showImagePickerOptions();
                 }
             });
             changeBackground_Image.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    showPictureDialog();
-                }
-            });
+                    //showPictureDialog();
+
+                     imageType="backgroundImage";
+                     showImagePickerOptions();
+                 }
+             });
         }else{
             changeBackground_Image.setVisibility(View.GONE);
             changeImage.setVisibility(View.GONE);
             uid= id;
             gteUsrDetail(id);
         }
-
 
         IncludeShortMenu includeShortMenu = view.findViewById(R.id.includeShortMenu);
         includeShortMenu.updateCounts(context,uid);
@@ -288,6 +298,20 @@ public class MyImageActivity extends Fragment implements MyImageAdapter.ItemList
                 Toast.makeText(context,e.getMessage(),Toast.LENGTH_LONG).show();
             }
         }
+        else  if (requestCode == REQUEST_IMAGE) {
+            if (resultCode == Activity.RESULT_OK) {
+                Uri uri = data.getParcelableExtra("path");
+                try {
+                    // You can update this bitmap to your server
+                    Bitmap bitmap = MediaStore.Images.Media.getBitmap(context.getContentResolver(), uri);
+                    backgroundimagePath = getPath(getImageUri(context,bitmap));
+                    // loading profile image from local cache
+                    loadImgData(uri.toString());
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
     }
 
     public String getPath(Uri uri) {
@@ -320,19 +344,87 @@ public class MyImageActivity extends Fragment implements MyImageAdapter.ItemList
                     .addParameter("type","update_img_video_banner")//Adding text parameter to the request
                     .addParameter("process_type","android")
                     .addParameter("userid",PrefManager.getLoginDetail(context,"id"))
+                    .addParameter("fname",PrefManager.getLoginDetail(context,"fname"))
+                    .addParameter("email",PrefManager.getLoginDetail(context,"email"))
+                    .addParameter("country",PrefManager.getLoginDetail(context,"country"))
+                    .addParameter("state",PrefManager.getLoginDetail(context,"state"))
+
                     //.setNotificationConfig(new UploadNotificationConfig())
                     .setMaxRetries(2)
                     .startUpload(); //Starting the upload
             ProfileActivity fragment = new ProfileActivity();
             function.loadFragment(context,fragment,null);
             Toast.makeText(context, "Update Profile Background Image is processing please wait", Toast.LENGTH_SHORT).show();
-            getActivity().finish();
+            //getActivity().finish();
         } catch (Exception exc) {
             Toast.makeText(context, exc.getMessage(), Toast.LENGTH_SHORT).show();
         }
+         /*
+          type: update_img_video_banner
+process_type: android
+page_url: page/gallery.html
+userid: 693
+fname: deep
+email:
+country: INDIA
+state: MP
+image_name: image_gallery_banner_image
+
+
+Videogallery profile image
+
+           */
 
     }
 
+    public void sendUserPic(){
+        if (!Config.haveNetworkConnection(context)) {
+            Config.showInternetDialog(context);
+            return;
+        }
+        //Toast.makeText(getApplicationContext(), "Video upload remain pleasw wait....", Toast.LENGTH_LONG).show();
+        //return;
+        try {
+            String uploadId = UUID.randomUUID().toString();
+            //Creating a multi part request
+            new MultipartUploadRequest(context, uploadId, Config.AJAX_URL + "signup.php")
+                    .addFileToUpload(backgroundimagePath, "profile_image_gallery") //Adding file
+                    .addParameter("type","update_img_video_banner")//Adding text parameter to the request
+                    .addParameter("process_type","android")
+                    .addParameter("page_url","page/update_profile.html")
+                    .addParameter("userid",PrefManager.getLoginDetail(context,"id"))
+                    .addParameter("fname",PrefManager.getLoginDetail(context,"fname"))
+                    .addParameter("email",PrefManager.getLoginDetail(context,"email"))
+                    .addParameter("country",PrefManager.getLoginDetail(context,"country"))
+                     .addParameter("state",PrefManager.getLoginDetail(context,"state"))
+                    //.setNotificationConfig(new UploadNotificationConfig())
+                    .setMaxRetries(2)
+                    .startUpload(); //Starting the upload
+            ProfileActivity fragment = new ProfileActivity();
+            function.loadFragment(context,fragment,null);
+            //getActivity().finish();
+            /*   type: update_img_video_banner
+   process_type: android
+   page_url: page/gallery.html
+  userid: 693
+  fname: deep
+  email:
+  country: INDIA
+  state: MP
+  image_name: image_gallery_profile_image
+  profile_image_gallery: (binary)
+         */
+        } catch (Exception exc) {
+            Toast.makeText(context,""+exc.getMessage(), Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    public Uri getImageUri(Context inContext, Bitmap inImage) {
+        ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+        inImage.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
+        String path = MediaStore.Images.Media.insertImage(inContext.getContentResolver(), inImage, "Title", null);
+        return Uri.parse(path);
+    }
     public void redirect(View v){
         Intent i_signup = new Intent(context,AddImageActivity.class);
         MyImageActivity.this.startActivity(i_signup);
@@ -393,6 +485,7 @@ public class MyImageActivity extends Fragment implements MyImageAdapter.ItemList
          //String url=Config.API_URL+"app_service.php?type=getMyAlbemsListt&search_type=image&uid="+uid+"&my_id="+uid;
          String url=Config.API_URL+"app_service.php?type=getMyAlbemsListt&search_type=image&uid="+uid+"&my_id="+uid+"&album_id="+aid;
         // Initialize a new RequestQueue instance
+        Log.d("urlimggg",""+url);
         RequestQueue requestQueue = Volley.newRequestQueue(context);
         //final ProgressDialog pDialog = new ProgressDialog(getApplicationContext()); //Your Activity.this
         //pDialog.setMessage("Loading...!");
@@ -408,8 +501,10 @@ public class MyImageActivity extends Fragment implements MyImageAdapter.ItemList
                         SectionImageModel dm = new SectionImageModel();
                         dm.setHeaderTitle(item_name.get(aid));
                         dm.setAlbemId(aid);
+                        dm.setAddedBy(id);
                         //ArrayList<MyImageModel> singleItem = new ArrayList<>();
                         ArrayList<MyImageModel> item = new ArrayList<>();
+                        //ArrayList<String> alAddedBy=new ArrayList<>();
                         try{
                             for(int i=0;i<response.length();i++){
                                 // Get current json object
@@ -420,7 +515,6 @@ public class MyImageActivity extends Fragment implements MyImageAdapter.ItemList
                                   String added_byy=student.optString("added_by");
 
                                    String name1=student.optString("name");
-
                                     String atype=student.optString("atype");
                                    tv_category.setText(name1);
                                    tv_category.setVisibility(View.GONE);
@@ -502,4 +596,65 @@ public class MyImageActivity extends Fragment implements MyImageAdapter.ItemList
     public void onItemClick(MyImageModel item) {
 
     }
+
+    private void showImagePickerOptions() {
+        ImagePickerActivity.showImagePickerOptions(getContext(), new ImagePickerActivity.PickerOptionListener() {
+            @Override
+            public void onTakeCameraSelected() {
+                launchCameraIntent();
+            }
+
+            @Override
+            public void onChooseGallerySelected() {
+                launchGalleryIntent();
+            }
+        });
+    }
+
+    private void launchCameraIntent() {
+        Intent intent = new Intent(getContext(), ImagePickerActivity.class);
+        intent.putExtra(ImagePickerActivity.INTENT_IMAGE_PICKER_OPTION, ImagePickerActivity.REQUEST_IMAGE_CAPTURE);
+
+        // setting aspect ratio
+        intent.putExtra(ImagePickerActivity.INTENT_LOCK_ASPECT_RATIO, true);
+        intent.putExtra(ImagePickerActivity.INTENT_ASPECT_RATIO_X, 1); // 16x9, 1x1, 3:4, 3:2
+        intent.putExtra(ImagePickerActivity.INTENT_ASPECT_RATIO_Y, 1);
+
+        // setting maximum bitmap width and height
+        intent.putExtra(ImagePickerActivity.INTENT_SET_BITMAP_MAX_WIDTH_HEIGHT, true);
+        intent.putExtra(ImagePickerActivity.INTENT_BITMAP_MAX_WIDTH, 1000);
+        intent.putExtra(ImagePickerActivity.INTENT_BITMAP_MAX_HEIGHT, 1000);
+
+        startActivityForResult(intent, REQUEST_IMAGE);
+    }
+
+    private void launchGalleryIntent() {
+        Intent intent = new Intent(getContext(), ImagePickerActivity.class);
+        intent.putExtra(ImagePickerActivity.INTENT_IMAGE_PICKER_OPTION, ImagePickerActivity.REQUEST_GALLERY_IMAGE);
+
+        // setting aspect ratio
+        intent.putExtra(ImagePickerActivity.INTENT_LOCK_ASPECT_RATIO, true);
+        intent.putExtra(ImagePickerActivity.INTENT_ASPECT_RATIO_X, 1); // 16x9, 1x1, 3:4, 3:2
+        intent.putExtra(ImagePickerActivity.INTENT_ASPECT_RATIO_Y, 1);
+        startActivityForResult(intent, REQUEST_IMAGE);
+    }
+
+    private void loadImgData(String url)   {
+        Log.d("eProfile_uri", "Image cache path: " + url);
+        if(imageType.equalsIgnoreCase("backgroundImage"))  {
+            Glide.with(this).load(url)
+                    .into(userbackgroud);
+            userbackgroud.setColorFilter(ContextCompat.getColor(context, android.R.color.transparent));
+            sendData();
+        }
+        else if (imageType.equalsIgnoreCase("userImage")){
+            //userimage
+            Glide.with(this).load(url)
+                    .into(userimage);
+             userimage.setColorFilter(ContextCompat.getColor(context, android.R.color.transparent));
+             sendUserPic();
+        }
+    }
+
+
 }
