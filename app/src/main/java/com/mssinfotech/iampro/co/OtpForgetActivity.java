@@ -19,6 +19,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.mssinfotech.iampro.co.common.Config;
+import com.mssinfotech.iampro.co.common.function;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -77,11 +78,8 @@ public class OtpForgetActivity extends AppCompatActivity {
                                 String status = result.getString("status");
                                 String msg = result.getString("msg");
                                 if (status.equals("success")) {
-
-                                    Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
-                                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-
-                                    startActivity(intent);
+                                    LoginActivity fragment = new LoginActivity();
+                                    function.loadFragment(getApplicationContext(),fragment,null);
                                     finish();
                                 } else {
                                     Toast.makeText(OtpForgetActivity.this, msg, Toast.LENGTH_LONG).show();

@@ -23,6 +23,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.mssinfotech.iampro.co.common.Config;
+import com.mssinfotech.iampro.co.common.function;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -58,9 +59,10 @@ public class OtpRegistrationActivity extends AppCompatActivity {
         super.onResume();
     }
      public void resend(){
-        Intent intent=new Intent(getApplicationContext(),SignupActivity.class);
-        intent.putExtra("resend","resend");
-        startActivity(intent);
+         SignupActivity fragment = new SignupActivity();
+         Bundle args = new Bundle();
+         args.putString("resend","resend");
+         function.loadFragment(getApplicationContext(),fragment,args);
      }
     @Override
     public void onPause() {
@@ -105,9 +107,8 @@ public class OtpRegistrationActivity extends AppCompatActivity {
                             Toast.makeText(getApplicationContext(),""+msgg,Toast.LENGTH_LONG).show();
                             if (status.equalsIgnoreCase("success")){
 
-                                Intent intent=new Intent(getApplicationContext(),LoginActivity.class);
-                                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                                startActivity(intent);
+                                LoginActivity fragment = new LoginActivity();
+                                function.loadFragment(getApplicationContext(),fragment,null);
                                 finish();
                             }
                         }

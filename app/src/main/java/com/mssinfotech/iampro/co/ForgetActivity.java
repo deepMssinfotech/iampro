@@ -20,6 +20,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.mssinfotech.iampro.co.common.Config;
+import com.mssinfotech.iampro.co.common.function;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -52,8 +53,8 @@ public class ForgetActivity extends AppCompatActivity   implements View.OnClickL
     public void onClick(View v) {
         switch (v.getId() /*to get clicked view id**/) {
             case R.id.btnLogin:
-                Intent i_login = new Intent(ForgetActivity.this, LoginActivity.class);
-                ForgetActivity.this.startActivity(i_login);
+                LoginActivity fragment = new LoginActivity();
+                function.loadFragment(getApplicationContext(),fragment,null);
                 break;
 
             default:
