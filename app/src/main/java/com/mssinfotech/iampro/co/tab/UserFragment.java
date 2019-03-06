@@ -60,7 +60,8 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.TreeMap;
 
-public class UserFragment extends Fragment implements UserDataAdapter.ItemListener,UserItemTouchHelper.UserItemTouchHelperListener {
+public class UserFragment extends Fragment implements UserDataAdapter.ItemListener {
+    //,UserItemTouchHelper.UserItemTouchHelperListener
     //ArrayList<SectionDataModel> allSampleData=new ArrayList<>();
     ArrayList<UserModel> allSampleData=new ArrayList<>();
     RecyclerView my_recycler_view,recycler_view_load_more;
@@ -134,7 +135,7 @@ public class UserFragment extends Fragment implements UserDataAdapter.ItemListen
             }
         });
 
-        initSwipe();
+        //initSwipe();
     }
     /*public void getAllAlbum(){
         //String url="https://www.iampro.co/api/app_service.php?type=getAlbemsListt&search_type=video&uid="+uid;
@@ -386,9 +387,16 @@ public class UserFragment extends Fragment implements UserDataAdapter.ItemListen
                                 String total_provides=student.optString("total_provide");
                                 String total_demands=student.optString("total_demend");
 
-                                //allSampleData.add(new UserModel(uid,name,image,udate,category));
-                                //String total_image,String total_video,String total_friend
-                                allSampleData.add(new UserModel(uid,name,image,udate,category,total_images,total_videos,total_users,total_products,total_provides,total_demands));
+                                //is_friend,friend_status,tid,is_block,user_url
+                                String is_friend=student.optString("is_friend");
+                                String friend_status=student.optString("friend_status");
+                                String tid=student.optString("tid");
+                                int is_block=student.optInt("is_block");
+                                 String user_url=student.optString("user_url");
+
+                                 //allSampleData.add(new UserModel(uid,name,image,udate,category));
+                                //String total_image,String total_video,String total_friend     //is_friend,friend_status,tid,is_block,user_url
+                                allSampleData.add(new UserModel(uid,name,image,udate,category,total_images,total_videos,total_users,total_products,total_provides,total_demands,is_friend,friend_status,tid,is_block,user_url));
 
                             }
                             Log.d("bdm",singleItem.toString());
@@ -511,8 +519,8 @@ public class UserFragment extends Fragment implements UserDataAdapter.ItemListen
                             my_recycler_view.setItemAnimator(new DefaultItemAnimator());
                              my_recycler_view.addItemDecoration(new DividerItemDecoration(getContext(),DividerItemDecoration.VERTICAL));
 
-                      ItemTouchHelper.SimpleCallback itemTouchHelperCallback = new UserItemTouchHelper(0, ItemTouchHelper.LEFT,UserFragment.this);
-                      new ItemTouchHelper(itemTouchHelperCallback).attachToRecyclerView(recycler_view_load_more);
+                     // ItemTouchHelper.SimpleCallback itemTouchHelperCallback = new UserItemTouchHelper(0, ItemTouchHelper.LEFT,UserFragment.this);
+                      //new ItemTouchHelper(itemTouchHelperCallback).attachToRecyclerView(recycler_view_load_more);
 
                          }
                         catch (JSONException e){
@@ -536,7 +544,7 @@ public class UserFragment extends Fragment implements UserDataAdapter.ItemListen
         requestQueue.add(jsonArrayRequest);
     }
 
-       @Override
+      /* @Override
         public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction, int position) {
         Toast.makeText(getContext(),"swiped",Toast.LENGTH_LONG).show();
         if (viewHolder instanceof UserDataAdapter.ViewHolder) {
@@ -564,7 +572,7 @@ public class UserFragment extends Fragment implements UserDataAdapter.ItemListen
         snackbar.setActionTextColor(Color.YELLOW);
         snackbar.show();
         }
-        }
+        } */
 
     private void initSwipe(){
         ItemTouchHelper.SimpleCallback simpleItemTouchCallback = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
@@ -615,7 +623,7 @@ public class UserFragment extends Fragment implements UserDataAdapter.ItemListen
                         c.drawRect(background,p);
                         icon = BitmapFactory.decodeResource(getResources(), R.drawable.ic_delete_white);
                         RectF icon_dest = new RectF((float) itemView.getRight() - 2*width ,(float) itemView.getTop() + width,(float) itemView.getRight() - width,(float)itemView.getBottom() - width);
-                        c.drawBitmap(icon,null,icon_dest,p);
+                        //c.drawBitmap(icon,null,icon_dest,p);
                     }
                 }
                 super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive);

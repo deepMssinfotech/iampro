@@ -20,10 +20,7 @@ import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
- import com.mssinfotech.iampro.co.R;
-
-//import static com.bumptech.glide.Glide.init;
-
+import com.mssinfotech.iampro.co.R;
 /**
  * Created by Mark O'Sullivan on 25th February 2018.
  */
@@ -102,12 +99,12 @@ public class SwipeRevealLayout extends ViewGroup {
 
     public SwipeRevealLayout(Context context) {
         super(context);
-        //init(context, null);
+        init(context, null);
     }
 
     public SwipeRevealLayout(Context context, AttributeSet attrs) {
         super(context, attrs);
-        //init(context, attrs);
+        init(context, attrs);
     }
 
     public SwipeRevealLayout(Context context, AttributeSet attrs, int defStyleAttr) {
@@ -517,7 +514,7 @@ public class SwipeRevealLayout extends ViewGroup {
         mDragDist += dragged;
     }
 
-    /*private void init(Context context, AttributeSet attrs) {
+    private void init(Context context, AttributeSet attrs) {
         if (attrs != null && context != null) {
             TypedArray a = context.getTheme().obtainStyledAttributes(
                     attrs,
@@ -536,7 +533,7 @@ public class SwipeRevealLayout extends ViewGroup {
 
         mGestureDetector = new GestureDetectorCompat(context, mGestureListener);
     }
- */
+
     private final GestureDetector.OnGestureListener mGestureListener = new GestureDetector.SimpleOnGestureListener() {
         boolean hasDisallowed = false;
 
@@ -709,6 +706,7 @@ public class SwipeRevealLayout extends ViewGroup {
             ViewCompat.postInvalidateOnAnimation(SwipeRevealLayout.this);
         }
     };
+
     private int pxToDp(int px) {
         Resources resources = getContext().getResources();
         DisplayMetrics metrics = resources.getDisplayMetrics();

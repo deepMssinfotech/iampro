@@ -45,6 +45,10 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
+import bg.devlabs.fullscreenvideoview.FullscreenVideoView;
+import bg.devlabs.fullscreenvideoview.orientation.LandscapeOrientation;
+import bg.devlabs.fullscreenvideoview.orientation.PortraitOrientation;
+
 import static com.mssinfotech.iampro.co.common.Config.AVATAR_URL;
 
 public class ImageDetail extends Fragment implements Img_Video_Details.ItemListener {
@@ -64,6 +68,7 @@ public class ImageDetail extends Fragment implements Img_Video_Details.ItemListe
     View view;
     Intent intent;
     Context context;
+    FullscreenVideoView fullscreenVideoView;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup parent, Bundle savedInstanceState) {
         // Defines the xml file for the fragment
@@ -93,6 +98,8 @@ public class ImageDetail extends Fragment implements Img_Video_Details.ItemListe
         iv_comments=view.findViewById(R.id.iv_comments);
         image=view.findViewById(R.id.image);
         videoView=view.findViewById(R.id.video);
+
+        fullscreenVideoView=view.findViewById(R.id.fullscreenVideoView);
         ratingBar=view.findViewById(R.id.ratingBar);
         recycler_view_review_detail=view.findViewById(R.id.recycler_view_review_detail);
         Bundle args = getArguments();
@@ -317,11 +324,30 @@ public class ImageDetail extends Fragment implements Img_Video_Details.ItemListe
                             /*Glide.with(ImageDetail.this)
                                     .load(avatar_url)
                                     .into(image); */
-                            videoView.setVisibility(View.VISIBLE);
+                            //videoView.setVisibility(View.VISIBLE);
 
-                            videoView.setVideoPath(avatar_url);
-                            videoView.start();
-                             image.setVisibility(View.GONE);
+                            //videoView.setVideoPath(avatar_url);
+                            //videoView.start();
+
+
+                         fullscreenVideoView.setVisibility(View.VISIBLE);
+                            String ImageHol = Config.URL_ROOT+"uploads/video/"+imagee;
+                                /*videoView.setVideoPath(ImageHol);
+                                Log.d(Config.TAG, ImageHol);
+                                mediaController = new MediaController(CommentActivity.this);
+                                mediaController.setAnchorView(videoView);
+                                videoView.setMediaController(mediaController);
+                                videoView.requestFocus();
+                                videoView.start();*/
+                            fullscreenVideoView.videoUrl(ImageHol)
+                                    .enableAutoStart()
+                                    .addSeekBackwardButton()
+                                    .addSeekForwardButton()
+                                    .portraitOrientation(PortraitOrientation.DEFAULT)
+                                    .landscapeOrientation(LandscapeOrientation.DEFAULT);
+
+
+                            image.setVisibility(View.GONE);
 
                             JSONObject jsonObjectUser=responses.getJSONObject("user_detail");
                             final String added_by= jsonObjectUser.optString("id");

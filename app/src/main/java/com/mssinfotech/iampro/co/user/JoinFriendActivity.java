@@ -2,6 +2,7 @@ package com.mssinfotech.iampro.co.user;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Canvas;
 import android.graphics.Color;
 import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.Snackbar;
@@ -38,6 +39,8 @@ import com.mssinfotech.iampro.co.model.MyImageModel;
 import com.mssinfotech.iampro.co.model.SectionDataModel;
 import com.mssinfotech.iampro.co.model.SingleItemModel;
 import com.mssinfotech.iampro.co.model.UserModel;
+import com.mssinfotech.iampro.co.swipecontroller.SwipeController;
+import com.mssinfotech.iampro.co.swipecontroller.SwipeControllerActions;
 import com.mssinfotech.iampro.co.tab.UserFragment;
 import com.mssinfotech.iampro.co.user.JoinFriendActivity;
 import com.mssinfotech.iampro.co.R;
@@ -56,7 +59,8 @@ import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
-public class JoinFriendActivity extends Fragment implements JoinFriendItemTouchHelper.RecyclerItemTouchHelperListener,UserDataAdapter.ItemListener {
+public class JoinFriendActivity extends Fragment implements UserDataAdapter.ItemListener {
+    //JoinFriendItemTouchHelper.RecyclerItemTouchHelperListener,
     ImageView userbackgroud;
     CircleImageView userimage;
     TextView username,tv_category;
@@ -70,7 +74,7 @@ public class JoinFriendActivity extends Fragment implements JoinFriendItemTouchH
     Intent intent;
      LinearLayout ll_header;
     View view;
-
+    SwipeController swipeController = null;
      ArrayList<UserModel> allSampleData=new ArrayList<>();
          UserDataAdapter adapter;
 
@@ -140,11 +144,36 @@ public class JoinFriendActivity extends Fragment implements JoinFriendItemTouchH
         // only ItemTouchHelper.LEFT added to detect Right to Left swipe
         // if you want both Right -> Left and Left -> Right
         // add pass ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT as param
-        ItemTouchHelper.SimpleCallback itemTouchHelperCallback = new JoinFriendItemTouchHelper(0, ItemTouchHelper.LEFT, this);
-        new ItemTouchHelper(itemTouchHelperCallback).attachToRecyclerView(recyclerView);
+       // ItemTouchHelper.SimpleCallback itemTouchHelperCallback = new JoinFriendItemTouchHelper(0, ItemTouchHelper.LEFT,JoinFriendActivity.this);
+        //new ItemTouchHelper(itemTouchHelperCallback).attachToRecyclerView(recyclerView);
         // making http call and fetching menu json
         prepareWhishList();
         getJoinedFriend();
+
+        swipeController = new SwipeController(JoinFriendActivity.this.getContext(),new SwipeControllerActions() {
+            @Override
+            public void onRightClicked(int position) {
+                //mAdapter.players.remove(position);
+                //mAdapter.notifyItemRemoved(position);
+                //mAdapter.notifyItemRangeChanged(position, mAdapter.getItemCount());
+                Toast.makeText(getContext(),"Right Clicked"+position,Toast.LENGTH_LONG).show();
+
+            }
+            public void onLeftClicked(int position) {
+                Toast.makeText(getContext(),"Left Clicked"+position,Toast.LENGTH_LONG).show();
+            }
+        });
+
+        ItemTouchHelper itemTouchhelper = new ItemTouchHelper(swipeController);
+        itemTouchhelper.attachToRecyclerView(recyclerView);
+
+        recyclerView.addItemDecoration(new RecyclerView.ItemDecoration() {
+            @Override
+            public void onDraw(Canvas c, RecyclerView parent, RecyclerView.State state) {
+                swipeController.onDraw(c);
+            }
+        });
+
     }
 
     private void gteUsrDetail(String id){
@@ -265,7 +294,7 @@ public class JoinFriendActivity extends Fragment implements JoinFriendItemTouchH
         }
     }
 
-    @Override
+    /*@Override
     public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction, int position) {
         if (viewHolder instanceof JoinFriendAdapter.MyViewHolder) {
             // get the removed item name to display it in snack bar
@@ -294,7 +323,7 @@ public class JoinFriendActivity extends Fragment implements JoinFriendItemTouchH
             snackbar.setActionTextColor(Color.YELLOW);
             snackbar.show();
         }
-    }
+    } */
 
     public void getJoinedFriend(){
         String url="https://www.iampro.co/api/app_service.php?type=view_friend_list&id="+uid+"&status=2&uid="+uid+"&my_id="+uid;
@@ -334,8 +363,8 @@ public class JoinFriendActivity extends Fragment implements JoinFriendItemTouchH
 
                             RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getContext());
                             recyclerView.setLayoutManager(mLayoutManager);
-                            recyclerView.setItemAnimator(new DefaultItemAnimator());
-                            recyclerView.addItemDecoration(new DividerItemDecoration(getContext(),DividerItemDecoration.VERTICAL));
+                            //recyclerView.setItemAnimator(new DefaultItemAnimator());
+                            //recyclerView.addItemDecoration(new DividerItemDecoration(getContext(),DividerItemDecoration.VERTICAL));
                             recyclerView.setAdapter(mAdapter);
                             recyclerView.setNestedScrollingEnabled(false);
                         }

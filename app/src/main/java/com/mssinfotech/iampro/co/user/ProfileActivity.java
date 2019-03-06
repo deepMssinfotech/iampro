@@ -32,6 +32,7 @@ import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.bumptech.glide.Glide;
+import com.mssinfotech.iampro.co.ChatToUser;
 import com.mssinfotech.iampro.co.R;
 import com.mssinfotech.iampro.co.adapter.AllFeedAdapter;
 import com.mssinfotech.iampro.co.adapter.CommentAdapter;
@@ -279,7 +280,10 @@ public class ProfileActivity extends Fragment implements AllFeedAdapter.ItemList
         chat_layout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(context,"redirect to chat page...",Toast.LENGTH_LONG).show();
+                //Toast.makeText(context,"redirect to chat page...",Toast.LENGTH_LONG).show();
+                 Intent intent=new Intent(getContext(), ChatToUser.class);
+                  intent.putExtra("id",String.valueOf(fid));
+                  getContext().startActivity(intent);
             }
         });
     }

@@ -105,14 +105,17 @@ public class SectionImageVideoAdapter extends RecyclerView.Adapter<SectionImageV
         return mh; */
     }
     @Override
-    public void onBindViewHolder(final SingleItemRowHolder holder, final int i) {
+    public void onBindViewHolder(final SingleItemRowHolder holder, final int position) {
+        final int i=position;
         MyImageModel singleItem = itemsList.get(i);
         //orgg
         //final String uid=singleItem.getUid();
+
         final String uid=PrefManager.getLoginDetail(mContext,"id");
         final String id=singleItem.getId();
         final String pid=singleItem.getId();
         final String uidv=itemsList.get(i).getUid();
+
         holder. category.setText(singleItem .getCategory());
         int my_uid=Integer.parseInt(uidv);
         if(my_uid==0){
@@ -255,12 +258,28 @@ public class SectionImageVideoAdapter extends RecyclerView.Adapter<SectionImageV
                     intent.putExtra("type", "demand");
                     mContext.startActivity(intent);
                 }
+                else if(type.equalsIgnoreCase("image")){
+                    ImageDetail fragment = new ImageDetail();
+                    Bundle args = new Bundle();
+                    args.putString("id", id);
+                    args.putString("type","image");
+                    args.putString("uid",String.valueOf(mValues.get(i).getUid()));
+                    function.loadFragment(mContext,fragment,args);
+                }
+                else if(type.equalsIgnoreCase("video")){
+                    ImageDetail fragment = new ImageDetail();
+                    Bundle args = new Bundle();
+                    args.putString("id", id);
+                    args.putString("type","video");
+                    args.putString("uid",String.valueOf(mValues.get(i).getUid()));
+                    function.loadFragment(mContext,fragment,args);
+                }
                 else {
                     ImageDetail fragment = new ImageDetail();
                     Bundle args = new Bundle();
                     args.putString("id", id);
-                    args.putString("type", String.valueOf(type.equalsIgnoreCase("demand")));
-                    args.putString("uid", uid);
+                    args.putString("type","");
+                    args.putString("uid",String.valueOf(mValues.get(i).getUid()));
                     function.loadFragment(mContext,fragment,args);
                 }
 

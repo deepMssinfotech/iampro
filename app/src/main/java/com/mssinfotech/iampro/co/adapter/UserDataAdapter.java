@@ -3,18 +3,29 @@ package com.mssinfotech.iampro.co.adapter;
 /**
  * Created by mssinfotech on 18/01/19.
  */
+//import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.content.res.AppCompatResources;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.Volley;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
+import com.mssinfotech.iampro.co.ChatToUser;
 import com.mssinfotech.iampro.co.R;
 import android.view.ViewGroup;
 
@@ -23,32 +34,44 @@ import android.view.ViewGroup;
  * {@link GridLayoutManager}.
  */
 import android.content.Context;
+import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.mssinfotech.iampro.co.common.Config;
 import com.mssinfotech.iampro.co.common.function;
 import com.mssinfotech.iampro.co.model.UserModel;
+import com.mssinfotech.iampro.co.user.FriendRequestActivity;
 import com.mssinfotech.iampro.co.user.ProfileActivity;
+import com.mssinfotech.iampro.co.utils.PrefManager;
+
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 public class UserDataAdapter extends RecyclerView.Adapter<UserDataAdapter.ViewHolder> {
     ArrayList<UserModel> mValues;
     Context mContext;
     protected ItemListener mListener;
+    int user_block;
+    String FrindStatus;
     public UserDataAdapter(Context context, ArrayList<UserModel> values, ItemListener itemListener) {
         mValues = values;
         mContext = context;
         mListener=itemListener;
     }
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-        public TextView textView,tv_category,tv_images,tv_videos,tv_users,tv_products,tv_provides,tv_demands;
-        de.hdodenhof.circleimageview.CircleImageView imageView;
+        public TextView textView,tv_category,tv_images,tv_videos,tv_users,tv_products,tv_provides,tv_demands,tv_viewProfile,tv_fRequest,tv_sendMessage,tv_blockUser;
+        de.hdodenhof.circleimageview.CircleImageView imageView,imageView_frequest,imageView_message,imageView_block,imageView_viewProfile;
         UserModel item;
+
+        protected ImageButton infoButton;
+        protected ImageButton editButton;
+
         public ViewHolder(View v) {
             super(v);
             v.setOnClickListener(this);
             textView =v.findViewById(R.id.textView);
             imageView =v.findViewById(R.id.imageView);
-
             tv_category=v.findViewById(R.id.tvcategory);
             tv_images=v.findViewById(R.id.tv_images);
             tv_videos=v.findViewById(R.id.tv_videos);
@@ -56,6 +79,20 @@ public class UserDataAdapter extends RecyclerView.Adapter<UserDataAdapter.ViewHo
             tv_products=v.findViewById(R.id.tv_products);
             tv_provides=v.findViewById(R.id.tv_provides);
             tv_demands=v.findViewById(R.id.tv_demands);
+            infoButton = v.findViewById(R.id.info_button);
+            editButton= v.findViewById(R.id.edit_button);
+            imageView_frequest=v.findViewById(R.id.imageView_frequest);
+            imageView_message=v.findViewById(R.id.imageView_message);
+            imageView_block=v.findViewById(R.id.imageView_block);
+            imageView_viewProfile=v.findViewById(R.id.imageView_viewProfile);
+
+
+            tv_viewProfile=v.findViewById(R.id.tv_viewProfile);
+            tv_fRequest=v.findViewById(R.id.tv_fRequest);
+            tv_sendMessage=v.findViewById(R.id.tv_sendMessage);
+            tv_blockUser=v.findViewById(R.id.tv_blockUser);
+
+
         }
         public void setData(UserModel item) {
             this.item = item;
@@ -89,14 +126,49 @@ public class UserDataAdapter extends RecyclerView.Adapter<UserDataAdapter.ViewHo
     @Override
     public UserDataAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 
-        View view = LayoutInflater.from(mContext).inflate(R.layout.user_item, parent, false);
+        View view = LayoutInflater.from(mContext).inflate(R.layout.user_items,parent,false);
 
         return new ViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(ViewHolder Vholder, final int position) {
+    public void onBindViewHolder(ViewHolder Vholders, final int position) {
+         final ViewHolder Vholder=Vholders;
         Vholder.setData(mValues.get(position));
+        Vholder.imageView_message.setBackground(AppCompatResources.getDrawable(mContext,R.drawable.user_slide_info_message));
+        Vholder.imageView_frequest.setBackground(AppCompatResources.getDrawable(mContext,R.drawable.user_slide_nfo));
+        Vholder.imageView_viewProfile.setBackground(AppCompatResources.getDrawable(mContext,R.drawable.user_slide_info_view_profile));
+
+        Vholder.imageView_block.setBackground(AppCompatResources.getDrawable(mContext,R.drawable.unblockicone));
+         if (mValues.get(position).getIs_block()==1){
+             Vholder.imageView_block.setBackground(AppCompatResources.getDrawable(mContext,R.drawable.unblockicone));
+             //tv_viewProfile,tv_fRequest,tv_sendMessage,tv_blockUser
+             Vholder.tv_viewProfile.setText("View Profile");
+              Vholder.tv_fRequest.setText("Delete "+mValues.get(position).getName());
+
+               Vholder.tv_sendMessage.setText("Message \t"+mValues.get(position).getName());
+                Vholder.tv_blockUser.setText("UnBlock");
+         }
+         else if (mValues.get(position).getIs_block()==2){
+             Vholder.imageView_block.setBackground(AppCompatResources.getDrawable(mContext,R.drawable.blockicone));
+
+
+             Vholder.tv_viewProfile.setText("View Profile");
+             Vholder.tv_fRequest.setText("You ");
+             Vholder.tv_sendMessage.setText("Message \t"+mValues.get(position).getName());
+             Vholder.tv_blockUser.setText("Block");
+         }
+        FrindStatus =mValues.get(position).getFriend_status();
+         if (FrindStatus==null){
+             FrindStatus="";
+         }
+        if(FrindStatus.equals("NO")){
+            Vholder.tv_fRequest.setText("Add to Friend");
+        }else if(FrindStatus.equals("PANDING")){
+            Vholder.tv_fRequest.setText("Cancel Request");
+        }else{
+            Vholder.tv_fRequest.setText("Remove Friend");
+        }
          Vholder.imageView.setOnClickListener(new View.OnClickListener() {
              @Override
              public void onClick(View v) {
@@ -107,6 +179,121 @@ public class UserDataAdapter extends RecyclerView.Adapter<UserDataAdapter.ViewHo
 
              }
          });
+
+         //imageView_frequest,imageView_message,imageView_block
+        Vholder.imageView_frequest.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //Toast.makeText(v.getContext(), "FREQUEST CLICKED"+position,Toast.LENGTH_SHORT).show();
+                 if (mValues.get(position).getIs_block()==1){
+                     Toast.makeText(mContext,"This User is blocked can't send Your request...",Toast.LENGTH_LONG).show();
+                     return;
+                 }
+                 else if (mValues.get(position).getIs_block()==2){
+                     FriendRequestActivity fragment = new FriendRequestActivity();
+                     Bundle args = new Bundle();
+                     args.putString("uid", String.valueOf(mValues.get(position).getId()));
+                     function.loadFragment(mContext,fragment,args);
+                 }
+                 else {
+                     FriendRequestActivity fragment = new FriendRequestActivity();
+                     Bundle args = new Bundle();
+                     args.putString("uid", String.valueOf(mValues.get(position).getId()));
+                     function.loadFragment(mContext,fragment,args);
+                 }
+
+                String myid=PrefManager.getLoginDetail(mContext,"id");
+                 int fid=mValues.get(position).getId();
+                if(FrindStatus.equals("NO")){
+                    function.executeUrl(mContext,"get", Config.API_URL+"app_service.php?type=join_friend&fid="+fid+"&uid="+myid,null);
+                    Vholder.tv_fRequest.setText("Delete Request");
+                    FrindStatus = "PANDING";
+                }else if(FrindStatus.equals("PANDING")){
+                    function.executeUrl(mContext,"get",Config.API_URL+"app_service.php?type=delete_friend&id="+fid+"&tid="+myid,null);
+                    Vholder.tv_fRequest.setText("Add to Friend");
+                    FrindStatus = "NO";
+                }else{
+                    function.executeUrl(mContext,"get",Config.API_URL+"app_service.php?type=delete_friend&id="+fid+"&tid="+myid,null);
+                    Vholder.tv_fRequest.setText("Add To Friend");
+                    FrindStatus = "NO";
+                }
+
+            }
+        });
+        Vholder.imageView_message.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (mValues.get(position).getIs_block()==1){
+                    Toast.makeText(mContext,"This User is blocked so you can't do any conversation...",Toast.LENGTH_LONG).show();
+                    return;
+                }
+                else if (mValues.get(position).getIs_block()==2) {
+                    Toast.makeText(v.getContext(), "Redirecting to message..."+position, Toast.LENGTH_SHORT).show();
+                    Intent intentMessage=new Intent(mContext, ChatToUser.class);
+                    intentMessage.putExtra("id",String.valueOf(mValues.get(position).getId()));
+                    mContext.startActivity(intentMessage);
+                }
+              else{
+                    Toast.makeText(v.getContext(), "Redirecting to message...."+position, Toast.LENGTH_SHORT).show();
+
+                    Intent intentMessage=new Intent(mContext, ChatToUser.class);
+                    intentMessage.putExtra("id",String.valueOf(mValues.get(position).getId()));
+                    mContext.startActivity(intentMessage);
+                }
+
+            }
+        });
+        Vholder.imageView_block.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //Toast.makeText(v.getContext(), "BLOCK CLICKED"+position, Toast.LENGTH_SHORT).show();
+                final String fid=String.valueOf(mValues.get(position).getId());
+                AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(mContext);
+                alertDialogBuilder.setMessage("Are you sure, ");
+                        alertDialogBuilder.setPositiveButton("yes",
+                                new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface arg0, int arg1) {
+                                        blockUser(fid);
+                                    }
+                                });
+
+                alertDialogBuilder.setNegativeButton("No",new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        //finish();
+                    }
+                });
+
+                AlertDialog alertDialog = alertDialogBuilder.create();
+                alertDialog.show();
+
+                if(user_block==1){
+                    Vholder.imageView_block.setBackground(AppCompatResources.getDrawable(mContext,R.drawable.unblockicone));
+                }
+                else if (user_block==2){
+                     Vholder.imageView_block.setBackground(AppCompatResources.getDrawable(mContext,R.drawable.blockicone));
+
+                }
+            }
+        });
+        //imageView_viewProfile
+        Vholder.imageView_viewProfile.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //Toast.makeText(v.getContext(), "VIEWPROFILE CLICKED"+position, Toast.LENGTH_SHORT).show();
+                ProfileActivity fragment = new ProfileActivity();
+                Bundle args = new Bundle();
+                args.putString("uid", String.valueOf(mValues.get(position).getId()));
+                function.loadFragment(mContext,fragment,args);
+            }
+        });
+        if (String.valueOf(mValues.get(position).getId()).equalsIgnoreCase(PrefManager.getLoginDetail(mContext,"id"))){
+            Vholder.imageView_frequest.setEnabled(false);
+            Vholder.imageView_message.setEnabled(false);
+            Vholder.imageView_block.setEnabled(false);
+
+        }
     }
     @Override
     public int getItemCount() {
@@ -129,4 +316,34 @@ public class UserDataAdapter extends RecyclerView.Adapter<UserDataAdapter.ViewHo
         // notify item added by position
         notifyItemInserted(position);
     }
+     public void blockUser(String fid){
+         String url="https://www.iampro.co/api/app_service.php?type=get_block_user_detail&uid="+ PrefManager.getLoginDetail(mContext,"id")+"&fid=657"+fid;
+
+         RequestQueue requestQueue = Volley.newRequestQueue(mContext);
+         JsonObjectRequest jsObjRequest = new JsonObjectRequest(Request.Method.POST,url,null,
+                 new Response.Listener<JSONObject>() {
+                     @Override
+                     public void onResponse(JSONObject response) {
+                         System.out.println(response);
+                         try {
+                             String status = response.getString("status");
+                             String  msg = response.getString("msg");
+                            user_block = response.optInt("user_block");
+                            Toast.makeText(mContext,""+msg,Toast.LENGTH_LONG).show();
+
+                         }
+                         catch(Exception e) {
+                             Toast.makeText(mContext,""+e.getMessage(),Toast.LENGTH_LONG).show();
+                         }
+                     }
+                 },
+                 new Response.ErrorListener() {
+                     @Override
+                     public void onErrorResponse(VolleyError error) {
+
+                     }
+                 });
+         requestQueue.add(jsObjRequest);
+
+     }
 }

@@ -49,6 +49,10 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
+import bg.devlabs.fullscreenvideoview.FullscreenVideoView;
+import bg.devlabs.fullscreenvideoview.orientation.LandscapeOrientation;
+import bg.devlabs.fullscreenvideoview.orientation.PortraitOrientation;
+
 import static android.content.Intent.FLAG_ACTIVITY_NEW_TASK;
 
 public class Img_Video_Details extends RecyclerView.Adapter<Img_Video_Details.ViewHolder> {
@@ -64,6 +68,7 @@ public class Img_Video_Details extends RecyclerView.Adapter<Img_Video_Details.Vi
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
        TextView fullname,udate,tv_comments,tv_totallike,name,category;
         ImageView imageView_user,imageView_icon,iv_comments,image;
+         FullscreenVideoView fullscreenVideoView;
          VideoView videoView;
         RatingBar ratingBar;
         ImageDetailModel item;
@@ -71,9 +76,10 @@ public class Img_Video_Details extends RecyclerView.Adapter<Img_Video_Details.Vi
         public ViewHolder(View v) {
             super(v);
             v.setOnClickListener(this);
-            fullname = v.findViewById(R.id.fullname);
-            udate =v.findViewById(R.id.udate);
-            tv_comments=v.findViewById(R.id.tv_comments);
+             fullname = v.findViewById(R.id.fullname);
+             udate =v.findViewById(R.id.udate);
+             tv_comments=v.findViewById(R.id.tv_comments);
+               fullscreenVideoView =v.findViewById(R.id.fullscreenVideoView);
             //tv_comments
             tv_comments=v.findViewById(R.id.tv_comments);
             tv_totallike=v.findViewById(R.id.tv_totallike);
@@ -114,7 +120,6 @@ public class Img_Video_Details extends RecyclerView.Adapter<Img_Video_Details.Vi
             String avatar=item.getAvatar();
             String images=item.getImage();
 
-
             ratingBar.setRating(item.getRating());
 
              uid=item.getUid();
@@ -123,66 +128,6 @@ public class Img_Video_Details extends RecyclerView.Adapter<Img_Video_Details.Vi
                     .load(avatar)
                     .apply(Config.options_avatar)
                     .into(imageView_user);
-
-           if(item.getType().equalsIgnoreCase("image")) {
-               videoView.setVisibility(View.GONE);
-                image.setVisibility(View.VISIBLE);
-               Glide.with(mContext)
-                       .load(images)
-                       .apply(Config.options_image)
-                       .into(image);
-
-               Glide.with(mContext)
-                       .load(R.drawable.image_icon)
-                       .apply(Config.options_avatar)
-                       .into(imageView_icon);
-               final int added_by_id = item.getUid();
-               imageView_icon.setOnClickListener(new View.OnClickListener() {
-                   @Override
-                   public void onClick(View view) {
-                       MyImageActivity fragment = new MyImageActivity();
-                       Bundle args = new Bundle();
-                       args.putString("uid", String.valueOf(added_by_id));
-                       function.loadFragment(mContext,fragment,args);
-                   }
-               });
-
-               //imageView_icon.setImageResource(R.drawable.image_icon);
-           }
-           else if(item.getType().equalsIgnoreCase("video")) {
-               image.setVisibility(View.GONE);
-                videoView.setVisibility(View.VISIBLE);
-
-               videoView.setVideoPath(item.getImage());
-               //videoView.start();
-               final int added_by_id = item.getUid();
-               imageView_icon.setOnClickListener(new View.OnClickListener() {
-                   @Override
-                   public void onClick(View view) {
-                       MyVideoActivity fragment = new MyVideoActivity();
-                       Bundle args = new Bundle();
-                       args.putString("uid", String.valueOf(added_by_id));
-                       function.loadFragment(mContext,fragment,args);
-                   }
-               });
-               Glide.with(mContext)
-                       .load(R.drawable.video_icon)
-                       .apply(Config.options_video)
-                       .into(imageView_icon);
-
-               //imageView_icon.setImageResource(R.drawable.video_icon);
-           }
-               imageView_user.setOnClickListener(new View.OnClickListener() {
-                   @Override
-                   public void onClick(View v) {
-                       ProfileActivity fragment = new ProfileActivity();
-                       Bundle args = new Bundle();
-                       args.putString("uid", String.valueOf(uid));
-                       function.loadFragment(mContext,fragment,args);
-                   }
-               });
-
-
         }
         @Override
         public void onClick(View view) {
@@ -221,6 +166,82 @@ public class Img_Video_Details extends RecyclerView.Adapter<Img_Video_Details.Vi
                 String url = Config.API_URL+"app_service.php?type=like_me&id="+String.valueOf(id)+"&uid="+uid+"&ptype="+type;
                 Log.e(Config.TAG,url);
                 function.executeUrl(mContext,"get",url,null);
+            }
+        });
+
+        if(mValues.get(position).getType().equalsIgnoreCase("image")) {
+            Vholder.videoView.setVisibility(View.GONE);
+            Vholder.image.setVisibility(View.VISIBLE);
+             Vholder.fullscreenVideoView.setVisibility(View.GONE);
+            Glide.with(mContext)
+                    .load(mValues.get(position).getImage())
+                    .apply(Config.options_image)
+                    .into(Vholder.image);
+
+            Glide.with(mContext)
+                    .load(R.drawable.image_icon)
+                    .apply(Config.options_avatar)
+                    .into(Vholder.imageView_icon);
+            final int added_by_id =mValues.get(position).getUid();
+             Vholder.imageView_icon.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    MyImageActivity fragment = new MyImageActivity();
+                    Bundle args = new Bundle();
+                    args.putString("uid", String.valueOf(added_by_id));
+                    function.loadFragment(mContext,fragment,args);
+                }
+            });
+
+            //imageView_icon.setImageResource(R.drawable.image_icon);
+        }
+        else if(mValues.get(position).getType().equalsIgnoreCase("video")) {
+            Vholder.image.setVisibility(View.GONE);
+            //videoView.setVisibility(View.VISIBLE);
+
+            //videoView.setVideoPath(item.getImage());
+            //videoView.start();//
+            final int added_by_id = mValues.get(position).getUid();
+            Vholder.imageView_icon.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    MyVideoActivity fragment = new MyVideoActivity();
+                    Bundle args = new Bundle();
+                    args.putString("uid", String.valueOf(added_by_id));
+                    function.loadFragment(mContext,fragment,args);
+                }
+            });
+             Glide.with(mContext)
+                    .load(R.drawable.video_icon)
+                    .apply(Config.options_video)
+                    .into(Vholder.imageView_icon);
+
+             Vholder.fullscreenVideoView.setVisibility(View.VISIBLE);
+            String ImageHol = Config.URL_ROOT+"uploads/video/"+mValues.get(position).getImage();
+                                /*videoView.setVideoPath(ImageHol);
+                                Log.d(Config.TAG, ImageHol);
+                                mediaController = new MediaController(CommentActivity.this);
+                                mediaController.setAnchorView(videoView);
+                                videoView.setMediaController(mediaController);
+                                videoView.requestFocus();
+                                videoView.start();*/
+             Vholder.fullscreenVideoView.videoUrl(ImageHol)
+                    .enableAutoStart()
+                    .addSeekBackwardButton()
+                    .addSeekForwardButton()
+                    .portraitOrientation(PortraitOrientation.DEFAULT)
+                    .landscapeOrientation(LandscapeOrientation.DEFAULT);
+
+            //imageView_icon.setImageResource(R.drawable.video_icon);
+              Toast.makeText(mContext,"video",Toast.LENGTH_LONG).show();
+        }
+         Vholder.imageView_user.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ProfileActivity fragment = new ProfileActivity();
+                Bundle args = new Bundle();
+                args.putString("uid", String.valueOf(uid));
+                function.loadFragment(mContext,fragment,args);
             }
         });
     }
