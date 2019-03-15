@@ -32,6 +32,7 @@ import com.android.volley.toolbox.Volley;
 import com.bumptech.glide.Glide;
 import com.like.LikeButton;
 import com.like.OnLikeListener;
+import com.mssinfotech.iampro.co.CartActivity;
 import com.mssinfotech.iampro.co.CommentActivity;
 import com.mssinfotech.iampro.co.R;
 import com.mssinfotech.iampro.co.common.Config;
@@ -213,6 +214,23 @@ public class SectionProductAdapter extends RecyclerView.Adapter<SectionProductAd
                 sendrating(ratingBar.getRating(),Integer.parseInt(uidv),Integer.parseInt(id));
             }
         });
+         if (mValues.get(i).getUid().equalsIgnoreCase(PrefManager.getLoginDetail(mContext,"id"))){
+             holder.iv_delete.setVisibility(View.VISIBLE);
+             holder.iv_edit.setVisibility(View.VISIBLE);
+         }
+         else{
+             holder.iv_buy.setVisibility(View.VISIBLE);
+             holder.iv_delete.setVisibility(View.GONE);
+             holder.iv_edit.setVisibility(View.GONE);
+         }
+        holder.iv_buy.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                function.addtocart(mContext, mValues.get(i).getId(), "1",String.valueOf(mValues.get(i).getScost()));
+                CartActivity fragment = new CartActivity();
+                function.loadFragment(mContext,fragment,null);
+            }
+        });
     }
     @Override
     public int getItemCount() {
@@ -226,7 +244,7 @@ public class SectionProductAdapter extends RecyclerView.Adapter<SectionProductAd
         //this.btnMore= view.findViewById(R.id.btnMore);
 
         //orginal
-        ImageView  imageView,imageView_user,imageView_icon,iv_comments,image,iv_favourite,iv_delete,iv_edit;
+        ImageView  imageView,imageView_user,imageView_icon,iv_comments,image,iv_favourite,iv_delete,iv_edit,iv_buy;
         VideoView videoView;
         TextView tv_name,category,udate,tv_comments,tv_totallike,detail_name;
         RatingBar ratingBar;
@@ -250,6 +268,7 @@ public class SectionProductAdapter extends RecyclerView.Adapter<SectionProductAd
             imageView_user=view.findViewById(R.id.imageView_user);
             imageView_icon=view.findViewById(R.id.imageView_icon);
             ll_comment=view.findViewById(R.id.ll_comment);
+            iv_buy= view.findViewById(R.id.iv_buy);
             likeButton =view.findViewById(R.id.likeButton);
             iv_comments=view.findViewById(R.id.iv_comments);
             iv_favourite=view.findViewById(R.id.iv_favourite);

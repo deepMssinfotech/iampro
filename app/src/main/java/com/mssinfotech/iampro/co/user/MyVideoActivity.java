@@ -1,4 +1,5 @@
 package com.mssinfotech.iampro.co.user;
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -8,8 +9,10 @@ import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.provider.MediaStore;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
@@ -58,6 +61,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -85,6 +89,9 @@ public class MyVideoActivity extends Fragment implements MyVideoAdapter.ItemList
     ImageView changeImage,changeBackground_Image ;
     Context context;
     View view;
+     FloatingActionButton fab;
+    public static final int REQUEST_IMAGE = 100;
+    public static String imageType;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup parent, Bundle savedInstanceState) {
         // Defines the xml file for the fragment
@@ -109,6 +116,7 @@ public class MyVideoActivity extends Fragment implements MyVideoAdapter.ItemList
         userbackgroud = view.findViewById(R.id.userbackgroud);
         changeImage = view.findViewById(R.id.changeImage);
         changeImage = view.findViewById(R.id.changeImage);
+         fab=view.findViewById(R.id.fab);
         changeBackground_Image = view.findViewById(R.id.changeBackground_Image);
         uid= PrefManager.getLoginDetail(context,"id");
         if(id == null || id.equals(uid)) {
@@ -135,15 +143,19 @@ public class MyVideoActivity extends Fragment implements MyVideoAdapter.ItemList
             changeImage.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Intent intent=new Intent(context,ProfileImageCroperActivity.class);
-                    startActivity(intent);
+                   /* Intent intent=new Intent(context,ProfileImageCroperActivity.class);
+                    startActivity(intent);*/
                     //finish();
+                    imageType="userImage";
+                    showImagePickerOptions();
                 }
             });
             changeBackground_Image.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    showPictureDialog();
+                    //showPictureDialog();
+                    imageType="backgroundImage";
+                    showImagePickerOptions();
                 }
             });
         }else{
@@ -160,7 +172,13 @@ public class MyVideoActivity extends Fragment implements MyVideoAdapter.ItemList
         Config.PREVIOUS_PAGE_TAG = i.getStringExtra(Config.PAGE_TAG);
         //getVideo();
         getAllAlbum();
-
+         fab.setOnClickListener(new View.OnClickListener() {
+             @Override
+             public void onClick(View v) {
+                 Intent i_signup = new Intent(context,AddVideoActivity.class);
+                 MyVideoActivity.this.startActivity(i_signup);
+             }
+         });
     }
     private void gteUsrDetail(String id){
         String myurl = Config.API_URL + "ajax.php?type=friend_detail&id=" + id + "&uid=" + uid;
@@ -288,6 +306,24 @@ public class MyVideoActivity extends Fragment implements MyVideoAdapter.ItemList
                 Toast.makeText(context,e.getMessage(),Toast.LENGTH_LONG).show();
             }
         }
+        else if (requestCode == REQUEST_IMAGE) {
+            if (resultCode == Activity.RESULT_OK) {
+                Uri uri = data.getParcelableExtra("path");
+                try {
+                    // You can update this bitmap to your server
+                    Bitmap bitmap = MediaStore.Images.Media.getBitmap(context.getContentResolver(), uri);
+                    backgroundimagePath = getPath(getImageUri(context,bitmap));
+
+                    // loading profile image from local cache
+                    loadImgData(uri.toString());
+                    // loading profile image from local cache
+                    loadVideoData(uri.toString());
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+
     }
 
     public String getPath(Uri uri) {
@@ -320,23 +356,42 @@ public class MyVideoActivity extends Fragment implements MyVideoAdapter.ItemList
                     .addParameter("type","update_img_video_banner")//Adding text parameter to the request
                     .addParameter("process_type","android")
                     .addParameter("userid",PrefManager.getLoginDetail(context,"id"))
+                    .addParameter("page_url","page/update_profile.html")
+                    .addParameter("fname",PrefManager.getLoginDetail(context,"fname"))
+                    .addParameter("email",PrefManager.getLoginDetail(context,"email"))
+                    .addParameter("country",PrefManager.getLoginDetail(context,"country"))
+                    .addParameter("state",PrefManager.getLoginDetail(context,"state"))
                     //.setNotificationConfig(new UploadNotificationConfig())
                     .setMaxRetries(2)
                     .startUpload(); //Starting the upload
             ProfileActivity fragment = new ProfileActivity();
             function.loadFragment(context,fragment,null);
             Toast.makeText(context, "Update Profile Background Image is processing please wait", Toast.LENGTH_SHORT).show();
-            getActivity().finish();
+            //getActivity().finish();
         } catch (Exception exc) {
             Toast.makeText(context, exc.getMessage(), Toast.LENGTH_SHORT).show();
         }
 
-    }
+        /*
 
-    public void redirect(View v){
+         type: update_img_video_banner
+process_type: android
+page_url: page/gallery.html
+userid: 693
+fname: deep
+email:
+country: INDIA
+state: MP
+image_name: video_gallery_banner_image
+video_banner_image: (binary)
+img_banner_image: (binary)
+
+        */
+    }
+  /*  public void redirect(View v){
         Intent i_signup = new Intent(context,AddVideoActivity.class);
         MyVideoActivity.this.startActivity(i_signup);
-    }
+    } */
     @Override
     public void onItemClick(MyImageModel item) {
 
@@ -405,6 +460,7 @@ public class MyVideoActivity extends Fragment implements MyVideoAdapter.ItemList
                          dm.setAlbemId(aid);
                         //ArrayList<MyImageModel> singleItem = new ArrayList<>();
                         ArrayList<MyImageModel> item = new ArrayList<>();
+                        dm.setAddedBy(id);
                         try{
                             for(int i=0;i<response.length();i++){
                                 // Get current json object
@@ -484,6 +540,132 @@ public class MyVideoActivity extends Fragment implements MyVideoAdapter.ItemList
         // Add JsonArrayRequest to the RequestQueue
         requestQueue.add(jsonArrayRequest);
         //getProvide();
+    }
+
+    private void showImagePickerOptions() {
+        ImagePickerActivity.showImagePickerOptions(getContext(), new ImagePickerActivity.PickerOptionListener() {
+            @Override
+            public void onTakeCameraSelected() {
+                launchCameraIntent();
+            }
+
+            @Override
+            public void onChooseGallerySelected() {
+                launchGalleryIntent();
+            }
+        });
+    }
+
+    private void launchCameraIntent() {
+        Intent intent = new Intent(getContext(), ImagePickerActivity.class);
+        intent.putExtra(ImagePickerActivity.INTENT_IMAGE_PICKER_OPTION, ImagePickerActivity.REQUEST_IMAGE_CAPTURE);
+
+        // setting aspect ratio
+        intent.putExtra(ImagePickerActivity.INTENT_LOCK_ASPECT_RATIO, true);
+        intent.putExtra(ImagePickerActivity.INTENT_ASPECT_RATIO_X, 1); // 16x9, 1x1, 3:4, 3:2
+        intent.putExtra(ImagePickerActivity.INTENT_ASPECT_RATIO_Y, 1);
+
+        // setting maximum bitmap width and height
+        intent.putExtra(ImagePickerActivity.INTENT_SET_BITMAP_MAX_WIDTH_HEIGHT, true);
+        intent.putExtra(ImagePickerActivity.INTENT_BITMAP_MAX_WIDTH, 1000);
+        intent.putExtra(ImagePickerActivity.INTENT_BITMAP_MAX_HEIGHT, 1000);
+
+        startActivityForResult(intent, REQUEST_IMAGE);
+    }
+
+    private void launchGalleryIntent() {
+        Intent intent = new Intent(getContext(), ImagePickerActivity.class);
+        intent.putExtra(ImagePickerActivity.INTENT_IMAGE_PICKER_OPTION, ImagePickerActivity.REQUEST_GALLERY_IMAGE);
+
+        // setting aspect ratio
+        intent.putExtra(ImagePickerActivity.INTENT_LOCK_ASPECT_RATIO, true);
+        intent.putExtra(ImagePickerActivity.INTENT_ASPECT_RATIO_X, 1); // 16x9, 1x1, 3:4, 3:2
+        intent.putExtra(ImagePickerActivity.INTENT_ASPECT_RATIO_Y, 1);
+        startActivityForResult(intent, REQUEST_IMAGE);
+    }
+
+    private void loadVideoData(String url)   {
+        Log.d("eProfile_uri", "Image cache path: " + url);
+        if(imageType.equalsIgnoreCase("backgroundImage"))  {
+            Glide.with(this).load(url)
+                    .into(userbackgroud);
+            userbackgroud.setColorFilter(ContextCompat.getColor(context, android.R.color.transparent));
+        }
+        else if (imageType.equalsIgnoreCase("userImage")){
+            //userimage
+            Glide.with(this).load(url)
+                    .into(userimage);
+            userimage.setColorFilter(ContextCompat.getColor(context, android.R.color.transparent));
+        }
+    }
+
+    public void sendUserPic(){
+        if (!Config.haveNetworkConnection(context)) {
+            Config.showInternetDialog(context);
+            return;
+        }
+        //Toast.makeText(getApplicationContext(), "Video upload remain pleasw wait....", Toast.LENGTH_LONG).show();
+        //return;
+        try {
+            String uploadId = UUID.randomUUID().toString();
+            //Creating a multi part request
+            new MultipartUploadRequest(context, uploadId, Config.AJAX_URL + "signup.php")
+                    .addFileToUpload(backgroundimagePath, "profile_video_gallery") //Adding file
+                    .addParameter("type","update_img_video_banner")//Adding text parameter to the request
+                    .addParameter("process_type","android")
+                    .addParameter("page_url","page/update_profile.html")
+                    .addParameter("userid",PrefManager.getLoginDetail(context,"id"))
+                    .addParameter("fname",PrefManager.getLoginDetail(context,"fname"))
+                    .addParameter("email",PrefManager.getLoginDetail(context,"email"))
+                    .addParameter("country",PrefManager.getLoginDetail(context,"country"))
+                    .addParameter("state",PrefManager.getLoginDetail(context,"state"))
+                    .addParameter("image_name",backgroundimagePath)
+                    //.setNotificationConfig(new UploadNotificationConfig())
+                    .setMaxRetries(2)
+                    .startUpload(); //Starting the upload
+            ProfileActivity fragment = new ProfileActivity();
+            function.loadFragment(context,fragment,null);
+            //getActivity().finish();
+            /*   type: update_img_video_banner
+process_type: android
+page_url: page/gallery.html
+userid: 693
+fname: deep
+email:
+country: INDIA
+state: MP
+image_name: video_gallery_profile_image
+profile_video_gallery: (binary)
+
+         */
+        } catch (Exception exc) {
+            Toast.makeText(context,""+exc.getMessage(), Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    public Uri getImageUri(Context inContext, Bitmap inImage) {
+        ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+        inImage.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
+        String path = MediaStore.Images.Media.insertImage(inContext.getContentResolver(), inImage, "Title", null);
+        return Uri.parse(path);
+    }
+
+
+    private void loadImgData(String url)   {
+        Log.d("eProfile_uri", "Image cache path: " + url);
+        if(imageType.equalsIgnoreCase("backgroundImage"))  {
+            Glide.with(this).load(url)
+                    .into(userbackgroud);
+            userbackgroud.setColorFilter(ContextCompat.getColor(context, android.R.color.transparent));
+            sendData();
+        }
+        else if (imageType.equalsIgnoreCase("userImage")){
+            //userimage
+            Glide.with(this).load(url)
+                    .into(userimage);
+            userimage.setColorFilter(ContextCompat.getColor(context, android.R.color.transparent));
+            sendUserPic();
+        }
     }
 
 }

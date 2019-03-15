@@ -106,6 +106,7 @@
                                 android:textSize="12dp"
                                 android:text="Rs "
                                 android:padding="2dp"/>
+
                         </LinearLayout>
 
 
@@ -177,6 +178,7 @@
                     android:layout_weight="0"
                     android:isIndicator="false"
                     android:numStars="5"
+                    android:layout_marginBottom="4dp"
                     android:rating="4"
                     android:stepSize="0.3"/>
                 <ImageView
@@ -197,6 +199,17 @@
                     android:layout_marginRight="10dp"
                     android:layout_width="30dp"
                     android:layout_height="30dp"/>
+                <ImageView
+                    android:id="@+id/iv_buy"
+                    android:layout_width="18dp"
+                    android:layout_height="18dp"
+                    android:layout_marginRight="-10dp"
+                    android:layout_weight="1"
+                    android:visibility="gone"
+                    android:layout_marginBottom="4dp"
+                    android:layout_gravity="end"
+                    android:layout_marginLeft="40dp"
+                    app:srcCompat="@drawable/profile_box_buy"/>
             </LinearLayout>
         </LinearLayout>
     </android.support.v7.widget.CardView>

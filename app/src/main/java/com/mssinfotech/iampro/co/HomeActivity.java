@@ -68,4 +68,28 @@ public class HomeActivity extends AppCompatActivity {
         //adapter.addFragment(new TestFragment(), "TestFragment");
         viewPager.setAdapter(adapter);
     }
+
+    @Override
+    public void onBackPressed() {
+        int count = getSupportFragmentManager().getBackStackEntryCount();
+
+        if (count == 0) {
+            if (Config.doubleBackToExitPressedOnce) {
+                super.onBackPressed();
+                //this.finish();
+                // return;
+            }
+            Config.doubleBackToExitPressedOnce = true;
+            //Toast.makeText(this, "Please click again ", Toast.LENGTH_SHORT).show();
+
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    Config.doubleBackToExitPressedOnce = false;
+                }
+            }, 2000);
+        } else {
+            getSupportFragmentManager().popBackStack();
+        }
+    }
 }

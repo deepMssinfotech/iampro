@@ -47,7 +47,6 @@ import com.mssinfotech.iampro.co.utils.PrefManager;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 public class UserMenuActivity  extends Fragment {
-
     GridView mGridView;;
     ImageView menu_btn_dashboard_nonuser,menu_btn_login,menu_btn_register,menu_btn_search,menu_btn_shareit,menu_btn_review,menu_btn_wallet,menu_btn_browser;
     ImageView menu_btn_dashboard,menu_btn_myprofile,menu_btn_editprofile,menu_btn_changepassword,menu_btn_joinedfriend,menu_btn_friendrequest,menu_btn_myphoto,menu_btn_myvideo,menu_btn_myproduct,menu_btn_myprovide,menu_btn_demand,menu_btn_mymessage,menu_btn_mycart,menu_btn_myselling,menu_btn_mypurchase,menu_btn_share,menu_btn_mywhishlist,menu_btn_logout;
@@ -57,7 +56,6 @@ public class UserMenuActivity  extends Fragment {
         View view = inflater.inflate(R.layout.include_user_menu, parent, false);
         return view;
     }
-
     public void removeFragment(){
         //getActivity().finish();
     }
@@ -324,5 +322,4 @@ public class UserMenuActivity  extends Fragment {
             user_menu.setVisibility(View.GONE);
         }
     }
-
 }

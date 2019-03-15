@@ -1,5 +1,6 @@
 package com.mssinfotech.iampro.co.user;
 
+import android.graphics.Canvas;
 import android.graphics.Color;
 import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.Snackbar;
@@ -21,6 +22,11 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.StringRequest;
+import com.mssinfotech.iampro.co.adapter.FriendRequestSwipeAdapter;
+import com.mssinfotech.iampro.co.swipecontroller.SwipeController;
+import com.mssinfotech.iampro.co.swipecontroller.SwipeControllerActions;
 import com.mssinfotech.iampro.co.user.FriendRequestActivity;
 import com.mssinfotech.iampro.co.R;
 import com.mssinfotech.iampro.co.adapter.FriendRequestAdapter;
@@ -35,13 +41,15 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
-public class FriendRequestActivity extends Fragment implements FriendRequestItemTouchHelper.RecyclerItemTouchHelperListener {
-
+public class FriendRequestActivity extends Fragment  {
+ // implements FriendRequestItemTouchHelper.RecyclerItemTouchHelperListener
     private RecyclerView recyclerView;
     private List<FriendRequestItem> FriendRequestItemList;
     private FriendRequestAdapter mAdapter;
+     private FriendRequestSwipeAdapter adapter_swipe;
     private ConstraintLayout constraintLayout;
     private static String NOTIFY_URL  = "";
+     SwipeController swipeController = null;
     View view;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup parent, Bundle savedInstanceState) {
@@ -56,20 +64,58 @@ public class FriendRequestActivity extends Fragment implements FriendRequestItem
         recyclerView = view.findViewById(R.id.recycler_view);
         FriendRequestItemList = new ArrayList<FriendRequestItem>();
         mAdapter = new FriendRequestAdapter(getContext(), FriendRequestItemList);
+        adapter_swipe = new FriendRequestSwipeAdapter(getContext(), FriendRequestItemList);
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getContext());
         recyclerView.setLayoutManager(mLayoutManager);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.addItemDecoration(new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL));
-        recyclerView.setAdapter(mAdapter);
+        //recyclerView.setAdapter(mAdapter);
+         //recyclerView.setAdapter(adapter_swipe);
         constraintLayout = view.findViewById(R.id.constraintLayout);
         // adding item touch helper
         // only ItemTouchHelper.LEFT added to detect Right to Left swipe
         // if you want both Right -> Left and Left -> Right
         // add pass ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT as param
-        ItemTouchHelper.SimpleCallback itemTouchHelperCallback = new FriendRequestItemTouchHelper(0, ItemTouchHelper.LEFT, this);
-        new ItemTouchHelper(itemTouchHelperCallback).attachToRecyclerView(recyclerView);
+        //ItemTouchHelper.SimpleCallback itemTouchHelperCallback = new FriendRequestItemTouchHelper(0, ItemTouchHelper.LEFT, this);
+       // new ItemTouchHelper(itemTouchHelperCallback).attachToRecyclerView(recyclerView);
         // making http call and fetching menu json
         prepareWhishList();
+
+
+        swipeController = new SwipeController(FriendRequestActivity.this.getContext(),new SwipeControllerActions() {
+            @Override
+            public void onRightClicked(int position) {
+                //mAdapter.players.remove(position);
+                //mAdapter.notifyItemRemoved(position);
+                //mAdapter.notifyItemRangeChanged(position, mAdapter.getItemCount());
+                //Toast.makeText(getContext(),"Right Clicked"+position,Toast.LENGTH_LONG).show();
+                 int id= adapter_swipe.notifyList.get(position).getUser_id();
+                 int tid=adapter_swipe.notifyList.get(position).getFriend_id();
+                reject(position);
+                 adapter_swipe.notifyList.remove(position);
+                 adapter_swipe.notifyItemRemoved(position);
+                 adapter_swipe.notifyItemRangeChanged(position,adapter_swipe.getItemCount());
+
+            }
+            public void onLeftClicked(int position) {
+                //Toast.makeText(getContext(),"Left Clicked"+position,Toast.LENGTH_LONG).show();
+                accept(position);
+                adapter_swipe.notifyList.remove(position);
+                adapter_swipe.notifyItemRemoved(position);
+                adapter_swipe.notifyItemRangeChanged(position,adapter_swipe.getItemCount());
+
+            }
+        });
+
+       ItemTouchHelper itemTouchhelper = new ItemTouchHelper(swipeController);
+        itemTouchhelper.attachToRecyclerView(recyclerView);
+
+        recyclerView.addItemDecoration(new RecyclerView.ItemDecoration() {
+            @Override
+            public void onDraw(Canvas c, RecyclerView parent, RecyclerView.State state) {
+                swipeController.onDraw(c);
+            }
+        });
 
     }
     /**
@@ -106,6 +152,9 @@ public class FriendRequestActivity extends Fragment implements FriendRequestItem
                     FriendRequestItem item = new FriendRequestItem();
 
                     String image_path = "";
+                    int is_block=Integer.parseInt(feedObj.optString("is_block"));
+                    item.setIs_block(is_block);
+
                     JSONObject user_detail = feedObj.getJSONObject("user_detail");
                     String user_image = Config.AVATAR_URL + "80/80/" + user_detail.getString("avatar");
                     item.setId(feedObj.getInt("id"));
@@ -125,13 +174,20 @@ public class FriendRequestActivity extends Fragment implements FriendRequestItem
                     item.setTotal_product_demand(feedObj.getInt("total_product_demand"));
                     item.setTotal_video(feedObj.getInt("total_video"));
 
+                    JSONObject friendstatus =feedObj.getJSONObject("friendstatus");
+
+                     String friend_status=friendstatus.optString("friend_status");
+                     item.setFriend_status(friend_status);
+
+
                     FriendRequestItemList.add(item);
+
                 }
             }else{
                 ImageView no_rodr = view.findViewById(R.id.no_record_found);
                 no_rodr.setVisibility(View.VISIBLE);
             }
-
+             recyclerView.setAdapter(adapter_swipe);
             // notify data changes to list adapater
         } catch (JSONException e) {
 
@@ -145,7 +201,7 @@ public class FriendRequestActivity extends Fragment implements FriendRequestItem
      * item will be removed on swiped
      * undo option will be provided in snackbar to restore the item
      */
-    @Override
+    /*@Override
     public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction, int position) {
         if (viewHolder instanceof FriendRequestAdapter.MyViewHolder) {
             // get the removed item name to display it in snack bar
@@ -174,6 +230,72 @@ public class FriendRequestActivity extends Fragment implements FriendRequestItem
             snackbar.setActionTextColor(Color.YELLOW);
             snackbar.show();
         }
-    }
+    }*/
 
+    public void accept(int position){
+        //String id="";
+         String tid="";
+        int uid= adapter_swipe.notifyList.get(position).getUser_id();
+        int fid=adapter_swipe.notifyList.get(position).getFriend_id();
+        int id=adapter_swipe.notifyList.get(position).getId();
+        //https://www.iampro.co/api/app_service.php?type=approve_friend&id=812&tid=116
+        String url="https://www.iampro.co/api/app_service.php?type=approve_friend&id=812&tid="+id;
+        // Request a string response from the provided URL.
+        JsonObjectRequest jsonObjReq = new JsonObjectRequest(Request.Method.GET,
+                url, null,
+                new Response.Listener<JSONObject>() {
+
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        Log.d("f_accept", response.toString());
+                        try {
+                            JSONObject jsonObject =response;
+                            String msg=jsonObject.getString("msg");
+                            String status=jsonObject.getString("status");
+                            Toast.makeText(getContext(),""+msg,Toast.LENGTH_LONG).show();
+                        }
+                        catch (JSONException ex){
+                            Toast.makeText(getContext(),""+ex.getMessage(),Toast.LENGTH_LONG).show();
+                        }
+
+                    }
+                }, new Response.ErrorListener() {
+
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                 Toast.makeText(getContext(),""+error.getMessage(),Toast.LENGTH_LONG).show();
+            }
+        });
+    }
+    public void  reject(int position){
+        //delete_friend
+        int uid= adapter_swipe.notifyList.get(position).getUser_id();
+        int fid=adapter_swipe.notifyList.get(position).getFriend_id();
+        int id=adapter_swipe.notifyList.get(position).getId();
+         //https://www.iampro.co/api/app_service.php?type=delete_friend&id=812&tid=116
+         String url="https://www.iampro.co/api/app_service.php?type=delete_friend&id="+uid+"&tid="+id;
+         // Request a string response from the provided URL.
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
+                 new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        // Display the first 500 characters of the response string.
+                        try {
+                            JSONObject jsonObject = new JSONObject(response);
+                            String msg=jsonObject.getString("msg");
+                            String status=jsonObject.getString("status");
+                            Toast.makeText(getContext(),""+msg,Toast.LENGTH_LONG).show();
+                        }
+                        catch (JSONException ex){
+                              Toast.makeText(getContext(),""+ex.getMessage(),Toast.LENGTH_LONG).show();
+                        }
+
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+             Toast.makeText(getContext(),""+error.getMessage(),Toast.LENGTH_LONG).show();
+            }
+        });
+    }
 }

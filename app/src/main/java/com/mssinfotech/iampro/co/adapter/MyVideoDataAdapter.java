@@ -29,6 +29,7 @@ import com.mssinfotech.iampro.co.R;
 import com.mssinfotech.iampro.co.common.Config;
 import com.mssinfotech.iampro.co.model.SectionDataModel;
 import com.mssinfotech.iampro.co.model.SectionImageModel;
+import com.mssinfotech.iampro.co.utils.PrefManager;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -62,10 +63,14 @@ public class MyVideoDataAdapter extends RecyclerView.Adapter<MyVideoDataAdapter.
         final String sectionName = dataList.get(i).getHeaderTitle();
 
         ArrayList singleSectionItems = dataList.get(i).getAllItemsInSection();
+        final String singleSectionAddedBy = dataList.get(i).getAddedBy();
         Log.e(Config.TAG,sectionName);
         //Toast.makeText(mContext, "click event on more, "+sectionName , Toast.LENGTH_SHORT).show();
         itemRowHolder.itemTitle.setText(sectionName);
         if(dataList.get(i).getMore()!=null && dataList.get(i).getMore().equalsIgnoreCase("loadmore")){
+            itemRowHolder.btnMore.setVisibility(View.INVISIBLE);
+        }
+        else  if(!(singleSectionAddedBy.toString().equalsIgnoreCase(PrefManager.getLoginDetail(mContext,"id")))){
             itemRowHolder.btnMore.setVisibility(View.INVISIBLE);
         }
        /* if(sectionName.equalsIgnoreCase("Product")){

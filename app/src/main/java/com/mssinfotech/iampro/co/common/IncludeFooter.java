@@ -43,6 +43,7 @@ public class IncludeFooter  extends RelativeLayout {
         super(context, attrs);
         inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         inflater.inflate(R.layout.include_footer, this, true);
+         this.context=context;
         Config.count_chat = this.findViewById(R.id.count_chat);
         Config.count_notify = this.findViewById(R.id.count_notify);
         Config.count_cart = this.findViewById(R.id.count_cart);
@@ -113,12 +114,12 @@ public class IncludeFooter  extends RelativeLayout {
         public void onClick(View v) {
             if(isLogin) {
                 ProfileActivity fragment = new ProfileActivity();
-                function.loadFragment(getContext(),fragment,null);
-            }else{
-                LoginActivity fragment = new LoginActivity();
-                function.loadFragment(getContext(),fragment,null);
+                function.loadFragment(context,fragment,null);
+            }else {
+                //getContext().startActivity(new Intent(context, LoginActivity.class));
+                LoginActivity loginFragment = new LoginActivity();
+                function.loadFragment(context, loginFragment, null);
             }
-            //getContext().startActivity(new Intent(getContext(), LoginActivity.class));
         }
     };
 

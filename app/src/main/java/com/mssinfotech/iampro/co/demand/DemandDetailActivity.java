@@ -31,6 +31,7 @@ import com.bumptech.glide.load.resource.bitmap.CircleCrop;
 import com.bumptech.glide.request.RequestOptions;
 import com.like.LikeButton;
 import com.like.OnLikeListener;
+import com.mssinfotech.iampro.co.ChatToUser;
 import com.mssinfotech.iampro.co.CommentActivity;
 import com.mssinfotech.iampro.co.MessageActivity;
 import com.mssinfotech.iampro.co.R;
@@ -126,7 +127,7 @@ public class DemandDetailActivity extends AppCompatActivity implements CommentAd
                     public void onResponse(String response) {
                         // Do something with response
                         //mTextView.setText(response.toString());
-                        Log.d("Prod_detail_demand",response.toString());
+                        Log.d("Prod_detail_demand",response.toString()+"\t\t"+pid);
                         // Process the JSON
                         try{
                             if (response.toString().equalsIgnoreCase("") || response==null){
@@ -228,8 +229,6 @@ public class DemandDetailActivity extends AppCompatActivity implements CommentAd
                                 }
                             }
 
-
-
                         }catch (Exception e){
                             e.printStackTrace();
                             Toast.makeText(getApplicationContext(),e.getMessage(),Toast.LENGTH_LONG).show();
@@ -250,6 +249,10 @@ public class DemandDetailActivity extends AppCompatActivity implements CommentAd
     public void chat(View view){
         if(PrefManager.isLogin(DemandDetailActivity.this)) {
             Toast.makeText(DemandDetailActivity.this,"redirect to start chat with "+uid+"...",Toast.LENGTH_LONG).show();
+             Intent intent=new Intent(DemandDetailActivity.this, ChatToUser.class);
+              intent.putExtra("id",String.valueOf(uid));
+               intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(intent);
         }
         else {
             Toast.makeText(DemandDetailActivity.this,"First Login and try again...",Toast.LENGTH_LONG).show();

@@ -167,6 +167,7 @@ public class MyProvideAdapter extends RecyclerView.Adapter<MyProvideAdapter.View
         final int uidv=mValues.get(position).getUid();
         final String idv=mValues.get(position).getPid();
 
+
         int my_uid=uidv;
         if(my_uid==0){
             Vholder.likeButton.setEnabled(false);
@@ -249,6 +250,15 @@ public class MyProvideAdapter extends RecyclerView.Adapter<MyProvideAdapter.View
             Vholder.iv_delete.setVisibility(View.GONE);
             Vholder.iv_edit.setVisibility(View.GONE);
         }
+        if(!PrefManager.getLoginDetail(mContext,"id").equalsIgnoreCase(String.valueOf(mValues.get(position).getUid()))){
+            Vholder.iv_delete.setVisibility(View.GONE);
+            Vholder.iv_edit.setVisibility(View.GONE);
+        }
+        else{
+            Vholder.iv_delete.setVisibility(View.VISIBLE);
+            Vholder.iv_edit.setVisibility(View.VISIBLE);
+        }
+
     }
     @Override
     public int getItemCount() {

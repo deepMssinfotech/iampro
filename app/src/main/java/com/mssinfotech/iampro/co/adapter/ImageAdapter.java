@@ -1,9 +1,7 @@
 package com.mssinfotech.iampro.co.adapter;
-
 /**
  * Created by mssinfotech on 16/01/19.
  */
-
 import android.arch.lifecycle.ViewModel;
 import android.content.Intent;
 import android.os.Bundle;
@@ -52,7 +50,6 @@ import com.mssinfotech.iampro.co.user.ProfileActivity;
 import com.mssinfotech.iampro.co.utils.PrefManager;
 
 import java.util.ArrayList;
-
 public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ViewHolder> {
     ArrayList<DataModel> mValues;
     Context mContext;
@@ -87,17 +84,7 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ViewHolder> 
             ratingBar=v.findViewById(R.id.ratingBar);
             uname=v.findViewById(R.id.uname);
             userImage=v.findViewById(R.id.user_image);
-            imageView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    ImageDetail fragment = new ImageDetail();
-                    Bundle args = new Bundle();
-                    args.putString("id", String.valueOf(id));
-                    args.putString("type", "image");
-                    args.putString("uid", String.valueOf(uid));
-                    function.loadFragment(mContext,fragment,args);
-                }
-            });
+
             tv_comments.setOnClickListener(CommnetOnClickListener);
             iv_comments.setOnClickListener(CommnetOnClickListener);
 
@@ -207,8 +194,19 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ViewHolder> 
         return new ViewHolder(view);
     }
     @Override
-    public void onBindViewHolder(ViewHolder Vholder, int position) {
+    public void onBindViewHolder(ViewHolder Vholder, final int position) {
         Vholder.setData(mValues.get(position));
+        Vholder.imageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ImageDetail fragment = new ImageDetail();
+                Bundle args = new Bundle();
+                args.putString("id", String.valueOf(mValues.get(position).getId()));
+                args.putString("type", "image");
+                args.putString("uid", String.valueOf(mValues.get(position).getUid()));
+                function.loadFragment(mContext,fragment,args);
+            }
+        });
     }
     @Override
     public int getItemCount() {

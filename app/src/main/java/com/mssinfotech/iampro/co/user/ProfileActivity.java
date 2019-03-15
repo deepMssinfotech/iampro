@@ -32,6 +32,7 @@ import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.bumptech.glide.Glide;
+import com.mssinfotech.iampro.co.ChatToUser;
 import com.mssinfotech.iampro.co.R;
 import com.mssinfotech.iampro.co.adapter.AllFeedAdapter;
 import com.mssinfotech.iampro.co.adapter.CommentAdapter;
@@ -91,9 +92,10 @@ public class ProfileActivity extends Fragment implements AllFeedAdapter.ItemList
     TextView tv_name,tv_dob,tv_categories,tv_email,tv_gender,tv_address,tv_city,tv_state,tv_country,tv_detail,tv_message;
     View view;
     String FrindStatus = "";
+    // ProgressDialog loading = ProgressDialog.show(getContext(),"Processing...","Please wait...",false,false);
     public void onBackPressed()
     {
-        FragmentManager fm = getActivity().getSupportFragmentManager();
+        FragmentManager fm =new ProfileActivity().getActivity().getSupportFragmentManager();
         fm.popBackStack();
     }
     @Override
@@ -188,7 +190,15 @@ public class ProfileActivity extends Fragment implements AllFeedAdapter.ItemList
             ll_frienddashboard.setVisibility(View.GONE);
         }else{
             uid= fid;
-            gteUsrDetail(fid);
+
+
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    gteUsrDetail(fid);
+                }
+            }, 2000);
+
             ll_dashboard.setVisibility(View.GONE);
             ll_frienddashboard.setVisibility(View.VISIBLE);
 
@@ -197,7 +207,15 @@ public class ProfileActivity extends Fragment implements AllFeedAdapter.ItemList
         includeShortMenu.updateCounts(context,uid);
         TextView myuid= includeShortMenu.findViewById(R.id.myuid);
         myuid.setText(uid);
-        getFeed(FEED_START);
+
+
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                getFeed(FEED_START);
+            }
+        }, 2000);
+
         vFeed.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrollStateChanged(RecyclerView recyclerView,int newState) {
@@ -236,8 +254,15 @@ public class ProfileActivity extends Fragment implements AllFeedAdapter.ItemList
                     Log.d(TAG,scrollY+"-----"+v.getMeasuredHeight() +"/"+ v.getChildAt(0).getMeasuredHeight()+"====="+(v.getMeasuredHeight() - v.getChildAt(0).getMeasuredHeight()));
                     if (scrollY == ( v.getChildAt(0).getMeasuredHeight()-v.getMeasuredHeight() )) {
                         Log.i(TAG, "BOTTOM SCROLL");
-                        FEED_START=FEED_START+FEED_LIMIT;
-                        getFeed(FEED_START);
+
+
+                        new Handler().postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                FEED_START=FEED_START+FEED_LIMIT;
+                                getFeed(FEED_START);
+                            }
+                        }, 2000);
                     }
                 }
             });
@@ -255,7 +280,10 @@ public class ProfileActivity extends Fragment implements AllFeedAdapter.ItemList
         chat_layout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(context,"redirect to chat page...",Toast.LENGTH_LONG).show();
+                //Toast.makeText(context,"redirect to chat page...",Toast.LENGTH_LONG).show();
+                 Intent intent=new Intent(getContext(), ChatToUser.class);
+                  intent.putExtra("id",String.valueOf(fid));
+                  getContext().startActivity(intent);
             }
         });
     }
@@ -355,10 +383,11 @@ public class ProfileActivity extends Fragment implements AllFeedAdapter.ItemList
     }
     public void getFeed(int start){
         String My_id=PrefManager.getLoginDetail(context,"id");
-        final ProgressDialog loading = ProgressDialog.show(context,"Processing...","Please wait...",false,false);
+        //final ProgressDialog loading = ProgressDialog.show(context,"Processing...","Please wait...",false,false);
         URL_FEED = Config.API_URL+ "feed_service.php?type=AllFeeds&start="+start+"&limit="+FEED_LIMIT+"&fid=" +fid+ "&uid=" +My_id+ "&my_id=" +My_id;
         Log.e(Config.TAG,URL_FEED);
         RequestQueue requestQueue = Volley.newRequestQueue(context);
+
         // Initialize a new JsonObjectRequest instance
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(
                 Request.Method.GET,
@@ -480,14 +509,14 @@ public class ProfileActivity extends Fragment implements AllFeedAdapter.ItemList
                                 adapter = new AllFeedAdapter(context, mValues, ProfileActivity.this);
                                 vFeed.setLayoutManager(new LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false));
                                 ViewCompat.setNestedScrollingEnabled(vFeed, false);
-                                loading.dismiss();
+                                //loading.dismiss();
                                 vFeed.setAdapter(adapter);
                             }else{
-                                loading.dismiss();
+                                //loading.dismiss();
                             }
                         }
                         catch (Exception e){
-                            loading.dismiss();
+                            //loading.dismiss();
                             e.printStackTrace();
                             Toast.makeText(context,e.getMessage(),Toast.LENGTH_LONG).show();
                         }
@@ -496,7 +525,7 @@ public class ProfileActivity extends Fragment implements AllFeedAdapter.ItemList
                 new Response.ErrorListener(){
                     @Override
                     public void onErrorResponse(VolleyError error){
-                        loading.dismiss();
+                        //loading.dismiss();
                         // Do something when error occurred
                         Toast.makeText(context,error.getMessage(),Toast.LENGTH_LONG).show();
                     }

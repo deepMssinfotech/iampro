@@ -2,7 +2,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     package="com.mssinfotech.iampro.co">
-
     <uses-permission android:name="android.permission.RECEIVE_SMS" />
     <uses-permission android:name="android.permission.READ_SMS" />
     <uses-permission android:name="android.permission.SEND_SMS" />
@@ -10,9 +9,9 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="com.mssinfotech.attendance.permission.C2D_MESSAGE" />
-
     <uses-feature
         android:name="android.hardware.camera"
         android:required="false" />
@@ -82,17 +81,22 @@
             android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".OtpRegistrationActivity" />
         <activity
+            android:name=".user.AddImageActivity"
+            android:label="Add Image"/>
+
+        <activity
+            android:name=".user.AddVideoActivity"
+            android:label="Add Video"/>
+
+        <activity
             android:name=".user.AddProductActivity"
-            android:label="Add Product"
-            android:parentActivityName=".user.MyProductActivity" />
+            android:label="Add Product" />
         <activity
             android:name=".user.AddProvideActivity"
-            android:label="Add Provide"
-            android:parentActivityName=".user.MyProvideActivity" />
+            android:label="Add Provide" />
         <activity
             android:name=".user.AddDemandActivity"
-            android:label="Add Demand"
-            android:parentActivityName=".user.MyDemandActivity" />
+            android:label="Add Demand" />
         <activity
             android:name=".user.MyProductActivity"
             android:label="My Product&apos;s"
@@ -152,9 +156,48 @@
             android:label="Login"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".ChatToUser" />
-        <!--<activity android:name=".user.ProfileActivity"
-            android:label="Profile"/> -->
-        <activity android:name=".SearchedActivity"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+        <!--
+            <activity android:name=".user.ProfileActivity"
+            android:label="Profile"/>
+        -->
+        <activity
+            android:name=".SearchedActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".user.ImagePickerActivity" />
+
+        <!-- uCrop cropping activity -->
+        <activity
+            android:name="com.yalantis.ucrop.UCropActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" />
+
+        <!-- cache directory file provider paths -->
+        <provider
+            android:name="android.support.v4.content.FileProvider"
+            android:authorities="${applicationId}.provider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/file_paths" />
+        </provider>
+
+        <activity android:name=".user.UserEditprofileActivity" />
+        <activity android:name=".activity.MainActivity"></activity>
+
+        <!-- Firebase Notifications -->
+        <service android:name=".service.MyFirebaseMessagingService">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+            </intent-filter>
+        </service>
+
+        <service android:name=".service.MyFirebaseInstanceIDService">
+            <intent-filter>
+                <action android:name="com.google.firebase.INSTANCE_ID_EVENT" />
+            </intent-filter>
+        </service>
+        <!-- ./Firebase Notifications -->
+
     </application>
 </manifest>

@@ -2,6 +2,7 @@ package com.mssinfotech.iampro.co.user;
 
 import android.content.Context;
 import android.content.Intent;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -54,8 +55,10 @@ public class MyProvideActivity extends Fragment implements MyProvideAdapter.Item
     ArrayList<MyProductModel> item = new ArrayList<>();
     MyProvideAdapter adapter;
     RecyclerView recyclerView;
+     FloatingActionButton fab;
     Context context;
     View view;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup parent, Bundle savedInstanceState) {
         // Defines the xml file for the fragment
@@ -76,6 +79,14 @@ public class MyProvideActivity extends Fragment implements MyProvideAdapter.Item
         Config.setLayoutName(getResources().getResourceEntryName(R.layout.activity_my_provide));
         username = view.findViewById(R.id.username);
         userimage = view.findViewById(R.id.userimage);
+        fab=view.findViewById(R.id.fab);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i_signup = new Intent(context,AddProvideActivity.class);
+                MyProvideActivity.this.startActivity(i_signup);
+            }
+        });
         recyclerView = view.findViewById(R.id.recyclerView);
 
         userbackgroud = view.findViewById(R.id.userbackgroud);
@@ -162,10 +173,10 @@ public class MyProvideActivity extends Fragment implements MyProvideAdapter.Item
         //Adding request to the queue
         requestQueue.add(stringRequest);
     }
-    public void redirect(View v){
+   /* public void redirect(View v){
         Intent i_signup = new Intent(context,AddProvideActivity.class);
         MyProvideActivity.this.startActivity(i_signup);
-    }
+    } */
 
     public void getProvide(){
         String url=Config.API_URL+"app_service.php?type=getall_product&added_by="+uid+"&my_id="+uid+"&search_type=PROVIDE";
@@ -183,6 +194,7 @@ public class MyProvideActivity extends Fragment implements MyProvideAdapter.Item
                         Log.d("responsef",response.toString());
                         SectionDataModel dm = new SectionDataModel();
                         dm.setHeaderTitle("Product");
+                        dm.setAddedBy(id);
                         ArrayList<SingleItemModel> singleItem = new ArrayList<SingleItemModel>();
                         if(!singleItem.isEmpty()){
                             singleItem.clear();

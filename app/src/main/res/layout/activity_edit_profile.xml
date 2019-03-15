@@ -60,7 +60,7 @@
                         android:id="@+id/userimage"
                         android:src="@drawable/iampro"
                         android:layout_height="@dimen/profile_icon_height"
-                        android:layout_width="@dimen/profile_icon_height" />
+                        android:layout_width="@dimen/profile_icon_height"/>
                     <ImageView
                         android:adjustViewBounds="true"
                         android:id="@+id/changeImage"
@@ -311,7 +311,7 @@
                     android:drawablePadding="5dp"
                     android:inputType="text"
                     android:imeOptions="actionNext"
-                    android:textColorHint="@color/colorPrimary" />
+                    android:textColorHint="@color/colorPrimary"/>
 
             </android.support.design.widget.TextInputLayout>
             <android.support.design.widget.TextInputLayout
@@ -334,10 +334,7 @@
             </android.support.design.widget.TextInputLayout>
                 </LinearLayout>
             </ScrollView>
-
-
     </LinearLayout>
-
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/floatingActionButton"
         android:layout_width="wrap_content"
@@ -355,5 +352,8 @@
         app:srcCompat="@drawable/ic_action_check"
         app:backgroundTint="@color/link"
         app:rippleColor="@color/white"
-        tools:ignore="VectorDrawableCompat" />
+        tools:ignore="VectorDrawableCompat"/>
+
+    <include layout="@layout/content_main"
+        android:visibility="gone"/>
 </RelativeLayout>

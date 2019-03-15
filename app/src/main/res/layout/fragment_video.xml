@@ -15,6 +15,7 @@
         app:popupTheme="@style/ThemeOverlay.AppCompat.Light" /> -->
 
     <ImageView
+        android:id="@+id/lvideo_iv"
         android:layout_width="130dp"
         android:layout_height="34dp"
         android:layout_marginLeft="0dp"
@@ -45,6 +46,12 @@
              android:layout_height="wrap_content"
              android:nestedScrollingEnabled="false"
              android:scrollbars="none" />
+         <ImageView
+             android:id="@+id/no_record_found"
+             android:visibility="gone"
+             android:src="@drawable/no_results_found"
+             android:layout_width="match_parent"
+             android:layout_height="wrap_content" />
     <Button
         android:id="@+id/btn_load_more"
         android:layout_width="wrap_content"

@@ -2,6 +2,8 @@ package com.mssinfotech.iampro.co;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+
+import com.mssinfotech.iampro.co.activity.MainActivity;
 import com.mssinfotech.iampro.co.utils.PrefManager;
 import android.support.v7.app.AppCompatActivity;
 
@@ -15,7 +17,8 @@ public class LoadingActivity extends AppCompatActivity {
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                Intent mainIntent = new Intent(LoadingActivity.this, WelcomeActivity.class);
+                  Intent mainIntent = new Intent(LoadingActivity.this, WelcomeActivity.class);
+                 //Intent mainIntent = new Intent(LoadingActivity.this, MainActivity.class);
                 startActivity(mainIntent);
                 finish();
             }

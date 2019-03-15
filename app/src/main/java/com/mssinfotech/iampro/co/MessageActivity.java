@@ -99,6 +99,7 @@ public class MessageActivity extends Fragment implements MessageItemTouchHelper.
     }
     private void parseJsonFeed(String response) {
         try {
+
             JSONObject obj = new JSONObject(response);
             JSONArray heroArray = obj.getJSONArray("list");
             if(heroArray.length()>0) {
@@ -117,11 +118,16 @@ public class MessageActivity extends Fragment implements MessageItemTouchHelper.
             }else{
                 ImageView no_rodr = view.findViewById(R.id.no_record_found);
                 no_rodr.setVisibility(View.VISIBLE);
+
+
             }
             // notify data changes to list adapater
         } catch (JSONException e) {
             Log.d(Config.TAG,"printStackTrace 167" + e.getMessage() + "  Error Message");
             e.printStackTrace();
+            //Toast.makeText(getContext(),""+e.getMessage()+"\t"+response,Toast.LENGTH_LONG).show();
+            ImageView no_rodr = view.findViewById(R.id.no_record_found);
+            no_rodr.setVisibility(View.VISIBLE);
         }
     }
         /**

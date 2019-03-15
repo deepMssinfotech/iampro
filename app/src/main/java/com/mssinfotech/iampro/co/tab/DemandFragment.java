@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.content.res.AppCompatResources;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -61,7 +62,7 @@ public class DemandFragment extends Fragment implements DemandAdapter.ItemListen
     TreeMap<String,String> item_name=new TreeMap<>();
     ArrayList<SectionImageModel> allSampleDatamore=new ArrayList<>();
      ImageView ldemand_iv;
-
+      ImageView no_rodr;
     public DemandFragment() {
         // Required empty public constructor
     }
@@ -89,10 +90,13 @@ public class DemandFragment extends Fragment implements DemandAdapter.ItemListen
         getDemand();
         my_recycler_view =view.findViewById(R.id.my_recycler_view);
         recycler_view_load_more= view.findViewById(R.id.recycler_view_load_more);
+        no_rodr =view.findViewById(R.id.no_record_found);
         //view.findViewById(R.id.title_tv).setTooltipText("Demand");
         btn_load_more=view.findViewById(R.id.btn_load_more);
         ldemand_iv=view.findViewById(R.id.ldemand_iv);
        //  ldemand_iv.setBackground(getContext().getResources().getDrawable(R.drawable.latestdemand));
+         ldemand_iv.setVisibility(View.VISIBLE);
+          ldemand_iv.setBackground(AppCompatResources.getDrawable(getContext(),R.drawable.latestdemand));
         btn_load_more.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -120,79 +124,85 @@ public class DemandFragment extends Fragment implements DemandAdapter.ItemListen
                     @Override
                     public void onResponse(JSONArray response) {
                         pDialog.dismiss();
-                        Log.d("responsef",response.toString());
-                        SectionDataModel dm = new SectionDataModel();
-                        dm.setHeaderTitle("Demand");
-                        ArrayList<SingleItemModel> singleItem = new ArrayList<SingleItemModel>();
-                        if(!singleItem.isEmpty()){
-                            singleItem.clear();
-                        }
-                        if(!allSampleData.isEmpty()){
-                            allSampleData.clear();
-                        }
-                        try{
-                            for(int i=0;i<response.length();i++){
-                                // Get current json object
-                                JSONObject student = response.getJSONObject(i);
-                                 int id=student.getInt("id");
-                                  String idv=String.valueOf(id);
-                                 int added_by=student.getInt("added_by");
-                                 String name = student.getString("name");
-                                String categoryv=student.getString("category");
-
-                                int totallike=Integer.parseInt(student.getString("totallike"));
-                                int comments=student.getInt("comments");
-
-                                int scost=student.getInt("selling_cost");
-                                int pcost=student.getInt("purchese_cost");
-
-                                String imagev=student.getString("image");
-                                String image= Config.URL_ROOT + "uploads/product/" +imagev;
-                                String udate=student.getString("udate");
-                                Log.d("pdata",""+name+""+categoryv+""+image+""+udate);
-                                //String daysago=student.getString("ago");
-
-                                String rating=student.getString("rating");
-                                float ratingv=Float.parseFloat(rating);
-
-                                JSONObject userDetail=student.getJSONObject("user_detail");
-
-                                int uid=userDetail.getInt("id");
-                                String fullname=userDetail.getString("fullname");
-                                String avatar=Config.AVATAR_URL+"250/250/"+userDetail.getString("avatar");
-
-                                //SectionDataModel dm = new SectionDataModel();
-                                //dm.setHeaderTitle("Section " + i);
-                                //Toast.makeText(getContext(),"rrrresponse_enterrr:",Toast.LENGTH_LONG).show();
-                               // singleItem.add(new SingleItemModel(name,image,udate));
-                                //allSampleData.add(new DataModel(name,image,udate,categoryv));
-                                int isliked=student.getInt("like_unlike");
-                                allSampleData.add(new DataModel(name,image,udate,categoryv,totallike,isliked,comments,scost,pcost,ratingv,uid,fullname,avatar,idv,"demand"));
+                        if (response.length() > 0) {
+                             no_rodr.setVisibility(View.GONE);
+                            Log.d("responsef", response.toString());
+                            SectionDataModel dm = new SectionDataModel();
+                            dm.setHeaderTitle("Demand");
+                            ArrayList<SingleItemModel> singleItem = new ArrayList<SingleItemModel>();
+                            if (!singleItem.isEmpty()) {
+                                singleItem.clear();
                             }
-                            Log.d("bdm",singleItem.toString());
-                            //dm.setAllItemsInSection(singleItem);
-                            Log.d("adm",singleItem.toString());
-                            Log.d("dmm",dm.toString());
-                           // allSampleData.add(dm);
-                            Log.d("allsampledatav", allSampleData.toString());
-                            //my_recycler_view.setHasFixedSize(true);
-                            Log.d("allSampleDatas",""+allSampleData.size()+"--"+allSampleData.toString());
+                            if (!allSampleData.isEmpty()) {
+                                allSampleData.clear();
+                            }
+                            try {
+                                for (int i = 0; i < response.length(); i++) {
+                                    // Get current json object
+                                    JSONObject student = response.getJSONObject(i);
+                                    int id = student.getInt("id");
+                                    String idv = String.valueOf(id);
+                                    int added_by = student.getInt("added_by");
+                                    String name = student.getString("name");
+                                    String categoryv = student.getString("category");
+
+                                    int totallike = Integer.parseInt(student.getString("totallike"));
+                                    int comments = student.getInt("comments");
+
+                                    int scost = student.getInt("selling_cost");
+                                    int pcost = student.getInt("purchese_cost");
+
+                                    String imagev = student.getString("image");
+                                    String image = Config.URL_ROOT + "uploads/product/300/250/" + imagev;
+                                    String udate = student.getString("udate");
+                                    Log.d("pdata", "" + name + "" + categoryv + "" + image + "" + udate);
+                                    //String daysago=student.getString("ago");
+
+                                    String rating = student.getString("rating");
+                                    float ratingv = Float.parseFloat(rating);
+
+                                    JSONObject userDetail = student.getJSONObject("user_detail");
+
+                                    int uid = userDetail.getInt("id");
+                                    String fullname = userDetail.getString("fullname");
+                                    String avatar = Config.AVATAR_URL + "250/250/" + userDetail.getString("avatar");
+                                      String is_favourite=student.getString("is_favourite");
+                                    //SectionDataModel dm = new SectionDataModel();
+                                    //dm.setHeaderTitle("Section " + i);
+                                    //Toast.makeText(getContext(),"rrrresponse_enterrr:",Toast.LENGTH_LONG).show();
+                                    // singleItem.add(new SingleItemModel(name,image,udate));
+                                    //allSampleData.add(new DataModel(name,image,udate,categoryv));
+                                    int isliked = student.getInt("like_unlike");
+                                    allSampleData.add(new DataModel(name, image, udate, categoryv, totallike, isliked, comments, scost, pcost, ratingv, uid, fullname, avatar, idv, "demand",is_favourite));
+                                }
+                                Log.d("bdm", singleItem.toString());
+                                //dm.setAllItemsInSection(singleItem);
+                                Log.d("adm", singleItem.toString());
+                                Log.d("dmm", dm.toString());
+                                // allSampleData.add(dm);
+                                Log.d("allsampledatav", allSampleData.toString());
+                                //my_recycler_view.setHasFixedSize(true);
+                                Log.d("allSampleDatas", "" + allSampleData.size() + "--" + allSampleData.toString());
                            /* RecyclerViewDataAdapter adapter = new RecyclerViewDataAdapter(getContext(), allSampleData);
                             my_recycler_view.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
                             //my_recycler_view.setLayoutManager(new GridLayoutManager(getActivity(), 2));
                             my_recycler_view.setAdapter(adapter); */
-                            //adapter= new RecyclerViewAdapter(getContext(), allSampleData,DemandFragment.this);
-                            adapter_demand= new DemandAdapter(getContext(), allSampleData,DemandFragment.this);
-                            my_recycler_view.setAdapter(adapter_demand);
-                            GridLayoutManager manager = new GridLayoutManager(getContext(), 2, GridLayoutManager.VERTICAL, false);
-                            my_recycler_view.setLayoutManager(manager);
+                                //adapter= new RecyclerViewAdapter(getContext(), allSampleData,DemandFragment.this);
+                                adapter_demand = new DemandAdapter(getContext(), allSampleData, DemandFragment.this);
+                                my_recycler_view.setAdapter(adapter_demand);
+                                GridLayoutManager manager = new GridLayoutManager(getContext(), 2, GridLayoutManager.VERTICAL, false);
+                                my_recycler_view.setLayoutManager(manager);
 
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                                Toast.makeText(getContext(), "" + e.getMessage(), Toast.LENGTH_SHORT).show();
+                                Log.d("catch_f", "" + e.getMessage());
+                                pDialog.dismiss();
+                                no_rodr.setVisibility(View.VISIBLE);
+                            }
                         }
-                        catch (JSONException e){
-                            e.printStackTrace();
-                            Toast.makeText(getContext(), ""+e.getMessage(), Toast.LENGTH_SHORT).show();
-                            Log.d("catch_f",""+e.getMessage());
-                             pDialog.dismiss();
+                        else{
+                             no_rodr.setVisibility(View.VISIBLE);
                         }
                     }
                 },

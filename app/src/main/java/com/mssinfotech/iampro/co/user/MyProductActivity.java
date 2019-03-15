@@ -71,6 +71,7 @@ public class MyProductActivity extends Fragment implements MyProductAdapter.Item
     Intent intent;
     ArrayList<MyProductModel> item = new ArrayList<>();
     MyProductAdapter adapter;
+    FloatingActionButton  fab;
     Context context;
     View view;
     @Override
@@ -92,6 +93,7 @@ public class MyProductActivity extends Fragment implements MyProductAdapter.Item
         }
         username = view.findViewById(R.id.username);
         userimage = view.findViewById(R.id.userimage);
+        fab=view.findViewById(R.id.fab);
         userbackgroud = view.findViewById(R.id.userbackgroud);
         uid= PrefManager.getLoginDetail(context,"id");
         if(id == null || id.equals(uid)) {
@@ -137,6 +139,14 @@ public class MyProductActivity extends Fragment implements MyProductAdapter.Item
         //initAdapter();
         initScrollListener();
         getProduct();
+
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                 Intent i_signup = new Intent(context,AddProductActivity.class);
+                 MyProductActivity.this.startActivity(i_signup);
+            }
+        });
     }
     private void gteUsrDetail(String id){
         String myurl = Config.API_URL + "ajax.php?type=friend_detail&id=" + id + "&uid=" + uid;
@@ -188,10 +198,10 @@ public class MyProductActivity extends Fragment implements MyProductAdapter.Item
         //Adding request to the queue
         requestQueue.add(stringRequest);
     }
-    public void redirect(View v){
+   /* public void redirect(View v){
         Intent i_signup = new Intent(context,AddProductActivity.class);
         MyProductActivity.this.startActivity(i_signup);
-    }
+    } */
     private void initAdapter() {
         //mAdapter = new MyProductAdapter(rowsArrayList);
         //recyclerView.setAdapter(mAdapter);
@@ -290,6 +300,7 @@ public class MyProductActivity extends Fragment implements MyProductAdapter.Item
                         Log.d("responsef",response.toString());
                         SectionDataModel dm = new SectionDataModel();
                         dm.setHeaderTitle("Product");
+                         dm.setAddedBy(id);
                         ArrayList<SingleItemModel> singleItem = new ArrayList<SingleItemModel>();
                         if(!singleItem.isEmpty()){
                             singleItem.clear();

@@ -5,6 +5,7 @@ import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.content.res.AppCompatResources;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -13,6 +14,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.android.volley.Request;
@@ -55,7 +57,8 @@ public class VideoFragment extends Fragment implements VideoAdapter.ItemListener
     HashMap<String,String> item_name=new HashMap<>();
     ArrayList<SectionImageModel> allSampleDatamore=new ArrayList<>();
     MyVideoDataAdapter adapterr;
-
+     ImageView lvideo_iv;
+    ImageView no_rodr;
     public VideoFragment() {
         // Required empty public constructor
     }
@@ -81,6 +84,10 @@ public class VideoFragment extends Fragment implements VideoAdapter.ItemListener
             getVideo();
             my_recycler_view =view.findViewById(R.id.my_recycler_view);
             recycler_view_load_more=view.findViewById(R.id.recycler_view_load_more);
+            lvideo_iv=view.findViewById(R.id.lvideo_iv);
+            lvideo_iv.setVisibility(View.VISIBLE);
+             no_rodr =view.findViewById(R.id.no_record_found);
+            lvideo_iv.setBackground(AppCompatResources.getDrawable(getContext(),R.drawable.latestvideo));
             btn_load_more=view.findViewById(R.id.btn_load_more);
             btn_load_more.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -106,55 +113,57 @@ public class VideoFragment extends Fragment implements VideoAdapter.ItemListener
                     @Override
                     public void onResponse(JSONArray response) {
                         pDialog.dismiss();
-                        Log.d("responsef",response.toString());
-                        SectionDataModel dm = new SectionDataModel();
-                        dm.setHeaderTitle("Video ");
-                        ArrayList<SingleItemModel> singleItem = new ArrayList<SingleItemModel>();
-                        if(!singleItem.isEmpty()){
-                            singleItem.clear();
-                        }
-                        if(!allSampleData.isEmpty()){
-                            allSampleData.clear();
-                        }
-                        try{
-                            for(int i=0;i<response.length();i++){
-                                // Get current json object
-                                JSONObject student = response.getJSONObject(i);
-                                int id=student.optInt("id");
-                                //int added_by=student.getInt("albumid");
-                                String name = student.optString("name");
-                                String categoryv=student.optString("category");
-                                String imagev=student.optString("v_image");
-                                String image= Config.URL_ROOT + "uploads/v_image/" + imagev;
-                                String udate=student.optString("udate");
-                                Log.d("pdata",""+name+""+categoryv+""+image+""+udate);
-                                int totallike=student.optInt("totallike");
-                                int comments=student.optInt("comments");
-
-                                String daysago=student.optString("ago");
-
-                                String rating=student.getString("rating");
-                                float ratingv=Float.parseFloat(rating);
-
-                                JSONObject userDetail=student.getJSONObject("user_detail");
-                                int uid=userDetail.getInt("id");
-                                String fullname=userDetail.getString("fullname");
-                                String avatar=Config.AVATAR_URL+"250/250/"+userDetail.getString("avatar");
-
-                                //SectionDataModel dm = new SectionDataModel();
-                                //dm.setHeaderTitle("Section " + i);
-                               // Toast.makeText(getContext(),"rrrresponse_enterrr:",Toast.LENGTH_LONG).show();
-                                //singleItem.add(new SingleItemModel(name,image,udate));
-                                //allSampleData.add(new DataModel(name,image,udate,categoryv));
-                                int isliked=student.getInt("like_unlike");
-                                allSampleData.add(new DataModel(name,image,udate,categoryv,totallike,isliked,comments,daysago,ratingv,uid,fullname,avatar,id,VIDEO_TYPE));
+                        if (response.length() > 0) {
+                            no_rodr.setVisibility(View.GONE);
+                            Log.d("responsef", response.toString());
+                            SectionDataModel dm = new SectionDataModel();
+                            dm.setHeaderTitle("Video ");
+                            ArrayList<SingleItemModel> singleItem = new ArrayList<SingleItemModel>();
+                            if (!singleItem.isEmpty()) {
+                                singleItem.clear();
                             }
-                            Log.d("bdm",singleItem.toString());
-                            dm.setAllItemsInSection(singleItem);
-                            Log.d("adm",singleItem.toString());
-                            Log.d("dmm",dm.toString());
-                           // allSampleData.add(dm);
-                            Log.d("allsampledatav", allSampleData.toString());
+                            if (!allSampleData.isEmpty()) {
+                                allSampleData.clear();
+                            }
+                            try {
+                                for (int i = 0; i < response.length(); i++) {
+                                    // Get current json object
+                                    JSONObject student = response.getJSONObject(i);
+                                    int id = student.optInt("id");
+                                    //int added_by=student.getInt("albumid");
+                                    String name = student.optString("name");
+                                    String categoryv = student.optString("category");
+                                    String imagev = student.optString("v_image");
+                                    String image = Config.URL_ROOT + "uploads/v_image/300/250/" + imagev;
+                                    String udate = student.optString("udate");
+                                    Log.d("pdata", "" + name + "" + categoryv + "" + image + "" + udate);
+                                    int totallike = student.optInt("totallike");
+                                    int comments = student.optInt("comments");
+
+                                    String daysago = student.optString("ago");
+
+                                    String rating = student.getString("rating");
+                                    float ratingv = Float.parseFloat(rating);
+
+                                    JSONObject userDetail = student.getJSONObject("user_detail");
+                                    int uid = userDetail.getInt("id");
+                                    String fullname = userDetail.getString("fullname");
+                                    String avatar = Config.AVATAR_URL + "250/250/" + userDetail.getString("avatar");
+
+                                    //SectionDataModel dm = new SectionDataModel();
+                                    //dm.setHeaderTitle("Section " + i);
+                                    // Toast.makeText(getContext(),"rrrresponse_enterrr:",Toast.LENGTH_LONG).show();
+                                    //singleItem.add(new SingleItemModel(name,image,udate));
+                                    //allSampleData.add(new DataModel(name,image,udate,categoryv));
+                                    int isliked = student.getInt("like_unlike");
+                                    allSampleData.add(new DataModel(name, image, udate, categoryv, totallike, isliked, comments, daysago, ratingv, uid, fullname, avatar, id, VIDEO_TYPE));
+                                }
+                                Log.d("bdm", singleItem.toString());
+                                dm.setAllItemsInSection(singleItem);
+                                Log.d("adm", singleItem.toString());
+                                Log.d("dmm", dm.toString());
+                                // allSampleData.add(dm);
+                                Log.d("allsampledatav", allSampleData.toString());
 
                           /*  my_recycler_view.setHasFixedSize(true);
                             Log.d("allSampleDatas",""+allSampleData.size()+"--"+allSampleData.toString());
@@ -164,18 +173,22 @@ public class VideoFragment extends Fragment implements VideoAdapter.ItemListener
                             //my_recycler_view.setLayoutManager(new GridLayoutManager(getActivity(), 2));
                             my_recycler_view.setAdapter(adapter); */
 
-                            adapter = new VideoAdapter(getContext(), allSampleData,VideoFragment.this);
-                            my_recycler_view.setAdapter(adapter);
+                                adapter = new VideoAdapter(getContext(), allSampleData, VideoFragment.this);
+                                my_recycler_view.setAdapter(adapter);
 
-                            GridLayoutManager manager = new GridLayoutManager(getContext(), 2, GridLayoutManager.VERTICAL, false);
-                            my_recycler_view.setLayoutManager(manager);
+                                GridLayoutManager manager = new GridLayoutManager(getContext(), 2, GridLayoutManager.VERTICAL, false);
+                                my_recycler_view.setLayoutManager(manager);
 
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                                Toast.makeText(getContext(), "" + e.getMessage(), Toast.LENGTH_SHORT).show();
+                                Log.d("catch_f", "" + e.getMessage());
+                                pDialog.dismiss();
+                                no_rodr.setVisibility(View.VISIBLE);
+                            }
                         }
-                        catch (JSONException e){
-                            e.printStackTrace();
-                            Toast.makeText(getContext(), ""+e.getMessage(), Toast.LENGTH_SHORT).show();
-                            Log.d("catch_f",""+e.getMessage());
-                             pDialog.dismiss();
+                        else{
+                            no_rodr.setVisibility(View.VISIBLE);
                         }
                     }
                 },
@@ -187,6 +200,7 @@ public class VideoFragment extends Fragment implements VideoAdapter.ItemListener
                         Toast.makeText(getContext(), "verror"+error.getMessage(), Toast.LENGTH_SHORT).show();
                         Log.d("verror",error.getMessage());
                         pDialog.dismiss();
+                        no_rodr.setVisibility(View.VISIBLE);
                     }
                 }
         );
@@ -401,6 +415,7 @@ public class VideoFragment extends Fragment implements VideoAdapter.ItemListener
                         dm.setMore("loadmore");
                         //ArrayList<MyImageModel> singleItem = new ArrayList<>();
                         ArrayList<MyImageModel> item = new ArrayList<>();
+                         //MyImageModel imageModel=new MyImageModel();
                         //ArrayList<DataModel> item = new ArrayList<>();
                         try{
                             for(int i=0;i<response.length();i++){
@@ -440,7 +455,9 @@ public class VideoFragment extends Fragment implements VideoAdapter.ItemListener
                                     int like_unlike=pics.optInt("like_unlike");
                                     String rating=pics.optString("rating");
                                     String is_block=pics.optString("is_block");
-                                     String v_image=pics.optString("v_image");
+                                    String v_image=pics.optString("v_image");
+                                     Log.d("VV_image",""+v_image);
+
                                     JSONObject userDetail=pics.getJSONObject("user_detail");
                                     int user_id=userDetail.optInt("id");
 
@@ -458,7 +475,7 @@ public class VideoFragment extends Fragment implements VideoAdapter.ItemListener
                                     String is_featuredd=userDetail.optString("is_featured");
                                     String fullname=userDetail.optString("fullname");
                                     String more="loadmore";
-                                    item.add(new MyImageModel(String.valueOf(id),String.valueOf(albemid),name,category,String.valueOf(albem_type),image,udate,about_us,String.valueOf(group_id),String.valueOf(is_featured),String.valueOf(status),is_block,String.valueOf(comments),String.valueOf(totallike),String.valueOf(like_unlike),rating,String.valueOf(user_id),more,avatar,fullname,v_image,"video"));
+                                    item.add(new MyImageModel(String.valueOf(id),String.valueOf(albemid),name,category,String.valueOf(albem_type),image,udate,about_us,String.valueOf(group_id),String.valueOf(is_featured),String.valueOf(status),is_block,String.valueOf(comments),String.valueOf(totallike),String.valueOf(like_unlike),rating,String.valueOf(user_id),more,avatar,fullname,v_image,"video",1));
                                     //item.add(new DataModel(name,image,udate,category,totallike,like_unlike,comments,udate,Float.parseFloat(rating),uid,fullname,avatar,id,IMAGE_TYPE));
                                 }
                             }

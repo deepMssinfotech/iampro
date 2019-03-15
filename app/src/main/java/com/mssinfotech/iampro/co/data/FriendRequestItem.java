@@ -34,6 +34,35 @@ package com.mssinfotech.iampro.co.data;
         private String username;
         private String fullname;
 
+        private int is_block;
+
+        public String getIs_friend() {
+            return is_friend;
+        }
+
+        public void setIs_friend(String is_friend) {
+            this.is_friend = is_friend;
+        }
+
+        public String getFriend_status() {
+            return friend_status;
+        }
+
+        public void setFriend_status(String friend_status) {
+            this.friend_status = friend_status;
+        }
+
+        private String is_friend;
+        private String friend_status;
+
+        public int getIs_block() {
+            return is_block;
+        }
+
+        public void setIs_block(int is_block) {
+            this.is_block = is_block;
+        }
+
         public FriendRequestItem() {
 
         }
@@ -165,4 +194,6 @@ package com.mssinfotech.iampro.co.data;
         public void setFullname(String fullname) {
             this.fullname = fullname;
         }
+
+
     }

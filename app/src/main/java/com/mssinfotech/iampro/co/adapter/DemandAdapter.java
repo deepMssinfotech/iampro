@@ -11,6 +11,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 
@@ -23,6 +24,8 @@ import com.android.volley.toolbox.Volley;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.bitmap.CircleCrop;
 import com.bumptech.glide.request.RequestOptions;
+import com.like.LikeButton;
+import com.like.OnLikeListener;
 import com.mssinfotech.iampro.co.CommentActivity;
 import com.mssinfotech.iampro.co.R;
 import android.view.ViewGroup;
@@ -71,6 +74,7 @@ public class DemandAdapter extends RecyclerView.Adapter<DemandAdapter.ViewHolder
         DataModel item;
         int uid;
         String pid;
+        LikeButton likeButton,favButton;
 
         public ViewHolder(View v) {
             super(v);
@@ -85,8 +89,9 @@ public class DemandAdapter extends RecyclerView.Adapter<DemandAdapter.ViewHolder
             tv_comments = v.findViewById(R.id.tv_comments);
             iv_comments = v.findViewById(R.id.iv_comments);
             tv_daysago = v.findViewById(R.id.tv_daysago);
+            favButton=v.findViewById(R.id.favButton);
             tv_sprice = v.findViewById(R.id.tv_sprice);
-            tv_pprice = v.findViewById(R.id.tv_sprice);
+            tv_pprice = v.findViewById(R.id.tv_pprice);
 
             ratingBar = v.findViewById(R.id.ratingBar);
 
@@ -140,7 +145,7 @@ public class DemandAdapter extends RecyclerView.Adapter<DemandAdapter.ViewHolder
             }
             if (String.valueOf(item.getpCost()) != null || !String.valueOf(item.getpCost()).equalsIgnoreCase(null) || item.getpCost() != 0) {
                 tv_pprice.setVisibility(View.VISIBLE);
-                tv_pprice.setText(String.valueOf(item.getpCost()));
+               // tv_pprice.setText(String.valueOf(item.getpCost()));
             }
 
             tv_daysago.setVisibility(View.VISIBLE);
@@ -287,8 +292,12 @@ public class DemandAdapter extends RecyclerView.Adapter<DemandAdapter.ViewHolder
     @Override
     public void onBindViewHolder(ViewHolder Vholder, final int position) {
         Vholder.setData(mValues.get(position));
-
-        Vholder.tv_comments.setOnClickListener(new View.OnClickListener() {
+         if (mValues.get(position).getIs_favourite().equalsIgnoreCase("1")) {
+            Vholder.favButton.setLiked(true);
+         } else {
+            Vholder.favButton.setLiked(false);
+         }
+         Vholder.tv_comments.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(mContext, CommentActivity.class);
@@ -306,6 +315,25 @@ public class DemandAdapter extends RecyclerView.Adapter<DemandAdapter.ViewHolder
                 intent.putExtra("id", String.valueOf(mValues.get(position).getPid()));
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 mContext.startActivity(intent);
+            }
+        });
+        Vholder.tv_sprice.setText("Rs: "+String.valueOf(mValues.get(position).getRating()));
+
+        Vholder.favButton.setOnLikeListener(new OnLikeListener() {
+            @Override
+            public void liked(LikeButton likeButton) {
+                Toast.makeText(mContext,"Liked",Toast.LENGTH_LONG).show();
+                String url = Config.API_URL + "app_service.php?type=provide_favo&pid=" + String.valueOf(mValues.get(position).getPid()) + "&uid=" + mValues.get(position).getUid() + "&product_type=" + mValues.get(position).getType();
+                Log.e(Config.TAG, url);
+                function.executeUrl(mContext, "get", url, null);
+            }
+
+            @Override
+            public void unLiked(LikeButton likeButton) {
+                Toast.makeText(mContext,"UnLiked",Toast.LENGTH_LONG).show();
+                String url = Config.API_URL + "app_service.php?type=provide_favo&pid=" + String.valueOf( mValues.get(position).getPid()) + "&uid=" +mValues.get(position).getUid()+ "&product_type=" + mValues.get(position).getType();
+                Log.e(Config.TAG, url);
+                function.executeUrl(mContext, "get", url, null);
             }
         });
     }

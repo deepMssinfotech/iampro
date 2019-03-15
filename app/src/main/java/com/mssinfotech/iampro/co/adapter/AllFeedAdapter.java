@@ -7,6 +7,8 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.content.res.AppCompatResources;
+import android.support.v7.widget.AppCompatImageView;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -62,6 +64,7 @@ import java.util.ArrayList;
 import bg.devlabs.fullscreenvideoview.FullscreenVideoView;
 import bg.devlabs.fullscreenvideoview.orientation.LandscapeOrientation;
 import bg.devlabs.fullscreenvideoview.orientation.PortraitOrientation;
+import de.hdodenhof.circleimageview.CircleImageView;
 
 public class AllFeedAdapter extends RecyclerView.Adapter<AllFeedAdapter.ViewHolder> {
     ArrayList<FeedModel> mValues;
@@ -73,14 +76,16 @@ public class AllFeedAdapter extends RecyclerView.Adapter<AllFeedAdapter.ViewHold
         mListener=itemListener;
     }
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-        ImageView imageView_user, imageView_icon, iv_comments, image, iv_favourite, ivLike, iv_buy;
+        AppCompatImageView iv_comments, image, iv_favourite, ivLike;
         TextView fullname, udate, tv_comments, tv_totallike, detail_name, purchese_cost, selling_cost;
         LikeButton like_un, favButton;
+        ImageView iv_buy;
         RatingBar ratingBar;
         LinearLayout ll_showhide, ll_comment;
         FeedModel item;
         FullscreenVideoView fullscreenVideoView;
-        ImageView videoImage;
+        CircleImageView imageView_user,imageView_icon;
+        android.support.v7.widget.AppCompatImageView videoImage;
         FrameLayout videoLayout;
         SliderLayout imageSlider;
         private View currentFocusedLayout, oldFocusedLayout;
@@ -95,7 +100,7 @@ public class AllFeedAdapter extends RecyclerView.Adapter<AllFeedAdapter.ViewHold
             iv_comments = v.findViewById(R.id.iv_comments);
             imageSlider = v.findViewById(R.id.imageSlider);
             fullscreenVideoView = v.findViewById(R.id.fullscreenVideoView);
-            videoImage = (ImageView) v.findViewById(R.id.videoImage);
+            videoImage = v.findViewById(R.id.videoImage);
             videoLayout = v.findViewById(R.id.videoLayout);
             iv_buy = v.findViewById(R.id.iv_buy);
             //iv_favourite=v.findViewById(R.id.iv_favourite);
@@ -128,8 +133,10 @@ public class AllFeedAdapter extends RecyclerView.Adapter<AllFeedAdapter.ViewHold
             udate.setText(item.getUdate());
             tv_comments.setText(String.valueOf(item.getComment()));
             tv_totallike.setText(String.valueOf(item.getLikes()));
-            like_un.setUnlikeDrawableRes(R.drawable.like);
-            like_un.setLikeDrawableRes(R.drawable.like_un);
+             //like_un.setUnlikeDrawableRes(R.drawable.like);
+             like_un.setUnlikeDrawable(AppCompatResources.getDrawable(mContext,R.drawable.like));
+            //like_un.setLikeDrawableRes(R.drawable.like_un);
+             like_un.setLikeDrawable(AppCompatResources.getDrawable(mContext,R.drawable.like_un));
             imageView_user.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -252,7 +259,6 @@ public class AllFeedAdapter extends RecyclerView.Adapter<AllFeedAdapter.ViewHold
                 //iv_favourite.setVisibility(View.VISIBLE);
             }
         }
-
         @Override
         public void onClick(View view) {
             if (mListener != null) {
@@ -593,45 +599,50 @@ public class AllFeedAdapter extends RecyclerView.Adapter<AllFeedAdapter.ViewHold
             }
         });
         //Vholder.c
-        Vholder.ll_comment.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (type.equalsIgnoreCase("IMAGE")) {
-                    Intent intent = new Intent(mContext, CommentActivity.class);
-                    intent.putExtra("type", "feed_image");
-                    intent.putExtra("id", String.valueOf(id));
-                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                    mContext.startActivity(intent);
-                } else if (type.equalsIgnoreCase("VIDEO")) {
-                    Intent intent = new Intent(mContext, CommentActivity.class);
-                    intent.putExtra("type", "video");
-                    intent.putExtra("id", String.valueOf(sharedId[0]));
-                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                    mContext.startActivity(intent);
-                } else if (type.equalsIgnoreCase("PRODUCT")) {
-                    Intent intent = new Intent(mContext, CommentActivity.class);
-                    intent.putExtra("type", "product");
-                    intent.putExtra("id", String.valueOf(sharedId[0]));
-                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                    mContext.startActivity(intent);
-                    // Toast.makeText(mContext,"Product"+id,Toast.LENGTH_LONG).show();
-                } else if (type.equalsIgnoreCase("PROVIDE")) {
-                    Intent intent = new Intent(mContext, CommentActivity.class);
-                    intent.putExtra("type", "provide");
-                    intent.putExtra("id", String.valueOf(sharedId[0]));
-                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                    mContext.startActivity(intent);
-                    //Toast.makeText(mContext,"Provide"+id,Toast.LENGTH_LONG).show();
-                } else if (type.equalsIgnoreCase("DEMAND")) {
-                    Intent intent = new Intent(mContext, CommentActivity.class);
-                    intent.putExtra("type", "demand");
-                    intent.putExtra("id", String.valueOf(sharedId[0]));
-                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                    mContext.startActivity(intent);
-                    //Toast.makeText(mContext,"Demand"+id,Toast.LENGTH_LONG).show();
-                }
-            }
-        });
+         if (PrefManager.isLogin(mContext)) {
+             Vholder.ll_comment.setOnClickListener(new View.OnClickListener() {
+                 @Override
+                 public void onClick(View v) {
+                     if (type.equalsIgnoreCase("IMAGE")) {
+                         Intent intent = new Intent(mContext, CommentActivity.class);
+                         intent.putExtra("type", "feed_image");
+                         intent.putExtra("id", String.valueOf(id));
+                         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                         mContext.startActivity(intent);
+                     } else if (type.equalsIgnoreCase("VIDEO")) {
+                         Intent intent = new Intent(mContext, CommentActivity.class);
+                         intent.putExtra("type", "video");
+                         intent.putExtra("id", String.valueOf(sharedId[0]));
+                         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                         mContext.startActivity(intent);
+                     } else if (type.equalsIgnoreCase("PRODUCT")) {
+                         Intent intent = new Intent(mContext, CommentActivity.class);
+                         intent.putExtra("type", "product");
+                         intent.putExtra("id", String.valueOf(sharedId[0]));
+                         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                         mContext.startActivity(intent);
+                         // Toast.makeText(mContext,"Product"+id,Toast.LENGTH_LONG).show();
+                     } else if (type.equalsIgnoreCase("PROVIDE")) {
+                         Intent intent = new Intent(mContext, CommentActivity.class);
+                         intent.putExtra("type", "provide");
+                         intent.putExtra("id", String.valueOf(sharedId[0]));
+                         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                         mContext.startActivity(intent);
+                         //Toast.makeText(mContext,"Provide"+id,Toast.LENGTH_LONG).show();
+                     } else if (type.equalsIgnoreCase("DEMAND")) {
+                         Intent intent = new Intent(mContext, CommentActivity.class);
+                         intent.putExtra("type", "demand");
+                         intent.putExtra("id", String.valueOf(sharedId[0]));
+                         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                         mContext.startActivity(intent);
+                         //Toast.makeText(mContext,"Demand"+id,Toast.LENGTH_LONG).show();
+                     }
+                 }
+             });
+         }
+         else{
+               Toast.makeText(mContext,"First Login and try again...",Toast.LENGTH_LONG).show();
+         }
     }
     @Override
     public int getItemCount() {
@@ -676,7 +687,6 @@ public class AllFeedAdapter extends RecyclerView.Adapter<AllFeedAdapter.ViewHold
                 }
         );
         requestQueue.add(jsonObjectRequest);
-
     }
 }
 

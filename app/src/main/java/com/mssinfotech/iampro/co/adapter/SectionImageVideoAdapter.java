@@ -3,7 +3,6 @@ package com.mssinfotech.iampro.co.adapter;
 /**
  * Created by mssinfotech on 15/01/19.
  */
-
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -35,6 +34,7 @@ import com.android.volley.toolbox.Volley;
 import com.bumptech.glide.Glide;
 import com.like.LikeButton;
 import com.like.OnLikeListener;
+import com.mssinfotech.iampro.co.CartActivity;
 import com.mssinfotech.iampro.co.CommentActivity;
 import com.mssinfotech.iampro.co.R;
 import com.mssinfotech.iampro.co.common.Config;
@@ -56,12 +56,11 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.TreeMap;
-
 public class SectionImageVideoAdapter extends RecyclerView.Adapter<SectionImageVideoAdapter.SingleItemRowHolder>  {
     private ArrayList<MyImageModel> itemsList;
     private Context mContext;
     //private String uid,id;
-    ArrayList<MyImageModel> mValues;
+    //ArrayList<MyImageModel> mValues;
     HashSet<String> heading_name;
     protected MyImageAdapter.ItemListener mListener;
      TreeMap<String,String> item_type;
@@ -105,15 +104,19 @@ public class SectionImageVideoAdapter extends RecyclerView.Adapter<SectionImageV
         return mh; */
     }
     @Override
-    public void onBindViewHolder(final SingleItemRowHolder holder, final int i) {
+    public void onBindViewHolder(final SingleItemRowHolder holder, final int position) {
+        final int i=position;
         MyImageModel singleItem = itemsList.get(i);
         //orgg
         //final String uid=singleItem.getUid();
+
         final String uid=PrefManager.getLoginDetail(mContext,"id");
         final String id=singleItem.getId();
         final String pid=singleItem.getId();
         final String uidv=itemsList.get(i).getUid();
-        holder. category.setText(singleItem .getCategory());
+
+        holder. category.setText(itemsList.get(i).getName());
+
         int my_uid=Integer.parseInt(uidv);
         if(my_uid==0){
             holder.likeButton.setEnabled(false);
@@ -233,16 +236,16 @@ public class SectionImageVideoAdapter extends RecyclerView.Adapter<SectionImageV
                 if (type.equalsIgnoreCase("product")){
                     Intent intent=new Intent(mContext, ProductDetail.class);
                     intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                    intent.putExtra("pid",String.valueOf(mValues.get(i).getId()));
-                    intent.putExtra("uid",String.valueOf(mValues.get(i).getUid()));
+                    intent.putExtra("pid",String.valueOf(itemsList.get(i).getId()));
+                    intent.putExtra("uid",String.valueOf(itemsList.get(i).getUid()));
                     intent.putExtra("type", "product");
                     mContext.startActivity(intent);
                 }
                 else if (type.equalsIgnoreCase("provide")){
                     Intent intent=new Intent(mContext, ProvideDetailActivity.class);
                     intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                    intent.putExtra("pid",String.valueOf(mValues.get(i).getId()));
-                    intent.putExtra("uid",String.valueOf(mValues.get(i).getUid()));
+                    intent.putExtra("pid",String.valueOf(itemsList.get(i).getId()));
+                    intent.putExtra("uid",String.valueOf(itemsList.get(i).getUid()));
                     intent.putExtra("type", "provide");
                     intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     mContext.startActivity(intent);
@@ -250,17 +253,34 @@ public class SectionImageVideoAdapter extends RecyclerView.Adapter<SectionImageV
                 else if (type.equalsIgnoreCase("demand")){
                     Intent intent=new Intent(mContext, DemandDetailActivity.class);
                     intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                    intent.putExtra("pid",String.valueOf(mValues.get(i).getId()));
-                    intent.putExtra("uid",String.valueOf(mValues.get(i).getUid()));
+                    intent.putExtra("pid",String.valueOf(itemsList.get(i).getId()));
+                    intent.putExtra("uid",String.valueOf(itemsList.get(i).getUid()));
                     intent.putExtra("type", "demand");
                     mContext.startActivity(intent);
+                }
+                else if(type.equalsIgnoreCase("image")){
+                    //Toast.makeText(, "", Toast.LENGTH_SHORT).show();
+                    ImageDetail fragment = new ImageDetail();
+                    Bundle args = new Bundle();
+                    args.putString("id",id);
+                    args.putString("type","image");
+                    args.putString("uid",String.valueOf(itemsList.get(i).getUid()));
+                    function.loadFragment(mContext,fragment,args);
+                }
+                else if(type.equalsIgnoreCase("video")){
+                    ImageDetail fragment = new ImageDetail();
+                    Bundle args = new Bundle();
+                    args.putString("id", id);
+                    args.putString("type","video");
+                    args.putString("uid",String.valueOf(itemsList.get(i).getUid()));
+                    function.loadFragment(mContext,fragment,args);
                 }
                 else {
                     ImageDetail fragment = new ImageDetail();
                     Bundle args = new Bundle();
                     args.putString("id", id);
-                    args.putString("type", String.valueOf(type.equalsIgnoreCase("demand")));
-                    args.putString("uid", uid);
+                    args.putString("type","");
+                    args.putString("uid",String.valueOf(itemsList.get(i).getUid()));
                     function.loadFragment(mContext,fragment,args);
                 }
 
@@ -340,7 +360,7 @@ public class SectionImageVideoAdapter extends RecyclerView.Adapter<SectionImageV
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         // dialog.cancel();
-                        mValues.remove(i);
+                        itemsList.remove(i);
                         notifyDataSetChanged();
                         deleteImage(itemsList.get(i).getId());
                         //Toast.makeText(mContext,"deleted",Toast.LENGTH_LONG).show();
@@ -384,14 +404,103 @@ public class SectionImageVideoAdapter extends RecyclerView.Adapter<SectionImageV
                 }
             });
       //  }
-    }
+
+        if(!PrefManager.getLoginDetail(mContext,"id").equalsIgnoreCase(itemsList.get(i).getUid().toString())){
+            holder.iv_delete.setVisibility(View.GONE);
+            holder.iv_edit.setVisibility(View.GONE);
+        }
+        else{
+            holder.iv_delete.setVisibility(View.VISIBLE);
+            holder.iv_edit.setVisibility(View.VISIBLE);
+        }
+        if (itemsList.get(i).getUid().equalsIgnoreCase(PrefManager.getLoginDetail(mContext,"id")) && type.equalsIgnoreCase("Product")){
+            holder.iv_delete.setVisibility(View.VISIBLE);
+            holder.iv_edit.setVisibility(View.VISIBLE);
+        }
+        else{
+            if (type.equalsIgnoreCase("Product")) {
+                holder.iv_buy.setVisibility(View.VISIBLE);
+                holder.iv_delete.setVisibility(View.GONE);
+                holder.iv_edit.setVisibility(View.GONE);
+            }
+        }
+        if (type.equalsIgnoreCase("Product")) {
+            holder.iv_buy.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    function.addtocart(mContext, itemsList.get(i).getId(), "1", String.valueOf(itemsList.get(i).getScost()));
+                    CartActivity fragment = new CartActivity();
+                    function.loadFragment(mContext, fragment, null);
+                }
+            });
+        }
+        if (itemsList.get(i).getUid().equalsIgnoreCase(PrefManager.getLoginDetail(mContext,"id")) && (type.equalsIgnoreCase("Provide") || type.equalsIgnoreCase("Demand"))) {
+            holder.iv_delete.setVisibility(View.VISIBLE);
+            holder.iv_edit.setVisibility(View.VISIBLE);
+        }
+        else{
+            if (type.equalsIgnoreCase("Provide") || type.equalsIgnoreCase("Demand")) {
+                holder.favButton.setVisibility(View.VISIBLE);
+                holder.iv_delete.setVisibility(View.INVISIBLE);
+                holder.iv_edit.setVisibility(View.INVISIBLE);
+            }
+        }
+          if (type.equalsIgnoreCase("Provide")){
+              if (itemsList.get(position).getIs_featured().equalsIgnoreCase("1")) {
+                  holder.favButton.setLiked(true);
+              } else {
+                  holder.favButton.setLiked(false);
+              }
+              holder.favButton.setOnLikeListener(new OnLikeListener() {
+                  @Override
+                  public void liked(LikeButton likeButton) {
+                      //Toast.makeText(mContext,"Liked",Toast.LENGTH_LONG).show();
+                      String url = Config.API_URL + "app_service.php?type=provide_favo&pid=" + String.valueOf(itemsList.get(position).getId()) + "&uid=" +itemsList.get(position).getUid() + "&product_type=" + type;
+                      Log.e(Config.TAG, url);
+                      function.executeUrl(mContext, "get", url, null);
+                  }
+
+                  @Override
+                  public void unLiked(LikeButton likeButton) {
+                      //Toast.makeText(mContext,"UnLiked",Toast.LENGTH_LONG).show();
+                      String url = Config.API_URL + "app_service.php?type=provide_favo&pid=" + String.valueOf(itemsList.get(position).getId()) + "&uid=" +itemsList.get(position).getUid()+ "&product_type=" + type;
+                      Log.e(Config.TAG, url);
+                      function.executeUrl(mContext, "get", url, null);
+                  }
+              });
+          }
+          if (type.equalsIgnoreCase("Demand")){
+              if (itemsList.get(position).getIs_featured().equalsIgnoreCase("1")) {
+                  holder.favButton.setLiked(true);
+              } else {
+                  holder.favButton.setLiked(false);
+              }
+              holder.favButton.setOnLikeListener(new OnLikeListener() {
+                  @Override
+                  public void liked(LikeButton likeButton) {
+                      //Toast.makeText(mContext,"Liked",Toast.LENGTH_LONG).show();
+                      String url = Config.API_URL + "app_service.php?type=provide_favo&pid=" + String.valueOf(itemsList.get(position).getId()) + "&uid=" +itemsList.get(position).getUid() + "&product_type=" + type;
+                      Log.e(Config.TAG, url);
+                      function.executeUrl(mContext, "get", url, null);
+                  }
+
+                  @Override
+                  public void unLiked(LikeButton likeButton) {
+                      //Toast.makeText(mContext,"UnLiked",Toast.LENGTH_LONG).show();
+                      String url = Config.API_URL + "app_service.php?type=provide_favo&pid=" + String.valueOf(itemsList.get(position).getId()) + "&uid=" +itemsList.get(position).getUid()+ "&product_type=" + type;
+                      Log.e(Config.TAG, url);
+                      function.executeUrl(mContext, "get", url, null);
+                  }
+              });
+          }
+        }
     @Override
     public int getItemCount() {
         return (null != itemsList ? itemsList.size() : 0);
     }
     public class SingleItemRowHolder extends RecyclerView.ViewHolder {
         protected TextView tvTitle,totallike,comments,daysago,user_name;
-        protected ImageView itemImage;
+        protected ImageView itemImage,iv_buy;
         protected de.hdodenhof.circleimageview.CircleImageView btnMore,user_image;
         protected LinearLayout likelayout;
         //this.btnMore= view.findViewById(R.id.btnMore);
@@ -403,7 +512,7 @@ public class SectionImageVideoAdapter extends RecyclerView.Adapter<SectionImageV
         RatingBar ratingBar;
         LinearLayout ll_showhide,ll_comment;
         MyImageModel item;
-        LikeButton likeButton;
+        LikeButton likeButton,favButton;
         public SingleItemRowHolder(View view) {
             super(view);
           /*  this.likelayout = view.findViewById(R.id.likelayout);
@@ -421,7 +530,14 @@ public class SectionImageVideoAdapter extends RecyclerView.Adapter<SectionImageV
 
             tv_name=view.findViewById(R.id.tv_name);
             imageView_user=view.findViewById(R.id.imageView_user);
+            favButton=view.findViewById(R.id.favButton);
             user_image= view.findViewById(R.id.imageView_user);
+            if (type.equalsIgnoreCase("Product")){
+                iv_buy=view.findViewById(R.id.iv_buy);
+            }
+            if (type.equalsIgnoreCase("Provide") || type.equalsIgnoreCase("Demand")){
+                favButton=view.findViewById(R.id.favButton);
+            }
             imageView_icon=view.findViewById(R.id.imageView_icon);
              if(type.equalsIgnoreCase("product")){
                  tv_purchaseprice=view.findViewById(R.id.tv_purchaseprice);

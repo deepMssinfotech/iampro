@@ -2,6 +2,7 @@ package com.mssinfotech.iampro.co.user;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Canvas;
 import android.graphics.Color;
 import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.Snackbar;
@@ -19,6 +20,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 import com.android.volley.Request;
@@ -30,10 +32,16 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.bumptech.glide.Glide;
 import com.mssinfotech.iampro.co.adapter.MyImageAdapter;
+import com.mssinfotech.iampro.co.adapter.UserDataAdapter;
 import com.mssinfotech.iampro.co.common.IncludeShortMenu;
 import com.mssinfotech.iampro.co.common.PhotoFullPopupWindow;
 import com.mssinfotech.iampro.co.model.MyImageModel;
+import com.mssinfotech.iampro.co.model.SectionDataModel;
 import com.mssinfotech.iampro.co.model.SingleItemModel;
+import com.mssinfotech.iampro.co.model.UserModel;
+import com.mssinfotech.iampro.co.swipecontroller.SwipeController;
+import com.mssinfotech.iampro.co.swipecontroller.SwipeControllerActions;
+import com.mssinfotech.iampro.co.tab.UserFragment;
 import com.mssinfotech.iampro.co.user.JoinFriendActivity;
 import com.mssinfotech.iampro.co.R;
 import com.mssinfotech.iampro.co.adapter.JoinFriendAdapter;
@@ -51,7 +59,8 @@ import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
-public class JoinFriendActivity extends Fragment implements JoinFriendItemTouchHelper.RecyclerItemTouchHelperListener {
+public class JoinFriendActivity extends Fragment implements UserDataAdapter.ItemListener {
+    //JoinFriendItemTouchHelper.RecyclerItemTouchHelperListener,
     ImageView userbackgroud;
     CircleImageView userimage;
     TextView username,tv_category;
@@ -63,7 +72,12 @@ public class JoinFriendActivity extends Fragment implements JoinFriendItemTouchH
     private String URL_FEED = "",uid = "";
     Context context;
     Intent intent;
+     LinearLayout ll_header;
     View view;
+    SwipeController swipeController = null;
+     ArrayList<UserModel> allSampleData=new ArrayList<>();
+         UserDataAdapter adapter;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup parent, Bundle savedInstanceState) {
         // Defines the xml file for the fragment
@@ -72,13 +86,21 @@ public class JoinFriendActivity extends Fragment implements JoinFriendItemTouchH
     @Override
     public void onViewCreated(View v, Bundle savedInstanceState) {
         view = v;
+        String id;
         context = getContext();
         uid= PrefManager.getLoginDetail(getContext(),"id");
         Config.setLayoutName(getResources().getResourceEntryName(R.layout.activity_joinfriend));
         username = view.findViewById(R.id.username);
         userimage = view.findViewById(R.id.userimage);
+        ll_header=view.findViewById(R.id.ll_header);
         userbackgroud = view.findViewById(R.id.userbackgroud);
-        String id = intent.getStringExtra("uid");
+        try {
+            id = intent.getStringExtra("uid");
+        }
+        catch (Exception e){
+            id=uid;
+        }
+        //getUser(15);
         uid= PrefManager.getLoginDetail(getContext(),"id");
         if(id == null || id.equals(uid)) {
             String fname=PrefManager.getLoginDetail(getContext(),"fname");
@@ -122,11 +144,36 @@ public class JoinFriendActivity extends Fragment implements JoinFriendItemTouchH
         // only ItemTouchHelper.LEFT added to detect Right to Left swipe
         // if you want both Right -> Left and Left -> Right
         // add pass ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT as param
-        ItemTouchHelper.SimpleCallback itemTouchHelperCallback = new JoinFriendItemTouchHelper(0, ItemTouchHelper.LEFT, this);
-        new ItemTouchHelper(itemTouchHelperCallback).attachToRecyclerView(recyclerView);
+       // ItemTouchHelper.SimpleCallback itemTouchHelperCallback = new JoinFriendItemTouchHelper(0, ItemTouchHelper.LEFT,JoinFriendActivity.this);
+        //new ItemTouchHelper(itemTouchHelperCallback).attachToRecyclerView(recyclerView);
         // making http call and fetching menu json
         prepareWhishList();
         getJoinedFriend();
+
+        /*swipeController = new SwipeController(JoinFriendActivity.this.getContext(),new SwipeControllerActions() {
+            @Override
+            public void onRightClicked(int position) {
+                //mAdapter.players.remove(position);
+                //mAdapter.notifyItemRemoved(position);
+                //mAdapter.notifyItemRangeChanged(position, mAdapter.getItemCount());
+                Toast.makeText(getContext(),"Right Clicked"+position,Toast.LENGTH_LONG).show();
+
+            }
+            public void onLeftClicked(int position) {
+                Toast.makeText(getContext(),"Left Clicked"+position,Toast.LENGTH_LONG).show();
+            }
+        }); */
+
+       /* ItemTouchHelper itemTouchhelper = new ItemTouchHelper(swipeController);
+        itemTouchhelper.attachToRecyclerView(recyclerView);
+
+        recyclerView.addItemDecoration(new RecyclerView.ItemDecoration() {
+            @Override
+            public void onDraw(Canvas c, RecyclerView parent, RecyclerView.State state) {
+                swipeController.onDraw(c);
+            }
+        }); */
+
     }
 
     private void gteUsrDetail(String id){
@@ -217,7 +264,9 @@ public class JoinFriendActivity extends Fragment implements JoinFriendItemTouchH
                     String user_image = Config.AVATAR_URL + "80/80/" + user_detail.getString("avatar");
                     item.setId(feedObj.getInt("id"));
                     item.setAvatar(user_image);
-                    item.setUser_id(feedObj.getInt("user_id"));
+                    //item.setUser_id(user_detail.getInt("user_id"));
+                    //item.setUser_id(user_detail.getInt("id"));
+                    item.setUser_id(Integer.parseInt(user_detail.optString("id")));
                     item.setFriend_id(feedObj.getInt("friend_id"));
                     item.setCategory(user_detail.getString("category"));
                     item.setCity(user_detail.getString("city"));
@@ -247,7 +296,7 @@ public class JoinFriendActivity extends Fragment implements JoinFriendItemTouchH
         }
     }
 
-    @Override
+    /*@Override
     public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction, int position) {
         if (viewHolder instanceof JoinFriendAdapter.MyViewHolder) {
             // get the removed item name to display it in snack bar
@@ -260,12 +309,12 @@ public class JoinFriendActivity extends Fragment implements JoinFriendItemTouchH
             final int deletedIndex = viewHolder.getAdapterPosition();
 
             // remove the item from recycler view
-            mAdapter.removeItem(viewHolder.getAdapterPosition());
-            String url=Config.API_URL+"app_service.php?type=delete_friend&id="+Friendid.toString()+"&tid="+id.toString();
-            String responc = function.executeUrl(getContext(),"get",url,null);
-            Log.e(Config.TAG,"result : "+responc+"url - "+url);
+            //mAdapter.removeItem(viewHolder.getAdapterPosition());
+            //String url=Config.API_URL+"app_service.php?type=delete_friend&id="+Friendid.toString()+"&tid="+id.toString();
+            //String responc = function.executeUrl(getContext(),"get",url,null);
+            //Log.e(Config.TAG,"result : "+responc+"url - "+url);
             // showing snack bar with Undo option
-            Snackbar snackbar = Snackbar.make(constraintLayout, "Notification removed ", Snackbar.LENGTH_LONG);
+            Snackbar snackbar = Snackbar.make(ll_header, "Notification removed ", Snackbar.LENGTH_LONG);
             snackbar.setAction("Close", new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -276,7 +325,7 @@ public class JoinFriendActivity extends Fragment implements JoinFriendItemTouchH
             snackbar.setActionTextColor(Color.YELLOW);
             snackbar.show();
         }
-    }
+    } */
 
     public void getJoinedFriend(){
         String url="https://www.iampro.co/api/app_service.php?type=view_friend_list&id="+uid+"&status=2&uid="+uid+"&my_id="+uid;
@@ -299,14 +348,42 @@ public class JoinFriendActivity extends Fragment implements JoinFriendItemTouchH
                             for(int i=0;i<response.length();i++){
                                 // Get current json object
                                 JSONObject student = response.getJSONObject(i);
+
                                   JSONObject user_detaiis=student.getJSONObject("user_detail");
+                                  //friendstatus
+                                JSONObject friendstatus=student.getJSONObject("friendstatus");
                                     String id=user_detaiis.getString("id");
                                  String fname=user_detaiis.getString("fname");
                                  String lname=user_detaiis.getString("lname");
                                 String avatar=user_detaiis.getString("avatar");
                                 String category=user_detaiis.getString("category");
 
-                                    JoinFriendItemList.add(new JoinFriendItem(avatar,fname,category));
+                                    //JoinFriendItemList.add(new JoinFriendItem(avatar,fname,category));
+
+                                String name = user_detaiis.optString("fname");
+                                int uid=user_detaiis.getInt("id");
+                                //String identity_type=student.getString("identity_type");
+                                String categorys=user_detaiis.getString("category");
+                                String imagev=user_detaiis.getString("avatar");
+                                String image= Config.AVATAR_URL+"200/200/"+imagev;
+                                String udate=student.getString("udate");
+                                Log.d("pdata",""+name+""+category+""+image+""+udate);
+
+                                String total_images=student.optString("total_img");
+                                String total_videos=student.optString("total_video");
+                                String total_users=student.optString("total_friend");
+                                String total_products=student.optString("total_product");
+                                String total_provides=student.optString("total_product_provide");
+                                String total_demands=student.optString("total_product_demend");
+
+                                //is_friend,friend_status,tid,is_block,user_url
+                                String is_friend=student.optString("is_friend");
+                                String friend_status=friendstatus.optString("status");
+                                String tid=student.optString("fid");
+                                int is_blocks=student.optInt("is_block");
+                                String user_url=user_detaiis.optString("fullname");
+                                JoinFriendItemList.add(new JoinFriendItem(uid,name,image,udate,categorys,total_images,total_videos,total_users,total_products,total_provides,total_demands,is_friend,friend_status,tid,is_blocks,user_url));
+
                             }
                             Log.d("bdm",singleItem.toString());
                             // dm.setAllItemsInSection(singleItem);
@@ -316,8 +393,8 @@ public class JoinFriendActivity extends Fragment implements JoinFriendItemTouchH
 
                             RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getContext());
                             recyclerView.setLayoutManager(mLayoutManager);
-                            recyclerView.setItemAnimator(new DefaultItemAnimator());
-                            recyclerView.addItemDecoration(new DividerItemDecoration(getContext(),DividerItemDecoration.VERTICAL));
+                            //recyclerView.setItemAnimator(new DefaultItemAnimator());
+                            //recyclerView.addItemDecoration(new DividerItemDecoration(getContext(),DividerItemDecoration.VERTICAL));
                             recyclerView.setAdapter(mAdapter);
                             recyclerView.setNestedScrollingEnabled(false);
                         }
@@ -339,5 +416,108 @@ public class JoinFriendActivity extends Fragment implements JoinFriendItemTouchH
         // Add JsonArrayRequest to the RequestQueue
         requestQueue.add(jsonArrayRequest);
         //getProvide();
+    }
+
+    public void getUser(int limitss){
+        //final String url = "https://www.iampro.co/api/app_service.php?type=getSelectedUser&limit="+limitss+"&uid="+uid+"&my_id="+uid;
+         String url="https://www.iampro.co/api/app_service.php?type=view_friend_list&id="+uid+"&status=2&uid="+uid+"&my_id="+uid;
+        // Initialize a new RequestQueue instance
+        RequestQueue requestQueue = Volley.newRequestQueue(getContext());
+
+        // Initialize a new JsonArrayRequest instance
+        JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(
+                Request.Method.GET,
+                url,
+                null,
+                new com.android.volley.Response.Listener<JSONArray>() {
+                    @Override
+                    public void onResponse(JSONArray response) {
+                        Log.d("responsef",response.toString());
+                        SectionDataModel dm = new SectionDataModel();
+                        dm.setHeaderTitle("User");
+                        ArrayList<SingleItemModel> singleItem = new ArrayList<SingleItemModel>();
+                        if(!singleItem.isEmpty()){
+                            singleItem.clear();
+                        }
+                        if(!allSampleData.isEmpty()){
+                            allSampleData.clear();
+                        }
+                        try{
+                            for(int i=0;i<response.length();i++){
+                                // Get current json object
+                                JSONObject student = response.getJSONObject(i);
+                                 JSONObject user_detail=student.getJSONObject("user_detail");
+                                String name=user_detail.optString("fname");
+                                int uid=user_detail.getInt("id");
+                                //String identity_type=student.getString("identity_type");
+                                String category=user_detail.getString("category");
+                                String imagev=user_detail.getString("avatar");
+                                String image= Config.AVATAR_URL+"200/200/"+imagev;
+                                String udate=student.getString("udate");
+                                Log.d("pdata",""+name+""+category+""+image+""+udate);
+
+                                String total_images=student.optString("total_image");
+                                String total_videos=student.optString("total_video");
+                                String total_users=student.optString("total_friends");
+                                String total_products=student.optString("total_product");
+                                String total_provides=student.optString("total_provide");
+                                String total_demands=student.optString("total_demend");
+
+                                String is_friend=student.optString("is_friend");
+                                String friend_status=student.optString("friend_status");
+                                String tid=student.optString("tid");
+                                int is_block=student.optInt("is_block");
+                                String user_url=student.optString("user_url");
+
+                                //allSampleData.add(new UserModel(uid,name,image,udate,category));
+                                //String total_image,String total_video,String total_friend
+                                //allSampleData.add(new UserModel(uid,name,image,udate,category,total_images,total_videos,total_users,total_products,total_provides,total_demands));
+                                allSampleData.add(new UserModel(uid,name,image,udate,category,total_images,total_videos,total_users,total_products,total_provides,total_demands,is_friend,friend_status,tid,is_block,user_url));
+
+                            }
+                            Log.d("bdm",singleItem.toString());
+                            dm.setAllItemsInSection(singleItem);
+                            Log.d("adm",singleItem.toString());
+                            Log.d("dmm",dm.toString());
+                            //allSampleData.add(dm);
+                            Log.d("allsampledatav", allSampleData.toString());
+                            // my_recycler_view.setHasFixedSize(true);
+                            Log.d("allSampleDatas",""+allSampleData.size()+"--"+allSampleData.toString());
+
+
+                            adapter = new UserDataAdapter(getContext(), allSampleData,JoinFriendActivity.this);
+                            recyclerView.setAdapter(adapter);
+
+                            LinearLayoutManager manager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
+                            recyclerView.setLayoutManager(manager);
+
+                            //ItemTouchHelper.SimpleCallback itemTouchHelperCallback = new UserItemTouchHelper(0, ItemTouchHelper.LEFT,UserFragment.this);
+                            //new ItemTouchHelper(itemTouchHelperCallback).attachToRecyclerView(recycler_view_load_more);
+
+                        }
+                        catch (JSONException e){
+                            e.printStackTrace();
+                            Toast.makeText(getContext(), ""+e.getMessage(), Toast.LENGTH_SHORT).show();
+                            Log.d("catch_f",""+e.getMessage());
+                        }
+                    }
+                },
+                new com.android.volley.Response.ErrorListener(){
+                    @Override
+                    public void onErrorResponse(VolleyError error){
+                        // Do something when error occurred
+                        //Snackbar.make(getContext(),"Error...", Snackbar.LENGTH_LONG).show();
+                        Toast.makeText(getContext(), "verror"+error.getMessage(), Toast.LENGTH_SHORT).show();
+                        Log.d("verror",error.getMessage());
+                    }
+                }
+        );
+        // Add JsonArrayRequest to the RequestQueue
+        requestQueue.add(jsonArrayRequest);
+        //getProduct();
+    }
+    @Override
+    public void onItemClick(UserModel item) {
+
     }
 }

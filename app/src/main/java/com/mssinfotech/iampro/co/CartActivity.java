@@ -139,6 +139,8 @@ public class CartActivity extends Fragment {
         } catch (JSONException e) {
             Log.d(Config.TAG,"printStackTrace 167" + e.getMessage() + "  Error Message");
             e.printStackTrace();
+            ImageView no_rodr = view.findViewById(R.id.no_record_found);
+            no_rodr.setVisibility(View.VISIBLE);
         }
     }
 

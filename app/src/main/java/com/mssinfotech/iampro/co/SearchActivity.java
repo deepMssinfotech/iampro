@@ -41,6 +41,7 @@ public class SearchActivity extends Fragment implements AdapterView.OnItemSelect
     private ImageButton ibtnBack;
     private ImageButton ibtnFilter;
     private RecyclerView rvContent;
+    String myType;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup parent, Bundle savedInstanceState) {
         // Defines the xml file for the fragment
@@ -81,6 +82,21 @@ public class SearchActivity extends Fragment implements AdapterView.OnItemSelect
                   startActivity(intent);
             }
         });
+        try {
+            Bundle bundle = getArguments();
+            //here is your list array
+            myType = bundle.getString("type");
+        }
+        catch (Exception e){
+            myType="IMAGE";
+        }
+
+        for (int i = 0; i < list.size() ; i++){
+            if(list.get(i).equalsIgnoreCase(myType)){
+                int spinnerPosition = dataAdapter.getPosition(list.get(i));
+                spnrSearchType.setSelection(spinnerPosition);
+            }
+        }
     }
     @Override
     public void onItemSelected(AdapterView<?> adapterView, View view, int position, long id) {

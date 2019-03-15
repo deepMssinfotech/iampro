@@ -40,11 +40,12 @@ public class Config
     public static final String AJAX_URL="https://www.iampro.co/ajax/";
     public static final String AVATAR_URL="https://www.iampro.co/uploads/avatar/";
 
-    public static final String OTHER_IMAGE_URL="https://www.iampro.co/uploads/product/";
-    public static final String V_URL="https://www.iampro.co/uploads/v_image/";
+    public static final String OTHER_IMAGE_URL="https://www.iampro.co/uploads/product/300/250";
+    public static final String V_URL="https://www.iampro.co/uploads/v_image/300/250";
     public static final String BANNER_URL="https://www.iampro.co/uploads/media/";
     public static final String MEDIA_URL="https://www.iampro.co/uploads/media/";
-    public static final String ALBUM_URL="https://www.iampro.co/uploads/album/w/500/";
+   // public static final String ALBUM_URL="https://www.iampro.co/uploads/album/w/500/";
+    public static final String ALBUM_URL="https://www.iampro.co/uploads/album/300/250/";
     public static final String IP_ADDRESS="";
     public static TextView count_chat = null, count_notify = null, count_cart = null, count_message = null , count_whishlist = null, count_friend_request = null;
     public static final String IMAGE_DIRECTORY = "/iampro/image";
