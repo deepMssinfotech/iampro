@@ -9,6 +9,7 @@ import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.provider.MediaStore;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.content.ContextCompat;
@@ -88,6 +89,7 @@ public class MyVideoActivity extends Fragment implements MyVideoAdapter.ItemList
     ImageView changeImage,changeBackground_Image ;
     Context context;
     View view;
+     FloatingActionButton fab;
     public static final int REQUEST_IMAGE = 100;
     public static String imageType;
     @Override
@@ -114,6 +116,7 @@ public class MyVideoActivity extends Fragment implements MyVideoAdapter.ItemList
         userbackgroud = view.findViewById(R.id.userbackgroud);
         changeImage = view.findViewById(R.id.changeImage);
         changeImage = view.findViewById(R.id.changeImage);
+         fab=view.findViewById(R.id.fab);
         changeBackground_Image = view.findViewById(R.id.changeBackground_Image);
         uid= PrefManager.getLoginDetail(context,"id");
         if(id == null || id.equals(uid)) {
@@ -169,7 +172,13 @@ public class MyVideoActivity extends Fragment implements MyVideoAdapter.ItemList
         Config.PREVIOUS_PAGE_TAG = i.getStringExtra(Config.PAGE_TAG);
         //getVideo();
         getAllAlbum();
-
+         fab.setOnClickListener(new View.OnClickListener() {
+             @Override
+             public void onClick(View v) {
+                 Intent i_signup = new Intent(context,AddVideoActivity.class);
+                 MyVideoActivity.this.startActivity(i_signup);
+             }
+         });
     }
     private void gteUsrDetail(String id){
         String myurl = Config.API_URL + "ajax.php?type=friend_detail&id=" + id + "&uid=" + uid;
@@ -379,10 +388,10 @@ img_banner_image: (binary)
 
         */
     }
-    public void redirect(View v){
+  /*  public void redirect(View v){
         Intent i_signup = new Intent(context,AddVideoActivity.class);
         MyVideoActivity.this.startActivity(i_signup);
-    }
+    } */
     @Override
     public void onItemClick(MyImageModel item) {
 

@@ -2,6 +2,7 @@ package com.mssinfotech.iampro.co.user;
 
 import android.content.Context;
 import android.content.Intent;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -51,6 +52,7 @@ public class MyDemandActivity extends Fragment implements MyDemandAdapter.ItemLi
     ArrayList<MyProductModel> item = new ArrayList<>();
     MyDemandAdapter adapter;
     RecyclerView recyclerView;
+    FloatingActionButton fab;
     Context context;
     View view;
     @Override
@@ -73,6 +75,14 @@ public class MyDemandActivity extends Fragment implements MyDemandAdapter.ItemLi
 
         username = view.findViewById(R.id.username);
         userimage = view.findViewById(R.id.userimage);
+         fab=view.findViewById(R.id.fab);
+          fab.setOnClickListener(new View.OnClickListener() {
+              @Override
+              public void onClick(View v) {
+                  Intent i_signup = new Intent(context,AddDemandActivity.class);
+                  MyDemandActivity.this.startActivity(i_signup);
+              }
+          });
         recyclerView = view.findViewById(R.id.recyclerView);
         tv_category=view.findViewById(R.id.tv_category);
         userbackgroud = view.findViewById(R.id.userbackgroud);
@@ -160,10 +170,10 @@ public class MyDemandActivity extends Fragment implements MyDemandAdapter.ItemLi
         //Adding request to the queue
         requestQueue.add(stringRequest);
     }
-    public void redirect(View v){
+    /*public void redirect(View v){
         Intent i_signup = new Intent(context,AddDemandActivity.class);
         MyDemandActivity.this.startActivity(i_signup);
-    }
+    }*/
 
     public void getDemand(){
         String url=Config.API_URL+"app_service.php?type=getall_product&added_by="+uid+"&my_id="+uid+"&search_type=DEMAND";

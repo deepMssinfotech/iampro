@@ -46,7 +46,6 @@ import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.TreeMap;
-
 public class ImageFragment extends Fragment implements ImageAdapter.ItemListener{
     ArrayList<DataModel> allSampleData=new ArrayList<>();
     RecyclerView my_recycler_view,recycler_view_load_more;
@@ -58,6 +57,7 @@ public class ImageFragment extends Fragment implements ImageAdapter.ItemListener
     ArrayList<SectionImageModel> allSampleDatamore=new ArrayList<>();
     MyImageVideoDataAdapter adapterr;
       ImageView limage_iv;
+    ImageView no_rodr;
     public ImageFragment() {
         // Required empty public constructor
     }
@@ -80,6 +80,7 @@ public class ImageFragment extends Fragment implements ImageAdapter.ItemListener
         getImage();
         my_recycler_view =view.findViewById(R.id.my_recycler_view);
         recycler_view_load_more=view.findViewById(R.id.recycler_view_load_more);
+         no_rodr =view.findViewById(R.id.no_record_found);
         btn_load_more=view.findViewById(R.id.btn_load_more);
         limage_iv=view.findViewById(R.id.limage_iv);
         limage_iv.setVisibility(View.VISIBLE);
@@ -103,7 +104,7 @@ public class ImageFragment extends Fragment implements ImageAdapter.ItemListener
         // Inflate the layout for this fragment
 
     }
-    public void  getImage(){
+    public void getImage(){
         final String url = "https://www.iampro.co/api/app_service.php?type=all_item&name=image&uid="+uid+"&my_id="+uid;
         final ProgressDialog pDialog = new ProgressDialog(getContext()); //Your Activity.this
         pDialog.setMessage("Loading...!");
@@ -119,66 +120,77 @@ public class ImageFragment extends Fragment implements ImageAdapter.ItemListener
                 new com.android.volley.Response.Listener<JSONArray>() {
                     @Override
                     public void onResponse(JSONArray response) {
-                        Log.d("responsef",response.toString());
-                        SectionDataModel dm = new SectionDataModel();
-                        dm.setHeaderTitle("Images ");
-                        pDialog.dismiss();
-                        ArrayList<SingleItemModel> singleItem = new ArrayList<SingleItemModel>();
-                        if(!singleItem.isEmpty()){
-                            singleItem.clear();
-                        }
-                        if(!allSampleData.isEmpty()){
-                            allSampleData.clear();
-                        }
-                        try{
-                            for(int i=0;i<response.length();i++){
-                                // Get current json object
-                                JSONObject student = response.getJSONObject(i);
-                                int id=student.getInt("id");
-                                String name = student.getString("name");
-                                String categoryv=student.getString("category");
-                                String imagev=student.getString("image");
-                                String image= Config.URL_ROOT+"uploads/album/450/500/"+imagev;
-                                String udate=student.getString("udate");
-                                Log.d("pdata",""+name+""+categoryv+""+image+""+udate);
-                                int totallike=student.getInt("totallike");
-                                int comments=student.getInt("comments");
-
-                                String daysago=student.optString("ago");
-                                String rating=student.getString("rating");
-                                 float ratingv=Float.parseFloat(rating);
-
-                                JSONObject userDetail=student.getJSONObject("user_detail");
-
-                                int uid=userDetail.getInt("id");
-                                String fullname=userDetail.getString("fullname");
-                                String avatar=Config.AVATAR_URL+"250/250/"+userDetail.getString("avatar");
-                                //singleItem.add(new SingleItemModel(name,image,udate));
-                                int isliked=student.getInt("like_unlike");
-                                allSampleData.add(new DataModel(name,image,udate,categoryv,totallike,isliked,comments,daysago,ratingv,uid,fullname,avatar,id,IMAGE_TYPE));
-
+                         pDialog.dismiss();
+                        if (response.length() > 0) {
+                            no_rodr.setVisibility(View.GONE);
+                            Log.d("responsef", response.toString());
+                            SectionDataModel dm = new SectionDataModel();
+                            dm.setHeaderTitle("Images ");
+                            //  pDialog.dismiss();
+                            ArrayList<SingleItemModel> singleItem = new ArrayList<SingleItemModel>();
+                            if (!singleItem.isEmpty()) {
+                                singleItem.clear();
                             }
-                            Log.d("bdm",singleItem.toString());
-                            //dm.setAllItemsInSection(singleItem);
-                            Log.d("adm",singleItem.toString());
-                            Log.d("dmm",dm.toString());
-                            //allSampleData.add(dm);
-                            Log.d("allsampledatav", allSampleData.toString());
-                            //my_recycler_view.setHasFixedSize(true);
-                            Log.d("allSampleDatas",""+allSampleData.size()+"--"+allSampleData.toString());
-                            adapter = new ImageAdapter(getContext(), allSampleData, ImageFragment.this);
-                            my_recycler_view.setItemAnimator(new DefaultItemAnimator());
-                            my_recycler_view.setAdapter(adapter);
+                            if (!allSampleData.isEmpty()) {
+                                allSampleData.clear();
+                            }
+                            try {
+                                for (int i = 0; i < response.length(); i++) {
+                                    // Get current json object
+                                    JSONObject student = response.getJSONObject(i);
+                                    int id = student.getInt("id");
+                                    String name = student.getString("name");
+                                    String categoryv = student.getString("category");
+                                    String imagev = student.getString("image");
+                                    //String image = Config.URL_ROOT + "uploads/album/450/500/" + imagev;
 
-                            GridLayoutManager manager = new GridLayoutManager(getContext(), 2, GridLayoutManager.VERTICAL, false);
-                            my_recycler_view.setLayoutManager(manager);
+                                    //String image = Config.URL_ROOT + "uploads/album/160/90/" + imagev;
+                                    String image = Config.URL_ROOT + "uploads/album/300/250/" + imagev;
+                                    String udate = student.getString("udate");
+                                    Log.d("pdata", "" + name + "" + categoryv + "" + image + "" + udate);
+                                    int totallike = student.getInt("totallike");
+                                    int comments = student.getInt("comments");
 
+                                    String daysago = student.optString("ago");
+                                    String rating = student.getString("rating");
+                                    float ratingv = Float.parseFloat(rating);
+
+                                    JSONObject userDetail = student.getJSONObject("user_detail");
+
+                                    int uid = userDetail.getInt("id");
+                                    String fullname = userDetail.getString("fullname");
+                                    String avatar = Config.AVATAR_URL + "250/250/" + userDetail.getString("avatar");
+                                    //singleItem.add(new SingleItemModel(name,image,udate));
+                                    int isliked = student.getInt("like_unlike");
+                                    allSampleData.add(new DataModel(name, image, udate, categoryv, totallike, isliked, comments, daysago, ratingv, uid, fullname, avatar, id, IMAGE_TYPE));
+
+                                }
+                                Log.d("bdm", singleItem.toString());
+                                //dm.setAllItemsInSection(singleItem);
+                                Log.d("adm", singleItem.toString());
+                                Log.d("dmm", dm.toString());
+                                //allSampleData.add(dm);
+                                Log.d("allsampledatav", allSampleData.toString());
+                                //my_recycler_view.setHasFixedSize(true);
+                                Log.d("allSampleDatas", "" + allSampleData.size() + "--" + allSampleData.toString());
+                                adapter = new ImageAdapter(getContext(), allSampleData, ImageFragment.this);
+                                my_recycler_view.setItemAnimator(new DefaultItemAnimator());
+                                my_recycler_view.setAdapter(adapter);
+
+                                GridLayoutManager manager = new GridLayoutManager(getContext(), 2, GridLayoutManager.VERTICAL, false);
+                                my_recycler_view.setLayoutManager(manager);
+
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                                pDialog.dismiss();
+                                Toast.makeText(getContext(), "" + e.getMessage(), Toast.LENGTH_SHORT).show();
+                                Log.d("catch_f", "" + e.getMessage());
+                                no_rodr.setVisibility(View.VISIBLE);
+                            }
                         }
-                        catch (JSONException e){
-                            e.printStackTrace();
-                             pDialog.dismiss();
-                            Toast.makeText(getContext(), ""+e.getMessage(), Toast.LENGTH_SHORT).show();
-                            Log.d("catch_f",""+e.getMessage());
+                        else
+                        {
+                            no_rodr.setVisibility(View.VISIBLE);
                         }
                     }
                 },
@@ -188,6 +200,7 @@ public class ImageFragment extends Fragment implements ImageAdapter.ItemListener
                         Toast.makeText(getContext(), "verror"+error.getMessage(), Toast.LENGTH_SHORT).show();
                         Log.d("verror",""+error.getMessage());
                         pDialog.dismiss();
+                        no_rodr.setVisibility(View.VISIBLE);
                     }
                 }
         );

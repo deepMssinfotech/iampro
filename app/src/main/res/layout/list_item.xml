@@ -43,7 +43,6 @@
             android:theme="@style/MyButton"
             android:text="more"
             android:textColor="#FFF"
-            app:civ_border_width="1dp"
             app:civ_border_color="#FF000000"
              />
 

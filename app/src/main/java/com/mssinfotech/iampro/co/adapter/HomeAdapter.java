@@ -23,16 +23,13 @@ import java.util.List;
  */
 
 public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.MyViewHolder> {
-
     private Context mContext;
     private List<Home> movieList;
-
 
     public HomeAdapter(Context mContext, List<Home> movieList){
         this.mContext = mContext;
         this.movieList = movieList;
     }
-
     @Override
     public HomeAdapter.MyViewHolder onCreateViewHolder(ViewGroup viewGroup, int i){
         View view = LayoutInflater.from(viewGroup.getContext())
@@ -40,7 +37,6 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.MyViewHolder> 
 
         return new MyViewHolder(view);
     }
-
     @Override
     public void onBindViewHolder(final HomeAdapter.MyViewHolder viewHolder, int i){
         viewHolder.title.setText(movieList.get(i).getOriginalTitle());
@@ -60,7 +56,6 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.MyViewHolder> 
     public int getItemCount(){
         return movieList.size();
     }
-
     public class MyViewHolder extends RecyclerView.ViewHolder{
         public TextView title, userrating;
         public ImageView thumbnail;

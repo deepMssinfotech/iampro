@@ -599,45 +599,50 @@ public class AllFeedAdapter extends RecyclerView.Adapter<AllFeedAdapter.ViewHold
             }
         });
         //Vholder.c
-        Vholder.ll_comment.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (type.equalsIgnoreCase("IMAGE")) {
-                    Intent intent = new Intent(mContext, CommentActivity.class);
-                    intent.putExtra("type", "feed_image");
-                    intent.putExtra("id", String.valueOf(id));
-                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                    mContext.startActivity(intent);
-                } else if (type.equalsIgnoreCase("VIDEO")) {
-                    Intent intent = new Intent(mContext, CommentActivity.class);
-                    intent.putExtra("type", "video");
-                    intent.putExtra("id", String.valueOf(sharedId[0]));
-                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                    mContext.startActivity(intent);
-                } else if (type.equalsIgnoreCase("PRODUCT")) {
-                    Intent intent = new Intent(mContext, CommentActivity.class);
-                    intent.putExtra("type", "product");
-                    intent.putExtra("id", String.valueOf(sharedId[0]));
-                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                    mContext.startActivity(intent);
-                    // Toast.makeText(mContext,"Product"+id,Toast.LENGTH_LONG).show();
-                } else if (type.equalsIgnoreCase("PROVIDE")) {
-                    Intent intent = new Intent(mContext, CommentActivity.class);
-                    intent.putExtra("type", "provide");
-                    intent.putExtra("id", String.valueOf(sharedId[0]));
-                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                    mContext.startActivity(intent);
-                    //Toast.makeText(mContext,"Provide"+id,Toast.LENGTH_LONG).show();
-                } else if (type.equalsIgnoreCase("DEMAND")) {
-                    Intent intent = new Intent(mContext, CommentActivity.class);
-                    intent.putExtra("type", "demand");
-                    intent.putExtra("id", String.valueOf(sharedId[0]));
-                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                    mContext.startActivity(intent);
-                    //Toast.makeText(mContext,"Demand"+id,Toast.LENGTH_LONG).show();
-                }
-            }
-        });
+         if (PrefManager.isLogin(mContext)) {
+             Vholder.ll_comment.setOnClickListener(new View.OnClickListener() {
+                 @Override
+                 public void onClick(View v) {
+                     if (type.equalsIgnoreCase("IMAGE")) {
+                         Intent intent = new Intent(mContext, CommentActivity.class);
+                         intent.putExtra("type", "feed_image");
+                         intent.putExtra("id", String.valueOf(id));
+                         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                         mContext.startActivity(intent);
+                     } else if (type.equalsIgnoreCase("VIDEO")) {
+                         Intent intent = new Intent(mContext, CommentActivity.class);
+                         intent.putExtra("type", "video");
+                         intent.putExtra("id", String.valueOf(sharedId[0]));
+                         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                         mContext.startActivity(intent);
+                     } else if (type.equalsIgnoreCase("PRODUCT")) {
+                         Intent intent = new Intent(mContext, CommentActivity.class);
+                         intent.putExtra("type", "product");
+                         intent.putExtra("id", String.valueOf(sharedId[0]));
+                         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                         mContext.startActivity(intent);
+                         // Toast.makeText(mContext,"Product"+id,Toast.LENGTH_LONG).show();
+                     } else if (type.equalsIgnoreCase("PROVIDE")) {
+                         Intent intent = new Intent(mContext, CommentActivity.class);
+                         intent.putExtra("type", "provide");
+                         intent.putExtra("id", String.valueOf(sharedId[0]));
+                         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                         mContext.startActivity(intent);
+                         //Toast.makeText(mContext,"Provide"+id,Toast.LENGTH_LONG).show();
+                     } else if (type.equalsIgnoreCase("DEMAND")) {
+                         Intent intent = new Intent(mContext, CommentActivity.class);
+                         intent.putExtra("type", "demand");
+                         intent.putExtra("id", String.valueOf(sharedId[0]));
+                         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                         mContext.startActivity(intent);
+                         //Toast.makeText(mContext,"Demand"+id,Toast.LENGTH_LONG).show();
+                     }
+                 }
+             });
+         }
+         else{
+               Toast.makeText(mContext,"First Login and try again...",Toast.LENGTH_LONG).show();
+         }
     }
     @Override
     public int getItemCount() {
@@ -682,7 +687,6 @@ public class AllFeedAdapter extends RecyclerView.Adapter<AllFeedAdapter.ViewHold
                 }
         );
         requestQueue.add(jsonObjectRequest);
-
     }
 }
 

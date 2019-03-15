@@ -28,6 +28,7 @@ import com.mssinfotech.iampro.co.common.Config;
 import com.mssinfotech.iampro.co.common.function;
 import com.mssinfotech.iampro.co.model.Review;
 import com.mssinfotech.iampro.co.user.ProfileActivity;
+import com.mssinfotech.iampro.co.utils.PrefManager;
 
 import java.util.ArrayList;
 
@@ -36,7 +37,7 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHold
     Context mContext;
     protected ItemListener mListener;
 
-    public CommentAdapter(Context context, ArrayList<Review> values, ItemListener itemListener) {
+    public CommentAdapter(Context context,ArrayList<Review> values,ItemListener itemListener) {
         mValues = values;
         mContext = context;
         mListener=itemListener;
@@ -71,7 +72,12 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHold
         public void setData(Review item) {
             this.item = item;
              if(item.getAdded_by()!=null || item.getAdded_by()!="" || !item.getAdded_by().equalsIgnoreCase("")) {
-                 uid = Integer.parseInt(item.getAdded_by());
+                 try {
+                     uid = Integer.parseInt(item.getAdded_by());
+                 }
+                 catch (Exception e){
+                     uid =Integer.parseInt(PrefManager.getLoginDetail(mContext,"id"));
+                 }
              }
             tv_user_name.setText(item.getFname());
              tv_time_ago.setText(item.getRdate());

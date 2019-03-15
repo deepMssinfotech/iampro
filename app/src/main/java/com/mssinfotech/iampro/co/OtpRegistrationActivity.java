@@ -5,6 +5,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.os.Handler;
 import android.support.design.widget.TextInputLayout;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AppCompatActivity;
@@ -153,5 +154,29 @@ public class OtpRegistrationActivity extends AppCompatActivity {
         //Adding request to the queue
         requestQueue.add(stringRequest);
 
+    }
+
+    @Override
+    public void onBackPressed() {
+        int count = getSupportFragmentManager().getBackStackEntryCount();
+
+        if (count == 0) {
+            if (Config.doubleBackToExitPressedOnce) {
+                super.onBackPressed();
+                //this.finish();
+                // return;
+            }
+            Config.doubleBackToExitPressedOnce = true;
+            Toast.makeText(this, "Please click BACK again to exit", Toast.LENGTH_SHORT).show();
+
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    Config.doubleBackToExitPressedOnce = false;
+                }
+            }, 2000);
+        } else {
+            getSupportFragmentManager().popBackStack();
+        }
     }
 }

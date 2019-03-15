@@ -62,6 +62,7 @@ public class ProvideFragment extends Fragment implements ProvideAdapter.ItemList
     TreeMap<String,String> item_name=new TreeMap<>();
     ArrayList<SectionImageModel> allSampleDatamore=new ArrayList<>();
      ImageView lprovide_iv;
+     ImageView no_rodr;
     public ProvideFragment() {
         // Required empty public constructor
     }
@@ -94,6 +95,7 @@ public class ProvideFragment extends Fragment implements ProvideAdapter.ItemList
         my_recycler_view =view.findViewById(R.id.my_recycler_view);
         recycler_view_load_more=view.findViewById(R.id.recycler_view_load_more);
         btn_load_more=view.findViewById(R.id.btn_load_more);
+        no_rodr =view.findViewById(R.id.no_record_found);
         lprovide_iv=view.findViewById(R.id.lprovide_iv);
       //  lprovide_iv.setBackground(getContext().getResources().getDrawable(R.drawable.latestprovide));
           lprovide_iv.setVisibility(View.VISIBLE);
@@ -272,36 +274,38 @@ public class ProvideFragment extends Fragment implements ProvideAdapter.ItemList
                     @Override
                     public void onResponse(JSONArray response) {
                         pDialog.dismiss();
-                        Log.d("response_provide",response.toString());
-                        SectionDataModel dm = new SectionDataModel();
-                        //Toast.makeText(getContext(),"rrrresponse_enterrr:1",Toast.LENGTH_LONG).show();
-                        dm.setHeaderTitle("Provide");
-                        ArrayList<SingleItemModel> singleItem = new ArrayList<SingleItemModel>();
+                        if (response.length() > 0) {
+                            Log.d("response_provide", response.toString());
+                            SectionDataModel dm = new SectionDataModel();
+                             no_rodr.setVisibility(View.GONE);
+                            //Toast.makeText(getContext(),"rrrresponse_enterrr:1",Toast.LENGTH_LONG).show();
+                            dm.setHeaderTitle("Provide");
+                            ArrayList<SingleItemModel> singleItem = new ArrayList<SingleItemModel>();
                        /* if(!singleItem.isEmpty()){
                             singleItem.clear();
                         } */
-                        if(!allSampleData.isEmpty())
-                        {
-                            allSampleData.clear();
-                        }
-                        try{
-                            int scost=0; int pcost=0;
-                            for(int i=0;i<response.length();i++){
-                                // Get current json object
-                                JSONObject student = response.getJSONObject(i);
-                                int id=student.getInt("id");
-                                 String idv=String.valueOf(id);
-                                int added_by=student.getInt("added_by");
-                                String name = student.getString("name");
-                                String categoryv=student.getString("category");
-                                String imagev=student.getString("image");
-                                String image= Config.URL_ROOT + "uploads/product/" + imagev;
-                                String udate=student.getString("udate");
-                                String tlike=student.getString("totallike");
-                                int totallike=Integer.parseInt(tlike);
-                                //int totallike=student.getInt("totallike");
-                                int comments=student.getInt("comments");
-                                scost = student.getInt("selling_cost");
+                            if (!allSampleData.isEmpty()) {
+                                allSampleData.clear();
+                            }
+                            try {
+                                int scost = 0;
+                                int pcost = 0;
+                                for (int i = 0; i < response.length(); i++) {
+                                    // Get current json object
+                                    JSONObject student = response.getJSONObject(i);
+                                    int id = student.getInt("id");
+                                    String idv = String.valueOf(id);
+                                    int added_by = student.getInt("added_by");
+                                    String name = student.getString("name");
+                                    String categoryv = student.getString("category");
+                                    String imagev = student.getString("image");
+                                    String image = Config.URL_ROOT + "uploads/product/300/250/" + imagev;
+                                    String udate = student.getString("udate");
+                                    String tlike = student.getString("totallike");
+                                    int totallike = Integer.parseInt(tlike);
+                                    //int totallike=student.getInt("totallike");
+                                    int comments = student.getInt("comments");
+                                    scost = student.getInt("selling_cost");
                                /*   if (String.valueOf(student.getInt("selling_cost"))==null){
                                       scost=0;
                                   }
@@ -316,29 +320,30 @@ public class ProvideFragment extends Fragment implements ProvideAdapter.ItemList
                                 } */
 
 
-                                Log.d("pdata",""+name+""+categoryv+""+image+""+udate);
-                                //String daysago=student.getString("ago");
-                                String rating=student.getString("rating");
-                                float ratingv=Float.parseFloat(rating);
-                                JSONObject userDetail=student.getJSONObject("user_detail");
-                                 int uid=userDetail.getInt("id");
-                                   String fullname=userDetail.getString("fullname");
-                                   String avatar=Config.AVATAR_URL+"250/250/"+userDetail.getString("avatar");
+                                    Log.d("pdata", "" + name + "" + categoryv + "" + image + "" + udate);
+                                    //String daysago=student.getString("ago");
+                                    String rating = student.getString("rating");
+                                    float ratingv = Float.parseFloat(rating);
+                                    JSONObject userDetail = student.getJSONObject("user_detail");
+                                    int uid = userDetail.getInt("id");
+                                    String fullname = userDetail.getString("fullname");
+                                    String avatar = Config.AVATAR_URL + "250/250/" + userDetail.getString("avatar");
+                                     String is_favourite=student.getString("is_favourite");
+                                    //SectionDataModel dm = new SectionDataModel();
+                                    //dm.setHeaderTitle("Section " + i);
 
-                                //SectionDataModel dm = new SectionDataModel();
-                                //dm.setHeaderTitle("Section " + i);
+                                    // singleItem.add(new SingleItemModel(name,image,udate));
+                                    //allSampleData.add(new DataModel(name,image,udate,categoryv));
+                                    int isliked = student.getInt("like_unlike");
 
-                                // singleItem.add(new SingleItemModel(name,image,udate));
-                                //allSampleData.add(new DataModel(name,image,udate,categoryv));
-                                int isliked=student.getInt("like_unlike");
-                                allSampleData.add(new DataModel(name,image,udate,categoryv,totallike,isliked,comments,scost,pcost,ratingv,uid,fullname,avatar,idv,"provide"));
+                                    allSampleData.add(new DataModel(name, image, udate, categoryv, totallike, isliked, comments, scost, pcost, ratingv, uid, fullname, avatar, idv, "provide",is_favourite));
 
-                            }
-                           // Toast.makeText(getContext(),"rrrresponse_enterrr:2",Toast.LENGTH_LONG).show();
-                            //dm.setAllItemsInSection(singleItem);
+                                }
+                                // Toast.makeText(getContext(),"rrrresponse_enterrr:2",Toast.LENGTH_LONG).show();
+                                //dm.setAllItemsInSection(singleItem);
 
-                            //
-                            //recyclerView = (RecyclerView)view.findViewById(R.id.recyclerView);
+                                //
+                                //recyclerView = (RecyclerView)view.findViewById(R.id.recyclerView);
 
                             /*arrayList.add(new DataModel("Item 1", android.R.drawable.btn_default, "#09A9FF")),
                             arrayList.add(new DataModel("Item 2", android.R.drawable.btn_default, "#3E51B1"));
@@ -347,12 +352,12 @@ public class ProvideFragment extends Fragment implements ProvideAdapter.ItemList
                             arrayList.add(new DataModel("Item 5", android.R.drawable.btn_minus, "#F94336"));
                             arrayList.add(new DataModel("Item 6", android.R.drawable.alert_dark_frame, "#0A9B88")); */
 
-                            //adapter = new RecyclerViewAdapter(getContext(), allSampleData,ProvideFragment.this);
-                            adapter_provide = new ProvideAdapter(getContext(), allSampleData,ProvideFragment.this);
-                            my_recycler_view.setAdapter(adapter_provide);
+                                //adapter = new RecyclerViewAdapter(getContext(), allSampleData,ProvideFragment.this);
+                                adapter_provide = new ProvideAdapter(getContext(), allSampleData, ProvideFragment.this);
+                                my_recycler_view.setAdapter(adapter_provide);
 
-                            GridLayoutManager manager = new GridLayoutManager(getContext(), 2, GridLayoutManager.VERTICAL, false);
-                            my_recycler_view.setLayoutManager(manager);
+                                GridLayoutManager manager = new GridLayoutManager(getContext(), 2, GridLayoutManager.VERTICAL, false);
+                                my_recycler_view.setLayoutManager(manager);
 
                            /* allSampleData.add(dm);
                             Log.d("allsampledatav", allSampleData.toString());
@@ -363,12 +368,16 @@ public class ProvideFragment extends Fragment implements ProvideAdapter.ItemList
                             my_recycler_view.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
                             //my_recycler_view.setLayoutManager(new GridLayoutManager(getActivity(), 2));
                             my_recycler_view.setAdapter(adapter); */
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                                Toast.makeText(getContext(), "" + e.getMessage(), Toast.LENGTH_SHORT).show();
+                                Log.d("catch_f", "" + e.getMessage());
+                                pDialog.dismiss();
+                                no_rodr.setVisibility(View.VISIBLE);
+                            }
                         }
-                        catch (JSONException e){
-                            e.printStackTrace();
-                            Toast.makeText(getContext(), ""+e.getMessage(), Toast.LENGTH_SHORT).show();
-                            Log.d("catch_f",""+e.getMessage());
-                            pDialog.dismiss();
+                        else{
+                            no_rodr.setVisibility(View.VISIBLE);
                         }
                     }
                 },
@@ -378,7 +387,7 @@ public class ProvideFragment extends Fragment implements ProvideAdapter.ItemList
                         // Do something when error occurred
                         //Snackbar.make(getContext(),"Error...", Snackbar.LENGTH_LONG).show();
                         Toast.makeText(getContext(), error.getMessage(), Toast.LENGTH_SHORT).show();
-                        Log.d("verror",error.getMessage());
+                        Log.d("verror",""+error.getMessage());
                         pDialog.dismiss();
                     }
                 }
@@ -547,7 +556,7 @@ public class ProvideFragment extends Fragment implements ProvideAdapter.ItemList
                                 //tv_category.setText(name1);
                                 //tv_category.setVisibility(View.GONE);
                                 JSONArray jsonArrayPics=student.getJSONArray("pro_detail");
-                                Log.d("picssss",jsonArrayPics.toString());
+                                Log.d("picssss",""+jsonArrayPics.toString());
 
                                 for (int j=0;j<jsonArrayPics.length();j++){
                                     JSONObject pics=jsonArrayPics.getJSONObject(j);
@@ -602,7 +611,7 @@ public class ProvideFragment extends Fragment implements ProvideAdapter.ItemList
 
                                 }
                             }
-                            Log.d("allsampledatav",item.toString());
+                            Log.d("allsampledatav",""+item.toString());
 
                             dm.setAllItemsInSection(item);
                             Log.d("adm",item.toString());

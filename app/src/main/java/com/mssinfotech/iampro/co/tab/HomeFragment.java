@@ -170,7 +170,8 @@ public class HomeFragment extends Fragment implements UserDataAdapter.ItemListen
                                 String type = student.optString("type");
                                 String categoryv=student.optString("category");
                                 String imagev=student.optString("image");
-                                String image= Config.URL_ROOT+"uploads/album/450/500/"+imagev;
+                                //String image= Config.URL_ROOT+"uploads/album/450/500/"+imagev;
+                                String image= Config.URL_ROOT+"uploads/album/300/250/"+imagev;
                                 String udate=student.optString("udate");
                                 //Log.d("pdata",""+name+""+categoryv+""+image+""+udate);
                                 String daysago=student.optString("ago");
@@ -275,7 +276,7 @@ public class HomeFragment extends Fragment implements UserDataAdapter.ItemListen
                                 String name = student.optString("name");
                                 String categoryv=student.optString("category");
                                 String imagev=student.optString("v_image");
-                                String image=Config.URL_ROOT + "uploads/v_image/" + imagev;
+                                String image=Config.URL_ROOT + "uploads/v_image/300/250/" + imagev;
                                 String udate=student.optString("udate");
                                 Log.d("pdata",""+name+""+categoryv+""+image+""+udate);
 
@@ -311,8 +312,8 @@ public class HomeFragment extends Fragment implements UserDataAdapter.ItemListen
                             //my_recycler_view.setLayoutManager(new GridLayoutManager(getActivity(), 2));
                             my_recycler_view.setAdapter(adapterr);
 
-                            //getUser();
-                            getProduct();
+                            getUser();
+                            //getProduct();
                         }
                         catch (JSONException e){
                             e.printStackTrace();
@@ -367,7 +368,7 @@ public class HomeFragment extends Fragment implements UserDataAdapter.ItemListen
                                 String identity_type=student.optString("identity_type");
                                 String category=student.optString("category");
                                 String imagev=student.optString("avatar");
-                                String image= Config.AVATAR_URL+"200/200/"+imagev;
+                                String image= Config.AVATAR_URL+"300/250/"+imagev;
                                 String udate=student.optString("udate");
                                 Log.d("pdata",""+name+""+category+""+image+""+udate);
                                 //SectionDataModel dm = new SectionDataModel();
@@ -443,7 +444,7 @@ public class HomeFragment extends Fragment implements UserDataAdapter.ItemListen
                                 String name = student.optString("name");
                                 String categoryv=student.getString("category");
                                 String imagev=student.optString("image");
-                                String image=Config.URL_ROOT + "uploads/product/" +imagev;
+                                String image=Config.URL_ROOT + "uploads/product/300/250/" +imagev;
                                 String udate=student.optString("udate");
                                 Log.d("pdata",""+name+""+categoryv+""+image+""+udate);
                                 //SectionDataModel dm = new SectionDataModel();
@@ -526,7 +527,7 @@ public class HomeFragment extends Fragment implements UserDataAdapter.ItemListen
                                 String name = student.optString("name");
                                 String categoryv=student.optString("category");
                                 String imagev=student.optString("image");
-                                String image=Config.URL_ROOT + "uploads/product/" + imagev;
+                                String image=Config.URL_ROOT + "uploads/product/300/250/" + imagev;
                                 String udate=student.optString("udate");
                                 Log.d("pdata",""+name+""+categoryv+""+image+""+udate);
                                 //SectionDataModel dm = new SectionDataModel();
@@ -608,7 +609,7 @@ public class HomeFragment extends Fragment implements UserDataAdapter.ItemListen
                                 String name = student.optString("name");
                                 String categoryv=student.optString("category");
                                 String imagev=student.optString("image");
-                                String image=Config.URL_ROOT + "uploads/product/" +imagev;
+                                String image=Config.URL_ROOT + "uploads/product/300/250/" +imagev;
                                 String udate=student.getString("udate");
                                 Log.d("pdata",""+name+""+categoryv+""+image+""+udate);
                                 //SectionDataModel dm = new SectionDataModel();

@@ -24,6 +24,7 @@ import com.android.volley.toolbox.Volley;
 import com.bumptech.glide.Glide;
 import com.like.LikeButton;
 import com.like.OnLikeListener;
+import com.mssinfotech.iampro.co.CartActivity;
 import com.mssinfotech.iampro.co.CommentActivity;
 import com.mssinfotech.iampro.co.R;
 import android.view.ViewGroup;
@@ -71,7 +72,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
         public RelativeLayout relativeLayout;
         LikeButton likeButton;
         DataModel item;
-        ImageView ivLike;
+        ImageView ivLike,iv_buy;
         LinearLayout ll_comments;
         public ViewHolder(View v) {
             super(v);
@@ -82,11 +83,12 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
             tv_tlike=v.findViewById(R.id.tv_totallike);
             //tv_comments
             tv_comments=v.findViewById(R.id.tv_comments);
+            iv_buy=v.findViewById(R.id.iv_buy);
             iv_comments=v.findViewById(R.id.iv_comments);
             ll_comments=v.findViewById(R.id.ll_comments);
             tv_daysago=v.findViewById(R.id.tv_daysago);
             tv_sprice=v.findViewById(R.id.tv_sprice);
-            tv_pprice=v.findViewById(R.id.tv_sprice);
+            tv_pprice=v.findViewById(R.id.tv_pprice);
 
             ratingBar=v.findViewById(R.id.ratingBar);
 
@@ -187,14 +189,14 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
             uid = Integer.parseInt(PrefManager.getLoginDetail(mContext,"id"));
             added_by = item.getUid();
 
-            if(String.valueOf(item.getsCost())!=null || !String.valueOf(item.getsCost()).equalsIgnoreCase(null)) {
+          /*  if(String.valueOf(item.getsCost())!=null || !String.valueOf(item.getsCost()).equalsIgnoreCase(null)) {
                 tv_sprice.setVisibility(View.VISIBLE);
                 tv_sprice.setText(String.valueOf(String.valueOf(item.getsCost())));
             }
             if(String.valueOf(item.getpCost())!=null || !String.valueOf(item.getpCost()).equalsIgnoreCase(null) || item.getpCost()!=0){
                 tv_pprice.setVisibility(View.VISIBLE);
                 tv_pprice.setText(String.valueOf(item.getpCost()));
-            }
+            } */
 
             tv_daysago.setVisibility(View.VISIBLE);
             tv_daysago.setText(item.getDaysago());
@@ -291,6 +293,19 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
                  mContext.startActivity(intent);
              }
          });
+        Vholder.tv_pprice.setVisibility(View.VISIBLE);
+         Vholder.tv_sprice.setVisibility(View.VISIBLE);
+          Vholder.tv_pprice.setText(String.valueOf("Rs: "+mValues.get(position).getpCost()));
+        Vholder.tv_sprice.setText(String.valueOf("Rs: "+mValues.get(position).getsCost()));
+        Vholder.iv_buy.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //CartActivity c=
+                function.addtocart(mContext, mValues.get(position).getPid(), "1",String.valueOf(mValues.get(position).getsCost()));
+                CartActivity fragment = new CartActivity();
+                function.loadFragment(mContext,fragment,null);
+            }
+        });
     }
     @Override
     public int getItemCount() {

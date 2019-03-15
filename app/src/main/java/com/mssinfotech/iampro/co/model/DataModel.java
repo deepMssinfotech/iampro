@@ -169,6 +169,16 @@ public class DataModel {
     }
 
     private int pCost;
+
+    public String getIs_favourite() {
+        return is_favourite;
+    }
+
+    public void setIs_favourite(String is_favourite) {
+        this.is_favourite = is_favourite;
+    }
+
+    private String is_favourite;
     public DataModel(String t, int d, String c)
     {
         text=t;
@@ -229,6 +239,26 @@ public class DataModel {
         this.pid=pid;
         this.isliked = isliked;
         this.type= type;
+    }
+    //product provide demand
+    public DataModel(String name,String image,String udate,String category,int totallike,int isliked,int comments,int sCost,int pCost,float rating,int uid,String fullname,String userImage,String pid,String type,String is_favourite){
+        this.name=name;
+        this.image=image;
+        this.udate=udate;
+        this.category=category;
+        this.totallike=totallike;
+        this.comments=comments;
+        this.sCost=sCost;
+        this.pCost=pCost;
+        this.rating=rating;
+        this.uid=uid;
+        this.fullname=fullname;
+        this.userImage=userImage;
+        this.uid=uid;
+        this.pid=pid;
+        this.isliked = isliked;
+        this.type= type;
+        this.is_favourite=is_favourite;
     }
     //name,image,udate,categoryv,totallike,comments,daysago,ratingv,uid,fullname,avatar
     public DataModel(String name,String image,String udate,String category,int totallike,int isliked,int comments,String daysago,float rating,int uid,String fullname,String userImage){

@@ -258,6 +258,7 @@ public class MyProvideAdapter extends RecyclerView.Adapter<MyProvideAdapter.View
             Vholder.iv_delete.setVisibility(View.VISIBLE);
             Vholder.iv_edit.setVisibility(View.VISIBLE);
         }
+
     }
     @Override
     public int getItemCount() {

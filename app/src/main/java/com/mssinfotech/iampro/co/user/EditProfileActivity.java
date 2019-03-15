@@ -86,24 +86,22 @@ public class EditProfileActivity extends Fragment {
     public static int CAMERA_CAPTURE_PICK_IMAGE_REQUEST=200;
     Bitmap bitmap; TextView tvlayouttype;
     CircleImageView userimage;
-
     public static final int REQUEST_IMAGE = 100;
-
     //upload image
     EditText imageName;
     Bitmap FixBitmap;
-    String ImageTag = "image_tag" ;
-    String ImageName = "image_data" ;
-    ProgressDialog progressDialog ;
-    ByteArrayOutputStream byteArrayOutputStream ;
-    byte[] byteArray ;
-    String ConvertImage ;
+    String ImageTag = "image_tag";
+    String ImageName = "image_data";
+    ProgressDialog progressDialog;
+    ByteArrayOutputStream byteArrayOutputStream;
+    byte[] byteArray;
+    String ConvertImage;
     String GetImageNameFromEditText;
-    HttpURLConnection httpURLConnection ;
+    HttpURLConnection httpURLConnection;
     URL url;
     OutputStream outputStream;
     BufferedWriter bufferedWriter;
-    int RC ;
+    int RC;
     BufferedReader bufferedReader;
     StringBuilder stringBuilder;
     boolean check = true;

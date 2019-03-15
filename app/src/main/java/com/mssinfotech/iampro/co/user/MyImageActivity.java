@@ -10,6 +10,7 @@ import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.provider.MediaStore;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.content.ContextCompat;
@@ -90,6 +91,7 @@ public class MyImageActivity extends Fragment implements MyImageAdapter.ItemList
     private GalleryAdapter galleryAdapter;
     Context context;
     View view;
+    FloatingActionButton fab;
      public static final int REQUEST_IMAGE = 100;
 
     public static String imageType;
@@ -116,6 +118,7 @@ public class MyImageActivity extends Fragment implements MyImageAdapter.ItemList
         changeBackground_Image = view.findViewById(R.id.changeBackground_Image);
         recyclerView=view.findViewById(R.id.recyclerView);
         tv_category=view.findViewById(R.id.tv_category);
+        fab=view.findViewById(R.id.fab);
         userbackgroud = view.findViewById(R.id.userbackgroud);
 
         uid= PrefManager.getLoginDetail(context,"id");
@@ -174,7 +177,13 @@ public class MyImageActivity extends Fragment implements MyImageAdapter.ItemList
         //getImages();
         getAllAlbum();
 
-
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i_signup = new Intent(getContext(),AddImageActivity.class);
+                MyImageActivity.this.startActivity(i_signup);
+            }
+        });
 
     }
     private void gteUsrDetail(String id){
@@ -425,10 +434,10 @@ Videogallery profile image
         String path = MediaStore.Images.Media.insertImage(inContext.getContentResolver(), inImage, "Title", null);
         return Uri.parse(path);
     }
-    public void redirect(View v){
-        Intent i_signup = new Intent(context,AddImageActivity.class);
+   /* public void redirect(View v){
+        Intent i_signup = new Intent(getContext(),AddImageActivity.class);
         MyImageActivity.this.startActivity(i_signup);
-    }
+    } */
     public void getAllAlbum(){
       String url="https://www.iampro.co/api/app_service.php?type=getAlbemsListt&search_type=image&uid="+uid;
         RequestQueue requestQueue = Volley.newRequestQueue(context);

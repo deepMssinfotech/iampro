@@ -15,7 +15,6 @@
         android:layout_gravity="bottom|end"
         android:layout_marginRight="@dimen/fab_margin_right"
         android:layout_marginBottom="@dimen/fab_margin_bottom"
-        android:onClick="redirect"
         app:backgroundTint="@color/color_video_color"
         app:srcCompat="@android:drawable/ic_input_add" />
 

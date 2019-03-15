@@ -169,6 +169,7 @@ public class UserModel {
     private String tid;
       private int is_block;
        private String user_url;
+    private String uid;
     public UserModel(String t, int d, String c)
     {
         text=t;

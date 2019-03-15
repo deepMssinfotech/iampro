@@ -70,7 +70,7 @@ public class ProvideAdapter extends RecyclerView.Adapter<ProvideAdapter.ViewHold
         public ImageView imageView,iv_comments;
         de.hdodenhof.circleimageview.CircleImageView userImage;
         public RelativeLayout relativeLayout;
-        LikeButton likeButton;
+        LikeButton likeButton,favButton;
         DataModel item;
         ImageView ivLike;
          LinearLayout ll_coomentpd;
@@ -81,6 +81,7 @@ public class ProvideAdapter extends RecyclerView.Adapter<ProvideAdapter.ViewHold
             imageView = (ImageView) v.findViewById(R.id.imageView);
             tv_tlike=v.findViewById(R.id.tv_totallike);
             likeButton = v.findViewById(R.id.likeButton);
+            favButton=v.findViewById(R.id.favButton);
             //tv_comments
             tv_comments=v.findViewById(R.id.tv_comments);
             iv_comments=v.findViewById(R.id.iv_comments);
@@ -283,6 +284,12 @@ public class ProvideAdapter extends RecyclerView.Adapter<ProvideAdapter.ViewHold
     @Override
     public void onBindViewHolder(ViewHolder Vholder, final int position) {
         Vholder.setData(mValues.get(position));
+        // mValues.get(position).
+      if (mValues.get(position).getIs_favourite().equalsIgnoreCase("1")) {
+            Vholder.favButton.setLiked(true);
+        } else {
+            Vholder.favButton.setLiked(false);
+        }
          Vholder.ll_coomentpd.setOnClickListener(new View.OnClickListener() {
              @Override
              public void onClick(View v) {
@@ -291,6 +298,24 @@ public class ProvideAdapter extends RecyclerView.Adapter<ProvideAdapter.ViewHold
                  intent.putExtra("type","provide");
                  intent.putExtra("uid",PrefManager.getLoginDetail(mContext,"id"));
                  mContext.startActivity(intent);
+             }
+         });
+        Vholder.tv_sprice.setText("Rs: "+String.valueOf(mValues.get(position).getsCost()));
+         Vholder.favButton.setOnLikeListener(new OnLikeListener() {
+             @Override
+             public void liked(LikeButton likeButton) {
+                  Toast.makeText(mContext,"Liked",Toast.LENGTH_LONG).show();
+                 String url = Config.API_URL + "app_service.php?type=provide_favo&pid=" + String.valueOf(mValues.get(position).getPid()) + "&uid=" + mValues.get(position).getUid() + "&product_type=" + mValues.get(position).getType();
+                 Log.e(Config.TAG, url);
+                 function.executeUrl(mContext, "get", url, null);
+             }
+
+             @Override
+             public void unLiked(LikeButton likeButton) {
+                 Toast.makeText(mContext,"UnLiked",Toast.LENGTH_LONG).show();
+                 String url = Config.API_URL + "app_service.php?type=provide_favo&pid=" + String.valueOf( mValues.get(position).getPid()) + "&uid=" +mValues.get(position).getUid()+ "&product_type=" + mValues.get(position).getType();
+                 Log.e(Config.TAG, url);
+                 function.executeUrl(mContext, "get", url, null);
              }
          });
     }

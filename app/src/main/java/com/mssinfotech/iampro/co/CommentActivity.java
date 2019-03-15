@@ -2,6 +2,7 @@ package com.mssinfotech.iampro.co;
 
 import android.content.Intent;
 import android.graphics.Color;
+import android.os.Handler;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -72,8 +73,36 @@ public class CommentActivity extends AppCompatActivity implements CommentAdapter
     String data_type,data_id;
     RecyclerView recycler_view_review;
     ArrayList<Review> items=new ArrayList<>();
+     ImageView no_rodr;
     CommentAdapter comment_adapter;
     LikeButton likeButton;
+
+    @Override
+    public void onBackPressed() {
+        int count = getSupportFragmentManager().getBackStackEntryCount();
+
+        if (count == 0) {
+            super.onBackPressed();
+           /* if (Config.doubleBackToExitPressedOnce) {
+                super.onBackPressed();
+                this.finish();
+                return;
+            }
+            Config.doubleBackToExitPressedOnce = true;
+            //Toast.makeText(this, "Please click BACK again to exit", Toast.LENGTH_SHORT).show();
+
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    Config.doubleBackToExitPressedOnce = false;
+                }
+            }, 2000);*/
+
+        } else {
+            getSupportFragmentManager().popBackStack();
+        }
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -86,6 +115,7 @@ public class CommentActivity extends AppCompatActivity implements CommentAdapter
         data_id=getIntent().getExtras().getString("id");
         imageView = findViewById(R.id.imageView);
         imageSlider = findViewById(R.id.imageSlider);
+        no_rodr=findViewById(R.id.no_record_found);
         imageView_user = findViewById(R.id.imageView_user);
         imageView_icon = findViewById(R.id.imageView_icon);
         fullname = findViewById(R.id.fullname);
@@ -361,7 +391,7 @@ public class CommentActivity extends AppCompatActivity implements CommentAdapter
                                     public void onClick(View view) {
                                         MyVideoActivity fragment = new MyVideoActivity();
                                         Bundle args = new Bundle();
-                                        args.putString("uid", String.valueOf(user_id));
+                                        args.putString("uid", String.valueOf(added_user_id));
                                         function.loadFragment(CommentActivity.this,fragment,args);
                                     }
                                 });
@@ -385,6 +415,7 @@ public class CommentActivity extends AppCompatActivity implements CommentAdapter
                                         //intent.putExtra("id",String.valueOf(item.getPid()));
                                         intent.putExtra("pid",String.valueOf(data_id));
                                         intent.putExtra("uid",String.valueOf(user_id));
+                                         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                                         getApplicationContext().startActivity(intent);
                                     }
                                 });
@@ -406,6 +437,7 @@ public class CommentActivity extends AppCompatActivity implements CommentAdapter
                                                 //intent.putExtra("id",String.valueOf(item.getPid()));
                                                 intent.putExtra("pid",String.valueOf(data_id));
                                                 intent.putExtra("uid",String.valueOf(user_id));
+                                                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                                                 getApplicationContext().startActivity(intent);
                                             }
                                         });
@@ -419,7 +451,9 @@ public class CommentActivity extends AppCompatActivity implements CommentAdapter
                                     @Override
                                     public void onClick(View view) {
                                         MyProductActivity fragment = new MyProductActivity();
-                                        function.loadFragment(CommentActivity.this,fragment,null);
+                                        Bundle args = new Bundle();
+                                        args.putString("uid", String.valueOf(added_user_id));
+                                        function.loadFragment(CommentActivity.this,fragment,args);
                                     }
                                 });
                             }
@@ -442,6 +476,7 @@ public class CommentActivity extends AppCompatActivity implements CommentAdapter
                                         //intent.putExtra("id",String.valueOf(item.getPid()));
                                         intent.putExtra("pid",String.valueOf(data_id));
                                         intent.putExtra("uid",String.valueOf(user_id));
+                                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                                         getApplicationContext().startActivity(intent);
                                     }
                                 });
@@ -463,6 +498,7 @@ public class CommentActivity extends AppCompatActivity implements CommentAdapter
                                                 //intent.putExtra("id",String.valueOf(item.getPid()));
                                                 intent.putExtra("pid",String.valueOf(data_id));
                                                 intent.putExtra("uid",String.valueOf(user_id));
+                                                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                                                 getApplicationContext().startActivity(intent);
                                             }
                                         });
@@ -477,7 +513,7 @@ public class CommentActivity extends AppCompatActivity implements CommentAdapter
                                     public void onClick(View view) {
                                         MyProvideActivity fragment = new MyProvideActivity();
                                         Bundle args = new Bundle();
-                                        args.putString("uid",String.valueOf(user_id));
+                                        args.putString("uid", String.valueOf(added_user_id));
                                         function.loadFragment(CommentActivity.this,fragment,args);
                                     }
                                 });
@@ -500,6 +536,7 @@ public class CommentActivity extends AppCompatActivity implements CommentAdapter
                                         //intent.putExtra("id",String.valueOf(item.getPid()));
                                         intent.putExtra("pid",String.valueOf(data_id));
                                         intent.putExtra("uid",String.valueOf(user_id));
+                                         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                                         getApplicationContext().startActivity(intent);
                                     }
                                 });
@@ -521,6 +558,7 @@ public class CommentActivity extends AppCompatActivity implements CommentAdapter
                                                 //intent.putExtra("id",String.valueOf(item.getPid()));
                                                 intent.putExtra("pid",String.valueOf(data_id));
                                                 intent.putExtra("uid",String.valueOf(user_id));
+                                                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                                                 getApplicationContext().startActivity(intent);
                                             }
                                         });
@@ -534,8 +572,10 @@ public class CommentActivity extends AppCompatActivity implements CommentAdapter
                                     @Override
                                     public void onClick(View view) {
                                         MyDemandActivity fragment = new MyDemandActivity();
+
                                         Bundle args = new Bundle();
-                                        args.putString("uid",String.valueOf(user_id));
+                                        args.putString("uid", String.valueOf(added_user_id));
+
                                         function.loadFragment(CommentActivity.this,fragment,args);
                                     }
                                 });
@@ -568,33 +608,38 @@ public class CommentActivity extends AppCompatActivity implements CommentAdapter
                 new Response.Listener<JSONArray>() {
                     @Override
                     public void onResponse(JSONArray response) {
-                        try {
-                            if (!items.isEmpty()) {
-                                items.clear();
+                        if (response.length() > 0) {
+                            try {
+                                if (!items.isEmpty()) {
+                                    items.clear();
+                                }
+                                // Loop through the array elements
+                                for (int i = 0; i < response.length(); i++) {
+                                    // Get current json object
+                                    JSONObject student = response.getJSONObject(i);
+                                    // Get the current student (json object) data
+                                    String id = student.optString("id");
+                                    String added_by = student.optString("added_by");
+                                    String pid = student.optString("pid");
+                                    String pcid = student.optString("pcid");
+                                    String comment = student.optString("comment");
+                                    String fullname = student.optString("name");
+                                    String email = student.optString("email");
+                                    String user_img = Config.AVATAR_URL + student.optString("avatar");
+                                    String rdate = student.optString("date");
+                                    items.add(new Review(fullname, email, comment, id, pcid, user_img, rdate, added_by, pid));
+                                }
+                                Log.d("demand_itemss", items + "");
+                                comment_adapter = new CommentAdapter(CommentActivity.this, items, CommentActivity.this);
+                                recycler_view_review.setLayoutManager(new LinearLayoutManager(CommentActivity.this, LinearLayoutManager.VERTICAL, false));
+                                recycler_view_review.setAdapter(comment_adapter);
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                                Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_LONG).show();
                             }
-                            // Loop through the array elements
-                            for (int i = 0; i < response.length(); i++) {
-                                // Get current json object
-                                JSONObject student = response.getJSONObject(i);
-                                // Get the current student (json object) data
-                                String id = student.optString("id");
-                                String added_by = student.optString("added_by");
-                                String pid = student.optString("pid");
-                                String pcid = student.optString("pcid");
-                                String comment = student.optString("comment");
-                                String fullname = student.optString("name");
-                                String email = student.optString("email");
-                                String user_img = Config.AVATAR_URL+student.optString("avatar");
-                                String rdate = student.optString("date");
-                                items.add(new Review(fullname, email, comment, id, pcid, user_img, rdate, added_by, pid));
-                            }
-                            Log.d("demand_itemss", items + "");
-                            comment_adapter = new CommentAdapter(CommentActivity.this, items, CommentActivity.this);
-                            recycler_view_review.setLayoutManager(new LinearLayoutManager(CommentActivity.this, LinearLayoutManager.VERTICAL, false));
-                            recycler_view_review.setAdapter(comment_adapter);
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                            Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_LONG).show();
+                        }
+                        else{
+                            no_rodr.setVisibility(View.VISIBLE);
                         }
                     }
                 },
@@ -642,4 +687,5 @@ public class CommentActivity extends AppCompatActivity implements CommentAdapter
         // Add JsonObjectRequest to the RequestQueue
         requestQueue.add(jsonObjectRequest);
     }
+
 }

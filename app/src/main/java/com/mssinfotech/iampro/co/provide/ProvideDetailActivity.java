@@ -28,6 +28,7 @@ import com.mssinfotech.iampro.co.adapter.CommentAdapter;
 import com.mssinfotech.iampro.co.common.Config;
 import com.mssinfotech.iampro.co.common.PhotoFullPopupWindow;
 import com.mssinfotech.iampro.co.common.function;
+import com.mssinfotech.iampro.co.model.ChatList;
 import com.mssinfotech.iampro.co.model.Review;
 import com.mssinfotech.iampro.co.user.ProfileActivity;
 import com.mssinfotech.iampro.co.utils.PrefManager;
@@ -66,10 +67,8 @@ public class ProvideDetailActivity extends AppCompatActivity implements CommentA
     {
         //Remove title bar
         this.requestWindowFeature(Window.FEATURE_NO_TITLE);
-
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_provide_detail);
-
         //Set toolbar title
         CollapsingToolbarLayout collapsingToolbar = findViewById(R.id.collapsing_toolbar);
           expandedImage=collapsingToolbar.findViewById(R.id.expandedImage);
@@ -115,7 +114,7 @@ public class ProvideDetailActivity extends AppCompatActivity implements CommentA
                     public void onResponse(String response) {
                         // Do something with response
                         //mTextView.setText(response.toString());
-                        Log.d("Prod_detail",response.toString());
+                        Log.d("Prod_detail",response.toString()+"\t\t"+pid);
                         // Process the JSON
                         try{
                             final JSONObject responses=new JSONObject(response);
@@ -231,6 +230,10 @@ public class ProvideDetailActivity extends AppCompatActivity implements CommentA
     public void chat(View view){
         if(PrefManager.isLogin(ProvideDetailActivity.this)) {
             Toast.makeText(ProvideDetailActivity.this,"redirect to start chat with "+uid+"...",Toast.LENGTH_LONG).show();
+             Intent intent=new Intent(ProvideDetailActivity.this,ChatList.class);
+              intent.putExtra("id",String.valueOf(uid));
+               intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+               startActivity(intent);
         }
         else {
             Toast.makeText(ProvideDetailActivity.this,"First Login and try again...",Toast.LENGTH_LONG).show();

@@ -21,7 +21,7 @@
                 android:layout_height="100dp"
                 android:scaleType="fitXY"
                 android:background="@color/black"/>
-
+      <!-- android:layout_height="100dp"  -->
             <TextView
                 android:id="@+id/textView"
                 android:layout_width="match_parent"

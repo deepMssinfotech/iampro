@@ -112,6 +112,7 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
                        function.loadFragment(context,fragment,args); */
                         Intent imageDetail=new Intent(context,ProductDetail.class);
                           imageDetail.putExtra("id", String.valueOf(notifyList.get(position).getPid()));
+                       imageDetail.putExtra("pid", String.valueOf(notifyList.get(position).getPid()));
                          //imageDetail.putExtra("id", String.valueOf(notifyList.get(position).getAlbemId()));
                          imageDetail.putExtra("type", "image");
                           imageDetail.putExtra("uid",notifyList.get(position).getUid());
@@ -120,6 +121,7 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
                    else if (p_type.equalsIgnoreCase("provide") && n_type.equalsIgnoreCase("LIKE")){
                        Intent imageDetail=new Intent(context,ProvideDetailActivity.class);
                         imageDetail.putExtra("id", String.valueOf(notifyList.get(position).getPid()));
+                       imageDetail.putExtra("pid", String.valueOf(notifyList.get(position).getPid()));
                        //imageDetail.putExtra("id", String.valueOf(notifyList.get(position).getAlbemId()));
                        imageDetail.putExtra("type", "image");
                        imageDetail.putExtra("uid",notifyList.get(position).getUid());
@@ -129,6 +131,7 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
                    else if (p_type.equalsIgnoreCase("demand") && n_type.equalsIgnoreCase("LIKE")){
                        Intent imageDetail=new Intent(context,DemandDetailActivity.class);
                        imageDetail.putExtra("id", String.valueOf(notifyList.get(position).getPid()));
+                       imageDetail.putExtra("pid", String.valueOf(notifyList.get(position).getPid()));
                        //imageDetail.putExtra("id", String.valueOf(notifyList.get(position).getAlbemId()));
                        imageDetail.putExtra("type", "image");
                        imageDetail.putExtra("uid",notifyList.get(position).getUid());
@@ -152,6 +155,7 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
                   else if (p_type.equalsIgnoreCase("product") && n_type.equalsIgnoreCase("comment")){
                        Intent intent=new Intent(context, CommentActivity.class);
                        intent.putExtra("id",String.valueOf(notifyList.get(position).getPid()));
+                       intent.putExtra("id", String.valueOf(notifyList.get(position).getPid()));
                        intent.putExtra("type","product");
                        intent.putExtra("uid",notifyList.get(position).getUid());
                        context.startActivity(intent);
@@ -159,6 +163,7 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
                   else if (p_type.equalsIgnoreCase("provide") && n_type.equalsIgnoreCase("comment")){
                        Intent intent=new Intent(context, CommentActivity.class);
                        intent.putExtra("id",String.valueOf(notifyList.get(position).getPid()));
+                       intent.putExtra("id", String.valueOf(notifyList.get(position).getPid()));
                        intent.putExtra("type","provide");
                        intent.putExtra("uid",notifyList.get(position).getUid());
                        context.startActivity(intent);
@@ -166,6 +171,7 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
                   else if (p_type.equalsIgnoreCase("demand") && n_type.equalsIgnoreCase("comment")){
                        Intent intent=new Intent(context, CommentActivity.class);
                        intent.putExtra("id",String.valueOf(notifyList.get(position).getPid()));
+                       intent.putExtra("pid", String.valueOf(notifyList.get(position).getPid()));
                        intent.putExtra("type","demand");
                        intent.putExtra("uid",notifyList.get(position).getUid());
                        context.startActivity(intent);

@@ -25,11 +25,13 @@ import com.bumptech.glide.load.resource.bitmap.CircleCrop;
 import com.bumptech.glide.request.RequestOptions;
 import com.like.LikeButton;
 import com.like.OnLikeListener;
+import com.mssinfotech.iampro.co.CommentActivity;
 import com.mssinfotech.iampro.co.R;
 import android.view.ViewGroup;
 
 import android.content.Context;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RatingBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -44,6 +46,7 @@ import com.mssinfotech.iampro.co.model.ImageDetailModel;
 import com.mssinfotech.iampro.co.user.MyImageActivity;
 import com.mssinfotech.iampro.co.user.MyVideoActivity;
 import com.mssinfotech.iampro.co.user.ProfileActivity;
+import com.mssinfotech.iampro.co.utils.PrefManager;
 
 import org.json.JSONObject;
 
@@ -60,6 +63,7 @@ public class Img_Video_Details extends RecyclerView.Adapter<Img_Video_Details.Vi
     Context mContext;
     protected ItemListener mListener;
     int uid;
+
     public Img_Video_Details(Context context, ArrayList<ImageDetailModel> values, ItemListener itemListener) {
         mValues = values;
         mContext = context;
@@ -73,6 +77,7 @@ public class Img_Video_Details extends RecyclerView.Adapter<Img_Video_Details.Vi
         RatingBar ratingBar;
         ImageDetailModel item;
         LikeButton likeButton;
+         LinearLayout ll_comments;
         public ViewHolder(View v) {
             super(v);
             v.setOnClickListener(this);
@@ -83,6 +88,7 @@ public class Img_Video_Details extends RecyclerView.Adapter<Img_Video_Details.Vi
             //tv_comments
             tv_comments=v.findViewById(R.id.tv_comments);
             tv_totallike=v.findViewById(R.id.tv_totallike);
+            ll_comments=v.findViewById(R.id.ll_comments);
             name=v.findViewById(R.id.name);
             category=v.findViewById(R.id.category);
             ratingBar=v.findViewById(R.id.ratingBar);
@@ -142,12 +148,28 @@ public class Img_Video_Details extends RecyclerView.Adapter<Img_Video_Details.Vi
         return new ViewHolder(view);
     }
     @Override
-    public void onBindViewHolder(final ViewHolder Vholder, int position) {
+    public void onBindViewHolder(final ViewHolder Vholder, final int position) {
         Vholder.setData(mValues.get(position));
         //sendrating(float rating,int uid,int id)
         final int uid=mValues.get(position).getUid();
          final int id=mValues.get(position).getId();
         final String type=mValues.get(position).getType();
+         if (PrefManager.isLogin(mContext)){
+
+          Vholder.ll_comments.setOnClickListener(new View.OnClickListener() {
+              @Override
+              public void onClick(View v) {
+                  Intent intent = new Intent(mContext, CommentActivity.class);
+                  intent.putExtra("type", mValues.get(position).getType());
+                  intent.putExtra("id",String.valueOf(mValues.get(position).getId()));
+                  intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                  mContext.startActivity(intent);
+              }
+          });
+         }
+         else{
+              Toast.makeText(mContext,"First Login and try again...",Toast.LENGTH_LONG).show();
+         }
         Vholder.likeButton.setOnLikeListener(new OnLikeListener() {
             @Override
             public void liked(LikeButton likeButton) {
@@ -182,6 +204,7 @@ public class Img_Video_Details extends RecyclerView.Adapter<Img_Video_Details.Vi
                     .load(R.drawable.image_icon)
                     .apply(Config.options_avatar)
                     .into(Vholder.imageView_icon);
+
             final int added_by_id =mValues.get(position).getUid();
              Vholder.imageView_icon.setOnClickListener(new View.OnClickListener() {
                 @Override

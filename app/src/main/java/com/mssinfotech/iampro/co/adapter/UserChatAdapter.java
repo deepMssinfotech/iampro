@@ -85,7 +85,7 @@ public class UserChatAdapter extends RecyclerView.Adapter<UserChatAdapter.ViewHo
             view = LayoutInflater.from(mContext).inflate(R.layout.item_userchat_row_other, parent, false);
         }
         else{
-             view = LayoutInflater.from(mContext).inflate(R.layout.item_userchat_row_other, parent, false);
+             //view = LayoutInflater.from(mContext).inflate(R.layout.item_userchat_row_other, parent, false);
         }
         //view = LayoutInflater.from(mContext).inflate(R.layout.item_userchat_row_other, parent, false);
         return new ViewHolder(view);
@@ -93,7 +93,8 @@ public class UserChatAdapter extends RecyclerView.Adapter<UserChatAdapter.ViewHo
     @Override
     public void onBindViewHolder(ViewHolder Vholder, int position) {
         Vholder.setData(mValues.get(position));
-
+        Log.d("chatbind_data",""+mValues.get(position));
+        type=mValues.get(position).getMessageType();
         if(mValues.get(position).getMessageType().equalsIgnoreCase("received")) {
             Vholder.user_image.setVisibility(View.VISIBLE);
             Glide.with(mContext)
@@ -112,12 +113,13 @@ public class UserChatAdapter extends RecyclerView.Adapter<UserChatAdapter.ViewHo
             Vholder.tv_msg.setText(mValues.get(position).getMsg());
             Vholder.tv_msg.setTextColor(Color.BLACK);
             Vholder.tv_msg.setGravity(Gravity.END);
+            Vholder.user_image.setVisibility(View.GONE);
             //Vholder.tv_msg.setBackground(R.drawable.rounded_corner);
              Vholder.tv_msg.setBackground(mContext.getResources().getDrawable(R.drawable.rounded_corner));
             Vholder.cll.setGravity(Gravity.END);
         }
         else{
-            Vholder.user_image.setVisibility(View.VISIBLE);
+           /* Vholder.user_image.setVisibility(View.VISIBLE);
             Glide.with(mContext)
                     .load(mValues.get(position).getAvatar())
                     .apply(new RequestOptions()
@@ -127,7 +129,7 @@ public class UserChatAdapter extends RecyclerView.Adapter<UserChatAdapter.ViewHo
             Vholder.tv_msg.setText(mValues.get(position).getMsg());
             Vholder.tv_msg.setTextColor(Color.BLACK);
             Vholder.tv_msg.setGravity(Gravity.LEFT | Gravity.START);
-             Vholder.cll.setGravity(Gravity.LEFT);
+             Vholder.cll.setGravity(Gravity.LEFT); */
         }
          //Toast.makeText(mContext,mValues.get(position).getMsg(),Toast.LENGTH_LONG).show();
     }

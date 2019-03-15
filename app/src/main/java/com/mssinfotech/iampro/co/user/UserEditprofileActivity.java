@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.provider.MediaStore;
 import android.provider.Settings;
 import android.support.annotation.Nullable;
@@ -15,6 +16,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.karumi.dexter.Dexter;
@@ -30,6 +32,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import com.mssinfotech.iampro.co.R;
+import com.mssinfotech.iampro.co.common.Config;
 
 public class UserEditprofileActivity extends AppCompatActivity {
     private static final String TAG =UserEditprofileActivity.class.getSimpleName();
@@ -177,5 +180,29 @@ public class UserEditprofileActivity extends AppCompatActivity {
         Uri uri = Uri.fromParts("package", getPackageName(), null);
         intent.setData(uri);
         startActivityForResult(intent, 101);
+    }
+
+    @Override
+    public void onBackPressed() {
+        int count = getSupportFragmentManager().getBackStackEntryCount();
+
+        if (count == 0) {
+            if (Config.doubleBackToExitPressedOnce) {
+                super.onBackPressed();
+                //this.finish();
+                // return;
+            }
+            Config.doubleBackToExitPressedOnce = true;
+            Toast.makeText(this, "Please click BACK again to exit", Toast.LENGTH_SHORT).show();
+
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    Config.doubleBackToExitPressedOnce = false;
+                }
+            }, 2000);
+        } else {
+            getSupportFragmentManager().popBackStack();
+        }
     }
 }

@@ -26,6 +26,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.mssinfotech.iampro.co.common.Config;
+import com.mssinfotech.iampro.co.common.function;
 import com.mssinfotech.iampro.co.utils.PrefManager;
 import com.mssinfotech.iampro.co.utils.Validate;
 
@@ -36,13 +37,13 @@ import java.util.Hashtable;
 import java.util.Map;
 
 public class LoginActivity extends Fragment {
-
     TextView btnforgetPassword;
     Button btnprocess;
     TextInputLayout tilemail,tilpassword;
     EditText etemail,etpassword;
     View view;
     Context context;
+     TextView btnSignUp;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup parent, Bundle savedInstanceState) {
         // Defines the xml file for the fragment
@@ -56,10 +57,34 @@ public class LoginActivity extends Fragment {
 
         tilemail = view.findViewById(R.id.tilemail);
         etemail = view.findViewById(R.id.etemail);
-
+        btnSignUp=view.findViewById(R.id.btnSignUp);
+         btnprocess=view.findViewById(R.id.btnprocess);
         tilpassword = view.findViewById(R.id.tilpassword);
+        btnforgetPassword=view.findViewById(R.id.btnforgetPassword);
         etpassword = view.findViewById(R.id.etpassword);
+        btnprocess.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                processLogin(v);
+            }
+        });
+        btnSignUp.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                SignupActivity fragmentz = new SignupActivity();
+                function.loadFragment(getContext(),fragmentz,null);
+            }
+        });
 
+
+
+
+        btnforgetPassword.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                redirect(v);
+            }
+        });
     }
     public void redirect(View v){
         Intent i_login = new Intent(context, ForgetActivity.class);
@@ -163,8 +188,8 @@ public class LoginActivity extends Fragment {
                         Toast.makeText(context.getApplicationContext(),volleyError.getMessage(),Toast.LENGTH_LONG).show();
                     }
                 }){
-            @Override
-            protected Map<String, String> getParams() throws AuthFailureError {
+    @Override
+    protected Map<String, String> getParams() throws AuthFailureError {
                 Map<String,String> params = new Hashtable<String, String>();
                 params.put("type","login");
                 params.put("username",unamee);

@@ -634,4 +634,5 @@ public class VideoImageCroperActivity extends AppCompatActivity implements IProf
         finish();
     }
 
+
 }

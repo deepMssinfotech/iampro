@@ -2,6 +2,7 @@ package com.mssinfotech.iampro.co;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.os.Handler;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -152,6 +153,30 @@ public class OtpForgetActivity extends AppCompatActivity {
             tilcpassword.setErrorEnabled(false);
             tilotp.setErrorEnabled(false);
             return true;
+        }
+    }
+
+    @Override
+    public void onBackPressed() {
+        int count = getSupportFragmentManager().getBackStackEntryCount();
+
+        if (count == 0) {
+            if (Config.doubleBackToExitPressedOnce) {
+                super.onBackPressed();
+                //this.finish();
+                // return;
+            }
+            Config.doubleBackToExitPressedOnce = true;
+            Toast.makeText(this, "Please click BACK again to exit", Toast.LENGTH_SHORT).show();
+
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    Config.doubleBackToExitPressedOnce = false;
+                }
+            }, 2000);
+        } else {
+            getSupportFragmentManager().popBackStack();
         }
     }
 }

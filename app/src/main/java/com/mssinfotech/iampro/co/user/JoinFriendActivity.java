@@ -100,7 +100,7 @@ public class JoinFriendActivity extends Fragment implements UserDataAdapter.Item
         catch (Exception e){
             id=uid;
         }
-        getUser(15);
+        //getUser(15);
         uid= PrefManager.getLoginDetail(getContext(),"id");
         if(id == null || id.equals(uid)) {
             String fname=PrefManager.getLoginDetail(getContext(),"fname");
@@ -150,7 +150,7 @@ public class JoinFriendActivity extends Fragment implements UserDataAdapter.Item
         prepareWhishList();
         getJoinedFriend();
 
-        swipeController = new SwipeController(JoinFriendActivity.this.getContext(),new SwipeControllerActions() {
+        /*swipeController = new SwipeController(JoinFriendActivity.this.getContext(),new SwipeControllerActions() {
             @Override
             public void onRightClicked(int position) {
                 //mAdapter.players.remove(position);
@@ -162,9 +162,9 @@ public class JoinFriendActivity extends Fragment implements UserDataAdapter.Item
             public void onLeftClicked(int position) {
                 Toast.makeText(getContext(),"Left Clicked"+position,Toast.LENGTH_LONG).show();
             }
-        });
+        }); */
 
-        ItemTouchHelper itemTouchhelper = new ItemTouchHelper(swipeController);
+       /* ItemTouchHelper itemTouchhelper = new ItemTouchHelper(swipeController);
         itemTouchhelper.attachToRecyclerView(recyclerView);
 
         recyclerView.addItemDecoration(new RecyclerView.ItemDecoration() {
@@ -172,7 +172,7 @@ public class JoinFriendActivity extends Fragment implements UserDataAdapter.Item
             public void onDraw(Canvas c, RecyclerView parent, RecyclerView.State state) {
                 swipeController.onDraw(c);
             }
-        });
+        }); */
 
     }
 
@@ -264,7 +264,9 @@ public class JoinFriendActivity extends Fragment implements UserDataAdapter.Item
                     String user_image = Config.AVATAR_URL + "80/80/" + user_detail.getString("avatar");
                     item.setId(feedObj.getInt("id"));
                     item.setAvatar(user_image);
-                    item.setUser_id(feedObj.getInt("user_id"));
+                    //item.setUser_id(user_detail.getInt("user_id"));
+                    //item.setUser_id(user_detail.getInt("id"));
+                    item.setUser_id(Integer.parseInt(user_detail.optString("id")));
                     item.setFriend_id(feedObj.getInt("friend_id"));
                     item.setCategory(user_detail.getString("category"));
                     item.setCity(user_detail.getString("city"));
@@ -346,14 +348,42 @@ public class JoinFriendActivity extends Fragment implements UserDataAdapter.Item
                             for(int i=0;i<response.length();i++){
                                 // Get current json object
                                 JSONObject student = response.getJSONObject(i);
+
                                   JSONObject user_detaiis=student.getJSONObject("user_detail");
+                                  //friendstatus
+                                JSONObject friendstatus=student.getJSONObject("friendstatus");
                                     String id=user_detaiis.getString("id");
                                  String fname=user_detaiis.getString("fname");
                                  String lname=user_detaiis.getString("lname");
                                 String avatar=user_detaiis.getString("avatar");
                                 String category=user_detaiis.getString("category");
 
-                                    JoinFriendItemList.add(new JoinFriendItem(avatar,fname,category));
+                                    //JoinFriendItemList.add(new JoinFriendItem(avatar,fname,category));
+
+                                String name = user_detaiis.optString("fname");
+                                int uid=user_detaiis.getInt("id");
+                                //String identity_type=student.getString("identity_type");
+                                String categorys=user_detaiis.getString("category");
+                                String imagev=user_detaiis.getString("avatar");
+                                String image= Config.AVATAR_URL+"200/200/"+imagev;
+                                String udate=student.getString("udate");
+                                Log.d("pdata",""+name+""+category+""+image+""+udate);
+
+                                String total_images=student.optString("total_img");
+                                String total_videos=student.optString("total_video");
+                                String total_users=student.optString("total_friend");
+                                String total_products=student.optString("total_product");
+                                String total_provides=student.optString("total_product_provide");
+                                String total_demands=student.optString("total_product_demend");
+
+                                //is_friend,friend_status,tid,is_block,user_url
+                                String is_friend=student.optString("is_friend");
+                                String friend_status=friendstatus.optString("status");
+                                String tid=student.optString("fid");
+                                int is_blocks=student.optInt("is_block");
+                                String user_url=user_detaiis.optString("fullname");
+                                JoinFriendItemList.add(new JoinFriendItem(uid,name,image,udate,categorys,total_images,total_videos,total_users,total_products,total_provides,total_demands,is_friend,friend_status,tid,is_blocks,user_url));
+
                             }
                             Log.d("bdm",singleItem.toString());
                             // dm.setAllItemsInSection(singleItem);
@@ -416,12 +446,12 @@ public class JoinFriendActivity extends Fragment implements UserDataAdapter.Item
                             for(int i=0;i<response.length();i++){
                                 // Get current json object
                                 JSONObject student = response.getJSONObject(i);
-
-                                String name = student.getString("fname");
-                                int uid=student.getInt("id");
-                                String identity_type=student.getString("identity_type");
-                                String category=student.getString("category");
-                                String imagev=student.getString("avatar");
+                                 JSONObject user_detail=student.getJSONObject("user_detail");
+                                String name=user_detail.optString("fname");
+                                int uid=user_detail.getInt("id");
+                                //String identity_type=student.getString("identity_type");
+                                String category=user_detail.getString("category");
+                                String imagev=user_detail.getString("avatar");
                                 String image= Config.AVATAR_URL+"200/200/"+imagev;
                                 String udate=student.getString("udate");
                                 Log.d("pdata",""+name+""+category+""+image+""+udate);
@@ -433,9 +463,16 @@ public class JoinFriendActivity extends Fragment implements UserDataAdapter.Item
                                 String total_provides=student.optString("total_provide");
                                 String total_demands=student.optString("total_demend");
 
+                                String is_friend=student.optString("is_friend");
+                                String friend_status=student.optString("friend_status");
+                                String tid=student.optString("tid");
+                                int is_block=student.optInt("is_block");
+                                String user_url=student.optString("user_url");
+
                                 //allSampleData.add(new UserModel(uid,name,image,udate,category));
                                 //String total_image,String total_video,String total_friend
-                                allSampleData.add(new UserModel(uid,name,image,udate,category,total_images,total_videos,total_users,total_products,total_provides,total_demands));
+                                //allSampleData.add(new UserModel(uid,name,image,udate,category,total_images,total_videos,total_users,total_products,total_provides,total_demands));
+                                allSampleData.add(new UserModel(uid,name,image,udate,category,total_images,total_videos,total_users,total_products,total_provides,total_demands,is_friend,friend_status,tid,is_block,user_url));
 
                             }
                             Log.d("bdm",singleItem.toString());

@@ -14,6 +14,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -26,6 +27,7 @@ import com.bumptech.glide.load.resource.bitmap.CircleCrop;
 import com.bumptech.glide.request.RequestOptions;
 import com.like.LikeButton;
 import com.like.OnLikeListener;
+import com.mssinfotech.iampro.co.CommentActivity;
 import com.mssinfotech.iampro.co.R;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
@@ -69,6 +71,8 @@ public class ImageDetail extends Fragment implements Img_Video_Details.ItemListe
     Intent intent;
     Context context;
     FullscreenVideoView fullscreenVideoView;
+         LinearLayout ll_comment;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup parent, Bundle savedInstanceState) {
         // Defines the xml file for the fragment
@@ -98,6 +102,7 @@ public class ImageDetail extends Fragment implements Img_Video_Details.ItemListe
         iv_comments=view.findViewById(R.id.iv_comments);
         image=view.findViewById(R.id.image);
         videoView=view.findViewById(R.id.video);
+        ll_comment=view.findViewById(R.id.ll_comment);
 
         fullscreenVideoView=view.findViewById(R.id.fullscreenVideoView);
         ratingBar=view.findViewById(R.id.ratingBar);
@@ -147,6 +152,18 @@ public class ImageDetail extends Fragment implements Img_Video_Details.ItemListe
                 function.executeUrl(context,"get",url,null);
             }
         });
+
+        ll_comment.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(context, CommentActivity.class);
+                intent.putExtra("type", type);
+                intent.putExtra("id",id);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                 context.startActivity(intent);
+            }
+        });
+
     }
     protected void getImageDetail() {
         final String url = "https://www.iampro.co/api/app_service.php?type=get_image_detail&id=" + id + "&update_type=" + type + "&uid=" + uid + "&login_id=" + uid + "&my_id=" + uid;
@@ -190,7 +207,13 @@ public class ImageDetail extends Fragment implements Img_Video_Details.ItemListe
                             tv_totallike.setText(String.valueOf(totallike));
                             name.setText(namev);
                             category.setText(category_name);
-                            imageView_icon.setImageResource(R.drawable.image_icon);
+                           // imageView_icon.setImageResource(R.drawable.image_icon);
+
+                            Glide.with(getContext())
+                                    .load(R.drawable.image_icon)
+                                    .apply(Config.options_avatar)
+                                    .into(imageView_icon);
+
                             ratingBar.setRating(Float.parseFloat(String.valueOf(rating)));
 
                             videoView.setVisibility(View.GONE);

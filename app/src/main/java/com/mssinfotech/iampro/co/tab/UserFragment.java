@@ -83,7 +83,7 @@ public class UserFragment extends Fragment implements UserDataAdapter.ItemListen
     private View view;
     private boolean add = false;
     private Paint p = new Paint();
-
+       ImageView no_rodr;
     public UserFragment() {
         // Required empty public constructor
     }
@@ -115,6 +115,7 @@ public class UserFragment extends Fragment implements UserDataAdapter.ItemListen
         recycler_view_load_more=view.findViewById(R.id.recycler_view_load_more);
         ll=view.findViewById(R.id.ll);
         luser_iv=view.findViewById(R.id.luser_iv);
+        no_rodr =view.findViewById(R.id.no_record_found);
         luser_iv.setVisibility(View.VISIBLE);
         luser_iv.setBackground(AppCompatResources.getDrawable(getContext(),R.drawable.user));
           btn_load_more=view.findViewById(R.id.btn_load_more);
@@ -356,73 +357,79 @@ public class UserFragment extends Fragment implements UserDataAdapter.ItemListen
                 new com.android.volley.Response.Listener<JSONArray>() {
                     @Override
                     public void onResponse(JSONArray response) {
-                        Log.d("responsef",response.toString());
-                        SectionDataModel dm = new SectionDataModel();
-                        dm.setHeaderTitle("User");
-                        ArrayList<SingleItemModel> singleItem = new ArrayList<SingleItemModel>();
-                        if(!singleItem.isEmpty()){
-                            singleItem.clear();
-                        }
-                        if(!allSampleData.isEmpty()){
-                            allSampleData.clear();
-                        }
-                        try{
-                            for(int i=0;i<response.length();i++){
-                                // Get current json object
-                                JSONObject student = response.getJSONObject(i);
-
-                                String name = student.getString("fname");
-                                   uid=student.getInt("id");
-                                String identity_type=student.getString("identity_type");
-                                String category=student.getString("category");
-                                String imagev=student.getString("avatar");
-                                String image= Config.AVATAR_URL+"200/200/"+imagev;
-                                String udate=student.getString("udate");
-                                Log.d("pdata",""+name+""+category+""+image+""+udate);
-
-                                String total_images=student.optString("total_image");
-                                String total_videos=student.optString("total_video");
-                                String total_users=student.optString("total_friends");
-                                String total_products=student.optString("total_product");
-                                String total_provides=student.optString("total_provide");
-                                String total_demands=student.optString("total_demend");
-
-                                //is_friend,friend_status,tid,is_block,user_url
-                                String is_friend=student.optString("is_friend");
-                                String friend_status=student.optString("friend_status");
-                                String tid=student.optString("tid");
-                                int is_block=student.optInt("is_block");
-                                 String user_url=student.optString("user_url");
-
-                                 //allSampleData.add(new UserModel(uid,name,image,udate,category));
-                                //String total_image,String total_video,String total_friend     //is_friend,friend_status,tid,is_block,user_url
-                                allSampleData.add(new UserModel(uid,name,image,udate,category,total_images,total_videos,total_users,total_products,total_provides,total_demands,is_friend,friend_status,tid,is_block,user_url));
-
+                        Log.d("responsef", response.toString());
+                        if (response.length() > 0) {
+                             no_rodr.setVisibility(View.GONE);
+                            SectionDataModel dm = new SectionDataModel();
+                            dm.setHeaderTitle("User");
+                            ArrayList<SingleItemModel> singleItem = new ArrayList<SingleItemModel>();
+                            if (!singleItem.isEmpty()) {
+                                singleItem.clear();
                             }
-                            Log.d("bdm",singleItem.toString());
-                            dm.setAllItemsInSection(singleItem);
-                            Log.d("adm",singleItem.toString());
-                            Log.d("dmm",dm.toString());
-                            //allSampleData.add(dm);
-                            Log.d("allsampledatav", allSampleData.toString());
-                           // my_recycler_view.setHasFixedSize(true);
-                            Log.d("allSampleDatas",""+allSampleData.size()+"--"+allSampleData.toString());
+                            if (!allSampleData.isEmpty()) {
+                                allSampleData.clear();
+                            }
+                            try {
+                                for (int i = 0; i < response.length(); i++) {
+                                    // Get current json object
+                                    JSONObject student = response.getJSONObject(i);
+
+                                    String name = student.optString("fname");
+                                    uid = student.getInt("id");
+                                    String identity_type = student.getString("identity_type");
+                                    String category = student.getString("category");
+                                    String imagev = student.getString("avatar");
+                                    String image = Config.AVATAR_URL + "200/200/" + imagev;
+                                    String udate = student.getString("udate");
+                                    Log.d("pdata", "" + name + "" + category + "" + image + "" + udate);
+
+                                    String total_images = student.optString("total_image");
+                                    String total_videos = student.optString("total_video");
+                                    String total_users = student.optString("total_friends");
+                                    String total_products = student.optString("total_product");
+                                    String total_provides = student.optString("total_provide");
+                                    String total_demands = student.optString("total_demend");
+
+                                    //is_friend,friend_status,tid,is_block,user_url
+                                    String is_friend = student.optString("is_friend");
+                                    String friend_status = student.optString("friend_status");
+                                    String tid = student.optString("tid");
+                                    int is_block = student.optInt("is_block");
+                                    String user_url = student.optString("user_url");
+
+                                    //allSampleData.add(new UserModel(uid,name,image,udate,category));
+                                    //String total_image,String total_video,String total_friend     //is_friend,friend_status,tid,is_block,user_url
+                                    allSampleData.add(new UserModel(uid, name, image, udate, category, total_images, total_videos, total_users, total_products, total_provides, total_demands, is_friend, friend_status, tid, is_block, user_url));
+
+                                }
+                                Log.d("bdm", singleItem.toString());
+                                dm.setAllItemsInSection(singleItem);
+                                Log.d("adm", singleItem.toString());
+                                Log.d("dmm", dm.toString());
+                                //allSampleData.add(dm);
+                                Log.d("allsampledatav", allSampleData.toString());
+                                // my_recycler_view.setHasFixedSize(true);
+                                Log.d("allSampleDatas", "" + allSampleData.size() + "--" + allSampleData.toString());
 
 
-                            adapter = new UserDataAdapter(getContext(), allSampleData,UserFragment.this);
-                            my_recycler_view.setAdapter(adapter);
+                                adapter = new UserDataAdapter(getContext(), allSampleData, UserFragment.this);
+                                my_recycler_view.setAdapter(adapter);
 
-                            LinearLayoutManager manager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
-                            my_recycler_view.setLayoutManager(manager);
+                                LinearLayoutManager manager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
+                                my_recycler_view.setLayoutManager(manager);
 
-                            //ItemTouchHelper.SimpleCallback itemTouchHelperCallback = new UserItemTouchHelper(0, ItemTouchHelper.LEFT,UserFragment.this);
-                            //new ItemTouchHelper(itemTouchHelperCallback).attachToRecyclerView(recycler_view_load_more);
+                                //ItemTouchHelper.SimpleCallback itemTouchHelperCallback = new UserItemTouchHelper(0, ItemTouchHelper.LEFT,UserFragment.this);
+                                //new ItemTouchHelper(itemTouchHelperCallback).attachToRecyclerView(recycler_view_load_more);
 
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                                Toast.makeText(getContext(), "" + e.getMessage(), Toast.LENGTH_SHORT).show();
+                                Log.d("catch_f", "" + e.getMessage());
+                                no_rodr.setVisibility(View.VISIBLE);
+                            }
                         }
-                        catch (JSONException e){
-                            e.printStackTrace();
-                            Toast.makeText(getContext(), ""+e.getMessage(), Toast.LENGTH_SHORT).show();
-                            Log.d("catch_f",""+e.getMessage());
+                        else {
+                            no_rodr.setVisibility(View.VISIBLE);
                         }
                     }
                 },
@@ -433,6 +440,7 @@ public class UserFragment extends Fragment implements UserDataAdapter.ItemListen
                         //Snackbar.make(getContext(),"Error...", Snackbar.LENGTH_LONG).show();
                         Toast.makeText(getContext(), "verror"+error.getMessage(), Toast.LENGTH_SHORT).show();
                         Log.d("verror",error.getMessage());
+                        no_rodr.setVisibility(View.VISIBLE);
                     }
                 }
         );

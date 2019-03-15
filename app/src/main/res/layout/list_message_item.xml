@@ -50,7 +50,6 @@
         <TextView
             android:background="@drawable/notify_circle_red"
             android:id="@+id/count_chat"
-            android:visibility="gone"
             android:layout_marginLeft="35dp"
             android:text="0"
             android:textColor="#ffffff"

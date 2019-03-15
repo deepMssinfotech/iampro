@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Handler;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -24,12 +25,13 @@ import com.mssinfotech.iampro.co.utils.PrefManager;
 import com.squareup.picasso.Picasso;
 
 public class WelcomeActivity extends AppCompatActivity implements View.OnClickListener{
-
     LinearLayout nonloginlayout;
     RelativeLayout loginlayout;
     SharedPreferences prefrence;
     ImageView btnsignin,btnsignup,btnhome,imguser;
     TextView username;
+    FragmentManager fm;
+    FragmentTransaction fragmentTransaction;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -57,17 +59,41 @@ public class WelcomeActivity extends AppCompatActivity implements View.OnClickLi
         Intent i= new Intent(this, ScheduledService.class);
         this.startService(i);
     }
-
     @Override
     public void onClick(View v) {
         switch (v.getId()) { /*to get clicked view id**/
             case R.id.imglogin:
                 LoginActivity fragment = new LoginActivity();
-                function.loadFragment(getApplicationContext(),fragment,null);
+                //function.loadFragment(WelcomeActivity.this,fragment,null);
+
+                AppCompatActivity activity =WelcomeActivity.this;
+                 fm = activity.getSupportFragmentManager(); //getFragmentManager();
+                // create a FragmentTransaction to begin the transaction and replace the Fragment
+                /*if(args != null){
+                    fragment.setArguments(args);
+                }*/
+               fragmentTransaction = fm.beginTransaction();
+                // replace the FrameLayout with new Fragment
+                fragmentTransaction.replace(android.R.id.content,fragment);
+                fragmentTransaction.addToBackStack(null);
+                fragmentTransaction.commit(); // save the changes
                 break;
             case R.id.imgsignup:
                 SignupActivity fragmentz = new SignupActivity();
-                function.loadFragment(getApplicationContext(),fragmentz,null);
+                //function.loadFragment(WelcomeActivity.this,fragmentz,null);
+
+                AppCompatActivity activitys =WelcomeActivity.this;
+                 fm = activitys.getSupportFragmentManager(); //getFragmentManager();
+                // create a FragmentTransaction to begin the transaction and replace the Fragment
+                /*if(args != null){
+                    fragment.setArguments(args);
+                }*/
+                 fragmentTransaction = fm.beginTransaction();
+                // replace the FrameLayout with new Fragment
+                fragmentTransaction.replace(android.R.id.content,fragmentz);
+                fragmentTransaction.addToBackStack(null);
+                fragmentTransaction.commit(); // save the changes
+
                 break;
             case R.id.imghome:
                 Intent i_home = new Intent(WelcomeActivity.this,HomeActivity.class);
@@ -85,10 +111,11 @@ public class WelcomeActivity extends AppCompatActivity implements View.OnClickLi
 
     @Override
     public void onBackPressed() {
-        if (Config.doubleBackToExitPressedOnce) {
+
+       /* if (Config.doubleBackToExitPressedOnce) {
             super.onBackPressed();
-            finish();
-            return;
+            //this.finish();
+           // return;
         }
         Config.doubleBackToExitPressedOnce = true;
         Toast.makeText(this, "Please click BACK again to exit", Toast.LENGTH_SHORT).show();
@@ -98,7 +125,27 @@ public class WelcomeActivity extends AppCompatActivity implements View.OnClickLi
             public void run() {
                 Config.doubleBackToExitPressedOnce = false;
             }
-        }, 2000);
-    }
+        }, 2000); */
+        int count = getSupportFragmentManager().getBackStackEntryCount();
 
+        if (count == 0) {
+            if (Config.doubleBackToExitPressedOnce) {
+                super.onBackPressed();
+                this.finish();
+                return;
+            }
+            Config.doubleBackToExitPressedOnce = true;
+            Toast.makeText(this, "Please click BACK again to exit", Toast.LENGTH_SHORT).show();
+
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    Config.doubleBackToExitPressedOnce = false;
+                }
+            }, 2000);
+        } else {
+            getSupportFragmentManager().popBackStack();
+        }
+
+    }
 }

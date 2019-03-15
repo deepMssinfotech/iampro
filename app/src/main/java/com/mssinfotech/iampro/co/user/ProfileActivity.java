@@ -95,7 +95,7 @@ public class ProfileActivity extends Fragment implements AllFeedAdapter.ItemList
     // ProgressDialog loading = ProgressDialog.show(getContext(),"Processing...","Please wait...",false,false);
     public void onBackPressed()
     {
-        FragmentManager fm = getActivity().getSupportFragmentManager();
+        FragmentManager fm =new ProfileActivity().getActivity().getSupportFragmentManager();
         fm.popBackStack();
     }
     @Override
