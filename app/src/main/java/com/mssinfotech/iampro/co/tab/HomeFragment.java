@@ -671,9 +671,6 @@ public class HomeFragment extends Fragment implements UserDataAdapter.ItemListen
     public void onItemClick(UserModel item) {
         //Toast.makeText(getContext(), item.getName()+ " is clicked", Toast.LENGTH_SHORT).show();
     }
-
-
-
    /* @Override
     public void onItemClick(DataModel item) {
         Toast.makeText(getContext(), item.getName() + " is clicked", Toast.LENGTH_SHORT).show();

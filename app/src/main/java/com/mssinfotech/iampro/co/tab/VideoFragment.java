@@ -198,7 +198,7 @@ public class VideoFragment extends Fragment implements VideoAdapter.ItemListener
                         // Do something when error occurred
                         //Snackbar.make(getContext(),"Error...", Snackbar.LENGTH_LONG).show();
                         Toast.makeText(getContext(), "verror"+error.getMessage(), Toast.LENGTH_SHORT).show();
-                        Log.d("verror",error.getMessage());
+                        Log.d("verror",""+error.getMessage());
                         pDialog.dismiss();
                         no_rodr.setVisibility(View.VISIBLE);
                     }

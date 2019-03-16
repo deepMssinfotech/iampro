@@ -39,6 +39,7 @@ import android.widget.Toast;
 import android.widget.VideoView;
 
 import com.mssinfotech.iampro.co.common.Config;
+import com.mssinfotech.iampro.co.common.PhotoFullPopupWindow;
 import com.mssinfotech.iampro.co.common.function;
 import com.mssinfotech.iampro.co.image.ImageDetail;
 import com.mssinfotech.iampro.co.model.DataModel;
@@ -215,6 +216,14 @@ public class Img_Video_Details extends RecyclerView.Adapter<Img_Video_Details.Vi
                     function.loadFragment(mContext,fragment,args);
                 }
             });
+
+             Vholder.image.setOnClickListener(new View.OnClickListener() {
+                 @Override
+                 public void onClick(View v) {
+                     new PhotoFullPopupWindow(mContext, R.layout.popup_photo_full,Vholder.image.getRootView(),mValues.get(position).getImage(), null);
+
+                 }
+             });
 
             //imageView_icon.setImageResource(R.drawable.image_icon);
         }

@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.widget.NestedScrollView;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -35,11 +36,13 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.mssinfotech.iampro.co.adapter.Img_Video_Details;
 import com.mssinfotech.iampro.co.common.Config;
+import com.mssinfotech.iampro.co.common.PhotoFullPopupWindow;
 import com.mssinfotech.iampro.co.common.function;
 import com.mssinfotech.iampro.co.model.ImageDetailModel;
 import com.mssinfotech.iampro.co.user.MyImageActivity;
 import com.mssinfotech.iampro.co.user.MyVideoActivity;
 import com.mssinfotech.iampro.co.user.ProfileActivity;
+import com.mssinfotech.iampro.co.utils.PrefManager;
 
 
 import org.json.JSONArray;
@@ -63,6 +66,7 @@ public class ImageDetail extends Fragment implements Img_Video_Details.ItemListe
     VideoView videoView;
       RatingBar ratingBar;
        RecyclerView recycler_view_review_detail;
+       LinearLayout ll_top;
     public static final String IMAGE_TYPE="image";
     public static final String VIDEO_TYPE="video";
        Img_Video_Details adapter;
@@ -72,7 +76,8 @@ public class ImageDetail extends Fragment implements Img_Video_Details.ItemListe
     Context context;
     FullscreenVideoView fullscreenVideoView;
          LinearLayout ll_comment;
-
+    NestedScrollView nsv;
+     String avatar_urll;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup parent, Bundle savedInstanceState) {
         // Defines the xml file for the fragment
@@ -85,6 +90,9 @@ public class ImageDetail extends Fragment implements Img_Video_Details.ItemListe
         context = getContext();
         tv_about_tag=view.findViewById(R.id.tv_about_tag);
         tv_about_msg=view.findViewById(R.id.tv_about_msg);
+        ll_top=view.findViewById(R.id.ll_top);
+        nsv=view.findViewById(R.id.nsv);
+
         fullname=view.findViewById(R.id.fullname);
         udate=view.findViewById(R.id.udate);
         likeButton = view.findViewById(R.id.likeButton);
@@ -106,6 +114,7 @@ public class ImageDetail extends Fragment implements Img_Video_Details.ItemListe
 
         fullscreenVideoView=view.findViewById(R.id.fullscreenVideoView);
         ratingBar=view.findViewById(R.id.ratingBar);
+
         recycler_view_review_detail=view.findViewById(R.id.recycler_view_review_detail);
         Bundle args = getArguments();
         //fid = getArguments().getString("uid");
@@ -164,6 +173,13 @@ public class ImageDetail extends Fragment implements Img_Video_Details.ItemListe
             }
         });
 
+        image.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                new PhotoFullPopupWindow(getContext(), R.layout.popup_photo_full,ll_top,avatar_urll, null);
+            }
+        });
+
     }
     protected void getImageDetail() {
         final String url = "https://www.iampro.co/api/app_service.php?type=get_image_detail&id=" + id + "&update_type=" + type + "&uid=" + uid + "&login_id=" + uid + "&my_id=" + uid;
@@ -188,7 +204,8 @@ public class ImageDetail extends Fragment implements Img_Video_Details.ItemListe
                             String imagee = responses.optString("image");
                             String category_name = responses.optString("category_name");
                             //https://www.iampro.co/uploads/album/w/500/45.png
-                            String avatar_url = Config.ALBUM_URL + imagee;
+                            final String avatar_url = "https://www.iampro.co/uploads/album/"+imagee;
+                            avatar_urll=avatar_url;
                             String udatev = responses.optString("udate");
                             String about_us = responses.optString("about_us");
                             int group_id = responses.optInt("group_id");
@@ -220,6 +237,8 @@ public class ImageDetail extends Fragment implements Img_Video_Details.ItemListe
                             Glide.with(ImageDetail.this)
                                     .load(avatar_url)
                                     .into(image);
+
+
 
                             JSONObject jsonObjectUser = responses.getJSONObject("user_detail");
                             final String added_by=jsonObjectUser.getString("id");
@@ -257,7 +276,7 @@ public class ImageDetail extends Fragment implements Img_Video_Details.ItemListe
                                     int iid = image_data.getInt("id");
                                     String namee = image_data.optString("name");
                                     String imagevv = image_data.optString("image");
-                                    String imagev = Config.ALBUM_URL + imagevv;
+                                     String imagev="https://www.iampro.co/uploads/album/"+imagevv;
                                     String about_usv = image_data.optString("about_us");
                                     int like_unlikei = image_data.optInt("like_unlike");
                                     String like_unlikev = image_data.optString("like_unlike");
