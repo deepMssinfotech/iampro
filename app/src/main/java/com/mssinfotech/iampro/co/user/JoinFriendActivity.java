@@ -518,6 +518,6 @@ public class JoinFriendActivity extends Fragment implements UserDataAdapter.Item
     }
     @Override
     public void onItemClick(UserModel item) {
-
+    Toast.makeText(getContext(),"",Toast.LENGTH_LONG).show();
     }
 }
