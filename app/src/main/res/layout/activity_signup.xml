@@ -2,7 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/background"
+    android:background="#287bbf"
     android:orientation="vertical"
     android:scrollbarAlwaysDrawVerticalTrack="true">
 <ScrollView
@@ -15,6 +15,7 @@
 
     <TextView
         android:id="@+id/login_title"
+        android:visibility="gone"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="16dp"
@@ -32,7 +33,6 @@
         android:layout_marginLeft="30dp"
         android:layout_marginRight="30dp"
         android:layout_marginTop="10dp"
-        android:background="#80ffffff"
         android:elevation="4dp"
         android:orientation="vertical"
         android:layout_marginBottom="20dp"
@@ -42,6 +42,15 @@
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:paddingTop="0dp">
+            <ImageButton
+                android:layout_gravity="center"
+                android:id="@+id/user_profile_photo"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:layout_centerHorizontal="true"
+                android:layout_margin="56dp"
+                android:background="@drawable/iampro"
+                android:elevation="4dp" />
                 <LinearLayout
                     android:orientation="horizontal"
                     android:layout_width="match_parent"
@@ -50,6 +59,7 @@
                         android:id="@+id/tvpprofession"
                         android:text="Profession : "
                         android:layout_marginTop="15dp"
+                        android:textColor="@color/white"
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent" />
                     <Spinner
@@ -60,6 +70,7 @@
                 </LinearLayout>
             <android.support.design.widget.TextInputLayout
                 android:id="@+id/tilFirstname"
+                android:textColorHint="@color/white"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
@@ -69,12 +80,14 @@
                     android:layout_height="wrap_content"
                     android:drawableLeft="@drawable/ic_action_user"
                     android:drawableTint="#000000"
+                    android:textColor="@color/white"
                     android:hint="First Name"
                     android:inputType="text"
                     android:singleLine="true" />
             </android.support.design.widget.TextInputLayout>
             <android.support.design.widget.TextInputLayout
                 android:id="@+id/tilLastName"
+                android:textColorHint="@color/white"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
@@ -84,12 +97,14 @@
                     android:layout_height="wrap_content"
                     android:drawableLeft="@drawable/ic_action_user"
                     android:drawableTint="#000000"
+                    android:textColor="@color/white"
                     android:hint="Last Name"
                     android:inputType="text"
                     android:singleLine="true" />
             </android.support.design.widget.TextInputLayout>
             <android.support.design.widget.TextInputLayout
                 android:id="@+id/tilMobile"
+                android:textColorHint="@color/white"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
@@ -99,12 +114,14 @@
                     android:layout_height="wrap_content"
                     android:drawableLeft="@drawable/ic_action_mobile"
                     android:drawableTint="#000000"
+                    android:textColor="@color/white"
                     android:hint="Mobile Number"
                     android:inputType="number"
                     android:singleLine="true" />
             </android.support.design.widget.TextInputLayout>
             <android.support.design.widget.TextInputLayout
                 android:id="@+id/tilEmail"
+                android:textColorHint="@color/white"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
@@ -114,6 +131,7 @@
                     android:layout_height="wrap_content"
                     android:drawableLeft="@drawable/ic_action_message"
                     android:drawableTint="#000000"
+                    android:textColor="@color/white"
                     android:singleLine="true"
                     android:hint="Email Address"
                     android:inputType="textEmailAddress" />
@@ -122,21 +140,23 @@
 
             <Button
                 android:id="@+id/btnRegister"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
+                android:layout_width="200dp"
                 android:layout_margin="22dp"
-                android:background="@drawable/black"
+                android:background="@drawable/loginbuttonbg"
                 android:text="Process Now"
-                android:textAllCaps="false"
+                android:layout_height="40dp"
+                android:layout_gravity="center"
+                android:textAllCaps="true"
                 android:textColor="#fff"
                 android:textSize="18sp" />
             <TextView
+                android:textColor="@color/white"
                 android:id="@+id/btnLogin"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:paddingBottom="5dp"
-                android:text="Login Now" />
+                android:text="Already Have Account ?" />
         </LinearLayout>
     </RelativeLayout>
     </RelativeLayout>

@@ -26,7 +26,7 @@ import com.squareup.picasso.Picasso;
 
 public class WelcomeActivity extends AppCompatActivity implements View.OnClickListener{
     LinearLayout nonloginlayout;
-    RelativeLayout loginlayout;
+    RelativeLayout loginlayout,loginimage,signupimage;
     SharedPreferences prefrence;
     ImageView btnsignin,btnsignup,btnhome,imguser;
     TextView username;
@@ -41,15 +41,19 @@ public class WelcomeActivity extends AppCompatActivity implements View.OnClickLi
         btnhome = findViewById(R.id.imghome);
         username = findViewById(R.id.username);
         imguser = findViewById(R.id.imguser);
+
         btnsignin.setOnClickListener(this);
         btnsignup.setOnClickListener(this);
         btnhome.setOnClickListener(this);
         if(PrefManager.isLogin(this)){
             loginlayout = findViewById(R.id.loginlayout);
             loginlayout.setVisibility(View.VISIBLE);
-            nonloginlayout = findViewById(R.id.nonloginlayout);
-            nonloginlayout.setVisibility(View.GONE);
-
+            //nonloginlayout = findViewById(R.id.nonloginlayout);
+            //nonloginlayout.setVisibility(View.GONE);
+            loginimage = findViewById(R.id.loginimage);
+            signupimage = findViewById(R.id.signupimage);
+            loginimage.setVisibility(View.GONE);
+            signupimage.setVisibility(View.GONE);
             String avatar=Config.AVATAR_URL+"250/250/"+PrefManager.getLoginDetail(this,"img_url");
             username.setText(PrefManager.getLoginDetail(this,"fname"));
             Glide.with(this).load(avatar).into(imguser);
