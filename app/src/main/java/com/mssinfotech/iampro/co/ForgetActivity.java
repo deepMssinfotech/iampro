@@ -54,7 +54,7 @@ public class ForgetActivity extends AppCompatActivity   implements View.OnClickL
         switch (v.getId() /*to get clicked view id**/) {
             case R.id.btnLogin:
                 LoginActivity fragment = new LoginActivity();
-                function.loadFragment(getApplicationContext(),fragment,null);
+                function.loadFragment(ForgetActivity.this,fragment,null);
                 break;
 
             default:
@@ -82,16 +82,15 @@ public class ForgetActivity extends AppCompatActivity   implements View.OnClickL
                                 String status=jsonObject.getString("status");
                                 String msg=jsonObject.getString("msg");
                                 Toast.makeText(ForgetActivity.this, msg, Toast.LENGTH_LONG).show();
-                                if (status.equalsIgnoreCase("success")) {
+                                //if (status.equalsIgnoreCase("success")) {
                                     String vcode = jsonObject.getString("vcode");
                                     Log.d("Lresponse", "" + vcode);
-                                    Intent intent = new Intent(getApplicationContext(), OtpForgetActivity.class);
-                                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                                    intent.putExtra("vcode", vcode);
-                                    intent.putExtra("email", etemail.getText().toString().trim());
-                                    startActivity(intent);
-                                    finish();
-                                }
+                                    OtpForgetActivity fragment = new OtpForgetActivity();
+                                    Bundle arg = new Bundle();
+                                    arg.putString("vcode", vcode);
+                                    arg.putString("email", etemail.getText().toString().trim());
+                                    function.loadFragment(ForgetActivity.this,fragment,arg);
+                                //}
                             } catch (JSONException e) {
                                 e.printStackTrace();
                             }

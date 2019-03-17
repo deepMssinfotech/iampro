@@ -98,6 +98,6 @@ dependencies {
     annotationProcessor 'com.github.bumptech.glide:compiler:4.7.1'
 
     implementation 'com.github.yalantis:ucrop:2.2.2'
-
+     implementation 'com.github.JakeWharton:ViewPagerIndicator:2.4.1'
 }
 apply plugin: 'com.google.gms.google-services'

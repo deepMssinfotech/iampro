@@ -13,6 +13,7 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
 
+import com.mssinfotech.iampro.co.activity.MainActivity;
 import com.mssinfotech.iampro.co.utils.PrefManager;
 
 import pl.droidsonroids.gif.GifImageView;
@@ -27,6 +28,7 @@ public class IntroActivity extends AppCompatActivity {
             android.Manifest.permission.CAMERA,
             Manifest.permission.INTERNET,
             Manifest.permission.READ_SMS,
+            Manifest.permission.RECEIVE_SMS,
             Manifest.permission.ACCESS_NOTIFICATION_POLICY,
             Manifest.permission.BIND_NOTIFICATION_LISTENER_SERVICE
 

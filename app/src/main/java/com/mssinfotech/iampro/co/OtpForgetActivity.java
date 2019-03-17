@@ -1,13 +1,24 @@
 package com.mssinfotech.iampro.co;
 
+import android.Manifest;
 import android.app.ProgressDialog;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
+import android.content.pm.PackageManager;
 import android.os.Handler;
 import android.support.design.widget.TextInputLayout;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -25,11 +36,13 @@ import com.mssinfotech.iampro.co.common.function;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
 import java.util.Hashtable;
+import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
-public class OtpForgetActivity extends AppCompatActivity {
+public class OtpForgetActivity extends Fragment {
 
     private Button btnforgetotpprocess;
 
@@ -38,34 +51,92 @@ public class OtpForgetActivity extends AppCompatActivity {
     Random r = new Random();
     public static String email, vcode;
     public static int randomNumber;
-
+    View view;
+    Intent intent;
+    Context context;
+    public static final int REQUEST_ID_MULTIPLE_PERMISSIONS = 1;
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_otp_forget);
-        tilotp= findViewById(R.id.tilotp);
-        etotp = findViewById(R.id.etotp);
-        tilnpassword= findViewById(R.id.tilnpassword);
-        etnpassword = findViewById(R.id.etnpassword);
-        tilcpassword= findViewById(R.id.tilcpassword);
-        etcpassword = findViewById(R.id.etcpassword);
-        email=getIntent().getExtras().getString("email");
-        vcode=getIntent().getExtras().getString("vcode");
+    public View onCreateView(LayoutInflater inflater, ViewGroup parent, Bundle savedInstanceState) {
+        // Defines the xml file for the fragment
+        return inflater.inflate(R.layout.activity_otp_forget, parent, false);
+    }
+    @Override
+    public void onViewCreated(View v, Bundle savedInstanceState) {
+        view = v;
+        tilotp= view.findViewById(R.id.tilotp);
+        etotp = view.findViewById(R.id.etotp);
+        tilnpassword= view.findViewById(R.id.tilnpassword);
+        etnpassword = view.findViewById(R.id.etnpassword);
+        tilcpassword= view.findViewById(R.id.tilcpassword);
+        etcpassword = view.findViewById(R.id.etcpassword);
+        Bundle args = getArguments();
+        //fid = getArguments().getString("uid");
+        if (args != null) {
+            email = args.getString("email").toString();
+            vcode = args.getString("vcode").toString();
+        }else{
+            email = intent.getStringExtra("email");
+            vcode = intent.getStringExtra("vcode");
+        }
+        btnforgetotpprocess = view.findViewById(R.id.btnforgetotpprocess);
+        btnforgetotpprocess.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                update_password(v);
+            }
+        });
+        //checkAndRequestPermissions();
+    }
+    private BroadcastReceiver receiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            if (intent.getAction().equalsIgnoreCase("otp")) {
+                final String message = intent.getStringExtra("message");
+                String separated = message.replaceAll("[^0-9]", "");
+                //TextView tv = (TextView) findViewById(R.id.txtview);
+                etotp.setText(separated);
+                Toast.makeText(getActivity() , "OTP is : "+separated, Toast.LENGTH_LONG).show();
+                Log.e("otp is",separated);
+            }
+        }
+    };
+    @Override
+    public void onResume() {
+        LocalBroadcastManager.getInstance(context).registerReceiver(receiver, new IntentFilter("otp"));
+        super.onResume();
 
     }
 
+    @Override
+    public void onPause() {
+        super.onPause();
+        LocalBroadcastManager.getInstance(context).unregisterReceiver(receiver);
+    }
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode == 5) {
+            if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                // Now user should be able to use camera
+            }
+            else {
 
+                Toast.makeText(context, "Unable to use Camera..Please Allow us to use Camera", Toast.LENGTH_LONG).show();
+
+            }
+        }
+    }
 
     public void update_password(View v){
         if (validatenpassword()) {
-            if (!Config.haveNetworkConnection(this)) {
-                Config.showInternetDialog(this);
+            if (!Config.haveNetworkConnection(context)) {
+                Config.showInternetDialog(context);
                 return;
             }
             randomNumber = r.nextInt(10000);
             final String url = Config.API_URL + "app_service.php";
             //tv.setText(String.valueOf(randomNumber));
-            final ProgressDialog loading = ProgressDialog.show(this, "Processing...", "Please wait...", false, false);
+            final ProgressDialog loading = ProgressDialog.show(context, "Processing...", "Please wait...", false, false);
             StringRequest stringRequest = new StringRequest(Request.Method.POST, url,
                     new Response.Listener<String>() {
                         @Override
@@ -80,10 +151,10 @@ public class OtpForgetActivity extends AppCompatActivity {
                                 String msg = result.getString("msg");
                                 if (status.equals("success")) {
                                     LoginActivity fragment = new LoginActivity();
-                                    function.loadFragment(getApplicationContext(),fragment,null);
-                                    finish();
+                                    function.loadFragment(context,fragment,null);
+                                    //finish();
                                 } else {
-                                    Toast.makeText(OtpForgetActivity.this, msg, Toast.LENGTH_LONG).show();
+                                    Toast.makeText(getActivity() , msg, Toast.LENGTH_LONG).show();
                                 }
                             } catch (JSONException e) {
                                 e.printStackTrace();
@@ -96,7 +167,7 @@ public class OtpForgetActivity extends AppCompatActivity {
                             //Dismissing the progress dialog
                             loading.dismiss();
                             Log.d("error", volleyError.getMessage() + "--" + url.toString());
-                            Toast.makeText(getApplicationContext(), volleyError.getMessage(), Toast.LENGTH_LONG).show();
+                            Toast.makeText(context, volleyError.getMessage(), Toast.LENGTH_LONG).show();
                         }
                     }) {
                 @Override
@@ -117,7 +188,7 @@ public class OtpForgetActivity extends AppCompatActivity {
                 }
             };
             //Creating a Request Queue
-            RequestQueue requestQueue = Volley.newRequestQueue(this);
+            RequestQueue requestQueue = Volley.newRequestQueue(context);
 
             //Adding request to the queue
             requestQueue.add(stringRequest);
@@ -153,30 +224,6 @@ public class OtpForgetActivity extends AppCompatActivity {
             tilcpassword.setErrorEnabled(false);
             tilotp.setErrorEnabled(false);
             return true;
-        }
-    }
-
-    @Override
-    public void onBackPressed() {
-        int count = getSupportFragmentManager().getBackStackEntryCount();
-
-        if (count == 0) {
-            if (Config.doubleBackToExitPressedOnce) {
-                super.onBackPressed();
-                //this.finish();
-                // return;
-            }
-            Config.doubleBackToExitPressedOnce = true;
-            Toast.makeText(this, "Please click BACK again to exit", Toast.LENGTH_SHORT).show();
-
-            new Handler().postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    Config.doubleBackToExitPressedOnce = false;
-                }
-            }, 2000);
-        } else {
-            getSupportFragmentManager().popBackStack();
         }
     }
 }

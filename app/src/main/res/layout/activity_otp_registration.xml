@@ -1,11 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/background"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="#287bbf"
     android:orientation="vertical"
     android:scrollbarAlwaysDrawVerticalTrack="true">
-
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
     <TextView
         android:id="@+id/login_title"
         android:layout_width="fill_parent"
@@ -13,10 +20,11 @@
         android:layout_marginBottom="16dp"
         android:layout_marginTop="22dp"
         android:gravity="center_horizontal"
+        android:visibility="gone"
         android:text="OTP process"
         android:textColor="#fff"
         android:textSize="26sp"
-        android:textStyle="bold" />
+        android:textStyle="bold"/>
 
     <RelativeLayout
         android:layout_width="fill_parent"
@@ -25,8 +33,6 @@
         android:layout_marginLeft="30dp"
         android:layout_marginRight="30dp"
         android:layout_marginTop="70dp"
-        android:background="#80ffffff"
-        android:elevation="4dp"
         android:orientation="vertical"
         android:padding="20dp">
 
@@ -35,14 +41,45 @@
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:paddingTop="30dp">
-
-            <android.support.design.widget.TextInputLayout
-                android:id="@+id/tilotp"
+            <RelativeLayout
+                android:layout_margin="56dp"
+                android:layout_gravity="center"
+                android:layout_centerHorizontal="true"
+                android:gravity="center"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
-                <EditText
+                <de.hdodenhof.circleimageview.CircleImageView
+                    android:id="@+id/changeImage"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:background="@drawable/welcome_newuser"
+                    app:civ_border_color="@color/white"
+                    app:civ_border_width="1dp"
+                    android:foregroundGravity="center"
+                    app:civ_circle_background_color="#ffffff"
+                    app:civ_fill_color="@color/white" />
+                <TextView
+                    android:layout_below="@+id/changeImage"
+                    android:layout_width="100dp"
+                    android:textColor="@color/white"
+                    android:layout_marginTop="5dp"
+                    android:text="Change Profile"
+                    android:gravity="center"
+                    android:layout_height="wrap_content" />
+            </RelativeLayout>
+
+
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/tilotp"
+                android:textColorHint="@color/white"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <android.support.design.widget.TextInputEditText
                     android:id="@+id/etotp"
+                    android:textColorHint="@color/white"
+                    android:textColor="@color/white"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
                     android:drawableLeft="@drawable/ic_action_mobile"
@@ -54,10 +91,13 @@
 
             <android.support.design.widget.TextInputLayout
                 android:id="@+id/tilpassword"
+                android:textColorHint="@color/white"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
-                <EditText
+                <android.support.design.widget.TextInputEditText
+                    android:textColorHint="@color/white"
+                    android:textColor="@color/white"
                     android:id="@+id/etpassword"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
@@ -70,10 +110,13 @@
             </android.support.design.widget.TextInputLayout>
             <android.support.design.widget.TextInputLayout
                 android:id="@+id/tilcpassword"
+                android:textColorHint="@color/white"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
-                <EditText
+                <android.support.design.widget.TextInputEditText
+                    android:textColorHint="@color/white"
+                    android:textColor="@color/white"
                     android:id="@+id/etcpassword"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
@@ -90,33 +133,25 @@
 
             <Button
                 android:id="@+id/btnprocess"
-                android:layout_width="fill_parent"
+                android:layout_width="200dp"
+                android:layout_gravity="center"
                 android:layout_height="wrap_content"
                 android:layout_margin="22dp"
-                android:background="@drawable/black"
+                android:background="@drawable/loginbuttonbg"
                 android:text="Register Now"
-                android:onClick="sendData"
                 android:textAllCaps="false"
                 android:textColor="#fff"
                 android:textSize="18sp" />
             <TextView
                 android:id="@+id/btnResedOTP"
+                android:textColor="@color/white"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:onClick="resend"
                 android:paddingBottom="5dp"
-                android:text="Resend OTP?" />
+                android:text="Resend OTP ?" />
         </LinearLayout>
     </RelativeLayout>
+        </RelativeLayout></ScrollView>
 
-    <ImageButton
-        android:id="@+id/user_profile_photo"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
-        android:layout_below="@+id/login_title"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="16dp"
-        android:background="@drawable/iampro"
-        android:elevation="4dp" />
 </RelativeLayout>

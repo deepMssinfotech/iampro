@@ -17,9 +17,12 @@ import android.support.v4.widget.ViewDragHelper;
 import android.util.AttributeSet;
 import android.util.DisplayMetrics;
 import android.view.GestureDetector;
+import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
+
 import com.mssinfotech.iampro.co.R;
 /**
  * Created by Mark O'Sullivan on 25th February 2018.
@@ -96,19 +99,22 @@ public class SwipeRevealLayout extends ViewGroup {
 
     private ViewDragHelper mDragHelper;
     private GestureDetectorCompat mGestureDetector;
-
+     private Context context;
     public SwipeRevealLayout(Context context) {
         super(context);
         init(context, null);
+         this.context=context;
     }
 
     public SwipeRevealLayout(Context context, AttributeSet attrs) {
         super(context, attrs);
         init(context, attrs);
+         this.context=context;
     }
 
     public SwipeRevealLayout(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
+         this.context=context;
     }
 
     @Nullable
@@ -130,6 +136,7 @@ public class SwipeRevealLayout extends ViewGroup {
     public boolean onTouchEvent(MotionEvent event) {
         mGestureDetector.onTouchEvent(event);
         mDragHelper.processTouchEvent(event);
+        Toast.makeText(context,"Touched...",Toast.LENGTH_LONG).show();
         return true;
     }
 
@@ -242,17 +249,13 @@ public class SwipeRevealLayout extends ViewGroup {
                     break;
             }
         }
-
         initRects();
-
         if (mIsOpenBeforeInit) {
             open(false);
         } else {
             close(false);
         }
-
     }
-
     /**
      * {@inheritDoc}
      */
@@ -342,7 +345,6 @@ public class SwipeRevealLayout extends ViewGroup {
             ViewCompat.postInvalidateOnAnimation(this);
         }
     }
-
     /**
      * Open the panel to show the secondary view
      */
@@ -706,10 +708,15 @@ public class SwipeRevealLayout extends ViewGroup {
             ViewCompat.postInvalidateOnAnimation(SwipeRevealLayout.this);
         }
     };
-
     private int pxToDp(int px) {
         Resources resources = getContext().getResources();
         DisplayMetrics metrics = resources.getDisplayMetrics();
         return (int) (px / ((float)metrics.densityDpi / DisplayMetrics.DENSITY_DEFAULT));
+    }
+
+    @Override
+    public boolean onKeyLongPress(int keyCode, KeyEvent event) {
+        Toast.makeText(context,"Long Press",Toast.LENGTH_LONG).show();
+        return super.onKeyLongPress(keyCode, event);
     }
 }

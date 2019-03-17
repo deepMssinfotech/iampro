@@ -2,11 +2,17 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/background"
+    android:background="#287bbf"
     android:orientation="vertical"
     android:scrollbarAlwaysDrawVerticalTrack="true">
-
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
     <TextView
+        android:visibility="gone"
         android:id="@+id/login_title"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
@@ -25,7 +31,6 @@
         android:layout_marginLeft="30dp"
         android:layout_marginRight="30dp"
         android:layout_marginTop="70dp"
-        android:background="#80ffffff"
         android:elevation="4dp"
         android:orientation="vertical"
         android:padding="20dp">
@@ -35,9 +40,20 @@
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:paddingTop="30dp">
+            <ImageButton
+                android:id="@+id/user_profile_photo"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:layout_below="@+id/login_title"
+                android:layout_centerHorizontal="true"
+                android:layout_gravity="center"
+                android:layout_margin="56dp"
+                android:background="@drawable/iampro"
+                android:elevation="4dp" />
 
             <android.support.design.widget.TextInputLayout
                 android:id="@+id/tilotp"
+                android:textColorHint="@color/white"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
@@ -47,6 +63,8 @@
                     android:layout_height="wrap_content"
                     android:drawableLeft="@drawable/ic_action_mobile"
                     android:drawableTint="#000000"
+                    android:textColorHint="@color/white"
+                    android:textColor="@color/white"
                     android:hint="Enter OTP"
                     android:inputType="number"
                     android:singleLine="true" />
@@ -54,11 +72,14 @@
 
             <android.support.design.widget.TextInputLayout
                 android:id="@+id/tilnpassword"
+                android:textColorHint="@color/white"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
                 <EditText
                     android:id="@+id/etnpassword"
+                    android:textColorHint="@color/white"
+                    android:textColor="@color/white"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="16dp"
@@ -70,6 +91,7 @@
             </android.support.design.widget.TextInputLayout>
             <android.support.design.widget.TextInputLayout
                 android:id="@+id/tilcpassword"
+                android:textColorHint="@color/white"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
@@ -78,6 +100,8 @@
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="16dp"
+                    android:textColorHint="@color/white"
+                    android:textColor="@color/white"
                     android:drawableLeft="@drawable/ic_action_key"
                     android:drawableTint="#000000"
                     android:hint="Confirm Password"
@@ -90,11 +114,11 @@
 
             <Button
                 android:id="@+id/btnforgetotpprocess"
-                android:layout_width="fill_parent"
+                android:layout_width="200dp"
+                android:layout_gravity="center"
                 android:layout_height="wrap_content"
                 android:layout_margin="22dp"
-                android:onClick="update_password"
-                android:background="@drawable/black"
+                android:background="@drawable/loginbuttonbg"
                 android:text="Change Password"
                 android:textAllCaps="false"
                 android:textColor="#fff"
@@ -104,18 +128,11 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
+                android:textColor="@color/white"
                 android:paddingBottom="5dp"
-                android:text="Resend OTP?" />
+                android:text="Resend OTP ?" />
         </LinearLayout>
     </RelativeLayout>
+        </RelativeLayout></ScrollView>
 
-    <ImageButton
-        android:id="@+id/user_profile_photo"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
-        android:layout_below="@+id/login_title"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="16dp"
-        android:background="@drawable/iampro"
-        android:elevation="4dp" />
 </RelativeLayout>

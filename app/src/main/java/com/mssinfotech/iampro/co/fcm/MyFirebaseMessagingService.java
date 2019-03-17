@@ -20,7 +20,6 @@ import com.mssinfotech.iampro.co.FirebaseChatMainApp;
 
 import com.mssinfotech.iampro.co.R;
 import com.mssinfotech.iampro.co.events.PushNotificationEvent;
-import com.mssinfotech.iampro.co.ui.activities.ChatActivity;
 import com.mssinfotech.iampro.co.utils.Constants;
 
 import org.greenrobot.eventbus.EventBus;
@@ -83,7 +82,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                                   String receiver,
                                   String receiverUid,
                                   String firebaseToken) {
-        Intent intent = new Intent(this, ChatActivity.class);
+        Intent intent = new Intent(this, null);
         intent.putExtra(Constants.ARG_RECEIVER, receiver);
         intent.putExtra(Constants.ARG_RECEIVER_UID, receiverUid);
         intent.putExtra(Constants.ARG_FIREBASE_TOKEN, firebaseToken);

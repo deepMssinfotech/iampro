@@ -1,10 +1,13 @@
 package com.mssinfotech.iampro.co.tab;
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
+import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
@@ -28,14 +31,18 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.mssinfotech.iampro.co.BuildConfig;
+import com.mssinfotech.iampro.co.LoadingActivity;
 import com.mssinfotech.iampro.co.R;
+import com.mssinfotech.iampro.co.WelcomeActivity;
 import com.mssinfotech.iampro.co.adapter.HomeAdapter;
 import com.mssinfotech.iampro.co.adapter.RecyclerViewAdapter;
 import com.mssinfotech.iampro.co.adapter.RecyclerViewDataAdapter;
 import com.mssinfotech.iampro.co.adapter.UserDataAdapter;
 import com.mssinfotech.iampro.co.api.Client;
 import com.mssinfotech.iampro.co.api.Service;
+import com.mssinfotech.iampro.co.common.SlidingImage_Adapter;
 import com.mssinfotech.iampro.co.data.AutoFitGridLayoutManager;
+import com.mssinfotech.iampro.co.data.ImageModel;
 import com.mssinfotech.iampro.co.model.DataModel;
 import com.mssinfotech.iampro.co.model.Home;
 import com.mssinfotech.iampro.co.model.HomesResponse;
@@ -47,6 +54,8 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -58,6 +67,7 @@ import com.mssinfotech.iampro.co.common.Config;
 import com.mssinfotech.iampro.co.model.UserModel;
 import com.mssinfotech.iampro.co.utils.PrefManager;
 import com.takusemba.multisnaprecyclerview.MultiSnapRecyclerView;
+import com.viewpagerindicator.CirclePageIndicator;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -77,6 +87,14 @@ public class HomeFragment extends Fragment implements UserDataAdapter.ItemListen
     RecyclerViewDataAdapter adapterr;
     UserDataAdapter user_adapter;
     ArrayList<UserModel> userSampleData=new ArrayList<>();
+    View views;
+//sliderr
+    private static ViewPager mPager;
+    private static int currentPage = 0;
+    private static int NUM_PAGES = 0;
+    private ArrayList<com.mssinfotech.iampro.co.data.ImageModel> imageModelArrayList;
+
+
     public HomeFragment() {
         // Required empty public constructor
     }
@@ -90,10 +108,141 @@ public class HomeFragment extends Fragment implements UserDataAdapter.ItemListen
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view=inflater.inflate(R.layout.frag_home, container, false);
+        views=view;
          //oolbar =view.findViewById(R.id.toolbar);
 
         return view;
     }
+   /* private ArrayList<ImageModel> populateList(){
+
+        ArrayList<ImageModel> list = new ArrayList<>();
+
+        for(int i = 0; i < 6; i++){
+            ImageModel imageModel = new ImageModel();
+            //imageModel.setImage_drawable(myImageList[i]);
+            list.add(imageModel);
+        }
+
+        return list;
+    }*/
+    private void init() {
+
+        mPager = views.findViewById(R.id.pager);
+        mPager.setAdapter(new SlidingImage_Adapter(getContext(),imageModelArrayList));
+
+        CirclePageIndicator indicator = (CirclePageIndicator)views.findViewById(R.id.indicator);
+
+        indicator.setViewPager(mPager);
+
+        final float density = getResources().getDisplayMetrics().density;
+
+//Set circle indicator radius
+        indicator.setRadius(5 * density);
+
+        NUM_PAGES =imageModelArrayList.size();
+
+        // Auto start of viewpager
+        final Handler handler = new Handler();
+        final Runnable Update = new Runnable() {
+            public void run() {
+                if (currentPage == NUM_PAGES) {
+                    currentPage = 0;
+                }
+                mPager.setCurrentItem(currentPage++, true);
+            }
+        };
+        Timer swipeTimer = new Timer();
+        swipeTimer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                handler.post(Update);
+            }
+        }, 3000, 3000);
+
+        // Pager listener over indicator
+        indicator.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+
+            @Override
+            public void onPageSelected(int position) {
+                currentPage = position;
+
+            }
+
+            @Override
+            public void onPageScrolled(int pos, float arg1, int arg2) {
+
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int pos) {
+
+            }
+        });
+
+    }
+     private void getTopSlider(){
+        final String url="https://www.iampro.co/api/index.php?type=get_slider&name=TOP_SLIDER";
+         RequestQueue requestQueue = Volley.newRequestQueue(getContext());
+         // Initialize a new JsonArrayRequest instance
+         JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(
+                 Request.Method.GET,
+                 url,
+                 null,
+                 new com.android.volley.Response.Listener<JSONArray>() {
+                     @Override
+                     public void onResponse(JSONArray response) {
+                         // pDialog.dismiss();
+                         Log.d("responsef",response.toString());
+
+                         try{
+                             for(int i=0;i<response.length();i++){
+                                 // Get current json object
+                                 JSONObject student = response.getJSONObject(i);
+
+                                 String id = student.optString("id");
+                                 String heading = student.optString("heading");
+
+                                 String slider_type=student.optString("slider_type");
+                                  //id ,heading,slider_type,link,image,slider_image,status,language,lorder,no,index,mindex
+                                 String link=student.optString("link");
+                                 String imagev=student.optString("image");
+                                 String slider_image=student.optString("slider_image");
+                                 String status=student.optString("status");
+                                 String language=student.optString("language");
+                                 String lorder=student.optString("lorder");
+                                  int no=student.optInt("no");
+                                  int index=student.optInt("index");
+                                  int mindex=student.optInt("mindex");
+
+                                 String image= Config.URL_ROOT+"uploads/album/300/250/"+imagev;
+                                 imageModelArrayList.add(new ImageModel(id,heading,slider_type,link,imagev,slider_image,status,language,lorder,no,index,String.valueOf(mindex)));
+                                 //singleItem.add(new SingleItemModel(id, name,image,udate,daysago,totallike,comments,uid,fullname,avatar,isliked,"image"));
+                             }
+                             init();
+                         }
+                         catch (JSONException e){
+                             //pDialog.dismiss();
+                             e.printStackTrace();
+                             Toast.makeText(getContext(), ""+e.getMessage(), Toast.LENGTH_SHORT).show();
+                             Log.d("catch_f",""+e.getMessage());
+                         }
+                     }
+                 },
+                 new com.android.volley.Response.ErrorListener(){
+                     @Override
+                     public void onErrorResponse(VolleyError error){
+                         //pDialog.dismiss();
+                         // Do something when error occurred
+                         //Snackbar.make(getContext(),"Error...", Snackbar.LENGTH_LONG).show();
+                         Toast.makeText(getContext(), "verror"+error.getMessage(), Toast.LENGTH_SHORT).show();
+                         Log.d("verror",""+error.getMessage());
+                     }
+                 }
+         );
+         jsonArrayRequest.setRetryPolicy(new DefaultRetryPolicy(3000,0,DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+         // Add JsonArrayRequest to the RequestQueue
+         requestQueue.add(jsonArrayRequest);
+     }
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
@@ -108,7 +257,26 @@ public class HomeFragment extends Fragment implements UserDataAdapter.ItemListen
         if(PrefManager.isLogin(getContext()))
         uid= Integer.parseInt(PrefManager.getLoginDetail(getContext(),"id"));
         //callData();
-        getImage();
+      /*  new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                //getTopSlider();
+            }
+        }, 3500);
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                //init();
+            }
+        }, 3500);
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+
+            }
+        }, 3500); */
+
+
         //my_recycler_view,recycler_view_video,recycler_view_user,recycler_view_product,recycler_view_provide,recycler_view_demand
          my_recycler_view =view.findViewById(R.id.my_recycler_view);
         recycler_view_list=view.findViewById(R.id.recycler_view_list);
@@ -133,6 +301,7 @@ public class HomeFragment extends Fragment implements UserDataAdapter.ItemListen
         my_recycler_view.setAdapter(adapter); */
 
         // Inflate the layout for this fragment
+        getImage();
 
     }
 

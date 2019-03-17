@@ -100,7 +100,7 @@ public class SignupActivity extends Fragment implements View.OnClickListener{
             Config.showInternetDialog(context);
             return;
         }
-         randomNumber = r.nextInt(10000);
+        randomNumber = r.nextInt(10000);
         final String url=Config.API_URL+"ajax.php";
         //tv.setText(String.valueOf(randomNumber));
         final ProgressDialog loading = ProgressDialog.show(context,"Processing...","Please wait...",false,false);
@@ -113,19 +113,16 @@ public class SignupActivity extends Fragment implements View.OnClickListener{
                         //Showing toast message of the response
                         //Toast.makeText(LoginActivity.this, s , Toast.LENGTH_LONG).show();
                         Log.d("Lresponse",""+s);
-
-                        Intent intent=new Intent(context,OtpRegistrationActivity.class);
-                        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                        intent.putExtra("otp",String.valueOf(randomNumber));
-                        intent.putExtra("fname",etFirstname.getText().toString().trim());
-                        intent.putExtra("lname",etLastname.getText().toString().trim());
-                        intent.putExtra("mobile",etMobile.getText().toString().trim());
-                        intent.putExtra("email",etEmail.getText().toString().trim());
-                        intent.putExtra("category",spprofession.getSelectedItem().toString().trim());
-
-                        startActivity(intent);
-                        getActivity().finish();
-
+                        OtpRegistrationActivity fregment = new OtpRegistrationActivity();
+                        Bundle arg = new Bundle();
+                        arg.putString("otp",String.valueOf(randomNumber));
+                        arg.putString("fname",etFirstname.getText().toString().trim());
+                        arg.putString("lname",etLastname.getText().toString().trim());
+                        arg.putString("mobile",etMobile.getText().toString().trim());
+                        arg.putString("email",etEmail.getText().toString().trim());
+                        arg.putString("category",spprofession.getSelectedItem().toString().trim());
+                        function.loadFragment(context,fregment,arg);
+                        //getActivity().finish();
                     }
                 },
                 new Response.ErrorListener() {

@@ -25,7 +25,6 @@ import com.mssinfotech.iampro.co.MessageActivity;
 import com.mssinfotech.iampro.co.NotificationActivity;
 import com.mssinfotech.iampro.co.R;
 import com.mssinfotech.iampro.co.SearchActivity;
-import com.mssinfotech.iampro.co.ui.activities.SplashActivity;
 import com.mssinfotech.iampro.co.user.ProfileActivity;
 import com.mssinfotech.iampro.co.utils.PrefManager;
 
