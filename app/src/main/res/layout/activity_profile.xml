@@ -46,11 +46,34 @@
                             android:layout_width="match_parent"
                             android:layout_height="match_parent">
                             <ImageView
+                                android:id="@+id/changeBackground_Image"
+                                android:layout_width="30dp"
+                                android:layout_height="30dp"
+                                android:layout_alignParentRight="true"
+                                android:layout_marginStart="20dp"
+                                android:layout_marginLeft="20dp"
+                                android:layout_marginTop="20dp"
+                                android:layout_marginEnd="20dp"
+                                android:layout_marginRight="16dp"
+                                android:layout_marginBottom="20dp"
+                                android:visibility="gone"
+                                android:adjustViewBounds="true"
+                                android:background="@drawable/img_circle_placeholder"
+                                android:elevation="45dp"
+                                android:padding="5dp"
+                                android:src="@drawable/upload_photo" />
+                            <ImageView
                                 android:id="@+id/userbackgroud"
                                 android:src="@drawable/profile_background"
                                 android:layout_width="match_parent"
                                 android:scaleType="fitXY"
                                 android:layout_height="match_parent" />
+                    <RelativeLayout
+                        android:layout_marginBottom="@dimen/profile_icon_margin_bottom"
+                        android:layout_marginLeft="@dimen/profile_icon_margin_left"
+                        android:layout_alignParentBottom="true"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content">
                             <de.hdodenhof.circleimageview.CircleImageView
                                 android:id="@+id/userimage"
                                 android:layout_alignParentBottom="true"
@@ -58,7 +81,20 @@
                                 android:layout_marginLeft="@dimen/profile_icon_margin_left"
                                 android:src="@drawable/iampro"
                                 android:layout_height="@dimen/profile_icon_height"
-                                android:layout_width="@dimen/profile_icon_height" />
+                                android:layout_width="@dimen/profile_icon_height"/>
+                        <ImageView
+                            android:adjustViewBounds="true"
+                            android:id="@+id/changeImage"
+                            android:elevation="5dp"
+                            android:layout_marginTop="55dp"
+                            android:layout_marginLeft="70dp"
+                            android:background="@drawable/img_circle_placeholder"
+                            android:padding="5dp"
+                             android:visibility="gone"
+                            android:layout_width="30dp"
+                            android:layout_height="30dp"
+                            android:src="@drawable/upload_photo"/>
+                     </RelativeLayout>
                         </RelativeLayout>
                     </LinearLayout>
                 <RelativeLayout

@@ -89,10 +89,10 @@ public class HomeFragment extends Fragment implements UserDataAdapter.ItemListen
     ArrayList<UserModel> userSampleData=new ArrayList<>();
     View views;
 //sliderr
-    private static ViewPager mPager;
+    private static ViewPager mPager,mPager2;
     private static int currentPage = 0;
     private static int NUM_PAGES = 0;
-    private ArrayList<com.mssinfotech.iampro.co.data.ImageModel> imageModelArrayList;
+    private ArrayList<com.mssinfotech.iampro.co.data.ImageModel> imageModelArrayList,imageModelArrayList2;
 
 
     public HomeFragment() {
@@ -180,6 +180,7 @@ public class HomeFragment extends Fragment implements UserDataAdapter.ItemListen
         });
 
     }
+
      private void getTopSlider(){
         final String url="https://www.iampro.co/api/index.php?type=get_slider&name=TOP_SLIDER";
          RequestQueue requestQueue = Volley.newRequestQueue(getContext());
@@ -193,7 +194,9 @@ public class HomeFragment extends Fragment implements UserDataAdapter.ItemListen
                      public void onResponse(JSONArray response) {
                          // pDialog.dismiss();
                          Log.d("responsef",response.toString());
-
+                             if (!imageModelArrayList.isEmpty()){
+                                 imageModelArrayList.clear();
+                             }
                          try{
                              for(int i=0;i<response.length();i++){
                                  // Get current json object
@@ -243,6 +246,128 @@ public class HomeFragment extends Fragment implements UserDataAdapter.ItemListen
          // Add JsonArrayRequest to the RequestQueue
          requestQueue.add(jsonArrayRequest);
      }
+    private void init2() {
+
+        mPager2 = views.findViewById(R.id.pager2);
+        mPager2.setAdapter(new SlidingImage_Adapter(getContext(),imageModelArrayList2));
+
+        CirclePageIndicator indicator2 = (CirclePageIndicator)views.findViewById(R.id.indicator2);
+
+        indicator2.setViewPager(mPager);
+
+        final float density = getResources().getDisplayMetrics().density;
+
+//Set circle indicator radius
+        indicator2.setRadius(5 * density);
+
+        NUM_PAGES =imageModelArrayList2.size();
+
+        // Auto start of viewpager
+        final Handler handler = new Handler();
+        final Runnable Update = new Runnable() {
+            public void run() {
+                if (currentPage == NUM_PAGES) {
+                    currentPage = 0;
+                }
+                mPager2.setCurrentItem(currentPage++, true);
+            }
+        };
+        Timer swipeTimer = new Timer();
+        swipeTimer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                handler.post(Update);
+            }
+        }, 3000, 3000);
+
+        // Pager listener over indicator
+        indicator2.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+
+            @Override
+            public void onPageSelected(int position) {
+                currentPage = position;
+
+            }
+
+            @Override
+            public void onPageScrolled(int pos, float arg1, int arg2) {
+
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int pos) {
+
+            }
+        });
+
+    }
+     public void getSecondSlider(){
+         final String url="https://www.iampro.co/api/index.php?type=get_slider&name=SERVICE_SLIDER";
+         RequestQueue requestQueue = Volley.newRequestQueue(getContext());
+         // Initialize a new JsonArrayRequest instance
+         JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(
+                 Request.Method.GET,
+                 url,
+                 null,
+                 new com.android.volley.Response.Listener<JSONArray>() {
+                     @Override
+                     public void onResponse(JSONArray response) {
+                         // pDialog.dismiss();
+                         Log.d("responsef",response.toString());
+                         if (!imageModelArrayList2.isEmpty()){
+                             imageModelArrayList2.clear();
+                         }
+
+                         try{
+                             for(int i=0;i<response.length();i++){
+                                 // Get current json object
+                                 JSONObject student = response.getJSONObject(i);
+
+                                 String id = student.optString("id");
+                                 String heading = student.optString("heading");
+
+                                 String slider_type=student.optString("slider_type");
+                                 //id ,heading,slider_type,link,image,slider_image,status,language,lorder,no,index,mindex
+                                 String link=student.optString("link");
+                                 String imagev=student.optString("image");
+                                 String slider_image=student.optString("slider_image");
+                                 String status=student.optString("status");
+                                 String language=student.optString("language");
+                                 String lorder=student.optString("lorder");
+                                 int no=student.optInt("no");
+                                 int index=student.optInt("index");
+                                 int mindex=student.optInt("mindex");
+
+                                 String image= Config.URL_ROOT+"uploads/album/300/250/"+imagev;
+                                 imageModelArrayList2.add(new ImageModel(id,heading,slider_type,link,imagev,slider_image,status,language,lorder,no,index,String.valueOf(mindex)));
+                                 //singleItem.add(new SingleItemModel(id, name,image,udate,daysago,totallike,comments,uid,fullname,avatar,isliked,"image"));
+                             }
+                             init2();
+                         }
+                         catch (JSONException e){
+                             //pDialog.dismiss();
+                             e.printStackTrace();
+                             Toast.makeText(getContext(), ""+e.getMessage(), Toast.LENGTH_SHORT).show();
+                             Log.d("catch_f",""+e.getMessage());
+                         }
+                     }
+                 },
+                 new com.android.volley.Response.ErrorListener(){
+                     @Override
+                     public void onErrorResponse(VolleyError error){
+                         //pDialog.dismiss();
+                         // Do something when error occurred
+                         //Snackbar.make(getContext(),"Error...", Snackbar.LENGTH_LONG).show();
+                         Toast.makeText(getContext(), "verror"+error.getMessage(), Toast.LENGTH_SHORT).show();
+                         Log.d("verror",""+error.getMessage());
+                     }
+                 }
+         );
+         jsonArrayRequest.setRetryPolicy(new DefaultRetryPolicy(3000,0,DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+         // Add JsonArrayRequest to the RequestQueue
+         requestQueue.add(jsonArrayRequest);
+
+     }
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
@@ -280,6 +405,8 @@ public class HomeFragment extends Fragment implements UserDataAdapter.ItemListen
         //my_recycler_view,recycler_view_video,recycler_view_user,recycler_view_product,recycler_view_provide,recycler_view_demand
          my_recycler_view =view.findViewById(R.id.my_recycler_view);
         recycler_view_list=view.findViewById(R.id.recycler_view_list);
+        imageModelArrayList=new ArrayList<>();
+        imageModelArrayList2=new ArrayList<>();
        /* recycler_view_video=view.findViewById(R.id.video_rv_view);
         recycler_view_user=view.findViewById(R.id.user_rv_view);
         recycler_view_product=view.findViewById(R.id.product_rv_view);
@@ -301,12 +428,28 @@ public class HomeFragment extends Fragment implements UserDataAdapter.ItemListen
         my_recycler_view.setAdapter(adapter); */
 
         // Inflate the layout for this fragment
-        getImage();
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                getTopSlider();
+            }
+        }, 500);
+        //init();
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                getSecondSlider();
+            }
+        }, 500);
 
+      //init2();
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                getImage();
+            }
+        }, 500);
     }
-
-
-
     public void  getImage(){
         final String url = "https://www.iampro.co/api/app_service.php?type=all_item&name=image&uid="+uid+"&my_id="+uid;
         // Initialize a new RequestQueue instance

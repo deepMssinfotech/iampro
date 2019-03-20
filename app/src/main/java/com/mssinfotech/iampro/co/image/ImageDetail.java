@@ -3,6 +3,7 @@ package com.mssinfotech.iampro.co.image;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.widget.NestedScrollView;
@@ -11,14 +12,17 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.PopupWindow;
 import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.Toolbar;
 import android.widget.VideoView;
 
 import com.android.volley.Request;
@@ -39,10 +43,16 @@ import com.mssinfotech.iampro.co.common.Config;
 import com.mssinfotech.iampro.co.common.PhotoFullPopupWindow;
 import com.mssinfotech.iampro.co.common.function;
 import com.mssinfotech.iampro.co.model.ImageDetailModel;
+import com.mssinfotech.iampro.co.product.ProductDetail;
 import com.mssinfotech.iampro.co.user.MyImageActivity;
 import com.mssinfotech.iampro.co.user.MyVideoActivity;
 import com.mssinfotech.iampro.co.user.ProfileActivity;
 import com.mssinfotech.iampro.co.utils.PrefManager;
+import com.smarteist.autoimageslider.DefaultSliderView;
+import com.smarteist.autoimageslider.IndicatorAnimations;
+import com.smarteist.autoimageslider.SliderAnimations;
+import com.smarteist.autoimageslider.SliderLayout;
+import com.smarteist.autoimageslider.SliderView;
 
 
 import org.json.JSONArray;
@@ -75,9 +85,9 @@ public class ImageDetail extends Fragment implements Img_Video_Details.ItemListe
     Intent intent;
     Context context;
     FullscreenVideoView fullscreenVideoView;
-         LinearLayout ll_comment;
-    NestedScrollView nsv;
-     String avatar_urll;
+     LinearLayout ll_comment;
+     NestedScrollView nsv;
+     public static String avatar_urll;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup parent, Bundle savedInstanceState) {
         // Defines the xml file for the fragment
@@ -172,10 +182,84 @@ public class ImageDetail extends Fragment implements Img_Video_Details.ItemListe
                  context.startActivity(intent);
             }
         });
+        /*image.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                new PhotoFullPopupWindow(getContext(),R.layout.popup_photo_full,ll_top.getRootView(),avatar_urll, null);
+            }
+        }); */
+
         image.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                new PhotoFullPopupWindow(getContext(), R.layout.popup_photo_full,ll_top,avatar_urll, null);
+                View popupView = getLayoutInflater().inflate(R.layout.popup_layout, null);
+                PopupWindow popupWindow = new PopupWindow(popupView,ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+
+                // Example: If you have a TextView inside `popup_layout.xml`
+                  final ImageView iview=popupView.findViewById(R.id.expandedImage);
+                SliderLayout imageSlider=popupView.findViewById(R.id.imageSlider);
+                Toolbar toolbar=popupView.findViewById(R.id.toolbar);
+
+                    imageSlider.setIndicatorAnimation(IndicatorAnimations.SWAP); //set indicator animation by using SliderLayout.IndicatorAnimations. :WORM or THIN_WORM or COLOR or DROP or FILL or NONE or SCALE or SCALE_DOWN or SLIDE and SWAP!!
+                    imageSlider.setSliderTransformAnimation(SliderAnimations.FADETRANSFORMATION);
+                    //if (other_imagee.length()>1)
+                    imageSlider.setScrollTimeInSec(5); //set scroll delay in seconds :
+                    //Glide.with(getApplicationContext()).load(R.drawable.product_icon).into(imageView_icon);
+                    DefaultSliderView sliderView1 = new DefaultSliderView(ImageDetail.this.getContext());
+                    sliderView1.setImageUrl(avatar_urll);
+                    sliderView1.setImageScaleType(ImageView.ScaleType.CENTER_CROP);
+                    //sliderView.setDescription("setDescription " + (i + 1));
+                    sliderView1.setOnSliderClickListener(new SliderView.OnSliderClickListener() {
+                        @Override
+                        public void onSliderClick(SliderView sliderView) {
+                            //new PhotoFullPopupWindow(getApplication(), R.layout.popup_photo_full, tv_cost.getRootView(), ImageHolFull, null);
+                        }
+                    });
+
+                    //at last add this view in your layout:
+                    imageSlider.addSliderView(sliderView1);
+                if(myData.size()>0){
+                    for(int i=0; i<myData.size(); i++){
+                        DefaultSliderView sliderView = new DefaultSliderView(ImageDetail.this.getContext());
+                        sliderView.setImageUrl(myData.get(i).getImage());
+                        final String myImage = myData.get(i).getImage();
+                        sliderView.setImageScaleType(ImageView.ScaleType.CENTER_CROP);
+                        //sliderView.setDescription("setDescription " + (i + 1));
+                        final int finalI = i;
+                        sliderView.setOnSliderClickListener(new SliderView.OnSliderClickListener() {
+                            @Override
+                            public void onSliderClick(SliderView sliderView) {
+                                new PhotoFullPopupWindow(getContext(), R.layout.popup_photo_full, iview.getRootView(), myImage, null);
+                            }
+                        });
+
+                        //at last add this view in your layout :
+                        imageSlider.addSliderView(sliderView);
+                    }
+                }
+                 else{
+                    Glide.with(ImageDetail.this)
+                            .load(avatar_urll)
+                            .apply(Config.options_avatar)
+                            .into(iview);
+                }
+                // Initialize more widgets from `popup_layout.xml`
+
+                // If the PopupWindow should be focusable
+                popupWindow.setFocusable(true);
+
+                // If you need the PopupWindow to dismiss when when touched outside
+                popupWindow.setBackgroundDrawable(new ColorDrawable());
+
+                int location[] = new int[2];
+
+                // Get the View's(the one that was clicked in the Fragment) location
+                v.getLocationOnScreen(location);
+
+                // Using location, the PopupWindow will be displayed right under anchorView
+                popupWindow.showAtLocation(v, Gravity.NO_GRAVITY,
+                        location[0], location[1] + v.getHeight());
+
             }
         });
     }
@@ -235,8 +319,6 @@ public class ImageDetail extends Fragment implements Img_Video_Details.ItemListe
                             Glide.with(ImageDetail.this)
                                     .load(avatar_url)
                                     .into(image);
-
-
 
                             JSONObject jsonObjectUser = responses.getJSONObject("user_detail");
                             final String added_by=jsonObjectUser.getString("id");

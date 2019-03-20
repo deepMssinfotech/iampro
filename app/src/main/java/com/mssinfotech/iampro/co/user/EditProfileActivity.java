@@ -13,6 +13,7 @@ import android.graphics.Bitmap;
 import android.net.ConnectivityManager;
 import android.net.Uri;
 import android.os.AsyncTask;
+import android.os.Handler;
 import android.provider.MediaStore;
 import android.support.design.widget.TextInputEditText;
 import android.support.v4.app.Fragment;
@@ -122,6 +123,9 @@ public class EditProfileActivity extends Fragment {
     private GalleryAdapter galleryAdapter;
     View view;
     public static String imageType;
+    ProgressDialog progressdialog;
+    int status = 0;
+    Handler handler = new Handler();
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup parent, Bundle savedInstanceState) {
         // Defines the xml file for the fragment
@@ -308,7 +312,6 @@ public class EditProfileActivity extends Fragment {
         return false;
     }
     public void getData(){
-
         String url=Config.API_URL+"ajax.php?type=get_users_all_detail&uid="+PrefManager.getLoginDetail(context,"id");
         final ProgressDialog loading = ProgressDialog.show(context,"Processing...","Please wait...",false,false);
         StringRequest stringRequest = new StringRequest(Request.Method.GET,url,
@@ -526,6 +529,7 @@ public class EditProfileActivity extends Fragment {
             Config.showInternetDialog(context);
             return;
         }
+           CreateProgressDialog();
         //Toast.makeText(getApplicationContext(), "Video upload remain pleasw wait....", Toast.LENGTH_LONG).show();
         //return;
         try {
@@ -540,6 +544,7 @@ public class EditProfileActivity extends Fragment {
                     //.setNotificationConfig(new UploadNotificationConfig())
                     .setMaxRetries(2)
                     .startUpload(); //Starting the upload
+             ShowProgressDialog();
             ProfileActivity fragment = new ProfileActivity();
             function.loadFragment(context,fragment,null);
             //getActivity().finish();
@@ -552,22 +557,53 @@ public class EditProfileActivity extends Fragment {
              Config.showInternetDialog(context);
              return;
          }
+         CreateProgressDialog();
          //Toast.makeText(getApplicationContext(), "Video upload remain pleasw wait....", Toast.LENGTH_LONG).show();
          //return;
+
          try {
-             String uploadId = UUID.randomUUID().toString();
+             String uploadId=UUID.randomUUID().toString();
              //Creating a multi part request
              new MultipartUploadRequest(context, uploadId, Config.AJAX_URL + "signup.php")
                      .addFileToUpload(backgroundimagePath, "avatar") //Adding file
-                     .addParameter("type"," profile_pic")//Adding text parameter to the request
+                     .addParameter("type","profile_pic")//Adding text parameter to the request
                      .addParameter("process_type","android")
                      .addParameter("page_url","page/update_profile.html")
                      .addParameter("user_id",PrefManager.getLoginDetail(context,"id"))
+                     .addParameter("userid",PrefManager.getLoginDetail(context,"id"))
+                     .addParameter("fname",PrefManager.getLoginDetail(context,"fname"))
+                     .addParameter("email",PrefManager.getLoginDetail(context,"email"))
+                     .addParameter("country",PrefManager.getLoginDetail(context,"country"))
+                     .addParameter("state",PrefManager.getLoginDetail(context,"state"))
+                     .addParameter("image_name",backgroundimagePath)
                      //.setNotificationConfig(new UploadNotificationConfig())
                      .setMaxRetries(2)
                      .startUpload(); //Starting the upload
+                   ShowProgressDialog();
              ProfileActivity fragment = new ProfileActivity();
              function.loadFragment(context,fragment,null);
+
+              /*
+               String uploadId = UUID.randomUUID().toString();
+            //Creating a multi part request
+            new MultipartUploadRequest(context, uploadId, Config.AJAX_URL + "signup.php")
+                    .addFileToUpload(backgroundimagePath, "profile_video_gallery") //Adding file
+                    .addParameter("type","update_img_video_banner")//Adding text parameter to the request
+                    .addParameter("process_type","android")
+                    .addParameter("page_url","page/update_profile.html")
+                    .addParameter("userid",PrefManager.getLoginDetail(context,"id"))
+                    .addParameter("fname",PrefManager.getLoginDetail(context,"fname"))
+                    .addParameter("email",PrefManager.getLoginDetail(context,"email"))
+                    .addParameter("country",PrefManager.getLoginDetail(context,"country"))
+                    .addParameter("state",PrefManager.getLoginDetail(context,"state"))
+                    .addParameter("image_name",backgroundimagePath)
+                    //.setNotificationConfig(new UploadNotificationConfig())
+                    .setMaxRetries(2)
+                    .startUpload(); //Starting the upload
+            ProfileActivity fragment = new ProfileActivity();
+            function.loadFragment(context,fragment,null);
+               */
+
              //getActivity().finish();
          } catch (Exception exc) {
              Toast.makeText(context,""+exc.getMessage(), Toast.LENGTH_SHORT).show();
@@ -611,7 +647,7 @@ public class EditProfileActivity extends Fragment {
     }
     private void launchCameraIntent() {
         Intent intent = new Intent(getContext(), ImagePickerActivity.class);
-        intent.putExtra(ImagePickerActivity.INTENT_IMAGE_PICKER_OPTION, ImagePickerActivity.REQUEST_IMAGE_CAPTURE);
+        intent.putExtra(ImagePickerActivity.INTENT_IMAGE_PICKER_OPTION,ImagePickerActivity.REQUEST_IMAGE_CAPTURE);
 
         // setting aspect ratio
         intent.putExtra(ImagePickerActivity.INTENT_LOCK_ASPECT_RATIO, true);
@@ -634,6 +670,47 @@ public class EditProfileActivity extends Fragment {
         intent.putExtra(ImagePickerActivity.INTENT_ASPECT_RATIO_X, 1); // 16x9, 1x1, 3:4, 3:2
         intent.putExtra(ImagePickerActivity.INTENT_ASPECT_RATIO_Y, 1);
         startActivityForResult(intent, REQUEST_IMAGE);
+    }
+    public void CreateProgressDialog()
+    {
+        progressdialog = new ProgressDialog(EditProfileActivity.this.getContext());
+        progressdialog.setIndeterminate(false);
+        progressdialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+        progressdialog.setCancelable(true);
+        progressdialog.setMax(100);
+        progressdialog.show();
+    }
+
+    public void ShowProgressDialog()
+    {
+        status = 0;
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                while(status < 100){
+                    status +=1;
+                    try{
+                        Thread.sleep(200);
+                    }catch(InterruptedException e){
+                        e.printStackTrace();
+                    }
+
+                    handler.post(new Runnable() {
+                        @Override
+                        public void run() {
+
+                            progressdialog.setProgress(status);
+
+                            if(status == 100){
+
+                                progressdialog.dismiss();
+                            }
+                        }
+                    });
+                }
+            }
+        }).start();
+
     }
 
 }

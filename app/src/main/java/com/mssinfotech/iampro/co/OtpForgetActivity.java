@@ -126,7 +126,6 @@ public class OtpForgetActivity extends Fragment {
             }
         }
     }
-
     public void update_password(View v){
         if (validatenpassword()) {
             if (!Config.haveNetworkConnection(context)) {

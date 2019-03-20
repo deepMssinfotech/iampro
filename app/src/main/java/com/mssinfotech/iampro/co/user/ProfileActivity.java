@@ -1,6 +1,4 @@
 package com.mssinfotech.iampro.co.user;
-
-
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -66,7 +64,6 @@ import com.android.volley.VolleyLog;
 import com.android.volley.toolbox.JsonObjectRequest;
 
 import de.hdodenhof.circleimageview.CircleImageView;
-
 public class ProfileActivity extends Fragment implements AllFeedAdapter.ItemListener,SwipeRefreshLayout.OnRefreshListener  {
  //,OnLikeListener,OnAnimationEndListener
     private static final String TAG = ProfileActivity.class.getSimpleName();
@@ -197,7 +194,7 @@ public class ProfileActivity extends Fragment implements AllFeedAdapter.ItemList
                 public void run() {
                     gteUsrDetail(fid);
                 }
-            }, 2000);
+            }, 1000);
 
             ll_dashboard.setVisibility(View.GONE);
             ll_frienddashboard.setVisibility(View.VISIBLE);
@@ -214,7 +211,7 @@ public class ProfileActivity extends Fragment implements AllFeedAdapter.ItemList
             public void run() {
                 getFeed(FEED_START);
             }
-        }, 2000);
+        }, 1000);
 
         vFeed.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override

@@ -42,6 +42,7 @@ import com.mssinfotech.iampro.co.common.Config;
 import com.mssinfotech.iampro.co.common.function;
 import com.mssinfotech.iampro.co.services.SingleUploadBroadcastReceiver;
 import com.mssinfotech.iampro.co.user.ImagePickerActivity;
+import com.mssinfotech.iampro.co.user.MyImageActivity;
 import com.mssinfotech.iampro.co.utils.PrefManager;
 
 import net.gotev.uploadservice.MultipartUploadRequest;
@@ -52,6 +53,7 @@ import org.json.JSONObject;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.List;
 import java.util.Map;
@@ -61,7 +63,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 import static android.app.Activity.RESULT_CANCELED;
 
-public class OtpRegistrationActivity extends Fragment  implements SingleUploadBroadcastReceiver.Delegate{
+public class OtpRegistrationActivity extends Fragment  implements SingleUploadBroadcastReceiver.Delegate {
     private Button btnprocess;
     private TextInputLayout tilotp,tilpassword,tilcpassword;
     private TextInputEditText etotp,etpassword,etcpassword;
@@ -79,13 +81,18 @@ public class OtpRegistrationActivity extends Fragment  implements SingleUploadBr
     Intent intent;
     Context context;
     ProgressDialog dialog;
+
+    ProgressDialog progressdialog;
+    int status = 0;
+    Handler handler = new Handler();
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup parent, Bundle savedInstanceState) {
         // Defines the xml file for the fragment
         return inflater.inflate(R.layout.activity_otp_registration, parent, false);
     }
     @Override
-    public void onViewCreated(View v, Bundle savedInstanceState) {
+    public void onViewCreated(View v,Bundle savedInstanceState) {
         view  = v;
         etotp = view.findViewById(R.id.etotp);
         etpassword = view.findViewById(R.id.etpassword);
@@ -115,7 +122,15 @@ public class OtpRegistrationActivity extends Fragment  implements SingleUploadBr
         btnprocess.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                sendData();
+                 if (backgroundimagePath==null ||  backgroundimagePath=="" || backgroundimagePath.equalsIgnoreCase("")){
+                      Toast.makeText(getContext(),""+"response1",Toast.LENGTH_LONG).show();
+                       sendUserTextData();
+
+                 }
+               else{
+                     Toast.makeText(getContext(),""+"response2",Toast.LENGTH_LONG).show();
+                     sendData();
+                 }
             }
         });
         btnResedOTP=view.findViewById(R.id.btnResedOTP);
@@ -153,6 +168,16 @@ public class OtpRegistrationActivity extends Fragment  implements SingleUploadBr
         LocalBroadcastManager.getInstance(context).unregisterReceiver(receiver);
         uploadReceiver.unregister(context);
     }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        LocalBroadcastManager.getInstance(context).registerReceiver(receiver, new IntentFilter("otp"));
+        super.onResume();
+        uploadReceiver.register(context);
+    }
+
+
     public void resend(){
         if (!Config.haveNetworkConnection(context)){
             Config.showInternetDialog(context);
@@ -285,6 +310,43 @@ public class OtpRegistrationActivity extends Fragment  implements SingleUploadBr
         intent.putExtra(ImagePickerActivity.INTENT_ASPECT_RATIO_Y, 1);
         startActivityForResult(intent, REQUEST_IMAGE);
     }
+     public void sendUserTextData(){
+        String url=Config.AJAX_URL + "signup.php";
+         RequestQueue queue = Volley.newRequestQueue(context);
+         Log.d("verror_otp1","before");
+
+         Log.d("verror_otp2","after");
+         StringRequest sr = new StringRequest(Request.Method.POST,url, new Response.Listener<String>() {
+             @Override
+             public void onResponse(String response) {
+                 Log.d("verror_otp3",""+response);
+                 CreateProgressDialog();
+                  ShowProgressDialog();
+                 Toast.makeText(getContext(),""+response,Toast.LENGTH_LONG).show();
+             }
+         }, new Response.ErrorListener() {
+             @Override
+             public void onErrorResponse(VolleyError error) {
+                 Toast.makeText(getContext(),""+error.getMessage(),Toast.LENGTH_LONG).show();
+                  Log.d("verror_otp",""+error.getMessage());
+             }
+         }){
+             @Override
+             protected Map<String,String> getParams(){
+                 Map<String,String> params = new HashMap<String, String>();
+                 params.put("type","user_registration");
+                 params.put("fname", fname);
+                 params.put("lname", lname);
+                 params.put("mobile", mobile);
+                 params.put("email", email);
+                 params.put("password", password);
+                 params.put("category", category);
+                 //params.put("avatar","");
+                 return params;
+             }
+         };
+         queue.add(sr);
+     }
     public void sendData(){
         if (!Config.haveNetworkConnection(context)) {
             Config.showInternetDialog(context);
@@ -298,30 +360,50 @@ public class OtpRegistrationActivity extends Fragment  implements SingleUploadBr
         dialog.setMax(100);
         dialog.setCancelable(true);
         dialog.show();
-        try {
+        //CreateProgressDialog();
+        try  {
             final String uploadId = UUID.randomUUID().toString();
             uploadReceiver.setDelegate((SingleUploadBroadcastReceiver.Delegate) this);
             uploadReceiver.setUploadID(uploadId);
+
             //Creating a multi part request
             String boundary = "---------------------------14737809831466499882746641449";
-            new MultipartUploadRequest(context, uploadId, Config.AJAX_URL + "signup.php")
-                    .addHeader("Content-Type", "multipart/form-data; boundary="+boundary)
-                    .addFileToUpload(backgroundimagePath, "avatar") //Adding file
-                    .addParameter("type","user_registration")//Adding text parameter to the request
-                    .addParameter("fname",fname)
-                    .addParameter("lname",lname)
-                    .addParameter("mobile",mobile)
-                    .addParameter("email",email)
-                    .addParameter("password",password)
-                    .addParameter("category",category)
-                    //.setNotificationConfig(new UploadNotificationConfig())
-                    .setMaxRetries(2)
-                    .startUpload(); //Starting the upload
+              if (!backgroundimagePath.equalsIgnoreCase("")) {
+                  new MultipartUploadRequest(context, uploadId, Config.AJAX_URL + "signup.php")
+                          .addHeader("Content-Type", "multipart/form-data; boundary=" + boundary)
+                          .addFileToUpload(backgroundimagePath, "avatar") //Adding file
+                          .addParameter("type", "user_registration")//Adding text parameter to the request
+                          .addParameter("fname", fname)
+                          .addParameter("lname", lname)
+                          .addParameter("mobile", mobile)
+                          .addParameter("email", email)
+                          .addParameter("password", password)
+                          .addParameter("category", category)
+                          //.setNotificationConfig(new UploadNotificationConfig())
+                          .setMaxRetries(2)
+                          .startUpload(); //Starting the upload
+                  //ShowProgressDialog();
+              }
+              else{
+                  new MultipartUploadRequest(context, uploadId, Config.AJAX_URL + "signup.php")
+                          .addParameter("type", "user_registration")//Adding text parameter to the request
+                          .addParameter("fname", fname)
+                          .addParameter("lname", lname)
+                          .addParameter("mobile", mobile)
+                          .addParameter("email", email)
+                          .addParameter("password", password)
+                          .addParameter("category", category)
+                          //.setNotificationConfig(new UploadNotificationConfig())
+                          .setMaxRetries(2)
+                          .startUpload(); //Starting the upload   .addHeader("Content-Type", "multipart/form-data; boundary=" + boundary)
+                  ShowProgressDialog();
+              }
             //ProfileActivity fragment = new ProfileActivity();
             //function.loadFragment(context,fragment,null);
             //getActivity().finish();
         } catch (Exception exc) {
             Toast.makeText(context,""+exc.getMessage(), Toast.LENGTH_SHORT).show();
+             //dialog.dismiss();
         }
     }
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -404,6 +486,46 @@ public class OtpRegistrationActivity extends Fragment  implements SingleUploadBr
 
     @Override
     public void onCancelled() {
+
+    }
+    public void CreateProgressDialog()
+    {
+        progressdialog=new ProgressDialog(OtpRegistrationActivity.this.getContext());
+        progressdialog.setIndeterminate(false);
+        progressdialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+        progressdialog.setCancelable(true);
+        progressdialog.setMax(100);
+        progressdialog.show();
+    }
+    public void ShowProgressDialog()
+    {
+        status = 0;
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                while(status < 100){
+                    status +=1;
+                    try{
+                        Thread.sleep(200);
+                    }catch(InterruptedException e){
+                        e.printStackTrace();
+                    }
+
+                    handler.post(new Runnable() {
+                        @Override
+                        public void run() {
+
+                            progressdialog.setProgress(status);
+
+                            if(status == 100){
+
+                                progressdialog.dismiss();
+                            }
+                        }
+                    });
+                }
+            }
+        }).start();
 
     }
 }

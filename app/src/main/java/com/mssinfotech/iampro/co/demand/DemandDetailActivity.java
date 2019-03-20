@@ -40,6 +40,7 @@ import com.mssinfotech.iampro.co.common.Config;
 import com.mssinfotech.iampro.co.common.PhotoFullPopupWindow;
 import com.mssinfotech.iampro.co.common.function;
 import com.mssinfotech.iampro.co.model.Review;
+import com.mssinfotech.iampro.co.provide.ProvideDetailActivity;
 import com.mssinfotech.iampro.co.user.ProfileActivity;
 import com.mssinfotech.iampro.co.utils.PrefManager;
 import com.smarteist.autoimageslider.DefaultSliderView;
@@ -227,6 +228,20 @@ public class DemandDetailActivity extends AppCompatActivity implements CommentAd
                                     //at last add this view in your layout :
                                     imageSlider.addSliderView(sliderView);
                                 }
+                            }
+                            else if (other_imagee.length()==1){
+                                imageSlider.setVisibility(View.GONE);
+                                expandedImage.setVisibility(View.VISIBLE);
+                                Glide.with(DemandDetailActivity.this)
+                                        .load(ImageHolInfo)
+                                        .apply(Config.options_avatar)
+                                        .into(expandedImage);
+                                expandedImage.setOnClickListener(new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View v) {
+                                        new PhotoFullPopupWindow(getApplication(), R.layout.popup_photo_full, tv_cost.getRootView(),ImageHolInfo, null);
+                                    }
+                                });
                             }
 
                         }catch (Exception e){

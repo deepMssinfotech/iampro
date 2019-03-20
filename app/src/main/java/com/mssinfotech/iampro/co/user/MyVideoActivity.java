@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.net.Uri;
+import android.os.Handler;
 import android.provider.MediaStore;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
@@ -52,6 +53,7 @@ import com.mssinfotech.iampro.co.model.MyImageModel;
 import com.mssinfotech.iampro.co.model.MyProductModel;
 import com.mssinfotech.iampro.co.model.SectionImageModel;
 import com.mssinfotech.iampro.co.model.SingleItemModel;
+import com.mssinfotech.iampro.co.services.SingleUploadBroadcastReceiver;
 import com.mssinfotech.iampro.co.utils.PrefManager;
 import com.squareup.picasso.Picasso;
 
@@ -65,6 +67,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Random;
 import java.util.UUID;
 
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -92,6 +95,13 @@ public class MyVideoActivity extends Fragment implements MyVideoAdapter.ItemList
      FloatingActionButton fab;
     public static final int REQUEST_IMAGE = 100;
     public static String imageType;
+
+    Random r = new Random();
+    public static int randomNumber;
+
+    ProgressDialog progressdialog;
+     int status = 0;
+    Handler handler = new Handler();
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup parent, Bundle savedInstanceState) {
         // Defines the xml file for the fragment
@@ -346,9 +356,19 @@ public class MyVideoActivity extends Fragment implements MyVideoAdapter.ItemList
             Config.showInternetDialog(context);
             return;
         }
+        /*dialog = new ProgressDialog(context);
+        dialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+        dialog.setMessage("Uploading photo, please wait.");
+        dialog.setMax(100);
+        dialog.setCancelable(true);
+        dialog.show(); */
+        CreateProgressDialog();
+
         //Toast.makeText(getApplicationContext(), "Video upload remain pleasw wait....", Toast.LENGTH_LONG).show();
         //return;
         try {
+            //Creating a multi part request
+            String boundary = "---------------------------14737809831466499882746641449";
             String uploadId = UUID.randomUUID().toString();
             //Creating a multi part request
             new MultipartUploadRequest(context, uploadId, Config.AJAX_URL + "signup.php")
@@ -364,6 +384,7 @@ public class MyVideoActivity extends Fragment implements MyVideoAdapter.ItemList
                     //.setNotificationConfig(new UploadNotificationConfig())
                     .setMaxRetries(2)
                     .startUpload(); //Starting the upload
+            ShowProgressDialog();
             ProfileActivity fragment = new ProfileActivity();
             function.loadFragment(context,fragment,null);
             Toast.makeText(context, "Update Profile Background Image is processing please wait", Toast.LENGTH_SHORT).show();
@@ -392,6 +413,50 @@ img_banner_image: (binary)
         Intent i_signup = new Intent(context,AddVideoActivity.class);
         MyVideoActivity.this.startActivity(i_signup);
     } */
+
+    public void CreateProgressDialog()
+    {
+        progressdialog = new ProgressDialog(MyVideoActivity.this.getContext());
+        progressdialog.setIndeterminate(false);
+        progressdialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+        progressdialog.setCancelable(true);
+        progressdialog.setMax(100);
+        progressdialog.show();
+    }
+
+    public void ShowProgressDialog()
+    {
+        status = 0;
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                while(status < 100){
+                    status +=1;
+                    try{
+                        Thread.sleep(200);
+                    }catch(InterruptedException e){
+                        e.printStackTrace();
+                    }
+
+                    handler.post(new Runnable() {
+                        @Override
+                        public void run() {
+
+                            progressdialog.setProgress(status);
+
+                            if(status == 100){
+
+                                progressdialog.dismiss();
+                            }
+                        }
+                    });
+                }
+            }
+        }).start();
+
+    }
+
+
     @Override
     public void onItemClick(MyImageModel item) {
 
@@ -541,30 +606,25 @@ img_banner_image: (binary)
         requestQueue.add(jsonArrayRequest);
         //getProvide();
     }
-
     private void showImagePickerOptions() {
         ImagePickerActivity.showImagePickerOptions(getContext(), new ImagePickerActivity.PickerOptionListener() {
             @Override
             public void onTakeCameraSelected() {
                 launchCameraIntent();
             }
-
             @Override
             public void onChooseGallerySelected() {
                 launchGalleryIntent();
             }
         });
     }
-
     private void launchCameraIntent() {
         Intent intent = new Intent(getContext(), ImagePickerActivity.class);
         intent.putExtra(ImagePickerActivity.INTENT_IMAGE_PICKER_OPTION, ImagePickerActivity.REQUEST_IMAGE_CAPTURE);
-
         // setting aspect ratio
         intent.putExtra(ImagePickerActivity.INTENT_LOCK_ASPECT_RATIO, true);
         intent.putExtra(ImagePickerActivity.INTENT_ASPECT_RATIO_X, 1); // 16x9, 1x1, 3:4, 3:2
         intent.putExtra(ImagePickerActivity.INTENT_ASPECT_RATIO_Y, 1);
-
         // setting maximum bitmap width and height
         intent.putExtra(ImagePickerActivity.INTENT_SET_BITMAP_MAX_WIDTH_HEIGHT, true);
         intent.putExtra(ImagePickerActivity.INTENT_BITMAP_MAX_WIDTH, 1000);
@@ -604,10 +664,17 @@ img_banner_image: (binary)
             Config.showInternetDialog(context);
             return;
         }
+        CreateProgressDialog();
         //Toast.makeText(getApplicationContext(), "Video upload remain pleasw wait....", Toast.LENGTH_LONG).show();
         //return;
+        /*dialog = new ProgressDialog(context);
+        dialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+        dialog.setMessage("Uploading photo, please wait.");
+        dialog.setMax(100);
+        dialog.setCancelable(true);
+        dialog.show();  */
         try {
-            String uploadId = UUID.randomUUID().toString();
+            String uploadId =UUID.randomUUID().toString();
             //Creating a multi part request
             new MultipartUploadRequest(context, uploadId, Config.AJAX_URL + "signup.php")
                     .addFileToUpload(backgroundimagePath, "profile_video_gallery") //Adding file
@@ -623,6 +690,7 @@ img_banner_image: (binary)
                     //.setNotificationConfig(new UploadNotificationConfig())
                     .setMaxRetries(2)
                     .startUpload(); //Starting the upload
+             ShowProgressDialog();
             ProfileActivity fragment = new ProfileActivity();
             function.loadFragment(context,fragment,null);
             //getActivity().finish();

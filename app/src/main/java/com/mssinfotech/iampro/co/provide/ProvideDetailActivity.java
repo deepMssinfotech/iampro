@@ -30,6 +30,7 @@ import com.mssinfotech.iampro.co.common.PhotoFullPopupWindow;
 import com.mssinfotech.iampro.co.common.function;
 import com.mssinfotech.iampro.co.model.ChatList;
 import com.mssinfotech.iampro.co.model.Review;
+import com.mssinfotech.iampro.co.product.ProductDetail;
 import com.mssinfotech.iampro.co.user.ProfileActivity;
 import com.mssinfotech.iampro.co.utils.PrefManager;
 import com.smarteist.autoimageslider.DefaultSliderView;
@@ -185,12 +186,13 @@ public class ProvideDetailActivity extends AppCompatActivity implements CommentA
                                 @Override
                                 public void onSliderClick(SliderView sliderView) {
                                     new PhotoFullPopupWindow(getApplication(), R.layout.popup_photo_full, tv_cost.getRootView(), ImageHol, null);
-                                }
+                                    Toast.makeText(getApplicationContext(), "", Toast.LENGTH_SHORT).show();
+                                 }
                             });
 
                             //at last add this view in your layout :
                             imageSlider.addSliderView(sliderView1);
-                            if(other_imagee.length()>0){
+                            if(other_imagee.length()>1){
                                 for(int i=0; i<other_imagee.length(); i++){
                                     DefaultSliderView sliderView = new DefaultSliderView(ProvideDetailActivity.this);
                                     sliderView.setImageUrl(Config.URL_ROOT+"uploads/product/w/500/"+other_imagee.getString(i));
@@ -206,6 +208,22 @@ public class ProvideDetailActivity extends AppCompatActivity implements CommentA
                                     //at last add this view in your layout :
                                     imageSlider.addSliderView(sliderView);
                                 }
+                            }
+                            else if(other_imagee.length()==1){
+                                imageSlider.setVisibility(View.GONE);
+                                expandedImage.setVisibility(View.VISIBLE);
+                                Glide.with(ProvideDetailActivity.this)
+                                        .load(ImageHoly)
+                                        .apply(Config.options_avatar)
+                                        .into(expandedImage);
+
+                                expandedImage.setOnClickListener(new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View v) {
+                                        new PhotoFullPopupWindow(getApplication(), R.layout.popup_photo_full, tv_cost.getRootView(),ImageHoly, null);
+                                    }
+                                });
+
                             }
 
 

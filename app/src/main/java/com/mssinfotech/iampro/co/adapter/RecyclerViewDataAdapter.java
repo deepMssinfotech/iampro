@@ -70,11 +70,11 @@ public class RecyclerViewDataAdapter extends RecyclerView.Adapter<RecyclerViewDa
         }
         if (sectionName.equalsIgnoreCase("User")){
              //SectionListUserDataAdapter
-             SectionListUserDataAdapter itemListDataAdapter = new SectionListUserDataAdapter(mContext, singleSectionItems);
+            /* SectionListUserDataAdapter itemListDataAdapter = new SectionListUserDataAdapter(mContext, singleSectionItems);
              itemRowHolder.recycler_view_list.setHasFixedSize(true);
              itemRowHolder.recycler_view_list.setLayoutManager(new LinearLayoutManager(mContext, LinearLayoutManager.VERTICAL, false));
              itemRowHolder.recycler_view_list.setAdapter(itemListDataAdapter);
-             notifyDataSetChanged();
+             notifyDataSetChanged(); */
          }
          else {
              SectionListDataAdapter itemListDataAdapter = new SectionListDataAdapter(mContext, singleSectionItems,sectionName);

@@ -133,9 +133,8 @@
                     android:textColor="@color/white"
                     android:singleLine="true"
                     android:hint="Email Address"
-                    android:inputType="textEmailAddress" />
+                    android:inputType="textEmailAddress"/>
             </android.support.design.widget.TextInputLayout>
-
 
             <Button
                 android:id="@+id/btnRegister"

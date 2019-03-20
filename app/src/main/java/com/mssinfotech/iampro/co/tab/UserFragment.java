@@ -8,11 +8,13 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.RectF;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.content.res.AppCompatResources;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -30,6 +32,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
+import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.VolleyError;
@@ -42,7 +45,9 @@ import com.mssinfotech.iampro.co.adapter.RecyclerViewDataAdapter;
 import com.mssinfotech.iampro.co.adapter.UserDataAdapter;
 
 import com.mssinfotech.iampro.co.adapter.UserItemTouchHelper;
+import com.mssinfotech.iampro.co.common.SlidingImage_Adapter;
 import com.mssinfotech.iampro.co.common.function;
+import com.mssinfotech.iampro.co.data.ImageModel;
 import com.mssinfotech.iampro.co.model.DataModel;
 import com.mssinfotech.iampro.co.model.MyImageModel;
 import com.mssinfotech.iampro.co.model.SectionDataModel;
@@ -52,12 +57,15 @@ import com.mssinfotech.iampro.co.common.Config;
 import com.mssinfotech.iampro.co.model.UserModel;
 import com.mssinfotech.iampro.co.user.ProfileActivity;
 import com.mssinfotech.iampro.co.utils.PrefManager;
+import com.viewpagerindicator.CirclePageIndicator;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Timer;
+import java.util.TimerTask;
 import java.util.TreeMap;
 
 public class UserFragment extends Fragment implements UserDataAdapter.ItemListener {
@@ -83,7 +91,15 @@ public class UserFragment extends Fragment implements UserDataAdapter.ItemListen
     private View view;
     private boolean add = false;
     private Paint p = new Paint();
-       ImageView no_rodr;
+     ImageView no_rodr;
+
+    View views;
+    //sliderr
+    private static ViewPager mPager;
+    private static int currentPage = 0;
+    private static int NUM_PAGES = 0;
+    private ArrayList<com.mssinfotech.iampro.co.data.ImageModel> imageModelArrayList;
+
     public UserFragment() {
         // Required empty public constructor
     }
@@ -97,6 +113,7 @@ public class UserFragment extends Fragment implements UserDataAdapter.ItemListen
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view=inflater.inflate(R.layout.fragment_user, container, false);
+         views=view;
         //oolbar =view.findViewById(R.id.toolbar);
         //view.findViewById(R.id.title_tv).setTag("User");
 
@@ -113,6 +130,7 @@ public class UserFragment extends Fragment implements UserDataAdapter.ItemListen
         getUser(15);
         my_recycler_view =view.findViewById(R.id.my_recycler_view);
         recycler_view_load_more=view.findViewById(R.id.recycler_view_load_more);
+         imageModelArrayList=new ArrayList<>();
         ll=view.findViewById(R.id.ll);
         luser_iv=view.findViewById(R.id.luser_iv);
         no_rodr =view.findViewById(R.id.no_record_found);
@@ -135,8 +153,129 @@ public class UserFragment extends Fragment implements UserDataAdapter.ItemListen
 
             }
         });
-
+        getTopSlider();
         //initSwipe();
+    }
+    private void init() {
+
+        mPager = views.findViewById(R.id.pager);
+        mPager.setAdapter(new SlidingImage_Adapter(getContext(),imageModelArrayList));
+
+        CirclePageIndicator indicator = (CirclePageIndicator)views.findViewById(R.id.indicator);
+
+        indicator.setViewPager(mPager);
+
+        final float density = getResources().getDisplayMetrics().density;
+
+//Set circle indicator radius
+        indicator.setRadius(5 * density);
+
+        NUM_PAGES =imageModelArrayList.size();
+
+        // Auto start of viewpager
+        final Handler handler = new Handler();
+        final Runnable Update = new Runnable() {
+            public void run() {
+                if (currentPage == NUM_PAGES) {
+                    currentPage = 0;
+                }
+                mPager.setCurrentItem(currentPage++, true);
+            }
+        };
+        Timer swipeTimer = new Timer();
+        swipeTimer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                handler.post(Update);
+            }
+        }, 3000, 3000);
+
+        // Pager listener over indicator
+        indicator.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+
+            @Override
+            public void onPageSelected(int position) {
+                currentPage = position;
+
+            }
+
+            @Override
+            public void onPageScrolled(int pos, float arg1, int arg2) {
+
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int pos) {
+
+            }
+        });
+
+    }
+
+    private void getTopSlider(){
+        final String url="https://www.iampro.co/api/index.php?type=get_slider&name=TOP_SLIDER";
+        RequestQueue requestQueue = Volley.newRequestQueue(getContext());
+        // Initialize a new JsonArrayRequest instance
+        JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(
+                Request.Method.GET,
+                url,
+                null,
+                new com.android.volley.Response.Listener<JSONArray>() {
+                    @Override
+                    public void onResponse(JSONArray response) {
+                        // pDialog.dismiss();
+                        Log.d("responsef",response.toString());
+                        if (!imageModelArrayList.isEmpty()){
+                            imageModelArrayList.clear();
+                        }
+                        try{
+                            for(int i=0;i<response.length();i++){
+                                // Get current json object
+                                JSONObject student = response.getJSONObject(i);
+
+                                String id = student.optString("id");
+                                String heading = student.optString("heading");
+
+                                String slider_type=student.optString("slider_type");
+                                //id ,heading,slider_type,link,image,slider_image,status,language,lorder,no,index,mindex
+                                String link=student.optString("link");
+                                String imagev=student.optString("image");
+                                String slider_image=student.optString("slider_image");
+                                String status=student.optString("status");
+                                String language=student.optString("language");
+                                String lorder=student.optString("lorder");
+                                int no=student.optInt("no");
+                                int index=student.optInt("index");
+                                int mindex=student.optInt("mindex");
+
+                                String image= Config.URL_ROOT+"uploads/album/300/250/"+imagev;
+                                imageModelArrayList.add(new ImageModel(id,heading,slider_type,link,imagev,slider_image,status,language,lorder,no,index,String.valueOf(mindex)));
+                                //singleItem.add(new SingleItemModel(id, name,image,udate,daysago,totallike,comments,uid,fullname,avatar,isliked,"image"));
+                            }
+                            init();
+                        }
+                        catch (JSONException e){
+                            //pDialog.dismiss();
+                            e.printStackTrace();
+                            Toast.makeText(getContext(), ""+e.getMessage(), Toast.LENGTH_SHORT).show();
+                            Log.d("catch_f",""+e.getMessage());
+                        }
+                    }
+                },
+                new com.android.volley.Response.ErrorListener(){
+                    @Override
+                    public void onErrorResponse(VolleyError error){
+                        //pDialog.dismiss();
+                        // Do something when error occurred
+                        //Snackbar.make(getContext(),"Error...", Snackbar.LENGTH_LONG).show();
+                        Toast.makeText(getContext(), "verror"+error.getMessage(), Toast.LENGTH_SHORT).show();
+                        Log.d("verror",""+error.getMessage());
+                    }
+                }
+        );
+        jsonArrayRequest.setRetryPolicy(new DefaultRetryPolicy(3000,0,DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+        // Add JsonArrayRequest to the RequestQueue
+        requestQueue.add(jsonArrayRequest);
     }
     /*public void getAllAlbum(){
         //String url="https://www.iampro.co/api/app_service.php?type=getAlbemsListt&search_type=video&uid="+uid;

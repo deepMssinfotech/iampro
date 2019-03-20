@@ -9,6 +9,7 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.net.Uri;
+import android.os.Handler;
 import android.provider.MediaStore;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
@@ -95,6 +96,10 @@ public class MyImageActivity extends Fragment implements MyImageAdapter.ItemList
      public static final int REQUEST_IMAGE = 100;
 
     public static String imageType;
+    ProgressDialog progressdialog;
+    int status = 0;
+    Handler handler = new Handler();
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup parent, Bundle savedInstanceState) {
         // Defines the xml file for the fragment
@@ -343,6 +348,7 @@ public class MyImageActivity extends Fragment implements MyImageAdapter.ItemList
             Config.showInternetDialog(context);
             return;
         }
+         CreateProgressDialog();
         //Toast.makeText(getApplicationContext(), "Video upload remain pleasw wait....", Toast.LENGTH_LONG).show();
         //return;
         try {
@@ -361,6 +367,7 @@ public class MyImageActivity extends Fragment implements MyImageAdapter.ItemList
                     //.setNotificationConfig(new UploadNotificationConfig())
                     .setMaxRetries(2)
                     .startUpload(); //Starting the upload
+              ShowProgressDialog();
             ProfileActivity fragment = new ProfileActivity();
             function.loadFragment(context,fragment,null);
             Toast.makeText(context, "Update Profile Background Image is processing please wait", Toast.LENGTH_SHORT).show();
@@ -391,6 +398,7 @@ Videogallery profile image
             Config.showInternetDialog(context);
             return;
         }
+        CreateProgressDialog();
         //Toast.makeText(getApplicationContext(), "Video upload remain pleasw wait....", Toast.LENGTH_LONG).show();
         //return;
         try {
@@ -409,6 +417,7 @@ Videogallery profile image
                     //.setNotificationConfig(new UploadNotificationConfig())
                     .setMaxRetries(2)
                     .startUpload(); //Starting the upload
+             ShowProgressDialog();
             ProfileActivity fragment = new ProfileActivity();
             function.loadFragment(context,fragment,null);
             //getActivity().finish();
@@ -664,6 +673,44 @@ Videogallery profile image
              sendUserPic();
         }
     }
+    public void CreateProgressDialog()
+    {
+        progressdialog = new ProgressDialog(MyImageActivity.this.getContext());
+        progressdialog.setIndeterminate(false);
+        progressdialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+        progressdialog.setCancelable(true);
+        progressdialog.setMax(100);
+        progressdialog.show();
+    }
+    public void ShowProgressDialog()
+    {
+        status = 0;
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                while(status < 100){
+                    status +=1;
+                    try{
+                        Thread.sleep(200);
+                    }catch(InterruptedException e){
+                        e.printStackTrace();
+                    }
 
+                    handler.post(new Runnable() {
+                        @Override
+                        public void run() {
 
+                            progressdialog.setProgress(status);
+
+                            if(status == 100){
+
+                                progressdialog.dismiss();
+                            }
+                        }
+                    });
+                }
+            }
+        }).start();
+
+    }
 }
