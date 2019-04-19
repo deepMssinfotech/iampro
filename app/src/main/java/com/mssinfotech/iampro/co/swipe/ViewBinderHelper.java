@@ -3,16 +3,13 @@ package com.mssinfotech.iampro.co.swipe;
 /**
  * Created by mssinfotech on 19/03/19.
  */
-
         import android.os.Bundle;
-
         import java.util.Arrays;
         import java.util.Collections;
         import java.util.HashMap;
         import java.util.HashSet;
         import java.util.Map;
         import java.util.Set;
-
 /**
  * ViewBinderHelper provides a quick and easy solution to restore the open/close state
  * of the items in RecyclerView, ListView, GridView or any view that requires its child view
@@ -205,7 +202,6 @@ public class ViewBinderHelper {
             }
         }
     }
-
     private void setLockSwipe(boolean lock, String... id) {
         if (id == null || id.length == 0)
             return;
@@ -214,24 +210,20 @@ public class ViewBinderHelper {
             lockedSwipeSet.addAll(Arrays.asList(id));
         else
             lockedSwipeSet.removeAll(Arrays.asList(id));
-
         for (String s : id) {
             SwipeRevealLayout layout = mapLayouts.get(s);
             if (layout != null) {
                 layout.setLockDrag(lock);
             }
         }
-    }
-
+     }
     private int getOpenCount() {
         int total = 0;
-
         for (int state : mapStates.values()) {
             if (state == SwipeRevealLayout.STATE_OPEN || state == SwipeRevealLayout.STATE_OPENING) {
                 total++;
             }
         }
-
         return total;
     }
 }

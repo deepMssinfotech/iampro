@@ -1114,6 +1114,11 @@ import android.view.ViewGroup;
             }
         }
 
+        @Override
+        public boolean callOnClick() {
+            return super.callOnClick();
+        }
+
         private int pxToDp(int px) {
             Resources resources = getContext().getResources();
             DisplayMetrics metrics = resources.getDisplayMetrics();

@@ -39,6 +39,7 @@ import com.mssinfotech.iampro.co.adapter.CommentAdapter;
 import com.mssinfotech.iampro.co.common.Config;
 import com.mssinfotech.iampro.co.common.PhotoFullPopupWindow;
 import com.mssinfotech.iampro.co.common.function;
+import com.mssinfotech.iampro.co.demand.DemandDetailActivity;
 import com.mssinfotech.iampro.co.image.ImageDetail;
 import com.mssinfotech.iampro.co.model.Review;
 import com.mssinfotech.iampro.co.user.ProfileActivity;
@@ -198,10 +199,9 @@ public class ProductDetail extends AppCompatActivity implements CommentAdapter.I
                                     sliderView.setImageScaleType(ImageView.ScaleType.CENTER_CROP);
                                     //sliderView.setDescription("setDescription " + (i + 1));
                                     final int finalI = i;
-                                    sliderView1.setOnSliderClickListener(new SliderView.OnSliderClickListener() {
+                                    sliderView.setOnSliderClickListener(new SliderView.OnSliderClickListener() {
                                         @Override
                                         public void onSliderClick(SliderView sliderView) {
-                                            //new PhotoFullPopupWindow(getApplication(), R.layout.popup_photo_full, tv_cost.getRootView(), myImage, null);
 
                                             View popupView = getLayoutInflater().inflate(R.layout.popup_layout, null);
                                             PopupWindow popupWindow = new PopupWindow(popupView, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
@@ -216,7 +216,7 @@ public class ProductDetail extends AppCompatActivity implements CommentAdapter.I
                                             //if (other_imagee.length()>1)
                                             imageSlider.setScrollTimeInSec(5); //set scroll delay in seconds :
                                             //Glide.with(getApplicationContext()).load(R.drawable.product_icon).into(imageView_icon);
-                                            DefaultSliderView sliderView1 = new DefaultSliderView(ProductDetail.this.getApplicationContext());
+                                            DefaultSliderView sliderView1 = new DefaultSliderView(ProductDetail.this);
                                             sliderView1.setImageUrl(ImageHolFull);
                                             sliderView1.setImageScaleType(ImageView.ScaleType.CENTER_CROP);
                                             //sliderView.setDescription("setDescription " + (i + 1));
@@ -231,22 +231,21 @@ public class ProductDetail extends AppCompatActivity implements CommentAdapter.I
                                             imageSlider.addSliderView(sliderView1);
                                             if(other_imagees.length()>0){
                                                 for(int i=0; i<other_imagees.length(); i++){
-                                                    DefaultSliderView sliderViews = new DefaultSliderView(getApplicationContext());
-                                                          try {
-                                                              sliderView.setImageUrl(Config.URL_ROOT + "uploads/product/w/500/" + other_imagees.getString(i));
-                                                              final String myImage = Config.URL_ROOT + "uploads/product/w/500/" + other_imagees.getString(i);
-                                                          }
-                                                          catch (JSONException e){
-
-                                                          }
-
+                                                    DefaultSliderView sliderVieww = new DefaultSliderView(ProductDetail.this);
+                                                    try {
+                                                        sliderView.setImageUrl(Config.URL_ROOT + "uploads/product/w/500/" + other_imagees.getString(i));
+                                                        final String myImage = Config.URL_ROOT + "uploads/product/w/500/" + other_imagees.getString(i);
+                                                    }
+                                                    catch(JSONException je){
+                                                        Toast.makeText(ProductDetail.this,""+je.getMessage(),Toast.LENGTH_LONG).show();
+                                                    }
                                                     sliderView.setImageScaleType(ImageView.ScaleType.CENTER_CROP);
                                                     //sliderView.setDescription("setDescription " + (i + 1));
                                                     final int finalI = i;
-                                                  /*  sliderView.setOnSliderClickListener(new SliderView.OnSliderClickListener() {
+                                                    /*sliderView.setOnSliderClickListener(new SliderView.OnSliderClickListener() {
                                                         @Override
                                                         public void onSliderClick(SliderView sliderView) {
-                                                            new PhotoFullPopupWindow(getApplicationContext(), R.layout.popup_photo_full, iview.getRootView(), myImage, null);
+                                                            new PhotoFullPopupWindow(ProvideDetailActivity.this, R.layout.popup_photo_full, iview.getRootView(), myImage, null);
                                                         }
                                                     }); */
 
@@ -255,18 +254,10 @@ public class ProductDetail extends AppCompatActivity implements CommentAdapter.I
                                                 }
                                             }
                                             else{
-                                                imageSlider.setVisibility(View.GONE);
-                                                expandedImage.setVisibility(View.VISIBLE);
                                                 Glide.with(ProductDetail.this)
                                                         .load(ImageHolFull)
                                                         .apply(Config.options_avatar)
-                                                        .into(expandedImage);
-                                                expandedImage.setOnClickListener(new View.OnClickListener() {
-                                                    @Override
-                                                    public void onClick(View v) {
-                                                        new PhotoFullPopupWindow(getApplication(), R.layout.popup_photo_full, tv_cost.getRootView(),ImageHolFull, null);
-                                                    }
-                                                });
+                                                        .into(iview);
                                             }
                                             // Initialize more widgets from `popup_layout.xml`
 
@@ -279,10 +270,13 @@ public class ProductDetail extends AppCompatActivity implements CommentAdapter.I
                                             int location[] = new int[2];
 
                                             // Get the View's(the one that was clicked in the Fragment) location
-                                            //sliderView.getLocationOnScreen(location);
+                                            user_image.getLocationOnScreen(location);
 
                                             // Using location, the PopupWindow will be displayed right under anchorView
-                                            //popupWindow.showAtLocation(v, Gravity.NO_GRAVITY, location[0], location[1] + v.getHeight());
+                                            popupWindow.showAtLocation(user_image, Gravity.NO_GRAVITY, location[0], location[1] + user_image.getHeight());
+
+
+
                                         }
                                     });
 

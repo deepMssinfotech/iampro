@@ -288,7 +288,7 @@ public class Img_Video_Details extends RecyclerView.Adapter<Img_Video_Details.Vi
          Vholder.image.setOnClickListener(new View.OnClickListener() {
              @Override
              public void onClick(View v) {
-                 Toast.makeText(mContext,"Image Clickedd..."+mValues.size(),Toast.LENGTH_LONG).show();
+                 //Toast.makeText(mContext,"Image Clickedd..."+mValues.size(),Toast.LENGTH_LONG).show();
                  //View popupView =LayoutInflater.from(mContext).inflate(R.layout.popup_layout, null);
                  //PopupWindow popupWindow = new PopupWindow(popupView,ViewGroup.LayoutParams.WRAP_CONTENT,ViewGroup.LayoutParams.WRAP_CONTENT);
 

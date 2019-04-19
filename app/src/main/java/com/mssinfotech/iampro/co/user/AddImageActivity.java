@@ -68,7 +68,7 @@ public class AddImageActivity extends AppCompatActivity {
     TextInputLayout tilalbumname,tilimagename,tilimagedetail;
     EditText etalbumname,etimagename,etimagedetail;
     Spinner spcat,spimage_album;
-    Button add_image_button,create_album_button,ibImageMoreImage;;
+    Button add_image_button,create_album_button,ibImageMoreImage;
     List<String> imagesEncodedList;
     String imageEncoded;
     private String albumname, imagename, imagedetail,cat,image_album;
@@ -262,11 +262,16 @@ public class AddImageActivity extends AppCompatActivity {
         tilimagedetail.setErrorEnabled(false);
     }
     private void hideKeyboard() {
-        View view = getCurrentFocus();
-        if (view != null) {
-            ((InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE)).
-                    hideSoftInputFromWindow(view.getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
-        }
+         try {
+             View view = getCurrentFocus();
+             if (view != null) {
+                 ((InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE)).hideSoftInputFromWindow(view.getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+             }
+         }
+         catch (Exception e){
+              Toast.makeText(getApplicationContext(),""+e.getMessage(),Toast.LENGTH_LONG).show();
+              e.printStackTrace();
+         }
     }
     public void sendData()
     {
@@ -281,6 +286,7 @@ public class AddImageActivity extends AppCompatActivity {
                     @Override
                     public void onResponse(String s) {
                         loading.dismiss();
+                         Log.d("addimage_sendData",""+s);
                         try
                         {
                             JSONObject jsonObject = new JSONObject(s);
@@ -292,7 +298,7 @@ public class AddImageActivity extends AppCompatActivity {
                             if (status.equalsIgnoreCase("success")){
                                 MyImageActivity fragment = new MyImageActivity();
                                 function.loadFragment(AddImageActivity.this,fragment,null);
-                                finish();
+                                //AddImageActivity.this.finish();
                             }
                         }
                         catch(JSONException e)

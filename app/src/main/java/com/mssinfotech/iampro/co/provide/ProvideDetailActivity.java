@@ -1,17 +1,22 @@
 package com.mssinfotech.iampro.co.provide;
 
 import android.content.Intent;
+import android.graphics.drawable.ColorDrawable;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.ImageView;
+import android.widget.PopupWindow;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.Toolbar;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -28,6 +33,7 @@ import com.mssinfotech.iampro.co.adapter.CommentAdapter;
 import com.mssinfotech.iampro.co.common.Config;
 import com.mssinfotech.iampro.co.common.PhotoFullPopupWindow;
 import com.mssinfotech.iampro.co.common.function;
+import com.mssinfotech.iampro.co.image.ImageDetail;
 import com.mssinfotech.iampro.co.model.ChatList;
 import com.mssinfotech.iampro.co.model.Review;
 import com.mssinfotech.iampro.co.product.ProductDetail;
@@ -40,6 +46,7 @@ import com.smarteist.autoimageslider.SliderLayout;
 import com.smarteist.autoimageslider.SliderView;
 
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
@@ -62,7 +69,7 @@ public class ProvideDetailActivity extends AppCompatActivity implements CommentA
     LikeButton favButton;
     FullscreenVideoView fullscreenVideoView;
     SliderLayout imageSlider;
-
+    JSONArray other_imagees;
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
@@ -170,7 +177,8 @@ public class ProvideDetailActivity extends AppCompatActivity implements CommentA
                             });
 
                             imageSlider.setVisibility(View.VISIBLE);
-                            final JSONArray other_imagee=responses.getJSONArray("myother_img");
+                              JSONArray other_imagee=responses.getJSONArray("myother_img");
+                             other_imagees=other_imagee;
                             // JSONArray other_image = result.getJSONArray("image_array");
                             final String ImageHol = Config.URL_ROOT+"uploads/product/"+responses.getString("image");
                             final String ImageHoly = Config.URL_ROOT+"uploads/product/w/500/"+responses.getString("image");
@@ -186,7 +194,7 @@ public class ProvideDetailActivity extends AppCompatActivity implements CommentA
                                 @Override
                                 public void onSliderClick(SliderView sliderView) {
                                     new PhotoFullPopupWindow(getApplication(), R.layout.popup_photo_full, tv_cost.getRootView(), ImageHol, null);
-                                    Toast.makeText(getApplicationContext(), "", Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(getApplicationContext(), "slider1", Toast.LENGTH_SHORT).show();
                                  }
                             });
 
@@ -201,7 +209,81 @@ public class ProvideDetailActivity extends AppCompatActivity implements CommentA
                                     sliderView.setOnSliderClickListener(new SliderView.OnSliderClickListener() {
                                         @Override
                                         public void onSliderClick(SliderView sliderView) {
-                                            new PhotoFullPopupWindow(getApplication(), R.layout.popup_photo_full, tv_cost.getRootView(), myImage, null);
+                                           // Toast.makeText(getApplicationContext(),"sliderview",Toast.LENGTH_LONG).show();
+                                            //new PhotoFullPopupWindow(getApplication(), R.layout.popup_photo_full, tv_cost.getRootView(), myImage, null);
+
+                                            View popupView = getLayoutInflater().inflate(R.layout.popup_layout, null);
+                                            PopupWindow popupWindow = new PopupWindow(popupView, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+
+                                            // Example: If you have a TextView inside `popup_layout.xml`
+                                            final ImageView iview=popupView.findViewById(R.id.expandedImage);
+                                            SliderLayout imageSlider=popupView.findViewById(R.id.imageSlider);
+                                            Toolbar toolbar=popupView.findViewById(R.id.toolbar);
+
+                                            imageSlider.setIndicatorAnimation(IndicatorAnimations.SWAP); //set indicator animation by using SliderLayout.IndicatorAnimations. :WORM or THIN_WORM or COLOR or DROP or FILL or NONE or SCALE or SCALE_DOWN or SLIDE and SWAP!!
+                                            imageSlider.setSliderTransformAnimation(SliderAnimations.FADETRANSFORMATION);
+                                            //if (other_imagee.length()>1)
+                                            imageSlider.setScrollTimeInSec(5); //set scroll delay in seconds :
+                                            //Glide.with(getApplicationContext()).load(R.drawable.product_icon).into(imageView_icon);
+                                            DefaultSliderView sliderView1 = new DefaultSliderView(ProvideDetailActivity.this);
+                                            sliderView1.setImageUrl(ImageHoly);
+                                            sliderView1.setImageScaleType(ImageView.ScaleType.CENTER_CROP);
+                                            //sliderView.setDescription("setDescription " + (i + 1));
+                                            sliderView1.setOnSliderClickListener(new SliderView.OnSliderClickListener() {
+                                                @Override
+                                                public void onSliderClick(SliderView sliderView) {
+                                                    //new PhotoFullPopupWindow(getApplication(), R.layout.popup_photo_full, tv_cost.getRootView(), ImageHolFull, null);
+                                                }
+                                            });
+
+                                            //at last add this view in your layout:
+                                            imageSlider.addSliderView(sliderView1);
+                                            if(other_imagees.length()>0){
+                                                for(int i=0; i<other_imagees.length(); i++){
+                                                    DefaultSliderView sliderVieww = new DefaultSliderView(ProvideDetailActivity.this);
+                                                    try {
+                                                        sliderView.setImageUrl(Config.URL_ROOT + "uploads/product/w/500/" + other_imagees.getString(i));
+                                                        final String myImage = Config.URL_ROOT + "uploads/product/w/500/" + other_imagees.getString(i);
+                                                    }
+                                                    catch(JSONException je){
+                                                        Toast.makeText(ProvideDetailActivity.this,""+je.getMessage(),Toast.LENGTH_LONG).show();
+                                                    }
+                                                    sliderView.setImageScaleType(ImageView.ScaleType.CENTER_CROP);
+                                                    //sliderView.setDescription("setDescription " + (i + 1));
+                                                    final int finalI = i;
+                                                    /*sliderView.setOnSliderClickListener(new SliderView.OnSliderClickListener() {
+                                                        @Override
+                                                        public void onSliderClick(SliderView sliderView) {
+                                                            new PhotoFullPopupWindow(ProvideDetailActivity.this, R.layout.popup_photo_full, iview.getRootView(), myImage, null);
+                                                        }
+                                                    }); */
+
+                                                    //at last add this view in your layout :
+                                                    imageSlider.addSliderView(sliderView);
+                                                }
+                                            }
+                                            else{
+                                                Glide.with(ProvideDetailActivity.this)
+                                                        .load(ImageHoly)
+                                                        .apply(Config.options_avatar)
+                                                        .into(iview);
+                                            }
+                                            // Initialize more widgets from `popup_layout.xml`
+
+                                            // If the PopupWindow should be focusable
+                                            popupWindow.setFocusable(true);
+
+                                            // If you need the PopupWindow to dismiss when when touched outside
+                                            popupWindow.setBackgroundDrawable(new ColorDrawable());
+
+                                            int location[] = new int[2];
+
+                                            // Get the View's(the one that was clicked in the Fragment) location
+                                            favButton.getLocationOnScreen(location);
+
+                                            // Using location, the PopupWindow will be displayed right under anchorView
+                                            popupWindow.showAtLocation(favButton, Gravity.NO_GRAVITY, location[0], location[1] + favButton.getHeight());
+
                                         }
                                     });
 

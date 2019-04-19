@@ -365,7 +365,7 @@ public class AddDemandActivity extends AppCompatActivity {
 
                                 MyDemandActivity fragment = new MyDemandActivity();
                                 function.loadFragment(AddDemandActivity.this,fragment,null);
-                                finish();
+                                //finish();
                             }
                         }
                         catch(JSONException e)

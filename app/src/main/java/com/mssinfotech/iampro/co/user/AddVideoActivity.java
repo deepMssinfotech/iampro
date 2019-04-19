@@ -354,7 +354,7 @@ public class AddVideoActivity extends AppCompatActivity {
                     .startUpload(); //Starting the upload
             MyVideoActivity fragment = new MyVideoActivity();
             function.loadFragment(AddVideoActivity.this,fragment,null);
-            finish();
+            //finish();
         } catch (Exception exc) {
             Toast.makeText(this, exc.getMessage(), Toast.LENGTH_SHORT).show();
         }

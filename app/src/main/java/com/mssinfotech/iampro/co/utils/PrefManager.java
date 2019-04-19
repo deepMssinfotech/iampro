@@ -151,5 +151,4 @@ public class PrefManager {
         preferences.edit().remove("profile_image_gallery").commit();
         preferences.edit().remove("profile_video_gallery").commit();
     }
-
 }

@@ -25,6 +25,7 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
+import com.chauthai.swipereveallayout.SwipeRevealLayout;
 import com.mssinfotech.iampro.co.ChatToUser;
 import com.mssinfotech.iampro.co.R;
 import android.view.ViewGroup;
@@ -41,6 +42,7 @@ import android.widget.Toast;
 import com.mssinfotech.iampro.co.common.Config;
 import com.mssinfotech.iampro.co.common.function;
 import com.mssinfotech.iampro.co.model.UserModel;
+//import com.mssinfotech.iampro.co.swipe.SwipeRevealLayout;
 import com.mssinfotech.iampro.co.user.FriendRequestActivity;
 import com.mssinfotech.iampro.co.user.ProfileActivity;
 import com.mssinfotech.iampro.co.utils.PrefManager;
@@ -67,6 +69,7 @@ public class UserDataAdapter extends RecyclerView.Adapter<UserDataAdapter.ViewHo
 
         protected ImageButton infoButton;
         protected ImageButton editButton;
+        SwipeRevealLayout root;
 
         public ViewHolder(View v) {
             super(v);
@@ -79,6 +82,7 @@ public class UserDataAdapter extends RecyclerView.Adapter<UserDataAdapter.ViewHo
             tv_users=v.findViewById(R.id.tv_users);
             tv_products=v.findViewById(R.id.tv_products);
             tv_provides=v.findViewById(R.id.tv_provides);
+                root=v.findViewById(R.id.root);
             tv_demands=v.findViewById(R.id.tv_demands);
             infoButton = v.findViewById(R.id.info_button);
             editButton= v.findViewById(R.id.edit_button);
@@ -295,6 +299,12 @@ public class UserDataAdapter extends RecyclerView.Adapter<UserDataAdapter.ViewHo
             Vholder.imageView_block.setEnabled(false);
 
         }
+        Vholder.root.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+          Toast.makeText(mContext,""+position,Toast.LENGTH_LONG).show();
+            }
+        });
     }
     @Override
     public int getItemCount() {

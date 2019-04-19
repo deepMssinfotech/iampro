@@ -1,13 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.mssinfotech.iampro.co.swipe.SwipeRevealLayout
+<com.chauthai.swipereveallayout.SwipeRevealLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     xmlns:card_view="http://schemas.android.com/tools"
     android:layout_gravity="center_vertical"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    app:mode="same_level"
     app:dragFromEdge="right">
-    <!--  app:dragFromEdge="right" height=88dp -->
+    <!--  app:dragFromEdge="right" height=88dp
+     com.mssinfotech.iampro.co.swipe.SwipeRevealLayout-->
     <FrameLayout
         android:layout_width="wrap_content"
         android:background="@drawable/user_background"
@@ -17,6 +19,7 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:gravity="center_vertical|end"
+            android:layout_gravity="center_vertical"
             android:paddingStart="20dp"
             android:paddingEnd="20dp"
             android:orientation="horizontal">
@@ -308,4 +311,4 @@
 
 
     </FrameLayout>
-</com.mssinfotech.iampro.co.swipe.SwipeRevealLayout>
+</com.chauthai.swipereveallayout.SwipeRevealLayout>

@@ -368,7 +368,7 @@ public class AddProvideActivity extends AppCompatActivity {
 
                                 MyProvideActivity fragment = new MyProvideActivity();
                                 function.loadFragment(AddProvideActivity.this,fragment,null);
-                                finish();
+                                //finish();
                             }
                         }
                         catch(JSONException e)

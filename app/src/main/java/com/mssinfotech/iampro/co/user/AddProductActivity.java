@@ -378,7 +378,7 @@ public class AddProductActivity extends AppCompatActivity {
 
                                 MyProductActivity fragment = new MyProductActivity();
                                 function.loadFragment(AddProductActivity.this,fragment,null);
-                                finish();
+                                //finish();
                             }
                         }
                         catch(JSONException e)

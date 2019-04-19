@@ -170,6 +170,7 @@ public class MyImageActivity extends Fragment implements MyImageAdapter.ItemList
             changeBackground_Image.setVisibility(View.GONE);
             changeImage.setVisibility(View.GONE);
             uid= id;
+
             gteUsrDetail(id);
         }
 
@@ -180,8 +181,14 @@ public class MyImageActivity extends Fragment implements MyImageAdapter.ItemList
         Intent i = new Intent();
         Config.PREVIOUS_PAGE_TAG = i.getStringExtra(Config.PAGE_TAG);
         //getImages();
-        getAllAlbum();
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                getAllAlbum();
+            }
+        }, 500);
 
+ //  getAllAlbum();
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

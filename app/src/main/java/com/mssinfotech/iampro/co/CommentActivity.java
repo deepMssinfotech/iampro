@@ -230,7 +230,7 @@ public class CommentActivity extends AppCompatActivity implements CommentAdapter
 
                             //at last add this view in your layout :
                             imageSlider.addSliderView(sliderView1);
-                            if(other_image.length()>0){
+                            if(other_image.length()>1){
                                 for(int i=0; i<other_image.length(); i++){
                                     DefaultSliderView sliderView = new DefaultSliderView(CommentActivity.this);
                                     final String imgUrl=Config.URL_ROOT+"uploads/album/w/500/"+other_image.getString(i);
@@ -248,6 +248,20 @@ public class CommentActivity extends AppCompatActivity implements CommentAdapter
                                     //at last add this view in your layout :
                                     imageSlider.addSliderView(sliderView);
                                 }
+                            }
+                            else if(other_image.length()==1) {
+                                imageSlider.setVisibility(View.GONE);
+                                imageView.setVisibility(View.VISIBLE);
+                                Glide.with(CommentActivity.this)
+                                        .load(ImageHol)
+                                        .apply(Config.options_avatar)
+                                        .into(imageView);
+                                imageView.setOnClickListener(new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View v) {
+                                        new PhotoFullPopupWindow(getApplication(), R.layout.popup_photo_full,fullname.getRootView(),ImageHol, null);
+                                    }
+                                });
                             }
                             Glide.with(getApplicationContext()).load(R.drawable.image_icon).into(imageView_icon);
                             imageView_icon.setOnClickListener(new View.OnClickListener() {

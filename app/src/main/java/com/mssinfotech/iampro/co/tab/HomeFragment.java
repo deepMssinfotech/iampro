@@ -970,7 +970,7 @@ public class HomeFragment extends Fragment implements UserDataAdapter.ItemListen
                         // Do something when error occurred
                         //Snackbar.make(getContext(),"Error...", Snackbar.LENGTH_LONG).show();
                         Toast.makeText(getContext(), "verror"+error.getMessage(), Toast.LENGTH_SHORT).show();
-                        Log.d("verror",error.getMessage());
+                        Log.d("verror",""+error.getMessage());
                     }
                 }
         );
