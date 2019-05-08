@@ -81,11 +81,10 @@ public class HomeActivity extends AppCompatActivity {
             }
             Config.doubleBackToExitPressedOnce = true;
             //Toast.makeText(this, "Please click again ", Toast.LENGTH_SHORT).show();
-
             new Handler().postDelayed(new Runnable() {
                 @Override
                 public void run() {
-                    Config.doubleBackToExitPressedOnce = false;
+                    Config.doubleBackToExitPressedOnce=false;
                 }
             }, 2000);
         } else {

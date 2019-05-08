@@ -133,6 +133,9 @@ public class ChatToUser extends AppCompatActivity implements UserChatAdapter.Ite
                     @Override
                     public void onResponse(JSONObject response) {
                         System.out.println(response);
+                        if (!allSampleDatamore.isEmpty()){
+                            allSampleDatamore.clear();
+                        }
                         try {
                             JSONArray jsonArray=response.getJSONArray("list");
                             for(int i=0;i<jsonArray.length();i++) {
@@ -173,53 +176,58 @@ public class ChatToUser extends AppCompatActivity implements UserChatAdapter.Ite
     }
     public void sendMessage(){
         final String msg=et_chat.getText().toString();
-        String query=null;
-        String url=null;
-        try {
-            query = URLEncoder.encode(msg,"utf-8");
-
-            //String url=Config.API_URL+"app_service.php?type=getMyAlbemsListt&search_type=image&uid="+uid+"&my_id="+uid;
-            // String url=Config.API_URL+"app_service.php?type=getMyAlbemsListt&search_type=image&uid="+uid+"&my_id="+uid+"&album_id="+aid;
-            url="https://www.iampro.co/api/chat.php?type=saveChat&uid="+id+"&msg="+ query+"&myid="+myid+"&abc_chat=0";
-            // Initialize a new RequestQueue instance
+        if (msg.equalsIgnoreCase("") || msg.length()==0){
+              Toast.makeText(ChatToUser.this,""+"Message can't be blank...",Toast.LENGTH_LONG).show();
+              return;
         }
-        catch(UnsupportedEncodingException e){
-            e.printStackTrace();
-            url = "https://www.iampro.co/api/chat.php?type=saveChat&uid="+id+"&msg="+query+"&myid="+myid+"&abc_chat=0";
+        else {
+            String query = null;
+            String url = null;
+            try {
+                query = URLEncoder.encode(msg, "utf-8");
 
+                //String url=Config.API_URL+"app_service.php?type=getMyAlbemsListt&search_type=image&uid="+uid+"&my_id="+uid;
+                // String url=Config.API_URL+"app_service.php?type=getMyAlbemsListt&search_type=image&uid="+uid+"&my_id="+uid+"&album_id="+aid;
+                url = "https://www.iampro.co/api/chat.php?type=saveChat&uid=" + id + "&msg=" + query + "&myid=" + myid + "&abc_chat=0";
+                // Initialize a new RequestQueue instance
+            } catch (UnsupportedEncodingException e) {
+                e.printStackTrace();
+                url = "https://www.iampro.co/api/chat.php?type=saveChat&uid=" + id + "&msg=" + query + "&myid=" + myid + "&abc_chat=0";
+
+            }
+            // String url="https://www.iampro.co/api/chat.php?type=saveChat&uid="+id+"&msg="+msg+"&myid="+myid+"&abc_chat=0";
+            RequestQueue MyRequestQueue = Volley.newRequestQueue(this);
+            StringRequest MyStringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
+                @Override
+                public void onResponse(String response) {
+                    allSampleDatamore.add(new ChatList(myid, id, "avatar", "sent", msg, new Date().toString()));
+                    adapter = new UserChatAdapter(getApplicationContext(), allSampleDatamore, ChatToUser.this, "sent");
+                    recycler_view_chat.setLayoutManager(new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.VERTICAL, false));
+                    recycler_view_chat.setAdapter(adapter);
+                    recycler_view_chat.scrollToPosition(allSampleDatamore.size() - 1);
+                    adapter.notifyDataSetChanged();
+                    getChatList(id);
+                    et_chat.setText("");
+                    Log.d("allSampleDatamore", "" + allSampleDatamore + "\t" + response);
+                }
+            }, new Response.ErrorListener() { //Create an error listener to handle errors appropriately.
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    //This code is executed if there is an error.
+                }
+            }) {
+                protected Map<String, String> getParams() {
+                    Map<String, String> MyData = new HashMap<String, String>();
+                    MyData.put("type", "saveChat");
+                    MyData.put("uid", id);
+                    MyData.put("msg", msg);
+                    MyData.put("myid", myid);
+                    MyData.put("abc_chat", "0");
+                    return MyData;
+                }
+            };
+            MyRequestQueue.add(MyStringRequest);
         }
-        // String url="https://www.iampro.co/api/chat.php?type=saveChat&uid="+id+"&msg="+msg+"&myid="+myid+"&abc_chat=0";
-         RequestQueue MyRequestQueue = Volley.newRequestQueue(this);
-        StringRequest MyStringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
-            @Override
-            public void onResponse(String response) {
-                allSampleDatamore.add(new ChatList(myid,id,"avatar","sent",msg,new Date().toString()));
-                adapter = new UserChatAdapter(getApplicationContext(),allSampleDatamore,ChatToUser.this,"sent");
-                recycler_view_chat.setLayoutManager(new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.VERTICAL, false));
-                recycler_view_chat.setAdapter(adapter);
-                recycler_view_chat.scrollToPosition(allSampleDatamore.size() - 1);
-                 adapter.notifyDataSetChanged();
-                getChatList(id);
-                et_chat.setText("");
-                 Log.d("allSampleDatamore",""+ allSampleDatamore+"\t"+response);
-            }
-        }, new Response.ErrorListener() { //Create an error listener to handle errors appropriately.
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                //This code is executed if there is an error.
-            }
-        }) {
-            protected Map<String, String> getParams() {
-                Map<String, String> MyData = new HashMap<String, String>();
-                MyData.put("type","saveChat");
-                MyData.put("uid",id);
-                MyData.put("msg",msg);
-                MyData.put("myid",myid);
-                MyData.put("abc_chat","0");
-                return MyData;
-            }
-        };
-        MyRequestQueue.add(MyStringRequest);
     }
     public void checkNewChat(){
         String url="https://www.iampro.co/api/chat.php?type=checkNewChat&lang=en&uid="+id+"&myid="+myid;

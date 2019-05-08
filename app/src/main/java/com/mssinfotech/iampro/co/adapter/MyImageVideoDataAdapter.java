@@ -86,6 +86,7 @@ public class MyImageVideoDataAdapter extends RecyclerView.Adapter<MyImageVideoDa
         final String albumId = dataList.get(i).getAlbemId();
         final ArrayList singleSectionItems = dataList.get(i).getAllItemsInSection();
         final String singleSectionAddedBy = dataList.get(i).getAddedBy();
+        //dataList.get(i).getAllItemsInSection().get(i).get
         Log.e(Config.TAG,sectionName);
         //Toast.makeText(mContext, "click event on more, "+sectionName , Toast.LENGTH_SHORT).show();
        itemRowHolder.itemTitle.setText(sectionName);
@@ -93,9 +94,19 @@ public class MyImageVideoDataAdapter extends RecyclerView.Adapter<MyImageVideoDa
        if(dataList.get(i).getMore()!=null && dataList.get(i).getMore().equalsIgnoreCase("loadmore")){
            itemRowHolder.btnMore.setVisibility(View.INVISIBLE);
        }
-       else  if(!(singleSectionAddedBy.toString().equalsIgnoreCase(PrefManager.getLoginDetail(mContext,"id")))){
+        if (dataList.get(i).getMore()!=null && dataList.get(i).getAddedBy()!=null && !dataList.get(i).getAddedBy().equalsIgnoreCase(PrefManager.getLoginDetail(mContext,"id"))){
+            itemRowHolder.btnMore.setVisibility(View.GONE);
+        }
+        if (dataList.get(i).getAddedBy()!=null && !dataList.get(i).getAddedBy().equalsIgnoreCase(PrefManager.getLoginDetail(mContext,"id"))){
+            itemRowHolder.btnMore.setVisibility(View.GONE);
+        }
+        if (!PrefManager.isLogin(mContext)){
+            itemRowHolder.btnMore.setVisibility(View.GONE);
+        }
+      /* else  if(!(singleSectionAddedBy.toString().equalsIgnoreCase(PrefManager.getLoginDetail(mContext,"id")))){
            itemRowHolder.btnMore.setVisibility(View.INVISIBLE);
-       }
+       }*/
+
          //if(singleSectionItems.get(i))
        /* if(sectionName.equalsIgnoreCase("Product")){
             Glide.with(mContext).load(R.drawable.latestproduct).into(itemRowHolder.itemTitle);
@@ -132,9 +143,9 @@ public class MyImageVideoDataAdapter extends RecyclerView.Adapter<MyImageVideoDa
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         // dialog.cancel();
+                        deleteAlbum(albumId);
                         dataList.remove(j);
                         notifyDataSetChanged();
-                        deleteAlbum(albumId);
                         //Toast.makeText(mContext,"deleted",Toast.LENGTH_LONG).show();
                     }
                 });

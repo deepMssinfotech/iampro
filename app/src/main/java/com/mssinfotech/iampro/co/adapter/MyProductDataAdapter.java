@@ -71,6 +71,13 @@ public class MyProductDataAdapter extends RecyclerView.Adapter<MyProductDataAdap
             itemRowHolder.btnMore.setVisibility(View.INVISIBLE);
         }
 
+        if (dataList.get(i).getMore()!=null && !dataList.get(i).getAddedBy().equalsIgnoreCase(PrefManager.getLoginDetail(mContext,"id"))){
+            itemRowHolder.btnMore.setVisibility(View.GONE);
+        }
+        if (!dataList.get(i).getAddedBy().equalsIgnoreCase(PrefManager.getLoginDetail(mContext,"id"))){
+            itemRowHolder.btnMore.setVisibility(View.GONE);
+        }
+
        /* if(sectionName.equalsIgnoreCase("Product")){
             Glide.with(mContext).load(R.drawable.latestproduct).into(itemRowHolder.itemTitle);
         }
@@ -97,7 +104,7 @@ public class MyProductDataAdapter extends RecyclerView.Adapter<MyProductDataAdap
                 //String albemId=singleSectionItems.get(i).
 
 
-                Toast.makeText(v.getContext(), ""+sectionName+""+albumId, Toast.LENGTH_SHORT).show();
+               // Toast.makeText(v.getContext(), ""+sectionName+""+albumId, Toast.LENGTH_SHORT).show();
 
                 AlertDialog.Builder alertDialog = new AlertDialog.Builder(mContext);
                 alertDialog.setTitle("Delete it!");
@@ -106,9 +113,9 @@ public class MyProductDataAdapter extends RecyclerView.Adapter<MyProductDataAdap
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         // dialog.cancel();
+                        deleteAlbum(albumId);
                         dataList.remove(j);
                         notifyDataSetChanged();
-                        deleteAlbum(albumId);
                         //Toast.makeText(mContext,"deleted",Toast.LENGTH_LONG).show();
                     }
                 });

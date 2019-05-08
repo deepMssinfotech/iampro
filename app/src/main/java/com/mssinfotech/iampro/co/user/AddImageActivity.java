@@ -71,16 +71,18 @@ public class AddImageActivity extends AppCompatActivity {
     Button add_image_button,create_album_button,ibImageMoreImage;
     List<String> imagesEncodedList;
     String imageEncoded;
-    private String albumname, imagename, imagedetail,cat,image_album;
+    private String albumname, imagename, imagedetail,cat,image_album="fashion";
     private GridView gvGallery;
     private Bitmap bitmap=null;
     private GalleryAdapter galleryAdapter;
     private LinearLayout categoryLayout,albumLayout;
      ArrayList<Uri> mArrayUri = new ArrayList<>();
+    ArrayList<String> students = new ArrayList<String>();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_image);
+         getSupportActionBar().hide();
         Config.setLayoutName(getResources().getResourceEntryName(R.layout.activity_add_image));
         tvlayouttype = findViewById(R.id.tvlayouttype);
         tilalbumname = findViewById(R.id.tilalbumname);
@@ -90,7 +92,9 @@ public class AddImageActivity extends AppCompatActivity {
         tilimagedetail = findViewById(R.id.tilimagedetail);
         etimagedetail = findViewById(R.id.etimagedetail);
         spcat= findViewById(R.id.spcat);
+
         spimage_album= findViewById(R.id.spimage_album);
+
         add_image_button = findViewById(R.id.add_image_button);
         create_album_button = findViewById(R.id.create_album_button);
         function.getData(AddImageActivity.this, this, spcat, "IMAGE");
@@ -226,19 +230,20 @@ public class AddImageActivity extends AppCompatActivity {
             Toast.makeText(this, "You haven't picked Image",  Toast.LENGTH_LONG).show();
         }
     }
-
     public void processAddImage(View v){
         albumname=etalbumname.getText().toString();
         imagename=etimagename.getText().toString();
         imagedetail=etimagedetail.getText().toString();
         cat=spcat.getSelectedItem().toString();
+        if (spimage_album.getSelectedItem()!=null)
         image_album=spimage_album.getSelectedItem().toString();
+        Log.d("student_spinner2",""+image_album);
         String utype=tvlayouttype.getText().toString();
         if (Validate.isNull(albumname) && utype.equalsIgnoreCase("new_album")) {
             resetError();
             tilalbumname.setErrorEnabled(true);
-            tilalbumname.setError("Enter Album Name ");
-            return ;
+            tilalbumname.setError("Enter Album Name");
+            return;
         } else if (Validate.isNull(imagename)) {
             resetError();
             tilimagename.setErrorEnabled(true);
@@ -297,7 +302,9 @@ public class AddImageActivity extends AppCompatActivity {
                             Toast.makeText(getApplicationContext(),""+msgg,Toast.LENGTH_LONG).show();
                             if (status.equalsIgnoreCase("success")){
                                 MyImageActivity fragment = new MyImageActivity();
-                                function.loadFragment(AddImageActivity.this,fragment,null);
+                                Bundle args = new Bundle();
+                                args.putString("uid",PrefManager.getLoginDetail(AddImageActivity.this,"id"));
+                                function.loadFragment(AddImageActivity.this,fragment,args);
                                 //AddImageActivity.this.finish();
                             }
                         }
@@ -342,16 +349,21 @@ public class AddImageActivity extends AppCompatActivity {
         requestQueue.add(stringRequest);
     }
     public void click_image_button(View v){
-        add_image_button.setBackgroundResource(R.drawable.black);
-        add_image_button.setTextColor(getResources().getColor(R.color.white));
-        create_album_button.setBackgroundResource(R.drawable.white);
-        create_album_button.setTextColor(getResources().getColor(R.color.black));
-        tvlayouttype.setText("add_iamge");
-        albumLayout.setVisibility(View.VISIBLE);
-        categoryLayout.setVisibility(View.GONE);
-        tilalbumname.setVisibility(View.GONE);
-        etalbumname.setVisibility(View.GONE);
-        return;
+        if (students.size()>0) {
+            add_image_button.setBackgroundResource(R.drawable.black);
+            add_image_button.setTextColor(getResources().getColor(R.color.white));
+            create_album_button.setBackgroundResource(R.drawable.white);
+            create_album_button.setTextColor(getResources().getColor(R.color.black));
+            tvlayouttype.setText("add_iamge");
+            albumLayout.setVisibility(View.VISIBLE);
+            categoryLayout.setVisibility(View.GONE);
+            tilalbumname.setVisibility(View.GONE);
+            etalbumname.setVisibility(View.GONE);
+        }
+        else{
+            add_image_button.setEnabled(false);
+        }
+        //return;
     }
     public void click_album_button(View v){
         add_image_button.setBackgroundResource(R.drawable.white);
@@ -375,12 +387,15 @@ public class AddImageActivity extends AppCompatActivity {
                     @Override
                     public void onResponse(String response) {
                         JSONArray result = null;
+                        if (!students.isEmpty()){
+                                students.clear();
+                        }
                         try {
                             //Parsing the fetched Json String to JSON Object
                             result = new JSONArray(response);
                             //Storing the Array of JSON String to our JSON Array
                             //JSONArray result = j.getJSONArray("data");
-                            ArrayList<String> students = new ArrayList<String>();
+
                             //Calling method getStudents to get the students from the JSON Array
                             //Log.d(TAG,result.toString());
                             for(int i=0;i<result.length();i++){
@@ -391,8 +406,10 @@ public class AddImageActivity extends AppCompatActivity {
                                     students.add(json.getString("name"));
                                 } catch (JSONException e) {
                                     e.printStackTrace();
+                                    Log.d("spinner",""+e.getMessage());
                                 }
                             }
+                            Log.d("student_spinner",""+students.toString());
                             spimage_album.setAdapter(new ArrayAdapter<String>(AddImageActivity.this, android.R.layout.simple_spinner_dropdown_item, students));
                         } catch (JSONException e) {
                             e.printStackTrace();

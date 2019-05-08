@@ -65,6 +65,7 @@ public class SectionImageVideoAdapter extends RecyclerView.Adapter<SectionImageV
     protected MyImageAdapter.ItemListener mListener;
      TreeMap<String,String> item_type;
       String type="image";
+    String svalue="error";
     public SectionImageVideoAdapter(Context context, ArrayList<MyImageModel> itemsList,TreeMap<String,String> item_type)  {
         this.itemsList=itemsList;
         this.mContext=context;
@@ -107,6 +108,7 @@ public class SectionImageVideoAdapter extends RecyclerView.Adapter<SectionImageV
     public void onBindViewHolder(final SingleItemRowHolder holder, final int position) {
         final int i=position;
         MyImageModel singleItem = itemsList.get(i);
+        Log.d("onBind_resp",""+itemsList.size());
         //orgg
         //final String uid=singleItem.getUid();
 
@@ -360,11 +362,12 @@ public class SectionImageVideoAdapter extends RecyclerView.Adapter<SectionImageV
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         // dialog.cancel();
-                        itemsList.remove(i);
-                        notifyDataSetChanged();
-                        deleteImage(itemsList.get(i).getId());
-                        //Toast.makeText(mContext,"deleted",Toast.LENGTH_LONG).show();
-                    }
+                        String valc=deleteImage(itemsList.get(position).getId());
+                         Toast.makeText(mContext,"deleted"+valc,Toast.LENGTH_LONG).show();
+                        //if (valc.equalsIgnoreCase("success")){
+                        itemsList.remove(position);
+                        notifyDataSetChanged(); }
+                    //}
                 });
                 alertDialog.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
                     @Override
@@ -617,22 +620,26 @@ public class SectionImageVideoAdapter extends RecyclerView.Adapter<SectionImageV
         requestQueue.add(jsonObjectRequest);
 
     }
-    public void deleteImage(String pid){
+    public String deleteImage(String pid){
         String url="https://www.iampro.co/ajax/profile.php?type=deleteAlbemimage&id="+Integer.parseInt(pid);
         RequestQueue MyRequestQueue = Volley.newRequestQueue(mContext);
+
         StringRequest MyStringRequest = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
+                Log.d("delete_reponses",""+response);
                 try {
                     JSONObject jsonObject = new JSONObject(response);
                     String status=jsonObject.optString("status");
                     String msg=jsonObject.getString("msg");
+                    svalue=status;
                     if(status.equalsIgnoreCase("success")){
                         Toast.makeText(mContext,"Deleted successfully"+" "+msg,Toast.LENGTH_LONG).show();
                     }
                 }
                 catch (JSONException ex){
                     Toast.makeText(mContext,""+ex.getMessage(),Toast.LENGTH_LONG).show();
+                     Log.d("delete_catch",""+ex.getMessage());
                 }
             }
         }, new Response.ErrorListener() {
@@ -647,5 +654,6 @@ public class SectionImageVideoAdapter extends RecyclerView.Adapter<SectionImageV
             }
         };
         MyRequestQueue.add(MyStringRequest);
+        return svalue;
     }
 }

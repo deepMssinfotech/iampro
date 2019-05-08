@@ -71,7 +71,7 @@ public class OtpRegistrationActivity extends Fragment  implements SingleUploadBr
     public static final int REQUEST_ID_MULTIPLE_PERMISSIONS = 1;
     public static final int REQUEST_IMAGE = 100;
     private int GALLERY = 1, CAMERA = 2;
-    private final SingleUploadBroadcastReceiver uploadReceiver = new SingleUploadBroadcastReceiver();
+
     String otp;
     String fname,lname,mobile,email,password,cpassword,category;
     public static String imageType;
@@ -81,11 +81,10 @@ public class OtpRegistrationActivity extends Fragment  implements SingleUploadBr
     Intent intent;
     Context context;
     ProgressDialog dialog;
-
+    private final SingleUploadBroadcastReceiver uploadReceiver = new SingleUploadBroadcastReceiver();
     ProgressDialog progressdialog;
     int status = 0;
     Handler handler = new Handler();
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup parent, Bundle savedInstanceState) {
         // Defines the xml file for the fragment
@@ -97,10 +96,8 @@ public class OtpRegistrationActivity extends Fragment  implements SingleUploadBr
         etotp = view.findViewById(R.id.etotp);
         etpassword = view.findViewById(R.id.etpassword);
         etcpassword = view.findViewById(R.id.etcpassword);
-
         context = getContext();
         intent = getActivity().getIntent();
-
         Bundle args = getArguments();
         //fid = getArguments().getString("uid");
         if (args != null) {
@@ -161,14 +158,12 @@ public class OtpRegistrationActivity extends Fragment  implements SingleUploadBr
         uploadReceiver.register(context);
 
     }
-
     @Override
     public void onPause() {
         super.onPause();
         LocalBroadcastManager.getInstance(context).unregisterReceiver(receiver);
         uploadReceiver.unregister(context);
     }
-
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
@@ -176,8 +171,6 @@ public class OtpRegistrationActivity extends Fragment  implements SingleUploadBr
         super.onResume();
         uploadReceiver.register(context);
     }
-
-
     public void resend(){
         if (!Config.haveNetworkConnection(context)){
             Config.showInternetDialog(context);
@@ -459,23 +452,19 @@ public class OtpRegistrationActivity extends Fragment  implements SingleUploadBr
         String path = MediaStore.Images.Media.insertImage(inContext.getContentResolver(), inImage, "Title", null);
         return Uri.parse(path);
     }
-
     @Override
     public void onProgress(int progress) {
         Log.d("PROGRESS", "progress = " + progress);
         dialog.setProgress(progress);
     }
-
     @Override
     public void onProgress(long uploadedBytes, long totalBytes) {
 
     }
-
     @Override
     public void onError(Exception exception) {
 
     }
-
     @Override
     public void onCompleted(int serverResponseCode, byte[] serverResponseBody) {
         dialog.dismiss();
@@ -483,7 +472,6 @@ public class OtpRegistrationActivity extends Fragment  implements SingleUploadBr
         function.loadFragment(context,fragment,null);
         //finish();
     }
-
     @Override
     public void onCancelled() {
 
@@ -510,15 +498,11 @@ public class OtpRegistrationActivity extends Fragment  implements SingleUploadBr
                     }catch(InterruptedException e){
                         e.printStackTrace();
                     }
-
                     handler.post(new Runnable() {
                         @Override
                         public void run() {
-
                             progressdialog.setProgress(status);
-
                             if(status == 100){
-
                                 progressdialog.dismiss();
                             }
                         }
@@ -526,7 +510,6 @@ public class OtpRegistrationActivity extends Fragment  implements SingleUploadBr
                 }
             }
         }).start();
-
     }
 }
 

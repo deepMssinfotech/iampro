@@ -11,6 +11,7 @@ import android.content.ClipData;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Bitmap;
@@ -25,6 +26,7 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -53,6 +55,7 @@ import com.mssinfotech.iampro.co.adapter.GalleryAdapter;
 import com.mssinfotech.iampro.co.common.ImageProcess;
 import com.mssinfotech.iampro.co.common.function;
 import com.mssinfotech.iampro.co.common.Config;
+import com.mssinfotech.iampro.co.services.SingleUploadBroadcastReceiver;
 import com.mssinfotech.iampro.co.utils.PrefManager;
 import com.mssinfotech.iampro.co.utils.Validate;
 
@@ -75,26 +78,29 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.UUID;
 
-public class AddVideoActivity extends AppCompatActivity {
+public class AddVideoActivity extends AppCompatActivity  implements SingleUploadBroadcastReceiver.Delegate {
     TextView tvlayouttype;
     TextInputLayout tilalbumname, tilvideoname, tilvideodetail;
     EditText etalbumname, etvideoname, etvideodetail;
     Spinner spcat, spvideo_album;
     Button add_video_button, create_album_button, ibVideoMoreVideo;
-    private String albumname, videoname, videodetail, cat, video_album, myVideoPath;
+    private String albumname, videoname, videodetail, cat, video_album="fashion", myVideoPath;
     private GridView gvGallery;
     private Bitmap bitmap = null;
     private GalleryAdapter galleryAdapter;
     private LinearLayout categoryLayout, albumLayout;
     private VideoView videoView;
     Intent i;
+    private final SingleUploadBroadcastReceiver uploadReceiver = new SingleUploadBroadcastReceiver();
     ArrayList<Uri> mArrayUri = new ArrayList<Uri>();
+     ArrayList<String> students = new ArrayList<String>();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_video);
         Config.setLayoutName(getResources().getResourceEntryName(R.layout.activity_add_video));
         i = new Intent(this, AddVideoActivity.class);
+        getSupportActionBar().hide();
         tvlayouttype = findViewById(R.id.tvlayouttype);
         tilalbumname = findViewById(R.id.tilalbumname);
         etalbumname = findViewById(R.id.etalbumname);
@@ -122,7 +128,6 @@ public class AddVideoActivity extends AppCompatActivity {
         getAlbumList();
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
             startMyOwnForeground();
-
     }
     private void startMyOwnForeground(){
         String NOTIFICATION_CHANNEL_ID = "com.example.simpleapp";
@@ -220,7 +225,7 @@ public class AddVideoActivity extends AppCompatActivity {
                 videoView.setVisibility(View.VISIBLE);
                 videoView.setVideoURI(contentURI);
                 videoView.requestFocus();
-                videoView.start();
+                //videoView.start();
             }
 
         } else if (requestCode == Config.CAMERA) {
@@ -232,7 +237,7 @@ public class AddVideoActivity extends AppCompatActivity {
             videoView.setVisibility(View.VISIBLE);
             videoView.setVideoURI(contentURI);
             videoView.requestFocus();
-            videoView.start();
+            //videoView.start();
         }
     }
     private void saveVideoToInternalStorage (String filePath) {
@@ -270,7 +275,6 @@ public class AddVideoActivity extends AppCompatActivity {
         }
 
     }
-
     public String getPath(Uri uri) {
         String[] projection = { MediaStore.Video.Media.DATA };
         Cursor cursor = getContentResolver().query(uri, projection, null, null, null);
@@ -285,32 +289,35 @@ public class AddVideoActivity extends AppCompatActivity {
             return null;
     }
     public void processAddVideo(View v) {
-        albumname = etalbumname.getText().toString();
-        videoname = etvideoname.getText().toString();
-        videodetail = etvideodetail.getText().toString();
-        cat = spcat.getSelectedItem().toString();
-        video_album = spvideo_album.getSelectedItem().toString();
-        String utype=tvlayouttype.getText().toString();
-        if (Validate.isNull(albumname) && utype.equalsIgnoreCase("new_album")) {
-            resetError();
-            tilalbumname.setErrorEnabled(true);
-            tilalbumname.setError("Enter Album Name ");
-            return;
-        } else if (Validate.isNull(videoname)) {
-            resetError();
-            tilvideoname.setErrorEnabled(true);
-            tilvideoname.setError("Enter Video  Name");
-            return;
-        } else if (Validate.isNull(videodetail)) {
-            resetError();
-            tilvideodetail.setErrorEnabled(true);
-            tilvideodetail.setError("Enter Image Detail");
-            return;
-        } else {
-            hideKeyboard();
-            resetError();
-            sendData();
-        }
+            albumname = etalbumname.getText().toString();
+            videoname = etvideoname.getText().toString();
+            videodetail = etvideodetail.getText().toString();
+            if (spcat.getSelectedItem()!=null)
+            cat = spcat.getSelectedItem().toString();
+            if (spvideo_album.getSelectedItem() != null)
+                video_album = spvideo_album.getSelectedItem().toString();
+            String utype = tvlayouttype.getText().toString();
+            if (Validate.isNull(albumname) && utype.equalsIgnoreCase("new_album")) {
+                resetError();
+                tilalbumname.setErrorEnabled(true);
+                tilalbumname.setError("Enter Album Name ");
+                return;
+            } else if (Validate.isNull(videoname)) {
+                resetError();
+                tilvideoname.setErrorEnabled(true);
+                tilvideoname.setError("Enter Video  Name");
+                return;
+            } else if (Validate.isNull(videodetail)) {
+                resetError();
+                tilvideodetail.setErrorEnabled(true);
+                tilvideodetail.setError("Enter Image Detail");
+                return;
+            } else {
+                hideKeyboard();
+                resetError();
+                sendData();
+            }
+
     }
     public void resetError(){
         tilalbumname.setErrorEnabled(false);
@@ -324,9 +331,7 @@ public class AddVideoActivity extends AppCompatActivity {
                     hideSoftInputFromWindow(view.getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
         }
     }
-
     public void sendData() {
-
         if (!Config.haveNetworkConnection(this)) {
             Config.showInternetDialog(this);
             return;
@@ -335,11 +340,16 @@ public class AddVideoActivity extends AppCompatActivity {
         //return;
         try {
             String uploadId = UUID.randomUUID().toString();
+            uploadReceiver.setDelegate((SingleUploadBroadcastReceiver.Delegate) this);
+            uploadReceiver.setUploadID(uploadId);
             //Creating a multi part request
             String palbumname= tvlayouttype.getText().toString();
             if(!palbumname.equalsIgnoreCase("videonew"))palbumname=spvideo_album.getSelectedItem().toString();
 
+            //Creating a multi part request
+            String boundary = "---------------------------14737809831466499882746641449";
             new MultipartUploadRequest(this, uploadId, Config.AJAX_URL + "uploadprocess.php")
+                    .addHeader("Content-Type", "multipart/form-data; boundary=" + boundary)
                     .addFileToUpload(myVideoPath, "myfile") //Adding file
                     .addParameter("type","uploadvideo")//Adding text parameter to the request
                     .addParameter("process_type","native_android")
@@ -349,31 +359,37 @@ public class AddVideoActivity extends AppCompatActivity {
                     .addParameter("about_us",videodetail)
                     .addParameter("category",cat)
                     .addParameter("user_id",PrefManager.getLoginDetail(getApplicationContext(),"id"))
+                    .addParameter("my_id",PrefManager.getLoginDetail(getApplicationContext(),"id"))
+                    .addParameter("uid",PrefManager.getLoginDetail(getApplicationContext(),"id"))
                     //.setNotificationConfig(new UploadNotificationConfig())
                     .setMaxRetries(2)
                     .startUpload(); //Starting the upload
             MyVideoActivity fragment = new MyVideoActivity();
-            function.loadFragment(AddVideoActivity.this,fragment,null);
+            Bundle args = new Bundle();
+            args.putString("uid",PrefManager.getLoginDetail(AddVideoActivity.this,"id"));
+            function.loadFragment(AddVideoActivity.this,fragment,args);
             //finish();
         } catch (Exception exc) {
-            Toast.makeText(this, exc.getMessage(), Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, ""+exc.getMessage(), Toast.LENGTH_SHORT).show();
         }
-
     }
-
     public void click_video_button(View v) {
-        add_video_button.setBackgroundResource(R.drawable.black);
-        add_video_button.setTextColor(getResources().getColor(R.color.white));
-        create_album_button.setBackgroundResource(R.drawable.white);
-        create_album_button.setTextColor(getResources().getColor(R.color.black));
-        tvlayouttype.setText("add_video");
-        albumLayout.setVisibility(View.VISIBLE);
-        categoryLayout.setVisibility(View.GONE);
-        tilalbumname.setVisibility(View.GONE);
-        etalbumname.setVisibility(View.GONE);
-        return;
+        if (!students.isEmpty()) {
+            add_video_button.setBackgroundResource(R.drawable.black);
+            add_video_button.setTextColor(getResources().getColor(R.color.white));
+            create_album_button.setBackgroundResource(R.drawable.white);
+            create_album_button.setTextColor(getResources().getColor(R.color.black));
+            tvlayouttype.setText("add_video");
+            albumLayout.setVisibility(View.VISIBLE);
+            categoryLayout.setVisibility(View.GONE);
+            tilalbumname.setVisibility(View.GONE);
+            etalbumname.setVisibility(View.GONE);
+            return;
+        }
+        else{
+            add_video_button.setEnabled(false);
+        }
     }
-
     public void click_album_button(View v) {
         add_video_button.setBackgroundResource(R.drawable.white);
         add_video_button.setTextColor(getResources().getColor(R.color.black));
@@ -397,12 +413,14 @@ public class AddVideoActivity extends AppCompatActivity {
                     @Override
                     public void onResponse(String response) {
                         JSONArray result = null;
+                        if (!students.isEmpty())
+                             students.clear();
                         try {
                             //Parsing the fetched Json String to JSON Object
                             result = new JSONArray(response);
                             //Storing the Array of JSON String to our JSON Array
                             //JSONArray result = j.getJSONArray("data");
-                            ArrayList<String> students = new ArrayList<String>();
+                            //ArrayList<String> students = new ArrayList<String>();
                             //Calling method getStudents to get the students from the JSON Array
                             //Log.d(TAG,result.toString());
                             for (int i = 0; i < result.length(); i++) {
@@ -427,11 +445,59 @@ public class AddVideoActivity extends AppCompatActivity {
 
                     }
                 });
-
         //Creating a request queue
         RequestQueue requestQueue = Volley.newRequestQueue(this);
-
         //Adding request to the queue
         requestQueue.add(stringRequest);
     }
+
+    @Override
+    public void onProgress(int progress) {
+        Toast.makeText(AddVideoActivity.this,""+progress+"\t"+"Percentage Completed",Toast.LENGTH_LONG).show();
+    }
+
+    @Override
+    public void onProgress(long uploadedBytes, long totalBytes) {
+
+    }
+
+    @Override
+    public void onError(Exception exception) {
+
+    }
+
+    @Override
+    public void onCompleted(int serverResponseCode, byte[] serverResponseBody) {
+        //Toast.makeText(AddVideoActivity.this,""+"Video Uploading Completed...",Toast.LENGTH_LONG).show();
+        AlertDialog.Builder alertDialog = new AlertDialog.Builder(AddVideoActivity.this);
+        alertDialog.setTitle("Uploading Status!");
+        alertDialog.setMessage("Video Uploading Completed...");
+        alertDialog.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                // dialog.cancel();
+
+            }
+        });
+
+        AlertDialog dialog = alertDialog.create();
+        dialog.show();
+    }
+    @Override
+    public void onCancelled() {
+    }
+    @Override
+    public void onResume() {
+        super.onResume();
+        //LocalBroadcastManager.getInstance(AddVideoActivity.this).registerReceiver(receiver, new IntentFilter("otp"));
+        uploadReceiver.register(AddVideoActivity.this);
+
+    }
+    @Override
+    public void onPause() {
+        super.onPause();
+       // LocalBroadcastManager.getInstance(context).unregisterReceiver(receiver);
+        uploadReceiver.unregister(AddVideoActivity.this);
+    }
+
 }

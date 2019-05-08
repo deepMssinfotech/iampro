@@ -71,6 +71,7 @@ public class AddProductActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_product);
+         getSupportActionBar().hide();
         Config.setLayoutName(getResources().getResourceEntryName(R.layout.activity_add_product));
         tilproductname = findViewById(R.id.tilproductname);
         etproductname = findViewById(R.id.etproductname);
@@ -377,7 +378,9 @@ public class AddProductActivity extends AppCompatActivity {
                                 etproductdetail.setText(" ");
 
                                 MyProductActivity fragment = new MyProductActivity();
-                                function.loadFragment(AddProductActivity.this,fragment,null);
+                                Bundle args = new Bundle();
+                                args.putString("uid",PrefManager.getLoginDetail(AddProductActivity.this,"id"));
+                                function.loadFragment(AddProductActivity.this,fragment,args);
                                 //finish();
                             }
                         }

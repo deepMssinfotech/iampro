@@ -1,9 +1,7 @@
 package com.mssinfotech.iampro.co.adapter;
-
 /**
  * Created by mssinfotech on 15/01/19.
  */
-
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -62,20 +60,19 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.TreeMap;
-
 public class SectionVideoAdapter extends RecyclerView.Adapter<SectionVideoAdapter.SingleItemRowHolder> {
     private ArrayList<MyImageModel> itemsList;
     private Context mContext;
     //private String uid,id;
-    ArrayList<MyImageModel> mValues;
+    //ArrayList<MyImageModel> mValues;
     HashSet<String> heading_name;
     HashMap<String,String> item_name;
     protected MyImageAdapter.ItemListener mListener;
-    public SectionVideoAdapter(Context context, ArrayList<MyImageModel> itemsList,HashMap<String,String> item_name) {
+     public   SectionVideoAdapter(Context context, ArrayList<MyImageModel> itemsList,HashMap<String,String> item_name) {
         this.itemsList = itemsList;
         this.mContext = context;
         this.item_name=item_name;
-    }
+     }
     @Override
     public SingleItemRowHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
         View v = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.item_video_row, null);
@@ -168,7 +165,14 @@ public class SectionVideoAdapter extends RecyclerView.Adapter<SectionVideoAdapte
            //Toast.makeText(mContext,"vimage",Toast.LENGTH_LONG).show();
             Log.d("vimagee_path",Config.V_URL+itemsList.get(i).getV_image());
         }
-
+        else{
+            Glide.with(mContext)
+                    .load(Config.V_URL+itemsList.get(i).getImage())
+                    .apply(Config.options_video)
+                    .into(holder.videoView);
+            holder.videoView.setVisibility(View.VISIBLE);
+             Log.d("v_url_main",""+Config.V_URL+itemsList.get(i).getImage());
+        }
        // holder.udate.setText(singleItem.getUdate());
         holder.tv_comments.setText(String.valueOf(singleItem.getComments()));
         holder.tv_totallike.setText(String.valueOf(singleItem.getTotallike()));
@@ -231,10 +235,13 @@ public class SectionVideoAdapter extends RecyclerView.Adapter<SectionVideoAdapte
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         // dialog.cancel();
-                        mValues.remove(i);
-                        notifyDataSetChanged();
+
                         deleteVideo(itemsList.get(i).getId());
                         //Toast.makeText(mContext,"deleted",Toast.LENGTH_LONG).show();
+
+                        itemsList.remove(i);
+                        notifyDataSetChanged();
+
                     }
                 });
                 alertDialog.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
@@ -256,7 +263,6 @@ public class SectionVideoAdapter extends RecyclerView.Adapter<SectionVideoAdapte
                 mContext.startActivity(intent);
             }
         });
-
          holder.ll_comment.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -274,10 +280,8 @@ public class SectionVideoAdapter extends RecyclerView.Adapter<SectionVideoAdapte
                  Bundle args = new Bundle();
                  args.putString("uid", String.valueOf(uidd));
                  function.loadFragment(mContext,fragment,args);
-
              }
          });
-
         if(!PrefManager.getLoginDetail(mContext,"id").equalsIgnoreCase(itemsList.get(i).getUid().toString())){
             holder.iv_delete.setVisibility(View.GONE);
             holder.iv_edit.setVisibility(View.GONE);
@@ -285,6 +289,13 @@ public class SectionVideoAdapter extends RecyclerView.Adapter<SectionVideoAdapte
         else{
             holder.iv_delete.setVisibility(View.VISIBLE);
             holder.iv_edit.setVisibility(View.VISIBLE);
+        }
+        if(itemsList.get(i).getMore()==null) {
+            Glide.with(mContext)
+                    .load(Config.V_URL + itemsList.get(i).getImage())
+                    .apply(Config.options_video)
+                    .into(holder.videoView);
+            holder.videoView.setVisibility(View.VISIBLE);
         }
     }
     @Override
@@ -358,7 +369,6 @@ public class SectionVideoAdapter extends RecyclerView.Adapter<SectionVideoAdapte
     }
     public void sendrating(float rating,int uid,int id){
         String urlv="https://www.iampro.co/api/app_service.php?type=rate_me&id="+id+"&uid="+uid+"&ptype=video&total_rate="+rating;
-
         RequestQueue requestQueue = Volley.newRequestQueue(mContext);
         // Initialize a new JsonObjectRequest instance
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(

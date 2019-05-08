@@ -83,6 +83,14 @@ public class MyDemandActivity extends Fragment implements MyDemandAdapter.ItemLi
                   MyDemandActivity.this.startActivity(i_signup);
               }
           });
+
+        if (!PrefManager.isLogin(MyDemandActivity.this.getContext())){
+            fab.hide();
+        }
+        else if (!PrefManager.getLoginDetail(MyDemandActivity.this.getContext(),"id").equalsIgnoreCase(id)) {
+            fab.hide();
+        }
+
         recyclerView = view.findViewById(R.id.recyclerView);
         tv_category=view.findViewById(R.id.tv_category);
         userbackgroud = view.findViewById(R.id.userbackgroud);

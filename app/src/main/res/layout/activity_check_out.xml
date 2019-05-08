@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     android:background="@color/white"
     tools:context=".CartActivity">
-<LinearLayout
+    <LinearLayout
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
@@ -53,25 +53,17 @@
         android:weightSum="1"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
+
         <Button
-            android:id="@+id/bClear"
+            android:id="@+id/btn_placeOrder"
             android:layout_width="0dip"
-            android:layout_weight="0.5"
+            android:layout_weight="1"
             android:background="@drawable/black"
             android:textColor="@android:color/white"
             android:textAllCaps="true"
             android:textStyle="bold"
             android:layout_height="wrap_content"
-            android:text="Clear Cart"/>
-        <Button android:id="@+id/bCheckout"
-            android:layout_width="0dip"
-            android:layout_weight="0.5"
-            android:background="@drawable/black"
-            android:textColor="@android:color/white"
-            android:textAllCaps="true"
-            android:textStyle="bold"
-            android:layout_height="wrap_content"
-            android:text="Checkout"/>
+            android:text="Place Order"/>
     </LinearLayout>
 
 </RelativeLayout>

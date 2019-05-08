@@ -553,7 +553,6 @@ public class ProductFragment extends Fragment implements ProductAdapter.ItemList
     public void onItemClick(MyProductModel item) {
 
     }
-
     public void getProductMores(final String cname){
         final ProgressDialog pDialog = new ProgressDialog(getContext()); //Your Activity.this
         pDialog.setMessage("Loading...!");

@@ -111,7 +111,11 @@ public class MyVideoAdapter extends RecyclerView.Adapter<MyVideoAdapter.ViewHold
     @Override
     public void onBindViewHolder(ViewHolder Vholder, int position) {
         Vholder.setData(mValues.get(position));
-
+        Glide.with(mContext)
+                .load(Config.V_URL+mValues.get(position).getV_image())
+                .apply(Config.options_video)
+                .into(Vholder.videoView);
+        Log.d("vimagee_path",Config.V_URL+mValues.get(position).getV_image());
     }
     @Override
     public int getItemCount() {

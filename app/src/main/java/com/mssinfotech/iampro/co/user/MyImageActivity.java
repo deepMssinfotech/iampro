@@ -1,5 +1,6 @@
 package com.mssinfotech.iampro.co.user;
 
+//import android.app.Activity;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
@@ -99,11 +100,17 @@ public class MyImageActivity extends Fragment implements MyImageAdapter.ItemList
     ProgressDialog progressdialog;
     int status = 0;
     Handler handler = new Handler();
-
+    String added_bys;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup parent, Bundle savedInstanceState) {
         // Defines the xml file for the fragment
         return inflater.inflate(R.layout.activity_my_image, parent, false);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        //((AppCompatActivity)getActivity()).getSupportActionBar().hide();
     }
     @Override
     public void onViewCreated(View v, Bundle savedInstanceState) {
@@ -124,9 +131,16 @@ public class MyImageActivity extends Fragment implements MyImageAdapter.ItemList
         recyclerView=view.findViewById(R.id.recyclerView);
         tv_category=view.findViewById(R.id.tv_category);
         fab=view.findViewById(R.id.fab);
+        if (!PrefManager.isLogin(MyImageActivity.this.getContext())){
+             fab.hide();
+        }
+        else if (!(PrefManager.getLoginDetail(MyImageActivity.this.getContext(),"id").equalsIgnoreCase(id))){
+            fab.hide();
+        }
         userbackgroud = view.findViewById(R.id.userbackgroud);
 
         uid= PrefManager.getLoginDetail(context,"id");
+        Log.d("image_uid",""+id+"\t"+uid+"\t"+PrefManager.getLoginDetail(MyImageActivity.this.getContext(),"id"));
         if(id == null || id.equals(uid)) {
             String fname=PrefManager.getLoginDetail(context,"fname");
             String lname=PrefManager.getLoginDetail(context,"lname");
@@ -526,7 +540,7 @@ Videogallery profile image
                         SectionImageModel dm = new SectionImageModel();
                         dm.setHeaderTitle(item_name.get(aid));
                         dm.setAlbemId(aid);
-                        dm.setAddedBy(id);
+                        //dm.setAddedBy(id);
                         //ArrayList<MyImageModel> singleItem = new ArrayList<>();
                         ArrayList<MyImageModel> item = new ArrayList<>();
                         //ArrayList<String> alAddedBy=new ArrayList<>();
@@ -539,6 +553,7 @@ Videogallery profile image
                                   String idd=student.optString("id");
                                   String added_byy=student.optString("added_by");
 
+                                dm.setAddedBy(added_byy);
                                    String name1=student.optString("name");
                                     String atype=student.optString("atype");
                                    tv_category.setText(name1);
@@ -583,7 +598,7 @@ Videogallery profile image
                             GridLayoutManager manager = new GridLayoutManager(getApplicationContext(), 2, GridLayoutManager.VERTICAL, false);
                             recyclerView.setLayoutManager(manager);
                             recyclerView.setNestedScrollingEnabled(false); */
-
+                            //dm.setAddedBy(added_bys);
                             dm.setAllItemsInSection(item);
                             Log.d("adm",item.toString());
                             Log.d("dmm",dm.toString());

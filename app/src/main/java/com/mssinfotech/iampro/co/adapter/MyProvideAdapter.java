@@ -206,15 +206,17 @@ public class MyProvideAdapter extends RecyclerView.Adapter<MyProvideAdapter.View
             public void onClick(View v) {
                 AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
                 builder.setCancelable(true);
-                builder.setTitle("Delete it!"+mValues.get(position).getPid());
+                builder.setTitle("Delete it!");
+                //+mValues.get(position).getPid()
                 builder.setMessage("Are you sure...");
                 builder.setPositiveButton("Confirm",
                         new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
+
+                                deleteProvide(mValues.get(position).getPid());
                                 mValues.remove(position);
                                 notifyDataSetChanged();
-                                deleteProvide(mValues.get(position).getPid());
                             }
                         });
                 builder.setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {

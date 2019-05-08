@@ -203,15 +203,16 @@ public class MyDemandAdapter extends RecyclerView.Adapter<MyDemandAdapter.ViewHo
             @Override
             public void onClick(View v) {
                 AlertDialog.Builder alertDialog = new AlertDialog.Builder(mContext);
-                alertDialog.setTitle("Delete it!"+mValues.get(position).getPid());
+                alertDialog.setTitle("Delete it!");
+                //+mValues.get(position).getPid()
                 alertDialog.setMessage("Are you sure...");
                 alertDialog.setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                        // dialog.cancel();
+                        deleteDemand(mValues.get(position).getPid());
                         mValues.remove(position);
                         notifyDataSetChanged();
-                        deleteDemand(mValues.get(position).getPid());
                         //Toast.makeText(mContext,"deleted",Toast.LENGTH_LONG).show();
                     }
                 });

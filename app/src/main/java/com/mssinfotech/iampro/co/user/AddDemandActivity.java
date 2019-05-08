@@ -68,6 +68,7 @@ public class AddDemandActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_demand);
+        getSupportActionBar().hide();
         Config.setLayoutName(getResources().getResourceEntryName(R.layout.activity_add_demand));
         tildemandname = findViewById(R.id.tildemandname);
         etdemandname = findViewById(R.id.etdemandname);
@@ -364,7 +365,9 @@ public class AddDemandActivity extends AppCompatActivity {
                                 etdemanddetail.setText(" ");
 
                                 MyDemandActivity fragment = new MyDemandActivity();
-                                function.loadFragment(AddDemandActivity.this,fragment,null);
+                                Bundle args = new Bundle();
+                                args.putString("uid",PrefManager.getLoginDetail(AddDemandActivity.this,"id"));
+                                function.loadFragment(AddDemandActivity.this,fragment,args);
                                 //finish();
                             }
                         }

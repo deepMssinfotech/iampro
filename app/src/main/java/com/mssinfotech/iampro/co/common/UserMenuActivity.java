@@ -73,7 +73,9 @@ public class UserMenuActivity  extends Fragment {
         public void onClick(View v) {
             //if(function.isSamePage("activity_profile"))return;
             ProfileActivity fragment = new ProfileActivity();
-            function.loadFragment(getContext(),fragment,null);
+            Bundle args = new Bundle();
+            args.putString("uid",PrefManager.getLoginDetail(getContext(),"id"));
+            function.loadFragment(getContext(),fragment,args);
             removeFragment();
         }
     };
@@ -110,49 +112,63 @@ public class UserMenuActivity  extends Fragment {
         public void onClick(View v) {
             //if(function.isSamePage("activity_my_image"))return;
             MyImageActivity fragment = new MyImageActivity();
-            function.loadFragment(getContext(),fragment,null);
+            Bundle args = new Bundle();
+            args.putString("uid",PrefManager.getLoginDetail(getContext(),"id"));
+            function.loadFragment(getContext(),fragment,args);
             removeFragment();
         }
     };
     private View.OnClickListener myvideoOnClickListener = new View.OnClickListener() {
         public void onClick(View v) {
             MyVideoActivity fragment = new MyVideoActivity();
-            function.loadFragment(getContext(),fragment,null);
+            Bundle args = new Bundle();
+            args.putString("uid",PrefManager.getLoginDetail(getContext(),"id"));
+            function.loadFragment(getContext(),fragment,args);
             removeFragment();
         }
     };
     private View.OnClickListener myproductOnClickListener = new View.OnClickListener() {
         public void onClick(View v) {
             MyProductActivity fragment = new MyProductActivity();
-            function.loadFragment(getContext(),fragment,null);
+            Bundle args = new Bundle();
+            args.putString("uid",PrefManager.getLoginDetail(getContext(),"id"));
+            function.loadFragment(getContext(),fragment,args);
             removeFragment();
         }
     };
     private View.OnClickListener myprovideOnClickListener = new View.OnClickListener() {
         public void onClick(View v) {
             MyProvideActivity fragment = new MyProvideActivity();
-            function.loadFragment(getContext(),fragment,null);
+            Bundle args = new Bundle();
+            args.putString("uid",PrefManager.getLoginDetail(getContext(),"id"));
+            function.loadFragment(getContext(),fragment,args);
             removeFragment();
         }
     };
     private View.OnClickListener demandOnClickListener = new View.OnClickListener() {
         public void onClick(View v) {
             MyDemandActivity fragment = new MyDemandActivity();
-            function.loadFragment(getContext(),fragment,null);
+            Bundle args = new Bundle();
+            args.putString("uid",PrefManager.getLoginDetail(getContext(),"id"));
+            function.loadFragment(getContext(),fragment,args);
             removeFragment();
         }
     };
     private View.OnClickListener mymessageOnClickListener = new View.OnClickListener() {
         public void onClick(View v) {
             MessageActivity fragment = new MessageActivity();
-            function.loadFragment(getContext(),fragment,null);
+            Bundle args = new Bundle();
+            args.putString("uid",PrefManager.getLoginDetail(getContext(),"id"));
+            function.loadFragment(getContext(),fragment,args);
             removeFragment();
         }
     };
     private View.OnClickListener mycartOnClickListener = new View.OnClickListener() {
         public void onClick(View v) {
             CartActivity fragment = new CartActivity();
-            function.loadFragment(getContext(),fragment,null);
+            Bundle args = new Bundle();
+            args.putString("uid",PrefManager.getLoginDetail(getContext(),"id"));
+            function.loadFragment(getContext(),fragment,args);
             removeFragment();
         }
     };

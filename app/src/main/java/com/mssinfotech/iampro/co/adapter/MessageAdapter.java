@@ -21,7 +21,6 @@ import java.util.List;
 public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MyViewHolder> {
     private Context context;
     private List<MessageItem> notifyList;
-
     public class MyViewHolder extends RecyclerView.ViewHolder {
         public TextView title, time, detail;
         public TextView count_chat;
@@ -42,13 +41,10 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MyViewHo
             message_item=view.findViewById(R.id.message_item);
         }
     }
-
-
     public MessageAdapter(Context context, List<MessageItem> notifyList) {
         this.context = context;
         this.notifyList = notifyList;
     }
-
     @Override
     public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View itemView = LayoutInflater.from(parent.getContext())
@@ -56,7 +52,6 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MyViewHo
 
         return new MyViewHolder(itemView);
     }
-
     @Override
     public void onBindViewHolder(MyViewHolder holder, final int position) {
         final MessageItem item = notifyList.get(position);
@@ -83,7 +78,6 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MyViewHo
             }
         });
     }
-
     @Override
     public int getItemCount() {
         return notifyList.size();
@@ -96,7 +90,6 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MyViewHo
         // NOTE: don't call notifyDataSetChanged()
         notifyItemRemoved(position);
     }
-
     public void restoreItem(MessageItem item, int position) {
         notifyList.add(position, item);
         // notify item added by position

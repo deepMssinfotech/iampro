@@ -14,6 +14,7 @@ import android.support.v7.content.res.AppCompatResources;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 
@@ -140,11 +141,15 @@ public class UserDataAdapter extends RecyclerView.Adapter<UserDataAdapter.ViewHo
     public void onBindViewHolder(ViewHolder Vholders, final int position) {
          final ViewHolder Vholder=Vholders;
         Vholder.setData(mValues.get(position));
-        Vholder.imageView_message.setBackground(AppCompatResources.getDrawable(mContext,R.drawable.user_slide_info_message));
-        Vholder.imageView_frequest.setBackground(AppCompatResources.getDrawable(mContext,R.drawable.user_slide_nfo));
-        Vholder.imageView_viewProfile.setBackground(AppCompatResources.getDrawable(mContext,R.drawable.user_slide_info_view_profile));
-
-        Vholder.imageView_block.setBackground(AppCompatResources.getDrawable(mContext,R.drawable.unblockicone));
+        try {
+            Vholder.imageView_message.setBackground(AppCompatResources.getDrawable(mContext, R.drawable.user_slide_info_message));
+            Vholder.imageView_frequest.setBackground(AppCompatResources.getDrawable(mContext, R.drawable.user_slide_nfo));
+            Vholder.imageView_viewProfile.setBackground(AppCompatResources.getDrawable(mContext, R.drawable.user_slide_info_view_profile));
+            Vholder.imageView_block.setBackground(AppCompatResources.getDrawable(mContext, R.drawable.unblockicone));
+        }
+        catch (Exception e){
+            Log.d("imageView_error",""+e.getMessage());
+        }
          if (mValues.get(position).getIs_block()==1){
              Vholder.imageView_block.setBackground(AppCompatResources.getDrawable(mContext,R.drawable.unblockicone));
              //tv_viewProfile,tv_fRequest,tv_sendMessage,tv_blockUser

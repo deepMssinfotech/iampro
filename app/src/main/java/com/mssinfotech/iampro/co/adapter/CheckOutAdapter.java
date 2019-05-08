@@ -1,4 +1,9 @@
 package com.mssinfotech.iampro.co.adapter;
+
+/**
+ * Created by mssinfotech on 08/05/19.
+ */
+
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -39,7 +44,7 @@ import java.util.List;
 
 import static java.security.AccessController.getContext;
 
-public class CartItemAdapter extends RecyclerView.Adapter<CartItemAdapter.MyViewHolder> {
+public class CheckOutAdapter extends RecyclerView.Adapter<CheckOutAdapter.MyViewHolder> {
     private Context context;
     private List<CartItem> notifyList;
     static int tcost=0;
@@ -74,11 +79,11 @@ public class CartItemAdapter extends RecyclerView.Adapter<CartItemAdapter.MyView
             }
         }
     }
-    public CartItemAdapter(Context context, List<CartItem> notifyList) {
+    public CheckOutAdapter(Context context, List<CartItem> notifyList) {
         this.context = context;
         this.notifyList = notifyList;
     }
-    public CartItemAdapter(Context context, List<CartItem> notifyList,ItemListener itemListener) {
+    public CheckOutAdapter(Context context, List<CartItem> notifyList,ItemListener itemListener) {
         this.context = context;
         this.notifyList = notifyList;
         this.itemListener=itemListener;
@@ -111,21 +116,21 @@ public class CartItemAdapter extends RecyclerView.Adapter<CartItemAdapter.MyView
                 Integer id = Integer.valueOf(item.id);
                 notifyList.get(positions).setqty(String.valueOf(qty));
 
-                 tcost=tcost+Integer.parseInt(item.getselling_cost());
+                tcost=tcost+Integer.parseInt(item.getselling_cost());
 
                 Log.d("cartitem_count",String.valueOf(qty));
                 addtocart(context,String.valueOf(id),String.valueOf(qty),price);
                 //TextView cart_product_quantity = v.getRootView().findViewById(R.id.cart_product_quantity_tv);
                 //cart_product_quantity.setText(qty);
                 //notifyItemChanged(position);
-                 //notifyDataSetChanged();
+                //notifyDataSetChanged();
                 refreshCart(PrefManager.getLoginDetail(context,"id"));
-                 AppCompatActivity activity = (AppCompatActivity)context;
+                AppCompatActivity activity = (AppCompatActivity)context;
                 CartActivity fragment = new CartActivity();
                 Bundle args = new Bundle();
                 args.putString("name", "mragank");
                 //((AppCompatActivity) context).finish();
-                 //removeFragment(context,fragment,args);
+                //removeFragment(context,fragment,args);
                 loadFragment(context,fragment,args);
                 //((AppCompatActivity) context).finish();
 
@@ -156,11 +161,11 @@ public class CartItemAdapter extends RecyclerView.Adapter<CartItemAdapter.MyView
 
                 }
                 //function.executeUrl(context,"get", url, null);
-                 if (qty!=0) {
-                     notifyList.get(positions).setqty(String.valueOf(qty));
-                     removeFromCart(url);
-                     holder.plist_price_text.setText("");
-                 } //
+                if (qty!=0) {
+                    notifyList.get(positions).setqty(String.valueOf(qty));
+                    removeFromCart(url);
+                    holder.plist_price_text.setText("");
+                } //
                 refreshCart(PrefManager.getLoginDetail(context,"id"));
                 //TextView cart_product_quantity = v.getRootView().findViewById(R.id.cart_product_quantity_tv);
                 //cart_product_quantity.setText(qty);
@@ -173,15 +178,15 @@ public class CartItemAdapter extends RecyclerView.Adapter<CartItemAdapter.MyView
                 args.putString("uid",PrefManager.getLoginDetail(context,"id"));
                 //removeFragment(context,fragment,args);
                 loadFragment(context,fragment,args);
-                 //((AppCompatActivity) context).finish();
+                //((AppCompatActivity) context).finish();
                 tcost=tcost-Integer.parseInt(item.getselling_cost());
                 holder.plist_price_text.setText("₹ " +tcost);
                 holder.from_name.setText(item.getp_nane());
                 holder.cart_product_quantity_tv.setText(item.getqty());
                 Glide.with(context).load(item.getp_image()).into(holder.list_image);
                 holder.product_id.setText(item.getid().toString());
-                 //function.loadFragment(context,fragment,args);
-               // fragment.prepareCart();
+                //function.loadFragment(context,fragment,args);
+                // fragment.prepareCart();
             }
         });
     }
@@ -215,9 +220,9 @@ public class CartItemAdapter extends RecyclerView.Adapter<CartItemAdapter.MyView
                     public void onResponse(JSONObject response) {
                         try{
                             String status=response.optString("status");
-                             // tcost=tcost+Integer.parseInt(selling_cost);
+                            // tcost=tcost+Integer.parseInt(selling_cost);
                             //plist_price_text
-                           // Toast.makeText(context,status,Toast.LENGTH_LONG).show();
+                            // Toast.makeText(context,status,Toast.LENGTH_LONG).show();
                         }
                         catch (Exception e){
                             e.printStackTrace();
@@ -301,7 +306,7 @@ public class CartItemAdapter extends RecyclerView.Adapter<CartItemAdapter.MyView
     }
     public void refreshCart(String uid){
 
-         String url="https://www.iampro.co/api/cart.php?type=refreshCart&uid="+uid+"&ip_address="+Config.IP_ADDRESS;
+        String url="https://www.iampro.co/api/cart.php?type=refreshCart&uid="+uid+"&ip_address="+Config.IP_ADDRESS;
         RequestQueue requestQueue = Volley.newRequestQueue(context);
         // Initialize a new JsonObjectRequest instance
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(
@@ -319,7 +324,7 @@ public class CartItemAdapter extends RecyclerView.Adapter<CartItemAdapter.MyView
                                 JSONObject jsonObject1=jsonArray.getJSONObject(i);
                                 String selling_cost = jsonObject1.optString("selling_cost");
                             }
-      //plist_price_text
+                            //plist_price_text
                             //Toast.makeText(context,status,Toast.LENGTH_LONG).show();
                         }
                         catch (Exception e){

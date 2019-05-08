@@ -91,7 +91,7 @@ public class ProductDataAdapter extends RecyclerView.Adapter<ProductDataAdapter.
                 //String albemId=singleSectionItems.get(i).
 
 
-                Toast.makeText(v.getContext(), ""+sectionName+""+albumId, Toast.LENGTH_SHORT).show();
+                //Toast.makeText(v.getContext(), ""+sectionName+""+albumId, Toast.LENGTH_SHORT).show();
 
                 AlertDialog.Builder alertDialog = new AlertDialog.Builder(mContext);
                 alertDialog.setTitle("Delete it!");
@@ -100,9 +100,10 @@ public class ProductDataAdapter extends RecyclerView.Adapter<ProductDataAdapter.
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         // dialog.cancel();
+
+                        deleteAlbum(albumId);
                         dataList.remove(j);
                         notifyDataSetChanged();
-                        deleteAlbum(albumId);
                         //Toast.makeText(mContext,"deleted",Toast.LENGTH_LONG).show();
                     }
                 });

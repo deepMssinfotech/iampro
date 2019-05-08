@@ -124,7 +124,7 @@
                     android:imeOptions="actionNext"
                     android:drawableLeft="@drawable/ic_action_common"
                     android:drawablePadding="5dp"
-                    android:inputType="text"
+                     android:inputType="textPersonName"
                     android:textColorHint="@color/colorPrimary" />
 
             </android.support.design.widget.TextInputLayout>
@@ -158,7 +158,7 @@
                     android:drawablePadding="5dp"
                     android:hint="Contact Number"
                     android:imeOptions="actionNext"
-                    android:inputType="text"
+                    android:inputType="phone"
                     android:textColorHint="@color/colorPrimary" />
 
             </android.support.design.widget.TextInputLayout>
@@ -277,6 +277,7 @@
                     android:drawablePadding="5dp"
                     android:hint="Address"
                     android:imeOptions="actionNext"
+                    android:inputType="textPostalAddress"
                     android:textColorHint="@color/colorPrimary" />
 
             </android.support.design.widget.TextInputLayout>
@@ -348,7 +349,6 @@
         android:layout_marginRight="15dp"
         android:layout_marginBottom="15dp"
         android:background="@color/white"
-        android:onClick="SaveForm"
         app:srcCompat="@drawable/ic_action_check"
         app:backgroundTint="@color/link"
         app:rippleColor="@color/white"

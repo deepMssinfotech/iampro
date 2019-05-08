@@ -10,6 +10,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
@@ -29,10 +30,13 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.Request;
+import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
+import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.mssinfotech.iampro.co.adapter.CartItemAdapter;
 import com.mssinfotech.iampro.co.app.AppController;
 import com.mssinfotech.iampro.co.common.Config;
@@ -42,7 +46,7 @@ import com.mssinfotech.iampro.co.utils.PrefManager;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-public class CartActivity extends Fragment {
+public class CartActivity extends Fragment implements CartItemAdapter.ItemListener, OnClickListener{
     private static final String TAG = "ShoppingCartActivity";
     private static String CART_URL  = "";
     private CartItemAdapter mAdapter;
@@ -51,10 +55,9 @@ public class CartActivity extends Fragment {
     Button bShop;
     TextView tvTotalPrice;
     private RecyclerView recyclerView;
-    private List<CartItem> CartItemList;
+    private ArrayList<CartItem> CartItemList;
     View view;
     //ProgressDialog loading = ProgressDialog.show(getContext(),"Processing...","Please wait...",false,false);
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup parent, Bundle savedInstanceState) {
         // Defines the xml file for the fragment
@@ -63,11 +66,23 @@ public class CartActivity extends Fragment {
     @Override
     public void onViewCreated(View v, Bundle savedInstanceState) {
         view = v;
-        CART_URL  = Config.API_URL+"cart.php?type=refreshCart&uid="+ PrefManager.getLoginDetail(getContext(),"id")+"&ip_address="+Config.IP_ADDRESS;
+        //CART_URL  = Config.API_URL+"cart.php?type=refreshCart&uid="+ PrefManager.getLoginDetail(getContext(),"id")+"&ip_address="+Config.IP_ADDRESS;
         recyclerView = view.findViewById(R.id.recycler_view);
         tvTotalPrice = view.findViewById(R.id.tvTotalPrice);
         CartItemList = new ArrayList<CartItem>();
+        bClear=view.findViewById(R.id.bClear);
+        bShop=view.findViewById(R.id.bCheckout);
 
+        //prepareCart();
+
+        bClear.setOnClickListener(this);
+        bShop.setOnClickListener(this);
+    }
+    @Override
+    public void onResume() {
+        super.onResume();
+        CART_URL  = Config.API_URL+"cart.php?type=refreshCart&uid="+ PrefManager.getLoginDetail(getContext(),"id")+"&ip_address="+Config.IP_ADDRESS;
+          Log.d("CART_URL",""+CART_URL);
         prepareCart();
     }
     public void refreshFregment(){
@@ -77,14 +92,18 @@ public class CartActivity extends Fragment {
         ft.detach(this).attach(this).commit();
     }
     public void prepareCart() {
-        //loading.show();
-         StringRequest stringRequest = new StringRequest(Request.Method.GET,CART_URL,
+        //loading.show()
+       CART_URL  = Config.API_URL+"cart.php?type=refreshCart&uid="+ PrefManager.getLoginDetail(getContext(),"id")+"&ip_address="+Config.IP_ADDRESS;
+        Log.d("CART_URL2",""+CART_URL);
+        StringRequest stringRequest = new StringRequest(Request.Method.GET,CART_URL,
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
                         //loading.dismiss();
-                        parseJsonFeed(response);
-                        mAdapter.notifyDataSetChanged();
+                       parseJsonFeed(response);
+                        /* if (CartItemList.size()>0)
+                         mAdapter.notifyDataSetChanged();  */
+                        //parseJsonFeed(response);
                     }
                 }, new Response.ErrorListener() {
             @Override
@@ -97,11 +116,17 @@ public class CartActivity extends Fragment {
         AppController.getInstance().addToRequestQueue(stringRequest);
     }
     private void parseJsonFeed(String response) {
+        //Toast.makeText(getContext(),""+response,Toast.LENGTH_LONG).show();
+              Log.d("CART_URL",""+CART_URL);
+         if (!CartItemList.isEmpty()){
+             CartItemList.clear();
+         }
+          Log.d("CART_URL_resp",""+response);
         try {
             JSONObject jsonObject = new JSONObject(response);
             tvTotalPrice.setText("₹ " +jsonObject.getString("total"));
             JSONObject obj = new JSONObject(response.toString());
-            JSONArray heroArray = obj.getJSONArray("all_product");
+             JSONArray heroArray = obj.getJSONArray("all_product");
             if(heroArray.length()>0) {
                 for (int i = 0; i < heroArray.length(); i++) {
                     JSONObject feedObj = (JSONObject) heroArray.get(i);
@@ -123,13 +148,15 @@ public class CartActivity extends Fragment {
                     item.setselling_cost(feedObj.getString("selling_cost"));
                     CartItemList.add(item);
                 }
+                 Log.d("CartItemList",""+CartItemList);
+
             }else{
                 ImageView no_rodr = view.findViewById(R.id.no_record_found);
                 no_rodr.setVisibility(View.VISIBLE);
             }
             // notify data changes to list adapater
 
-            mAdapter = new CartItemAdapter(getContext(), CartItemList);
+            mAdapter = new CartItemAdapter(getContext(), CartItemList,CartActivity.this);
             RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getContext());
             recyclerView.setLayoutManager(mLayoutManager);
             recyclerView.setItemAnimator(new DefaultItemAnimator());
@@ -143,6 +170,84 @@ public class CartActivity extends Fragment {
             no_rodr.setVisibility(View.VISIBLE);
         }
     }
+    @Override
+    public void onItemClick(CartItem item,int tcost) {
+        Toast.makeText(getContext(),""+tcost,Toast.LENGTH_LONG).show();
+    }
 
+    @Override
+    public void onClick(View v) {
+         //R.id.bClear
+        switch (v.getId()) {
+            case R.id.bClear:
+                if (!PrefManager.isLogin(CartActivity.this.getContext())){
+                    Toast.makeText(getContext(),""+"First Login and try again...",Toast.LENGTH_LONG).show();
+                    break;
+                }
+                 clearCart();
+                 if (!CartItemList.isEmpty()){
+                     CartItemList.removeAll(CartItemList);
 
+                     //CartItemList.remove(i);
+                     mAdapter.notifyDataSetChanged();
+
+                 }
+               // Toast.makeText(getContext(),""+"clear",Toast.LENGTH_LONG).show();
+                break;
+            case R.id.bCheckout:
+                if (CartItemList.size()>0) {
+                    Intent intent = new Intent(getContext(), CheckOutActivity.class);
+                    intent.putExtra("cart_item", CartItemList);
+                    startActivity(intent);
+                }
+                else{
+                    Toast.makeText(getContext(),""+"Your cart is empty...",Toast.LENGTH_LONG).show();
+                }
+                 //Toast.makeText(getContext(),""+"Checkout",Toast.LENGTH_LONG).show();
+                break;
+        }
+    }
+      public void clearCart(){
+          String url="https://www.iampro.co/api/cart.php?type=clear_cart&uid="+PrefManager.getLoginDetail(CartActivity.this.getContext(),"id");
+          // Initialize a new RequestQueue instance
+          final ProgressDialog loading = ProgressDialog.show(CartActivity.this.getContext(), "Processing...", "Please wait...", false, false);
+          RequestQueue requestQueue = Volley.newRequestQueue(CartActivity.this.getContext());
+
+          // Initialize a new JsonObjectRequest instance
+          JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(
+                  Request.Method.GET,url,
+                  null,
+                  new Response.Listener<JSONObject>() {
+                      @Override
+                      public void onResponse(JSONObject response) {
+                          // Do something with response
+                          //mTextView.setText(response.toString());
+
+                          String status=response.optString("status");
+                          if (status.equalsIgnoreCase("success")) {
+                              CartItemList.clear();
+                              mAdapter.notifyDataSetChanged();
+                          }
+                          String msg=response.optString("msg");
+                          Toast.makeText(CartActivity.this.getContext(),""+msg,Toast.LENGTH_LONG).show();
+                        if (loading.isShowing())
+                             loading.dismiss();
+                      }
+                  },
+                  new Response.ErrorListener(){
+                      @Override
+                      public void onErrorResponse(VolleyError error){
+                          // Do something when error occurred
+                          Toast.makeText(CartActivity.this.getContext(),""+error.getMessage(),Toast.LENGTH_LONG).show();
+                          if (loading.isShowing())
+                               loading.dismiss();
+                      }
+                  }
+          );
+
+          // Add JsonObjectRequest to the RequestQueue
+          requestQueue.add(jsonObjectRequest);
+      }
+//});
+      //}
 }

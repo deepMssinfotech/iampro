@@ -5,6 +5,7 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.net.Uri;
@@ -14,6 +15,7 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
@@ -73,8 +75,9 @@ import java.util.UUID;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 import static android.app.Activity.RESULT_CANCELED;
+import static com.firebase.ui.auth.AuthUI.getApplicationContext;
 
-public class MyVideoActivity extends Fragment implements MyVideoAdapter.ItemListener {
+public class MyVideoActivity extends Fragment implements MyVideoAdapter.ItemListener,SingleUploadBroadcastReceiver.Delegate {
     ImageView userbackgroud;
     CircleImageView userimage;
     TextView username,tv_category;
@@ -95,13 +98,16 @@ public class MyVideoActivity extends Fragment implements MyVideoAdapter.ItemList
      FloatingActionButton fab;
     public static final int REQUEST_IMAGE = 100;
     public static String imageType;
-
     Random r = new Random();
     public static int randomNumber;
-
     ProgressDialog progressdialog;
      int status = 0;
     Handler handler = new Handler();
+
+    ProgressDialog dialog;
+
+    private final SingleUploadBroadcastReceiver uploadReceiver = new SingleUploadBroadcastReceiver();
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup parent, Bundle savedInstanceState) {
         // Defines the xml file for the fragment
@@ -189,6 +195,12 @@ public class MyVideoActivity extends Fragment implements MyVideoAdapter.ItemList
                  MyVideoActivity.this.startActivity(i_signup);
              }
          });
+        if (!PrefManager.isLogin(MyVideoActivity.this.getContext())){
+            fab.hide();
+        }
+        else if (!PrefManager.getLoginDetail(MyVideoActivity.this.getContext(),"id").equalsIgnoreCase(id)) {
+            fab.hide();
+        }
     }
     private void gteUsrDetail(String id){
         String myurl = Config.API_URL + "ajax.php?type=friend_detail&id=" + id + "&uid=" + uid;
@@ -525,45 +537,51 @@ img_banner_image: (binary)
                          dm.setAlbemId(aid);
                         //ArrayList<MyImageModel> singleItem = new ArrayList<>();
                         ArrayList<MyImageModel> item = new ArrayList<>();
-                        dm.setAddedBy(id);
-                        try{
-                            for(int i=0;i<response.length();i++){
+                        //dm.setAddedBy(id);
+
+                        try {
+                            for (int i = 0; i < response.length(); i++) {
                                 // Get current json object
                                 JSONObject student = response.getJSONObject(i);
-                                 String name1=student.getString("name");
+                                String name1 = student.getString("name");
                                 tv_category.setText(name1.toString());
-                                JSONArray jsonArrayPics=student.getJSONArray("pics");
-                                Log.d("picssss",jsonArrayPics.toString());
+                                JSONArray jsonArrayPics = student.getJSONArray("pics");
+                                Log.d("picssss", jsonArrayPics.toString());
+                                String added_byy=student.optString("added_by");
+                                dm.setAddedBy(added_byy);
                                 //JSONObject picss= jsonArrayPics.getJSONObject(0);
                                 //Log.d("picssss11",""+picss.toString());
                                 //String idd=picss.getString("albemid");
                                 //Log.d("picssss1",""+idd);
-                                for (int j=0;j<jsonArrayPics.length();j++){
-                                    JSONObject pics=jsonArrayPics.getJSONObject(j);
-                                    String id=pics.getString("id");
+                                for (int j = 0; j < jsonArrayPics.length(); j++) {
+                                    JSONObject pics = jsonArrayPics.getJSONObject(j);
+                                    String id = pics.getString("id");
 
-                                    String albemid=pics.optString("albemid");
-                                    String name=pics.optString("name");
-                                    String category=pics.optString("category");
-                                    String albem_type=pics.optString("albem_type");
-                                    String imagev=pics.optString("image");
+                                    String albemid = pics.optString("albemid");
+                                    String name = pics.optString("name");
+                                    String category = pics.optString("category");
+                                    String albem_type = pics.optString("albem_type");
+                                    String imagev = pics.optString("image");
                                     String imagee = imagev.substring(0, imagev.lastIndexOf("."));
-                                     String image=imagee+".jpg";
-                                      Log.d("imagebb",""+image);
-                                    String udate=pics.optString("udate");
-                                    String about_us=pics.optString("about_us");
-                                    String group_id=pics.optString("group_id");
-                                    String is_featured=pics.optString("is_featured");
-                                    String status=pics.optString("status");
-                                    String is_block=pics.optString("is_block");
-                                    String comments=pics.optString("comments");
-                                    String totallike=pics.optString("totallike");
-                                    String like_unlike=pics.optString("like_unlike");
-                                    String rating=pics.optString("rating");
-                                    item.add(new MyImageModel(id,albemid,name,category,albem_type,image,udate,about_us,group_id,is_featured,status,is_block,comments,totallike,like_unlike,rating,uid));
+                                    String image = imagee + ".jpg";
+                                     Log.d("jpg_image",""+image);
+                                    //String image
+                                    Log.d("imagebb", "" + image);
+                                    String udate = pics.optString("udate");
+                                    String about_us = pics.optString("about_us");
+                                    String group_id = pics.optString("group_id");
+                                    String is_featured = pics.optString("is_featured");
+                                    String status = pics.optString("status");
+                                    String is_block = pics.optString("is_block");
+                                    String comments = pics.optString("comments");
+                                    String totallike = pics.optString("totallike");
+                                    String like_unlike = pics.optString("like_unlike");
+                                    String rating = pics.optString("rating");
+                                    item.add(new MyImageModel(id, albemid, name, category, albem_type, image, udate, about_us, group_id, is_featured, status, is_block, comments, totallike, like_unlike, rating, uid));
 
                                 }
                             }
+
                             Log.d("bdm",singleItem.toString());
                             // dm.setAllItemsInSection(singleItem);
                             Log.d("adm",singleItem.toString());
@@ -658,14 +676,13 @@ img_banner_image: (binary)
             userimage.setColorFilter(ContextCompat.getColor(context, android.R.color.transparent));
         }
     }
-
     public void sendUserPic(){
         if (!Config.haveNetworkConnection(context)) {
             Config.showInternetDialog(context);
             return;
         }
         CreateProgressDialog();
-        //Toast.makeText(getApplicationContext(), "Video upload remain pleasw wait....", Toast.LENGTH_LONG).show();
+        Toast.makeText(getContext(), "Video upload remaining please wait....", Toast.LENGTH_LONG).show();
         //return;
         /*dialog = new ProgressDialog(context);
         dialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
@@ -675,6 +692,10 @@ img_banner_image: (binary)
         dialog.show();  */
         try {
             String uploadId =UUID.randomUUID().toString();
+            uploadReceiver.setDelegate((SingleUploadBroadcastReceiver.Delegate) this);
+            uploadReceiver.setUploadID(uploadId);
+            //Creating a multi part request
+            String boundary = "---------------------------14737809831466499882746641449";
             //Creating a multi part request
             new MultipartUploadRequest(context, uploadId, Config.AJAX_URL + "signup.php")
                     .addFileToUpload(backgroundimagePath, "profile_video_gallery") //Adding file
@@ -695,15 +716,15 @@ img_banner_image: (binary)
             function.loadFragment(context,fragment,null);
             //getActivity().finish();
             /*   type: update_img_video_banner
-process_type: android
-page_url: page/gallery.html
-userid: 693
-fname: deep
-email:
-country: INDIA
-state: MP
-image_name: video_gallery_profile_image
-profile_video_gallery: (binary)
+  process_type: android
+  page_url: page/gallery.html
+  userid: 693
+  fname: deep
+  email:
+  country: INDIA
+  state: MP
+  image_name: video_gallery_profile_image
+  profile_video_gallery: (binary)
 
          */
         } catch (Exception exc) {
@@ -731,9 +752,64 @@ profile_video_gallery: (binary)
             //userimage
             Glide.with(this).load(url)
                     .into(userimage);
-            userimage.setColorFilter(ContextCompat.getColor(context, android.R.color.transparent));
+            userimage.setColorFilter(ContextCompat.getColor(context,android.R.color.transparent));
             sendUserPic();
         }
     }
+    @Override
+    public void onProgress(int progress) {
+     Toast.makeText(getContext(),""+progress+"\t"+"Percentage Completed",Toast.LENGTH_LONG).show();
+    }
+    @Override
+    public void onProgress(long uploadedBytes, long totalBytes) {
 
+    }
+    @Override
+    public void onError(Exception exception) {
+
+    }
+    @Override
+    public void onCompleted(int serverResponseCode, byte[] serverResponseBody) {
+        //Toast.makeText(getContext(),""+"Video uploaded successfully...",Toast.LENGTH_LONG).show();
+        AlertDialog.Builder builder = new AlertDialog.Builder(MyVideoActivity.this.getContext());
+        builder.setCancelable(true);
+        builder.setTitle("Confirm!");
+        builder.setMessage("Video uploaded successfully...");
+        builder.setPositiveButton("Ok",
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                    }
+                });
+       /* builder.setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+            }
+        }); */
+        AlertDialog dialog = builder.create();
+        dialog.show();
+    }
+
+    @Override
+    public void onCancelled() {
+
+    }
+   @Override
+    public void onResume() {
+
+        super.onResume();
+        uploadReceiver.register(context);
+
+    }
+    @Override
+    public void onPause() {
+        super.onPause();
+        //uploadReceiver.unregister(context);
+    }
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        uploadReceiver.register(context);
+    }
 }

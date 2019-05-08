@@ -1,10 +1,12 @@
 package com.mssinfotech.iampro.co;
 
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.content.res.AppCompatResources;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -17,15 +19,20 @@ import com.android.volley.RequestQueue;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.Volley;
+import com.mssinfotech.iampro.co.adapter.MyDemandAdapter;
 import com.mssinfotech.iampro.co.adapter.MyImageVideoDataAdapter;
+import com.mssinfotech.iampro.co.adapter.MyProductAdapter;
+import com.mssinfotech.iampro.co.adapter.MyProvideAdapter;
 import com.mssinfotech.iampro.co.adapter.UserDataAdapter;
 import com.mssinfotech.iampro.co.common.Config;
 import com.mssinfotech.iampro.co.model.MyImageModel;
+import com.mssinfotech.iampro.co.model.MyProductModel;
 import com.mssinfotech.iampro.co.model.SectionDataModel;
 import com.mssinfotech.iampro.co.model.SectionImageModel;
 import com.mssinfotech.iampro.co.model.SingleItemModel;
 import com.mssinfotech.iampro.co.model.UserModel;
 import com.mssinfotech.iampro.co.tab.UserFragment;
+import com.mssinfotech.iampro.co.user.MyProductActivity;
 import com.mssinfotech.iampro.co.utils.PrefManager;
 
 import org.json.JSONArray;
@@ -37,7 +44,7 @@ import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.TreeMap;
 
-public class SearchedActivity extends AppCompatActivity implements UserDataAdapter.ItemListener {
+public class SearchedActivity extends AppCompatActivity implements UserDataAdapter.ItemListener,MyProductAdapter.ItemListener {
  RecyclerView my_recycler_view;
  ImageView searched_iv;
   String SearchType,SearchCat,SearchData;
@@ -46,9 +53,16 @@ public class SearchedActivity extends AppCompatActivity implements UserDataAdapt
     TreeMap<String,String> item_name = new TreeMap<>();
      String uid;
     ArrayList<SectionImageModel> allSampleDatamore=new ArrayList<>();
+    ArrayList<SectionDataModel> allSampleDataP=new ArrayList<>();
      ImageView  no_rodr;
 
     ArrayList<UserModel> allSampleData=new ArrayList<>();
+
+    MyProductAdapter productAdapter;
+    MyProvideAdapter provideAdapter;
+    MyDemandAdapter demandAdapter;
+     int addedBy;
+    ArrayList<MyProductModel> item = new ArrayList<>();
    //ImageView
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,9 +82,198 @@ public class SearchedActivity extends AppCompatActivity implements UserDataAdapt
         if (SearchType.equalsIgnoreCase("FRIEND")){
              getUser();
         }
+        else if (SearchType.equalsIgnoreCase("PRODUCT") || SearchType.equalsIgnoreCase("PROVIDE") || SearchType.equalsIgnoreCase("DEMAND")){
+            getProductData();
+        }
         else {
             getSearchedItem();
         }
+    }
+    private void getProductData(){
+        final ProgressDialog pDialog = new ProgressDialog(SearchedActivity.this); //Your Activity.this
+        pDialog.setMessage("Loading...!");
+        pDialog.show();
+        String url=null;
+        try {
+            String query = URLEncoder.encode(SearchCat,"utf-8");
+
+            //String url=Config.API_URL+"app_service.php?type=getMyAlbemsListt&search_type=image&uid="+uid+"&my_id="+uid;
+            // String url=Config.API_URL+"app_service.php?type=getMyAlbemsListt&search_type=image&uid="+uid+"&my_id="+uid+"&album_id="+aid;
+            url = "https://www.iampro.co/api/app_service.php?type=search_all_items&search_type="+SearchType+"&category=" + query + "&search_data=&uid=" + uid + "&my_id=" + uid;
+            // Initialize a new RequestQueue instance
+        }
+        catch (UnsupportedEncodingException e){
+            e.printStackTrace();
+            url = "https://www.iampro.co/api/app_service.php?type=search_all_items&search_type="+SearchType+"&category=" +SearchCat+ "&search_data=&uid=" + uid + "&my_id=" + uid;
+
+        }
+         Log.d("product_search",""+url);
+        RequestQueue requestQueue = Volley.newRequestQueue(SearchedActivity.this);
+
+        // Initialize a new JsonArrayRequest instance
+       JsonArrayRequest jsonArrayRequest= new JsonArrayRequest(
+                Request.Method.GET,
+                url,
+                null,
+                new com.android.volley.Response.Listener<JSONArray>() {
+                    @Override
+                    public void onResponse(JSONArray response) {
+                        Log.d("responsef",response.toString());
+                        if (!item.isEmpty()){
+                            item.clear();
+                        }
+                        if (pDialog.isShowing())
+                          pDialog.dismiss();
+                        if (SearchType.equalsIgnoreCase("Image")) {
+                            searched_iv.setVisibility(View.VISIBLE);
+                            searched_iv.setBackground(AppCompatResources.getDrawable(SearchedActivity.this, R.drawable.latestphotos));
+                        }
+                        else if (SearchType.equalsIgnoreCase("Video")) {
+                            searched_iv.setVisibility(View.VISIBLE);
+                            searched_iv.setBackground(AppCompatResources.getDrawable(SearchedActivity.this, R.drawable.latestvideo));
+                        }
+                        else if (SearchType.equalsIgnoreCase("Friend")) {
+                            searched_iv.setVisibility(View.VISIBLE);
+                            searched_iv.setBackground(AppCompatResources.getDrawable(SearchedActivity.this, R.drawable.latestphotos));
+                        }
+                        else if (SearchType.equalsIgnoreCase("Product")) {
+                            searched_iv.setVisibility(View.VISIBLE);
+                            searched_iv.setBackground(AppCompatResources.getDrawable(SearchedActivity.this, R.drawable.latestproduct));
+                        }
+                        else if (SearchType.equalsIgnoreCase("Provide")) {
+                            searched_iv.setVisibility(View.VISIBLE);
+                            searched_iv.setBackground(AppCompatResources.getDrawable(SearchedActivity.this, R.drawable.latestprovide));
+                        }
+                        else if (SearchType.equalsIgnoreCase("Demand")) {
+                            searched_iv.setVisibility(View.VISIBLE);
+                            searched_iv.setBackground(AppCompatResources.getDrawable(SearchedActivity.this, R.drawable.latestdemand));
+                        }
+
+
+                        SectionDataModel dm = new SectionDataModel();
+
+                        dm.setHeaderTitle(SearchCat);
+                       dm.setAddedBy(String.valueOf(addedBy));
+                        ArrayList<SingleItemModel> singleItem = new ArrayList<SingleItemModel>();
+                        if(!singleItem.isEmpty()){
+                            singleItem.clear();
+                        }
+                        try{
+                            for(int i=0;i<response.length();i++){
+                                // Get current json object
+                                JSONObject student = response.getJSONObject(i);
+                                 String id=student.getString("id");
+                                   String name=student.getString("name");
+                                   String category_type=student.getString("category_type");
+                                   String detail=student.getString("detail");
+                                     String image=student.getString("image");
+                                     String language=student.getString("language");
+                                String status=student.getString("status");
+
+                                String cat_name=student.getString("cat_name");
+
+
+                                //String category=student.getString("category");
+
+                                 JSONArray jsonArrayPro=student.getJSONArray("pro_detail");
+                                for(int j=0;j<jsonArrayPro.length();j++) {
+                                    JSONObject studentPro =jsonArrayPro.getJSONObject(i);
+                                    String idv = studentPro.getString("id");
+                                    String added_by = studentPro.getString("added_by");
+
+                                    String totallike=studentPro.getString("totallike");
+                                    String comments=studentPro.getString("comments");
+
+                                    String namev = studentPro.getString("name");
+                                    String category = studentPro.getString("category");
+                                    //name,image,udate,categoryv,totallike,comments,scost,pcost,ratingv,uid,fullname,avatar,idv,like_unlike
+                                    String scost = studentPro.getString("selling_cost");
+                                    String pcost = studentPro.getString("purchese_cost");
+                                    //udate
+                                    String pudate = studentPro.getString("udate");
+                                    //avg_rating,fullname,avatar,like_unlike
+                                    String avg_rating = studentPro.getString("avg_rating");
+                                    String like_unlike = studentPro.getString("like_unlike");
+                                     JSONObject jsonObject=studentPro.getJSONObject("user_detail");
+                                     String fullname=jsonObject.getString("fullname");
+                                    String avatar=jsonObject.getString("avatar");
+                                    item.add(new MyProductModel(name,image,pudate,category,Integer.parseInt(totallike),Integer.parseInt(comments),Integer.parseInt(scost),Integer.parseInt(pcost),Float.parseFloat(avg_rating),Integer.parseInt(added_by),fullname,avatar,idv,Integer.parseInt(like_unlike)));
+
+                                }
+
+                                //int id=student.optInt("id");
+                               /* String idv=String.valueOf(id);
+                                int added_by=student.optInt("added_by");
+                                    addedBy=added_by;
+
+                                int scost=student.optInt("selling_cost");
+                                int pcost=student.optInt("purchese_cost");
+
+                                //String name = student.optString("name");
+                                String categoryv=student.optString("category");
+                                //tv_category.setText(categoryv);
+
+                                String imagev=student.optString("image");
+                                String image= Config.URL_ROOT + "uploads/product/" +imagev;
+                                String udate=student.optString("udate");
+                                int totallike=Integer.parseInt(student.getString("likes"));
+                                int comments=student.optInt("comments");
+                                Log.d("pdata",""+name+""+categoryv+""+image+""+udate);
+
+                                // String daysago=student.getString("ago");
+                                int like_unlike=student.optInt("like_unlike");
+                                String rating=String.valueOf(student.optInt("average_rating"));
+                                float ratingv=Float.parseFloat(rating);
+
+                                JSONObject userDetail=student.getJSONObject("user_name");
+                                int uid=userDetail.getInt("id");
+                                String fname=userDetail.getString("fname");
+                                String lname=userDetail.getString("lname");
+                                String fullname=fname+"\t"+lname;
+                                String avatar=Config.AVATAR_URL+"250/250/"+userDetail.getString("avatar"); */
+
+                                 //if (SearchType.equalsIgnoreCase("PRODUCT"))
+                               // item.add(new MyProductModel(name,image,udate,categoryv,totallike,comments,scost,pcost,ratingv,uid,fullname,avatar,idv,like_unlike));
+                            }
+                            Log.d("bdm",singleItem.toString());
+                           dm.setAllItemsInSection(singleItem);
+                            Log.d("adm",singleItem.toString());
+                            Log.d("dmm",dm.toString());
+                            allSampleDataP.add(dm);
+                            Log.d("allsampledatav",item.toString());
+                            TreeMap<String,String> item_loadmore=new TreeMap<>();
+                            item_loadmore.put("loadmore","loadmore");
+                            //if (SearchType.equalsIgnoreCase("PRODUCT"))
+                            productAdapter = new MyProductAdapter(SearchedActivity.this,item,SearchedActivity.this);
+
+                           my_recycler_view.setAdapter(adapter);
+                            GridLayoutManager manager = new GridLayoutManager(SearchedActivity.this, 2, GridLayoutManager.VERTICAL, false);
+                            my_recycler_view.setLayoutManager(manager);
+
+                        }
+                        catch (JSONException e){
+                            e.printStackTrace();
+                            if (pDialog.isShowing())
+                            pDialog.dismiss();
+                            Toast.makeText(SearchedActivity.this, ""+e.getMessage(), Toast.LENGTH_SHORT).show();
+                            Log.d("catch_f",""+e.getMessage());
+                        }
+                    }
+                },
+                new com.android.volley.Response.ErrorListener(){
+                    @Override
+                    public void onErrorResponse(VolleyError error){
+                        if (pDialog.isShowing())
+                        pDialog.dismiss();
+                        // Do something when error occurred
+                        //Snackbar.make(getContext(),"Error...", Snackbar.LENGTH_LONG).show();
+                        Toast.makeText(SearchedActivity.this, error.getMessage(), Toast.LENGTH_SHORT).show();
+                        Log.d("verror",""+error.getMessage());
+                    }
+                }
+        );
+        // Add JsonArrayRequest to the RequestQueue
+        requestQueue.add(jsonArrayRequest);
     }
     public void getSearchedItem(){
         final ProgressDialog pDialog = new ProgressDialog(SearchedActivity.this); //Your Activity.this
@@ -87,9 +290,10 @@ public class SearchedActivity extends AppCompatActivity implements UserDataAdapt
         }
         catch (UnsupportedEncodingException e){
             e.printStackTrace();
-            url = "https://www.iampro.co/api/app_service.php?type=search_all_items&search_type=IMAGE&category=" +SearchCat+ "&search_data=&uid=" + uid + "&my_id=" + uid;
+            url = "https://www.iampro.co/api/app_service.php?type=search_all_items&search_type="+SearchType+"&category=" +SearchCat+ "&search_data=&uid=" + uid + "&my_id=" + uid;
 
         }
+        Log.d("serched_url",""+url+"\t"+SearchType+"\t"+SearchCat);
         RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
         JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(
                 Request.Method.GET,
@@ -204,7 +408,7 @@ public class SearchedActivity extends AppCompatActivity implements UserDataAdapt
                             Log.d("allSampleDatas",""+allSampleDatamore.size()+"--"+allSampleDatamore.toString());
                             TreeMap<String,String> item_loadmore=new TreeMap<>();
                             item_loadmore.put("loadmore","loadmore");
-                            adapterr = new MyImageVideoDataAdapter(getApplicationContext(), allSampleDatamore,item_loadmore);
+                            adapterr = new MyImageVideoDataAdapter(SearchedActivity.this, allSampleDatamore,item_loadmore);
                             my_recycler_view.setLayoutManager(new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.VERTICAL, false));
                             my_recycler_view.setAdapter(adapterr);
                         }
@@ -244,7 +448,7 @@ public class SearchedActivity extends AppCompatActivity implements UserDataAdapt
                 // return;
             }
             Config.doubleBackToExitPressedOnce = true;
-            Toast.makeText(this, "Please click BACK again to exit", Toast.LENGTH_SHORT).show();
+            //Toast.makeText(this, "Please click BACK again to exit", Toast.LENGTH_SHORT).show();
 
             new Handler().postDelayed(new Runnable() {
                 @Override
@@ -385,6 +589,11 @@ public class SearchedActivity extends AppCompatActivity implements UserDataAdapt
 
     @Override
     public void onItemClick(UserModel item) {
+
+    }
+
+    @Override
+    public void onItemClick(MyProductModel item) {
 
     }
 }

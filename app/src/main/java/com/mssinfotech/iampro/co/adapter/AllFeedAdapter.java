@@ -116,7 +116,6 @@ public class AllFeedAdapter extends RecyclerView.Adapter<AllFeedAdapter.ViewHold
             tv_totallike = v.findViewById(R.id.tv_totallike);
             ll_showhide = v.findViewById(R.id.ll_showhide);
             detail_name = v.findViewById(R.id.detail_name);
-
             purchese_cost = v.findViewById(R.id.purchese_cost);
             selling_cost = v.findViewById(R.id.selling_cost);
         }
@@ -356,7 +355,7 @@ public class AllFeedAdapter extends RecyclerView.Adapter<AllFeedAdapter.ViewHold
                     sliderView.setImageUrl(Config.URL_ROOT + "uploads/album/w/500/" + mValues.get(position).getImageArray().get(i));
                     sliderView.setImageScaleType(ImageView.ScaleType.CENTER_CROP);
                     final int finalI = i;
-                    sliderView.setDescription("setDescription " + sidArray[finalI]);
+                    //sliderView.setDescription("setDescription " + sidArray[finalI]);
                     sliderView.setOnSliderClickListener(new SliderView.OnSliderClickListener() {
                         @Override
                         public void onSliderClick(SliderView sliderView) {

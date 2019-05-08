@@ -68,6 +68,7 @@ public class AddProvideActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_provide);
+         getSupportActionBar().hide();
         Config.setLayoutName(getResources().getResourceEntryName(R.layout.activity_add_provide));
         tilprovidename = findViewById(R.id.tilprovidename);
         etprovidename = findViewById(R.id.etprovidename);
@@ -107,7 +108,6 @@ public class AddProvideActivity extends AppCompatActivity {
             gteProvideDetail(pid);
         }
     }
-
     private void gteProvideDetail(String id){
         String myurl = Config.API_URL + "app_service.php?type=get_product_detail&id=" + id + "&uid=" + uid+"&update_type=provide&my_id="+uid;
         Log.d(Config.TAG, myurl);
@@ -349,7 +349,7 @@ public class AddProvideActivity extends AppCompatActivity {
                     @Override
                     public void onResponse(String s) {
                         loading.dismiss();
-                        //Log.e("Lresponse",""+s);
+                       Log.e("Lresponses",""+s);
                         try
                         {
                             JSONObject jsonObject = new JSONObject(s);
@@ -367,7 +367,9 @@ public class AddProvideActivity extends AppCompatActivity {
                                 etprovidedetail.setText(" ");
 
                                 MyProvideActivity fragment = new MyProvideActivity();
-                                function.loadFragment(AddProvideActivity.this,fragment,null);
+                                Bundle args = new Bundle();
+                                args.putString("uid",PrefManager.getLoginDetail(AddProvideActivity.this,"id"));
+                                function.loadFragment(AddProvideActivity.this,fragment,args);
                                 //finish();
                             }
                         }
@@ -421,7 +423,7 @@ public class AddProvideActivity extends AppCompatActivity {
                     @Override
                     public void onResponse(String s) {
                         loading.dismiss();
-                        Log.d("Lresponse",""+s);
+                        Log.d("Lresponseu",""+s);
                         try
                         {
                             JSONObject jsonObject = new JSONObject(s);
@@ -438,7 +440,9 @@ public class AddProvideActivity extends AppCompatActivity {
                                 etprovidedetail.setText(" ");
 
                                 MyProvideActivity fragment = new MyProvideActivity();
-                                function.loadFragment(AddProvideActivity.this,fragment,null);
+                                Bundle args = new Bundle();
+                                args.putString("uid",PrefManager.getLoginDetail(AddProvideActivity.this,"id"));
+                                function.loadFragment(AddProvideActivity.this,fragment,args);
                                 finish();
                             }
                         }

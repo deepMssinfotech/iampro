@@ -1,6 +1,8 @@
 package com.mssinfotech.iampro.co.data;
 
-public class CartItem {
+import java.io.Serializable;
+
+public class CartItem implements Serializable {
     public Integer id;
     public String uid;
     public String pid;

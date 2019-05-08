@@ -208,16 +208,17 @@ public class MyProductAdapter extends RecyclerView.Adapter<MyProductAdapter.View
             public void onClick(View v) {
                 AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
                 builder.setCancelable(true);
-                builder.setTitle("Delete it!"+mValues.get(position).getPid());
+                builder.setTitle("Delete it!");
                 builder.setMessage("Are you sure...");
                 builder.setPositiveButton("Confirm",
                         new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-                                mValues.remove(position);
-                                notifyDataSetChanged();
+
                                 //Toast.makeText(mContext,"deleted",Toast.LENGTH_LONG).show();
                                 deleteProduct(mValues.get(position).getPid());
+                                mValues.remove(position);
+                                notifyDataSetChanged();
                             }
                         });
                 builder.setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {

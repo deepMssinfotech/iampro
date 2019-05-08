@@ -15,6 +15,7 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Handler;
 import android.provider.MediaStore;
+import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TextInputEditText;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -126,6 +127,7 @@ public class EditProfileActivity extends Fragment {
     ProgressDialog progressdialog;
     int status = 0;
     Handler handler = new Handler();
+    FloatingActionButton floatingActionButton;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup parent, Bundle savedInstanceState) {
         // Defines the xml file for the fragment
@@ -141,6 +143,13 @@ public class EditProfileActivity extends Fragment {
         background=Config.AVATAR_URL+"h/250/"+PrefManager.getLoginDetail(context,"banner_image");
 
         username = view.findViewById(R.id.username);
+        floatingActionButton=view.findViewById(R.id.floatingActionButton);
+        floatingActionButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                SaveForm(v);
+            }
+        });
         userimage = view.findViewById(R.id.userimage);
         userbackgroud = view.findViewById(R.id.userbackgroud);
         tvlayouttype = view.findViewById(R.id.tvlayouttype);

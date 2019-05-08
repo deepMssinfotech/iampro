@@ -56,7 +56,7 @@ public class SectionProductAdapter extends RecyclerView.Adapter<SectionProductAd
     private ArrayList<MyImageModel> itemsList;
     private Context mContext;
     //private String uid,id;
-    ArrayList<MyImageModel> mValues;
+    //ArrayList<MyImageModel> mValues;
     HashSet<String> heading_name;
     protected MyImageAdapter.ItemListener mListener;
     TreeMap<String,String> item_type;
@@ -181,10 +181,13 @@ public class SectionProductAdapter extends RecyclerView.Adapter<SectionProductAd
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         // dialog.cancel();
-                        mValues.remove(i);
-                        notifyDataSetChanged();
+
                         deleteImage(itemsList.get(i).getId());
                         //Toast.makeText(mContext,"deleted",Toast.LENGTH_LONG).show();
+
+                        itemsList.remove(i);
+                        notifyDataSetChanged();
+
                     }
                 });
                 alertDialog.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
@@ -214,7 +217,7 @@ public class SectionProductAdapter extends RecyclerView.Adapter<SectionProductAd
                 sendrating(ratingBar.getRating(),Integer.parseInt(uidv),Integer.parseInt(id));
             }
         });
-         if (mValues.get(i).getUid().equalsIgnoreCase(PrefManager.getLoginDetail(mContext,"id"))){
+         if (itemsList.get(i).getUid().equalsIgnoreCase(PrefManager.getLoginDetail(mContext,"id"))){
              holder.iv_delete.setVisibility(View.VISIBLE);
              holder.iv_edit.setVisibility(View.VISIBLE);
          }
@@ -226,7 +229,7 @@ public class SectionProductAdapter extends RecyclerView.Adapter<SectionProductAd
         holder.iv_buy.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                function.addtocart(mContext, mValues.get(i).getId(), "1",String.valueOf(mValues.get(i).getScost()));
+                function.addtocart(mContext,itemsList.get(i).getId(), "1",String.valueOf(itemsList.get(i).getScost()));
                 CartActivity fragment = new CartActivity();
                 function.loadFragment(mContext,fragment,null);
             }

@@ -27,6 +27,7 @@ import com.android.volley.toolbox.Volley;
 import com.bumptech.glide.Glide;
 import com.like.LikeButton;
 import com.like.OnLikeListener;
+import com.mssinfotech.iampro.co.ChatToUser;
 import com.mssinfotech.iampro.co.CommentActivity;
 import com.mssinfotech.iampro.co.R;
 import com.mssinfotech.iampro.co.adapter.CommentAdapter;
@@ -330,7 +331,7 @@ public class ProvideDetailActivity extends AppCompatActivity implements CommentA
     public void chat(View view){
         if(PrefManager.isLogin(ProvideDetailActivity.this)) {
             Toast.makeText(ProvideDetailActivity.this,"redirect to start chat with "+uid+"...",Toast.LENGTH_LONG).show();
-             Intent intent=new Intent(ProvideDetailActivity.this,ChatList.class);
+             Intent intent=new Intent(ProvideDetailActivity.this,ChatToUser.class);
               intent.putExtra("id",String.valueOf(uid));
                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                startActivity(intent);

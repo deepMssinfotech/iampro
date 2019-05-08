@@ -94,7 +94,13 @@ public class MyProductActivity extends Fragment implements MyProductAdapter.Item
         username = view.findViewById(R.id.username);
         userimage = view.findViewById(R.id.userimage);
         fab=view.findViewById(R.id.fab);
-        userbackgroud = view.findViewById(R.id.userbackgroud);
+         if (!PrefManager.isLogin(MyProductActivity.this.getContext())){
+            fab.hide();
+         }
+         else if (!PrefManager.getLoginDetail(MyProductActivity.this.getContext(),"id").equalsIgnoreCase(id)) {
+             fab.hide();
+         }
+            userbackgroud = view.findViewById(R.id.userbackgroud);
         uid= PrefManager.getLoginDetail(context,"id");
         if(id == null || id.equals(uid)) {
             String fname=PrefManager.getLoginDetail(context,"fname");

@@ -58,21 +58,38 @@ public class MyVideoDataAdapter extends RecyclerView.Adapter<MyVideoDataAdapter.
     }
 
     @Override
-    public void onBindViewHolder(ItemRowHolder itemRowHolder, int i) {
+    public void onBindViewHolder(ItemRowHolder itemRowHolder, final int i) {
 
         final String sectionName = dataList.get(i).getHeaderTitle();
 
         ArrayList singleSectionItems = dataList.get(i).getAllItemsInSection();
-        final String singleSectionAddedBy = dataList.get(i).getAddedBy();
+        final String singleSectionAddedBy = String.valueOf(dataList.get(i).getAddedBy());
         Log.e(Config.TAG,sectionName);
         //Toast.makeText(mContext, "click event on more, "+sectionName , Toast.LENGTH_SHORT).show();
         itemRowHolder.itemTitle.setText(sectionName);
         if(dataList.get(i).getMore()!=null && dataList.get(i).getMore().equalsIgnoreCase("loadmore")){
             itemRowHolder.btnMore.setVisibility(View.INVISIBLE);
         }
-        else  if(!(singleSectionAddedBy.toString().equalsIgnoreCase(PrefManager.getLoginDetail(mContext,"id")))){
-            itemRowHolder.btnMore.setVisibility(View.INVISIBLE);
+       /* if (dataList.get(i).getMore()!=null && !dataList.get(i).getAddedBy().equalsIgnoreCase(PrefManager.getLoginDetail(mContext,"id"))){
+            itemRowHolder.btnMore.setVisibility(View.GONE);
         }
+        if (dataList.get(i).getMore()!=null && !dataList.get(i).getAddedBy().equalsIgnoreCase(PrefManager.getLoginDetail(mContext,"id"))){
+            itemRowHolder.btnMore.setVisibility(View.GONE);
+        } */
+        if (!PrefManager.isLogin(mContext)){
+            itemRowHolder.btnMore.setVisibility(View.GONE);
+        }
+        if (PrefManager.isLogin(mContext) && dataList.get(i).getAddedBy()!=null && dataList.get(i).getAddedBy().equalsIgnoreCase(PrefManager.getLoginDetail(mContext,"id"))){
+            itemRowHolder.btnMore.setVisibility(View.VISIBLE);
+        }
+        else {
+            itemRowHolder.btnMore.setVisibility(View.GONE);
+        }
+        Log.d("check_video",""+PrefManager.isLogin(mContext)+"\t"+dataList.get(i).getAddedBy()+"\t"+PrefManager.getLoginDetail(mContext,"id"));
+        ///////////////special
+        /*else  if(singleSectionAddedBy!=null && !(singleSectionAddedBy.equalsIgnoreCase(PrefManager.getLoginDetail(mContext,"id")))){
+            itemRowHolder.btnMore.setVisibility(View.INVISIBLE);
+        }*/
        /* if(sectionName.equalsIgnoreCase("Product")){
             Glide.with(mContext).load(R.drawable.latestproduct).into(itemRowHolder.itemTitle);
         }
@@ -96,8 +113,10 @@ public class MyVideoDataAdapter extends RecyclerView.Adapter<MyVideoDataAdapter.
         itemRowHolder.btnMore.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(v.getContext(), "click event on more, "+sectionName , Toast.LENGTH_SHORT).show();
-
+                //Toast.makeText(v.getContext(), "click event on more, "+sectionName+""+dataList.get(i).getAlbemId() , Toast.LENGTH_SHORT).show();
+                deleteAlbum(dataList.get(i).getAlbemId());
+                dataList.remove(i);
+                notifyDataSetChanged();
             }
         });
        /* Glide.with(mContext)
@@ -143,31 +162,22 @@ public class MyVideoDataAdapter extends RecyclerView.Adapter<MyVideoDataAdapter.
     public int getItemCount() {
         return (null != dataList ? dataList.size() : 0);
     }
-
     public class ItemRowHolder extends RecyclerView.ViewHolder {
-
         protected TextView totallike,comments,daysago,user_name;
         protected TextView itemTitle;
-
         protected RecyclerView recycler_view_list;
-
-        protected de.hdodenhof.circleimageview.CircleImageView btnMore,user_image;
-
+        protected de.hdodenhof.circleimageview.CircleImageView user_image;
+           ImageView btnMore;
         public ItemRowHolder(View view) {
             super(view);
-
             this.itemTitle = view.findViewById(R.id.itemTitle);
             this.recycler_view_list = view.findViewById(R.id.recycler_view_list);
             this.btnMore= view.findViewById(R.id.btnMore);
-
             this.totallike=view.findViewById(R.id.tv_totallike);
             this.comments=view.findViewById(R.id.tv_comments);
             this.daysago=view.findViewById(R.id.tv_daysago);
             this.user_image=view.findViewById(R.id.user_image);
             this.user_name=view.findViewById(R.id.tv_user_name);
-
         }
-
     }
-
 }

@@ -46,7 +46,6 @@ import java.util.ArrayList;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 public class MyProvideActivity extends Fragment implements MyProvideAdapter.ItemListener {
-
     ImageView userbackgroud;
     CircleImageView userimage;
     TextView username,tv_category;
@@ -58,7 +57,6 @@ public class MyProvideActivity extends Fragment implements MyProvideAdapter.Item
      FloatingActionButton fab;
     Context context;
     View view;
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup parent, Bundle savedInstanceState) {
         // Defines the xml file for the fragment
@@ -87,6 +85,12 @@ public class MyProvideActivity extends Fragment implements MyProvideAdapter.Item
                 MyProvideActivity.this.startActivity(i_signup);
             }
         });
+        if (!PrefManager.isLogin(MyProvideActivity.this.getContext())){
+            fab.hide();
+        }
+        else if (!PrefManager.getLoginDetail(MyProvideActivity.this.getContext(),"id").equalsIgnoreCase(id)) {
+            fab.hide();
+        }
         recyclerView = view.findViewById(R.id.recyclerView);
 
         userbackgroud = view.findViewById(R.id.userbackgroud);
