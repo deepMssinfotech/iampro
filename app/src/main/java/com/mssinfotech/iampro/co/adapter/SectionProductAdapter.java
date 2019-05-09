@@ -9,6 +9,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
+import android.net.Uri;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -22,6 +23,7 @@ import android.widget.Toast;
 import android.widget.VideoView;
 
 
+import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -60,6 +62,7 @@ public class SectionProductAdapter extends RecyclerView.Adapter<SectionProductAd
     HashSet<String> heading_name;
     protected MyImageAdapter.ItemListener mListener;
     TreeMap<String,String> item_type;
+    String status="";
     public SectionProductAdapter(Context context, ArrayList<MyImageModel> itemsList,TreeMap<String,String> item_type)  {
         this.itemsList=itemsList;
         this.mContext=context;
@@ -226,12 +229,17 @@ public class SectionProductAdapter extends RecyclerView.Adapter<SectionProductAd
              holder.iv_delete.setVisibility(View.GONE);
              holder.iv_edit.setVisibility(View.GONE);
          }
-        holder.iv_buy.setOnClickListener(new View.OnClickListener() {
+        holder.iv_buy.setOnClickListener(new View.OnClickListener()  {
             @Override
-            public void onClick(View v) {
-                function.addtocart(mContext,itemsList.get(i).getId(), "1",String.valueOf(itemsList.get(i).getScost()));
-                CartActivity fragment = new CartActivity();
-                function.loadFragment(mContext,fragment,null);
+            public void onClick(View v)  {
+                String statuss=addToCart(mContext,itemsList.get(i).getId(), "1",String.valueOf(itemsList.get(i).getScost()));
+                 Toast.makeText(mContext,""+statuss,Toast.LENGTH_LONG).show();
+                if (statuss.equalsIgnoreCase("success")) {
+
+                    CartActivity fragment = new CartActivity();
+                    function.loadFragment(mContext, fragment, null);
+                }
+                 //function.addtocart(mContext,itemsList.get(i).getId(), "1",String.valueOf(itemsList.get(i).getScost()));
             }
         });
     }
@@ -366,5 +374,49 @@ public class SectionProductAdapter extends RecyclerView.Adapter<SectionProductAd
             }
         };
         MyRequestQueue.add(MyStringRequest);
+    }
+
+     private String addToCart(Context context,String pid,String qty,String price){
+         String url ="https://www.iampro.co/api/cart.php?type=addtocart&p_type=product&pid="+pid+"&qty="+qty+"&price="+price+"&uid="+ PrefManager.getLoginDetail(context,"id") +"&ip_address="+ Config.IP_ADDRESS;
+
+         RequestQueue queue = Volley.newRequestQueue(context);
+         StringRequest sr = new StringRequest(Request.Method.GET,"http://api.someservice.com/post/comment", new Response.Listener<String>() {
+             @Override
+             public void onResponse(String response) {
+                 try {
+                     JSONObject jsonObject = new JSONObject(response);
+                      String statusv=jsonObject.optString("status");
+                       String msg=jsonObject.optString("msg");
+                     status=statusv;
+                        Toast.makeText(mContext,""+msg,Toast.LENGTH_LONG).show();
+                 }
+                  catch(JSONException je){
+                       Toast.makeText(mContext,""+je.getMessage(),Toast.LENGTH_LONG).show();
+                  }
+             }
+         }, new Response.ErrorListener() {
+             @Override
+             public void onErrorResponse(VolleyError error) {
+
+             }
+         }){
+             @Override
+             protected Map<String,String> getParams(){
+                 Map<String,String> params = new HashMap<String, String>();
+                  params.put("type","addtocart");
+                 params.put("p_type","product");
+
+                 return params;
+             }
+
+             @Override
+             public Map<String, String> getHeaders() throws AuthFailureError {
+                 Map<String,String> params = new HashMap<String, String>();
+                 params.put("Content-Type","application/x-www-form-urlencoded");
+                 return params;
+             }
+         };
+         queue.add(sr);
+      return status;
     }
 }

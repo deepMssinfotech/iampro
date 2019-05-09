@@ -11,6 +11,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.Response;
@@ -49,16 +50,13 @@ public class CheckOutActivity extends AppCompatActivity implements CheckOutAdapt
         btn_placeOrder.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                Toast.makeText(CheckOutActivity.this,""+"Placed Order",Toast.LENGTH_LONG).show();
             }
         });
-
         recyclerView = findViewById(R.id.recycler_view);
         tvTotalPrice = findViewById(R.id.tvTotalPrice);
         prepareCart();
     }
-
-
     public void prepareCart() {
         //loading.show()
         CART_URL  = Config.API_URL+"cart.php?type=refreshCart&uid="+ PrefManager.getLoginDetail(CheckOutActivity.this,"id")+"&ip_address="+Config.IP_ADDRESS;
@@ -94,34 +92,42 @@ public class CheckOutActivity extends AppCompatActivity implements CheckOutAdapt
             JSONObject jsonObject = new JSONObject(response);
             tvTotalPrice.setText("₹ " +jsonObject.getString("total"));
             JSONObject obj = new JSONObject(response.toString());
-            JSONArray heroArray = obj.getJSONArray("all_product");
-            if(heroArray.length()>0) {
-                for (int i = 0; i < heroArray.length(); i++) {
-                    JSONObject feedObj = (JSONObject) heroArray.get(i);
-                    CartItem item = new CartItem();
-                    String product_image = feedObj.isNull("p_image") ? null : feedObj.getString("p_image");
-                    String image_path = Config.URL_ROOT + "uploads/product/h/300/" + product_image;
-                    item.setp_image(image_path);
-                    item.setid(feedObj.getInt("id"));
-                    item.setuid(feedObj.getString("uid"));
-                    item.setpid(feedObj.getString("pid"));
-                    item.setqty(feedObj.getString("qty"));
-                    item.setunit_rate(feedObj.getString("unit_rate"));
-                    item.settotal_rate(feedObj.getString("total_rate"));
-                    item.setp_type(feedObj.getString("p_type"));
-                    item.setudate(feedObj.getString("udate"));
-                    item.setstatus(feedObj.getString("status"));
-                    item.setp_cat(feedObj.getString("p_cat"));
-                    item.setp_nane(feedObj.getString("p_name"));
-                    item.setselling_cost(feedObj.getString("selling_cost"));
-                    CartItemList.add(item);
-                }
-                Log.d("CartItemList",""+CartItemList);
+               String status=obj.optString("status");
+                int total_item=obj.optInt("total_item");
+                  if (total_item>0 && status.equalsIgnoreCase("success")) {
+                      JSONArray heroArray = obj.getJSONArray("all_product");
+                      if (heroArray.length() > 0) {
+                          for (int i = 0; i < heroArray.length(); i++) {
+                              JSONObject feedObj = (JSONObject) heroArray.get(i);
+                              CartItem item = new CartItem();
+                              String product_image = feedObj.isNull("p_image") ? null : feedObj.getString("p_image");
+                              String image_path = Config.URL_ROOT + "uploads/product/h/300/" + product_image;
+                              item.setp_image(image_path);
+                              item.setid(feedObj.getInt("id"));
+                              item.setuid(feedObj.getString("uid"));
+                              item.setpid(feedObj.getString("pid"));
+                              item.setqty(feedObj.getString("qty"));
+                              item.setunit_rate(feedObj.getString("unit_rate"));
+                              item.settotal_rate(feedObj.getString("total_rate"));
+                              item.setp_type(feedObj.getString("p_type"));
+                              item.setudate(feedObj.getString("udate"));
+                              item.setstatus(feedObj.getString("status"));
+                              item.setp_cat(feedObj.getString("p_cat"));
+                              item.setp_nane(feedObj.getString("p_name"));
+                              item.setselling_cost(feedObj.getString("selling_cost"));
+                              CartItemList.add(item);
+                          }
+                          Log.d("CartItemList", "" + CartItemList);
 
-            }else{
-                ImageView no_rodr = view.findViewById(R.id.no_record_found);
-                no_rodr.setVisibility(View.VISIBLE);
-            }
+                      } else {
+                          ImageView no_rodr = view.findViewById(R.id.no_record_found);
+                          no_rodr.setVisibility(View.VISIBLE);
+                      }
+                  }
+                  else {
+                      ImageView no_rodr = view.findViewById(R.id.no_record_found);
+                      no_rodr.setVisibility(View.VISIBLE);
+                  }
             // notify data changes to list adapater
 
             mAdapter = new CheckOutAdapter(CheckOutActivity.this, CartItemList,CheckOutActivity.this);

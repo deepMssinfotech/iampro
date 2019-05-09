@@ -1,5 +1,4 @@
 package com.mssinfotech.iampro.co.image;
-
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
@@ -65,7 +64,6 @@ import bg.devlabs.fullscreenvideoview.orientation.LandscapeOrientation;
 import bg.devlabs.fullscreenvideoview.orientation.PortraitOrientation;
 
 import static com.mssinfotech.iampro.co.common.Config.AVATAR_URL;
-
 public class ImageDetail extends Fragment implements Img_Video_Details.ItemListener {
     public String uid,id;
     String type="";
@@ -207,7 +205,7 @@ public class ImageDetail extends Fragment implements Img_Video_Details.ItemListe
                     //Glide.with(getApplicationContext()).load(R.drawable.product_icon).into(imageView_icon);
                     DefaultSliderView sliderView1 = new DefaultSliderView(ImageDetail.this.getContext());
                     sliderView1.setImageUrl(avatar_urll);
-                    sliderView1.setImageScaleType(ImageView.ScaleType.CENTER_CROP);
+                    sliderView1.setImageScaleType(ImageView.ScaleType.FIT_XY);
                     //sliderView.setDescription("setDescription " + (i + 1));
                     sliderView1.setOnSliderClickListener(new SliderView.OnSliderClickListener() {
                         @Override
@@ -223,7 +221,7 @@ public class ImageDetail extends Fragment implements Img_Video_Details.ItemListe
                         DefaultSliderView sliderView = new DefaultSliderView(ImageDetail.this.getContext());
                         sliderView.setImageUrl(myData.get(i).getImage());
                         final String myImage = myData.get(i).getImage();
-                        sliderView.setImageScaleType(ImageView.ScaleType.CENTER_CROP);
+                        sliderView.setImageScaleType(ImageView.ScaleType.FIT_XY);
                         //sliderView.setDescription("setDescription " + (i + 1));
                         final int finalI = i;
                         sliderView.setOnSliderClickListener(new SliderView.OnSliderClickListener() {

@@ -46,7 +46,7 @@ import com.mssinfotech.iampro.co.utils.PrefManager;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-public class CartActivity extends Fragment implements CartItemAdapter.ItemListener, OnClickListener{
+public class CartActivity extends Fragment implements CartItemAdapter.ItemListener,OnClickListener{
     private static final String TAG = "ShoppingCartActivity";
     private static String CART_URL  = "";
     private CartItemAdapter mAdapter;
@@ -72,9 +72,7 @@ public class CartActivity extends Fragment implements CartItemAdapter.ItemListen
         CartItemList = new ArrayList<CartItem>();
         bClear=view.findViewById(R.id.bClear);
         bShop=view.findViewById(R.id.bCheckout);
-
-        //prepareCart();
-
+        prepareCart();
         bClear.setOnClickListener(this);
         bShop.setOnClickListener(this);
     }
@@ -184,6 +182,11 @@ public class CartActivity extends Fragment implements CartItemAdapter.ItemListen
                     Toast.makeText(getContext(),""+"First Login and try again...",Toast.LENGTH_LONG).show();
                     break;
                 }
+                if (CartItemList.isEmpty()){
+                    Toast.makeText(getContext(),""+"Your cart is empty...",Toast.LENGTH_LONG).show();
+                    break;
+                }
+                else
                  clearCart();
                  if (!CartItemList.isEmpty()){
                      CartItemList.removeAll(CartItemList);

@@ -224,16 +224,7 @@ public class ProvideAdapter extends RecyclerView.Adapter<ProvideAdapter.ViewHold
             //imageView.setImageResource(item.image);
 
             // relativeLayout.setBackgroundColor(Color.parseColor("#000000"));
-            //userImage
-            userImage.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    ProfileActivity fragment = new ProfileActivity();
-                    Bundle args = new Bundle();
-                    args.putString("uid", String.valueOf(uid));
-                    function.loadFragment(mContext,fragment,args);
-                }
-            });
+
             likeButton.setUnlikeDrawableRes(R.drawable.like);
             likeButton.setLikeDrawableRes(R.drawable.like_un);
             if (PrefManager.getLoginDetail(mContext, "id") == null) {
@@ -316,6 +307,15 @@ public class ProvideAdapter extends RecyclerView.Adapter<ProvideAdapter.ViewHold
                  String url = Config.API_URL + "app_service.php?type=provide_favo&pid=" + String.valueOf( mValues.get(position).getPid()) + "&uid=" +mValues.get(position).getUid()+ "&product_type=" + mValues.get(position).getType();
                  Log.e(Config.TAG, url);
                  function.executeUrl(mContext, "get", url, null);
+             }
+         });
+         Vholder.userImage.setOnClickListener(new View.OnClickListener() {
+             @Override
+             public void onClick(View v) {
+                 ProfileActivity fragment = new ProfileActivity();
+                 Bundle args = new Bundle();
+                 args.putString("uid",String.valueOf(mValues.get(position).getUid()));
+                 function.loadFragment(mContext,fragment,args);
              }
          });
     }

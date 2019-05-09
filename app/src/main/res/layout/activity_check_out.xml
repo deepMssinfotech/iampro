@@ -7,15 +7,22 @@
     android:layout_height="match_parent"
     android:background="@color/white"
     tools:context=".CartActivity">
+    <android.support.v4.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
     <LinearLayout
         android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_marginBottom="0dp"
+        android:layout_height="wrap_content">
+
         <android.support.v7.widget.RecyclerView
             android:id="@+id/recycler_view"
             android:layout_width="match_parent"
+            android:layout_marginBottom="100dp"
             android:layout_height="wrap_content"
-            android:scrollbars="vertical" />
+            android:nestedScrollingEnabled="false" />
+
         <ImageView
             android:id="@+id/no_record_found"
             android:visibility="gone"
@@ -23,8 +30,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
     </LinearLayout>
-
-    <LinearLayout android:id="@+id/llTotal"
+    </android.support.v4.widget.NestedScrollView>
+    <LinearLayout
+        android:id="@+id/llTotal"
         android:layout_above="@+id/llBottom"
         android:layout_width="match_parent"
         android:paddingTop="10dp"

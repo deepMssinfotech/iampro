@@ -72,8 +72,8 @@ public class OtpRegistrationActivity extends Fragment  implements SingleUploadBr
     public static final int REQUEST_IMAGE = 100;
     private int GALLERY = 1, CAMERA = 2;
 
-    String otp;
-    String fname,lname,mobile,email,password,cpassword,category;
+    String otp="";
+    String fname="",lname="",mobile="",email="",password="",cpassword="",category="";
     public static String imageType;
     public String backgroundimagePath="",imageuri="";
     CircleImageView changeImage;
@@ -116,16 +116,32 @@ public class OtpRegistrationActivity extends Fragment  implements SingleUploadBr
             category = intent.getStringExtra("category");
         }
         btnprocess=view.findViewById(R.id.btnprocess);
+        btnprocess.setEnabled(true);
         btnprocess.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                 if (backgroundimagePath==null ||  backgroundimagePath=="" || backgroundimagePath.equalsIgnoreCase("")){
+                btnprocess.setEnabled(false);
+                 if (backgroundimagePath==null ||  backgroundimagePath==""){
                       Toast.makeText(getContext(),""+"response1",Toast.LENGTH_LONG).show();
+                      password=etpassword.getText().toString().trim();
+                      cpassword=etcpassword.getText().toString().trim();
+                      if (!password.equalsIgnoreCase(cpassword)){
+                           Toast.makeText(getContext(),""+"Password and Confirm Password doesnot match!",Toast.LENGTH_LONG).show();
+                       return;
+                      }
+                      else
                        sendUserTextData();
 
                  }
                else{
                      Toast.makeText(getContext(),""+"response2",Toast.LENGTH_LONG).show();
+                     password=etpassword.getText().toString().trim();
+                     cpassword=etcpassword.getText().toString().trim();
+                     if (!password.equalsIgnoreCase(cpassword)){
+                         Toast.makeText(getContext(),""+"Password and Confirm Password doesnot match!",Toast.LENGTH_LONG).show();
+                         return;
+                     }
+                     else
                      sendData();
                  }
             }
@@ -269,7 +285,6 @@ public class OtpRegistrationActivity extends Fragment  implements SingleUploadBr
             public void onTakeCameraSelected() {
                 launchCameraIntent();
             }
-
             @Override
             public void onChooseGallerySelected() {
                 launchGalleryIntent();
@@ -279,24 +294,19 @@ public class OtpRegistrationActivity extends Fragment  implements SingleUploadBr
     private void launchCameraIntent() {
         Intent intent = new Intent(getContext(), ImagePickerActivity.class);
         intent.putExtra(ImagePickerActivity.INTENT_IMAGE_PICKER_OPTION, ImagePickerActivity.REQUEST_IMAGE_CAPTURE);
-
         // setting aspect ratio
         intent.putExtra(ImagePickerActivity.INTENT_LOCK_ASPECT_RATIO, true);
         intent.putExtra(ImagePickerActivity.INTENT_ASPECT_RATIO_X, 1); // 16x9, 1x1, 3:4, 3:2
         intent.putExtra(ImagePickerActivity.INTENT_ASPECT_RATIO_Y, 1);
-
         // setting maximum bitmap width and height
         intent.putExtra(ImagePickerActivity.INTENT_SET_BITMAP_MAX_WIDTH_HEIGHT, true);
         intent.putExtra(ImagePickerActivity.INTENT_BITMAP_MAX_WIDTH, 1000);
         intent.putExtra(ImagePickerActivity.INTENT_BITMAP_MAX_HEIGHT, 1000);
-
         startActivityForResult(intent, REQUEST_IMAGE);
     }
-
     private void launchGalleryIntent() {
         Intent intent = new Intent(getContext(), ImagePickerActivity.class);
         intent.putExtra(ImagePickerActivity.INTENT_IMAGE_PICKER_OPTION, ImagePickerActivity.REQUEST_GALLERY_IMAGE);
-
         // setting aspect ratio
         intent.putExtra(ImagePickerActivity.INTENT_LOCK_ASPECT_RATIO, true);
         intent.putExtra(ImagePickerActivity.INTENT_ASPECT_RATIO_X, 1); // 16x9, 1x1, 3:4, 3:2
@@ -309,19 +319,40 @@ public class OtpRegistrationActivity extends Fragment  implements SingleUploadBr
          Log.d("verror_otp1","before");
 
          Log.d("verror_otp2","after");
+         final ProgressDialog loading = ProgressDialog.show(getContext(),"Processing...","Please wait...",false,false);
+
          StringRequest sr = new StringRequest(Request.Method.POST,url, new Response.Listener<String>() {
              @Override
              public void onResponse(String response) {
                  Log.d("verror_otp3",""+response);
-                 CreateProgressDialog();
-                  ShowProgressDialog();
-                 Toast.makeText(getContext(),""+response,Toast.LENGTH_LONG).show();
+                 //CreateProgressDialog();
+                  //ShowProgressDialog();
+                 //Toast.makeText(getContext(),""+response,Toast.LENGTH_LONG).show();
+                 try {
+                     JSONObject jsonObject = new JSONObject(response);
+                       String statusv=jsonObject.optString("status");
+                       if (statusv.equalsIgnoreCase("success")){
+                           LoginActivity loginActivity=new LoginActivity();
+                            function.loadFragment(getContext(),loginActivity,null);
+                       }
+                     String msgv=jsonObject.optString("msg");
+                     Toast.makeText(getContext(),""+msgv,Toast.LENGTH_LONG).show();
+                     if (loading.isShowing())
+                          loading.dismiss();
+                 }
+                 catch (JSONException je){
+                     if (loading.isShowing())
+                         loading.dismiss();
+                       Toast.makeText(getContext(),""+je.getMessage(),Toast.LENGTH_LONG).show();
+                 }
              }
          }, new Response.ErrorListener() {
              @Override
              public void onErrorResponse(VolleyError error) {
                  Toast.makeText(getContext(),""+error.getMessage(),Toast.LENGTH_LONG).show();
-                  Log.d("verror_otp",""+error.getMessage());
+                 if (loading.isShowing())
+                     loading.dismiss();
+                  Log.d("verror_otp",""+error.getMessage()+"\t"+error.toString());
              }
          }){
              @Override
@@ -339,9 +370,10 @@ public class OtpRegistrationActivity extends Fragment  implements SingleUploadBr
              }
          };
          queue.add(sr);
+         btnprocess.setEnabled(true);
      }
     public void sendData(){
-        if (!Config.haveNetworkConnection(context)) {
+        if(!Config.haveNetworkConnection(context)) {
             Config.showInternetDialog(context);
             return;
         }
@@ -398,6 +430,10 @@ public class OtpRegistrationActivity extends Fragment  implements SingleUploadBr
             Toast.makeText(context,""+exc.getMessage(), Toast.LENGTH_SHORT).show();
              //dialog.dismiss();
         }
+
+
+        //}
+        btnprocess.setEnabled(true);
     }
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
 
@@ -468,6 +504,7 @@ public class OtpRegistrationActivity extends Fragment  implements SingleUploadBr
     @Override
     public void onCompleted(int serverResponseCode, byte[] serverResponseBody) {
         dialog.dismiss();
+        Toast.makeText(getContext(),""+"Register successfully...",Toast.LENGTH_LONG).show();
         LoginActivity fragment = new LoginActivity();
         function.loadFragment(context,fragment,null);
         //finish();
