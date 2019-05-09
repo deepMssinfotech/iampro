@@ -60,7 +60,6 @@ public class IncludeFooter  extends RelativeLayout {
         }
 
     }
-
     private OnClickListener moreOnClickListener = new OnClickListener() {
         public void onClick(View v) {
             UserMenuActivity fragment = new UserMenuActivity();
