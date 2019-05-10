@@ -25,6 +25,7 @@
     </LinearLayout>
 
     <LinearLayout android:id="@+id/llTotal"
+        android:visibility="invisible"
         android:layout_above="@+id/llBottom"
         android:layout_width="match_parent"
         android:paddingTop="10dp"

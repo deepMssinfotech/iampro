@@ -624,8 +624,8 @@ public class HomeFragment extends Fragment implements UserDataAdapter.ItemListen
                             //my_recycler_view.setLayoutManager(new GridLayoutManager(getActivity(), 2));
                             my_recycler_view.setAdapter(adapterr);
 
-                            getUser();
-                            //getProduct();
+                            //getUser();
+                            getProduct();
                         }
                         catch (JSONException e){
                             e.printStackTrace();

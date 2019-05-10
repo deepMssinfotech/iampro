@@ -1,18 +1,22 @@
 package com.mssinfotech.iampro.co.adapter;
 import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.Context;
 //import android.content.DialogInterface;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 
+import android.graphics.drawable.ColorDrawable;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.PopupMenu;
 import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -35,6 +39,7 @@ import com.mssinfotech.iampro.co.common.function;
 import com.mssinfotech.iampro.co.demand.DemandDetailActivity;
 import com.mssinfotech.iampro.co.model.MyProductModel;
 import com.mssinfotech.iampro.co.user.AddDemandActivity;
+import com.mssinfotech.iampro.co.user.AddProvideActivity;
 import com.mssinfotech.iampro.co.utils.PrefManager;
 
 import org.json.JSONException;
@@ -57,7 +62,7 @@ public class MyDemandAdapter extends RecyclerView.Adapter<MyDemandAdapter.ViewHo
         mListener=itemListener;
     }
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-        ImageView  imageView,imageView_user,imageView_icon,iv_comments,image,iv_favourite,iv_delete,iv_edit;
+        ImageView  imageView,imageView_user,imageView_icon,iv_comments,image,iv_favourite,buttonViewOption;
         VideoView videoView;
          LinearLayout ll_comment;
         TextView tv_name,uname,udate,tv_comments,tv_totallike,detail_name,tv_sellingprice;
@@ -69,16 +74,16 @@ public class MyDemandAdapter extends RecyclerView.Adapter<MyDemandAdapter.ViewHo
             super(v);
             v.setOnClickListener(this);
             imageView=v.findViewById(R.id.imageView);
+            buttonViewOption = v.findViewById(R.id.textViewOptions);
             tv_name=v.findViewById(R.id.tv_name);
+            imageView=v.findViewById(R.id.imageView);
             imageView_user=v.findViewById(R.id.imageView_user);
             likeButton =v.findViewById(R.id.likeButton);
             imageView_icon=v.findViewById(R.id.imageView_icon);
             ll_comment=v.findViewById(R.id.ll_comment);
             iv_comments=v.findViewById(R.id.iv_comments);
             iv_favourite=v.findViewById(R.id.iv_favourite);
-            iv_edit = v.findViewById(R.id.iv_edit);
             image=v.findViewById(R.id.imageView);
-            iv_delete=v.findViewById(R.id.iv_delete);
             videoView=v.findViewById(R.id.videoView);
             ratingBar=v.findViewById(R.id.ratingBar);
             //udate=v.findViewById(R.id.udate);
@@ -90,14 +95,6 @@ public class MyDemandAdapter extends RecyclerView.Adapter<MyDemandAdapter.ViewHo
             detail_name=v.findViewById(R.id.detail_name);
             tv_sellingprice=v.findViewById(R.id.tv_sellingprice);
 
-            iv_edit.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Intent intent=new Intent(mContext, AddDemandActivity.class);
-                    intent.putExtra("id",String.valueOf(item.getPid()));
-                    mContext.startActivity(intent);
-                }
-            });
             imageView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -138,10 +135,10 @@ public class MyDemandAdapter extends RecyclerView.Adapter<MyDemandAdapter.ViewHo
 
             tv_sellingprice.setText("Rs: "+String.valueOf(item.getsCost()));
             if (myid.equalsIgnoreCase(String.valueOf(uid)) || uid==0 || String.valueOf(uid)=="" || String.valueOf(uid)==null) {
-                iv_delete.setVisibility(View.VISIBLE);
+                buttonViewOption.setVisibility(View.VISIBLE);
             }
             else {
-                iv_delete.setVisibility(View.GONE);
+                buttonViewOption.setVisibility(View.GONE);
             }
             Glide.with(mContext)
                     .load(item.getImage())
@@ -165,7 +162,62 @@ public class MyDemandAdapter extends RecyclerView.Adapter<MyDemandAdapter.ViewHo
         Vholder.setData(mValues.get(position));
         final int uidv=mValues.get(position).getUid();
          final String idv=mValues.get(position).getPid();
+        Vholder.buttonViewOption.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                final Dialog myDialog = new Dialog(mContext);
+                //creating a popup menu
+                PopupMenu popup = new PopupMenu(mContext, Vholder.buttonViewOption);
+                //inflating menu from xml resource
+                popup.inflate(R.menu.ppd_menu);
+                //adding click listener
+                popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                    @Override
+                    public boolean onMenuItemClick(MenuItem item) {
 
+                        switch (item.getItemId()) {
+                            case R.id.menu_edit:
+                                Intent intent=new Intent(mContext, AddDemandActivity.class);
+                                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                intent.putExtra("id",String.valueOf(mValues.get(position).getPid()));
+                                mContext.startActivity(intent);
+                                break;
+                            case R.id.menu_delete:
+                                myDialog.setContentView(R.layout.confirm_popup);
+                                TextView yes = myDialog.findViewById(R.id.yes);
+                                TextView no = myDialog.findViewById(R.id.no);
+                                TextView heading = myDialog.findViewById(R.id.heading);
+                                TextView detail = myDialog.findViewById(R.id.detail);
+                                heading.setText("Delete");
+                                detail.setText("Are you sure you want to remove");
+                                yes.setOnClickListener(new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View v) {
+                                        deleteDemand(mValues.get(position).getPid());
+                                        mValues.remove(position);
+                                        notifyDataSetChanged();
+                                        myDialog.dismiss();
+                                    }
+                                });
+                                no.setOnClickListener(new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View v) {
+                                        myDialog.dismiss();
+                                    }
+                                });
+                                myDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+                                myDialog.show();
+                                //handle menu1 click
+                                break;
+                        }
+                        return false;
+                    }
+                });
+                //displaying the popup
+                popup.show();
+
+            }
+        });
         int my_uid=uidv;
         if(my_uid==0){
             Vholder.likeButton.setEnabled(false);
@@ -199,49 +251,7 @@ public class MyDemandAdapter extends RecyclerView.Adapter<MyDemandAdapter.ViewHo
             }
         });
 
-        Vholder.iv_delete.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                AlertDialog.Builder alertDialog = new AlertDialog.Builder(mContext);
-                alertDialog.setTitle("Delete it!");
-                //+mValues.get(position).getPid()
-                alertDialog.setMessage("Are you sure...");
-                alertDialog.setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                       // dialog.cancel();
-                        deleteDemand(mValues.get(position).getPid());
-                        mValues.remove(position);
-                        notifyDataSetChanged();
-                        //Toast.makeText(mContext,"deleted",Toast.LENGTH_LONG).show();
-                    }
-                });
-                alertDialog.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
 
-
-                    }
-                });
-
-                AlertDialog dialog = alertDialog.create();
-                dialog.show();
-
-                /*mValues.remove(position);
-                notifyDataSetChanged();
-                Toast.makeText(mContext,"deleted",Toast.LENGTH_LONG).show();*/
-            }
-        });
-
-        Vholder.iv_edit.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent=new Intent(mContext, AddDemandActivity.class);
-                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                intent.putExtra("id",mValues.get(position).getPid());
-                mContext.startActivity(intent);
-            }
-        });
 
         Vholder.ratingBar.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
 
@@ -254,8 +264,7 @@ public class MyDemandAdapter extends RecyclerView.Adapter<MyDemandAdapter.ViewHo
         });
 
         if(mValues.get(position).getMore()!=null && mValues.get(position).getMore().equalsIgnoreCase("loadmore")){
-            Vholder.iv_delete.setVisibility(View.GONE);
-            Vholder.iv_edit.setVisibility(View.GONE);
+            Vholder.buttonViewOption.setVisibility(View.GONE);
         }
         Vholder.ll_comment.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -268,12 +277,10 @@ public class MyDemandAdapter extends RecyclerView.Adapter<MyDemandAdapter.ViewHo
             }
         });
         if(!PrefManager.getLoginDetail(mContext,"id").equalsIgnoreCase(String.valueOf(mValues.get(position).getUid()))){
-            Vholder.iv_delete.setVisibility(View.GONE);
-            Vholder.iv_edit.setVisibility(View.GONE);
+            Vholder.buttonViewOption.setVisibility(View.GONE);
         }
         else{
-            Vholder.iv_delete.setVisibility(View.VISIBLE);
-            Vholder.iv_edit.setVisibility(View.VISIBLE);
+            Vholder.buttonViewOption.setVisibility(View.VISIBLE);
         }
 
     }

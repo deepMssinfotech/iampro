@@ -12,7 +12,6 @@ import com.mssinfotech.iampro.co.tab.HomeFragment;
 import com.mssinfotech.iampro.co.tab.ImageFragment;
 import com.mssinfotech.iampro.co.tab.ProductFragment;
 import com.mssinfotech.iampro.co.tab.ProvideFragment;
-import com.mssinfotech.iampro.co.tab.TestFragment;
 import com.mssinfotech.iampro.co.tab.UserFragment;
 import com.mssinfotech.iampro.co.tab.VideoFragment;
 import com.mssinfotech.iampro.co.common.Config;

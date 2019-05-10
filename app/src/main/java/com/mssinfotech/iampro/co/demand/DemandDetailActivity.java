@@ -314,7 +314,7 @@ public class DemandDetailActivity extends AppCompatActivity implements CommentAd
                                 expandedImage.setVisibility(View.VISIBLE);
                                 Glide.with(DemandDetailActivity.this)
                                         .load(ImageHolInfo)
-                                        .apply(Config.options_avatar)
+                                        .apply(Config.options_demand)
                                         .into(expandedImage);
                                 expandedImage.setOnClickListener(new View.OnClickListener() {
                                     @Override

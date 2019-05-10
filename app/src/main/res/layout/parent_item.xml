@@ -42,7 +42,7 @@
                     android:gravity="left"
                     android:padding="5dp"
                     android:singleLine="false"
-                    android:text="Abhi Patel added 7 new photos Abhi Patel added 7 new photos"
+                    android:text="added 7 new photos added 7 new photos"
                     android:textColor="#000000"
                     />
                 <TextView

@@ -1,18 +1,22 @@
 package com.mssinfotech.iampro.co.adapter;
 import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.drawable.ColorDrawable;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.PopupMenu;
 import android.widget.ProgressBar;
 import android.widget.RatingBar;
 import android.widget.TextView;
@@ -39,6 +43,7 @@ import com.mssinfotech.iampro.co.model.FeedModel;
 import com.mssinfotech.iampro.co.model.MyProductModel;
 import com.mssinfotech.iampro.co.product.ProductDetail;
 import com.mssinfotech.iampro.co.user.AddProductActivity;
+import com.mssinfotech.iampro.co.user.AddProvideActivity;
 import com.mssinfotech.iampro.co.user.ProfileActivity;
 import com.mssinfotech.iampro.co.utils.PrefManager;
 
@@ -62,7 +67,7 @@ public class MyProductAdapter extends RecyclerView.Adapter<MyProductAdapter.View
         mListener=itemListener;
     }
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-        ImageView  imageView,imageView_user,imageView_icon,iv_comments,image,iv_favourite,iv_delete,iv_edit;
+        ImageView  imageView,imageView_user,imageView_icon,iv_comments,image,iv_favourite,buttonViewOption;
         VideoView videoView;
         TextView tv_name,uname,udate,tv_comments,tv_totallike,detail_name,tv_purchaseprice,tv_sellingprice;
          LinearLayout ll_comment;
@@ -75,16 +80,15 @@ public class MyProductAdapter extends RecyclerView.Adapter<MyProductAdapter.View
             v.setOnClickListener(this);
             imageView=v.findViewById(R.id.imageView);
             tv_name=v.findViewById(R.id.tv_name);
-
+            buttonViewOption = v.findViewById(R.id.textViewOptions);
+            imageView=v.findViewById(R.id.imageView);
             imageView_user=v.findViewById(R.id.imageView_user);
             imageView_icon=v.findViewById(R.id.imageView_icon);
             ll_comment=v.findViewById(R.id.ll_comment);
             likeButton =v.findViewById(R.id.likeButton);
             iv_comments=v.findViewById(R.id.iv_comments);
             iv_favourite=v.findViewById(R.id.iv_favourite);
-            iv_edit = v.findViewById(R.id.iv_edit);
             image=v.findViewById(R.id.imageView);
-            iv_delete=v.findViewById(R.id.iv_delete);
             videoView=v.findViewById(R.id.videoView);
             ratingBar=v.findViewById(R.id.ratingBar);
             //udate=v.findViewById(R.id.udate);
@@ -105,13 +109,6 @@ public class MyProductAdapter extends RecyclerView.Adapter<MyProductAdapter.View
                     intent.putExtra("pid",String.valueOf(item.getPid()));
                     intent.putExtra("uid",String.valueOf(item.getUid()));
                     mContext.startActivity(intent);
-                }
-            });
-            iv_delete.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Toast.makeText(mContext, "delete clicked"+item.getName()+"\n"+item.getUid(), Toast.LENGTH_SHORT).show();
-
                 }
             });
         }
@@ -138,12 +135,12 @@ public class MyProductAdapter extends RecyclerView.Adapter<MyProductAdapter.View
             likeButton.setLikeDrawableRes(R.drawable.like_un);
             //tv_purchaseprice.setPaintFlags(tv_purchaseprice.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
             tv_sellingprice.setText("Rs: "+String.valueOf(item.getsCost()));
-              if (myid.equalsIgnoreCase(String.valueOf(uid)) || uid==0 || String.valueOf(uid)=="" || String.valueOf(uid)==null) {
-                  iv_delete.setVisibility(View.VISIBLE);
-              }
-              else {
-                  iv_delete.setVisibility(View.GONE);
-              }
+            if (myid.equalsIgnoreCase(String.valueOf(uid)) || uid==0 || String.valueOf(uid)=="" || String.valueOf(uid)==null) {
+              buttonViewOption.setVisibility(View.VISIBLE);
+            }
+            else {
+              buttonViewOption.setVisibility(View.GONE);
+            }
             Glide.with(mContext)
                     .load(item.getImage())
                     .apply(Config.options_product)
@@ -168,6 +165,62 @@ public class MyProductAdapter extends RecyclerView.Adapter<MyProductAdapter.View
         //final float ratingv
         final int uidv=mValues.get(position).getUid();
         final String idv=mValues.get(position).getPid();
+        Vholder.buttonViewOption.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                final Dialog myDialog = new Dialog(mContext);
+                //creating a popup menu
+                PopupMenu popup = new PopupMenu(mContext, Vholder.buttonViewOption);
+                //inflating menu from xml resource
+                popup.inflate(R.menu.ppd_menu);
+                //adding click listener
+                popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                    @Override
+                    public boolean onMenuItemClick(MenuItem item) {
+
+                        switch (item.getItemId()) {
+                            case R.id.menu_edit:
+                                Intent intent=new Intent(mContext, AddProductActivity.class);
+                                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                intent.putExtra("id",String.valueOf(mValues.get(position).getPid()));
+                                mContext.startActivity(intent);
+                                break;
+                            case R.id.menu_delete:
+                                myDialog.setContentView(R.layout.confirm_popup);
+                                TextView yes = myDialog.findViewById(R.id.yes);
+                                TextView no = myDialog.findViewById(R.id.no);
+                                TextView heading = myDialog.findViewById(R.id.heading);
+                                TextView detail = myDialog.findViewById(R.id.detail);
+                                heading.setText("Delete");
+                                detail.setText("Are you sure you want to remove");
+                                yes.setOnClickListener(new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View v) {
+                                        deleteProduct(mValues.get(position).getPid());
+                                        mValues.remove(position);
+                                        notifyDataSetChanged();
+                                        myDialog.dismiss();
+                                    }
+                                });
+                                no.setOnClickListener(new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View v) {
+                                        myDialog.dismiss();
+                                    }
+                                });
+                                myDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+                                myDialog.show();
+                                //handle menu1 click
+                                break;
+                        }
+                        return false;
+                    }
+                });
+                //displaying the popup
+                popup.show();
+
+            }
+        });
         int my_uid=uidv;
         if(my_uid==0){
             Vholder.likeButton.setEnabled(false);
@@ -180,8 +233,7 @@ public class MyProductAdapter extends RecyclerView.Adapter<MyProductAdapter.View
             Vholder.tv_totallike.setTextColor(Color.BLACK);
         }
         if(mValues.get(position).getMore()!=null && mValues.get(position).getMore().equalsIgnoreCase("loadmore")){
-            Vholder.iv_delete.setVisibility(View.GONE);
-            Vholder.iv_edit.setVisibility(View.GONE);
+            Vholder.buttonViewOption.setVisibility(View.GONE);
         }
         Vholder.likeButton.setOnLikeListener(new OnLikeListener() {
             @Override
@@ -201,48 +253,6 @@ public class MyProductAdapter extends RecyclerView.Adapter<MyProductAdapter.View
                 String url = Config.API_URL+"app_service.php?type=like_me&id="+String.valueOf(idv)+"&uid="+idv+"&ptype=product";
                 Log.e(Config.TAG,url);
                 function.executeUrl(mContext,"get",url,null);
-            }
-        });
-        Vholder.iv_delete.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
-                builder.setCancelable(true);
-                builder.setTitle("Delete it!");
-                builder.setMessage("Are you sure...");
-                builder.setPositiveButton("Confirm",
-                        new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-
-                                //Toast.makeText(mContext,"deleted",Toast.LENGTH_LONG).show();
-                                deleteProduct(mValues.get(position).getPid());
-                                mValues.remove(position);
-                                notifyDataSetChanged();
-                            }
-                        });
-                builder.setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                    }
-                });
-
-                AlertDialog dialog = builder.create();
-                dialog.show();
-
-                /*  mValues.remove(position);
-                                notifyDataSetChanged();
-                                Toast.makeText(mContext,"deleted",Toast.LENGTH_LONG).show();    */
-
-            }
-        });
-        Vholder.iv_edit.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent=new Intent(mContext, AddProductActivity.class);
-                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                intent.putExtra("id",mValues.get(position).getPid());
-                mContext.startActivity(intent);
             }
         });
         Vholder.ratingBar.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
@@ -265,12 +275,10 @@ public class MyProductAdapter extends RecyclerView.Adapter<MyProductAdapter.View
 
 
         if(!PrefManager.getLoginDetail(mContext,"id").equalsIgnoreCase(String.valueOf(mValues.get(position).getUid()))){
-            Vholder.iv_delete.setVisibility(View.GONE);
-            Vholder.iv_edit.setVisibility(View.GONE);
+            Vholder.buttonViewOption.setVisibility(View.GONE);
         }
         else{
-            Vholder.iv_delete.setVisibility(View.VISIBLE);
-            Vholder.iv_edit.setVisibility(View.VISIBLE);
+            Vholder.buttonViewOption.setVisibility(View.VISIBLE);
         }
     }
     @Override

@@ -289,7 +289,7 @@ public class ProductDetail extends AppCompatActivity implements CommentAdapter.I
                                 expandedImage.setVisibility(View.VISIBLE);
                                 Glide.with(ProductDetail.this)
                                         .load(ImageHolFull)
-                                        .apply(Config.options_avatar)
+                                        .apply(Config.options_product)
                                         .into(expandedImage);
                                   expandedImage.setOnClickListener(new View.OnClickListener() {
                                       @Override

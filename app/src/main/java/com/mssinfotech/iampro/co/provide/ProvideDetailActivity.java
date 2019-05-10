@@ -159,7 +159,7 @@ public class ProvideDetailActivity extends AppCompatActivity implements CommentA
                                     .into(expandedImage); */
                             Glide.with(ProvideDetailActivity.this)
                                     .load(avatar_path)
-                                    .apply(Config.options_avatar)
+                                    .apply(Config.options_demand)
                                     .into(user_image);
                             if (responses.getBoolean("wishlist")){
                                 favButton.setLiked(true);
