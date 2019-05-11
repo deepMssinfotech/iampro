@@ -143,6 +143,12 @@ public class SectionVideoAdapter extends RecyclerView.Adapter<SectionVideoAdapte
             holder.likeButton.setLiked(false);
             holder.tv_totallike.setTextColor(Color.BLACK);
         }
+        if (PrefManager.isLogin(mContext)){
+            holder.likeButton.setEnabled(true);
+        }
+        else {
+            holder.likeButton.setEnabled(false);
+        }
         holder.category.setText(singleItem.getCategory());
         holder.tv_name.setText(singleItem.getName());
         if(itemsList.get(i).getMore()!=null && itemsList.get(i).getMore().equalsIgnoreCase("loadmore")){

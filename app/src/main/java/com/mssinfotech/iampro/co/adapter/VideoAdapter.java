@@ -177,6 +177,12 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.ViewHolder> 
                 likeButton.setLiked(false);
                 tv_tlike.setTextColor(Color.BLACK);
             }
+            if (PrefManager.isLogin(mContext)){
+                likeButton.setEnabled(true);
+            }
+            else {
+                likeButton.setEnabled(false);
+            }
             likeButton.setOnLikeListener(new OnLikeListener() {
                 @Override
                 public void liked(LikeButton likeButton) {

@@ -101,7 +101,7 @@ public class MyImageVideoDataAdapter extends RecyclerView.Adapter<MyImageVideoDa
             itemRowHolder.btnMore.setVisibility(View.GONE);
         }
         if (!PrefManager.isLogin(mContext)){
-            itemRowHolder.btnMore.setVisibility(View.GONE);
+            itemRowHolder.btnMore.setVisibility(View.INVISIBLE);
         }
       /* else  if(!(singleSectionAddedBy.toString().equalsIgnoreCase(PrefManager.getLoginDetail(mContext,"id")))){
            itemRowHolder.btnMore.setVisibility(View.INVISIBLE);

@@ -122,7 +122,7 @@ public class OtpRegistrationActivity extends Fragment  implements SingleUploadBr
             public void onClick(View v) {
                 btnprocess.setEnabled(false);
                  if (backgroundimagePath==null ||  backgroundimagePath==""){
-                      Toast.makeText(getContext(),""+"response1",Toast.LENGTH_LONG).show();
+                     // Toast.makeText(getContext(),""+"response1",Toast.LENGTH_LONG).show();
                       password=etpassword.getText().toString().trim();
                       cpassword=etcpassword.getText().toString().trim();
                       if (!password.equalsIgnoreCase(cpassword)){
@@ -131,10 +131,9 @@ public class OtpRegistrationActivity extends Fragment  implements SingleUploadBr
                       }
                       else
                        sendUserTextData();
-
                  }
                else{
-                     Toast.makeText(getContext(),""+"response2",Toast.LENGTH_LONG).show();
+                     //Toast.makeText(getContext(),""+"response2",Toast.LENGTH_LONG).show();
                      password=etpassword.getText().toString().trim();
                      cpassword=etcpassword.getText().toString().trim();
                      if (!password.equalsIgnoreCase(cpassword)){

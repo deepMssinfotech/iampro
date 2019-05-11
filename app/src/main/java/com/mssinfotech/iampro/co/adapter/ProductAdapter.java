@@ -3,7 +3,6 @@ package com.mssinfotech.iampro.co.adapter;
 /**
  * Created by mssinfotech on 21/01/19.
  */
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
@@ -244,6 +243,14 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
                 likeButton.setLiked(false);
                 tv_tlike.setTextColor(Color.BLACK);
             }
+            if (PrefManager.isLogin(mContext)){
+                likeButton.setEnabled(true);
+                //iv_buy.setEnabled(true);
+            }
+            else {
+                likeButton.setEnabled(false);
+                //iv_buy.setEnabled(false);
+            }
             likeButton.setOnLikeListener(new OnLikeListener() {
                 @Override
                 public void liked(LikeButton likeButton) {
@@ -301,9 +308,14 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
             @Override
             public void onClick(View v) {
                 //CartActivity c=
-                function.addtocart(mContext, mValues.get(position).getPid(), "1",String.valueOf(mValues.get(position).getsCost()));
-                CartActivity fragment = new CartActivity();
-                function.loadFragment(mContext,fragment,null);
+                if (!PrefManager.isLogin(mContext)){
+                     Toast.makeText(mContext,""+"First Login and Try again...",Toast.LENGTH_LONG).show();
+                     return;
+                }else {
+                    function.addtocart(mContext, mValues.get(position).getPid(), "1", String.valueOf(mValues.get(position).getsCost()));
+                    CartActivity fragment = new CartActivity();
+                    function.loadFragment(mContext, fragment, null);
+                }
             }
         });
     }

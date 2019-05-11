@@ -159,6 +159,12 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ViewHolder> 
                 likeButton.setLiked(false);
                 tv_tlike.setTextColor(Color.BLACK);
             }
+            if (PrefManager.isLogin(mContext)){
+                likeButton.setEnabled(true);
+            }
+            else {
+                 likeButton.setEnabled(false);
+            }
             likeButton.setOnLikeListener(new OnLikeListener() {
                 @Override
                 public void liked(LikeButton likeButton) {
@@ -207,6 +213,12 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ViewHolder> 
                 function.loadFragment(mContext,fragment,args);
             }
         });
+        if (PrefManager.isLogin(mContext)){
+                Vholder.likeButton.setEnabled(true);
+        }
+        else {
+               Vholder.likeButton.setEnabled(false);
+        }
     }
     @Override
     public int getItemCount() {

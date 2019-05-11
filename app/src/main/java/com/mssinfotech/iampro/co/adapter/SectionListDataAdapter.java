@@ -18,7 +18,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RatingBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 
 import com.bumptech.glide.Glide;
@@ -41,7 +43,6 @@ import com.mssinfotech.iampro.co.utils.PrefManager;
 import java.util.ArrayList;
 
 public class SectionListDataAdapter extends RecyclerView.Adapter<SectionListDataAdapter.SingleItemRowHolder> {
-
     private ArrayList<SingleItemModel> itemsList;
     private Context mContext;
     public String uid="0";
@@ -55,7 +56,6 @@ public class SectionListDataAdapter extends RecyclerView.Adapter<SectionListData
         this.mContext = context;
          this.type=type;
     }
-
     @Override
     public SingleItemRowHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
         //SingleItemRowHolder mh;
@@ -92,6 +92,9 @@ public class SectionListDataAdapter extends RecyclerView.Adapter<SectionListData
             holder.tvTitle.setText(singleItem.getName());//+"-"+singleItem.getIsliked());
             holder.totallike.setText(String.valueOf(singleItem.getTotallike()));
             holder.comments.setText(String.valueOf(singleItem.getComments()));
+               if (itemsList.get(i).getRating()!=null)
+             holder.ratingBar.setRating(Float.parseFloat(itemsList.get(i).getRating()));
+             Log.d("total_rating",""+itemsList.get(i).getRating());
         /*
         if(singleItem.getDaysago()!="") {
               holder.daysago.setVisibility(View.VISIBLE);
@@ -108,7 +111,6 @@ public class SectionListDataAdapter extends RecyclerView.Adapter<SectionListData
                             .circleCrop().bitmapTransform(new CircleCrop())
                             .fitCenter())
                     .into(holder.user_image);
-
 
             String url = singleItem.getImage();
             //Log.d("url_adapter",url);
@@ -153,8 +155,15 @@ public class SectionListDataAdapter extends RecyclerView.Adapter<SectionListData
                     //Toast.makeText(mContext, utype+" clicked", Toast.LENGTH_SHORT).show();
                 }
             });
-            if (PrefManager.isLogin(mContext)) {
-                int my_uid = Integer.parseInt(uid);
+        int my_uid=0;
+                 try {
+                      my_uid = Integer.parseInt(uid);
+                 }
+                catch(Exception e){
+                    my_uid=0;
+                     }
+
+                 //holder.ratingBar.setEnabled(true);
                 if (my_uid == 0) {
                     holder.likeButton.setEnabled(false);
                 }
@@ -165,6 +174,12 @@ public class SectionListDataAdapter extends RecyclerView.Adapter<SectionListData
                     holder.likeButton.setLiked(false);
                     holder.totallike.setTextColor(Color.BLACK);
                 }
+        if (PrefManager.isLogin(mContext)) {
+            holder.likeButton.setEnabled(true);
+            }
+            else {
+                holder.likeButton.setEnabled(false);
+                //holder.ratingBar.setEnabled(false);
             }
             holder.user_image.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -221,7 +236,20 @@ public class SectionListDataAdapter extends RecyclerView.Adapter<SectionListData
                     mContext.startActivity(intent);
                 }
             });
+            if (PrefManager.isLogin(mContext)) {
+                holder.ratingBar.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
 
+                    }
+                });
+                holder.ratingBar.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
+                    @Override
+                    public void onRatingChanged(RatingBar ratingBar, float rating, boolean fromUser) {
+
+                    }
+                });
+            }
        // }
 
     }
@@ -235,10 +263,9 @@ public class SectionListDataAdapter extends RecyclerView.Adapter<SectionListData
         protected de.hdodenhof.circleimageview.CircleImageView btnMore,user_image;
         protected LinearLayout likelayout;
         protected LikeButton likeButton;
-
+          RatingBar ratingBar;
         public TextView textView,tv_category,tv_images,tv_videos,tv_users,tv_products,tv_provides,tv_demands,tv_viewProfile,tv_fRequest,tv_sendMessage,tv_blockUser;
         de.hdodenhof.circleimageview.CircleImageView imageView,imageView_frequest,imageView_message,imageView_block,imageView_viewProfile;
-
 
         public SingleItemRowHolder(View view) {
             super(view);
@@ -251,6 +278,7 @@ public class SectionListDataAdapter extends RecyclerView.Adapter<SectionListData
                 tv_users=view.findViewById(R.id.tv_users);
                 tv_products=view.findViewById(R.id.tv_products);
                 tv_provides=view.findViewById(R.id.tv_provides);
+                ratingBar=view.findViewById(R.id.ratingBar);
                 tv_demands=view.findViewById(R.id.tv_demands);
 
                 imageView_frequest=view.findViewById(R.id.imageView_frequest);
@@ -273,6 +301,7 @@ public class SectionListDataAdapter extends RecyclerView.Adapter<SectionListData
                 this.totallike = view.findViewById(R.id.tv_totallike);
                 this.comments = view.findViewById(R.id.tv_comments);
                 this.daysago = view.findViewById(R.id.tv_daysago);
+                this.ratingBar=view.findViewById(R.id.ratingBar);
                 this.user_image = view.findViewById(R.id.user_image);
                 this.user_name = view.findViewById(R.id.tv_user_name);
                 view.setOnClickListener(new View.OnClickListener() {

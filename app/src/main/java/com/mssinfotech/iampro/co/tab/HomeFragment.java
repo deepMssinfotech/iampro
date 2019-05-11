@@ -33,6 +33,7 @@ import com.android.volley.toolbox.Volley;
 import com.mssinfotech.iampro.co.BuildConfig;
 import com.mssinfotech.iampro.co.LoadingActivity;
 import com.mssinfotech.iampro.co.R;
+import com.mssinfotech.iampro.co.SearchedActivity;
 import com.mssinfotech.iampro.co.WelcomeActivity;
 import com.mssinfotech.iampro.co.adapter.HomeAdapter;
 import com.mssinfotech.iampro.co.adapter.RecyclerViewAdapter;
@@ -491,6 +492,7 @@ public class HomeFragment extends Fragment implements UserDataAdapter.ItemListen
                                 int isliked=student.getInt("like_unlike");
                                 int comments=student.getInt("comments");
 
+                                 String rating=student.optString("rating");
 
                                 JSONObject userDetail=student.optJSONObject("user_detail");
 
@@ -504,7 +506,8 @@ public class HomeFragment extends Fragment implements UserDataAdapter.ItemListen
                                 //Toast.makeText(getContext(),"rrrresponse_enterrr:",Toast.LENGTH_LONG).show();
 
                                 //singleItem.add(new SingleItemModel(name,image,udate));
-                                singleItem.add(new SingleItemModel(id, name,image,udate,daysago,totallike,comments,uid,fullname,avatar,isliked,"image"));
+                                //singleItem.add(new SingleItemModel(id, name,image,udate,daysago,totallike,comments,uid,fullname,avatar,isliked,"image"));
+                                singleItem.add(new SingleItemModel(id, name,image,udate,daysago,totallike,comments,uid,fullname,avatar,isliked,rating,"image"));
                             }
                             Log.d("bdm",singleItem.toString());
                             dm.setAllItemsInSection(singleItem);
@@ -526,11 +529,11 @@ public class HomeFragment extends Fragment implements UserDataAdapter.ItemListen
 
                             my_recycler_view.setAdapter(adapterr);
                             int numberOfColumns = 2;
-                            GridLayoutManager manager = new GridLayoutManager(getContext(), 2, GridLayoutManager.VERTICAL, false);
+                            GridLayoutManager manager = new GridLayoutManager(getContext(), 2, GridLayoutManager.HORIZONTAL, false);
                             my_recycler_view.setLayoutManager(manager);
 
-                            GridLayoutManager recycler_view_list = new GridLayoutManager(getContext(), 2, GridLayoutManager.VERTICAL, false);
-                            my_recycler_view.setLayoutManager(manager);
+                            /*GridLayoutManager recycler_view_list = new GridLayoutManager(getContext(), 2, GridLayoutManager.HORIZONTAL, false);
+                            my_recycler_view.setLayoutManager(manager); */
 
                             //adapter.notifyDataSetChanged();
                           //recycler_view_list
@@ -595,7 +598,7 @@ public class HomeFragment extends Fragment implements UserDataAdapter.ItemListen
                                 String daysago=student.optString("ago");
                                 int totallike=student.getInt("totallike");
                                 int comments=student.getInt("comments");
-
+                                  String rating=student.optString("rating");
                                 JSONObject userDetail=student.optJSONObject("user_detail");
 
                                 int uid=userDetail.getInt("id");
@@ -607,7 +610,8 @@ public class HomeFragment extends Fragment implements UserDataAdapter.ItemListen
                                 //SectionDataModel dm = new SectionDataModel();
                                 //dm.setHeaderTitle("Section " + i);
                                 //Toast.makeText(getContext(),"rrrresponse_enterrr:",Toast.LENGTH_LONG).show();
-                                singleItem.add(new SingleItemModel(id,name,image,udate,daysago,totallike,comments,uid,fullname,avatar,isliked,"video"));
+                                //singleItem.add(new SingleItemModel(id,name,image,udate,daysago,totallike,comments,uid,fullname,avatar,isliked,"video"));
+                                singleItem.add(new SingleItemModel(id,name,image,udate,daysago,totallike,comments,uid,fullname,avatar,isliked,rating,"video"));
 
                             }
                             Log.d("bdm",singleItem.toString());
@@ -625,7 +629,7 @@ public class HomeFragment extends Fragment implements UserDataAdapter.ItemListen
                             my_recycler_view.setAdapter(adapterr);
 
                             //getUser();
-                            getProduct();
+                                   getProduct();
                         }
                         catch (JSONException e){
                             e.printStackTrace();
@@ -770,10 +774,11 @@ public class HomeFragment extends Fragment implements UserDataAdapter.ItemListen
                                 int uid=userDetail.getInt("id");
                                 int id=student.getInt("id");
                                 int isliked=student.getInt("like_unlike");
+                                String rating=student.optString("rating");
                                 String fullname=userDetail.optString("fullname");
                                 String avatar=Config.AVATAR_URL+"250/250/"+userDetail.getString("avatar");
 
-                                singleItem.add(new SingleItemModel(id,name,image,udate,daysago,totallike,comments,uid,fullname,avatar,isliked,"product"));
+                                singleItem.add(new SingleItemModel(id,name,image,udate,daysago,totallike,comments,uid,fullname,avatar,isliked,rating,"product"));
 
                             }
                             Log.d("bdm",singleItem.toString());
@@ -847,6 +852,7 @@ public class HomeFragment extends Fragment implements UserDataAdapter.ItemListen
                                 //Toast.makeText(getContext(),"rrrresponse_enterrr:",Toast.LENGTH_LONG).show();
                                 String daysago=student.optString("ago");
                                 int totallike=student.getInt("totallike");
+                                String rating=student.optString("rating");
                                 int comments=student.getInt("comments");
                                 JSONObject userDetail=student.optJSONObject("user_detail");
                                 int uid=userDetail.optInt("id");
@@ -854,7 +860,7 @@ public class HomeFragment extends Fragment implements UserDataAdapter.ItemListen
                                 String fullname=userDetail.optString("fullname");
                                 String avatar=Config.AVATAR_URL+"250/250/"+userDetail.optString("avatar");
                                 int isliked=student.getInt("like_unlike");
-                                singleItem.add(new SingleItemModel(id, name,image,udate,daysago,totallike,comments,uid,fullname,avatar,isliked,"provide"));
+                                singleItem.add(new SingleItemModel(id,name,image,udate,daysago,totallike,comments,uid,fullname,avatar,isliked,rating,"provide"));
 
 
                             }
@@ -931,13 +937,14 @@ public class HomeFragment extends Fragment implements UserDataAdapter.ItemListen
                                 String daysago=student.optString("ago");
                                 int totallike=student.getInt("totallike");
                                 int comments=student.getInt("comments");
+                                String rating=student.optString("rating");
                                 JSONObject userDetail=student.optJSONObject("user_detail");
                                 int uid=userDetail.optInt("id");
                                 int id=student.getInt("id");
                                 String fullname=userDetail.optString("fullname");
                                 String avatar=Config.AVATAR_URL+"250/250/"+userDetail.optString("avatar");
                                 int isliked=student.getInt("like_unlike");
-                                singleItem.add(new SingleItemModel(id, name,image,udate,daysago,totallike,comments,uid,fullname,avatar,isliked,"demand"));
+                                singleItem.add(new SingleItemModel(id, name,image,udate,daysago,totallike,comments,uid,fullname,avatar,isliked,rating,"demand"));
 
 
                             }

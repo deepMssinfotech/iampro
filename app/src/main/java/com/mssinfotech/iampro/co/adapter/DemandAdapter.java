@@ -94,7 +94,8 @@ public class DemandAdapter extends RecyclerView.Adapter<DemandAdapter.ViewHolder
             tv_pprice = v.findViewById(R.id.tv_pprice);
 
             ratingBar = v.findViewById(R.id.ratingBar);
-
+              likeButton=v.findViewById(R.id.likeButton);
+               favButton=v.findViewById(R.id.favButton);
             uname = v.findViewById(R.id.uname);
             userImage = v.findViewById(R.id.user_image);
 
@@ -147,7 +148,14 @@ public class DemandAdapter extends RecyclerView.Adapter<DemandAdapter.ViewHolder
                 tv_pprice.setVisibility(View.VISIBLE);
                // tv_pprice.setText(String.valueOf(item.getpCost()));
             }
-
+            if (PrefManager.isLogin(mContext)){
+                likeButton.setEnabled(true);
+                favButton.setEnabled(true);
+            }
+            else {
+                likeButton.setEnabled(false);
+                favButton.setEnabled(false);
+            }
             tv_daysago.setVisibility(View.VISIBLE);
             tv_daysago.setText(item.getDaysago());
             uname.setText(item.getFullname());

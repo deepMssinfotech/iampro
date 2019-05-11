@@ -231,11 +231,25 @@ public class ProvideAdapter extends RecyclerView.Adapter<ProvideAdapter.ViewHold
                 likeButton.setEnabled(false);
             }
             if ((item.getIsliked()) == 1) {
-                likeButton.setLiked(true);
+                 likeButton.setLiked(true);
                 tv_tlike.setTextColor(Color.RED);
             } else {
-                likeButton.setLiked(false);
+                 likeButton.setLiked(false);
                 tv_tlike.setTextColor(Color.BLACK);
+            }
+            if (PrefManager.isLogin(mContext)){
+                 likeButton.setEnabled(true);
+            }
+            else {
+                 likeButton.setEnabled(false);
+            }
+            if (PrefManager.isLogin(mContext)){
+                 likeButton.setEnabled(true);
+                 favButton.setEnabled(true);
+            }
+            else {
+                 likeButton.setEnabled(false);
+                 favButton.setEnabled(false);
             }
             likeButton.setOnLikeListener(new OnLikeListener() {
                 @Override
