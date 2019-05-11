@@ -88,7 +88,7 @@ public class AllFeedAdapter extends RecyclerView.Adapter<AllFeedAdapter.ViewHold
         android.support.v7.widget.AppCompatImageView videoImage;
         FrameLayout videoLayout;
         SliderLayout imageSlider;
-        private View currentFocusedLayout, oldFocusedLayout;
+        private View currentFocusedLayout,oldFocusedLayout;
         int id;
 
         //int uid;

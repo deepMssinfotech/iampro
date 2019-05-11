@@ -140,11 +140,11 @@ public class SectionImageVideoAdapter extends RecyclerView.Adapter<SectionImageV
 
         if(PrefManager.isLogin(mContext)){
             holder.likeButton.setEnabled(true);
-            holder.favButton.setEnabled(true);
+            //holder.favButton.setEnabled(true);
         }
         else {
             holder.likeButton.setEnabled(false);
-            holder.favButton.setEnabled(false);
+            //holder.favButton.setEnabled(false);
         }
 
         //if(itemsList.get(i).getMore().equalsIgnoreCase("loadmore")){
@@ -168,6 +168,14 @@ public class SectionImageVideoAdapter extends RecyclerView.Adapter<SectionImageV
             //holder.btnMore.setVisibility(View.GONE);
             holder.iv_delete.setVisibility(View.GONE);
             holder.iv_edit.setVisibility(View.GONE);
+             if (type.equalsIgnoreCase("provide") || type.equalsIgnoreCase("demand")){
+                  if (PrefManager.isLogin(mContext)){
+                      holder.favButton.setEnabled(true);
+                  }
+                  else{
+                      holder.favButton.setEnabled(true);
+                  }
+             }
         }
         holder.tv_totallike.setText(String.valueOf(singleItem .getTotallike()));
         //holder.likeButton.setUnlikeDrawableRes(R.drawable.like);
