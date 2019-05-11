@@ -4,20 +4,24 @@ package com.mssinfotech.iampro.co.adapter;
  * Created by mssinfotech on 15/01/19.
  */
 import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.PopupMenu;
 import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -45,6 +49,7 @@ import com.mssinfotech.iampro.co.model.MyImageModel;
 import com.mssinfotech.iampro.co.product.ProductDetail;
 import com.mssinfotech.iampro.co.provide.ProvideDetailActivity;
 import com.mssinfotech.iampro.co.user.AddImageActivity;
+import com.mssinfotech.iampro.co.user.AddProductActivity;
 import com.mssinfotech.iampro.co.user.ProfileActivity;
 import com.mssinfotech.iampro.co.utils.PrefManager;
 
@@ -117,6 +122,8 @@ public class SectionImageVideoAdapter extends RecyclerView.Adapter<SectionImageV
         final String pid=singleItem.getId();
         final String uidv=itemsList.get(i).getUid();
 
+
+
         holder. category.setText(itemsList.get(i).getName());
 
         int my_uid=Integer.parseInt(uidv);
@@ -166,8 +173,7 @@ public class SectionImageVideoAdapter extends RecyclerView.Adapter<SectionImageV
         holder.tv_comments.setText(String.valueOf(singleItem .getComments()));
         if(itemsList.get(i).getMore()!=null && itemsList.get(i).getMore().equalsIgnoreCase("loadmore")){
             //holder.btnMore.setVisibility(View.GONE);
-            holder.iv_delete.setVisibility(View.GONE);
-            holder.iv_edit.setVisibility(View.GONE);
+            holder.buttonViewOption.setVisibility(View.GONE);
              if (type.equalsIgnoreCase("provide") || type.equalsIgnoreCase("demand")){
                   if (PrefManager.isLogin(mContext)){
                       holder.favButton.setEnabled(true);
@@ -375,8 +381,63 @@ public class SectionImageVideoAdapter extends RecyclerView.Adapter<SectionImageV
                     .apply(Config.options_avatar)
                     .into(holder.user_image);
         }
+        holder.buttonViewOption.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                final Dialog myDialog = new Dialog(mContext);
+                //creating a popup menu
+                PopupMenu popup = new PopupMenu(mContext, holder.buttonViewOption);
+                //inflating menu from xml resource
+                popup.inflate(R.menu.iv_menu);
+                //adding click listener
+                popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                    @Override
+                    public boolean onMenuItemClick(MenuItem item) {
 
-        holder.iv_delete.setOnClickListener(new View.OnClickListener() {
+                        switch (item.getItemId()) {
+                            case R.id.menu_edit:
+                                Intent intent=new Intent(mContext, AddProductActivity.class);
+                                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                intent.putExtra("id",String.valueOf(itemsList.get(position).getId()));
+                                mContext.startActivity(intent);
+                                break;
+                            case R.id.menu_delete:
+                                myDialog.setContentView(R.layout.confirm_popup);
+                                TextView yes = myDialog.findViewById(R.id.yes);
+                                TextView no = myDialog.findViewById(R.id.no);
+                                TextView heading = myDialog.findViewById(R.id.heading);
+                                TextView detail = myDialog.findViewById(R.id.detail);
+                                heading.setText("Delete");
+                                detail.setText("Are you sure you want to remove");
+                                yes.setOnClickListener(new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View v) {
+                                        deleteImage(itemsList.get(position).getId());
+                                        //Toast.makeText(mContext,"deleted"+valc,Toast.LENGTH_LONG).show();
+                                        //if (valc.equalsIgnoreCase("success")){
+                                        itemsList.remove(position);
+                                        notifyDataSetChanged();myDialog.dismiss();
+                                    }
+                                });
+                                no.setOnClickListener(new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View v) {
+                                        myDialog.dismiss();
+                                    }
+                                });
+                                myDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+                                myDialog.show();
+                                //handle menu1 click
+                                break;
+                        }
+                        return false;
+                    }
+                });
+                //displaying the popup
+                popup.show();
+            }
+        });
+        /*holder.iv_delete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 AlertDialog.Builder alertDialog = new AlertDialog.Builder(mContext);
@@ -411,7 +472,7 @@ public class SectionImageVideoAdapter extends RecyclerView.Adapter<SectionImageV
                 intent.putExtra("id",itemsList.get(i).getId());
                 mContext.startActivity(intent);
             }
-        });
+        });*/
         holder.ratingBar.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
 
             @Override
@@ -433,22 +494,18 @@ public class SectionImageVideoAdapter extends RecyclerView.Adapter<SectionImageV
       //  }
 
         if(!PrefManager.getLoginDetail(mContext,"id").equalsIgnoreCase(itemsList.get(i).getUid().toString())){
-            holder.iv_delete.setVisibility(View.GONE);
-            holder.iv_edit.setVisibility(View.GONE);
+            holder.buttonViewOption.setVisibility(View.GONE);
         }
         else{
-            holder.iv_delete.setVisibility(View.VISIBLE);
-            holder.iv_edit.setVisibility(View.VISIBLE);
+            holder.buttonViewOption.setVisibility(View.VISIBLE);
         }
         if (itemsList.get(i).getUid().equalsIgnoreCase(PrefManager.getLoginDetail(mContext,"id")) && type.equalsIgnoreCase("Product")){
-            holder.iv_delete.setVisibility(View.VISIBLE);
-            holder.iv_edit.setVisibility(View.VISIBLE);
+            holder.buttonViewOption.setVisibility(View.VISIBLE);
         }
         else{
             if (type.equalsIgnoreCase("Product")) {
                 holder.iv_buy.setVisibility(View.VISIBLE);
-                holder.iv_delete.setVisibility(View.GONE);
-                holder.iv_edit.setVisibility(View.GONE);
+                holder.buttonViewOption.setVisibility(View.GONE);
             }
         }
         if (type.equalsIgnoreCase("Product")) {
@@ -468,14 +525,12 @@ public class SectionImageVideoAdapter extends RecyclerView.Adapter<SectionImageV
             });
         }
         if (itemsList.get(i).getUid().equalsIgnoreCase(PrefManager.getLoginDetail(mContext,"id")) && (type.equalsIgnoreCase("Provide") || type.equalsIgnoreCase("Demand"))) {
-            holder.iv_delete.setVisibility(View.VISIBLE);
-            holder.iv_edit.setVisibility(View.VISIBLE);
+            holder.buttonViewOption.setVisibility(View.VISIBLE);
         }
         else{
             if (type.equalsIgnoreCase("Provide") || type.equalsIgnoreCase("Demand")) {
                 holder.favButton.setVisibility(View.VISIBLE);
-                holder.iv_delete.setVisibility(View.INVISIBLE);
-                holder.iv_edit.setVisibility(View.INVISIBLE);
+                holder.buttonViewOption.setVisibility(View.INVISIBLE);
             }
         }
           if (type.equalsIgnoreCase("Provide")){
@@ -547,7 +602,7 @@ public class SectionImageVideoAdapter extends RecyclerView.Adapter<SectionImageV
         //this.btnMore= view.findViewById(R.id.btnMore);
 
         //orginal
-        ImageView  imageView,imageView_user,imageView_icon,iv_comments,image,iv_favourite,iv_delete,iv_edit;
+        ImageView  imageView,imageView_user,imageView_icon,iv_comments,image,iv_favourite,buttonViewOption;
         VideoView videoView;
         TextView tv_name,category,udate,tv_comments,tv_totallike,detail_name,tv_purchaseprice,tv_sellingprice;
         RatingBar ratingBar;
@@ -568,6 +623,7 @@ public class SectionImageVideoAdapter extends RecyclerView.Adapter<SectionImageV
             //orgg
             imageView=view.findViewById(R.id.imageView);
 
+            buttonViewOption = view.findViewById(R.id.textViewOptions);
 
             tv_name=view.findViewById(R.id.tv_name);
             imageView_user=view.findViewById(R.id.imageView_user);
@@ -598,8 +654,6 @@ public class SectionImageVideoAdapter extends RecyclerView.Adapter<SectionImageV
             iv_comments=view.findViewById(R.id.iv_comments);
             iv_favourite=view.findViewById(R.id.iv_favourite);
 
-            iv_edit=view.findViewById(R.id.iv_edit);
-            iv_delete=view.findViewById(R.id.iv_delete);
             user_image=view.findViewById(R.id.user_image);
             image=view.findViewById(R.id.imageView);
             videoView=view.findViewById(R.id.videoView);

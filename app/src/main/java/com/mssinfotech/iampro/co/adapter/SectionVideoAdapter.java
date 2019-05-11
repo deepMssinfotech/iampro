@@ -3,20 +3,24 @@ package com.mssinfotech.iampro.co.adapter;
  * Created by mssinfotech on 15/01/19.
  */
 import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.PopupMenu;
 import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -45,6 +49,7 @@ import com.mssinfotech.iampro.co.model.MyImageModel;
 import com.mssinfotech.iampro.co.model.SingleItemModel;
 import com.mssinfotech.iampro.co.product.ProductDetail;
 import com.mssinfotech.iampro.co.provide.ProvideDetailActivity;
+import com.mssinfotech.iampro.co.user.AddProductActivity;
 import com.mssinfotech.iampro.co.user.AddProvideActivity;
 import com.mssinfotech.iampro.co.user.AddVideoActivity;
 import com.mssinfotech.iampro.co.user.MyProvideActivity;
@@ -153,8 +158,7 @@ public class SectionVideoAdapter extends RecyclerView.Adapter<SectionVideoAdapte
         holder.tv_name.setText(singleItem.getName());
         if(itemsList.get(i).getMore()!=null && itemsList.get(i).getMore().equalsIgnoreCase("loadmore")){
             //holder.btnMore.setVisibility(View.GONE);
-            holder.iv_delete.setVisibility(View.GONE);
-            holder.iv_edit.setVisibility(View.GONE);
+            holder.buttonViewOption.setVisibility(View.GONE);
             holder.user_image.setVisibility(View.VISIBLE);
             Glide.with(mContext)
                     .load(Config.AVATAR_URL+singleItem.getAvatar())
@@ -230,7 +234,64 @@ public class SectionVideoAdapter extends RecyclerView.Adapter<SectionVideoAdapte
                 .load(Config.V_URL+singleItem.getV_image())
                 .apply(Config.options_video)
                 .into(holder.videoView);
+        holder.buttonViewOption.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                final Dialog myDialog = new Dialog(mContext);
+                //creating a popup menu
+                PopupMenu popup = new PopupMenu(mContext, holder.buttonViewOption);
+                //inflating menu from xml resource
+                popup.inflate(R.menu.iv_menu);
+                //adding click listener
+                popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                    @Override
+                    public boolean onMenuItemClick(MenuItem item) {
 
+                        switch (item.getItemId()) {
+                            case R.id.menu_edit:
+                                Intent intent=new Intent(mContext, AddProductActivity.class);
+                                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                intent.putExtra("id",String.valueOf(itemsList.get(i).getId()));
+                                mContext.startActivity(intent);
+                                break;
+                            case R.id.menu_delete:
+                                myDialog.setContentView(R.layout.confirm_popup);
+                                TextView yes = myDialog.findViewById(R.id.yes);
+                                TextView no = myDialog.findViewById(R.id.no);
+                                TextView heading = myDialog.findViewById(R.id.heading);
+                                TextView detail = myDialog.findViewById(R.id.detail);
+                                heading.setText("Delete");
+                                detail.setText("Are you sure you want to remove");
+                                yes.setOnClickListener(new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View v) {
+                                        deleteVideo(itemsList.get(i).getId());
+                                        //Toast.makeText(mContext,"deleted",Toast.LENGTH_LONG).show();
+
+                                        itemsList.remove(i);
+                                        notifyDataSetChanged();
+                                        myDialog.dismiss();
+                                    }
+                                });
+                                no.setOnClickListener(new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View v) {
+                                        myDialog.dismiss();
+                                    }
+                                });
+                                myDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+                                myDialog.show();
+                                //handle menu1 click
+                                break;
+                        }
+                        return false;
+                    }
+                });
+                //displaying the popup
+                popup.show();
+            }
+        });
+    /*
         holder.iv_delete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -269,6 +330,7 @@ public class SectionVideoAdapter extends RecyclerView.Adapter<SectionVideoAdapte
                 mContext.startActivity(intent);
             }
         });
+        */
          holder.ll_comment.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -289,12 +351,10 @@ public class SectionVideoAdapter extends RecyclerView.Adapter<SectionVideoAdapte
              }
          });
         if(!PrefManager.getLoginDetail(mContext,"id").equalsIgnoreCase(itemsList.get(i).getUid().toString())){
-            holder.iv_delete.setVisibility(View.GONE);
-            holder.iv_edit.setVisibility(View.GONE);
+            holder.buttonViewOption.setVisibility(View.GONE);
         }
         else{
-            holder.iv_delete.setVisibility(View.VISIBLE);
-            holder.iv_edit.setVisibility(View.VISIBLE);
+            holder.buttonViewOption.setVisibility(View.VISIBLE);
         }
         if(itemsList.get(i).getMore()==null) {
             Glide.with(mContext)
@@ -315,7 +375,7 @@ public class SectionVideoAdapter extends RecyclerView.Adapter<SectionVideoAdapte
         protected LinearLayout likelayout;
         //this.btnMore= view.findViewById(R.id.btnMore);
         //orginal
-        ImageView  imageView_user,imageView_icon,iv_comments,image,iv_favourite,videoView,iv_delete,iv_edit,imageView;
+        ImageView  imageView_user,imageView_icon,iv_comments,image,iv_favourite,videoView,imageView,buttonViewOption;
         //VideoView videoView;
         TextView tv_name,category,udate,tv_comments,tv_totallike,detail_name;
         RatingBar ratingBar;
@@ -343,15 +403,13 @@ public class SectionVideoAdapter extends RecyclerView.Adapter<SectionVideoAdapte
             detail_name=view.findViewById(R.id.detail_name); */
 
             videoView=view.findViewById(R.id.videoView);
+            buttonViewOption = view.findViewById(R.id.textViewOptions);
             tv_name=view.findViewById(R.id.tv_name);
             imageView_user=view.findViewById(R.id.imageView_user);
             imageView_icon=view.findViewById(R.id.imageView_icon);
             ll_comment=view.findViewById(R.id.ll_comment);
             iv_comments=view.findViewById(R.id.iv_comments);
             iv_favourite=view.findViewById(R.id.iv_favourite);
-
-            iv_delete=view.findViewById(R.id.iv_delete);
-            iv_edit=view.findViewById(R.id.iv_edit);
 
             image=view.findViewById(R.id.imageView);
            // videoView=view.findViewById(R.id.videoView);
