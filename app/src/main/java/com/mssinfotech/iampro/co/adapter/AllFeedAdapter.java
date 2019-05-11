@@ -413,7 +413,7 @@ public class AllFeedAdapter extends RecyclerView.Adapter<AllFeedAdapter.ViewHold
                 public void onSliderClick(SliderView sliderView) {
                     Intent intent = new Intent(mContext, ProductDetail.class);
                     //intent.putExtra("id",String.valueOf(item.getPid()));
-                    intent.putExtra("pid", String.valueOf(mValues.get(position).getId()));
+                    intent.putExtra("pid", String.valueOf(mValues.get(position).getShareId()));
                     intent.putExtra("uid", String.valueOf(mValues.get(position).getUid()));
                     mContext.startActivity(intent);
                 }
@@ -435,7 +435,7 @@ public class AllFeedAdapter extends RecyclerView.Adapter<AllFeedAdapter.ViewHold
                         public void onSliderClick(SliderView sliderView) {
                             Intent intent = new Intent(mContext, ProductDetail.class);
                             //intent.putExtra("id",String.valueOf(item.getPid()));
-                            intent.putExtra("pid", String.valueOf(mValues.get(position).getId()));
+                            intent.putExtra("pid", String.valueOf(mValues.get(position).getShareId()));
                             intent.putExtra("uid", String.valueOf(mValues.get(position).getUid()));
                             mContext.startActivity(intent);
                         }
@@ -466,7 +466,7 @@ public class AllFeedAdapter extends RecyclerView.Adapter<AllFeedAdapter.ViewHold
                 public void onSliderClick(SliderView sliderView) {
                     Intent intent = new Intent(mContext, ProvideDetailActivity.class);
                     //intent.putExtra("id",String.valueOf(item.getPid()));
-                    intent.putExtra("pid", String.valueOf(mValues.get(position).getId()));
+                    intent.putExtra("pid", String.valueOf(mValues.get(position).getShareId()));
                     intent.putExtra("uid", String.valueOf(mValues.get(position).getUid()));
                     mContext.startActivity(intent);
                 }
@@ -487,7 +487,7 @@ public class AllFeedAdapter extends RecyclerView.Adapter<AllFeedAdapter.ViewHold
                         public void onSliderClick(SliderView sliderView) {
                             Intent intent = new Intent(mContext, ProvideDetailActivity.class);
                             //intent.putExtra("id",String.valueOf(item.getPid()));
-                            intent.putExtra("pid", String.valueOf(mValues.get(position).getId()));
+                            intent.putExtra("pid", String.valueOf(mValues.get(position).getShareId()));
                             intent.putExtra("uid", String.valueOf(mValues.get(position).getUid()));
                             mContext.startActivity(intent);
                         }
@@ -519,7 +519,7 @@ public class AllFeedAdapter extends RecyclerView.Adapter<AllFeedAdapter.ViewHold
                 public void onSliderClick(SliderView sliderView) {
                     Intent intent = new Intent(mContext, DemandDetailActivity.class);
                     //intent.putExtra("id",String.valueOf(item.getPid()));
-                    intent.putExtra("pid", String.valueOf(mValues.get(position).getId()));
+                    intent.putExtra("pid", String.valueOf(mValues.get(position).getShareId()));
                     intent.putExtra("uid", String.valueOf(mValues.get(position).getUid()));
                     mContext.startActivity(intent);
                 }
@@ -540,7 +540,7 @@ public class AllFeedAdapter extends RecyclerView.Adapter<AllFeedAdapter.ViewHold
                         public void onSliderClick(SliderView sliderView) {
                             Intent intent = new Intent(mContext, DemandDetailActivity.class);
                             //intent.putExtra("id",String.valueOf(item.getPid()));
-                            intent.putExtra("pid", String.valueOf(mValues.get(position).getId()));
+                            intent.putExtra("pid", String.valueOf(mValues.get(position).getShareId()));
                             intent.putExtra("uid", String.valueOf(mValues.get(position).getUid()));
                             mContext.startActivity(intent);
                         }

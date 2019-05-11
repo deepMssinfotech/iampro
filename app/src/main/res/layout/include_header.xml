@@ -40,7 +40,6 @@
             android:drawableLeft="@drawable/search_ioc"
             android:drawablePadding="5dp"
             android:hint="Search"
-            android:inputType="text"
             android:padding="5dp" />
     </LinearLayout>
 </merge>
