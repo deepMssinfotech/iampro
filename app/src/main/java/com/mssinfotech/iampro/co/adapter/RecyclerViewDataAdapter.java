@@ -79,8 +79,10 @@ public class RecyclerViewDataAdapter extends RecyclerView.Adapter<RecyclerViewDa
          else {
              SectionListDataAdapter itemListDataAdapter = new SectionListDataAdapter(mContext, singleSectionItems,sectionName);
              itemRowHolder.recycler_view_list.setHasFixedSize(true);
-             itemRowHolder.recycler_view_list.setLayoutManager(new LinearLayoutManager(mContext, LinearLayoutManager.HORIZONTAL, false));
-             itemRowHolder.recycler_view_list.setAdapter(itemListDataAdapter);
+             //itemRowHolder.recycler_view_list.setLayoutManager(new LinearLayoutManager(mContext, LinearLayoutManager.HORIZONTAL, false));
+            GridLayoutManager manager = new GridLayoutManager(mContext, 2, GridLayoutManager.VERTICAL, false);
+            itemRowHolder.recycler_view_list.setLayoutManager(manager);
+            itemRowHolder.recycler_view_list.setAdapter(itemListDataAdapter);
         }
         itemRowHolder.btnMore.setEnabled(false);
         itemRowHolder.btnMore.setOnClickListener(new View.OnClickListener() {

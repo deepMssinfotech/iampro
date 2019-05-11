@@ -57,6 +57,7 @@ public class CartActivity extends Fragment implements CartItemAdapter.ItemListen
     private RecyclerView recyclerView;
     private ArrayList<CartItem> CartItemList;
     View view;
+    TextView tv_tPrice;
     //ProgressDialog loading = ProgressDialog.show(getContext(),"Processing...","Please wait...",false,false);
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup parent, Bundle savedInstanceState) {
@@ -72,6 +73,7 @@ public class CartActivity extends Fragment implements CartItemAdapter.ItemListen
         CartItemList = new ArrayList<CartItem>();
         bClear=view.findViewById(R.id.bClear);
         bShop=view.findViewById(R.id.bCheckout);
+        tv_tPrice=view.findViewById(R.id.tv_tPrice);
         prepareCart();
         bClear.setOnClickListener(this);
         bShop.setOnClickListener(this);
@@ -151,6 +153,7 @@ public class CartActivity extends Fragment implements CartItemAdapter.ItemListen
             }else{
                 ImageView no_rodr = view.findViewById(R.id.no_record_found);
                 no_rodr.setVisibility(View.VISIBLE);
+                   tvTotalPrice.setText("");
             }
             // notify data changes to list adapater
 

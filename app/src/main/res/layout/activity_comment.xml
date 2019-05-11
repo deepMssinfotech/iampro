@@ -274,6 +274,7 @@
             android:layout_height="1dp"
             android:background="@color/trans_black"></View>
     <LinearLayout
+        android:id="@+id/ll_sendChats"
         android:orientation="horizontal"
         android:layout_gravity="bottom"
         android:gravity="bottom"

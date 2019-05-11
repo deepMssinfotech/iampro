@@ -12,6 +12,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.MediaController;
 import android.widget.RatingBar;
 import android.widget.TextView;
@@ -76,7 +77,7 @@ public class CommentActivity extends AppCompatActivity implements CommentAdapter
      ImageView no_rodr;
     CommentAdapter comment_adapter;
     LikeButton likeButton;
-
+     LinearLayout ll_sendChats;
     @Override
     public void onBackPressed() {
         int count = getSupportFragmentManager().getBackStackEntryCount();
@@ -133,6 +134,13 @@ public class CommentActivity extends AppCompatActivity implements CommentAdapter
         }else{
             getDetail();
             allComment(data_type);
+        }
+        ll_sendChats=findViewById(R.id.ll_sendChats);
+        if (PrefManager.isLogin(CommentActivity.this)){
+            ll_sendChats.setVisibility(View.VISIBLE);
+        }
+        else{
+            ll_sendChats.setVisibility(View.GONE);
         }
     }
     @Override

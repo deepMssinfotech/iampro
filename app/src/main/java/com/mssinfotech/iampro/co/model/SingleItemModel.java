@@ -17,6 +17,16 @@ public class SingleItemModel {
     private int totallike,isliked;
     private int uid,id;
 
+    public String getRating() {
+        return rating;
+    }
+
+    public void setRating(String rating) {
+        this.rating = rating;
+    }
+
+    private String rating;
+
     public int getUid() {
         return uid;
     }
@@ -143,7 +153,21 @@ public class SingleItemModel {
        this.type = type;
        this.id = id;
    }
-
+    public SingleItemModel(int id, String name, String image,String udate,String daysago,int totallike,int comments,int uid,String fullname,String avatar,int isliked,String ratingv, String type) {
+        this.name = name;
+        this.image = image;
+        this.udate = udate;
+        this.daysago = daysago;
+        this.totallike = totallike;
+        this.comments = comments;
+        this.uid = uid;
+        this.isliked = isliked;
+        this.fullname = fullname;
+        this.avatar = avatar;
+        this.rating=ratingv;
+        this.type = type;
+        this.id = id;
+    }
     public String getUrl() {
         return url;
     }

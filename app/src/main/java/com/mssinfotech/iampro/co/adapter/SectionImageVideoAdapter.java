@@ -130,6 +130,22 @@ public class SectionImageVideoAdapter extends RecyclerView.Adapter<SectionImageV
             holder.likeButton.setLiked(false);
             holder.tv_totallike.setTextColor(Color.BLACK);
         }
+        if(PrefManager.isLogin(mContext)) {
+            holder.likeButton.setEnabled(true);
+        }
+        else {
+            holder.likeButton.setEnabled(false);
+            //holder.ratingBar.setEnabled(false);
+        }
+
+        if(PrefManager.isLogin(mContext)){
+            holder.likeButton.setEnabled(true);
+            holder.favButton.setEnabled(true);
+        }
+        else {
+            holder.likeButton.setEnabled(false);
+            holder.favButton.setEnabled(false);
+        }
 
         //if(itemsList.get(i).getMore().equalsIgnoreCase("loadmore")){
             //holder.user_image.setVisibility(View.VISIBLE);
@@ -431,9 +447,15 @@ public class SectionImageVideoAdapter extends RecyclerView.Adapter<SectionImageV
             holder.iv_buy.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    function.addtocart(mContext, itemsList.get(i).getId(), "1", String.valueOf(itemsList.get(i).getScost()));
-                    CartActivity fragment = new CartActivity();
-                    function.loadFragment(mContext, fragment, null);
+                     if (!PrefManager.isLogin(mContext)){
+                          Toast.makeText(mContext,""+"First Login and try again...",Toast.LENGTH_LONG).show();
+                            return;
+                     }
+                     else {
+                         function.addtocart(mContext, itemsList.get(i).getId(), "1", String.valueOf(itemsList.get(i).getScost()));
+                         CartActivity fragment = new CartActivity();
+                         function.loadFragment(mContext, fragment, null);
+                     }
                 }
             });
         }
@@ -453,6 +475,14 @@ public class SectionImageVideoAdapter extends RecyclerView.Adapter<SectionImageV
                   holder.favButton.setLiked(true);
               } else {
                   holder.favButton.setLiked(false);
+              }
+              if (PrefManager.isLogin(mContext)){
+                    holder.likeButton.setEnabled(true);
+                      holder.favButton.setEnabled(true);
+              }
+              else {
+                       holder.likeButton.setEnabled(false);
+                         holder.favButton.setEnabled(false);
               }
               holder.favButton.setOnLikeListener(new OnLikeListener() {
                   @Override
