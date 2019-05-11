@@ -407,7 +407,9 @@ public class ProfileActivity extends Fragment implements AllFeedAdapter.ItemList
                                 for (int i = 0; i < jsonArray.length(); i++) {
                                     JSONObject jsonObject = jsonArray.getJSONObject(i);
                                     String image = jsonObject.getString("first_image");
-                                    String detail = jsonObject.getString("detail");
+                                     JSONObject detail_obj = jsonObject.optJSONObject("detail");
+                                    String detail = detail_obj.getString("name");
+                                    //String detail = detail_obj.getString("name");
 
                                     String fimage_path = Config.URL_ROOT + "uploads/avatar/150/150/'" + image;
                                     int id = jsonObject.getInt("id");

@@ -157,16 +157,20 @@ public class AllFeedAdapter extends RecyclerView.Adapter<AllFeedAdapter.ViewHold
                         //intent.putExtra("id",String.valueOf(item.getPid()));
                         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                         intent.putExtra("pid", String.valueOf(animalsArray[0]));
+                        //intent.putExtra("pid", String.valueOf(animalsArray[0]));
+                        intent.putExtra("id", String.valueOf(animalsArray[0]));
                         intent.putExtra("uid", String.valueOf(uid));
                         mContext.startActivity(intent);
                     } else if (type.equalsIgnoreCase("PROVIDE")) {
                         Intent intent = new Intent(mContext, ProvideDetailActivity.class);
                         intent.putExtra("pid", String.valueOf(animalsArray[0]));
+                        intent.putExtra("id", String.valueOf(animalsArray[0]));
                         intent.putExtra("uid", String.valueOf(uid));
                         mContext.startActivity(intent);
                     } else if (type.equalsIgnoreCase("PRODUCT")) {
                         Intent intent = new Intent(mContext, ProductDetail.class);
                         intent.putExtra("pid", String.valueOf(animalsArray[0]));
+                        intent.putExtra("id", String.valueOf(animalsArray[0]));
                         intent.putExtra("uid", String.valueOf(uid));
                         mContext.startActivity(intent);
                     }
@@ -618,6 +622,7 @@ public class AllFeedAdapter extends RecyclerView.Adapter<AllFeedAdapter.ViewHold
                          Intent intent = new Intent(mContext, CommentActivity.class);
                          intent.putExtra("type", "product");
                          intent.putExtra("id", String.valueOf(sharedId[0]));
+                         intent.putExtra("pid", String.valueOf(sharedId[0]));
                          intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                          mContext.startActivity(intent);
                          // Toast.makeText(mContext,"Product"+id,Toast.LENGTH_LONG).show();
@@ -625,6 +630,7 @@ public class AllFeedAdapter extends RecyclerView.Adapter<AllFeedAdapter.ViewHold
                          Intent intent = new Intent(mContext, CommentActivity.class);
                          intent.putExtra("type", "provide");
                          intent.putExtra("id", String.valueOf(sharedId[0]));
+                         intent.putExtra("pid", String.valueOf(sharedId[0]));
                          intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                          mContext.startActivity(intent);
                          //Toast.makeText(mContext,"Provide"+id,Toast.LENGTH_LONG).show();
@@ -632,6 +638,7 @@ public class AllFeedAdapter extends RecyclerView.Adapter<AllFeedAdapter.ViewHold
                          Intent intent = new Intent(mContext, CommentActivity.class);
                          intent.putExtra("type", "demand");
                          intent.putExtra("id", String.valueOf(sharedId[0]));
+                         intent.putExtra("pid", String.valueOf(sharedId[0]));
                          intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                          mContext.startActivity(intent);
                          //Toast.makeText(mContext,"Demand"+id,Toast.LENGTH_LONG).show();

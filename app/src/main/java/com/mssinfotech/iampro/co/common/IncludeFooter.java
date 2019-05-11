@@ -23,6 +23,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.mssinfotech.iampro.co.CartActivity;
@@ -51,10 +52,7 @@ import com.mssinfotech.iampro.co.user.ProfileActivity;
 import com.mssinfotech.iampro.co.utils.PrefManager;
 
 import de.hdodenhof.circleimageview.CircleImageView;
-
-
 public class IncludeFooter  extends RelativeLayout {
-
     private LayoutInflater inflater;
     private boolean isLogin = false;
     //NavigationView navigationView;
@@ -82,7 +80,6 @@ public class IncludeFooter  extends RelativeLayout {
             String avatar = Config.AVATAR_URL + "250/250/" + PrefManager.getLoginDetail(getContext(), "img_url");
             Glide.with(getContext()).load(avatar).apply(Config.options_avatar).into((ImageView) this.findViewById(R.id.btn_menu_user));
         }
-
     }
     private OnClickListener moreOnClickListener = new OnClickListener() {
         public void onClick(View v) {
@@ -282,11 +279,18 @@ public class IncludeFooter  extends RelativeLayout {
     };
     private View.OnClickListener mycartOnClickListener = new View.OnClickListener() {
         public void onClick(View v) {
-            CartActivity fragment = new CartActivity();
-            Bundle args = new Bundle();
-            args.putString("uid",PrefManager.getLoginDetail(getContext(),"id"));
-            function.loadFragment(getContext(),fragment,args);
-            removeFragment();
+              if (PrefManager.isLogin(getContext())){
+                  //Toast.makeText(context,""+"LoggedIn...",Toast.LENGTH_LONG).show();
+                  CartActivity fragment = new CartActivity();
+                  Bundle args = new Bundle();
+                  args.putString("uid",PrefManager.getLoginDetail(getContext(),"id"));
+                  function.loadFragment(getContext(),fragment,args);
+                  removeFragment();
+              }
+              else{
+                  Toast.makeText(getContext(),""+"First Login and try again...",Toast.LENGTH_LONG).show();
+                     return;
+              }
         }
     };
     private View.OnClickListener mysellingOnClickListener = new View.OnClickListener() {
@@ -376,15 +380,21 @@ public class IncludeFooter  extends RelativeLayout {
         }
     };
     public void removeFragment(){
+        if (myDialog!=null && myDialog.isShowing())
         myDialog.dismiss();
     }
     private OnClickListener cartOnClickListener = new OnClickListener() {
         public void onClick(View v) {
-            AppCompatActivity activity = (AppCompatActivity) getContext();
-            CartActivity fragment = new CartActivity();
-            Bundle args = new Bundle();
-            args.putString("name", "mragank");
-            function.loadFragment(getContext(),fragment,args);
+            if (PrefManager.isLogin(getContext())) {
+                AppCompatActivity activity = (AppCompatActivity) getContext();
+                CartActivity fragment = new CartActivity();
+                Bundle args = new Bundle();
+                args.putString("name", "mragank");
+                function.loadFragment(getContext(), fragment, args);
+            }
+             else{
+                  Toast.makeText(getContext(),""+"First Login and try again...",Toast.LENGTH_LONG).show();
+            }
         }
     };
     private OnClickListener iamproOnClickListener = new OnClickListener() {

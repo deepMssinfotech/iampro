@@ -425,7 +425,7 @@ public class SearchedActivity extends AppCompatActivity implements UserDataAdapt
                 new com.android.volley.Response.ErrorListener(){
                     @Override
                     public void onErrorResponse(VolleyError error){
-                        Toast.makeText(getApplicationContext(), error.getMessage(), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getApplicationContext(),""+error.getMessage(), Toast.LENGTH_SHORT).show();
                         pDialog.dismiss();
                         Log.d("verror",""+error.getMessage());
                         ImageView no_rodr = findViewById(R.id.no_record_found);
@@ -591,7 +591,6 @@ public class SearchedActivity extends AppCompatActivity implements UserDataAdapt
     public void onItemClick(UserModel item) {
 
     }
-
     @Override
     public void onItemClick(MyProductModel item) {
 
