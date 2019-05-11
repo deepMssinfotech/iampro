@@ -218,7 +218,6 @@ public class MyProductAdapter extends RecyclerView.Adapter<MyProductAdapter.View
                 });
                 //displaying the popup
                 popup.show();
-
             }
         });
         int my_uid=uidv;
