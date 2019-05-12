@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.os.Handler;
+import android.support.annotation.NonNull;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.LocalBroadcastManager;
@@ -20,6 +21,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.iid.FirebaseInstanceId;
+import com.google.firebase.iid.InstanceIdResult;
+import com.google.firebase.messaging.FirebaseMessaging;
 import com.mssinfotech.iampro.co.common.CircleTransform;
 import com.mssinfotech.iampro.co.common.function;
 import com.mssinfotech.iampro.co.services.ScheduledService;
@@ -36,6 +42,8 @@ public class WelcomeActivity extends AppCompatActivity implements View.OnClickLi
     TextView username;
     FragmentManager fm;
     FragmentTransaction fragmentTransaction;
+    private BroadcastReceiver mRegistrationBroadcastReceiver;
+    private String fcmMessage,fcmUrl,androidregid;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -64,8 +72,66 @@ public class WelcomeActivity extends AppCompatActivity implements View.OnClickLi
             Log.d(Config.TAG,avatar);
             imguser.setOnClickListener(this);
         }
-        Intent i= new Intent(this, ScheduledService.class);
-        this.startService(i);
+        //Intent i= new Intent(this, ScheduledService.class);
+        //this.startService(i);
+        if (fcmMessage != null && !fcmMessage.isEmpty() && !fcmMessage.equals("null")) {
+            Toast.makeText(getApplicationContext(), fcmMessage, Toast.LENGTH_LONG).show();
+        }
+        mRegistrationBroadcastReceiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                // checking for type intent filter
+                if (intent.getAction().equals(Config.REGISTRATION_COMPLETE)) {
+                    // gcm successfully registered
+                    // now subscribe to `global` topic to receive app wide notifications
+                    FirebaseMessaging.getInstance().subscribeToTopic(Config.TOPIC_GLOBAL);
+                    //FirebaseMessaging.getInstance().unsubscribeFromTopic(Config.TOPIC_GLOBAL);
+                    displayFirebaseRegId();
+                } else if (intent.getAction().equals(Config.PUSH_NOTIFICATION)) {
+                    // new push notification is received
+                    //String click_action = intent.getStringExtra("click_action");
+                    //Toast.makeText(getApplicationContext(), click_action, Toast.LENGTH_LONG).show();
+                    // Log.e(TAG, "Firebase click_action: " + click_action);
+                    //mWebView.loadUrl(click_action);
+                    String message = intent.getStringExtra("message");
+                    Toast.makeText(getApplicationContext(), message, Toast.LENGTH_LONG).show();
+                }
+            }
+        };
+        FirebaseInstanceId.getInstance().getInstanceId()
+                .addOnCompleteListener(new OnCompleteListener<InstanceIdResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<InstanceIdResult> task) {
+                        if (!task.isSuccessful()) {
+                            Log.w("getInstanceId ", "getInstanceId failed", task.getException());
+                            return;
+                        }
+                        // Get new Instance ID token
+                        String token = task.getResult().getToken();
+                        // Log and toast
+                        //String msg = getString("msg_token_fmt, token);
+                        Log.d("TAG", token);
+                        //Toast.makeText(WelcomeActivity.this, token, Toast.LENGTH_SHORT).show();
+                        sendRegistrationToServer(token);
+                    }
+                });
+        FirebaseMessaging.getInstance().setAutoInitEnabled(true);
+        displayFirebaseRegId();
+    }
+    private void sendRegistrationToServer(final String token) {
+        // sending gcm token to server
+        if(PrefManager.isLogin(this)) {
+
+            String url = Config.API_URL + "ajax.php?type=savefcmregistration&uid="+PrefManager.getLoginDetail(this,"id")+"&token=" + token;
+            Log.e("mss get firebase id", "url "+url);
+            function.executeUrl(this, "get", url, null);
+        }
+    }
+    private void displayFirebaseRegId() {
+        SharedPreferences pref = getApplicationContext().getSharedPreferences(Config.SHARED_PREF, 0);
+        String regId = pref.getString("regId", null);
+        Log.d("mss unique id", "Firebase reg id: " + regId);
+        androidregid = regId;
     }
     @Override
     public void onClick(View v) {

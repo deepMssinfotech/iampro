@@ -25,12 +25,14 @@ public class ScheduledService  extends Service
     public void onCreate()
     {
         super.onCreate();
+        /*
         timer.scheduleAtFixedRate(new TimerTask() {
             @Override
             public void run() {
                 Config.sendRequestToServer(getApplicationContext());   //Your code here
             }
         }, 0, 5*1000);//5 Sec
+        */
     }
 
     @Override

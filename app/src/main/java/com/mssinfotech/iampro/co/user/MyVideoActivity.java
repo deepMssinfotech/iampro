@@ -75,7 +75,6 @@ import java.util.UUID;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 import static android.app.Activity.RESULT_CANCELED;
-import static com.firebase.ui.auth.AuthUI.getApplicationContext;
 
 public class MyVideoActivity extends Fragment implements MyVideoAdapter.ItemListener,SingleUploadBroadcastReceiver.Delegate {
     ImageView userbackgroud;

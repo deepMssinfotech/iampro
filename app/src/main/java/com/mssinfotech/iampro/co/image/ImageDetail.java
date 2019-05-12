@@ -180,13 +180,14 @@ public class ImageDetail extends Fragment implements Img_Video_Details.ItemListe
                  context.startActivity(intent);
             }
         });
-        /*image.setOnClickListener(new View.OnClickListener() {
+        image.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 new PhotoFullPopupWindow(getContext(),R.layout.popup_photo_full,ll_top.getRootView(),avatar_urll, null);
             }
-        }); */
+        });
 
+        /*
         image.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -260,7 +261,9 @@ public class ImageDetail extends Fragment implements Img_Video_Details.ItemListe
 
             }
         });
+         */
     }
+
     protected void getImageDetail() {
         final String url = "https://www.iampro.co/api/app_service.php?type=get_image_detail&id=" + id + "&update_type=" + type + "&uid=" + uid + "&login_id=" + uid + "&my_id=" + uid;
         Log.d(Config.TAG,url);

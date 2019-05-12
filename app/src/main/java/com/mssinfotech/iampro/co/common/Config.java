@@ -59,7 +59,17 @@ public class Config
     private static final float BITMAP_SCALE = 0.4f;
     private static final int BLUR_RADIUS = 8;
     public static final boolean SHOW_LOGS = true;
+    public static final String TOPIC_GLOBAL = "global";
 
+    // broadcast receiver intent filters
+    public static final String REGISTRATION_COMPLETE = "registrationComplete";
+    public static final String PUSH_NOTIFICATION = "pushNotification";
+
+    // id to handle the notification in the notification tray
+    public static final int NOTIFICATION_ID = 100;
+    public static final int NOTIFICATION_ID_BIG_IMAGE = 101;
+
+    public static final String SHARED_PREF = "ah_firebase";
     public static RequestOptions options_avatar = new RequestOptions()
             .centerCrop()
             .circleCrop()

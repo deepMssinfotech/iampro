@@ -57,8 +57,7 @@
                     app:civ_border_color="@color/white"
                     app:civ_border_width="1dp"
                     android:foregroundGravity="center"
-                    app:civ_circle_background_color="#ffffff"
-                    app:civ_fill_color="@color/white" />
+                    app:civ_circle_background_color="#ffffff" />
                 <TextView
                     android:layout_below="@+id/changeImage"
                     android:layout_width="100dp"

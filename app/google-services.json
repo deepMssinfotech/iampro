@@ -1,39 +1,45 @@
 {
   "project_info": {
-    "project_number": "47504568696",
-    "firebase_url": "https://iampro-f2c80.firebaseio.com",
-    "project_id": "iampro-f2c80",
-    "storage_bucket": "iampro-f2c80.appspot.com"
+    "project_number": "449222749335",
+    "firebase_url": "https://iampro-fae16.firebaseio.com",
+    "project_id": "iampro-fae16",
+    "storage_bucket": "iampro-fae16.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:47504568696:android:0c1db05e03e509d1",
+        "mobilesdk_app_id": "1:449222749335:android:0c1db05e03e509d1",
         "android_client_info": {
           "package_name": "com.mssinfotech.iampro.co"
         }
       },
       "oauth_client": [
         {
-          "client_id": "47504568696-5dqjhi2toqmjg45cdjl61kg0l88pr13r.apps.googleusercontent.com",
+          "client_id": "449222749335-deto96lk138u36c8hqum8o3um61pee32.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.mssinfotech.iampro.co",
+            "certificate_hash": "85d37c980d6c2b94354d8444fab544863b0dcced"
+          }
+        },
+        {
+          "client_id": "449222749335-m52vhibkes02fbi48ktkd6h7g4mrk8sr.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyDAo_tavBNbgPBdGbLeEcWar1Wm4PxLjQA"
+          "current_key": "AIzaSyAWsgzsG5IgbYIFyobTNstmrih9V4RRJbo"
         }
       ],
       "services": {
-        "analytics_service": {
-          "status": 1
-        },
         "appinvite_service": {
-          "status": 1,
-          "other_platform_oauth_client": []
-        },
-        "ads_service": {
-          "status": 2
+          "other_platform_oauth_client": [
+            {
+              "client_id": "449222749335-m52vhibkes02fbi48ktkd6h7g4mrk8sr.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
         }
       }
     }
