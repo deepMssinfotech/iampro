@@ -104,6 +104,7 @@ public class ProfileActivity extends Fragment implements AllFeedAdapter.ItemList
     public void onViewCreated(View v, Bundle savedInstanceState) {
         view =v;
         context = getContext();
+        Config.getCountFromServer(getContext());
         LinearLayout edit_layout = view.findViewById(R.id.edit_layout);
         LinearLayout dashboard_layout = view.findViewById(R.id.dashboard_layout);
         LinearLayout chat_layout = view.findViewById(R.id.chat_layout);
@@ -407,8 +408,8 @@ public class ProfileActivity extends Fragment implements AllFeedAdapter.ItemList
                                 for (int i = 0; i < jsonArray.length(); i++) {
                                     JSONObject jsonObject = jsonArray.getJSONObject(i);
                                     String image = jsonObject.getString("first_image");
-                                     JSONObject detail_obj = jsonObject.optJSONObject("detail");
-                                    String detail = detail_obj.getString("name");
+                                    //JSONObject detail_obj = jsonObject.optJSONObject("detail");
+                                    String detail = jsonObject.getString("detail");
                                     //String detail = detail_obj.getString("name");
 
                                     String fimage_path = Config.URL_ROOT + "uploads/avatar/150/150/'" + image;

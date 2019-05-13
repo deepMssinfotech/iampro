@@ -126,18 +126,18 @@ public class ImageDetail extends Fragment implements Img_Video_Details.ItemListe
         recycler_view_review_detail=view.findViewById(R.id.recycler_view_review_detail);
         Bundle args = getArguments();
         //fid = getArguments().getString("uid");
-        if (args != null && args.containsKey("uid")) {
+        if (args != null && args.containsKey("uid") && args.getString("uid")!=null) {
             uid = args.getString("uid").toString();
         }else {
             uid = intent.getStringExtra("uid");
         }
-        if (args != null && args.containsKey("id")) {
+        if (args != null && args.containsKey("id") && args.getString("id")!=null) {
             id = args.getString("id").toString();
         }else {
             id = intent.getStringExtra("id");
         }
         //fid = getArguments().getString("uid");
-        if (args != null && args.containsKey("type")) {
+        if (args != null && args.containsKey("type") && args.getString("type")!=null) {
             type = args.getString("type").toString();
         }else {
             type = intent.getStringExtra("type");

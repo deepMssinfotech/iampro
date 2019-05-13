@@ -18,7 +18,6 @@ public class IncludeHeader extends RelativeLayout {
 
     public IncludeHeader(Context context, AttributeSet attrs) {
         super(context, attrs);
-
         inflater = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         inflater.inflate(R.layout.include_header, this, true);
         ((ImageView)this.findViewById(R.id.browser)).setOnClickListener(browserOnClickListener);

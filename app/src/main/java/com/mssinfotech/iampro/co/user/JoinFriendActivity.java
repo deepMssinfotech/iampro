@@ -129,7 +129,7 @@ public class JoinFriendActivity extends Fragment implements UserDataAdapter.Item
         }
 
         IncludeShortMenu includeShortMenu = view.findViewById(R.id.includeShortMenu);
-        includeShortMenu.updateCounts(getContext(),uid);
+        //includeShortMenu.updateCounts(getContext(),uid);
         TextView myuid= includeShortMenu.findViewById(R.id.myuid);
         myuid.setText(uid);
         Intent i = new Intent();

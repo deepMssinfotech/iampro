@@ -35,7 +35,6 @@ import com.mssinfotech.iampro.co.R;
 import com.mssinfotech.iampro.co.SearchActivity;
 import com.mssinfotech.iampro.co.SignupActivity;
 import com.mssinfotech.iampro.co.WelcomeActivity;
-import com.mssinfotech.iampro.co.popup.MenuPopup;
 import com.mssinfotech.iampro.co.user.ChangePasswordActivity;
 import com.mssinfotech.iampro.co.user.EditProfileActivity;
 import com.mssinfotech.iampro.co.user.FriendRequestActivity;
@@ -65,9 +64,12 @@ public class IncludeFooter  extends RelativeLayout {
         inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         inflater.inflate(R.layout.include_footer, this, true);
          this.context=context;
-        Config.count_chat = this.findViewById(R.id.count_chat);
-        Config.count_notify = this.findViewById(R.id.count_notify);
-        Config.count_cart = this.findViewById(R.id.count_cart);
+        TextView count_chat = this.findViewById(R.id.count_chat);
+        TextView count_notify = this.findViewById(R.id.count_notify);
+        TextView count_cart = this.findViewById(R.id.count_cart);
+        count_chat.setText(PrefManager.getLoginDetail(context,"chatcount"));
+        count_notify.setText(PrefManager.getLoginDetail(context,"my_notification"));
+        count_cart.setText(PrefManager.getLoginDetail(context,"cart_count"));
         (this.findViewById(R.id.btn_menu_more)).setOnClickListener(moreOnClickListener);
         (this.findViewById(R.id.btn_menu_search)).setOnClickListener(searchOnClickListener);
         (this.findViewById(R.id.btn_menu_cart)).setOnClickListener(cartOnClickListener);
@@ -96,10 +98,14 @@ public class IncludeFooter  extends RelativeLayout {
 
             LinearLayout nonuser_menu = myDialog.findViewById(R.id.nonuser_menu);
             LinearLayout user_menu = myDialog.findViewById(R.id.user_menu);
-            Config.count_whishlist = myDialog.findViewById(R.id.count_whishlist);
-            Config.count_friend_request = myDialog.findViewById(R.id.count_friend_request);
-            Config.count_cart = myDialog.findViewById(R.id.count_cart);
-            Config.count_message = myDialog.findViewById(R.id.count_message);
+            TextView count_whishlist = myDialog.findViewById(R.id.count_whishlist);
+            TextView count_friend_request = myDialog.findViewById(R.id.count_friend_request);
+            TextView count_cart = myDialog.findViewById(R.id.count_cart);
+            TextView  count_message = myDialog.findViewById(R.id.count_message);
+            count_cart.setText(PrefManager.getLoginDetail(context,"cart_count"));
+            count_message.setText(PrefManager.getLoginDetail(context,"chatcount"));
+            count_whishlist.setText(PrefManager.getLoginDetail(context,"my_wishlist"));
+            count_friend_request.setText(PrefManager.getLoginDetail(context,"panding_friend"));
             TextView username = myDialog.findViewById(R.id.username);
             if(PrefManager.isLogin(getContext())) {
                 menu_btn_dashboard = myDialog.findViewById(R.id.menu_btn_dashboard);

@@ -48,7 +48,6 @@ public class Config
     public static final String ALBUM_URL="https://www.iampro.co/uploads/album/160/95/";
     public static final String TOP_SLIDER="https://www.iampro.co/uploads/slider/h/280/";
     public static final String IP_ADDRESS="";
-    public static TextView count_chat = null, count_notify = null, count_cart = null, count_message = null , count_whishlist = null, count_friend_request = null;
     public static final String IMAGE_DIRECTORY = "/iampro/image";
     public static final String VIDEO_DIRECTORY = "/iampro/video";
     public static final Integer GALLERY = 1, CAMERA = 2, PICK_IMAGE_MULTIPLE = 3;
@@ -64,7 +63,6 @@ public class Config
     // broadcast receiver intent filters
     public static final String REGISTRATION_COMPLETE = "registrationComplete";
     public static final String PUSH_NOTIFICATION = "pushNotification";
-
     // id to handle the notification in the notification tray
     public static final int NOTIFICATION_ID = 100;
     public static final int NOTIFICATION_ID_BIG_IMAGE = 101;
@@ -363,12 +361,12 @@ public class Config
 
     }
 
-    public static void sendRequestToServer(Context context) {
+    public static void getCountFromServer(final Context context) {
         if (PrefManager.isLogin(context)) {
             //Log.d(TAG, "test servide for 5 sec");
-            String api_url = Config.API_URL + "chat.php?type=chat_count&myid=" + PrefManager.getLoginDetail(context, "id");
-            //Log.d(Config.TAG, api_url);
-             {
+            String api_url = Config.API_URL + "api.php?type=chat_count&myid=" + PrefManager.getLoginDetail(context, "id");
+            Log.e(Config.TAG, api_url);
+            {
                 StringRequest stringRequest = new StringRequest(api_url,
                         new Response.Listener<String>() {
                             @Override
@@ -377,13 +375,18 @@ public class Config
                                 //Log.d(Config.TAG, response);
                                 try {
                                     result = new JSONObject(response);
-                                    //Storing the Array of JSON String to our JSON Array
-                                    if (count_chat != null) count_chat.setText(result.getString("chatcount"));
-                                    if(count_notify != null) count_notify.setText(result.getString("my_notification"));
-                                    if(count_cart != null) count_cart.setText(result.getString("cart_count"));
-                                    if(count_message != null) count_message.setText(result.getString("chatcount"));
-                                    if(count_whishlist != null) count_whishlist.setText(result.getString("my_wishlist"));
-                                    if(count_friend_request != null) count_friend_request.setText(result.getString("panding_friend"));
+                                    PrefManager.updateLoginDetail(context,"chatcount", result.getString("chatcount"));
+                                    PrefManager.updateLoginDetail(context,"my_notification", result.getString("my_notification"));
+                                    PrefManager.updateLoginDetail(context,"cart_count", result.getString("cart_count"));
+                                    PrefManager.updateLoginDetail(context,"my_wishlist", result.getString("my_wishlist"));
+                                    PrefManager.updateLoginDetail(context,"panding_friend", result.getString("panding_friend"));
+
+                                    PrefManager.updateLoginDetail(context,"total_count_product", result.getString("total_count_product"));
+                                    PrefManager.updateLoginDetail(context,"total_count_provide", result.getString("total_count_provide"));
+                                    PrefManager.updateLoginDetail(context,"total_count_demand", result.getString("total_count_demand"));
+                                    PrefManager.updateLoginDetail(context,"total_count_image", result.getString("total_count_image"));
+                                    PrefManager.updateLoginDetail(context,"total_count_video", result.getString("total_count_video"));
+                                    PrefManager.updateLoginDetail(context,"total_count_friend", result.getString("total_count_friend"));
                                 } catch (JSONException e) {
                                     e.printStackTrace();
                                 }

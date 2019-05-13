@@ -3,7 +3,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 
-import com.mssinfotech.iampro.co.activity.MainActivity;
 import com.mssinfotech.iampro.co.utils.PrefManager;
 import android.support.v7.app.AppCompatActivity;
 
@@ -13,7 +12,8 @@ public class LoadingActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_loading);
-        PrefManager.updateUserData(this,null);
+        String id = PrefManager.getLoginDetail(this,"id");
+        PrefManager.updateUserData(this, id);
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
@@ -24,6 +24,7 @@ public class LoadingActivity extends AppCompatActivity {
             }
         }, 3500);
     }
+
 }
 
 

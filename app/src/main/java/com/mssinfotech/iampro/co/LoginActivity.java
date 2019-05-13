@@ -3,10 +3,8 @@ package com.mssinfotech.iampro.co;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.Fragment;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -43,7 +41,7 @@ public class LoginActivity extends Fragment {
     EditText etemail,etpassword;
     View view;
     Context context;
-     TextView btnSignUp;
+    TextView btnSignUp;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup parent, Bundle savedInstanceState) {
         // Defines the xml file for the fragment
@@ -54,7 +52,6 @@ public class LoginActivity extends Fragment {
         view = v;
         context = getContext();
         super.onCreate(savedInstanceState);
-
         tilemail = view.findViewById(R.id.tilemail);
         etemail = view.findViewById(R.id.etemail);
         btnSignUp=view.findViewById(R.id.btnSignUp);
@@ -141,23 +138,23 @@ public class LoginActivity extends Fragment {
 
                             Toast.makeText(context.getApplicationContext(),""+msgg,Toast.LENGTH_LONG).show();
                             if (status.equalsIgnoreCase("success")){
-                                //String urlv=jsonObject.getString("url");
-                                String avatarv=jsonObject.getString("avatar");
-                                String id=jsonObject.getString("id");
-                                String mobilev=jsonObject.getString("mobile");
-                                String fnamem=jsonObject.getString("fname");
-                                String lnamem=jsonObject.getString("lname");
-                                String email=jsonObject.getString("email");
-                                String banner_imagev=jsonObject.getString("banner_image");
 
-                                String img_banner_image=jsonObject.getString("img_banner_image");
-                                String video_banner_image=jsonObject.getString("video_banner_image");
-                                String profile_image_gallery=jsonObject.getString("profile_image_gallery");
-                                String profile_video_gallery=jsonObject.getString("profile_video_gallery");
-
-                                String name=fnamem+"\t"+lnamem;
-                                String imgurl=avatarv;
-                                saveLoginDetails(unamee,passwordd,avatarv,id,mobilev,fnamem,lnamem,email,banner_imagev,  img_banner_image,  video_banner_image,  profile_image_gallery,  profile_video_gallery);
+                                //String name=fnamem+"\t"+lnamem;
+                                //String imgurl=avatarv;
+                                PrefManager.updateLoginDetail(context,"username", unamee);
+                                PrefManager.updateLoginDetail(context,"img_url", jsonObject.getString("avatar"));
+                                PrefManager.updateLoginDetail(context,"id", jsonObject.getString("id"));
+                                PrefManager.updateLoginDetail(context,"dob", jsonObject.getString("dob"));
+                                PrefManager.updateLoginDetail(context,"mobile", jsonObject.getString("mobile"));
+                                PrefManager.updateLoginDetail(context,"fname", jsonObject.getString("fname"));
+                                PrefManager.updateLoginDetail(context,"lname", jsonObject.getString("lname"));
+                                PrefManager.updateLoginDetail(context,"email", jsonObject.getString("email"));
+                                PrefManager.updateLoginDetail(context,"banner_image", jsonObject.getString("banner_image"));
+                                PrefManager.updateLoginDetail(context,"img_banner_image", jsonObject.getString("img_banner_image"));
+                                PrefManager.updateLoginDetail(context,"video_banner_image", jsonObject.getString("video_banner_image"));
+                                PrefManager.updateLoginDetail(context,"profile_image_gallery", jsonObject.getString("profile_image_gallery"));
+                                PrefManager.updateLoginDetail(context,"profile_video_gallery", jsonObject.getString("profile_video_gallery"));
+                                //saveLoginDetails(unamee,passwordd,avatarv,id,mobilev,fnamem,lnamem,email,banner_imagev,  img_banner_image,  video_banner_image,  profile_image_gallery,  profile_video_gallery);
                                 etemail.setText(" ");
                                 etpassword.setText(" ");
 
@@ -203,8 +200,5 @@ public class LoginActivity extends Fragment {
 
         //Adding request to the queue
         requestQueue.add(stringRequest);
-    }
-    private void saveLoginDetails(String username, String password,String img_url,String id,String mobile,String fname,String lname,String email,String banner_imagev, String img_banner_image, String video_banner_image, String profile_image_gallery, String profile_video_gallery) {
-        new PrefManager(context).saveLoginDetails(username, password,img_url,id,mobile,fname,lname,email,banner_imagev,img_banner_image,  video_banner_image,  profile_image_gallery,  profile_video_gallery);
     }
 }

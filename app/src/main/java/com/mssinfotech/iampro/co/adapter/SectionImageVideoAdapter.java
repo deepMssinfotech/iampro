@@ -493,8 +493,11 @@ public class SectionImageVideoAdapter extends RecyclerView.Adapter<SectionImageV
             });
       //  }
 
-        if(!PrefManager.getLoginDetail(mContext,"id").equalsIgnoreCase(itemsList.get(i).getUid().toString())){
-            holder.buttonViewOption.setVisibility(View.GONE);
+        if(PrefManager.isLogin(mContext)){
+            if(!PrefManager.getLoginDetail(mContext,"id").equalsIgnoreCase(itemsList.get(i).getUid().toString()))
+                holder.buttonViewOption.setVisibility(View.GONE);
+            else
+                holder.buttonViewOption.setVisibility(View.VISIBLE);
         }
         else{
             holder.buttonViewOption.setVisibility(View.VISIBLE);

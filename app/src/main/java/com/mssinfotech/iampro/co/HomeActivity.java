@@ -41,7 +41,7 @@ public class HomeActivity extends AppCompatActivity {
 
         tabLayout = (TabLayout) findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(viewPager);
-
+        Config.getCountFromServer(this);
         setupTabIcons();
     }
     private void setupTabIcons() {

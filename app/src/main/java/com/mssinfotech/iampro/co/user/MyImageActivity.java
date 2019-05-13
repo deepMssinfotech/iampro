@@ -189,7 +189,7 @@ public class MyImageActivity extends Fragment implements MyImageAdapter.ItemList
         }
 
         IncludeShortMenu includeShortMenu = view.findViewById(R.id.includeShortMenu);
-        includeShortMenu.updateCounts(context,uid);
+        //includeShortMenu.updateCounts(context,uid);
         TextView myuid= includeShortMenu.findViewById(R.id.myuid);
         myuid.setText(uid);
         Intent i = new Intent();
