@@ -179,7 +179,7 @@ public class SectionImageVideoAdapter extends RecyclerView.Adapter<SectionImageV
                       holder.favButton.setEnabled(true);
                   }
                   else{
-                      holder.favButton.setEnabled(true);
+                      holder.favButton.setEnabled(false);
                   }
              }
         }
@@ -534,6 +534,12 @@ public class SectionImageVideoAdapter extends RecyclerView.Adapter<SectionImageV
             if (type.equalsIgnoreCase("Provide") || type.equalsIgnoreCase("Demand")) {
                 holder.favButton.setVisibility(View.VISIBLE);
                 holder.buttonViewOption.setVisibility(View.INVISIBLE);
+                if (PrefManager.isLogin(mContext)){
+                    holder.favButton.setEnabled(true);
+                }
+                else{
+                    holder.favButton.setEnabled(false);
+                }
             }
         }
           if (type.equalsIgnoreCase("Provide")){
@@ -549,6 +555,12 @@ public class SectionImageVideoAdapter extends RecyclerView.Adapter<SectionImageV
               else {
                        holder.likeButton.setEnabled(false);
                          holder.favButton.setEnabled(false);
+              }
+              if (PrefManager.isLogin(mContext)){
+                  holder.favButton.setEnabled(true);
+              }
+              else{
+                  holder.favButton.setEnabled(false);
               }
               holder.favButton.setOnLikeListener(new OnLikeListener() {
                   @Override
@@ -569,6 +581,12 @@ public class SectionImageVideoAdapter extends RecyclerView.Adapter<SectionImageV
               });
           }
           if (type.equalsIgnoreCase("Demand")){
+              if (PrefManager.isLogin(mContext)){
+                  holder.favButton.setEnabled(true);
+              }
+              else{
+                  holder.favButton.setEnabled(false);
+              }
               if (itemsList.get(position).getIs_featured().equalsIgnoreCase("1")) {
                   holder.favButton.setLiked(true);
               } else {
@@ -578,6 +596,7 @@ public class SectionImageVideoAdapter extends RecyclerView.Adapter<SectionImageV
                   @Override
                   public void liked(LikeButton likeButton) {
                       //Toast.makeText(mContext,"Liked",Toast.LENGTH_LONG).show();
+
                       String url = Config.API_URL + "app_service.php?type=provide_favo&pid=" + String.valueOf(itemsList.get(position).getId()) + "&uid=" +itemsList.get(position).getUid() + "&product_type=" + type;
                       Log.e(Config.TAG, url);
                       function.executeUrl(mContext, "get", url, null);

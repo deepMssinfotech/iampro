@@ -1,11 +1,19 @@
 package com.mssinfotech.iampro.co.user;
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
+import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Handler;
+import android.provider.MediaStore;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewCompat;
 import android.support.v4.widget.NestedScrollView;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -47,9 +55,12 @@ import com.mssinfotech.iampro.co.product.ProductDetail;
 import com.mssinfotech.iampro.co.utils.PrefManager;
 import com.squareup.picasso.Picasso;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -63,7 +74,12 @@ import com.android.volley.VolleyError;
 import com.android.volley.VolleyLog;
 import com.android.volley.toolbox.JsonObjectRequest;
 
+import net.gotev.uploadservice.MultipartUploadRequest;
+
 import de.hdodenhof.circleimageview.CircleImageView;
+
+import static android.app.Activity.RESULT_CANCELED;
+
 public class ProfileActivity extends Fragment implements AllFeedAdapter.ItemListener,SwipeRefreshLayout.OnRefreshListener  {
  //,OnLikeListener,OnAnimationEndListener
     private static final String TAG = ProfileActivity.class.getSimpleName();
@@ -90,6 +106,18 @@ public class ProfileActivity extends Fragment implements AllFeedAdapter.ItemList
     View view;
     String FrindStatus = "";
     // ProgressDialog loading = ProgressDialog.show(getContext(),"Processing...","Please wait...",false,false);
+    public static String imageType;
+    ImageView  changeImage,changeBackground_Image;
+    public static final int REQUEST_IMAGE = 100;
+    private int GALLERY = 1, CAMERA = 2;
+    Bitmap FixBitmap;
+    public String backgroundimagePath="";
+
+    ProgressDialog progressdialog;
+    int status = 0;
+    Handler handlers = new Handler();
+    FloatingActionButton floatingActionButton;
+
     public void onBackPressed()
     {
         FragmentManager fm =new ProfileActivity().getActivity().getSupportFragmentManager();
@@ -162,7 +190,7 @@ public class ProfileActivity extends Fragment implements AllFeedAdapter.ItemList
             userimage.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    new PhotoFullPopupWindow(context, R.layout.popup_photo_full, view, Config.AVATAR_URL+PrefManager.getLoginDetail(context,"img_url"), null);
+                    //new PhotoFullPopupWindow(context, R.layout.popup_photo_full, view, Config.AVATAR_URL+PrefManager.getLoginDetail(context,"img_url"), null);
                 }
             });
             edit_layout.setOnClickListener(new View.OnClickListener() {
@@ -284,6 +312,71 @@ public class ProfileActivity extends Fragment implements AllFeedAdapter.ItemList
                   getContext().startActivity(intent);
             }
         });
+
+        changeImage = view.findViewById(R.id.changeImage);
+        changeImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+               /* Intent intent=new Intent(context,ProfileImageCroperActivity.class);
+                startActivity(intent); */
+                //finish();
+                imageType="userImage";
+                showImagePickerOptions();
+
+            }
+        });
+
+        changeBackground_Image = view.findViewById(R.id.changeBackground_Image);
+        changeBackground_Image.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //showPictureDialog();
+
+                imageType="backgroundImage";
+                showImagePickerOptions();
+            }
+        });
+
+
+    }
+    private void showImagePickerOptions() {
+        ImagePickerActivity.showImagePickerOptions(getContext(), new ImagePickerActivity.PickerOptionListener() {
+            @Override
+            public void onTakeCameraSelected() {
+                launchCameraIntent();
+            }
+
+            @Override
+            public void onChooseGallerySelected() {
+                launchGalleryIntent();
+            }
+        });
+    }
+    private void launchCameraIntent() {
+        Intent intent = new Intent(getContext(), ImagePickerActivity.class);
+        intent.putExtra(ImagePickerActivity.INTENT_IMAGE_PICKER_OPTION,ImagePickerActivity.REQUEST_IMAGE_CAPTURE);
+
+        // setting aspect ratio
+        intent.putExtra(ImagePickerActivity.INTENT_LOCK_ASPECT_RATIO, true);
+        intent.putExtra(ImagePickerActivity.INTENT_ASPECT_RATIO_X, 1); // 16x9, 1x1, 3:4, 3:2
+        intent.putExtra(ImagePickerActivity.INTENT_ASPECT_RATIO_Y, 1);
+
+        // setting maximum bitmap width and height
+        intent.putExtra(ImagePickerActivity.INTENT_SET_BITMAP_MAX_WIDTH_HEIGHT, true);
+        intent.putExtra(ImagePickerActivity.INTENT_BITMAP_MAX_WIDTH, 1000);
+        intent.putExtra(ImagePickerActivity.INTENT_BITMAP_MAX_HEIGHT, 1000);
+
+        startActivityForResult(intent, REQUEST_IMAGE);
+    }
+    private void launchGalleryIntent() {
+        Intent intent = new Intent(getContext(), ImagePickerActivity.class);
+        intent.putExtra(ImagePickerActivity.INTENT_IMAGE_PICKER_OPTION, ImagePickerActivity.REQUEST_GALLERY_IMAGE);
+
+        // setting aspect ratio
+        intent.putExtra(ImagePickerActivity.INTENT_LOCK_ASPECT_RATIO, true);
+        intent.putExtra(ImagePickerActivity.INTENT_ASPECT_RATIO_X, 1); // 16x9, 1x1, 3:4, 3:2
+        intent.putExtra(ImagePickerActivity.INTENT_ASPECT_RATIO_Y, 1);
+        startActivityForResult(intent, REQUEST_IMAGE);
     }
     private void gteUsrDetail(String id){
         String myurl = Config.API_URL + "ajax.php?type=friend_detail&id=" + fid + "&uid=" + PrefManager.getLoginDetail(context,"id");
@@ -373,6 +466,224 @@ public class ProfileActivity extends Fragment implements AllFeedAdapter.ItemList
         //Adding request to the queue
         requestQueue.add(stringRequest);
     }
+    public String getPath(Uri uri) {
+        Cursor cursor = context.getContentResolver().query(uri, null, null, null, null);
+        cursor.moveToFirst();
+        String document_id = cursor.getString(0);
+        document_id = document_id.substring(document_id.lastIndexOf(":") + 1);
+        cursor.close();
+        cursor = context.getContentResolver().query(
+                android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
+                null, MediaStore.Images.Media._ID + " = ? ", new String[]{document_id}, null);
+        cursor.moveToFirst();
+        String path = cursor.getString(cursor.getColumnIndex(MediaStore.Images.Media.DATA));
+        cursor.close();
+        return path;
+    }
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == RESULT_CANCELED) {
+            return;
+        }
+        if (requestCode == GALLERY) {
+            if (data != null) {
+                Uri contentURI = data.getData();
+                try {
+                    FixBitmap = MediaStore.Images.Media.getBitmap(context.getContentResolver(), contentURI);
+                    //////userbackgroud.setImageBitmap(FixBitmap);
+                    backgroundimagePath = getPath(contentURI);
+                    if (imageType.equalsIgnoreCase("userImage")){
+                        userbackgroud.setImageBitmap(FixBitmap);
+                    }
+                    else if (imageType.equalsIgnoreCase("backgroundImage")){
+                        userbackgroud.setImageBitmap(FixBitmap);
+                    }
+                    //UploadImageOnServerButton.setVisibility(View.VISIBLE);
+                    sendData();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                    Toast.makeText(context, "Failed!", Toast.LENGTH_SHORT).show();
+                }
+            }
+        } else if (requestCode == CAMERA) {
+            Uri contentURI = data.getData();
+            try {
+                FixBitmap = (Bitmap) data.getExtras().get("data");
+                //ShowSelectedImage.setImageBitmap(FixBitmap);
+                userbackgroud.setImageBitmap(FixBitmap);
+                backgroundimagePath = getPath(contentURI);
+                if (imageType.equalsIgnoreCase("userImage")){
+                    userbackgroud.setImageBitmap(FixBitmap);
+                }
+                else if (imageType.equalsIgnoreCase("backgroundImage")){
+                    userbackgroud.setImageBitmap(FixBitmap);
+                }
+                //UploadImageOnServerButton.setVisibility(View.VISIBLE);
+                //  saveImage(thumbnail);
+                sendData();
+                //Toast.makeText(ShadiRegistrationPart5.this, "Image Saved!", Toast.LENGTH_SHORT).show();
+            }
+            catch (Exception e){
+                Toast.makeText(context,e.getMessage(),Toast.LENGTH_LONG).show();
+            }
+        }
+        if (requestCode == REQUEST_IMAGE) {
+            if (resultCode == Activity.RESULT_OK) {
+                Uri uri = data.getParcelableExtra("path");
+                try {
+                    // You can update this bitmap to your server
+                    Bitmap bitmap = MediaStore.Images.Media.getBitmap(context.getContentResolver(), uri);
+                    backgroundimagePath = getPath(getImageUri(context,bitmap));
+                    if (imageType.equalsIgnoreCase("userImage")){
+                        userbackgroud.setImageBitmap(bitmap);
+                    }
+                    else if (imageType.equalsIgnoreCase("backgroundImage")){
+                        userbackgroud.setImageBitmap(bitmap);
+                    }
+                    // loading profile image from local cache
+                    loadProfile(uri.toString());
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
+    public void sendData() {
+        if (!Config.haveNetworkConnection(context)) {
+            Config.showInternetDialog(context);
+            return;
+        }
+        CreateProgressDialog();
+        //Toast.makeText(getApplicationContext(), "Video upload remain pleasw wait....", Toast.LENGTH_LONG).show();
+        //return;
+        try {
+            String uploadId = UUID.randomUUID().toString();
+            //Creating a multi part request
+            new MultipartUploadRequest(context, uploadId, Config.AJAX_URL + "signup.php")
+                    .addFileToUpload(backgroundimagePath, "banner_img") //Adding file
+                    .addParameter("type","banner_img")//Adding text parameter to the request
+                    .addParameter("process_type","android")
+                    .addParameter("page_url","page/update_profile.html")
+                    .addParameter("userid",PrefManager.getLoginDetail(context,"id"))
+                    //.setNotificationConfig(new UploadNotificationConfig())
+                    .setMaxRetries(2)
+                    .startUpload(); //Starting the upload
+            ShowProgressDialog();
+            ProfileActivity fragment = new ProfileActivity();
+            function.loadFragment(context,fragment,null);
+            //getActivity().finish();
+        } catch (Exception exc) {
+            Toast.makeText(context, ""+exc.getMessage(), Toast.LENGTH_SHORT).show();
+        }
+    }
+    public void sendUserPic(){
+        if (!Config.haveNetworkConnection(context)) {
+            Config.showInternetDialog(context);
+            return;
+        }
+        CreateProgressDialog();
+        //Toast.makeText(getApplicationContext(), "Video upload remain pleasw wait....", Toast.LENGTH_LONG).show();
+        //return;
+
+        try {
+            String uploadId=UUID.randomUUID().toString();
+            //Creating a multi part request
+            new MultipartUploadRequest(context, uploadId, Config.AJAX_URL + "signup.php")
+                    .addFileToUpload(backgroundimagePath, "avatar") //Adding file
+                    .addParameter("type","profile_pic")//Adding text parameter to the request
+                    .addParameter("process_type","android")
+                    .addParameter("page_url","page/update_profile.html")
+                    .addParameter("user_id",PrefManager.getLoginDetail(context,"id"))
+                    .addParameter("userid",PrefManager.getLoginDetail(context,"id"))
+                    .addParameter("fname",PrefManager.getLoginDetail(context,"fname"))
+                    .addParameter("email",PrefManager.getLoginDetail(context,"email"))
+                    .addParameter("country",PrefManager.getLoginDetail(context,"country"))
+                    .addParameter("state",PrefManager.getLoginDetail(context,"state"))
+                    .addParameter("image_name",backgroundimagePath)
+                    //.setNotificationConfig(new UploadNotificationConfig())
+                    .setMaxRetries(2)
+                    .startUpload(); //Starting the upload
+            ShowProgressDialog();
+            ProfileActivity fragment = new ProfileActivity();
+            function.loadFragment(context,fragment,null);
+
+              /*
+               String uploadId = UUID.randomUUID().toString();
+            //Creating a multi part request
+            new MultipartUploadRequest(context, uploadId, Config.AJAX_URL + "signup.php")
+                    .addFileToUpload(backgroundimagePath, "profile_video_gallery") //Adding file
+                    .addParameter("type","update_img_video_banner")//Adding text parameter to the request
+                    .addParameter("process_type","android")
+                    .addParameter("page_url","page/update_profile.html")
+                    .addParameter("userid",PrefManager.getLoginDetail(context,"id"))
+                    .addParameter("fname",PrefManager.getLoginDetail(context,"fname"))
+                    .addParameter("email",PrefManager.getLoginDetail(context,"email"))
+                    .addParameter("country",PrefManager.getLoginDetail(context,"country"))
+                    .addParameter("state",PrefManager.getLoginDetail(context,"state"))
+                    .addParameter("image_name",backgroundimagePath)
+                    //.setNotificationConfig(new UploadNotificationConfig())
+                    .setMaxRetries(2)
+                    .startUpload(); //Starting the upload
+            ProfileActivity fragment = new ProfileActivity();
+            function.loadFragment(context,fragment,null);
+               */
+
+            //getActivity().finish();
+        } catch (Exception exc) {
+            Toast.makeText(context,""+exc.getMessage(), Toast.LENGTH_SHORT).show();
+        }
+         /*
+          type: profile_pic
+          process_type: android
+          page_url: page/update_profile.html
+          user_id: 693
+          avatar: (binary)
+
+          */
+    }
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode == 5) {
+            if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                // Now user should be able to use camera
+            }
+            else {
+
+                Toast.makeText(context, "Unable to use Camera..Please Allow us to use Camera", Toast.LENGTH_LONG).show();
+
+            }
+        }
+    }
+
+    public Uri getImageUri(Context inContext, Bitmap inImage) {
+        ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+        inImage.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
+        String path = MediaStore.Images.Media.insertImage(inContext.getContentResolver(), inImage, "Title", null);
+        return Uri.parse(path);
+    }
+    private void loadProfile(String url)   {
+        Log.d("eProfile_uri", "Image cache path: " + url);
+        if(imageType.equalsIgnoreCase("backgroundImage"))  {
+            //backgroundimagePath = getPath(url);
+            Glide.with(this).load(url)
+                    .into(userbackgroud);
+            userbackgroud.setColorFilter(ContextCompat.getColor(context, android.R.color.transparent));
+            sendData();
+        }
+        else if (imageType.equalsIgnoreCase("userImage")){
+            //userimage
+            //backgroundimagePath = getPath(url);
+            Glide.with(this).load(url)
+                    .into(userimage);
+            userimage.setColorFilter(ContextCompat.getColor(context, android.R.color.transparent));
+            Toast.makeText(context,"Sending",Toast.LENGTH_LONG).show();
+            sendUserPic();
+        }
+    }
+
     public void join_friend(String uid,String id){
 
     }
@@ -551,4 +862,47 @@ public class ProfileActivity extends Fragment implements AllFeedAdapter.ItemList
             }
         }, 4000); // Delay in millis
     }
+
+    public void CreateProgressDialog()
+    {
+        progressdialog = new ProgressDialog(ProfileActivity.this.getContext());
+        progressdialog.setIndeterminate(false);
+        progressdialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+        progressdialog.setCancelable(true);
+        progressdialog.setMax(100);
+        progressdialog.show();
+    }
+
+    public void ShowProgressDialog()
+    {
+        status = 0;
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                while(status < 100){
+                    status +=1;
+                    try{
+                        Thread.sleep(200);
+                    }catch(InterruptedException e){
+                        e.printStackTrace();
+                    }
+
+                    handlers.post(new Runnable() {
+                        @Override
+                        public void run() {
+
+                            progressdialog.setProgress(status);
+
+                            if(status == 100){
+
+                                progressdialog.dismiss();
+                            }
+                        }
+                    });
+                }
+            }
+        }).start();
+
+    }
+
 }

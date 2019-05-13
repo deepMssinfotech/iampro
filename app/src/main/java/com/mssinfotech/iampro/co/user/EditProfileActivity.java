@@ -469,6 +469,12 @@ public class EditProfileActivity extends Fragment {
                     FixBitmap = MediaStore.Images.Media.getBitmap(context.getContentResolver(), contentURI);
                     userbackgroud.setImageBitmap(FixBitmap);
                     backgroundimagePath = getPath(contentURI);
+                    if (imageType.equalsIgnoreCase("userImage")){
+                        userbackgroud.setImageBitmap(FixBitmap);
+                    }
+                    else if (imageType.equalsIgnoreCase("backgroundImage")){
+                        userbackgroud.setImageBitmap(FixBitmap);
+                    }
                     //UploadImageOnServerButton.setVisibility(View.VISIBLE);
                     sendData();
                 } catch (IOException e) {
@@ -483,6 +489,12 @@ public class EditProfileActivity extends Fragment {
                 //ShowSelectedImage.setImageBitmap(FixBitmap);
                 userbackgroud.setImageBitmap(FixBitmap);
                 backgroundimagePath = getPath(contentURI);
+                if (imageType.equalsIgnoreCase("userImage")){
+                    userbackgroud.setImageBitmap(FixBitmap);
+                }
+                else if (imageType.equalsIgnoreCase("backgroundImage")){
+                    userbackgroud.setImageBitmap(FixBitmap);
+                }
                 //UploadImageOnServerButton.setVisibility(View.VISIBLE);
                 //  saveImage(thumbnail);
                 sendData();
@@ -499,7 +511,12 @@ public class EditProfileActivity extends Fragment {
                     // You can update this bitmap to your server
                     Bitmap bitmap = MediaStore.Images.Media.getBitmap(context.getContentResolver(), uri);
                     backgroundimagePath = getPath(getImageUri(context,bitmap));
-
+                    if (imageType.equalsIgnoreCase("userImage")){
+                        userbackgroud.setImageBitmap(bitmap);
+                    }
+                    else if (imageType.equalsIgnoreCase("backgroundImage")){
+                        userbackgroud.setImageBitmap(bitmap);
+                    }
                     // loading profile image from local cache
                     loadProfile(uri.toString());
                 } catch (IOException e) {

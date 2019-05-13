@@ -76,6 +76,7 @@ public class PrefManager {
                                 usereditor.putString("video_banner_image", result.getString("video_banner_image"));
                                 usereditor.putString("profile_image_gallery", result.getString("profile_image_gallery"));
                                 usereditor.putString("profile_video_gallery", result.getString("profile_video_gallery"));
+                                usereditor.commit();
                             } catch (JSONException e) {
                                 e.printStackTrace();
                             }
