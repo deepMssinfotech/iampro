@@ -52,7 +52,7 @@ public class ImagePickerActivity extends AppCompatActivity {
     private int ASPECT_RATIO_X = 16, ASPECT_RATIO_Y = 9, bitmapMaxWidth = 1000, bitmapMaxHeight = 1000;
     private int IMAGE_COMPRESSION = 80;
     public static String fileName;
-
+         static Uri comp_result;
     public interface PickerOptionListener {
         void onTakeCameraSelected();
 
@@ -253,6 +253,7 @@ public class ImagePickerActivity extends AppCompatActivity {
         File path = new File(getExternalCacheDir(), "camera");
         if (!path.exists()) path.mkdirs();
         File image = new File(path, fileName);
+        comp_result=getUriForFile(ImagePickerActivity.this, getPackageName() + ".provider", image);
         return getUriForFile(ImagePickerActivity.this, getPackageName() + ".provider", image);
     }
 

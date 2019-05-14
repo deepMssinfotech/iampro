@@ -317,9 +317,6 @@ public class ProfileActivity extends Fragment implements AllFeedAdapter.ItemList
         changeImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-               /* Intent intent=new Intent(context,ProfileImageCroperActivity.class);
-                startActivity(intent); */
-                //finish();
                 imageType="userImage";
                 showImagePickerOptions();
 
@@ -491,6 +488,7 @@ public class ProfileActivity extends Fragment implements AllFeedAdapter.ItemList
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
 
         super.onActivityResult(requestCode, resultCode, data);
+        Log.i("responce code",requestCode+"---"+imageType);
         if (resultCode == RESULT_CANCELED) {
             return;
         }
@@ -504,8 +502,9 @@ public class ProfileActivity extends Fragment implements AllFeedAdapter.ItemList
                     if (imageType.equalsIgnoreCase("userImage")){
                         //userbackgroud.setImageBitmap(FixBitmap);
                         Uri selectedImage=data.getData();
+                        Uri imageUri = ImagePickerActivity.comp_result;
                         //userimage.setImageURI(selectedImage);
-                        Glide.with(this).load(selectedImage.toString())
+                        Glide.with(this).load(imageUri.toString())
                                 .into(userimage);
                     }
                     else if (imageType.equalsIgnoreCase("backgroundImage")){
@@ -522,7 +521,8 @@ public class ProfileActivity extends Fragment implements AllFeedAdapter.ItemList
                     Toast.makeText(context, "Failed!", Toast.LENGTH_SHORT).show();
                 }
             }
-        } else if (requestCode == CAMERA) {
+        }
+        else if (requestCode == CAMERA) {
             Uri contentURI = data.getData();
             try {
                 FixBitmap = (Bitmap) data.getExtras().get("data");
@@ -533,8 +533,9 @@ public class ProfileActivity extends Fragment implements AllFeedAdapter.ItemList
                     //userbackgroud.setImageBitmap(FixBitmap);
                     Uri selectedImage=data.getData();
                     //userimage.setImageURI(selectedImage);
-                    Glide.with(this).load(selectedImage.toString())
-                            .into(userimage);
+
+                    Toast.makeText(getContext(),""+selectedImage,Toast.LENGTH_LONG).show();
+
                 }
                 else if (imageType.equalsIgnoreCase("backgroundImage")){
                     //userbackgroud.setImageBitmap(FixBitmap);
@@ -586,7 +587,8 @@ public class ProfileActivity extends Fragment implements AllFeedAdapter.ItemList
             Config.showInternetDialog(context);
             return;
         }
-        CreateProgressDialog();
+
+        //CreateProgressDialog();
         //Toast.makeText(getApplicationContext(), "Video upload remain pleasw wait....", Toast.LENGTH_LONG).show();
         //return;
         try {
@@ -601,7 +603,7 @@ public class ProfileActivity extends Fragment implements AllFeedAdapter.ItemList
                     //.setNotificationConfig(new UploadNotificationConfig())
                     .setMaxRetries(2)
                     .startUpload(); //Starting the upload
-            ShowProgressDialog();
+            //ShowProgressDialog();
             ProfileActivity fragment = new ProfileActivity();
             function.loadFragment(context,fragment,null);
             //getActivity().finish();
@@ -614,19 +616,22 @@ public class ProfileActivity extends Fragment implements AllFeedAdapter.ItemList
             Config.showInternetDialog(context);
             return;
         }
-        CreateProgressDialog();
+        Glide.with(this).load(backgroundimagePath).into(userimage);
+        //CreateProgressDialog();
         //Toast.makeText(getApplicationContext(), "Video upload remain pleasw wait....", Toast.LENGTH_LONG).show();
         //return;
 
         try {
             String uploadId=UUID.randomUUID().toString();
             //Creating a multi part request
+            String image_name=System.currentTimeMillis()+".jpg";
             new MultipartUploadRequest(context, uploadId, Config.AJAX_URL + "signup.php")
                     .addFileToUpload(backgroundimagePath, "avatar") //Adding file
                     .addParameter("type","profile_pic")//Adding text parameter to the request
                     .addParameter("process_type","android")
                     .addParameter("page_url","page/update_profile.html")
                     .addParameter("user_id",PrefManager.getLoginDetail(context,"id"))
+                    .addParameter("image_name",image_name)
                     .addParameter("userid",PrefManager.getLoginDetail(context,"id"))
                     .addParameter("fname",PrefManager.getLoginDetail(context,"fname"))
                     .addParameter("email",PrefManager.getLoginDetail(context,"email"))
@@ -636,7 +641,7 @@ public class ProfileActivity extends Fragment implements AllFeedAdapter.ItemList
                     //.setNotificationConfig(new UploadNotificationConfig())
                     .setMaxRetries(2)
                     .startUpload(); //Starting the upload
-            ShowProgressDialog();
+            PrefManager.updateLoginDetail(context,"options_avatar",image_name);
             ProfileActivity fragment = new ProfileActivity();
             function.loadFragment(context,fragment,null);
 
@@ -696,12 +701,13 @@ public class ProfileActivity extends Fragment implements AllFeedAdapter.ItemList
         return Uri.parse(path);
     }
     private void loadProfile(String url)   {
+
         Log.d("eProfile_uri", "Image cache path: " + url);
         if(imageType.equalsIgnoreCase("backgroundImage"))  {
             //backgroundimagePath = getPath(url);
             Glide.with(this).load(url)
                     .into(userbackgroud);
-            userbackgroud.setColorFilter(ContextCompat.getColor(context, android.R.color.transparent));
+            //userbackgroud.setColorFilter(ContextCompat.getColor(context, android.R.color.transparent));
             sendData();
         }
         else if (imageType.equalsIgnoreCase("userImage")){
@@ -709,7 +715,7 @@ public class ProfileActivity extends Fragment implements AllFeedAdapter.ItemList
             //backgroundimagePath = getPath(url);
             Glide.with(this).load(url)
                     .into(userimage);
-            userimage.setColorFilter(ContextCompat.getColor(context, android.R.color.transparent));
+            //userimage.setColorFilter(ContextCompat.getColor(context, android.R.color.transparent));
             Toast.makeText(context,"Sending",Toast.LENGTH_LONG).show();
             sendUserPic();
         }
