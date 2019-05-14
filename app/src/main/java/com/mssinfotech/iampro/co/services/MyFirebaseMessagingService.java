@@ -25,7 +25,7 @@ import org.json.JSONObject;
 //import com.mssinfotech.iampro.co.DefaultActivity;
 //import com.mssinfotech.iampro.co.HomeActivity;
 import com.mssinfotech.iampro.co.WelcomeActivity;
-import com.mssinfotech.iampro.co.app.Config;
+import com.mssinfotech.iampro.co.common.Config;
 import com.mssinfotech.iampro.co.utils.NotificationUtils;
 import com.mssinfotech.iampro.co.R;
 
@@ -49,7 +49,6 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
     @Override
     public void onMessageReceived(RemoteMessage remoteMessage) {
         Log.e(TAG, "From: " + remoteMessage.getFrom());
-
         super.onMessageReceived(remoteMessage);
         Log.d("msg", "onMessageReceived: " + remoteMessage.getData().get("message"));
         if (remoteMessage == null)
@@ -117,13 +116,9 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
             String timestamp = data.getString("timestamp");
             JSONObject payload = data.getJSONObject("payload");
 
-            Log.e(TAG, "title: " + title);
-            Log.e(TAG, "message: " + message);
-            Log.e(TAG, "isBackground: " + isBackground);
-            Log.e(TAG, "payload: " + payload.toString());
-            Log.e(TAG, "imageUrl: " + imageUrl);
-            Log.e(TAG, "url: " + url);
-            Log.e(TAG, "timestamp: " + timestamp);
+
+
+            //Config.getCountFromServer(getApplicationContext());
 
 
             if (!NotificationUtils.isAppIsInBackground(getApplicationContext())) {
@@ -133,6 +128,13 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                 pushNotification.putExtra("url", url);
                 LocalBroadcastManager.getInstance(this).sendBroadcast(pushNotification);
             } else {
+                Log.e(TAG, "title: " + title);
+                Log.e(TAG, "message: " + message);
+                Log.e(TAG, "isBackground: " + isBackground);
+                Log.e(TAG, "payload: " + payload.toString());
+                Log.e(TAG, "imageUrl: " + imageUrl);
+                Log.e(TAG, "url: " + url);
+                Log.e(TAG, "timestamp: " + timestamp);
 
                 Intent intent = new Intent(this, WelcomeActivity.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
@@ -146,7 +148,6 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                                 intent,
                                 PendingIntent.FLAG_CANCEL_CURRENT
                         );
-
                 PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_ONE_SHOT);
                 String channelId = "Default";
                 // check for image attachment

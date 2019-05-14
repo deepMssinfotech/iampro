@@ -33,6 +33,18 @@ import java.util.ArrayList;
 
 public class Config
 {
+    public static final String TOPIC_GLOBAL = "global";
+
+    // broadcast receiver intent filters
+    public static final String REGISTRATION_COMPLETE = "registrationComplete";
+    public static final String PUSH_NOTIFICATION = "pushNotification";
+
+    // id to handle the notification in the notification tray
+    public static final int NOTIFICATION_ID = 100;
+    public static final int NOTIFICATION_ID_BIG_IMAGE = 101;
+
+    public static final String SHARED_PREF = "ah_firebase";
+
     public static final String TAG="Imapro tag";
     public static boolean doubleBackToExitPressedOnce = false;
     public static final String API_URL="https://www.iampro.co/api/";
@@ -58,16 +70,11 @@ public class Config
     private static final float BITMAP_SCALE = 0.4f;
     private static final int BLUR_RADIUS = 8;
     public static final boolean SHOW_LOGS = true;
-    public static final String TOPIC_GLOBAL = "global";
 
-    // broadcast receiver intent filters
-    public static final String REGISTRATION_COMPLETE = "registrationComplete";
-    public static final String PUSH_NOTIFICATION = "pushNotification";
-    // id to handle the notification in the notification tray
-    public static final int NOTIFICATION_ID = 100;
-    public static final int NOTIFICATION_ID_BIG_IMAGE = 101;
+    public static TextView count_chat=null, count_notify=null,count_cart=null,
+            count_whishlist=null,count_friend_request=null,count_message=null,count_cart_pop=null,
+            image_text=null,video_text=null,user_text=null,product_text=null,provide_text=null,demand_text=null;
 
-    public static final String SHARED_PREF = "ah_firebase";
     public static RequestOptions options_avatar = new RequestOptions()
             .centerCrop()
             .circleCrop()
@@ -361,7 +368,7 @@ public class Config
 
     }
 
-    public static void getCountFromServer(final Context context) {
+    public static final void getCountFromServer(final Context context) {
         if (PrefManager.isLogin(context)) {
             //Log.d(TAG, "test servide for 5 sec");
             String api_url = Config.API_URL + "api.php?type=chat_count&myid=" + PrefManager.getLoginDetail(context, "id");
@@ -387,6 +394,7 @@ public class Config
                                     PrefManager.updateLoginDetail(context,"total_count_image", result.getString("total_count_image"));
                                     PrefManager.updateLoginDetail(context,"total_count_video", result.getString("total_count_video"));
                                     PrefManager.updateLoginDetail(context,"total_count_friend", result.getString("total_count_friend"));
+                                    updateAllCount(context);
                                 } catch (JSONException e) {
                                     e.printStackTrace();
                                 }
@@ -405,5 +413,20 @@ public class Config
                 requestQueue.add(stringRequest);
             }
         }
+    }
+    public static void updateAllCount(final Context context) {
+        if(count_chat!=null){count_chat.setText(PrefManager.getLoginDetail(context,"chatcount"));}
+        if(count_notify!=null){count_notify.setText(PrefManager.getLoginDetail(context,"my_notification"));}
+        if(count_cart!=null){count_cart.setText(PrefManager.getLoginDetail(context,"cart_count"));}
+        if(count_whishlist!=null){count_whishlist.setText(PrefManager.getLoginDetail(context,"my_wishlist"));}
+        if(count_friend_request!=null){count_friend_request.setText(PrefManager.getLoginDetail(context,"panding_friend"));}
+        if(count_message!=null){count_message.setText(PrefManager.getLoginDetail(context,"chatcount"));}
+        if(count_cart_pop!=null){count_cart_pop.setText(PrefManager.getLoginDetail(context,"cart_count"));}
+        if(image_text!=null){image_text.setText(PrefManager.getLoginDetail(context,"total_count_image"));}
+        if(video_text!=null){video_text.setText(PrefManager.getLoginDetail(context,"total_count_video"));}
+        if(user_text!=null){user_text.setText(PrefManager.getLoginDetail(context,"total_count_friend"));}
+        if(product_text!=null){product_text.setText(PrefManager.getLoginDetail(context,"total_count_product"));}
+        if(provide_text!=null){provide_text.setText(PrefManager.getLoginDetail(context,"total_count_provide"));}
+        if(demand_text!=null){demand_text.setText(PrefManager.getLoginDetail(context,"total_count_demand"));}
     }
 }

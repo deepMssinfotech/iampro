@@ -51,10 +51,13 @@ public class IncludeShortMenu  extends RelativeLayout {
         (this.findViewById(R.id.img_provide)).setOnClickListener(provideOnClickListener);
         (this.findViewById(R.id.img_demand)).setOnClickListener(demandOnClickListener);
         tvs = this.findViewById(R.id.myuid);
+        Config.image_text = this.findViewById(R.id.image_count);
+        Config.video_text = this.findViewById(R.id.video_count);
+        Config.user_text = this.findViewById(R.id.user_count);
+        Config.product_text = this.findViewById(R.id.product_count);
+        Config.provide_text = this.findViewById(R.id.provide_count);
+        Config.demand_text = this.findViewById(R.id.demand_count);
         userProfileCount(context);
-    }
-    public void updateCounts(Context context,String id){
-        //Toast.makeText(context, id,  Toast.LENGTH_LONG).show();
     }
     public IncludeShortMenu(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
@@ -112,24 +115,18 @@ public class IncludeShortMenu  extends RelativeLayout {
         }
     };
     public void userProfileCount(Context context){
-        TextView image_text = this.findViewById(R.id.image_count);
-        TextView video_text = this.findViewById(R.id.video_count);
-        TextView user_text = this.findViewById(R.id.user_count);
-        TextView product_text = this.findViewById(R.id.product_count);
-        TextView provide_text = this.findViewById(R.id.provide_count);
-        TextView demand_text = this.findViewById(R.id.demand_count);
         String total_count_product=PrefManager.getLoginDetail(context,"total_count_product");
         String total_count_image=PrefManager.getLoginDetail(context,"total_count_image");
         String total_count_provide=PrefManager.getLoginDetail(context,"total_count_provide");
         String total_count_demand=PrefManager.getLoginDetail(context,"total_count_demand");
         String total_count_video=PrefManager.getLoginDetail(context,"total_count_video");
         String total_count_friend=PrefManager.getLoginDetail(context,"total_count_friend");
-        product_text.setText(total_count_product);
-        provide_text.setText(total_count_provide);
-        demand_text.setText(total_count_demand);
-        image_text.setText(total_count_image);
-        video_text.setText(total_count_video);
-        user_text.setText(total_count_friend);
-        Toast.makeText(context, "total_count_image:"+total_count_image,  Toast.LENGTH_LONG).show();
+        Config.product_text.setText(total_count_product);
+        Config.provide_text.setText(total_count_provide);
+        Config.demand_text.setText(total_count_demand);
+        Config.image_text.setText(total_count_image);
+        Config.video_text.setText(total_count_video);
+        Config.user_text.setText(total_count_friend);
+        //Toast.makeText(context, "total_count_image:"+total_count_image,  Toast.LENGTH_LONG).show();
     }
 }

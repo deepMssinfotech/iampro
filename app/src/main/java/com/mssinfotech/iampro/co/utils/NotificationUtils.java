@@ -30,7 +30,7 @@ import java.util.Date;
 import java.util.List;
 
 import com.mssinfotech.iampro.co.R;
-import com.mssinfotech.iampro.co.app.Config;
+import com.mssinfotech.iampro.co.common.Config;
 
 /**
  * Created by Ravi on 31/03/15.
