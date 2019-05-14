@@ -88,18 +88,20 @@ public class JoinFriendActivity extends Fragment implements UserDataAdapter.Item
         view = v;
         String id;
         context = getContext();
+        intent = getActivity().getIntent();
+        Bundle args = getArguments();
+        //fid = getArguments().getString("uid");
+        if (args != null && args.containsKey("uid")) {
+            id = args.getString("uid").toString();
+        }else {
+            id = intent.getStringExtra("uid");
+        }
         uid= PrefManager.getLoginDetail(getContext(),"id");
-        Config.setLayoutName(getResources().getResourceEntryName(R.layout.activity_joinfriend));
+        //Config.setLayoutName(getResources().getResourceEntryName(R.layout.activity_joinfriend));
         username = view.findViewById(R.id.username);
         userimage = view.findViewById(R.id.userimage);
         ll_header=view.findViewById(R.id.ll_header);
         userbackgroud = view.findViewById(R.id.userbackgroud);
-        try {
-            id = intent.getStringExtra("uid");
-        }
-        catch (Exception e){
-            id=uid;
-        }
         //getUser(15);
         uid= PrefManager.getLoginDetail(getContext(),"id");
         if(id == null || id.equals(uid)) {
@@ -129,7 +131,7 @@ public class JoinFriendActivity extends Fragment implements UserDataAdapter.Item
         }
 
         IncludeShortMenu includeShortMenu = view.findViewById(R.id.includeShortMenu);
-        //includeShortMenu.updateCounts(getContext(),uid);
+        includeShortMenu.updateCounts(context,uid);
         TextView myuid= includeShortMenu.findViewById(R.id.myuid);
         myuid.setText(uid);
         Intent i = new Intent();
@@ -340,6 +342,7 @@ public class JoinFriendActivity extends Fragment implements UserDataAdapter.Item
                 new com.android.volley.Response.Listener<JSONArray>() {
                     @Override
                     public void onResponse(JSONArray response) {
+
                         ArrayList<SingleItemModel> singleItem = new ArrayList<SingleItemModel>();
                         if(!singleItem.isEmpty()){
                             singleItem.clear();
@@ -349,17 +352,14 @@ public class JoinFriendActivity extends Fragment implements UserDataAdapter.Item
                                 // Get current json object
                                 JSONObject student = response.getJSONObject(i);
 
-                                  JSONObject user_detaiis=student.getJSONObject("user_detail");
+                                JSONObject user_detaiis=student.getJSONObject("user_detail");
                                   //friendstatus
                                 JSONObject friendstatus=student.getJSONObject("friendstatus");
-                                    String id=user_detaiis.getString("id");
-                                 String fname=user_detaiis.getString("fname");
-                                 String lname=user_detaiis.getString("lname");
+                                String id=user_detaiis.getString("id");
+                                String fname=user_detaiis.getString("fname");
+                                String lname=user_detaiis.getString("lname");
                                 String avatar=user_detaiis.getString("avatar");
                                 String category=user_detaiis.getString("category");
-
-                                    //JoinFriendItemList.add(new JoinFriendItem(avatar,fname,category));
-
                                 String name = user_detaiis.optString("fname");
                                 int uid=user_detaiis.getInt("id");
                                 //String identity_type=student.getString("identity_type");
