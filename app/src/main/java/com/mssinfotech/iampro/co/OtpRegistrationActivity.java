@@ -27,6 +27,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -63,7 +64,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 import static android.app.Activity.RESULT_CANCELED;
 
-public class OtpRegistrationActivity extends Fragment  implements SingleUploadBroadcastReceiver.Delegate {
+public class OtpRegistrationActivity extends Fragment  implements SingleUploadBroadcastReceiver.Delegate, View.OnClickListener {
     private Button btnprocess;
     private TextInputLayout tilotp,tilpassword,tilcpassword;
     private TextInputEditText etotp,etpassword,etcpassword;
@@ -71,7 +72,7 @@ public class OtpRegistrationActivity extends Fragment  implements SingleUploadBr
     public static final int REQUEST_ID_MULTIPLE_PERMISSIONS = 1;
     public static final int REQUEST_IMAGE = 100;
     private int GALLERY = 1, CAMERA = 2;
-
+   RelativeLayout changeImage_rl;
     String otp="";
     String fname="",lname="",mobile="",email="",password="",cpassword="",category="";
     public static String imageType;
@@ -96,6 +97,7 @@ public class OtpRegistrationActivity extends Fragment  implements SingleUploadBr
         etotp = view.findViewById(R.id.etotp);
         etpassword = view.findViewById(R.id.etpassword);
         etcpassword = view.findViewById(R.id.etcpassword);
+        changeImage_rl=view.findViewById(R.id.changeImage_rl);
         context = getContext();
         intent = getActivity().getIntent();
         Bundle args = getArguments();
@@ -136,7 +138,11 @@ public class OtpRegistrationActivity extends Fragment  implements SingleUploadBr
                      //Toast.makeText(getContext(),""+"response2",Toast.LENGTH_LONG).show();
                      password=etpassword.getText().toString().trim();
                      cpassword=etcpassword.getText().toString().trim();
-                     if (!password.equalsIgnoreCase(cpassword)){
+                     if (password.equalsIgnoreCase("") || password.length()==0 || password.isEmpty()){
+                         Toast.makeText(getContext(),""+"Password is empty!",Toast.LENGTH_LONG).show();
+                         return;
+                     }
+                      if (!password.equalsIgnoreCase(cpassword)){
                          Toast.makeText(getContext(),""+"Password and Confirm Password doesnot match!",Toast.LENGTH_LONG).show();
                          return;
                      }
@@ -159,9 +165,19 @@ public class OtpRegistrationActivity extends Fragment  implements SingleUploadBr
                /* Intent intent=new Intent(context,ProfileImageCroperActivity.class);
                 startActivity(intent); */
                 //finish();
+                //  changeImage
+                Toast.makeText(getContext(),""+"Click",Toast.LENGTH_LONG).show();
                 imageType="userImage";
                 showImagePickerOptions();
 
+            }
+        });
+        changeImage_rl.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //Toast.makeText(getContext(),""+"Click",Toast.LENGTH_LONG).show();
+                imageType="userImage";
+                showImagePickerOptions();
             }
         });
         checkAndRequestPermissions();
@@ -546,6 +562,11 @@ public class OtpRegistrationActivity extends Fragment  implements SingleUploadBr
                 }
             }
         }).start();
+    }
+
+    @Override
+    public void onClick(View v) {
+   Toast.makeText(getContext(),"Helloooo",Toast.LENGTH_LONG).show();
     }
 }
 

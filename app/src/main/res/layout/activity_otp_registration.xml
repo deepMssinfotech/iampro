@@ -42,6 +42,7 @@
             android:orientation="vertical"
             android:paddingTop="30dp">
             <RelativeLayout
+                android:id="@+id/changeImage_rl"
                 android:layout_margin="56dp"
                 android:layout_gravity="center"
                 android:layout_centerHorizontal="true"
