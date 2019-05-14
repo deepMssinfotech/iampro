@@ -459,7 +459,7 @@ public class OtpRegistrationActivity extends Fragment  implements SingleUploadBr
         }
 
     }
-    private void loadImgData(String url)   {
+    private void  loadImgData(String url)   {
         Log.d("eProfile_uri", "Image cache path: " + url);
         //userimage
         Glide.with(this).load(url)
