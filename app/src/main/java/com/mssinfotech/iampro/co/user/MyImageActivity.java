@@ -469,7 +469,7 @@ Videogallery profile image
         MyImageActivity.this.startActivity(i_signup);
     } */
     public void getAllAlbum(){
-      String url="https://www.iampro.co/api/app_service.php?type=getAlbemsListt&search_type=image&uid="+uid;
+      String url=Config.API_URL+"app_service.php?type=getAlbemsListt&search_type=image&uid="+uid;
         RequestQueue requestQueue = Volley.newRequestQueue(context);
         final ProgressDialog pDialog = new ProgressDialog(context); //Your Activity.this
         pDialog.setMessage("Loading...!");

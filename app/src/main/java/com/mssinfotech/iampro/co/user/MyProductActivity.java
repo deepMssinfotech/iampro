@@ -128,7 +128,7 @@ public class MyProductActivity extends Fragment implements MyProductAdapter.Item
             gteUsrDetail(id);
         }
         IncludeShortMenu includeShortMenu = view.findViewById(R.id.includeShortMenu);
-        //includeShortMenu.updateCounts(context,uid);
+        includeShortMenu.updateCounts(context,uid);
         TextView myuid= includeShortMenu.findViewById(R.id.myuid);
         myuid.setText(uid);
         Intent i = new Intent();
