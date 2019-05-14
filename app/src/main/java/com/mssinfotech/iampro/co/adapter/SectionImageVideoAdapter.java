@@ -122,8 +122,6 @@ public class SectionImageVideoAdapter extends RecyclerView.Adapter<SectionImageV
         final String pid=singleItem.getId();
         final String uidv=itemsList.get(i).getUid();
 
-
-
         holder. category.setText(itemsList.get(i).getName());
 
         int my_uid=Integer.parseInt(uidv);
@@ -145,14 +143,14 @@ public class SectionImageVideoAdapter extends RecyclerView.Adapter<SectionImageV
             //holder.ratingBar.setEnabled(false);
         }
 
-        if(PrefManager.isLogin(mContext)){
+       /* if(PrefManager.isLogin(mContext)){
             holder.likeButton.setEnabled(true);
             //holder.favButton.setEnabled(true);
         }
         else {
             holder.likeButton.setEnabled(false);
             //holder.favButton.setEnabled(false);
-        }
+        } */
 
         //if(itemsList.get(i).getMore().equalsIgnoreCase("loadmore")){
             //holder.user_image.setVisibility(View.VISIBLE);
@@ -494,7 +492,7 @@ public class SectionImageVideoAdapter extends RecyclerView.Adapter<SectionImageV
       //  }
 
         if(PrefManager.isLogin(mContext)){
-            if(!PrefManager.getLoginDetail(mContext,"id").equalsIgnoreCase(itemsList.get(i).getUid().toString()))
+            if(!PrefManager.getLoginDetail(mContext,"id").equalsIgnoreCase(itemsList.get(i).getUid()))
                 holder.buttonViewOption.setVisibility(View.GONE);
             else
                 holder.buttonViewOption.setVisibility(View.VISIBLE);
