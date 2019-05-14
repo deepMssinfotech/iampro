@@ -116,14 +116,12 @@ public class SectionImageVideoAdapter extends RecyclerView.Adapter<SectionImageV
         Log.d("onBind_resp",""+itemsList.size());
         //orgg
         //final String uid=singleItem.getUid();
-
         final String uid=PrefManager.getLoginDetail(mContext,"id");
         final String id=singleItem.getId();
         final String pid=singleItem.getId();
         final String uidv=itemsList.get(i).getUid();
 
         holder. category.setText(itemsList.get(i).getName());
-
         int my_uid=Integer.parseInt(uidv);
         if(my_uid==0){
             holder.likeButton.setEnabled(false);
@@ -142,7 +140,6 @@ public class SectionImageVideoAdapter extends RecyclerView.Adapter<SectionImageV
             holder.likeButton.setEnabled(false);
             //holder.ratingBar.setEnabled(false);
         }
-
        /* if(PrefManager.isLogin(mContext)){
             holder.likeButton.setEnabled(true);
             //holder.favButton.setEnabled(true);
@@ -151,7 +148,6 @@ public class SectionImageVideoAdapter extends RecyclerView.Adapter<SectionImageV
             holder.likeButton.setEnabled(false);
             //holder.favButton.setEnabled(false);
         } */
-
         //if(itemsList.get(i).getMore().equalsIgnoreCase("loadmore")){
             //holder.user_image.setVisibility(View.VISIBLE);
              Glide.with(mContext)
@@ -161,26 +157,13 @@ public class SectionImageVideoAdapter extends RecyclerView.Adapter<SectionImageV
              holder.category.setText(itemsList.get(i).getFullname());
              //holder.ratingBar.setRating(Float.parseFloat(itemsList.get(i).getRating()));
          //}
-
        //if(singleItem.getRating()!="NAN" || singleItem.getRating().length()>0 || !(singleItem.getRating().equalsIgnoreCase("NAN")) || singleItem.getRating()!="" || !singleItem.getRating().equalsIgnoreCase("")
         // || !singleItem.getRating().isEmpty())
         //holder.ratingBar.setRating(Float.parseFloat(String.valueOf(singleItem.getRating())));
-
         holder.tv_name.setText(singleItem.getName());
         holder.udate.setText(singleItem.getUdate());
         holder.tv_comments.setText(String.valueOf(singleItem .getComments()));
-        if(itemsList.get(i).getMore()!=null && itemsList.get(i).getMore().equalsIgnoreCase("loadmore")){
-            //holder.btnMore.setVisibility(View.GONE);
-            holder.buttonViewOption.setVisibility(View.GONE);
-             if (type.equalsIgnoreCase("provide") || type.equalsIgnoreCase("demand")){
-                  if (PrefManager.isLogin(mContext)){
-                      holder.favButton.setEnabled(true);
-                  }
-                  else{
-                      holder.favButton.setEnabled(false);
-                  }
-             }
-        }
+
         holder.tv_totallike.setText(String.valueOf(singleItem .getTotallike()));
         //holder.likeButton.setUnlikeDrawableRes(R.drawable.like);
         holder.likeButton.setUnlikeDrawable(mContext.getResources().getDrawable(R.drawable.like));
@@ -368,7 +351,6 @@ public class SectionImageVideoAdapter extends RecyclerView.Adapter<SectionImageV
 
         }
         else{
-
             holder.user_image.setVisibility(View.VISIBLE);
             Glide.with(mContext)
                     .load(Config.ALBUM_URL+singleItem.getImage())
@@ -609,6 +591,18 @@ public class SectionImageVideoAdapter extends RecyclerView.Adapter<SectionImageV
                   }
               });
           }
+        if(itemsList.get(i).getMore()!=null && itemsList.get(i).getMore().equalsIgnoreCase("loadmore")){
+            //holder.btnMore.setVisibility(View.GONE);
+            holder.buttonViewOption.setVisibility(View.GONE);
+            if (type.equalsIgnoreCase("provide") || type.equalsIgnoreCase("demand")){
+                if (PrefManager.isLogin(mContext)){
+                    holder.favButton.setEnabled(true);
+                }
+                else{
+                    holder.favButton.setEnabled(false);
+                }
+            }
+        }
         }
     @Override
     public int getItemCount() {
@@ -649,26 +643,7 @@ public class SectionImageVideoAdapter extends RecyclerView.Adapter<SectionImageV
             imageView_user=view.findViewById(R.id.imageView_user);
             favButton=view.findViewById(R.id.favButton);
             user_image= view.findViewById(R.id.imageView_user);
-            if (type.equalsIgnoreCase("Product")){
-                iv_buy=view.findViewById(R.id.iv_buy);
-            }
-            if (type.equalsIgnoreCase("Provide") || type.equalsIgnoreCase("Demand")){
-                favButton=view.findViewById(R.id.favButton);
-            }
-            imageView_icon=view.findViewById(R.id.imageView_icon);
-             if(type.equalsIgnoreCase("product")){
-                 tv_purchaseprice=view.findViewById(R.id.tv_purchaseprice);
-                  tv_sellingprice=view.findViewById(R.id.tv_sellingprice);
-                 //user_image=view.findViewById(R.id.user_image);
-              }
-              else if(type.equalsIgnoreCase("provide")){
-                 tv_sellingprice=view.findViewById(R.id.tv_sellingprice);
-                 //user_image=view.findViewById(R.id.user_image);
-               }
-              else if(type.equalsIgnoreCase("demand")){
-                 tv_sellingprice=view.findViewById(R.id.tv_sellingprice);
-                 //user_image=view.findViewById(R.id.user_image);
-              }
+
             ll_comment=view.findViewById(R.id.ll_comment);
             likeButton =view.findViewById(R.id.likeButton);
             iv_comments=view.findViewById(R.id.iv_comments);
@@ -691,6 +666,28 @@ public class SectionImageVideoAdapter extends RecyclerView.Adapter<SectionImageV
                     //        Toast.makeText(v.getContext(), tvTitle.getText(), Toast.LENGTH_SHORT).show();
                 }
             });
+
+            if (type.equalsIgnoreCase("Product")){
+                iv_buy=view.findViewById(R.id.iv_buy);
+            }
+            if (type.equalsIgnoreCase("Provide") || type.equalsIgnoreCase("Demand")){
+                favButton=view.findViewById(R.id.favButton);
+            }
+            imageView_icon=view.findViewById(R.id.imageView_icon);
+            if(type.equalsIgnoreCase("product")){
+                tv_purchaseprice=view.findViewById(R.id.tv_purchaseprice);
+                tv_sellingprice=view.findViewById(R.id.tv_sellingprice);
+                //user_image=view.findViewById(R.id.user_image);
+            }
+            else if(type.equalsIgnoreCase("provide")){
+                tv_sellingprice=view.findViewById(R.id.tv_sellingprice);
+                //user_image=view.findViewById(R.id.user_image);
+            }
+            else if(type.equalsIgnoreCase("demand")){
+                tv_sellingprice=view.findViewById(R.id.tv_sellingprice);
+                //user_image=view.findViewById(R.id.user_image);
+            }
+
         }
     }
     public void sendrating(float rating,int uid,int id){

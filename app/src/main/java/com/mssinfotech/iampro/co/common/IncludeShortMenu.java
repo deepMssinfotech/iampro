@@ -129,4 +129,7 @@ public class IncludeShortMenu  extends RelativeLayout {
         Config.user_text.setText(total_count_friend);
         //Toast.makeText(context, "total_count_image:"+total_count_image,  Toast.LENGTH_LONG).show();
     }
+    public void updateCounts(Context context,String uid){
+
+    }
 }

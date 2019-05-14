@@ -369,7 +369,7 @@ public class MyImageActivity extends Fragment implements MyImageAdapter.ItemList
             Config.showInternetDialog(context);
             return;
         }
-         CreateProgressDialog();
+         //CreateProgressDialog();
         //Toast.makeText(getApplicationContext(), "Video upload remain pleasw wait....", Toast.LENGTH_LONG).show();
         //return;
         try {
@@ -388,7 +388,7 @@ public class MyImageActivity extends Fragment implements MyImageAdapter.ItemList
                     //.setNotificationConfig(new UploadNotificationConfig())
                     .setMaxRetries(2)
                     .startUpload(); //Starting the upload
-              ShowProgressDialog();
+              //ShowProgressDialog();
             ProfileActivity fragment = new ProfileActivity();
             function.loadFragment(context,fragment,null);
             Toast.makeText(context, "Update Profile Background Image is processing please wait", Toast.LENGTH_SHORT).show();

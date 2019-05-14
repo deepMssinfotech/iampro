@@ -337,7 +337,14 @@ public class ProfileActivity extends Fragment implements AllFeedAdapter.ItemList
             }
         });
 
-
+        if (PrefManager.isLogin(ProfileActivity.this.getContext())){
+            changeBackground_Image.setVisibility(View.VISIBLE);
+            changeImage.setVisibility(View.VISIBLE);
+        }
+        else{
+            changeBackground_Image.setVisibility(View.GONE);
+            changeImage.setVisibility(View.GONE);
+        }
     }
     private void showImagePickerOptions() {
         ImagePickerActivity.showImagePickerOptions(getContext(), new ImagePickerActivity.PickerOptionListener() {
@@ -495,10 +502,18 @@ public class ProfileActivity extends Fragment implements AllFeedAdapter.ItemList
                     //////userbackgroud.setImageBitmap(FixBitmap);
                     backgroundimagePath = getPath(contentURI);
                     if (imageType.equalsIgnoreCase("userImage")){
-                        userbackgroud.setImageBitmap(FixBitmap);
+                        //userbackgroud.setImageBitmap(FixBitmap);
+                        Uri selectedImage=data.getData();
+                        //userimage.setImageURI(selectedImage);
+                        Glide.with(this).load(selectedImage.toString())
+                                .into(userimage);
                     }
                     else if (imageType.equalsIgnoreCase("backgroundImage")){
-                        userbackgroud.setImageBitmap(FixBitmap);
+                        //userbackgroud.setImageBitmap(FixBitmap);
+                        Uri selectedImage=data.getData();
+                       // userbackgroud.setImageURI(selectedImage);
+                        Glide.with(this).load(selectedImage.toString())
+                                .into(userbackgroud);
                     }
                     //UploadImageOnServerButton.setVisibility(View.VISIBLE);
                     sendData();
@@ -515,14 +530,23 @@ public class ProfileActivity extends Fragment implements AllFeedAdapter.ItemList
                 userbackgroud.setImageBitmap(FixBitmap);
                 backgroundimagePath = getPath(contentURI);
                 if (imageType.equalsIgnoreCase("userImage")){
-                    userbackgroud.setImageBitmap(FixBitmap);
+                    //userbackgroud.setImageBitmap(FixBitmap);
+                    Uri selectedImage=data.getData();
+                    //userimage.setImageURI(selectedImage);
+                    Glide.with(this).load(selectedImage.toString())
+                            .into(userimage);
                 }
                 else if (imageType.equalsIgnoreCase("backgroundImage")){
-                    userbackgroud.setImageBitmap(FixBitmap);
+                    //userbackgroud.setImageBitmap(FixBitmap);
+                    Uri selectedImage=data.getData();
+                    //userbackgroud.setImageURI(selectedImage);
+                    Glide.with(this).load(selectedImage.toString())
+                            .into(userbackgroud);
                 }
                 //UploadImageOnServerButton.setVisibility(View.VISIBLE);
                 //  saveImage(thumbnail);
                 sendData();
+                gteUsrDetail(PrefManager.getLoginDetail(getContext(),"if"));
                 //Toast.makeText(ShadiRegistrationPart5.this, "Image Saved!", Toast.LENGTH_SHORT).show();
             }
             catch (Exception e){
@@ -537,10 +561,17 @@ public class ProfileActivity extends Fragment implements AllFeedAdapter.ItemList
                     Bitmap bitmap = MediaStore.Images.Media.getBitmap(context.getContentResolver(), uri);
                     backgroundimagePath = getPath(getImageUri(context,bitmap));
                     if (imageType.equalsIgnoreCase("userImage")){
-                        userbackgroud.setImageBitmap(bitmap);
+                        //userbackgroud.setImageBitmap(bitmap);
+                        Uri selectedImage=data.getData();
+                        //userimage.setImageURI(selectedImage);
+                        Glide.with(this).load(uri.toString())
+                                .into(userimage);
                     }
                     else if (imageType.equalsIgnoreCase("backgroundImage")){
-                        userbackgroud.setImageBitmap(bitmap);
+                        //userbackgroud.setImageBitmap(bitmap);
+                        Uri selectedImage=data.getData();
+                        //userbackgroud.setImageURI(selectedImage);
+                        Glide.with(this).load(uri.toString()).into( userbackgroud);
                     }
                     // loading profile image from local cache
                     loadProfile(uri.toString());
@@ -829,6 +860,7 @@ public class ProfileActivity extends Fragment implements AllFeedAdapter.ItemList
                         catch (Exception e){
                             //loading.dismiss();
                             e.printStackTrace();
+                            Log.d("errorr",e.getMessage());
                             Toast.makeText(context,e.getMessage(),Toast.LENGTH_LONG).show();
                         }
                     }
@@ -838,6 +870,8 @@ public class ProfileActivity extends Fragment implements AllFeedAdapter.ItemList
                     public void onErrorResponse(VolleyError error){
                         //loading.dismiss();
                         // Do something when error occurred
+                        error.printStackTrace();
+                        Log.d("errorr",error.getMessage());
                         Toast.makeText(context,error.getMessage(),Toast.LENGTH_LONG).show();
                     }
                 }
