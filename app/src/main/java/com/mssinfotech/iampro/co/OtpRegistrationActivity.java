@@ -475,6 +475,7 @@ public class OtpRegistrationActivity extends Fragment  implements SingleUploadBr
         }
 
     }
+
     private void loadImgData(String url)   {
         Log.d("eProfile_uri", "Image cache path: " + url);
         //userimage
