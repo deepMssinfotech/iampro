@@ -19,6 +19,7 @@ import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewCompat;
 import android.support.v4.widget.NestedScrollView;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.CardView;
@@ -80,6 +81,7 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import net.gotev.uploadservice.MultipartUploadRequest;
 
 import de.hdodenhof.circleimageview.CircleImageView;
+import dmax.dialog.SpotsDialog;
 
 import static android.app.Activity.RESULT_CANCELED;
 
@@ -401,6 +403,11 @@ public class ProfileActivity extends Fragment implements AllFeedAdapter.ItemList
     private void gteUsrDetail(String id){
         String myurl = Config.API_URL + "ajax.php?type=friend_detail&id=" + fid + "&uid=" + PrefManager.getLoginDetail(context,"id");
         Log.d(Config.TAG, myurl);
+        final Dialog dialog = new Dialog(this.getContext());
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setContentView(R.layout.progress_dialog);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+        dialog.show();
         StringRequest stringRequest = new StringRequest(myurl,
                 new Response.Listener<String>() {
                     @Override
@@ -469,9 +476,12 @@ public class ProfileActivity extends Fragment implements AllFeedAdapter.ItemList
                                     }
                                 }
                             });
-
+                             if (dialog.isShowing())
+                                  dialog.dismiss();
                         } catch (JSONException e) {
                             e.printStackTrace();
+                            if (dialog.isShowing())
+                                 dialog.dismiss();
                         }
                     }
                 },
@@ -479,6 +489,8 @@ public class ProfileActivity extends Fragment implements AllFeedAdapter.ItemList
                     @Override
                     public void onErrorResponse(VolleyError error) {
                         Log.e(Config.TAG, error.toString());
+                        if (dialog.isShowing())
+                              dialog.dismiss();
                     }
                 });
         //Creating a request queue
@@ -587,6 +599,11 @@ public class ProfileActivity extends Fragment implements AllFeedAdapter.ItemList
         //CreateProgressDialog();
         //Toast.makeText(getApplicationContext(), "Video upload remain pleasw wait....", Toast.LENGTH_LONG).show();
         //return;
+        final Dialog dialog = new Dialog(this.getContext());
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setContentView(R.layout.progress_dialog);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+        dialog.show();
         try {
             String uploadId = UUID.randomUUID().toString();
             //Creating a multi part request
@@ -604,8 +621,12 @@ public class ProfileActivity extends Fragment implements AllFeedAdapter.ItemList
             ProfileActivity fragment = new ProfileActivity();
             function.loadFragment(context,fragment,null);
             //getActivity().finish();
+            if (dialog.isShowing())
+                 dialog.dismiss();
         } catch (Exception exc) {
             Toast.makeText(context, ""+exc.getMessage(), Toast.LENGTH_SHORT).show();
+            if (dialog.isShowing())
+                dialog.dismiss();
         }
     }
     public void sendUserPic(){
@@ -617,7 +638,11 @@ public class ProfileActivity extends Fragment implements AllFeedAdapter.ItemList
         //CreateProgressDialog();
         //Toast.makeText(getApplicationContext(), "Video upload remain pleasw wait....", Toast.LENGTH_LONG).show();
         //return;
-
+        final Dialog dialog = new Dialog(this.getContext());
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setContentView(R.layout.progress_dialog);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+        dialog.show();
         try {
             String uploadId=UUID.randomUUID().toString();
             //Creating a multi part request
@@ -642,9 +667,13 @@ public class ProfileActivity extends Fragment implements AllFeedAdapter.ItemList
             PrefManager.updateLoginDetail(context,"options_avatar",image_name);
             ProfileActivity fragment = new ProfileActivity();
             function.loadFragment(context,fragment,null);
+            if (dialog.isShowing())
+                  dialog.dismiss();
 
         } catch (Exception exc) {
             Toast.makeText(context,""+exc.getMessage(), Toast.LENGTH_SHORT).show();
+            if (dialog.isShowing())
+                dialog.dismiss();
         }
     }
     @Override
@@ -700,9 +729,13 @@ public class ProfileActivity extends Fragment implements AllFeedAdapter.ItemList
 
         final Dialog dialog = new Dialog(this.getContext());
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        dialog.setContentView(R.layout.confirm_popup);
+        dialog.setContentView(R.layout.progress_dialog);
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
          dialog.show();
+
+         // AlertDialog progressDialog;
+        //progressDialog = new SpotsDialog(getContext(), R.style.Custom);
+
         //loading.setContentView(R.layout.confirm_popup);
         URL_FEED = Config.API_URL+ "feed_service.php?type=AllFeeds&start="+start+"&limit="+FEED_LIMIT+"&fid=" +fid+ "&uid=" +My_id+ "&my_id=" +My_id;
         Log.e(Config.TAG,URL_FEED);

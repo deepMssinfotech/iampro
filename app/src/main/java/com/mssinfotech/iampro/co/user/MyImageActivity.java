@@ -3,12 +3,14 @@ package com.mssinfotech.iampro.co.user;
 //import android.app.Activity;
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
+import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Handler;
 import android.provider.MediaStore;
@@ -25,6 +27,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -190,7 +193,6 @@ public class MyImageActivity extends Fragment implements MyImageAdapter.ItemList
 
             gteUsrDetail(id);
         }
-
         IncludeShortMenu includeShortMenu = view.findViewById(R.id.includeShortMenu);
         includeShortMenu.updateCounts(context,uid);
         TextView myuid= includeShortMenu.findViewById(R.id.myuid);
@@ -218,6 +220,12 @@ public class MyImageActivity extends Fragment implements MyImageAdapter.ItemList
     private void gteUsrDetail(String id){
         String myurl = Config.API_URL + "ajax.php?type=friend_detail&id=" + id + "&uid=" + uid;
         Log.d(Config.TAG, myurl);
+        final Dialog dialog = new Dialog(this.getContext());
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setContentView(R.layout.progress_dialog);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+        dialog.show();
+
         StringRequest stringRequest = new StringRequest(myurl,
                 new Response.Listener<String>() {
                     @Override
@@ -248,9 +256,12 @@ public class MyImageActivity extends Fragment implements MyImageAdapter.ItemList
                                     new PhotoFullPopupWindow(context, R.layout.popup_photo_full, view, Config.BANNER_URL+avatarX, null);
                                 }
                             });
-
+                           if (dialog.isShowing())
+                               dialog.dismiss();
                         } catch (JSONException e) {
                             e.printStackTrace();
+                            if (dialog.isShowing())
+                                dialog.dismiss();
                         }
                     }
                 },
@@ -258,6 +269,8 @@ public class MyImageActivity extends Fragment implements MyImageAdapter.ItemList
                     @Override
                     public void onErrorResponse(VolleyError error) {
                         Log.e(Config.TAG, error.toString());
+                        if (dialog.isShowing())
+                             dialog.dismiss();
                     }
                 });
         //Creating a request queue
@@ -375,6 +388,11 @@ public class MyImageActivity extends Fragment implements MyImageAdapter.ItemList
          //CreateProgressDialog();
         //Toast.makeText(getApplicationContext(), "Video upload remain pleasw wait....", Toast.LENGTH_LONG).show();
         //return;
+        final Dialog dialog = new Dialog(this.getContext());
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setContentView(R.layout.progress_dialog);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+        dialog.show();
         try {
             String uploadId = UUID.randomUUID().toString();
             //Creating a multi part request
@@ -396,8 +414,12 @@ public class MyImageActivity extends Fragment implements MyImageAdapter.ItemList
             //function.loadFragment(context,fragment,null);
             Toast.makeText(context, "Update Profile Background Image is processing please wait", Toast.LENGTH_SHORT).show();
             //getActivity().finish();
+            if (dialog.isShowing())
+                dialog.dismiss();
         } catch (Exception exc) {
             Toast.makeText(context, exc.getMessage(), Toast.LENGTH_SHORT).show();
+            if (dialog.isShowing())
+                dialog.dismiss();
         }
     }
 
@@ -406,9 +428,14 @@ public class MyImageActivity extends Fragment implements MyImageAdapter.ItemList
             Config.showInternetDialog(context);
             return;
         }
-        CreateProgressDialog();
+        //CreateProgressDialog();
         //Toast.makeText(getApplicationContext(), "Video upload remain pleasw wait....", Toast.LENGTH_LONG).show();
         //return;
+        final Dialog dialog = new Dialog(this.getContext());
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setContentView(R.layout.progress_dialog);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+        dialog.show();
         try {
             String uploadId = UUID.randomUUID().toString();
             //Creating a multi part request
@@ -426,13 +453,17 @@ public class MyImageActivity extends Fragment implements MyImageAdapter.ItemList
                     //.setNotificationConfig(new UploadNotificationConfig())
                     .setMaxRetries(2)
                     .startUpload(); //Starting the upload
-             ShowProgressDialog();
+             //ShowProgressDialog();
             //ProfileActivity fragment = new ProfileActivity();
             //function.loadFragment(context,fragment,null);
             //getActivity().finish();
+            if (dialog.isShowing())
+                dialog.dismiss();
 
         } catch (Exception exc) {
             Toast.makeText(context,""+exc.getMessage(), Toast.LENGTH_SHORT).show();
+            if (dialog.isShowing())
+                  dialog.dismiss();
         }
     }
 
@@ -449,9 +480,14 @@ public class MyImageActivity extends Fragment implements MyImageAdapter.ItemList
     public void getAllAlbum(){
       String url=Config.API_URL+"app_service.php?type=getAlbemsListt&search_type=image&uid="+uid;
         RequestQueue requestQueue = Volley.newRequestQueue(context);
-        final ProgressDialog pDialog = new ProgressDialog(context); //Your Activity.this
+       /* final ProgressDialog pDialog = new ProgressDialog(context); //Your Activity.this
         pDialog.setMessage("Loading...!");
-        pDialog.show();
+        pDialog.show();*/
+        final Dialog dialog = new Dialog(this.getContext());
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setContentView(R.layout.progress_dialog);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+        dialog.show();
         JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(
                 Request.Method.GET,
                 url,
@@ -459,7 +495,7 @@ public class MyImageActivity extends Fragment implements MyImageAdapter.ItemList
                 new com.android.volley.Response.Listener<JSONArray>() {
                     @Override
                     public void onResponse(JSONArray response) {
-                        pDialog.dismiss();
+                        //pDialog.dismiss();
                         if(!item_name.isEmpty()){
                             item_name.clear();
                         }
@@ -476,21 +512,27 @@ public class MyImageActivity extends Fragment implements MyImageAdapter.ItemList
                                  getImages(data);
                                  Log.d("Keyset",""+data);
                              }
+                             if (dialog.isShowing())
+                                 dialog.dismiss();
                         }
                         catch (JSONException e){
-                            pDialog.dismiss();
+                            //pDialog.dismiss();
                             e.printStackTrace();
                             Toast.makeText(context, ""+e.getMessage(), Toast.LENGTH_SHORT).show();
                             Log.d("catch_f",""+e.getMessage());
+                            if (dialog.isShowing())
+                                 dialog.dismiss();
                         }
                     }
                 },
                 new com.android.volley.Response.ErrorListener(){
                     @Override
                     public void onErrorResponse(VolleyError error){
-                        pDialog.dismiss();
+                        //pDialog.dismiss();
                         Toast.makeText(context, error.getMessage(), Toast.LENGTH_SHORT).show();
                         Log.d("verror",""+error.getMessage());
+                        if (dialog.isShowing())
+                            dialog.dismiss();
                     }
                 }
         );
@@ -507,6 +549,11 @@ public class MyImageActivity extends Fragment implements MyImageAdapter.ItemList
         //final ProgressDialog pDialog = new ProgressDialog(getApplicationContext()); //Your Activity.this
         //pDialog.setMessage("Loading...!");
         //pDialog.show();
+        final Dialog dialog = new Dialog(this.getContext());
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setContentView(R.layout.progress_dialog);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+        dialog.show();
         JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(
                 Request.Method.GET,
                 url,
@@ -587,13 +634,16 @@ public class MyImageActivity extends Fragment implements MyImageAdapter.ItemList
                             adapterr = new MyImageVideoDataAdapter(context, allSampleData,item_name);
                             recyclerView.setLayoutManager(new LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false));
                             recyclerView.setAdapter(adapterr);
-
+                         if (dialog.isShowing())
+                              dialog.dismiss();
                         }
                         catch (JSONException e){
                             //pDialog.dismiss();
                             e.printStackTrace();
                             Toast.makeText(context, ""+e.getMessage(), Toast.LENGTH_SHORT).show();
                             Log.d("catch_f",""+e.getMessage());
+                            if (dialog.isShowing())
+                                 dialog.dismiss();
                         }
                     }
                 },
@@ -603,6 +653,8 @@ public class MyImageActivity extends Fragment implements MyImageAdapter.ItemList
                         //pDialog.dismiss();
                         Toast.makeText(context, error.getMessage(), Toast.LENGTH_SHORT).show();
                         Log.d("verror",""+error.getMessage());
+                        if (dialog.isShowing())
+                             dialog.dismiss();
                     }
                 }
         );

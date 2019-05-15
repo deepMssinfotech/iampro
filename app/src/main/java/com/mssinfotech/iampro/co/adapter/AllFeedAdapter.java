@@ -119,7 +119,6 @@ public class AllFeedAdapter extends RecyclerView.Adapter<AllFeedAdapter.ViewHold
             purchese_cost = v.findViewById(R.id.purchese_cost);
             selling_cost = v.findViewById(R.id.selling_cost);
         }
-
         public void setData(final FeedModel item) {
             this.item = item;
             //final String uid= PrefManager.getLoginDetail(mContext,"id");
@@ -176,7 +175,6 @@ public class AllFeedAdapter extends RecyclerView.Adapter<AllFeedAdapter.ViewHold
                     }
                 }
             });
-
             Glide.with(mContext)
                     .load(item.getAvatar_path())
                     .apply(new RequestOptions()
@@ -647,7 +645,21 @@ public class AllFeedAdapter extends RecyclerView.Adapter<AllFeedAdapter.ViewHold
              });
          }
          else{
-               Toast.makeText(mContext,"First Login and try again...",Toast.LENGTH_LONG).show();
+               //Toast.makeText(mContext,"First Login and try again...",Toast.LENGTH_LONG).show();
+         }
+         if (PrefManager.isLogin(mContext) && PrefManager.getLoginDetail(mContext,"id").equalsIgnoreCase(String.valueOf(mValues.get(position).getUid()))){
+            //Vholder.
+             Vholder.like_un.setEnabled(true);
+
+         }
+         else{
+             if (type.equalsIgnoreCase("product")){
+               Vholder.iv_buy.setEnabled(false);
+             }
+             else if (type.equalsIgnoreCase("product") || type.equalsIgnoreCase("provide")){
+                  Vholder.favButton.setEnabled(false);
+             }
+             Vholder.like_un.setEnabled(false);
          }
     }
     @Override
