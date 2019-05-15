@@ -1,5 +1,6 @@
 package com.mssinfotech.iampro.co.user;
 import android.app.Activity;
+import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -7,6 +8,7 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Bitmap;
+import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Handler;
 import android.provider.MediaStore;
@@ -26,6 +28,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.AbsListView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -670,18 +673,17 @@ public class ProfileActivity extends Fragment implements AllFeedAdapter.ItemList
         Log.d("eProfile_uri", "Image cache path: " + url);
         if(imageType.equalsIgnoreCase("backgroundImage"))  {
             //backgroundimagePath = getPath(url);
-            Glide.with(this).load(url)
-                    .into(userbackgroud);
+            Glide.with(this).load(url).into(userbackgroud);
             //userbackgroud.setColorFilter(ContextCompat.getColor(context, android.R.color.transparent));
+            Toast.makeText(context,"Sending userbackgroud",Toast.LENGTH_LONG).show();
             sendData();
         }
         else if (imageType.equalsIgnoreCase("userImage")){
             //userimage
             //backgroundimagePath = getPath(url);
-            Glide.with(this).load(url)
-                    .into(userimage);
+            Glide.with(this).load(url).into(userimage);
             //userimage.setColorFilter(ContextCompat.getColor(context, android.R.color.transparent));
-            Toast.makeText(context,"Sending",Toast.LENGTH_LONG).show();
+            Toast.makeText(context,"Sending UserPic",Toast.LENGTH_LONG).show();
             sendUserPic();
         }
     }
@@ -695,6 +697,13 @@ public class ProfileActivity extends Fragment implements AllFeedAdapter.ItemList
     public void getFeed(int start){
         String My_id=PrefManager.getLoginDetail(context,"id");
         //final ProgressDialog loading = ProgressDialog.show(context,"Processing...","Please wait...",false,false);
+
+        final Dialog dialog = new Dialog(this.getContext());
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setContentView(R.layout.confirm_popup);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+         dialog.show();
+        //loading.setContentView(R.layout.confirm_popup);
         URL_FEED = Config.API_URL+ "feed_service.php?type=AllFeeds&start="+start+"&limit="+FEED_LIMIT+"&fid=" +fid+ "&uid=" +My_id+ "&my_id=" +My_id;
         Log.e(Config.TAG,URL_FEED);
         RequestQueue requestQueue = Volley.newRequestQueue(context);
@@ -825,11 +834,24 @@ public class ProfileActivity extends Fragment implements AllFeedAdapter.ItemList
                                 //loading.dismiss();
                                 vFeed.setAdapter(adapter);
                             }else{
-                                //loading.dismiss();
+                               /* if (loading.isShowing())
+                                loading.dismiss(); */
+                               // progressdialog.dismiss();
+                                 if (dialog.isShowing())
+                                dialog.dismiss();
                             }
+                            /*if (loading.isShowing())
+                                loading.dismiss(); */
+                            if (dialog.isShowing())
+                            dialog.dismiss();
+                           // progressdialog.dismiss();
                         }
                         catch (Exception e){
-                            //loading.dismiss();
+                             /* if (loading.isShowing())
+                            loading.dismiss(); */
+                            //progressdialog.dismiss();
+                            if (dialog.isShowing())
+                                 dialog.dismiss();
                             e.printStackTrace();
                             Log.d("errorr",e.getMessage());
                             Toast.makeText(context,e.getMessage(),Toast.LENGTH_LONG).show();
@@ -839,8 +861,12 @@ public class ProfileActivity extends Fragment implements AllFeedAdapter.ItemList
                 new Response.ErrorListener(){
                     @Override
                     public void onErrorResponse(VolleyError error){
-                        //loading.dismiss();
+                        /*if (loading.isShowing())
+                          loading.dismiss(); */
+                        ///progressdialog.dismiss();
                         // Do something when error occurred
+                        if (dialog.isShowing())
+                             dialog.dismiss();
                         error.printStackTrace();
                         Log.d("errorr",error.getMessage());
                         Toast.makeText(context,error.getMessage(),Toast.LENGTH_LONG).show();
