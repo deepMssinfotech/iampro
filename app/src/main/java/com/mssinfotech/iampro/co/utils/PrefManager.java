@@ -46,8 +46,6 @@ public class PrefManager {
         editor.putBoolean(IS_FIRST_TIME_LAUNCH, isFirstTime);
         editor.commit();
     }
-
-
     public boolean isFirstTimeLaunch() {
         return pref.getBoolean(IS_FIRST_TIME_LAUNCH, true);
     }
@@ -55,7 +53,6 @@ public class PrefManager {
         if (!uid.isEmpty()) {
             //Log.d(TAG, "test servide for 5 sec");
             String api_url = Config.API_URL + "api.php?type=chat_count&myid=" + uid;
-
             StringRequest stringRequest = new StringRequest(api_url,
                     new Response.Listener<String>() {
                         @Override

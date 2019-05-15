@@ -76,12 +76,12 @@ public class AllFeedAdapter extends RecyclerView.Adapter<AllFeedAdapter.ViewHold
         mListener=itemListener;
     }
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-        AppCompatImageView iv_comments, image, iv_favourite, ivLike;
+        AppCompatImageView iv_comments, image, iv_favourite, ivLike,video_imageView;
         TextView fullname, udate, tv_comments, tv_totallike, detail_name, purchese_cost, selling_cost;
         LikeButton like_un, favButton;
         ImageView iv_buy;
         RatingBar ratingBar;
-        LinearLayout ll_showhide, ll_comment;
+        LinearLayout ll_showhide, ll_comment,video_imageView_ll;
         FeedModel item;
         FullscreenVideoView fullscreenVideoView;
         CircleImageView imageView_user,imageView_icon;
@@ -97,6 +97,8 @@ public class AllFeedAdapter extends RecyclerView.Adapter<AllFeedAdapter.ViewHold
             v.setOnClickListener(this);
             imageView_user = v.findViewById(R.id.imageView_user);
             imageView_icon = v.findViewById(R.id.imageView_icon);
+            video_imageView_ll=v.findViewById(R.id.video_imageView_ll);
+            video_imageView=v.findViewById(R.id.video_imageView);
             iv_comments = v.findViewById(R.id.iv_comments);
             imageSlider = v.findViewById(R.id.imageSlider);
             fullscreenVideoView = v.findViewById(R.id.fullscreenVideoView);
@@ -186,7 +188,7 @@ public class AllFeedAdapter extends RecyclerView.Adapter<AllFeedAdapter.ViewHold
             //String type=item.getType();
             if (!type.equalsIgnoreCase("VIDEO")) {
                 image.setVisibility(View.VISIBLE);
-                Glide.with(mContext)
+                  Glide.with(mContext)
                         .load(item.getFimage_path())
                         .apply(Config.options_avatar)
                         .into(image);
@@ -379,7 +381,10 @@ public class AllFeedAdapter extends RecyclerView.Adapter<AllFeedAdapter.ViewHold
             Glide.with(mContext).load(R.drawable.image_icon).into(Vholder.imageView_icon);
         } else if (type.equalsIgnoreCase("video")) {
             Vholder.image.setVisibility(View.GONE);
-            Vholder.videoLayout.setVisibility(View.GONE);
+            Vholder.video_imageView.setVisibility(View.VISIBLE);
+            Vholder.video_imageView_ll.setVisibility(View.VISIBLE);
+           /*  Vholder.image.setVisibility(View.GONE);
+           Vholder.videoLayout.setVisibility(View.GONE);
             Vholder.fullscreenVideoView.setVisibility(View.VISIBLE);
             String ImageHol = Config.URL_ROOT + "uploads/video/" + mValues.get(position).getFimage_path();
             Log.d(Config.TAG + "video tag", ImageHol);
@@ -390,13 +395,30 @@ public class AllFeedAdapter extends RecyclerView.Adapter<AllFeedAdapter.ViewHold
                     .addSeekBackwardButton()
                     .addSeekForwardButton()
                     .portraitOrientation(PortraitOrientation.DEFAULT)
-                    .landscapeOrientation(LandscapeOrientation.DEFAULT);
+                    .landscapeOrientation(LandscapeOrientation.DEFAULT); */
+
             /*
             String imgsVideo[] = (mValues.get(position).getFimage_path()).split(".");
             String ImageHol = Config.URL_ROOT + "uploads/v_image/" + imgsVideo[0]+".jpg";
             Log.d(Config.TAG + "video tag", ImageHol) ;
             Glide.with(mContext).load(ImageHol).into(Vholder.videoImage);*/
+            Glide.with(mContext).load(mValues.get(position).getFimage_path()).into(Vholder.video_imageView);
+            String shared_id = mValues.get(position).getShareId();
+            final String[] sidArray = shared_id.split(",");
+            Vholder.video_imageView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    ImageDetail fragment = new ImageDetail();
+                    Bundle args = new Bundle();
+                    args.putString("id", sidArray[0]);
+                    args.putString("type", "video");
+                    args.putString("uid", String.valueOf(mValues.get(position).getUid()));
+                    fragment.setArguments(args);
+                    function.loadFragment(mContext,fragment,args);
+                }
+            });
             Glide.with(mContext).load(R.drawable.video_icon).into(Vholder.imageView_icon);
+
         } else if (type.equalsIgnoreCase("product")) {
             Vholder.imageSlider.setVisibility(View.VISIBLE);
             Vholder.image.setVisibility(View.GONE);
@@ -650,7 +672,12 @@ public class AllFeedAdapter extends RecyclerView.Adapter<AllFeedAdapter.ViewHold
          if (PrefManager.isLogin(mContext) && PrefManager.getLoginDetail(mContext,"id").equalsIgnoreCase(String.valueOf(mValues.get(position).getUid()))){
             //Vholder.
              Vholder.like_un.setEnabled(true);
-
+             if (type.equalsIgnoreCase("product")){
+                 Vholder.iv_buy.setEnabled(true);
+             }
+             else if (type.equalsIgnoreCase("product") || type.equalsIgnoreCase("provide")){
+                 Vholder.favButton.setEnabled(true);
+             }
          }
          else{
              if (type.equalsIgnoreCase("product")){
@@ -661,6 +688,12 @@ public class AllFeedAdapter extends RecyclerView.Adapter<AllFeedAdapter.ViewHold
              }
              Vholder.like_un.setEnabled(false);
          }
+         /*Vholder.video_imageView.setOnClickListener(new View.OnClickListener() {
+             @Override
+             public void onClick(View v) {
+
+             }
+         }); */
     }
     @Override
     public int getItemCount() {
