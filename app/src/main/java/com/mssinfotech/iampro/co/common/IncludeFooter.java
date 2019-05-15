@@ -285,18 +285,17 @@ public class IncludeFooter  extends RelativeLayout {
     };
     private View.OnClickListener mycartOnClickListener = new View.OnClickListener() {
         public void onClick(View v) {
-              if (PrefManager.isLogin(getContext())){
-                  //Toast.makeText(context,""+"LoggedIn...",Toast.LENGTH_LONG).show();
-                  CartActivity fragment = new CartActivity();
-                  Bundle args = new Bundle();
-                  args.putString("uid",PrefManager.getLoginDetail(getContext(),"id"));
-                  function.loadFragment(getContext(),fragment,args);
-                  removeFragment();
-              }
-              else{
-                  Toast.makeText(getContext(),""+"First Login and try again...",Toast.LENGTH_LONG).show();
-                     return;
-              }
+          if (PrefManager.isLogin(getContext())){
+              CartActivity fragment = new CartActivity();
+              Bundle args = new Bundle();
+              args.putString("uid",PrefManager.getLoginDetail(getContext(),"id"));
+              function.loadFragment(getContext(),fragment,args);
+              removeFragment();
+          }
+          else{
+              Toast.makeText(getContext(),""+"First Login and try again...",Toast.LENGTH_LONG).show();
+                 return;
+          }
         }
     };
     private View.OnClickListener mysellingOnClickListener = new View.OnClickListener() {

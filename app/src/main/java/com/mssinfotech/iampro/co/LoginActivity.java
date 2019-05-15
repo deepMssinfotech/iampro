@@ -141,23 +141,23 @@ public class LoginActivity extends Fragment {
 
                                 //String name=fnamem+"\t"+lnamem;
                                 //String imgurl=avatarv;
-                                PrefManager.updateLoginDetail(context,"username", unamee);
-                                PrefManager.updateLoginDetail(context,"img_url", jsonObject.getString("avatar"));
-                                PrefManager.updateLoginDetail(context,"id", jsonObject.getString("id"));
-                                PrefManager.updateLoginDetail(context,"dob", jsonObject.getString("dob"));
-                                PrefManager.updateLoginDetail(context,"mobile", jsonObject.getString("mobile"));
-                                PrefManager.updateLoginDetail(context,"fname", jsonObject.getString("fname"));
-                                PrefManager.updateLoginDetail(context,"lname", jsonObject.getString("lname"));
-                                PrefManager.updateLoginDetail(context,"email", jsonObject.getString("email"));
-                                PrefManager.updateLoginDetail(context,"banner_image", jsonObject.getString("banner_image"));
-                                PrefManager.updateLoginDetail(context,"img_banner_image", jsonObject.getString("img_banner_image"));
-                                PrefManager.updateLoginDetail(context,"video_banner_image", jsonObject.getString("video_banner_image"));
-                                PrefManager.updateLoginDetail(context,"profile_image_gallery", jsonObject.getString("profile_image_gallery"));
-                                PrefManager.updateLoginDetail(context,"profile_video_gallery", jsonObject.getString("profile_video_gallery"));
-                                //saveLoginDetails(unamee,passwordd,avatarv,id,mobilev,fnamem,lnamem,email,banner_imagev,  img_banner_image,  video_banner_image,  profile_image_gallery,  profile_video_gallery);
+                                String id = jsonObject.getString("id");
+                                String img_url= jsonObject.getString("avatar");
+                                String dob = jsonObject.getString("dob");
+                                String mobile = jsonObject.getString("mobile");
+                                String fname = jsonObject.getString("fname");
+                                String lname = jsonObject.getString("lname");
+                                String email = jsonObject.getString("email");
+                                String banner_image = jsonObject.getString("banner_image");
+                                String img_banner_image = jsonObject.getString("img_banner_image");
+                                String video_banner_image = jsonObject.getString("video_banner_image");
+                                String profile_image_gallery = jsonObject.getString("profile_image_gallery");
+                                String profile_video_gallery = jsonObject.getString("profile_video_gallery");
+                                PrefManager.saveLoginDetails(unamee,img_url,id,mobile,fname,lname,email,dob,banner_image,  img_banner_image,  video_banner_image,  profile_image_gallery,  profile_video_gallery);
+                                PrefManager.setLogin(true);
+                                PrefManager.updateCountFromServer(context,id);
                                 etemail.setText(" ");
                                 etpassword.setText(" ");
-
                                 Intent intent=new Intent(context.getApplicationContext(),WelcomeActivity.class);
                                 intent.addCategory(Intent.CATEGORY_HOME);
                                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
