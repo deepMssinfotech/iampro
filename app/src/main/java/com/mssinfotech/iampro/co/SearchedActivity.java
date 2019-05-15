@@ -97,14 +97,12 @@ public class SearchedActivity extends AppCompatActivity implements UserDataAdapt
         try {
             String query = URLEncoder.encode(SearchCat,"utf-8");
 
-            //String url=Config.API_URL+"app_service.php?type=getMyAlbemsListt&search_type=image&uid="+uid+"&my_id="+uid;
-            // String url=Config.API_URL+"app_service.php?type=getMyAlbemsListt&search_type=image&uid="+uid+"&my_id="+uid+"&album_id="+aid;
-            url = "https://www.iampro.co/api/app_service.php?type=search_all_items&search_type="+SearchType+"&category=" + query + "&search_data=&uid=" + uid + "&my_id=" + uid;
+            url =  Config.API_URL+ "app_service.php?type=search_all_items&search_type="+SearchType+"&category=" + query + "&search_data=&uid=" + uid + "&my_id=" + uid;
             // Initialize a new RequestQueue instance
         }
         catch (UnsupportedEncodingException e){
             e.printStackTrace();
-            url = "https://www.iampro.co/api/app_service.php?type=search_all_items&search_type="+SearchType+"&category=" +SearchCat+ "&search_data=&uid=" + uid + "&my_id=" + uid;
+            url =  Config.API_URL+ "app_service.php?type=search_all_items&search_type="+SearchType+"&category=" +SearchCat+ "&search_data=&uid=" + uid + "&my_id=" + uid;
 
         }
          Log.d("product_search",""+url);
@@ -285,12 +283,12 @@ public class SearchedActivity extends AppCompatActivity implements UserDataAdapt
 
             //String url=Config.API_URL+"app_service.php?type=getMyAlbemsListt&search_type=image&uid="+uid+"&my_id="+uid;
             // String url=Config.API_URL+"app_service.php?type=getMyAlbemsListt&search_type=image&uid="+uid+"&my_id="+uid+"&album_id="+aid;
-            url = "https://www.iampro.co/api/app_service.php?type=search_all_items&search_type="+SearchType+"&category=" + query + "&search_data=&uid=" + uid + "&my_id=" + uid;
+            url = Config.API_URL+ "app_service.php?type=search_all_items&search_type="+SearchType+"&category=" + query + "&search_data=&uid=" + uid + "&my_id=" + uid;
             // Initialize a new RequestQueue instance
         }
         catch (UnsupportedEncodingException e){
             e.printStackTrace();
-            url = "https://www.iampro.co/api/app_service.php?type=search_all_items&search_type="+SearchType+"&category=" +SearchCat+ "&search_data=&uid=" + uid + "&my_id=" + uid;
+            url = Config.API_URL+ "app_service.php?type=search_all_items&search_type="+SearchType+"&category=" +SearchCat+ "&search_data=&uid=" + uid + "&my_id=" + uid;
 
         }
         Log.d("serched_url",""+url+"\t"+SearchType+"\t"+SearchCat);
@@ -467,15 +465,15 @@ public class SearchedActivity extends AppCompatActivity implements UserDataAdapt
 
             //String url=Config.API_URL+"app_service.php?type=getMyAlbemsListt&search_type=image&uid="+uid+"&my_id="+uid;
             // String url=Config.API_URL+"app_service.php?type=getMyAlbemsListt&search_type=image&uid="+uid+"&my_id="+uid+"&album_id="+aid;
-            url = "https://www.iampro.co/api/app_service.php?type=search_all_items&search_type="+SearchType+"&category=" + query + "&search_data=&uid=" + uid + "&my_id=" + uid;
+            url = Config.API_URL+ "app_service.php?type=search_all_items&search_type="+SearchType+"&category=" + query + "&search_data=&uid=" + uid + "&my_id=" + uid;
             // Initialize a new RequestQueue instance
         }
         catch (UnsupportedEncodingException e){
             e.printStackTrace();
-            url = "https://www.iampro.co/api/app_service.php?type=search_all_items&search_type=IMAGE&category=" +SearchCat+ "&search_data=&uid=" + uid + "&my_id=" + uid;
+            url = Config.API_URL+ "app_service.php?type=search_all_items&search_type=IMAGE&category=" +SearchCat+ "&search_data=&uid=" + uid + "&my_id=" + uid;
 
         } */
-        final String url = "https://www.iampro.co/api/app_service.php?type=getSelectedUser&limit=15&uid="+uid+"&my_id="+uid;
+        final String url = Config.API_URL+ "app_service.php?type=getSelectedUser&limit=15&uid="+uid+"&my_id="+uid;
 
         // Initialize a new RequestQueue instance
             RequestQueue requestQueue=Volley.newRequestQueue(SearchedActivity.this);

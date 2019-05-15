@@ -132,7 +132,7 @@ public class ProvideAdapter extends RecyclerView.Adapter<ProvideAdapter.ViewHold
             }
         }; */
         public void rateMe(String id,String uid,float rating){
-            String url="https://www.iampro.co/api/app_service.php?type=rate_me&id="+id+"&uid="+uid+"&ptype=provide&total_rate="+rating;
+            String url=Config.API_URL+ "app_service.php?type=rate_me&id="+id+"&uid="+uid+"&ptype=provide&total_rate="+rating;
 
             RequestQueue requestQueue = Volley.newRequestQueue(mContext);
 

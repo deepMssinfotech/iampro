@@ -184,7 +184,7 @@ public class ProvideFragment extends Fragment implements ProvideAdapter.ItemList
     }
 
     private void getTopSlider(){
-        final String url="https://www.iampro.co/api/index.php?type=get_slider&name=TOP_SLIDER";
+        final String url=Config.API_URL+ "index.php?type=get_slider&name=TOP_SLIDER";
         RequestQueue requestQueue = Volley.newRequestQueue(getContext());
         // Initialize a new JsonArrayRequest instance
         JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(
@@ -249,7 +249,7 @@ public class ProvideFragment extends Fragment implements ProvideAdapter.ItemList
         requestQueue.add(jsonArrayRequest);
     }
     /*public void getProvide(){
-        final String url = "https://www.iampro.co/api/app_service.php?type=all_product_classified&uid=&name=PROVIDE&my_id=";
+        final String url = Config.API_URL+ "app_service.php?type=all_product_classified&uid=&name=PROVIDE&my_id=";
         // Initialize a new RequestQueue instance
         RequestQueue requestQueue = Volley.newRequestQueue(getContext());
 
@@ -325,8 +325,8 @@ public class ProvideFragment extends Fragment implements ProvideAdapter.ItemList
     } */
 
     public void getAllAlbum(){
-        //String url="https://www.iampro.co/api/app_service.php?type=getAlbemsListt&search_type=video&uid="+uid;
-        String url="https://www.iampro.co/api/app_service.php?type=get_category&name=PROVIDE&uid="+uid;
+        //String url=Config.API_URL+ "app_service.php?type=getAlbemsListt&search_type=video&uid="+uid;
+        String url=Config.API_URL+ "app_service.php?type=get_category&name=PROVIDE&uid="+uid;
         RequestQueue requestQueue=Volley.newRequestQueue(getContext());
 
         final ProgressDialog pDialog = new ProgressDialog(getContext()); //Your Activity.this
@@ -658,12 +658,12 @@ public class ProvideFragment extends Fragment implements ProvideAdapter.ItemList
 
             //String url=Config.API_URL+"app_service.php?type=getMyAlbemsListt&search_type=image&uid="+uid+"&my_id="+uid;
             // String url=Config.API_URL+"app_service.php?type=getMyAlbemsListt&search_type=image&uid="+uid+"&my_id="+uid+"&album_id="+aid;
-             url = "https://www.iampro.co/api/app_service.php?type=search_all_items&search_type=PROVIDE&category=" + query+ "&search_data=&uid=" + uid + "&my_id=" + uid;
+             url = Config.API_URL+ "app_service.php?type=search_all_items&search_type=PROVIDE&category=" + query+ "&search_data=&uid=" + uid + "&my_id=" + uid;
             // Initialize a new RequestQueue instance
         }
         catch (UnsupportedEncodingException e){
             e.printStackTrace();
-            url = "https://www.iampro.co/api/app_service.php?type=search_all_items&search_type=PROVIDE&category=" + cname+ "&search_data=&uid=" + uid + "&my_id=" + uid;
+            url = Config.API_URL+ "app_service.php?type=search_all_items&search_type=PROVIDE&category=" + cname+ "&search_data=&uid=" + uid + "&my_id=" + uid;
 
         }
         RequestQueue requestQueue = Volley.newRequestQueue(getContext());

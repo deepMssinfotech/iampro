@@ -296,7 +296,7 @@ public class JoinFriendAdapter extends RecyclerView.Adapter<JoinFriendAdapter.My
     }
 
     public void blockUser(String fid){
-        String url="https://www.iampro.co/api/app_service.php?type=get_block_user_detail&uid="+ PrefManager.getLoginDetail(context,"id")+"&fid=657"+fid;
+        String url=Config.API_URL+ "app_service.php?type=get_block_user_detail&uid="+ PrefManager.getLoginDetail(context,"id")+"&fid=657"+fid;
 
         RequestQueue requestQueue = Volley.newRequestQueue(context);
         JsonObjectRequest jsObjRequest = new JsonObjectRequest(Request.Method.POST,url,null,

@@ -50,15 +50,15 @@ public class Config
     public static final String API_URL="https://www.iampro.co/api/";
     public static final String URL_ROOT="https://www.iampro.co/";
     public static final String AJAX_URL="https://www.iampro.co/ajax/";
-    public static final String AVATAR_URL="https://www.iampro.co/uploads/avatar/";
+    public static final String AVATAR_URL=URL_ROOT+ "uploads/avatar/";
 
-    public static final String OTHER_IMAGE_URL="https://www.iampro.co/uploads/product/300/250/";
-    public static final String V_URL="https://www.iampro.co/uploads/v_image/300/250/";
-    public static final String BANNER_URL="https://www.iampro.co/uploads/media/";
-    public static final String MEDIA_URL="https://www.iampro.co/uploads/media/";
-   // public static final String ALBUM_URL="https://www.iampro.co/uploads/album/w/500/";
-    public static final String ALBUM_URL="https://www.iampro.co/uploads/album/160/95/";
-    public static final String TOP_SLIDER="https://www.iampro.co/uploads/slider/h/280/";
+    public static final String OTHER_IMAGE_URL=URL_ROOT+ "uploads/product/300/250/";
+    public static final String V_URL=URL_ROOT+ "uploads/v_image/300/250/";
+    public static final String BANNER_URL=URL_ROOT+ "uploads/media/";
+    public static final String MEDIA_URL=URL_ROOT+ "uploads/media/";
+   // public static final String ALBUM_URL=URL_ROOT+ "uploads/album/w/500/";
+    public static final String ALBUM_URL=URL_ROOT+ "uploads/album/160/95/";
+    public static final String TOP_SLIDER=URL_ROOT+ "uploads/slider/h/280/";
     public static final String IP_ADDRESS="";
     public static final String IMAGE_DIRECTORY = "/iampro/image";
     public static final String VIDEO_DIRECTORY = "/iampro/video";

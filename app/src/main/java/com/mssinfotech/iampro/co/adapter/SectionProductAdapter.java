@@ -306,7 +306,7 @@ public class SectionProductAdapter extends RecyclerView.Adapter<SectionProductAd
         }
     }
     public void sendrating(float rating,int uid,int id){
-        String urlv="https://www.iampro.co/api/app_service.php?type=rate_me&id="+id+"&uid="+uid+"&ptype=image&total_rate="+rating;
+        String urlv=Config.API_URL+ "app_service.php?type=rate_me&id="+id+"&uid="+uid+"&ptype=image&total_rate="+rating;
 
         RequestQueue requestQueue = Volley.newRequestQueue(mContext);
         // Initialize a new JsonObjectRequest instance
@@ -345,7 +345,7 @@ public class SectionProductAdapter extends RecyclerView.Adapter<SectionProductAd
 
     }
     public void deleteImage(String pid){
-        String url="https://www.iampro.co/ajax/profile.php?type=deleteAlbemimage&id="+Integer.parseInt(pid);
+        String url=Config.AJAX_URL+ "profile.php?type=deleteAlbemimage&id="+Integer.parseInt(pid);
         RequestQueue MyRequestQueue = Volley.newRequestQueue(mContext);
         StringRequest MyStringRequest = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
             @Override
@@ -377,7 +377,7 @@ public class SectionProductAdapter extends RecyclerView.Adapter<SectionProductAd
     }
 
      private String addToCart(Context context,String pid,String qty,String price){
-         String url ="https://www.iampro.co/api/cart.php?type=addtocart&p_type=product&pid="+pid+"&qty="+qty+"&price="+price+"&uid="+ PrefManager.getLoginDetail(context,"id") +"&ip_address="+ Config.IP_ADDRESS;
+         String url =Config.API_URL+ "cart.php?type=addtocart&p_type=product&pid="+pid+"&qty="+qty+"&price="+price+"&uid="+ PrefManager.getLoginDetail(context,"id") +"&ip_address="+ Config.IP_ADDRESS;
 
          RequestQueue queue = Volley.newRequestQueue(context);
          StringRequest sr = new StringRequest(Request.Method.GET,"http://api.someservice.com/post/comment", new Response.Listener<String>() {

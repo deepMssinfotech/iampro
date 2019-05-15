@@ -121,7 +121,7 @@ public class DemandDetailActivity extends AppCompatActivity implements CommentAd
     }
     protected void getDemandDetail(){
         // String url= Config.API_URL+"ajax.php?type=provide_details&id="+pid+"&uid="+uid;
-        String url="https://www.iampro.co/api/app_service.php?id="+pid+"&uid="+uid+"&my_id="+uid+"&type=provide_details";
+        String url=Config.API_URL+ "app_service.php?id="+pid+"&uid="+uid+"&my_id="+uid+"&type=provide_details";
         // Initialize a new RequestQueue instance
         RequestQueue requestQueue = Volley.newRequestQueue(DemandDetailActivity.this);
 

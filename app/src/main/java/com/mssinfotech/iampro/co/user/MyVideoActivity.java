@@ -102,7 +102,8 @@ public class MyVideoActivity extends Fragment implements MyVideoAdapter.ItemList
     ProgressDialog progressdialog;
      int status = 0;
     Handler handler = new Handler();
-
+    public static String img_name_avatar= "avatar_"+String.valueOf(System.currentTimeMillis())+".jpg";
+    public static String img_name_background= "background_"+String.valueOf(System.currentTimeMillis())+".jpg";
     ProgressDialog dialog;
 
     private final SingleUploadBroadcastReceiver uploadReceiver = new SingleUploadBroadcastReceiver();
@@ -130,15 +131,14 @@ public class MyVideoActivity extends Fragment implements MyVideoAdapter.ItemList
         tv_category=view.findViewById(R.id.tv_category);
         userbackgroud = view.findViewById(R.id.userbackgroud);
         changeImage = view.findViewById(R.id.changeImage);
-        changeImage = view.findViewById(R.id.changeImage);
          fab=view.findViewById(R.id.fab);
         changeBackground_Image = view.findViewById(R.id.changeBackground_Image);
         uid= PrefManager.getLoginDetail(context,"id");
         if(id == null || id.equals(uid)) {
             String fname=PrefManager.getLoginDetail(context,"fname");
             String lname=PrefManager.getLoginDetail(context,"lname");
-            String avatar=Config.BANNER_URL+"250/250/"+PrefManager.getLoginDetail(context,"profile_video_gallery");
-            String background=Config.BANNER_URL+"h/250/"+PrefManager.getLoginDetail(context,"video_banner_image");
+            String avatar=Config.BANNER_URL+PrefManager.getLoginDetail(context,"profile_video_gallery");
+            String background=Config.BANNER_URL+PrefManager.getLoginDetail(context,"video_banner_image");
             username.setText("My Videos");
             Glide.with(this).load(background).apply(Config.options_video).into(userbackgroud);
             Glide.with(this).load(avatar).apply(Config.options_avatar).into(userimage);
@@ -158,9 +158,6 @@ public class MyVideoActivity extends Fragment implements MyVideoAdapter.ItemList
             changeImage.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                   /* Intent intent=new Intent(context,ProfileImageCroperActivity.class);
-                    startActivity(intent);*/
-                    //finish();
                     imageType="userImage";
                     showImagePickerOptions();
                 }
@@ -178,6 +175,7 @@ public class MyVideoActivity extends Fragment implements MyVideoAdapter.ItemList
             changeImage.setVisibility(View.GONE);
             uid= id;
             gteUsrDetail(id);
+
         }
         IncludeShortMenu includeShortMenu = view.findViewById(R.id.includeShortMenu);
         includeShortMenu.updateCounts(context,uid);
@@ -338,7 +336,7 @@ public class MyVideoActivity extends Fragment implements MyVideoAdapter.ItemList
                     // loading profile image from local cache
                     loadImgData(uri.toString());
                     // loading profile image from local cache
-                    loadVideoData(uri.toString());
+                    //loadVideoData(uri.toString());
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -392,38 +390,20 @@ public class MyVideoActivity extends Fragment implements MyVideoAdapter.ItemList
                     .addParameter("email",PrefManager.getLoginDetail(context,"email"))
                     .addParameter("country",PrefManager.getLoginDetail(context,"country"))
                     .addParameter("state",PrefManager.getLoginDetail(context,"state"))
+                    .addParameter("img_name",img_name_background)
                     //.setNotificationConfig(new UploadNotificationConfig())
                     .setMaxRetries(2)
                     .startUpload(); //Starting the upload
             ShowProgressDialog();
-            ProfileActivity fragment = new ProfileActivity();
-            function.loadFragment(context,fragment,null);
+            //ProfileActivity fragment = new ProfileActivity();
+            //function.loadFragment(context,fragment,null);
             Toast.makeText(context, "Update Profile Background Image is processing please wait", Toast.LENGTH_SHORT).show();
             //getActivity().finish();
         } catch (Exception exc) {
             Toast.makeText(context, exc.getMessage(), Toast.LENGTH_SHORT).show();
         }
 
-        /*
-
-         type: update_img_video_banner
-process_type: android
-page_url: page/gallery.html
-userid: 693
-fname: deep
-email:
-country: INDIA
-state: MP
-image_name: video_gallery_banner_image
-video_banner_image: (binary)
-img_banner_image: (binary)
-
-        */
     }
-  /*  public void redirect(View v){
-        Intent i_signup = new Intent(context,AddVideoActivity.class);
-        MyVideoActivity.this.startActivity(i_signup);
-    } */
 
     public void CreateProgressDialog()
     {
@@ -473,7 +453,7 @@ img_banner_image: (binary)
 
     }
     public void getAllAlbum(){
-        String url="https://www.iampro.co/api/app_service.php?type=getAlbemsListt&search_type=video&uid="+uid;
+        String url=Config.API_URL+ "app_service.php?type=getAlbemsListt&search_type=video&uid="+uid;
         RequestQueue requestQueue = Volley.newRequestQueue(context);
         JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(
                 Request.Method.GET,
@@ -639,9 +619,15 @@ img_banner_image: (binary)
         Intent intent = new Intent(getContext(), ImagePickerActivity.class);
         intent.putExtra(ImagePickerActivity.INTENT_IMAGE_PICKER_OPTION, ImagePickerActivity.REQUEST_IMAGE_CAPTURE);
         // setting aspect ratio
-        intent.putExtra(ImagePickerActivity.INTENT_LOCK_ASPECT_RATIO, true);
-        intent.putExtra(ImagePickerActivity.INTENT_ASPECT_RATIO_X, 1); // 16x9, 1x1, 3:4, 3:2
-        intent.putExtra(ImagePickerActivity.INTENT_ASPECT_RATIO_Y, 1);
+        if(imageType.equalsIgnoreCase("backgroundImage")) {
+            intent.putExtra(ImagePickerActivity.INTENT_LOCK_ASPECT_RATIO, true);
+            intent.putExtra(ImagePickerActivity.INTENT_ASPECT_RATIO_X, 16); // 16x9, 1x1, 3:4, 3:2
+            intent.putExtra(ImagePickerActivity.INTENT_ASPECT_RATIO_Y, 6);
+        }else{
+            intent.putExtra(ImagePickerActivity.INTENT_LOCK_ASPECT_RATIO, true);
+            intent.putExtra(ImagePickerActivity.INTENT_ASPECT_RATIO_X, 1); // 16x9, 1x1, 3:4, 3:2
+            intent.putExtra(ImagePickerActivity.INTENT_ASPECT_RATIO_Y, 1);
+        }
         // setting maximum bitmap width and height
         intent.putExtra(ImagePickerActivity.INTENT_SET_BITMAP_MAX_WIDTH_HEIGHT, true);
         intent.putExtra(ImagePickerActivity.INTENT_BITMAP_MAX_WIDTH, 1000);
@@ -655,9 +641,15 @@ img_banner_image: (binary)
         intent.putExtra(ImagePickerActivity.INTENT_IMAGE_PICKER_OPTION, ImagePickerActivity.REQUEST_GALLERY_IMAGE);
 
         // setting aspect ratio
-        intent.putExtra(ImagePickerActivity.INTENT_LOCK_ASPECT_RATIO, true);
-        intent.putExtra(ImagePickerActivity.INTENT_ASPECT_RATIO_X, 1); // 16x9, 1x1, 3:4, 3:2
-        intent.putExtra(ImagePickerActivity.INTENT_ASPECT_RATIO_Y, 1);
+        if(imageType.equalsIgnoreCase("backgroundImage")) {
+            intent.putExtra(ImagePickerActivity.INTENT_LOCK_ASPECT_RATIO, true);
+            intent.putExtra(ImagePickerActivity.INTENT_ASPECT_RATIO_X, 16); // 16x9, 1x1, 3:4, 3:2
+            intent.putExtra(ImagePickerActivity.INTENT_ASPECT_RATIO_Y, 6);
+        }else{
+            intent.putExtra(ImagePickerActivity.INTENT_LOCK_ASPECT_RATIO, true);
+            intent.putExtra(ImagePickerActivity.INTENT_ASPECT_RATIO_X, 1); // 16x9, 1x1, 3:4, 3:2
+            intent.putExtra(ImagePickerActivity.INTENT_ASPECT_RATIO_Y, 1);
+        }
         startActivityForResult(intent, REQUEST_IMAGE);
     }
 
@@ -666,13 +658,11 @@ img_banner_image: (binary)
         if(imageType.equalsIgnoreCase("backgroundImage"))  {
             Glide.with(this).load(url)
                     .into(userbackgroud);
-            userbackgroud.setColorFilter(ContextCompat.getColor(context, android.R.color.transparent));
         }
         else if (imageType.equalsIgnoreCase("userImage")){
             //userimage
             Glide.with(this).load(url)
                     .into(userimage);
-            userimage.setColorFilter(ContextCompat.getColor(context, android.R.color.transparent));
         }
     }
     public void sendUserPic(){
@@ -681,14 +671,6 @@ img_banner_image: (binary)
             return;
         }
         CreateProgressDialog();
-        Toast.makeText(getContext(), "Video upload remaining please wait....", Toast.LENGTH_LONG).show();
-        //return;
-        /*dialog = new ProgressDialog(context);
-        dialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
-        dialog.setMessage("Uploading photo, please wait.");
-        dialog.setMax(100);
-        dialog.setCancelable(true);
-        dialog.show();  */
         try {
             String uploadId =UUID.randomUUID().toString();
             uploadReceiver.setDelegate((SingleUploadBroadcastReceiver.Delegate) this);
@@ -706,26 +688,14 @@ img_banner_image: (binary)
                     .addParameter("email",PrefManager.getLoginDetail(context,"email"))
                     .addParameter("country",PrefManager.getLoginDetail(context,"country"))
                     .addParameter("state",PrefManager.getLoginDetail(context,"state"))
-                    .addParameter("image_name",backgroundimagePath)
+                    .addParameter("img_name",img_name_avatar)
                     //.setNotificationConfig(new UploadNotificationConfig())
                     .setMaxRetries(2)
                     .startUpload(); //Starting the upload
              ShowProgressDialog();
-            ProfileActivity fragment = new ProfileActivity();
-            function.loadFragment(context,fragment,null);
-            //getActivity().finish();
-            /*   type: update_img_video_banner
-  process_type: android
-  page_url: page/gallery.html
-  userid: 693
-  fname: deep
-  email:
-  country: INDIA
-  state: MP
-  image_name: video_gallery_profile_image
-  profile_video_gallery: (binary)
+            //ProfileActivity fragment = new ProfileActivity();
+            //function.loadFragment(context,fragment,null);
 
-         */
         } catch (Exception exc) {
             Toast.makeText(context,""+exc.getMessage(), Toast.LENGTH_SHORT).show();
         }
@@ -740,24 +710,21 @@ img_banner_image: (binary)
 
 
     private void loadImgData(String url)   {
-        Log.d("eProfile_uri", "Image cache path: " + url);
         if(imageType.equalsIgnoreCase("backgroundImage"))  {
-            Glide.with(this).load(url)
-                    .into(userbackgroud);
-            userbackgroud.setColorFilter(ContextCompat.getColor(context, android.R.color.transparent));
+            Glide.with(this).load(url).apply(Config.options_background).into(userbackgroud);
+            PrefManager.updateLoginDetail(context,"video_banner_image",img_name_background);
             sendData();
         }
         else if (imageType.equalsIgnoreCase("userImage")){
             //userimage
-            Glide.with(this).load(url)
-                    .into(userimage);
-            userimage.setColorFilter(ContextCompat.getColor(context,android.R.color.transparent));
+            Glide.with(this).load(url).apply(Config.options_avatar).into(userimage);
+            PrefManager.updateLoginDetail(context,"profile_video_gallery",img_name_avatar);
             sendUserPic();
         }
     }
     @Override
     public void onProgress(int progress) {
-     Toast.makeText(getContext(),""+progress+"\t"+"Percentage Completed",Toast.LENGTH_LONG).show();
+        Toast.makeText(getContext(),""+progress+"\t"+"Percentage Completed",Toast.LENGTH_LONG).show();
     }
     @Override
     public void onProgress(long uploadedBytes, long totalBytes) {
@@ -770,7 +737,7 @@ img_banner_image: (binary)
     @Override
     public void onCompleted(int serverResponseCode, byte[] serverResponseBody) {
         //Toast.makeText(getContext(),""+"Video uploaded successfully...",Toast.LENGTH_LONG).show();
-        AlertDialog.Builder builder = new AlertDialog.Builder(MyVideoActivity.this.getContext());
+        /*AlertDialog.Builder builder = new AlertDialog.Builder(MyVideoActivity.this.getContext());
         builder.setCancelable(true);
         builder.setTitle("Confirm!");
         builder.setMessage("Video uploaded successfully...");
@@ -781,13 +748,9 @@ img_banner_image: (binary)
 
                     }
                 });
-       /* builder.setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-            }
-        }); */
         AlertDialog dialog = builder.create();
         dialog.show();
+        */
     }
 
     @Override

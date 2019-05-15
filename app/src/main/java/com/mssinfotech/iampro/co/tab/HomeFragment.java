@@ -183,7 +183,7 @@ public class HomeFragment extends Fragment implements UserDataAdapter.ItemListen
     }
 
      private void getTopSlider(){
-        final String url="https://www.iampro.co/api/index.php?type=get_slider&name=TOP_SLIDER";
+        final String url=Config.API_URL+ "index.php?type=get_slider&name=TOP_SLIDER";
          RequestQueue requestQueue = Volley.newRequestQueue(getContext());
          // Initialize a new JsonArrayRequest instance
          JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(
@@ -303,7 +303,7 @@ public class HomeFragment extends Fragment implements UserDataAdapter.ItemListen
 
     }
      public void getSecondSlider(){
-         final String url="https://www.iampro.co/api/index.php?type=get_slider&name=SERVICE_SLIDER";
+         final String url=Config.API_URL+ "index.php?type=get_slider&name=SERVICE_SLIDER";
          RequestQueue requestQueue = Volley.newRequestQueue(getContext());
          // Initialize a new JsonArrayRequest instance
          JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(
@@ -452,7 +452,7 @@ public class HomeFragment extends Fragment implements UserDataAdapter.ItemListen
         }, 500);
     }
     public void  getImage(){
-        final String url = "https://www.iampro.co/api/app_service.php?type=all_item&name=image&uid="+uid+"&my_id="+uid;
+        final String url = Config.API_URL+ "app_service.php?type=all_item&name=image&uid="+uid+"&my_id="+uid;
         // Initialize a new RequestQueue instance
         RequestQueue requestQueue = Volley.newRequestQueue(getContext());
 
@@ -566,7 +566,7 @@ public class HomeFragment extends Fragment implements UserDataAdapter.ItemListen
         //getVideo();
     }
     public void getVideo(){
-        final String url = "https://www.iampro.co/api/app_service.php?type=all_item&name=video&uid="+uid+"&my_id="+uid;
+        final String url = Config.API_URL+ "app_service.php?type=all_item&name=video&uid="+uid+"&my_id="+uid;
         // Initialize a new RequestQueue instance
         RequestQueue requestQueue = Volley.newRequestQueue(getContext());
 
@@ -654,7 +654,7 @@ public class HomeFragment extends Fragment implements UserDataAdapter.ItemListen
         //getUser();
     }
     public void getUser(){
-        final String url = "https://www.iampro.co/api/app_service.php?type=getSelectedUser&limit=15&uid="+uid+"&my_id="+uid;
+        final String url = Config.API_URL+ "app_service.php?type=getSelectedUser&limit=15&uid="+uid+"&my_id="+uid;
         // Initialize a new RequestQueue instance
         RequestQueue requestQueue = Volley.newRequestQueue(getContext());
         // Initialize a new JsonArrayRequest instance
@@ -737,7 +737,7 @@ public class HomeFragment extends Fragment implements UserDataAdapter.ItemListen
     }
 
     public void getProduct(){
-        final String url = "https://www.iampro.co/api/app_service.php?type=all_product&uid="+uid+"&name=product&my_id="+uid;
+        final String url = Config.API_URL+ "app_service.php?type=all_product&uid="+uid+"&name=product&my_id="+uid;
         // Initialize a new RequestQueue instance
         RequestQueue requestQueue = Volley.newRequestQueue(getContext());
         // Initialize a new JsonArrayRequest instance
@@ -820,7 +820,7 @@ public class HomeFragment extends Fragment implements UserDataAdapter.ItemListen
         //getProvide();
     }
     public void getProvide(){
-        final String url = "https://www.iampro.co/api/app_service.php?type=all_product_classified&uid="+uid+"&name=PROVIDE&my_id="+uid;
+        final String url = Config.API_URL+ "app_service.php?type=all_product_classified&uid="+uid+"&name=PROVIDE&my_id="+uid;
         // Initialize a new RequestQueue instance
         RequestQueue requestQueue = Volley.newRequestQueue(getContext());
 
@@ -903,7 +903,7 @@ public class HomeFragment extends Fragment implements UserDataAdapter.ItemListen
         //getDemand();
     }
     public void getDemand(){
-        final String url = "https://www.iampro.co/api/app_service.php?type=all_product_classified&uid="+uid+"&name=DEMAND&my_id="+uid;
+        final String url = Config.API_URL+ "app_service.php?type=all_product_classified&uid="+uid+"&name=DEMAND&my_id="+uid;
         // Initialize a new RequestQueue instance
         RequestQueue requestQueue = Volley.newRequestQueue(getContext());
 

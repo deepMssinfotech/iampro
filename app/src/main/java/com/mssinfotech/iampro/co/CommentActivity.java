@@ -680,7 +680,7 @@ public class CommentActivity extends AppCompatActivity implements CommentAdapter
     public void sendComment(View view)
     {
         final String comment=et_comment.getText().toString();
-        final String url="https://www.iampro.co/api/app_service.php?type=product_review&data_id="+data_id+"&comment="+comment+"&id="+user_id+"&data_type="+data_type;
+        final String url= Config.API_URL+ "app_service.php?type=product_review&data_id="+data_id+"&comment="+comment+"&id="+user_id+"&data_type="+data_type;
         final RequestQueue requestQueue = Volley.newRequestQueue(this);
         // Initialize a new JsonObjectRequest instance
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(

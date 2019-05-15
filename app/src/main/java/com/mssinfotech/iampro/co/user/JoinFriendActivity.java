@@ -330,7 +330,7 @@ public class JoinFriendActivity extends Fragment implements UserDataAdapter.Item
     } */
 
     public void getJoinedFriend(){
-        String url="https://www.iampro.co/api/app_service.php?type=view_friend_list&id="+uid+"&status=2&uid="+uid+"&my_id="+uid;
+        String url=Config.API_URL+ "app_service.php?type=view_friend_list&id="+uid+"&status=2&uid="+uid+"&my_id="+uid;
         // Initialize a new RequestQueue instance
         RequestQueue requestQueue = Volley.newRequestQueue(getContext());
 
@@ -419,8 +419,8 @@ public class JoinFriendActivity extends Fragment implements UserDataAdapter.Item
     }
 
     public void getUser(int limitss){
-        //final String url = "https://www.iampro.co/api/app_service.php?type=getSelectedUser&limit="+limitss+"&uid="+uid+"&my_id="+uid;
-         String url="https://www.iampro.co/api/app_service.php?type=view_friend_list&id="+uid+"&status=2&uid="+uid+"&my_id="+uid;
+        //final String url = Config.API_URL+ "app_service.php?type=getSelectedUser&limit="+limitss+"&uid="+uid+"&my_id="+uid;
+         String url=Config.API_URL+ "app_service.php?type=view_friend_list&id="+uid+"&status=2&uid="+uid+"&my_id="+uid;
         // Initialize a new RequestQueue instance
         RequestQueue requestQueue = Volley.newRequestQueue(getContext());
 

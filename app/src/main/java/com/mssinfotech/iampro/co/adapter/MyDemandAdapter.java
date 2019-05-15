@@ -292,7 +292,7 @@ public class MyDemandAdapter extends RecyclerView.Adapter<MyDemandAdapter.ViewHo
         void onItemClick(MyProductModel item);
     }
     public void sendrating(float rating,int uid,int id){
-        String urlv="https://www.iampro.co/api/app_service.php?type=rate_me&id="+id+"&uid="+uid+"&ptype=demand&total_rate="+rating;
+        String urlv=Config.API_URL+ "app_service.php?type=rate_me&id="+id+"&uid="+uid+"&ptype=demand&total_rate="+rating;
 
         RequestQueue requestQueue = Volley.newRequestQueue(mContext);
         // Initialize a new JsonObjectRequest instance
@@ -331,7 +331,7 @@ public class MyDemandAdapter extends RecyclerView.Adapter<MyDemandAdapter.ViewHo
 
     }
     public void deleteDemand(String pid){
-         String url="https://www.iampro.co/api/app_service.php?type=delete_product&id="+Integer.parseInt(pid)+"&item_type=demand";
+         String url=Config.API_URL+ "app_service.php?type=delete_product&id="+Integer.parseInt(pid)+"&item_type=demand";
         RequestQueue MyRequestQueue =Volley.newRequestQueue(mContext);
         StringRequest MyStringRequest = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
             @Override

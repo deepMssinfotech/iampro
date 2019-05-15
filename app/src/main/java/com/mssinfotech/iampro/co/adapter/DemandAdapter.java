@@ -191,7 +191,7 @@ public class DemandAdapter extends RecyclerView.Adapter<DemandAdapter.ViewHolder
         }
 
         public void likeDemand(String id, String uid) {
-            String url = "https://www.iampro.co/api/app_service.php?type=like_me&id=" + id + "&uid=" + uid + "&ptype=demand";
+            String url = Config.API_URL+ "app_service.php?type=like_me&id=" + id + "&uid=" + uid + "&ptype=demand";
             RequestQueue requestQueue = Volley.newRequestQueue(mContext);
 
             // Initialize a new JsonObjectRequest instance
@@ -240,7 +240,7 @@ public class DemandAdapter extends RecyclerView.Adapter<DemandAdapter.ViewHolder
         }
 
         public void rateMe(String id, String uid, float rating) {
-            String url = "https://www.iampro.co/api/app_service.php?type=rate_me&id=" + id + "&uid=" + uid + "&ptype=demand&total_rate=" + rating;
+            String url =  Config.API_URL+ "app_service.php?type=rate_me&id=" + id + "&uid=" + uid + "&ptype=demand&total_rate=" + rating;
             RequestQueue requestQueue = Volley.newRequestQueue(mContext);
             // Initialize a new JsonObjectRequest instance
             JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(

@@ -213,7 +213,7 @@ public class UserFragment extends Fragment implements UserDataAdapter.ItemListen
     }
 
     private void getTopSlider(){
-        final String url="https://www.iampro.co/api/index.php?type=get_slider&name=TOP_SLIDER";
+        final String url=Config.API_URL+ "index.php?type=get_slider&name=TOP_SLIDER";
         RequestQueue requestQueue = Volley.newRequestQueue(getContext());
         // Initialize a new JsonArrayRequest instance
         JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(
@@ -278,8 +278,8 @@ public class UserFragment extends Fragment implements UserDataAdapter.ItemListen
         requestQueue.add(jsonArrayRequest);
     }
     /*public void getAllAlbum(){
-        //String url="https://www.iampro.co/api/app_service.php?type=getAlbemsListt&search_type=video&uid="+uid;
-        String url="https://www.iampro.co/api/app_service.php?type=get_category&name=FRIEND&uid="+uid;
+        //String url=Config.API_URL+ "app_service.php?type=getAlbemsListt&search_type=video&uid="+uid;
+        String url=Config.API_URL+ "app_service.php?type=get_category&name=FRIEND&uid="+uid;
         RequestQueue requestQueue=Volley.newRequestQueue(getContext());
 
         final ProgressDialog pDialog = new ProgressDialog(getContext()); //Your Activity.this
@@ -351,7 +351,7 @@ public class UserFragment extends Fragment implements UserDataAdapter.ItemListen
         pDialog.show();
         //String url=Config.API_URL+"app_service.php?type=getMyAlbemsListt&search_type=image&uid="+uid+"&my_id="+uid;
         // String url=Config.API_URL+"app_service.php?type=getMyAlbemsListt&search_type=image&uid="+uid+"&my_id="+uid+"&album_id="+aid;
-        String url="https://www.iampro.co/api/app_service.php?type=search_all_items&search_type=PRODUCT&category="+cname+"&search_data=&uid="+uid+"&my_id="+uid;
+        String url=Config.API_URL+ "app_service.php?type=search_all_items&search_type=PRODUCT&category="+cname+"&search_data=&uid="+uid+"&my_id="+uid;
         // Initialize a new RequestQueue instance
         RequestQueue requestQueue = Volley.newRequestQueue(getContext());
         JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(
@@ -483,7 +483,7 @@ public class UserFragment extends Fragment implements UserDataAdapter.ItemListen
     } */
 
     public void getUser(int limitss){
-        final String url = "https://www.iampro.co/api/app_service.php?type=getSelectedUser&limit="+limitss+"&uid="+uid+"&my_id="+uid;
+        final String url = Config.API_URL+ "app_service.php?type=getSelectedUser&limit="+limitss+"&uid="+uid+"&my_id="+uid;
 
         // Initialize a new RequestQueue instance
         RequestQueue requestQueue = Volley.newRequestQueue(getContext());
@@ -597,8 +597,8 @@ public class UserFragment extends Fragment implements UserDataAdapter.ItemListen
     }
 
     public void getUserMores(int start_limit,int end_limit){
-        //final String url = "https://www.iampro.co/api/app_service.php?type=getSelectedUser&limit="+limitss+"&uid="+uid+"&my_id="+uid;
-         final String url="https://www.iampro.co/api/app_service.php?type=getAllUser&name=&uid="+uid+"&my_id="+uid+"&start_limit="+start_limit+"&end_limit="+end_limit;
+        //final String url = Config.API_URL+ "app_service.php?type=getSelectedUser&limit="+limitss+"&uid="+uid+"&my_id="+uid;
+         final String url=Config.API_URL+ "app_service.php?type=getAllUser&name=&uid="+uid+"&my_id="+uid+"&start_limit="+start_limit+"&end_limit="+end_limit;
         // Initialize a new RequestQueue instance
         RequestQueue requestQueue = Volley.newRequestQueue(getContext());
 

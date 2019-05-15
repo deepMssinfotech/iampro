@@ -167,8 +167,8 @@ public class MyImageVideoDataAdapter extends RecyclerView.Adapter<MyImageVideoDa
                 .into(feedListRowHolder.thumbView);*/
     }
      private void deleteAlbum(String albumId){
-              String url="https://www.iampro.co/api/app_service.php?type=delete_album&id="+Integer.parseInt(albumId)+"&album_type=1";
-             //String url="https://www.iampro.co/ajax/profile.php?type=deleteAlbemimage&id="+Integer.parseInt(pid);
+              String url=Config.API_URL+ "app_service.php?type=delete_album&id="+Integer.parseInt(albumId)+"&album_type=1";
+             //String url=Config.AJAX_URL+ "profile.php?type=deleteAlbemimage&id="+Integer.parseInt(pid);
              RequestQueue MyRequestQueue = Volley.newRequestQueue(mContext);
              StringRequest MyStringRequest = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
                  @Override

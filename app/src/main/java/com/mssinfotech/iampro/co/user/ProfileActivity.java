@@ -103,6 +103,8 @@ public class ProfileActivity extends Fragment implements AllFeedAdapter.ItemList
     private View currentFocusedLayout, oldFocusedLayout;
     CardView userDetail_Layout,ll_dashboard,ll_frienddashboard;
     TextView tv_name,tv_dob,tv_categories,tv_email,tv_gender,tv_address,tv_city,tv_state,tv_country,tv_detail,tv_message;
+    public static String img_name_avatar= "avatar_"+String.valueOf(System.currentTimeMillis())+".jpg";
+    public static String img_name_background= "background_"+String.valueOf(System.currentTimeMillis())+".jpg";
     View view;
     String FrindStatus = "";
     // ProgressDialog loading = ProgressDialog.show(getContext(),"Processing...","Please wait...",false,false);
@@ -176,8 +178,8 @@ public class ProfileActivity extends Fragment implements AllFeedAdapter.ItemList
         if(fid == null || fid.isEmpty() || fid.equals(uid)) {
             String fname=PrefManager.getLoginDetail(context,"fname");
             String lname=PrefManager.getLoginDetail(context,"lname");
-            String avatar=Config.AVATAR_URL+"250/250/"+PrefManager.getLoginDetail(context,"img_url");
-            String background=Config.AVATAR_URL+"h/250/"+PrefManager.getLoginDetail(context,"banner_image");
+            String avatar=Config.AVATAR_URL+PrefManager.getLoginDetail(context,"img_url");
+            String background=Config.AVATAR_URL+PrefManager.getLoginDetail(context,"banner_image");
             username.setText(fname +" "+lname);
             Glide.with(this).load(background).apply(Config.options_background).into(userbackgroud);
             Glide.with(this).load(avatar).apply(Config.options_avatar).into(userimage);
@@ -328,7 +330,6 @@ public class ProfileActivity extends Fragment implements AllFeedAdapter.ItemList
             @Override
             public void onClick(View v) {
                 //showPictureDialog();
-
                 imageType="backgroundImage";
                 showImagePickerOptions();
             }
@@ -361,9 +362,15 @@ public class ProfileActivity extends Fragment implements AllFeedAdapter.ItemList
         intent.putExtra(ImagePickerActivity.INTENT_IMAGE_PICKER_OPTION,ImagePickerActivity.REQUEST_IMAGE_CAPTURE);
 
         // setting aspect ratio
-        intent.putExtra(ImagePickerActivity.INTENT_LOCK_ASPECT_RATIO, true);
-        intent.putExtra(ImagePickerActivity.INTENT_ASPECT_RATIO_X, 1); // 16x9, 1x1, 3:4, 3:2
-        intent.putExtra(ImagePickerActivity.INTENT_ASPECT_RATIO_Y, 1);
+        if(imageType.equalsIgnoreCase("backgroundImage")) {
+            intent.putExtra(ImagePickerActivity.INTENT_LOCK_ASPECT_RATIO, true);
+            intent.putExtra(ImagePickerActivity.INTENT_ASPECT_RATIO_X, 16); // 16x9, 1x1, 3:4, 3:2
+            intent.putExtra(ImagePickerActivity.INTENT_ASPECT_RATIO_Y, 6);
+        }else{
+            intent.putExtra(ImagePickerActivity.INTENT_LOCK_ASPECT_RATIO, true);
+            intent.putExtra(ImagePickerActivity.INTENT_ASPECT_RATIO_X, 1); // 16x9, 1x1, 3:4, 3:2
+            intent.putExtra(ImagePickerActivity.INTENT_ASPECT_RATIO_Y, 1);
+        }
 
         // setting maximum bitmap width and height
         intent.putExtra(ImagePickerActivity.INTENT_SET_BITMAP_MAX_WIDTH_HEIGHT, true);
@@ -377,9 +384,15 @@ public class ProfileActivity extends Fragment implements AllFeedAdapter.ItemList
         intent.putExtra(ImagePickerActivity.INTENT_IMAGE_PICKER_OPTION, ImagePickerActivity.REQUEST_GALLERY_IMAGE);
 
         // setting aspect ratio
-        intent.putExtra(ImagePickerActivity.INTENT_LOCK_ASPECT_RATIO, true);
-        intent.putExtra(ImagePickerActivity.INTENT_ASPECT_RATIO_X, 1); // 16x9, 1x1, 3:4, 3:2
-        intent.putExtra(ImagePickerActivity.INTENT_ASPECT_RATIO_Y, 1);
+        if(imageType.equalsIgnoreCase("backgroundImage")) {
+            intent.putExtra(ImagePickerActivity.INTENT_LOCK_ASPECT_RATIO, true);
+            intent.putExtra(ImagePickerActivity.INTENT_ASPECT_RATIO_X, 16); // 16x9, 1x1, 3:4, 3:2
+            intent.putExtra(ImagePickerActivity.INTENT_ASPECT_RATIO_Y, 6);
+        }else{
+            intent.putExtra(ImagePickerActivity.INTENT_LOCK_ASPECT_RATIO, true);
+            intent.putExtra(ImagePickerActivity.INTENT_ASPECT_RATIO_X, 1); // 16x9, 1x1, 3:4, 3:2
+            intent.putExtra(ImagePickerActivity.INTENT_ASPECT_RATIO_Y, 1);
+        }
         startActivityForResult(intent, REQUEST_IMAGE);
     }
     private void gteUsrDetail(String id){
@@ -488,7 +501,6 @@ public class ProfileActivity extends Fragment implements AllFeedAdapter.ItemList
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
 
         super.onActivityResult(requestCode, resultCode, data);
-        Log.i("responce code",requestCode+"---"+imageType);
         if (resultCode == RESULT_CANCELED) {
             return;
         }
@@ -497,23 +509,8 @@ public class ProfileActivity extends Fragment implements AllFeedAdapter.ItemList
                 Uri contentURI = data.getData();
                 try {
                     FixBitmap = MediaStore.Images.Media.getBitmap(context.getContentResolver(), contentURI);
-                    //////userbackgroud.setImageBitmap(FixBitmap);
+                    userbackgroud.setImageBitmap(FixBitmap);
                     backgroundimagePath = getPath(contentURI);
-                    if (imageType.equalsIgnoreCase("userImage")){
-                        //userbackgroud.setImageBitmap(FixBitmap);
-                        Uri selectedImage=data.getData();
-                        Uri imageUri = ImagePickerActivity.comp_result;
-                        //userimage.setImageURI(selectedImage);
-                        Glide.with(this).load(imageUri.toString())
-                                .into(userimage);
-                    }
-                    else if (imageType.equalsIgnoreCase("backgroundImage")){
-                        //userbackgroud.setImageBitmap(FixBitmap);
-                        Uri selectedImage=data.getData();
-                       // userbackgroud.setImageURI(selectedImage);
-                        Glide.with(this).load(selectedImage.toString())
-                                .into(userbackgroud);
-                    }
                     //UploadImageOnServerButton.setVisibility(View.VISIBLE);
                     sendData();
                 } catch (IOException e) {
@@ -521,65 +518,62 @@ public class ProfileActivity extends Fragment implements AllFeedAdapter.ItemList
                     Toast.makeText(context, "Failed!", Toast.LENGTH_SHORT).show();
                 }
             }
-        }
-        else if (requestCode == CAMERA) {
+        } else if (requestCode == CAMERA) {
             Uri contentURI = data.getData();
             try {
                 FixBitmap = (Bitmap) data.getExtras().get("data");
                 //ShowSelectedImage.setImageBitmap(FixBitmap);
                 userbackgroud.setImageBitmap(FixBitmap);
                 backgroundimagePath = getPath(contentURI);
-                if (imageType.equalsIgnoreCase("userImage")){
-                    //userbackgroud.setImageBitmap(FixBitmap);
-                    Uri selectedImage=data.getData();
-                    //userimage.setImageURI(selectedImage);
-
-                    Toast.makeText(getContext(),""+selectedImage,Toast.LENGTH_LONG).show();
-
-                }
-                else if (imageType.equalsIgnoreCase("backgroundImage")){
-                    //userbackgroud.setImageBitmap(FixBitmap);
-                    Uri selectedImage=data.getData();
-                    //userbackgroud.setImageURI(selectedImage);
-                    Glide.with(this).load(selectedImage.toString())
-                            .into(userbackgroud);
-                }
                 //UploadImageOnServerButton.setVisibility(View.VISIBLE);
                 //  saveImage(thumbnail);
                 sendData();
-                gteUsrDetail(PrefManager.getLoginDetail(getContext(),"if"));
                 //Toast.makeText(ShadiRegistrationPart5.this, "Image Saved!", Toast.LENGTH_SHORT).show();
             }
             catch (Exception e){
                 Toast.makeText(context,e.getMessage(),Toast.LENGTH_LONG).show();
             }
         }
-        if (requestCode == REQUEST_IMAGE) {
+        else if (requestCode == REQUEST_IMAGE) {
             if (resultCode == Activity.RESULT_OK) {
                 Uri uri = data.getParcelableExtra("path");
                 try {
                     // You can update this bitmap to your server
                     Bitmap bitmap = MediaStore.Images.Media.getBitmap(context.getContentResolver(), uri);
                     backgroundimagePath = getPath(getImageUri(context,bitmap));
-                    if (imageType.equalsIgnoreCase("userImage")){
-                        //userbackgroud.setImageBitmap(bitmap);
-                        Uri selectedImage=data.getData();
-                        //userimage.setImageURI(selectedImage);
-                        Glide.with(this).load(uri.toString())
-                                .into(userimage);
-                    }
-                    else if (imageType.equalsIgnoreCase("backgroundImage")){
-                        //userbackgroud.setImageBitmap(bitmap);
-                        Uri selectedImage=data.getData();
-                        //userbackgroud.setImageURI(selectedImage);
-                        Glide.with(this).load(uri.toString()).into( userbackgroud);
-                    }
+
                     // loading profile image from local cache
-                    loadProfile(uri.toString());
+                    loadImgData(uri.toString());
+                    // loading profile image from local cache
+                    //loadVideoData(uri.toString());
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
             }
+        }
+
+    }
+    private void loadVideoData(String url)   {
+        Log.d("eProfile_uri", "Image cache path: " + url);
+        if(imageType.equalsIgnoreCase("backgroundImage"))  {
+            Glide.with(this).load(url).apply(Config.options_background).into(userbackgroud);
+        }
+        else if (imageType.equalsIgnoreCase("userImage")){
+            //userimage
+            Glide.with(this).load(url).apply(Config.options_avatar).into(userimage);
+        }
+    }
+    private void loadImgData(String url)   {
+        if(imageType.equalsIgnoreCase("backgroundImage"))  {
+            Glide.with(this).load(url).apply(Config.options_background).into(userbackgroud);
+            PrefManager.updateLoginDetail(context,"banner_image",img_name_background);
+            sendData();
+        }
+        else if (imageType.equalsIgnoreCase("userImage")){
+            //userimage
+            Glide.with(this).load(url).apply(Config.options_avatar).into(userimage);
+            PrefManager.updateLoginDetail(context,"img_url",img_name_avatar);
+            sendUserPic();
         }
     }
     public void sendData() {
@@ -600,6 +594,7 @@ public class ProfileActivity extends Fragment implements AllFeedAdapter.ItemList
                     .addParameter("process_type","android")
                     .addParameter("page_url","page/update_profile.html")
                     .addParameter("userid",PrefManager.getLoginDetail(context,"id"))
+                    .addParameter("img_name",img_name_background)
                     //.setNotificationConfig(new UploadNotificationConfig())
                     .setMaxRetries(2)
                     .startUpload(); //Starting the upload
@@ -638,6 +633,7 @@ public class ProfileActivity extends Fragment implements AllFeedAdapter.ItemList
                     .addParameter("country",PrefManager.getLoginDetail(context,"country"))
                     .addParameter("state",PrefManager.getLoginDetail(context,"state"))
                     .addParameter("image_name",backgroundimagePath)
+                    .addParameter("img_name",img_name_avatar)
                     //.setNotificationConfig(new UploadNotificationConfig())
                     .setMaxRetries(2)
                     .startUpload(); //Starting the upload
@@ -645,39 +641,9 @@ public class ProfileActivity extends Fragment implements AllFeedAdapter.ItemList
             ProfileActivity fragment = new ProfileActivity();
             function.loadFragment(context,fragment,null);
 
-              /*
-               String uploadId = UUID.randomUUID().toString();
-            //Creating a multi part request
-            new MultipartUploadRequest(context, uploadId, Config.AJAX_URL + "signup.php")
-                    .addFileToUpload(backgroundimagePath, "profile_video_gallery") //Adding file
-                    .addParameter("type","update_img_video_banner")//Adding text parameter to the request
-                    .addParameter("process_type","android")
-                    .addParameter("page_url","page/update_profile.html")
-                    .addParameter("userid",PrefManager.getLoginDetail(context,"id"))
-                    .addParameter("fname",PrefManager.getLoginDetail(context,"fname"))
-                    .addParameter("email",PrefManager.getLoginDetail(context,"email"))
-                    .addParameter("country",PrefManager.getLoginDetail(context,"country"))
-                    .addParameter("state",PrefManager.getLoginDetail(context,"state"))
-                    .addParameter("image_name",backgroundimagePath)
-                    //.setNotificationConfig(new UploadNotificationConfig())
-                    .setMaxRetries(2)
-                    .startUpload(); //Starting the upload
-            ProfileActivity fragment = new ProfileActivity();
-            function.loadFragment(context,fragment,null);
-               */
-
-            //getActivity().finish();
         } catch (Exception exc) {
             Toast.makeText(context,""+exc.getMessage(), Toast.LENGTH_SHORT).show();
         }
-         /*
-          type: profile_pic
-          process_type: android
-          page_url: page/update_profile.html
-          user_id: 693
-          avatar: (binary)
-
-          */
     }
     @Override
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {

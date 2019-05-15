@@ -79,7 +79,7 @@ public class IncludeFooter  extends RelativeLayout {
         (this.findViewById(R.id.btn_menu_user)).setOnClickListener(userOnClickListener);
         if (PrefManager.isLogin(getContext())) {
             isLogin = true;
-            String avatar = Config.AVATAR_URL + "250/250/" + PrefManager.getLoginDetail(getContext(), "img_url");
+            String avatar = Config.AVATAR_URL + PrefManager.getLoginDetail(getContext(), "img_url");
             Glide.with(getContext()).load(avatar).apply(Config.options_avatar).into((ImageView) this.findViewById(R.id.btn_menu_user));
         }
     }
@@ -406,7 +406,6 @@ public class IncludeFooter  extends RelativeLayout {
     private OnClickListener iamproOnClickListener = new OnClickListener() {
         public void onClick(View v) {
             getContext().startActivity(new Intent(getContext(), HomeActivity.class));
-            if(function.isSamePage("activity_home"))function.finishFunction(getContext());
         }
     };
     private OnClickListener noticeOnClickListener = new OnClickListener() {

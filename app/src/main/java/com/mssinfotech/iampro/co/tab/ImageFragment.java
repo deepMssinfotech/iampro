@@ -181,7 +181,7 @@ public class ImageFragment extends Fragment implements ImageAdapter.ItemListener
     }
 
     private void getTopSlider(){
-        final String url="https://www.iampro.co/api/index.php?type=get_slider&name=TOP_SLIDER";
+        final String url=Config.API_URL+ "index.php?type=get_slider&name=TOP_SLIDER";
         RequestQueue requestQueue = Volley.newRequestQueue(getContext());
         // Initialize a new JsonArrayRequest instance
         JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(
@@ -246,7 +246,7 @@ public class ImageFragment extends Fragment implements ImageAdapter.ItemListener
         requestQueue.add(jsonArrayRequest);
     }
     public void getImage(){
-        final String url = "https://www.iampro.co/api/app_service.php?type=all_item&name=image&uid="+uid+"&my_id="+uid;
+        final String url = Config.API_URL+ "app_service.php?type=all_item&name=image&uid="+uid+"&my_id="+uid;
         final ProgressDialog pDialog = new ProgressDialog(getContext()); //Your Activity.this
         pDialog.setMessage("Loading...!");
         pDialog.show();
@@ -354,9 +354,9 @@ public class ImageFragment extends Fragment implements ImageAdapter.ItemListener
         Toast.makeText(getContext(), item.getName() + " is clicked", Toast.LENGTH_SHORT).show();
     }
     public void getAllAlbum(){
-        //String url="https://www.iampro.co/api/app_service.php?type=getAlbemsListt&search_type=image&uid="+uid;
-         //String url="https://www.iampro.co/api/app_service.php?type=search_all_items&search_type=IMAGE&category_type=&uid="+uid+"&my_id="+uid;
-          String url="https://www.iampro.co/api/app_service.php?type=get_category&name=IMAGE";
+        //String url=Config.API_URL+ "app_service.php?type=getAlbemsListt&search_type=image&uid="+uid;
+         //String url=Config.API_URL+ "app_service.php?type=search_all_items&search_type=IMAGE&category_type=&uid="+uid+"&my_id="+uid;
+          String url=Config.API_URL+ "app_service.php?type=get_category&name=IMAGE";
         RequestQueue requestQueue = Volley.newRequestQueue(getContext());
         final ProgressDialog pDialog = new ProgressDialog(getContext()); //Your Activity.this
         pDialog.setMessage("Loading...!");
@@ -422,7 +422,7 @@ public class ImageFragment extends Fragment implements ImageAdapter.ItemListener
         pDialog.show();
         //String url=Config.API_URL+"app_service.php?type=getMyAlbemsListt&search_type=image&uid="+uid+"&my_id="+uid;
        // String url=Config.API_URL+"app_service.php?type=getMyAlbemsListt&search_type=image&uid="+uid+"&my_id="+uid+"&album_id="+aid;
-        String url="https://www.iampro.co/api/app_service.php?type=search_all_items&search_type=IMAGE&category="+cname+"persnol&search_data=&uid=&my_id=";
+        String url=Config.API_URL+ "app_service.php?type=search_all_items&search_type=IMAGE&category="+cname+"persnol&search_data=&uid=&my_id=";
         // Initialize a new RequestQueue instance
         RequestQueue requestQueue = Volley.newRequestQueue(getContext());
         JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(
@@ -539,12 +539,12 @@ public class ImageFragment extends Fragment implements ImageAdapter.ItemListener
 
             //String url=Config.API_URL+"app_service.php?type=getMyAlbemsListt&search_type=image&uid="+uid+"&my_id="+uid;
             // String url=Config.API_URL+"app_service.php?type=getMyAlbemsListt&search_type=image&uid="+uid+"&my_id="+uid+"&album_id="+aid;
-            url = "https://www.iampro.co/api/app_service.php?type=search_all_items&search_type=IMAGE&category=" + query + "&search_data=&uid=" + uid + "&my_id=" + uid;
+            url = Config.API_URL+ "app_service.php?type=search_all_items&search_type=IMAGE&category=" + query + "&search_data=&uid=" + uid + "&my_id=" + uid;
             // Initialize a new RequestQueue instance
         }
         catch (UnsupportedEncodingException e){
             e.printStackTrace();
-            url = "https://www.iampro.co/api/app_service.php?type=search_all_items&search_type=IMAGE&category=" + cname + "&search_data=&uid=" + uid + "&my_id=" + uid;
+            url = Config.API_URL+ "app_service.php?type=search_all_items&search_type=IMAGE&category=" + cname + "&search_data=&uid=" + uid + "&my_id=" + uid;
 
         }
         RequestQueue requestQueue = Volley.newRequestQueue(getContext());

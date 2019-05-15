@@ -82,7 +82,7 @@ public class TestFragment extends Fragment implements RecyclerViewAdapter.ItemLi
         recyclerView.setLayoutManager(manager); */
     }
     public void getProvide(){
-        final String url = "https://www.iampro.co/api/app_service.php?type=all_product_classified&uid=&name=PROVIDE&my_id=";
+        final String url = Config.API_URL+ "app_service.php?type=all_product_classified&uid=&name=PROVIDE&my_id=";
         // Initialize a new RequestQueue instance
         RequestQueue requestQueue = Volley.newRequestQueue(getContext());
 
