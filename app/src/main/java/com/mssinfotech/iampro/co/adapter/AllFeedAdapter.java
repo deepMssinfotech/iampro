@@ -647,7 +647,7 @@ public class AllFeedAdapter extends RecyclerView.Adapter<AllFeedAdapter.ViewHold
              });
          }
          else{
-               Toast.makeText(mContext,"First Login and try again...",Toast.LENGTH_LONG).show();
+             //Toast.makeText(mContext,"First Login and try again...",Toast.LENGTH_LONG).show();
          }
     }
     @Override
