@@ -700,7 +700,6 @@ public class MyVideoActivity extends Fragment implements MyVideoAdapter.ItemList
             Toast.makeText(context,""+exc.getMessage(), Toast.LENGTH_SHORT).show();
         }
     }
-
     public Uri getImageUri(Context inContext, Bitmap inImage) {
         ByteArrayOutputStream bytes = new ByteArrayOutputStream();
         inImage.compress(Bitmap.CompressFormat.JPEG, 100, bytes);

@@ -92,7 +92,6 @@ public class MyProvideActivity extends Fragment implements MyProvideAdapter.Item
             fab.hide();
         }
         recyclerView = view.findViewById(R.id.recyclerView);
-
         userbackgroud = view.findViewById(R.id.userbackgroud);
         uid= PrefManager.getLoginDetail(context,"id");
         if(id == null || id.equals(uid)) {

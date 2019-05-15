@@ -100,7 +100,7 @@ public class MyProductActivity extends Fragment implements MyProductAdapter.Item
          else if (!PrefManager.getLoginDetail(MyProductActivity.this.getContext(),"id").equalsIgnoreCase(id)) {
              fab.hide();
          }
-            userbackgroud = view.findViewById(R.id.userbackgroud);
+         userbackgroud = view.findViewById(R.id.userbackgroud);
         uid= PrefManager.getLoginDetail(context,"id");
         if(id == null || id.equals(uid)) {
             String fname=PrefManager.getLoginDetail(context,"fname");

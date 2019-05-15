@@ -551,7 +551,6 @@ public class ProfileActivity extends Fragment implements AllFeedAdapter.ItemList
                 }
             }
         }
-
     }
     private void loadVideoData(String url)   {
         Log.d("eProfile_uri", "Image cache path: " + url);

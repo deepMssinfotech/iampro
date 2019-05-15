@@ -614,7 +614,6 @@ public class MyImageActivity extends Fragment implements MyImageAdapter.ItemList
     public void onItemClick(MyImageModel item) {
 
     }
-
     private void showImagePickerOptions() {
         ImagePickerActivity.showImagePickerOptions(getContext(), new ImagePickerActivity.PickerOptionListener() {
             @Override
