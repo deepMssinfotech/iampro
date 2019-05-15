@@ -95,7 +95,7 @@ public class PrefManager {
     }
 
     public static boolean isLogin(Context context){
-        if (userpref.getString("id", null)==null){
+        if (userpref==null || userpref.getString("id", null)==null){
              return false;
         }
         String value= userpref.getString("id", null);
