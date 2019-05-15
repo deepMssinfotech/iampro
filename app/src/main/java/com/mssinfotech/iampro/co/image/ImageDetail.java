@@ -265,7 +265,7 @@ public class ImageDetail extends Fragment implements Img_Video_Details.ItemListe
     }
 
     protected void getImageDetail() {
-        final String url = "https://www.iampro.co/api/app_service.php?type=get_image_detail&id=" + id + "&update_type=" + type + "&uid=" + uid + "&login_id=" + uid + "&my_id=" + uid;
+        final String url =  Config.API_URL+ "app_service.php?type=get_image_detail&id=" + id + "&update_type=" + type + "&uid=" + uid + "&login_id=" + uid + "&my_id=" + uid;
         Log.d(Config.TAG,url);
         RequestQueue requestQueue = Volley.newRequestQueue(context);
         StringRequest jsonObjectRequest = new StringRequest(
@@ -287,7 +287,7 @@ public class ImageDetail extends Fragment implements Img_Video_Details.ItemListe
                             String imagee = responses.optString("image");
                             String category_name = responses.optString("category_name");
                             //https://www.iampro.co/uploads/album/w/500/45.png
-                            final String avatar_url = "https://www.iampro.co/uploads/album/"+imagee;
+                            final String avatar_url = Config.URL_ROOT+ "uploads/album/"+imagee;
                             avatar_urll=avatar_url;
                             String udatev = responses.optString("udate");
                             String about_us = responses.optString("about_us");
@@ -357,7 +357,7 @@ public class ImageDetail extends Fragment implements Img_Video_Details.ItemListe
                                     int iid = image_data.getInt("id");
                                     String namee = image_data.optString("name");
                                     String imagevv = image_data.optString("image");
-                                     String imagev="https://www.iampro.co/uploads/album/"+imagevv;
+                                     String imagev=Config.URL_ROOT+ "uploads/album/"+imagevv;
                                     String about_usv = image_data.optString("about_us");
                                     int like_unlikei = image_data.optInt("like_unlike");
                                     String like_unlikev = image_data.optString("like_unlike");
@@ -399,7 +399,7 @@ public class ImageDetail extends Fragment implements Img_Video_Details.ItemListe
     }
 
     protected void getVideoDetail(){
-        String url="https://www.iampro.co/api/app_service.php?type=get_image_detail&id="+id+"&update_type="+type+"&uid=1&login_id="+uid+"&my_id="+uid;
+        String url= Config.API_URL+ "app_service.php?type=get_image_detail&id="+id+"&update_type="+type+"&uid=1&login_id="+uid+"&my_id="+uid;
         RequestQueue requestQueue = Volley.newRequestQueue(context);
 
         StringRequest jsonObjectRequest = new StringRequest(

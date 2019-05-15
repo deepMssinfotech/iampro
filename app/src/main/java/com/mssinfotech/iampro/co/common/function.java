@@ -40,32 +40,31 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class function {
-    public static boolean isSamePage(String pageName){
-        String CurrectPageName=Config.getLayoutName();
-        Log.d(Config.TAG,pageName+"=="+CurrectPageName);
 
-        if(pageName.equalsIgnoreCase(CurrectPageName)){
-            return true;
-        }
-        return false;
-    }
     public static void loadFragment(Context context, Fragment fragment, Bundle args) {
         // create a FragmentManager
         AppCompatActivity activity = (AppCompatActivity) context;
         FragmentManager fm = activity.getSupportFragmentManager(); //getFragmentManager();
+
+        Fragment tmp = fm.findFragmentByTag(fragment.getClass().getName());
+        if (tmp != null && tmp.isVisible()) {
+            //Toast.makeText(context,"You are already in same page",Toast.LENGTH_LONG).show();
+            //return;
+        }
         // create a FragmentTransaction to begin the transaction and replace the Fragment
         if(args != null){
             fragment.setArguments(args);
         }
         FragmentTransaction fragmentTransaction = fm.beginTransaction();
         // replace the FrameLayout with new Fragment
-        fragmentTransaction.add(android.R.id.content, fragment);
+        fragmentTransaction.add(android.R.id.content, fragment, fragment.getClass().getName());
+        fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
         fragmentTransaction.addToBackStack(null);
         fragmentTransaction.commit(); // save the changes
     }
 
     public static void addtocart(Context context,String pid,String qty,String price){
-        String url = "https://www.iampro.co/api/cart.php?type=addtocart&p_type=product&pid="+pid+"&qty="+qty+"&price="+price+"&uid="+ PrefManager.getLoginDetail(context,"id") +"&ip_address="+ Config.IP_ADDRESS;
+        String url = Config.API_URL+ "cart.php?type=addtocart&p_type=product&pid="+pid+"&qty="+qty+"&price="+price+"&uid="+ PrefManager.getLoginDetail(context,"id") +"&ip_address="+ Config.IP_ADDRESS;
         Log.d(Config.TAG+"cart",url);
         function.executeUrl(context,"get", url, null);
     }
@@ -167,7 +166,7 @@ public class function {
         requestQueue.add(stringRequest);
     }
     public static void rateMe(final Context mContext, String id, String uid, float rating, final RatingBar ratingBar){
-        String url="https://www.iampro.co/api/app_service.php?type=rate_me&id="+id+"&uid="+uid+"&ptype=demand&total_rate="+rating;
+        String url= Config.API_URL+ "app_service.php?type=rate_me&id="+id+"&uid="+uid+"&ptype=demand&total_rate="+rating;
         RequestQueue requestQueue = Volley.newRequestQueue(mContext);
         // Initialize a new JsonObjectRequest instance
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(

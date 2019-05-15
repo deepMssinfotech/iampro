@@ -333,7 +333,7 @@ public class UserDataAdapter extends RecyclerView.Adapter<UserDataAdapter.ViewHo
         notifyItemInserted(position);
     }
      public void blockUser(String fid){
-         String url="https://www.iampro.co/api/app_service.php?type=get_block_user_detail&uid="+ PrefManager.getLoginDetail(mContext,"id")+"&fid=657"+fid;
+         String url=Config.API_URL+ "app_service.php?type=get_block_user_detail&uid="+ PrefManager.getLoginDetail(mContext,"id")+"&fid=657"+fid;
 
          RequestQueue requestQueue = Volley.newRequestQueue(mContext);
          JsonObjectRequest jsObjRequest = new JsonObjectRequest(Request.Method.POST,url,null,

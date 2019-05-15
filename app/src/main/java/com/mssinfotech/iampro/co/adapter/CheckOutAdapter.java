@@ -149,13 +149,13 @@ public class CheckOutAdapter extends RecyclerView.Adapter<CheckOutAdapter.MyView
                 Integer qty= Integer.valueOf(item.getqty())-1;
                 Integer id = Integer.valueOf(item.id);
                 Log.d("cartitem_countm",String.valueOf(qty));
-                String url = "https://www.iampro.co/api/cart.php?type=update_cart&id="+id.toString()+"&qty="+qty.toString()+"&price="+price+"&uid="+ PrefManager.getLoginDetail(context,"id") +"&ip_address="+ Config.IP_ADDRESS;
+                String url = Config.API_URL+ "cart.php?type=update_cart&id="+id.toString()+"&qty="+qty.toString()+"&price="+price+"&uid="+ PrefManager.getLoginDetail(context,"id") +"&ip_address="+ Config.IP_ADDRESS;
                 //Toast.makeText(itemView.getContext(), id.toString()+"--"+qty.toString()+"-Position:" + Integer.toString(getPosition()), Toast.LENGTH_SHORT).show();
                 if(qty==0){
                     notifyList.remove(positions);
                     notifyDataSetChanged();
                     //removeItem(positions);
-                    url = "https://www.iampro.co/api/cart.php?type=delete_cart_item&id="+id.toString();
+                    url = Config.API_URL+ "cart.php?type=delete_cart_item&id="+id.toString();
                     removeFromCart(url);
                 }else{
 
@@ -206,7 +206,7 @@ public class CheckOutAdapter extends RecyclerView.Adapter<CheckOutAdapter.MyView
         item.gettotal_rate();
     }
     public  void addtocart(final Context context, String pid, String qty, String price){
-        String url = "https://www.iampro.co/api/cart.php?type=addtocart&p_type=product&pid="+pid+"&qty="+qty+"&price="+price+"&uid="+ PrefManager.getLoginDetail(context,"id") +"&ip_address="+ Config.IP_ADDRESS;
+        String url = Config.API_URL+ "cart.php?type=addtocart&p_type=product&pid="+pid+"&qty="+qty+"&price="+price+"&uid="+ PrefManager.getLoginDetail(context,"id") +"&ip_address="+ Config.IP_ADDRESS;
         Log.d(Config.TAG+"cart",url);
         //function.executeUrl(context,"get", url, null);
         RequestQueue requestQueue = Volley.newRequestQueue(context);
@@ -306,7 +306,7 @@ public class CheckOutAdapter extends RecyclerView.Adapter<CheckOutAdapter.MyView
     }
     public void refreshCart(String uid){
 
-        String url="https://www.iampro.co/api/cart.php?type=refreshCart&uid="+uid+"&ip_address="+Config.IP_ADDRESS;
+        String url=Config.API_URL+ "cart.php?type=refreshCart&uid="+uid+"&ip_address="+Config.IP_ADDRESS;
         RequestQueue requestQueue = Volley.newRequestQueue(context);
         // Initialize a new JsonObjectRequest instance
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(

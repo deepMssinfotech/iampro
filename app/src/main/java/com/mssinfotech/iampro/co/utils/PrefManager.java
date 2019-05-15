@@ -51,7 +51,6 @@ public class PrefManager {
     }
 
     public static void updateUserData(final Context context, String myid){
-
         if(myid != null) {
             String myurl = Config.API_URL + "ajax.php?type=friend_detail&id=" + myid + "&uid=" + myid;
             //Log.d(Config.TAG, myurl);
@@ -107,8 +106,9 @@ public class PrefManager {
         }
     }
     public static boolean updateLoginDetail(Context context, String field, String value) {
+        usereditor.remove(field);
         usereditor.putString(field, value);
-        usereditor.commit();
+        usereditor.apply();
         return true;
     }
     public static String getLoginDetail(Context context, String field){

@@ -181,7 +181,7 @@ public class DemandFragment extends Fragment implements DemandAdapter.ItemListen
     }
 
     private void getTopSlider(){
-        final String url="https://www.iampro.co/api/index.php?type=get_slider&name=TOP_SLIDER";
+        final String url=Config.API_URL+ "index.php?type=get_slider&name=TOP_SLIDER";
         RequestQueue requestQueue = Volley.newRequestQueue(getContext());
         // Initialize a new JsonArrayRequest instance
         JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(
@@ -480,12 +480,12 @@ public class DemandFragment extends Fragment implements DemandAdapter.ItemListen
 
             //String url=Config.API_URL+"app_service.php?type=getMyAlbemsListt&search_type=image&uid="+uid+"&my_id="+uid;
             // String url=Config.API_URL+"app_service.php?type=getMyAlbemsListt&search_type=image&uid="+uid+"&my_id="+uid+"&album_id="+aid;
-              url = "https://www.iampro.co/api/app_service.php?type=search_all_items&search_type=DEMAND&category=" +query+ "&search_data=&uid=" + uid + "&my_id=" + uid;
+              url = Config.API_URL+ "app_service.php?type=search_all_items&search_type=DEMAND&category=" +query+ "&search_data=&uid=" + uid + "&my_id=" + uid;
             // Initialize a new RequestQueue instance
         }
         catch (UnsupportedEncodingException e){
             e.printStackTrace();
-            url = "https://www.iampro.co/api/app_service.php?type=search_all_items&search_type=DEMAND&category=" + cname + "&search_data=&uid=" + uid + "&my_id=" + uid;
+            url = Config.API_URL+ "app_service.php?type=search_all_items&search_type=DEMAND&category=" + cname + "&search_data=&uid=" + uid + "&my_id=" + uid;
 
         }
         RequestQueue requestQueue = Volley.newRequestQueue(getContext());
@@ -621,8 +621,8 @@ public class DemandFragment extends Fragment implements DemandAdapter.ItemListen
         //getProvide();
     }
     public void getAllAlbum(){
-        //String url="https://www.iampro.co/api/app_service.php?type=getAlbemsListt&search_type=video&uid="+uid;
-        String url="https://www.iampro.co/api/app_service.php?type=get_category&name=DEMAND&uid="+uid;
+        //String url=Config.API_URL+ "app_service.php?type=getAlbemsListt&search_type=video&uid="+uid;
+        String url=Config.API_URL+ "app_service.php?type=get_category&name=DEMAND&uid="+uid;
         RequestQueue requestQueue=Volley.newRequestQueue(getContext());
 
         final ProgressDialog pDialog = new ProgressDialog(getContext()); //Your Activity.this

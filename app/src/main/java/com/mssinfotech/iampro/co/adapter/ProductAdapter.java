@@ -125,7 +125,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
         }; */
 
         public void rateMe(String id,String uid,float rating){
-             String url="https://www.iampro.co/api/app_service.php?type=rate_me&id="+id+"&uid="+uid+"&ptype=product&total_rate="+rating;
+             String url=Config.API_URL+ "app_service.php?type=rate_me&id="+id+"&uid="+uid+"&ptype=product&total_rate="+rating;
              RequestQueue requestQueue = Volley.newRequestQueue(mContext);
              // Initialize a new JsonObjectRequest instance
              JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(

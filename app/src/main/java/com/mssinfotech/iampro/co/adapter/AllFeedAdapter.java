@@ -658,7 +658,7 @@ public class AllFeedAdapter extends RecyclerView.Adapter<AllFeedAdapter.ViewHold
         void onItemClick(FeedModel item);
     }
     public void sendrating(float rating,int uid,int id,String type){
-        String urlv="https://www.iampro.co/api/app_service.php?type=rate_me&id="+id+"&uid="+uid+"&ptype="+type+"&total_rate="+rating;
+        String urlv=Config.API_URL+ "app_service.php?type=rate_me&id="+id+"&uid="+uid+"&ptype="+type+"&total_rate="+rating;
         RequestQueue requestQueue = Volley.newRequestQueue(mContext);
         // Initialize a new JsonObjectRequest instance
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(

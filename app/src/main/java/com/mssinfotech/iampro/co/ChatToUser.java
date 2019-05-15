@@ -91,7 +91,7 @@ public class ChatToUser extends AppCompatActivity implements UserChatAdapter.Ite
          new CheckNewChat().start();
     }
       public void getUserDetail(String id){
-          String url="https://www.iampro.co/api/app_service.php?type=get_user_detail&id="+id;
+          String url= Config.API_URL+ "app_service.php?type=get_user_detail&id="+id;
           RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
           JsonObjectRequest jsObjRequest = new JsonObjectRequest(Request.Method.POST,url,null,
                   new Response.Listener<JSONObject>() {
@@ -125,7 +125,7 @@ public class ChatToUser extends AppCompatActivity implements UserChatAdapter.Ite
 
     public void getChatList(String id){
           String myid= PrefManager.getLoginDetail(this,"id");
-        String url="https://www.iampro.co/api/chat.php?type=fetchChat&lang=en&uid="+id+"&myid="+myid;
+        String url= Config.API_URL+ "chat.php?type=fetchChat&lang=en&uid="+id+"&myid="+myid;
 
         RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
         JsonObjectRequest jsObjRequest = new JsonObjectRequest(Request.Method.POST,url,null,
@@ -186,16 +186,13 @@ public class ChatToUser extends AppCompatActivity implements UserChatAdapter.Ite
             try {
                 query = URLEncoder.encode(msg, "utf-8");
 
-                //String url=Config.API_URL+"app_service.php?type=getMyAlbemsListt&search_type=image&uid="+uid+"&my_id="+uid;
-                // String url=Config.API_URL+"app_service.php?type=getMyAlbemsListt&search_type=image&uid="+uid+"&my_id="+uid+"&album_id="+aid;
-                url = "https://www.iampro.co/api/chat.php?type=saveChat&uid=" + id + "&msg=" + query + "&myid=" + myid + "&abc_chat=0";
+                url =  Config.API_URL+ "chat.php?type=saveChat&uid=" + id + "&msg=" + query + "&myid=" + myid + "&abc_chat=0";
                 // Initialize a new RequestQueue instance
             } catch (UnsupportedEncodingException e) {
                 e.printStackTrace();
-                url = "https://www.iampro.co/api/chat.php?type=saveChat&uid=" + id + "&msg=" + query + "&myid=" + myid + "&abc_chat=0";
+                url =  Config.API_URL+ "chat.php?type=saveChat&uid=" + id + "&msg=" + query + "&myid=" + myid + "&abc_chat=0";
 
             }
-            // String url="https://www.iampro.co/api/chat.php?type=saveChat&uid="+id+"&msg="+msg+"&myid="+myid+"&abc_chat=0";
             RequestQueue MyRequestQueue = Volley.newRequestQueue(this);
             StringRequest MyStringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
                 @Override
@@ -230,7 +227,7 @@ public class ChatToUser extends AppCompatActivity implements UserChatAdapter.Ite
         }
     }
     public void checkNewChat(){
-        String url="https://www.iampro.co/api/chat.php?type=checkNewChat&lang=en&uid="+id+"&myid="+myid;
+        String url= Config.API_URL+ "chat.php?type=checkNewChat&lang=en&uid="+id+"&myid="+myid;
         RequestQueue MyRequestQueue = Volley.newRequestQueue(this);
         StringRequest MyStringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
             @Override

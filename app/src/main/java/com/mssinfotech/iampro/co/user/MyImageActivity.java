@@ -94,8 +94,9 @@ public class MyImageActivity extends Fragment implements MyImageAdapter.ItemList
     Context context;
     View view;
     FloatingActionButton fab;
-     public static final int REQUEST_IMAGE = 100;
-
+    public static final int REQUEST_IMAGE = 100;
+    public static String img_name_avatar= "avatar_"+String.valueOf(System.currentTimeMillis())+".jpg";
+    public static String img_name_background= "background_"+String.valueOf(System.currentTimeMillis())+".jpg";
     public static String imageType;
     ProgressDialog progressdialog;
     int status = 0;
@@ -117,6 +118,7 @@ public class MyImageActivity extends Fragment implements MyImageAdapter.ItemList
         view = v;
         context = getContext();
         intent = getActivity().getIntent();
+        Log.e("mragank","img_name_avatar="+img_name_avatar+" \n img_name_background="+img_name_background);
         Bundle args = getArguments();
         //fid = getArguments().getString("uid");
         if (args != null && args.containsKey("uid")) {
@@ -144,11 +146,12 @@ public class MyImageActivity extends Fragment implements MyImageAdapter.ItemList
         if(id == null || id.equals(uid)) {
             String fname=PrefManager.getLoginDetail(context,"fname");
             String lname=PrefManager.getLoginDetail(context,"lname");
-            String avatar=Config.BANNER_URL+"250/250/"+PrefManager.getLoginDetail(context,"profile_image_gallery");
-            String background=Config.BANNER_URL+"h/250/"+PrefManager.getLoginDetail(context,"img_banner_image");
+            String avatar=Config.BANNER_URL+PrefManager.getLoginDetail(context,"profile_image_gallery");
+            String background=Config.BANNER_URL+PrefManager.getLoginDetail(context,"img_banner_image");
             username.setText("My Images");
             Glide.with(this).load(background).apply(Config.options_image).into(userbackgroud);
             Glide.with(this).load(avatar).apply(Config.options_avatar).into(userimage);
+            Log.e("mragank","avatar="+avatar+" \n background="+background);
             userbackgroud.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -189,7 +192,7 @@ public class MyImageActivity extends Fragment implements MyImageAdapter.ItemList
         }
 
         IncludeShortMenu includeShortMenu = view.findViewById(R.id.includeShortMenu);
-        //includeShortMenu.updateCounts(context,uid);
+        includeShortMenu.updateCounts(context,uid);
         TextView myuid= includeShortMenu.findViewById(R.id.myuid);
         myuid.setText(uid);
         Intent i = new Intent();
@@ -384,34 +387,18 @@ public class MyImageActivity extends Fragment implements MyImageAdapter.ItemList
                     .addParameter("email",PrefManager.getLoginDetail(context,"email"))
                     .addParameter("country",PrefManager.getLoginDetail(context,"country"))
                     .addParameter("state",PrefManager.getLoginDetail(context,"state"))
-
+                    .addParameter("img_name",img_name_background)
                     //.setNotificationConfig(new UploadNotificationConfig())
                     .setMaxRetries(2)
                     .startUpload(); //Starting the upload
               //ShowProgressDialog();
-            ProfileActivity fragment = new ProfileActivity();
-            function.loadFragment(context,fragment,null);
+            //ProfileActivity fragment = new ProfileActivity();
+            //function.loadFragment(context,fragment,null);
             Toast.makeText(context, "Update Profile Background Image is processing please wait", Toast.LENGTH_SHORT).show();
             //getActivity().finish();
         } catch (Exception exc) {
             Toast.makeText(context, exc.getMessage(), Toast.LENGTH_SHORT).show();
         }
-         /*
-          type: update_img_video_banner
-process_type: android
-page_url: page/gallery.html
-userid: 693
-fname: deep
-email:
-country: INDIA
-state: MP
-image_name: image_gallery_banner_image
-
-
-Videogallery profile image
-
-           */
-
     }
 
     public void sendUserPic(){
@@ -434,25 +421,16 @@ Videogallery profile image
                     .addParameter("fname",PrefManager.getLoginDetail(context,"fname"))
                     .addParameter("email",PrefManager.getLoginDetail(context,"email"))
                     .addParameter("country",PrefManager.getLoginDetail(context,"country"))
-                     .addParameter("state",PrefManager.getLoginDetail(context,"state"))
+                    .addParameter("state",PrefManager.getLoginDetail(context,"state"))
+                    .addParameter("img_name",img_name_avatar)
                     //.setNotificationConfig(new UploadNotificationConfig())
                     .setMaxRetries(2)
                     .startUpload(); //Starting the upload
              ShowProgressDialog();
-            ProfileActivity fragment = new ProfileActivity();
-            function.loadFragment(context,fragment,null);
+            //ProfileActivity fragment = new ProfileActivity();
+            //function.loadFragment(context,fragment,null);
             //getActivity().finish();
-            /*   type: update_img_video_banner
-   process_type: android
-   page_url: page/gallery.html
-  userid: 693
-  fname: deep
-  email:
-  country: INDIA
-  state: MP
-  image_name: image_gallery_profile_image
-  profile_image_gallery: (binary)
-         */
+
         } catch (Exception exc) {
             Toast.makeText(context,""+exc.getMessage(), Toast.LENGTH_SHORT).show();
         }
@@ -656,10 +634,15 @@ Videogallery profile image
         intent.putExtra(ImagePickerActivity.INTENT_IMAGE_PICKER_OPTION, ImagePickerActivity.REQUEST_IMAGE_CAPTURE);
 
         // setting aspect ratio
-        intent.putExtra(ImagePickerActivity.INTENT_LOCK_ASPECT_RATIO, true);
-        intent.putExtra(ImagePickerActivity.INTENT_ASPECT_RATIO_X, 1); // 16x9, 1x1, 3:4, 3:2
-        intent.putExtra(ImagePickerActivity.INTENT_ASPECT_RATIO_Y, 1);
-
+        if(imageType.equalsIgnoreCase("backgroundImage")) {
+            intent.putExtra(ImagePickerActivity.INTENT_LOCK_ASPECT_RATIO, true);
+            intent.putExtra(ImagePickerActivity.INTENT_ASPECT_RATIO_X, 16); // 16x9, 1x1, 3:4, 3:2
+            intent.putExtra(ImagePickerActivity.INTENT_ASPECT_RATIO_Y, 6);
+        }else{
+            intent.putExtra(ImagePickerActivity.INTENT_LOCK_ASPECT_RATIO, true);
+            intent.putExtra(ImagePickerActivity.INTENT_ASPECT_RATIO_X, 1); // 16x9, 1x1, 3:4, 3:2
+            intent.putExtra(ImagePickerActivity.INTENT_ASPECT_RATIO_Y, 1);
+        }
         // setting maximum bitmap width and height
         intent.putExtra(ImagePickerActivity.INTENT_SET_BITMAP_MAX_WIDTH_HEIGHT, true);
         intent.putExtra(ImagePickerActivity.INTENT_BITMAP_MAX_WIDTH, 1000);
@@ -673,25 +656,31 @@ Videogallery profile image
         intent.putExtra(ImagePickerActivity.INTENT_IMAGE_PICKER_OPTION, ImagePickerActivity.REQUEST_GALLERY_IMAGE);
 
         // setting aspect ratio
-        intent.putExtra(ImagePickerActivity.INTENT_LOCK_ASPECT_RATIO, true);
-        intent.putExtra(ImagePickerActivity.INTENT_ASPECT_RATIO_X, 1); // 16x9, 1x1, 3:4, 3:2
-        intent.putExtra(ImagePickerActivity.INTENT_ASPECT_RATIO_Y, 1);
+        if(imageType.equalsIgnoreCase("backgroundImage")) {
+            intent.putExtra(ImagePickerActivity.INTENT_LOCK_ASPECT_RATIO, true);
+            intent.putExtra(ImagePickerActivity.INTENT_ASPECT_RATIO_X, 16); // 16x9, 1x1, 3:4, 3:2
+            intent.putExtra(ImagePickerActivity.INTENT_ASPECT_RATIO_Y, 6);
+        }else{
+            intent.putExtra(ImagePickerActivity.INTENT_LOCK_ASPECT_RATIO, true);
+            intent.putExtra(ImagePickerActivity.INTENT_ASPECT_RATIO_X, 1); // 16x9, 1x1, 3:4, 3:2
+            intent.putExtra(ImagePickerActivity.INTENT_ASPECT_RATIO_Y, 1);
+        }
         startActivityForResult(intent, REQUEST_IMAGE);
     }
 
     private void loadImgData(String url)   {
         Log.d("eProfile_uri", "Image cache path: " + url);
         if(imageType.equalsIgnoreCase("backgroundImage"))  {
-            Glide.with(this).load(url)
-                    .into(userbackgroud);
-            userbackgroud.setColorFilter(ContextCompat.getColor(context, android.R.color.transparent));
+            Glide.with(this).load(url).apply(Config.options_background).into(userbackgroud);
+            PrefManager.updateLoginDetail(context,"img_banner_image",img_name_background);
+            //userbackgroud.setColorFilter(ContextCompat.getColor(context, android.R.color.transparent));
             sendData();
         }
         else if (imageType.equalsIgnoreCase("userImage")){
             //userimage
-            Glide.with(this).load(url)
-                    .into(userimage);
-             userimage.setColorFilter(ContextCompat.getColor(context, android.R.color.transparent));
+            Glide.with(this).load(url).apply(Config.options_avatar).into(userimage);
+            PrefManager.updateLoginDetail(context,"profile_image_gallery",img_name_avatar);
+            //userimage.setColorFilter(ContextCompat.getColor(context, android.R.color.transparent));
              sendUserPic();
         }
     }

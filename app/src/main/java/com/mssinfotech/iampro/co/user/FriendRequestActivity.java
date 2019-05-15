@@ -239,7 +239,7 @@ public class FriendRequestActivity extends Fragment  {
         int fid=adapter_swipe.notifyList.get(position).getFriend_id();
         int id=adapter_swipe.notifyList.get(position).getId();
         //https://www.iampro.co/api/app_service.php?type=approve_friend&id=812&tid=116
-        String url="https://www.iampro.co/api/app_service.php?type=approve_friend&id=812&tid="+id;
+        String url=Config.API_URL+ "app_service.php?type=approve_friend&id=812&tid="+id;
         // Request a string response from the provided URL.
         JsonObjectRequest jsonObjReq = new JsonObjectRequest(Request.Method.GET,
                 url, null,
@@ -273,7 +273,7 @@ public class FriendRequestActivity extends Fragment  {
         int fid=adapter_swipe.notifyList.get(position).getFriend_id();
         int id=adapter_swipe.notifyList.get(position).getId();
          //https://www.iampro.co/api/app_service.php?type=delete_friend&id=812&tid=116
-         String url="https://www.iampro.co/api/app_service.php?type=delete_friend&id="+uid+"&tid="+id;
+         String url=Config.API_URL+ "app_service.php?type=delete_friend&id="+uid+"&tid="+id;
          // Request a string response from the provided URL.
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
                  new Response.Listener<String>() {

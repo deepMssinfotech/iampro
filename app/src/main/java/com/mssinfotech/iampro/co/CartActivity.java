@@ -214,7 +214,7 @@ public class CartActivity extends Fragment implements CartItemAdapter.ItemListen
         }
     }
       public void clearCart(){
-          String url="https://www.iampro.co/api/cart.php?type=clear_cart&uid="+PrefManager.getLoginDetail(CartActivity.this.getContext(),"id");
+          String url= Config.API_URL+ "cart.php?type=clear_cart&uid="+PrefManager.getLoginDetail(CartActivity.this.getContext(),"id");
           // Initialize a new RequestQueue instance
           final ProgressDialog loading = ProgressDialog.show(CartActivity.this.getContext(), "Processing...", "Please wait...", false, false);
           RequestQueue requestQueue = Volley.newRequestQueue(CartActivity.this.getContext());
