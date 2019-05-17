@@ -161,6 +161,7 @@ public class SectionImageVideoAdapter extends RecyclerView.Adapter<SectionImageV
         // || !singleItem.getRating().isEmpty())
         //holder.ratingBar.setRating(Float.parseFloat(String.valueOf(singleItem.getRating())));
         holder.tv_name.setText(singleItem.getName());
+        holder.category.setText(singleItem.getFullname());
         holder.udate.setText(singleItem.getUdate());
         holder.tv_comments.setText(String.valueOf(singleItem .getComments()));
 
