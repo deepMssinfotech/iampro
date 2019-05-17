@@ -961,7 +961,5 @@ public class ProfileActivity extends Fragment implements AllFeedAdapter.ItemList
                 }
             }
         }).start();
-
     }
-
 }
