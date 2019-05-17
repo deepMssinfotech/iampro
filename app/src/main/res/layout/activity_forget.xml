@@ -5,6 +5,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="#287bbf"
     android:orientation="vertical"
+    android:clickable="true"
     android:scrollbarAlwaysDrawVerticalTrack="true">
 
     <TextView

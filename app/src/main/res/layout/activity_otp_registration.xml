@@ -5,6 +5,7 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="#287bbf"
+    android:clickable="true"
     android:orientation="vertical"
     android:scrollbarAlwaysDrawVerticalTrack="true">
     <ScrollView

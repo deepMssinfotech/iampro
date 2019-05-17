@@ -4,6 +4,7 @@
     android:layout_height="match_parent"
     android:background="#287bbf"
     android:orientation="vertical"
+    android:clickable="true"
     android:scrollbarAlwaysDrawVerticalTrack="true">
 <ScrollView
     android:layout_width="match_parent"
