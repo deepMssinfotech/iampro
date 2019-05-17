@@ -327,9 +327,25 @@ public class CommentActivity extends AppCompatActivity implements CommentAdapter
                             }
                             txtRatingValue.setText("("+rating+")");
                             ratingBar.setRating(total_rating);
+                            if (PrefManager.isLogin(CommentActivity.this)) {
+                                likeButton.setEnabled(true);
+                                ratingBar.setFocusable(true);
+                                 ratingBar.setIsIndicator(false);
+                                //holder.ratingBar.setClickable(true);
+                            }
+                            else {
+                                  likeButton.setEnabled(false);
+                                  ratingBar.setFocusable(false);
+                                  ratingBar.setIsIndicator(true);
+                                //holder.ratingBar.setClickable(false);
+                            }
                             ratingBar.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
                                 public void onRatingChanged(RatingBar ratingBar, float rating, boolean fromUser) {
-                                    function.rateMe(getApplicationContext(),data_id,String.valueOf(user_id),rating,ratingBar);
+                                    //function.rateMe(getApplicationContext(),data_id,String.valueOf(user_id),rating,ratingBar);
+
+                                     sendrating(rating,Integer.parseInt(PrefManager.getLoginDetail(CommentActivity.this,"id")),Integer.parseInt(data_id),data_type);
+                                    ratingBar.setRating(rating);
+                                    txtRatingValue.setText("("+rating+")");
                                 }
                             });
                             if(my_uid==0){
@@ -659,6 +675,7 @@ public class CommentActivity extends AppCompatActivity implements CommentAdapter
                                 e.printStackTrace();
                                 Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_LONG).show();
                             }
+                            no_rodr.setVisibility(View.GONE);
                         }
                         else{
                             no_rodr.setVisibility(View.VISIBLE);
@@ -708,6 +725,46 @@ public class CommentActivity extends AppCompatActivity implements CommentAdapter
 
         // Add JsonObjectRequest to the RequestQueue
         requestQueue.add(jsonObjectRequest);
+    }
+
+    public void sendrating(float rating,int uid,int id,String ptype){
+        String urlv= Config.API_URL+ "app_service.php?type=rate_me&id="+id+"&uid="+uid+"&ptype="+ptype+"&total_rate="+rating;
+
+        RequestQueue requestQueue = Volley.newRequestQueue(CommentActivity.this);
+        // Initialize a new JsonObjectRequest instance
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(
+                Request.Method.GET,
+                urlv,
+                null,
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        Log.d("Prod_detaili_profile",""+response);
+                        try{
+                            String status=response.optString("status");
+                            String msgv=response.optString("msg");
+                            if(status.equalsIgnoreCase("success")) {
+                               // Toast.makeText(CommentActivity.this,""+msgv,Toast.LENGTH_LONG).show();
+                            }
+                            else{
+                               // Toast.makeText(CommentActivity.this,""+msgv,Toast.LENGTH_LONG).show();
+                            }
+                        }
+                        catch (Exception e){
+                            e.printStackTrace();
+                            Toast.makeText(CommentActivity.this,e.getMessage(),Toast.LENGTH_LONG).show();
+                        }
+                    }
+                },
+                new Response.ErrorListener(){
+                    @Override
+                    public void onErrorResponse(VolleyError error){
+                        Toast.makeText(CommentActivity.this,error.getMessage(),Toast.LENGTH_LONG).show();
+                    }
+                }
+        );
+        requestQueue.add(jsonObjectRequest);
+
     }
 
 }

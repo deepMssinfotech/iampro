@@ -612,6 +612,7 @@ public class SectionImageVideoAdapter extends RecyclerView.Adapter<SectionImageV
                 }
             }
         }
+
         }
     @Override
     public int getItemCount() {

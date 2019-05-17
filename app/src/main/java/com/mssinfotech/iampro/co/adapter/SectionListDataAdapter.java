@@ -23,6 +23,12 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.Volley;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.bitmap.CircleCrop;
 import com.bumptech.glide.request.RequestOptions;
@@ -39,6 +45,8 @@ import com.mssinfotech.iampro.co.product.ProductDetail;
 import com.mssinfotech.iampro.co.provide.ProvideDetailActivity;
 import com.mssinfotech.iampro.co.user.ProfileActivity;
 import com.mssinfotech.iampro.co.utils.PrefManager;
+
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 
@@ -77,16 +85,14 @@ public class SectionListDataAdapter extends RecyclerView.Adapter<SectionListData
         if(position==2)       // Even position
             return LAYOUT_ONE;
     } */
-
     @Override
-    public void onBindViewHolder(final SingleItemRowHolder holder, int i) {
+    public void onBindViewHolder(final SingleItemRowHolder holder, final int i) {
         SingleItemModel singleItem = itemsList.get(i);
         /*if (type.equalsIgnoreCase("User")){
             holder.imageView_message.setBackground(AppCompatResources.getDrawable(mContext,R.drawable.user_slide_info_message));
             holder.imageView_frequest.setBackground(AppCompatResources.getDrawable(mContext,R.drawable.user_slide_nfo));
             holder.imageView_viewProfile.setBackground(AppCompatResources.getDrawable(mContext,R.drawable.user_slide_info_view_profile));
             holder.imageView_block.setBackground(AppCompatResources.getDrawable(mContext,R.drawable.unblockicone));
-
         }
         else { */
             holder.tvTitle.setText(singleItem.getName());//+"-"+singleItem.getIsliked());
@@ -111,7 +117,6 @@ public class SectionListDataAdapter extends RecyclerView.Adapter<SectionListData
                             .circleCrop().bitmapTransform(new CircleCrop())
                             .fitCenter())
                     .into(holder.user_image);
-
             String url = singleItem.getImage();
             //Log.d("url_adapter",url);
             //Toast.makeText(mContext, ""+url, Toast.LENGTH_SHORT).show();
@@ -162,7 +167,6 @@ public class SectionListDataAdapter extends RecyclerView.Adapter<SectionListData
                 catch(Exception e){
                     my_uid=0;
                      }
-
                  //holder.ratingBar.setEnabled(true);
                 if (my_uid == 0) {
                     holder.likeButton.setEnabled(false);
@@ -176,10 +180,15 @@ public class SectionListDataAdapter extends RecyclerView.Adapter<SectionListData
                 }
         if (PrefManager.isLogin(mContext)) {
             holder.likeButton.setEnabled(true);
+            holder.ratingBar.setFocusable(true);
+            holder.ratingBar.setIsIndicator(false);
+            //holder.ratingBar.setClickable(true);
             }
             else {
                 holder.likeButton.setEnabled(false);
-                //holder.ratingBar.setEnabled(false);
+                holder.ratingBar.setFocusable(false);
+                holder.ratingBar.setIsIndicator(true);
+            //holder.ratingBar.setClickable(false);
             }
             holder.user_image.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -237,21 +246,20 @@ public class SectionListDataAdapter extends RecyclerView.Adapter<SectionListData
                 }
             });
             if (PrefManager.isLogin(mContext)) {
-                holder.ratingBar.setOnClickListener(new View.OnClickListener() {
+                /*holder.ratingBar.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-
                     }
-                });
-                holder.ratingBar.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
+                }); */
+               holder.ratingBar.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
                     @Override
                     public void onRatingChanged(RatingBar ratingBar, float rating, boolean fromUser) {
-
+                           sendrating(rating,itemsList.get(i).getUid(),itemsList.get(i).getId(),itemsList.get(i).getType());
+                           //Toast.makeText(mContext,itemsList.get(i).getType(),Toast.LENGTH_LONG).show();
                     }
                 });
             }
        // }
-
     }
     @Override
     public int getItemCount() {
@@ -312,5 +320,44 @@ public class SectionListDataAdapter extends RecyclerView.Adapter<SectionListData
                 });
             }
         }
+    }
+    public void sendrating(float rating,int uid,int id,String ptype){
+        String urlv= Config.API_URL+ "app_service.php?type=rate_me&id="+id+"&uid="+uid+"&ptype="+ptype+"&total_rate="+rating;
+
+        RequestQueue requestQueue = Volley.newRequestQueue(mContext);
+        // Initialize a new JsonObjectRequest instance
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(
+                Request.Method.GET,
+                urlv,
+                null,
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        Log.d("Prod_detaili_profile",""+response);
+                        try{
+                            String status=response.optString("status");
+                            String msgv=response.optString("msg");
+                            if(status.equalsIgnoreCase("success")) {
+                                //Toast.makeText(mContext,""+msgv,Toast.LENGTH_LONG).show();
+                            }
+                            else{
+                               // Toast.makeText(mContext,""+msgv,Toast.LENGTH_LONG).show();
+                            }
+                        }
+                        catch (Exception e){
+                            e.printStackTrace();
+                            Toast.makeText(mContext,e.getMessage(),Toast.LENGTH_LONG).show();
+                        }
+                    }
+                },
+                new Response.ErrorListener(){
+                    @Override
+                    public void onErrorResponse(VolleyError error){
+                        Toast.makeText(mContext,error.getMessage(),Toast.LENGTH_LONG).show();
+                    }
+                }
+        );
+        requestQueue.add(jsonObjectRequest);
+
     }
 }
