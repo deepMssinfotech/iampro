@@ -1,8 +1,10 @@
 package com.mssinfotech.iampro.co;
 
+import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.drawable.ColorDrawable;
 import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
@@ -10,6 +12,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
@@ -119,7 +122,11 @@ public class LoginActivity extends Fragment {
             return;
         }
 
-        final ProgressDialog loading = ProgressDialog.show(context,"Processing...","Please wait...",false,false);
+        final Dialog loading = new Dialog(getContext());
+        loading.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        loading.setContentView(R.layout.progress_dialog);
+        loading.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+        loading.show();
         StringRequest stringRequest = new StringRequest(Request.Method.POST,Config.AJAX_URL+"signup.php",
                 new Response.Listener<String>() {
                     @Override
@@ -142,6 +149,7 @@ public class LoginActivity extends Fragment {
                                 //String name=fnamem+"\t"+lnamem;
                                 //String imgurl=avatarv;
                                 String id = jsonObject.getString("id");
+                                String username = jsonObject.getString("username");
                                 String img_url= jsonObject.getString("avatar");
                                 String dob = jsonObject.getString("dob");
                                 String mobile = jsonObject.getString("mobile");
@@ -153,7 +161,7 @@ public class LoginActivity extends Fragment {
                                 String video_banner_image = jsonObject.getString("video_banner_image");
                                 String profile_image_gallery = jsonObject.getString("profile_image_gallery");
                                 String profile_video_gallery = jsonObject.getString("profile_video_gallery");
-                                PrefManager.saveLoginDetails(unamee,img_url,id,mobile,fname,lname,email,dob,banner_image,  img_banner_image,  video_banner_image,  profile_image_gallery,  profile_video_gallery);
+                                PrefManager.saveLoginDetails(username,img_url,id,mobile,fname,lname,email,dob,banner_image,  img_banner_image,  video_banner_image,  profile_image_gallery,  profile_video_gallery);
                                 PrefManager.setLogin(true);
                                 PrefManager.updateCountFromServer(context,id);
                                 etemail.setText(" ");

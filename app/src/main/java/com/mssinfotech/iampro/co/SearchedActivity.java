@@ -1,7 +1,9 @@
 package com.mssinfotech.iampro.co;
 
+import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -11,6 +13,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
+import android.view.Window;
 import android.widget.ImageView;
 import android.widget.Toast;
 
@@ -90,8 +93,10 @@ public class SearchedActivity extends AppCompatActivity implements UserDataAdapt
         }
     }
     private void getProductData(){
-        final ProgressDialog pDialog = new ProgressDialog(SearchedActivity.this); //Your Activity.this
-        pDialog.setMessage("Loading...!");
+        final Dialog pDialog = new Dialog(this);
+        pDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        pDialog.setContentView(R.layout.progress_dialog);
+        pDialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
         pDialog.show();
         String url=null;
         try {
@@ -274,8 +279,10 @@ public class SearchedActivity extends AppCompatActivity implements UserDataAdapt
         requestQueue.add(jsonArrayRequest);
     }
     public void getSearchedItem(){
-        final ProgressDialog pDialog = new ProgressDialog(SearchedActivity.this); //Your Activity.this
-        pDialog.setMessage("Loading...!");
+        final Dialog pDialog = new Dialog(this);
+        pDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        pDialog.setContentView(R.layout.progress_dialog);
+        pDialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
         pDialog.show();
         String url=null;
         try {

@@ -1,17 +1,20 @@
 package com.mssinfotech.iampro.co.common;
 
 import android.app.Activity;
+import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
+import android.graphics.drawable.ColorDrawable;
 import android.media.MediaScannerConnection;
 import android.net.Uri;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.util.Base64;
 import android.util.Log;
+import android.view.Window;
 import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
@@ -23,6 +26,7 @@ import com.android.volley.RetryPolicy;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.mssinfotech.iampro.co.R;
 import com.mssinfotech.iampro.co.utils.PrefManager;
 
 import org.json.JSONArray;
@@ -91,7 +95,11 @@ public class ImageProcess {
 
     public static void saveTempImage(final Context context, final String utype, final Bitmap bitmap){
         String url=Config.AJAX_URL+"uploadImage.php";
-        final ProgressDialog loading = ProgressDialog.show(context,"Processing...","Please wait...",false,false);
+        final Dialog loading = new Dialog(context);
+        loading.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        loading.setContentView(R.layout.progress_dialog);
+        loading.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+        loading.show();
         StringRequest stringRequest = new StringRequest(Request.Method.POST, url,
                 new Response.Listener<String>() {
                     @Override

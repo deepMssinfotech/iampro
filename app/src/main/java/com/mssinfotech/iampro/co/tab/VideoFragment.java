@@ -1,5 +1,7 @@
 package com.mssinfotech.iampro.co.tab;
+import android.app.Dialog;
 import android.app.ProgressDialog;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.provider.MediaStore;
@@ -15,6 +17,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Toast;
@@ -241,8 +244,10 @@ public class VideoFragment extends Fragment implements VideoAdapter.ItemListener
         final String url = Config.API_URL+ "app_service.php?type=all_item&name=video&uid="+uid+"&my_id="+uid;
         // Initialize a new RequestQueue instance
         RequestQueue requestQueue = Volley.newRequestQueue(getContext());
-        final ProgressDialog pDialog = new ProgressDialog(getContext()); //Your Activity.this
-        pDialog.setMessage("Loading...!");
+        final Dialog pDialog = new Dialog(this.getContext());
+        pDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        pDialog.setContentView(R.layout.progress_dialog);
+        pDialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
         pDialog.show();
         // Initialize a new JsonArrayRequest instance
         JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(
@@ -358,8 +363,10 @@ public class VideoFragment extends Fragment implements VideoAdapter.ItemListener
         String url=Config.API_URL+ "app_service.php?type=get_category&name=VIDEO&uid="+uid;
         RequestQueue requestQueue = Volley.newRequestQueue(getContext());
 
-        final ProgressDialog pDialog = new ProgressDialog(getContext()); //Your Activity.this
-        pDialog.setMessage("Loading...!");
+        final Dialog pDialog = new Dialog(getContext());
+        pDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        pDialog.setContentView(R.layout.progress_dialog);
+        pDialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
         pDialog.show();
         JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(
                 Request.Method.GET,
@@ -419,8 +426,10 @@ public class VideoFragment extends Fragment implements VideoAdapter.ItemListener
         String url=Config.API_URL+"app_service.php?type=getMyAlbemsListt&search_type=video&uid="+uid+"&my_id="+uid+"&album_id="+aid;
         // Initialize a new RequestQueue instance
         RequestQueue requestQueue = Volley.newRequestQueue(getContext());
-        final ProgressDialog pDialog = new ProgressDialog(getContext()); //Your Activity.this
-        pDialog.setMessage("Loading...!");
+        final Dialog pDialog = new Dialog(getContext());
+        pDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        pDialog.setContentView(R.layout.progress_dialog);
+        pDialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
         pDialog.show();
         // Initialize a new JsonArrayRequest instance
         JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(
@@ -524,8 +533,10 @@ public class VideoFragment extends Fragment implements VideoAdapter.ItemListener
     }
 
     public void getVideoMores(final String cname){
-        final ProgressDialog pDialog = new ProgressDialog(getContext()); //Your Activity.this
-        pDialog.setMessage("Loading...!");
+        final Dialog pDialog = new Dialog(getContext());
+        pDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        pDialog.setContentView(R.layout.progress_dialog);
+        pDialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
         pDialog.show();
         String url=null;
         try {

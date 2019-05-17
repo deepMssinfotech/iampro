@@ -1,5 +1,7 @@
 package com.mssinfotech.iampro.co.tab;
+import android.app.Dialog;
 import android.app.ProgressDialog;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
@@ -14,6 +16,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Toast;
@@ -329,8 +332,10 @@ public class ProvideFragment extends Fragment implements ProvideAdapter.ItemList
         String url=Config.API_URL+ "app_service.php?type=get_category&name=PROVIDE&uid="+uid;
         RequestQueue requestQueue=Volley.newRequestQueue(getContext());
 
-        final ProgressDialog pDialog = new ProgressDialog(getContext()); //Your Activity.this
-        pDialog.setMessage("Loading...!");
+        final Dialog pDialog = new Dialog(this.getContext());
+        pDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        pDialog.setContentView(R.layout.progress_dialog);
+        pDialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
         pDialog.show();
         JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(
                 Request.Method.GET,
@@ -399,8 +404,10 @@ public class ProvideFragment extends Fragment implements ProvideAdapter.ItemList
         final String url =Config.API_URL+"app_service.php?type=all_product_classified&uid="+uid+"&name=PROVIDE&my_id="+uid;
         // Initialize a new RequestQueue instance
         RequestQueue requestQueue = Volley.newRequestQueue(getContext());
-        final ProgressDialog pDialog = new ProgressDialog(getContext()); //Your Activity.this
-        pDialog.setMessage("Loading...!");
+        final Dialog pDialog = new Dialog(this.getContext());
+        pDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        pDialog.setContentView(R.layout.progress_dialog);
+        pDialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
         pDialog.show();
         //Toast.makeText(getContext(), "getProvide", Toast.LENGTH_SHORT).show();
         // Initialize a new JsonArrayRequest instance
@@ -538,110 +545,6 @@ public class ProvideFragment extends Fragment implements ProvideAdapter.ItemList
     public void onItemClick(DataModel item) {
         Toast.makeText(getContext(), item.getName()+ " is clicked", Toast.LENGTH_SHORT).show();
     }
-   /* public void getProvideMore(){
-        String url=Config.API_URL+"app_service.php?type=getall_product&added_by="+uid+"&my_id="+uid+"&search_type=PROVIDE";
-        // Initialize a new RequestQueue instance
-        RequestQueue requestQueue = Volley.newRequestQueue(getContext());
-
-
-        final ProgressDialog pDialog = new ProgressDialog(getContext()); //Your Activity.this
-        pDialog.setMessage("Loading...!");
-        pDialog.show();
-        // Initialize a new JsonArrayRequest instance
-        JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(
-                Request.Method.GET,
-                url,
-                null,
-                new com.android.volley.Response.Listener<JSONArray>() {
-                    @Override
-                    public void onResponse(JSONArray response) {
-                        pDialog.dismiss();
-                        Log.d("responsef",response.toString());
-                        SectionDataModel dm = new SectionDataModel();
-                        dm.setHeaderTitle("Product");
-                        ArrayList<SingleItemModel> singleItem = new ArrayList<SingleItemModel>();
-                        if(!singleItem.isEmpty()){
-                            singleItem.clear();
-                        }
-                        try{
-                            for(int i=0;i<response.length();i++){
-                                // Get current json object
-                                JSONObject student = response.getJSONObject(i);
-
-                                int id=student.getInt("id");
-                                String idv=String.valueOf(id);
-                                int added_by=student.getInt("added_by");
-
-                                int scost=student.getInt("selling_cost");
-                                //int pcost=student.getInt("purchese_cost");
-                                int pcost=0;
-                                String name = student.getString("name");
-                                String categoryv=student.getString("category");
-                                String imagev=student.getString("image");
-                                String image= Config.URL_ROOT + "uploads/product/" +imagev;
-                                String udate=student.getString("udate");
-                                int totallike=Integer.parseInt(student.getString("likes"));
-                                int comments=student.getInt("comments");
-                                Log.d("pdata",""+name+""+categoryv+""+image+""+udate);
-
-                                // String daysago=student.getString("ago");
-                                int like_unlike=student.optInt("like_unlike");
-                                String rating=String.valueOf(student.getInt("average_rating"));
-                                float ratingv=Float.parseFloat(rating);
-
-                                JSONObject userDetail=student.getJSONObject("user_name");
-                                int uid=userDetail.getInt("id");
-                                String fname=userDetail.getString("fname");
-                                String lname=userDetail.getString("lname");
-                                String fullname=fname+"\t"+lname;
-                                String avatar=Config.AVATAR_URL+"250/250/"+userDetail.getString("avatar");
-
-                                //SectionDataModel dm = new SectionDataModel();
-                                //dm.setHeaderTitle("Section " + i);
-                                //Toast.makeText(getContext(),"rrrresponse_enterrr:",Toast.LENGTH_LONG).show();
-                                // singleItem.add(new SingleItemModel(name,image,udate));
-                                //allSampleData.add(new DataModel(name,image,udate,categoryv));
-                                 String more="loadmore";
-                                //item.add(new MyProductModel(name,image,udate,categoryv,totallike,comments,scost,ratingv,uid,fullname,avatar,idv,more,like_unlike));
-                                item.add(new MyImageModel(String.valueOf(id),String.valueOf(albemid),name,category,String.valueOf(albem_type),image,udate,about_us,String.valueOf(group_id),String.valueOf(is_featured),String.valueOf(status),is_block,String.valueOf(comments),String.valueOf(totallike),String.valueOf(like_unlike),rating,String.valueOf(user_id),more,avatar,fullname));
-
-                            }
-                            Log.d("bdm",singleItem.toString());
-                            // dm.setAllItemsInSection(singleItem);
-                            Log.d("adm",singleItem.toString());
-                            Log.d("dmm",dm.toString());
-                            //allSampleData.add(dm);
-                            Log.d("allsampledatav",item.toString());
-                            adapterr = new MyProvideAdapter(getContext(),item,ProvideFragment.this);
-
-                            recycler_view_load_more.setAdapter(adapterr);
-                            GridLayoutManager manager = new GridLayoutManager(getContext(), 2, GridLayoutManager.VERTICAL, false);
-                            recycler_view_load_more.setLayoutManager(manager);
-
-                        }
-                        catch (JSONException e){
-                            e.printStackTrace();
-                            Toast.makeText(getContext(), ""+e.getMessage(), Toast.LENGTH_SHORT).show();
-                            Log.d("catch_f",""+e.getMessage());
-                             pDialog.dismiss();
-                        }
-                    }
-                },
-                new com.android.volley.Response.ErrorListener(){
-                    @Override
-                    public void onErrorResponse(VolleyError error){
-                        // Do something when error occurred
-                        //Snackbar.make(getContext(),"Error...", Snackbar.LENGTH_LONG).show();
-                        Toast.makeText(getContext(), error.getMessage(), Toast.LENGTH_SHORT).show();
-                        Log.d("verror",""+error.getMessage());
-                        pDialog.dismiss();
-                    }
-                }
-        );
-        // Add JsonArrayRequest to the RequestQueue
-        requestQueue.add(jsonArrayRequest);
-        //getProvide();
-    } */
 
     @Override
     public void onItemClick(MyProductModel item) {
@@ -649,8 +552,10 @@ public class ProvideFragment extends Fragment implements ProvideAdapter.ItemList
     }
 
     public void getProvidesMores(final String cname){
-        final ProgressDialog pDialog = new ProgressDialog(getContext()); //Your Activity.this
-        pDialog.setMessage("Loading...!");
+        final Dialog pDialog = new Dialog(getContext());
+        pDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        pDialog.setContentView(R.layout.progress_dialog);
+        pDialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
         pDialog.show();
         String url=null;
         try {

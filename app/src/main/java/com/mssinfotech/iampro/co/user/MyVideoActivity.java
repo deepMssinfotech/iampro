@@ -134,7 +134,7 @@ public class MyVideoActivity extends Fragment implements MyVideoAdapter.ItemList
         tv_category=view.findViewById(R.id.tv_category);
         userbackgroud = view.findViewById(R.id.userbackgroud);
         changeImage = view.findViewById(R.id.changeImage);
-         fab=view.findViewById(R.id.fab);
+        fab=view.findViewById(R.id.fab);
         changeBackground_Image = view.findViewById(R.id.changeBackground_Image);
         uid= PrefManager.getLoginDetail(context,"id");
         if(id == null || id.equals(uid)) {
@@ -177,8 +177,7 @@ public class MyVideoActivity extends Fragment implements MyVideoAdapter.ItemList
             changeBackground_Image.setVisibility(View.GONE);
             changeImage.setVisibility(View.GONE);
             uid= id;
-            gteUsrDetail(id);
-
+            gteUsrDetail(uid);
         }
         IncludeShortMenu includeShortMenu = view.findViewById(R.id.includeShortMenu);
         includeShortMenu.updateCounts(context,uid);
@@ -477,6 +476,7 @@ public class MyVideoActivity extends Fragment implements MyVideoAdapter.ItemList
     }
     public void getAllAlbum(){
         String url=Config.API_URL+ "app_service.php?type=getAlbemsListt&search_type=video&uid="+uid;
+        Log.e("url",url);
         RequestQueue requestQueue = Volley.newRequestQueue(context);
         final Dialog dialog = new Dialog(this.getContext());
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -534,7 +534,7 @@ public class MyVideoActivity extends Fragment implements MyVideoAdapter.ItemList
     }
     public void getVideo(final String aid){
         String url=Config.API_URL+"app_service.php?type=getMyAlbemsListt&search_type=video&uid="+uid+"&my_id="+uid+"&album_id="+aid;
-        // Initialize a new RequestQueue instance
+        Log.d("urlimggg",""+url);
         RequestQueue requestQueue = Volley.newRequestQueue(context);
         final Dialog dialog = new Dialog(this.getContext());
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);

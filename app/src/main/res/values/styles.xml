@@ -24,7 +24,6 @@
     </style>
     <style name="DialogTheme">
         <item name="android:windowEnterAnimation">@anim/slide_in_from_left</item>
-        <item name="android:windowExitAnimation">@anim/fadeout</item>
     </style>
    <!-- <style name="AppTheme.NoActionBar" parent="AppTheme">
         <item name="windowActionBar">false</item>

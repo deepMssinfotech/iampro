@@ -241,8 +241,6 @@ public class SectionImageVideoAdapter extends RecyclerView.Adapter<SectionImageV
                 function.executeUrl(mContext,"get",url,null);
             }
         });
-
-
         holder.imageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -351,7 +349,7 @@ public class SectionImageVideoAdapter extends RecyclerView.Adapter<SectionImageV
 
         }
         else{
-            holder.user_image.setVisibility(View.VISIBLE);
+            holder.user_image.setVisibility(View.GONE);
             Glide.with(mContext)
                     .load(Config.ALBUM_URL+singleItem.getImage())
                     .apply(Config.options_product)
@@ -473,23 +471,38 @@ public class SectionImageVideoAdapter extends RecyclerView.Adapter<SectionImageV
             });
       //  }
 
-        if(PrefManager.isLogin(mContext)){
-            if(!PrefManager.getLoginDetail(mContext,"id").equalsIgnoreCase(itemsList.get(i).getUid()))
+        if(PrefManager.isLogin(mContext)) {
+            if (!PrefManager.getLoginDetail(mContext, "id").equalsIgnoreCase(itemsList.get(i).getUid()))
                 holder.buttonViewOption.setVisibility(View.GONE);
             else
                 holder.buttonViewOption.setVisibility(View.VISIBLE);
-        }
-        else{
-            holder.buttonViewOption.setVisibility(View.VISIBLE);
-        }
-        if (itemsList.get(i).getUid().equalsIgnoreCase(PrefManager.getLoginDetail(mContext,"id")) && type.equalsIgnoreCase("Product")){
-            holder.buttonViewOption.setVisibility(View.VISIBLE);
-        }
-        else{
-            if (type.equalsIgnoreCase("Product")) {
-                holder.iv_buy.setVisibility(View.VISIBLE);
-                holder.buttonViewOption.setVisibility(View.GONE);
+
+
+            if (itemsList.get(i).getUid().equalsIgnoreCase(PrefManager.getLoginDetail(mContext, "id")) && type.equalsIgnoreCase("Product")) {
+                holder.buttonViewOption.setVisibility(View.VISIBLE);
+            } else {
+                if (type.equalsIgnoreCase("Product")) {
+                    holder.iv_buy.setVisibility(View.VISIBLE);
+                    holder.buttonViewOption.setVisibility(View.GONE);
+                }
             }
+            if (itemsList.get(i).getUid().equalsIgnoreCase(PrefManager.getLoginDetail(mContext,"id")) && (type.equalsIgnoreCase("Provide") || type.equalsIgnoreCase("Demand"))) {
+                holder.buttonViewOption.setVisibility(View.VISIBLE);
+            }
+            else{
+                if (type.equalsIgnoreCase("Provide") || type.equalsIgnoreCase("Demand")) {
+                    holder.favButton.setVisibility(View.VISIBLE);
+                    holder.buttonViewOption.setVisibility(View.INVISIBLE);
+                    if (PrefManager.isLogin(mContext)){
+                        holder.favButton.setEnabled(true);
+                    }
+                    else{
+                        holder.favButton.setEnabled(false);
+                    }
+                }
+            }
+        }else{
+            holder.buttonViewOption.setVisibility(View.GONE);
         }
         if (type.equalsIgnoreCase("Product")) {
             holder.iv_buy.setOnClickListener(new View.OnClickListener() {
@@ -507,21 +520,8 @@ public class SectionImageVideoAdapter extends RecyclerView.Adapter<SectionImageV
                 }
             });
         }
-        if (itemsList.get(i).getUid().equalsIgnoreCase(PrefManager.getLoginDetail(mContext,"id")) && (type.equalsIgnoreCase("Provide") || type.equalsIgnoreCase("Demand"))) {
-            holder.buttonViewOption.setVisibility(View.VISIBLE);
-        }
-        else{
-            if (type.equalsIgnoreCase("Provide") || type.equalsIgnoreCase("Demand")) {
-                holder.favButton.setVisibility(View.VISIBLE);
-                holder.buttonViewOption.setVisibility(View.INVISIBLE);
-                if (PrefManager.isLogin(mContext)){
-                    holder.favButton.setEnabled(true);
-                }
-                else{
-                    holder.favButton.setEnabled(false);
-                }
-            }
-        }
+
+
           if (type.equalsIgnoreCase("Provide")){
               if (itemsList.get(position).getIs_featured().equalsIgnoreCase("1")) {
                   holder.favButton.setLiked(true);

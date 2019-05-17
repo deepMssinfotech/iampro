@@ -5,6 +5,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 import android.app.Activity;
+import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -23,6 +24,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
@@ -216,7 +218,11 @@ public class CartActivity extends Fragment implements CartItemAdapter.ItemListen
       public void clearCart(){
           String url= Config.API_URL+ "cart.php?type=clear_cart&uid="+PrefManager.getLoginDetail(CartActivity.this.getContext(),"id");
           // Initialize a new RequestQueue instance
-          final ProgressDialog loading = ProgressDialog.show(CartActivity.this.getContext(), "Processing...", "Please wait...", false, false);
+          final Dialog loading = new Dialog(getContext());
+          loading.requestWindowFeature(Window.FEATURE_NO_TITLE);
+          loading.setContentView(R.layout.progress_dialog);
+          loading.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+          loading.show();
           RequestQueue requestQueue = Volley.newRequestQueue(CartActivity.this.getContext());
 
           // Initialize a new JsonObjectRequest instance
@@ -228,6 +234,8 @@ public class CartActivity extends Fragment implements CartItemAdapter.ItemListen
                       public void onResponse(JSONObject response) {
                           // Do something with response
                           //mTextView.setText(response.toString());
+                          PrefManager.updateLoginDetail(getContext(),"cart_count","0");
+                          Config.count_cart.setText("0");
 
                           String status=response.optString("status");
                           if (status.equalsIgnoreCase("success")) {

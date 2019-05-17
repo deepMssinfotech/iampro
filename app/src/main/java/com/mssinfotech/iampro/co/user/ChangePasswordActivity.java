@@ -1,6 +1,8 @@
 package com.mssinfotech.iampro.co.user;
+import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.graphics.drawable.ColorDrawable;
 import android.support.design.widget.TextInputEditText;
 import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.Fragment;
@@ -12,6 +14,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -78,7 +81,11 @@ public class ChangePasswordActivity extends Fragment {
             }
             final String url = Config.AJAX_URL + "signup.php";
             //tv.setText(String.valueOf(randomNumber));
-            final ProgressDialog loading = ProgressDialog.show(getContext(), "Processing...", "Please wait...", false, false);
+            final Dialog loading = new Dialog(getContext());
+            loading.requestWindowFeature(Window.FEATURE_NO_TITLE);
+            loading.setContentView(R.layout.progress_dialog);
+            loading.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+            loading.show();
             final StringRequest stringRequest = new StringRequest(Request.Method.POST, url,
                     new Response.Listener<String>() {
                         @Override

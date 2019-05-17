@@ -1,5 +1,7 @@
 package com.mssinfotech.iampro.co.tab;
+import android.app.Dialog;
 import android.app.ProgressDialog;
+import android.graphics.drawable.ColorDrawable;
 import android.media.Image;
 import android.os.Bundle;
 import android.os.Handler;
@@ -16,6 +18,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Toast;
@@ -247,8 +250,10 @@ public class ImageFragment extends Fragment implements ImageAdapter.ItemListener
     }
     public void getImage(){
         final String url = Config.API_URL+ "app_service.php?type=all_item&name=image&uid="+uid+"&my_id="+uid;
-        final ProgressDialog pDialog = new ProgressDialog(getContext()); //Your Activity.this
-        pDialog.setMessage("Loading...!");
+        final Dialog pDialog = new Dialog(this.getContext());
+        pDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        pDialog.setContentView(R.layout.progress_dialog);
+        pDialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
         pDialog.show();
         // Initialize a new RequestQueue instance
         RequestQueue requestQueue = Volley.newRequestQueue(getContext());
@@ -358,8 +363,10 @@ public class ImageFragment extends Fragment implements ImageAdapter.ItemListener
          //String url=Config.API_URL+ "app_service.php?type=search_all_items&search_type=IMAGE&category_type=&uid="+uid+"&my_id="+uid;
           String url=Config.API_URL+ "app_service.php?type=get_category&name=IMAGE";
         RequestQueue requestQueue = Volley.newRequestQueue(getContext());
-        final ProgressDialog pDialog = new ProgressDialog(getContext()); //Your Activity.this
-        pDialog.setMessage("Loading...!");
+        final Dialog pDialog = new Dialog(this.getContext());
+        pDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        pDialog.setContentView(R.layout.progress_dialog);
+        pDialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
         pDialog.show();
         JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(
                 Request.Method.GET,
@@ -417,8 +424,10 @@ public class ImageFragment extends Fragment implements ImageAdapter.ItemListener
         //getProvide();
     }
     public void getImagesMore(final String cname){
-        final ProgressDialog pDialog = new ProgressDialog(getContext()); //Your Activity.this
-        pDialog.setMessage("Loading...!");
+        final Dialog pDialog = new Dialog(this.getContext());
+        pDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        pDialog.setContentView(R.layout.progress_dialog);
+        pDialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
         pDialog.show();
         //String url=Config.API_URL+"app_service.php?type=getMyAlbemsListt&search_type=image&uid="+uid+"&my_id="+uid;
        // String url=Config.API_URL+"app_service.php?type=getMyAlbemsListt&search_type=image&uid="+uid+"&my_id="+uid+"&album_id="+aid;
@@ -530,8 +539,10 @@ public class ImageFragment extends Fragment implements ImageAdapter.ItemListener
         //getProvide();
     }
     public void getImagesMores(final String cname){
-        final ProgressDialog pDialog = new ProgressDialog(getContext()); //Your Activity.this
-        pDialog.setMessage("Loading...!");
+        final Dialog pDialog = new Dialog(this.getContext());
+        pDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        pDialog.setContentView(R.layout.progress_dialog);
+        pDialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
         pDialog.show();
         String url=null;
         try {

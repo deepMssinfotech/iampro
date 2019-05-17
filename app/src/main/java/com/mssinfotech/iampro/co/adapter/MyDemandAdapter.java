@@ -134,10 +134,13 @@ public class MyDemandAdapter extends RecyclerView.Adapter<MyDemandAdapter.ViewHo
              likeButton.setLikeDrawableRes(R.drawable.like_un);
 
             tv_sellingprice.setText("Rs: "+String.valueOf(item.getsCost()));
-            if (myid.equalsIgnoreCase(String.valueOf(uid)) || uid==0 || String.valueOf(uid)=="" || String.valueOf(uid)==null) {
-                buttonViewOption.setVisibility(View.VISIBLE);
-            }
-            else {
+            if(PrefManager.isLogin(mContext)) {
+                if (myid.equalsIgnoreCase(String.valueOf(uid)) || uid == 0 || String.valueOf(uid) == "" || String.valueOf(uid) == null) {
+                    buttonViewOption.setVisibility(View.VISIBLE);
+                } else {
+                    buttonViewOption.setVisibility(View.GONE);
+                }
+            }else{
                 buttonViewOption.setVisibility(View.GONE);
             }
             Glide.with(mContext)
@@ -276,11 +279,14 @@ public class MyDemandAdapter extends RecyclerView.Adapter<MyDemandAdapter.ViewHo
                 mContext.startActivity(intent);
             }
         });
-        if(!PrefManager.getLoginDetail(mContext,"id").equalsIgnoreCase(String.valueOf(mValues.get(position).getUid()))){
+        if(PrefManager.isLogin(mContext)) {
+            if (!PrefManager.getLoginDetail(mContext, "id").equalsIgnoreCase(String.valueOf(mValues.get(position).getUid()))) {
+                Vholder.buttonViewOption.setVisibility(View.GONE);
+            } else {
+                Vholder.buttonViewOption.setVisibility(View.VISIBLE);
+            }
+        }else{
             Vholder.buttonViewOption.setVisibility(View.GONE);
-        }
-        else{
-            Vholder.buttonViewOption.setVisibility(View.VISIBLE);
         }
 
     }

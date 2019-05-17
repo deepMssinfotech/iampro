@@ -73,7 +73,7 @@ public class IncludeShortMenu  extends RelativeLayout {
         }
     }
     public void getCountFromServer(final Context context,String uid) {
-        if (!uid.isEmpty()) {
+        if (uid!=null) {
             String api_url = Config.API_URL + "api.php?type=chat_count&myid=" + uid;
             Log.e(Config.TAG, api_url);
             StringRequest stringRequest = new StringRequest(api_url,

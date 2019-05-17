@@ -14,6 +14,7 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.mssinfotech.iampro.co.CommentActivity;
 import com.mssinfotech.iampro.co.R;
+import com.mssinfotech.iampro.co.common.Config;
 import com.mssinfotech.iampro.co.common.function;
 import com.mssinfotech.iampro.co.data.NotificationItem;
 import com.mssinfotech.iampro.co.demand.DemandDetailActivity;
@@ -191,6 +192,9 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
         // notify the item removed by position
         // to perform recycler view delete animations
         // NOTE: don't call notifyDataSetChanged()
+        int perNoti = Integer.parseInt(PrefManager.getLoginDetail(context,"my_notification"))-1;
+        PrefManager.updateLoginDetail(context,"my_notification",(perNoti)+"");
+        Config.count_notify.setText(perNoti+"");
         notifyItemRemoved(position);
     }
 

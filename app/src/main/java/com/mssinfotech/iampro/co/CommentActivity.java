@@ -262,7 +262,7 @@ public class CommentActivity extends AppCompatActivity implements CommentAdapter
                                 imageView.setVisibility(View.VISIBLE);
                                 Glide.with(CommentActivity.this)
                                         .load(ImageHol)
-                                        .apply(Config.options_avatar)
+                                        .apply(Config.options_background)
                                         .into(imageView);
                                 imageView.setOnClickListener(new View.OnClickListener() {
                                     @Override

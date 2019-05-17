@@ -1,8 +1,10 @@
 package com.mssinfotech.iampro.co.user;
 
+import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
@@ -16,6 +18,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -239,7 +242,11 @@ public class MyProductActivity extends Fragment implements MyProductAdapter.Item
     public void prepareCart() {
         String uid=PrefManager.getLoginDetail(context,"id");
         String MY_PRODUCT_URL = Config.API_URL+"app_service.php?type=getall_product&added_by="+uid+"&my_id="+uid+"&search_type=PRODUCT";
-        final ProgressDialog loading = ProgressDialog.show(context,"Processing...","Please wait...",false,false);
+        final Dialog loading = new Dialog(getContext());
+        loading.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        loading.setContentView(R.layout.progress_dialog);
+        loading.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+        loading.show();
         StringRequest stringRequest = new StringRequest(Request.Method.GET,MY_PRODUCT_URL,
                 new Response.Listener<String>() {
                     @Override

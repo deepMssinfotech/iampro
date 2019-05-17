@@ -21,12 +21,12 @@ import org.json.JSONObject;
 public class PrefManager {
     SharedPreferences pref;
     SharedPreferences.Editor editor;
-    Context _context;
+    static Context _context;
     private static SharedPreferences userpref = null;
     private static SharedPreferences.Editor usereditor = null;
     public static final String IS_LOGIN = "IsLoggedIn";
     // shared pref mode
-    int PRIVATE_MODE = 0;
+    static int PRIVATE_MODE = 0;
 
     // Shared preferences file name
     private static final String PREF_NAME = "mss-welcome";
@@ -130,8 +130,63 @@ public class PrefManager {
             //Adding request to the queue
             requestQueue.add(stringRequest);
         }
+    }public static final void getCountFromServer(final Context context) {
+        if (isLogin(context)) {
+            //Log.d(TAG, "test servide for 5 sec");
+            String api_url = Config.API_URL + "api.php?type=chat_count&myid=" + getLoginDetail(context, "id");
+            Log.e(Config.TAG, api_url);
+            {
+                StringRequest stringRequest = new StringRequest(api_url,
+                        new Response.Listener<String>() {
+                            @Override
+                            public void onResponse(String response) {
+                                JSONObject result = null;
+                                //Log.d(Config.TAG, response);
+                                try {
+                                    result = new JSONObject(response);
+                                    if(userpref==null)
+                                        userpref=_context.getSharedPreferences(PREF_USER_NAME, PRIVATE_MODE);
+                                    if(usereditor==null)
+                                        usereditor=userpref.edit();
+                                    usereditor.putString("chatcount", result.getString("chatcount"));
+                                    usereditor.putString("my_notification", result.getString("my_notification"));
+                                    usereditor.putString("cart_count", result.getString("cart_count"));
+                                    usereditor.putString("my_wishlist", result.getString("my_wishlist"));
+                                    usereditor.putString("panding_friend", result.getString("panding_friend"));
+
+                                    usereditor.putString("total_count_product", result.getString("total_count_product"));
+                                    usereditor.putString("total_count_provide", result.getString("total_count_provide"));
+                                    usereditor.putString("total_count_demand", result.getString("total_count_demand"));
+                                    usereditor.putString("total_count_image", result.getString("total_count_image"));
+                                    usereditor.putString("total_count_video", result.getString("total_count_video"));
+                                    usereditor.putString("total_count_friend", result.getString("total_count_friend"));
+                                    usereditor.commit();
+                                    Config.updateAllCount(context);
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                        },
+                        new Response.ErrorListener() {
+                            @Override
+                            public void onErrorResponse(VolleyError error) {
+                                Log.e(Config.TAG, error.toString());
+                            }
+                        });
+
+                //Creating a request queue
+                RequestQueue requestQueue = Volley.newRequestQueue(context);
+                //Adding request to the queue
+                requestQueue.add(stringRequest);
+            }
+        }
     }
+
     public static void saveCountDetails(String total_count_product,String total_count_provide,String total_count_demand,String total_count_image,String total_count_friend,String total_count_video){
+        if(userpref==null)
+            userpref=_context.getSharedPreferences(PREF_USER_NAME, PRIVATE_MODE);
+        if(usereditor==null)
+            usereditor=userpref.edit();
         usereditor.putString("total_count_product", total_count_product);
         usereditor.putString("total_count_provide", total_count_provide);
         usereditor.putString("total_count_demand", total_count_demand);
@@ -141,6 +196,10 @@ public class PrefManager {
         usereditor.commit();
     }
     public static void saveLoginDetails(String unamee,String avatarv,String id,String mobilev,String fnamem,String lnamem,String email,String dob,String banner_imagev,  String img_banner_image,  String video_banner_image,  String profile_image_gallery,  String profile_video_gallery){
+        if(userpref==null)
+            userpref=_context.getSharedPreferences(PREF_USER_NAME, PRIVATE_MODE);
+        if(usereditor==null)
+            usereditor=userpref.edit();
         usereditor.putString("username", unamee);
         usereditor.putString("img_url", avatarv);
         usereditor.putString("id", id);
@@ -173,8 +232,9 @@ public class PrefManager {
         usereditor.commit();
     }
     public static String getLoginDetail(Context context, String field){
+        if(userpref==null)
+            return null;
         String value= userpref.getString(field, null);
-        usereditor.commit();
         return value;
     }
     public static void logout(Context context){

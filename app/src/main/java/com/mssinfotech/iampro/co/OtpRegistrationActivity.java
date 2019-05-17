@@ -2,6 +2,7 @@ package com.mssinfotech.iampro.co;
 
 import android.Manifest;
 import android.app.Activity;
+import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -10,6 +11,7 @@ import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Bitmap;
+import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Handler;
 import android.provider.MediaStore;
@@ -25,6 +27,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RelativeLayout;
@@ -209,7 +212,11 @@ public class OtpRegistrationActivity extends Fragment  implements SingleUploadBr
         }
         final String url=Config.API_URL+"ajax.php";
         //tv.setText(String.valueOf(randomNumber));
-        final ProgressDialog loading = ProgressDialog.show(context,"Processing...","Please wait...",false,false);
+        final Dialog loading = new Dialog(getContext());
+        loading.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        loading.setContentView(R.layout.progress_dialog);
+        loading.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+        loading.show();
         StringRequest stringRequest = new StringRequest(Request.Method.POST,url,
                 new Response.Listener<String>() {
                     @Override
@@ -334,7 +341,11 @@ public class OtpRegistrationActivity extends Fragment  implements SingleUploadBr
          Log.d("verror_otp1","before");
 
          Log.d("verror_otp2","after");
-         final ProgressDialog loading = ProgressDialog.show(getContext(),"Processing...","Please wait...",false,false);
+         final Dialog loading = new Dialog(getContext());
+         loading.requestWindowFeature(Window.FEATURE_NO_TITLE);
+         loading.setContentView(R.layout.progress_dialog);
+         loading.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+         loading.show();
 
          StringRequest sr = new StringRequest(Request.Method.POST,url, new Response.Listener<String>() {
              @Override

@@ -357,7 +357,7 @@ public class SectionVideoAdapter extends RecyclerView.Adapter<SectionVideoAdapte
                 holder.buttonViewOption.setVisibility(View.VISIBLE);
         }
         else{
-            holder.buttonViewOption.setVisibility(View.VISIBLE);
+            holder.buttonViewOption.setVisibility(View.GONE);
         }
         if(itemsList.get(i).getMore()==null) {
             Glide.with(mContext)

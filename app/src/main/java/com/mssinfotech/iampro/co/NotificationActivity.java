@@ -1,7 +1,9 @@
 package com.mssinfotech.iampro.co;
 
+import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
@@ -16,6 +18,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.ImageView;
 import android.widget.Toast;
 
@@ -77,25 +80,29 @@ public class NotificationActivity extends Fragment implements NotificationItemTo
      * method make volley network call and parses json
      */
     private void prepareWhishList() {
-        final ProgressDialog loading = ProgressDialog.show(getContext(),"Processing...","Please wait...",false,false);
+        final Dialog pDialog = new Dialog(this.getContext());
+        pDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        pDialog.setContentView(R.layout.progress_dialog);
+        pDialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+        pDialog.show();
         JsonArrayRequest jsonReq = new JsonArrayRequest(Request.Method.GET,
                 NOTIFY_URL  , null, new Response.Listener<JSONArray>() {
 
             @Override
             public void onResponse(JSONArray response) {
                 if (response != null) {
-                    loading.dismiss();
+                    pDialog.dismiss();
                     parseJsonFeed(response);
                     mAdapter.notifyDataSetChanged();
                 }else{
-                    loading.dismiss();
+                    pDialog.dismiss();
                     Toast.makeText(getContext(), "Empty Record!", Toast.LENGTH_SHORT).show();
                 }
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                loading.dismiss();
+                pDialog.dismiss();
                 Log.d(Config.TAG,"onErrorResponse 96 : "+error.getMessage());
             }
         });

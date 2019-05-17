@@ -284,8 +284,6 @@ public class SectionProductAdapter extends RecyclerView.Adapter<SectionProductAd
             iv_comments=view.findViewById(R.id.iv_comments);
             iv_favourite=view.findViewById(R.id.iv_favourite);
 
-            iv_edit=view.findViewById(R.id.iv_edit);
-            iv_delete=view.findViewById(R.id.iv_delete);
 
             image=view.findViewById(R.id.imageView);
             videoView=view.findViewById(R.id.videoView);

@@ -2,6 +2,7 @@ package com.mssinfotech.iampro.co.user;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -10,6 +11,7 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Bitmap;
+import android.graphics.drawable.ColorDrawable;
 import android.net.ConnectivityManager;
 import android.net.Uri;
 import android.os.AsyncTask;
@@ -27,6 +29,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -207,7 +210,11 @@ public class EditProfileActivity extends Fragment {
             return;
         }
         String emailv=email.getText().toString();
-        final ProgressDialog loading = ProgressDialog.show(context,"Processing...","Please wait...",false,false);
+        final Dialog loading = new Dialog(getContext());
+        loading.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        loading.setContentView(R.layout.progress_dialog);
+        loading.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+        loading.show();
         StringRequest stringRequest = new StringRequest(Request.Method.GET,Config.API_URL+"ajax.php?type=checkemail&email="+emailv+"&uid="+idv,
                 new Response.Listener<String>() {
                     @Override
@@ -257,7 +264,11 @@ public class EditProfileActivity extends Fragment {
             showInternetDialog();
             return;
         }
-        final ProgressDialog loading =ProgressDialog.show(context,"Processing...","Please wait...",false,false);
+        final Dialog loading = new Dialog(getContext());
+        loading.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        loading.setContentView(R.layout.progress_dialog);
+        loading.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+        loading.show();
         StringRequest stringRequest = new StringRequest(Request.Method.GET,Config.AJAX_URL+"signup.php?type=update_profile&uid="+idv+"&fname="+first_name.getText()+"&lname="+last_name.getText()+"&mobile="+contact_no.getText()+"&email="+email.getText()+"&dob="+dob.getText()+"&identity_type="+identity_type.getText()+"&identity_number="+identity_no.getText()+"&about_me="+about_me.getText()+"&tag_line="+tag_line.getText()+"&address="+address_tag.getText()+"&city="+city.getText()+"&state="+state.getText()+"&country="+country.getText(),
                 new Response.Listener<String>() {
                     @Override
@@ -322,7 +333,11 @@ public class EditProfileActivity extends Fragment {
     }
     public void getData(){
         String url=Config.API_URL+"ajax.php?type=get_users_all_detail&uid="+PrefManager.getLoginDetail(context,"id");
-        final ProgressDialog loading = ProgressDialog.show(context,"Processing...","Please wait...",false,false);
+        final Dialog loading = new Dialog(getContext());
+        loading.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        loading.setContentView(R.layout.progress_dialog);
+        loading.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+        loading.show();
         StringRequest stringRequest = new StringRequest(Request.Method.GET,url,
                 new Response.Listener<String>() {
                     @Override

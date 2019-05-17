@@ -456,9 +456,6 @@ public class HomeFragment extends Fragment implements UserDataAdapter.ItemListen
         // Initialize a new RequestQueue instance
         RequestQueue requestQueue = Volley.newRequestQueue(getContext());
 
-        //final ProgressDialog pDialog = new ProgressDialog(getContext()); //Your Activity.this
-        //pDialog.setMessage("Loading...!");
-        //pDialog.show();
 
 
         // Initialize a new JsonArrayRequest instance

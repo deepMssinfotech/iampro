@@ -1,8 +1,10 @@
 package com.mssinfotech.iampro.co.user;
 
+import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.Snackbar;
@@ -17,6 +19,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.ImageView;
 import android.widget.Toast;
 
@@ -85,7 +88,11 @@ public class MyWhishlistActivity extends Fragment implements WhishListItemTouchH
      */
     private void prepareWhishList() {
         //Log.d(Config.TAG,WHISH_LIST_URL);
-        final ProgressDialog loading = ProgressDialog.show(getContext(),"Processing...","Please wait...",false,false);
+        final Dialog loading = new Dialog(getContext());
+        loading.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        loading.setContentView(R.layout.progress_dialog);
+        loading.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+        loading.show();
         JsonArrayRequest jsonReq = new JsonArrayRequest(Request.Method.GET,
                 WHISH_LIST_URL , null, new Response.Listener<JSONArray>() {
 

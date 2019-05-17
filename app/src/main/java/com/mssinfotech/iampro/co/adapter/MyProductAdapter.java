@@ -135,11 +135,14 @@ public class MyProductAdapter extends RecyclerView.Adapter<MyProductAdapter.View
             likeButton.setLikeDrawableRes(R.drawable.like_un);
             //tv_purchaseprice.setPaintFlags(tv_purchaseprice.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
             tv_sellingprice.setText("Rs: "+String.valueOf(item.getsCost()));
-            if (myid.equalsIgnoreCase(String.valueOf(uid)) || uid==0 || String.valueOf(uid)=="" || String.valueOf(uid)==null) {
-              buttonViewOption.setVisibility(View.VISIBLE);
-            }
-            else {
-              buttonViewOption.setVisibility(View.GONE);
+            if(PrefManager.isLogin(mContext)) {
+                if (myid.equalsIgnoreCase(String.valueOf(uid)) || uid == 0 || String.valueOf(uid) == "" || String.valueOf(uid) == null) {
+                    buttonViewOption.setVisibility(View.VISIBLE);
+                } else {
+                    buttonViewOption.setVisibility(View.GONE);
+                }
+            }else{
+                buttonViewOption.setVisibility(View.GONE);
             }
             Glide.with(mContext)
                     .load(item.getImage())
@@ -163,8 +166,8 @@ public class MyProductAdapter extends RecyclerView.Adapter<MyProductAdapter.View
         Vholder.setData(mValues.get(position));
         //ratingv,uidv,idv
         //final float ratingv
-        final int uidv=mValues.get(position).getUid();
-        final String idv=mValues.get(position).getPid();
+        final int uidv = mValues.get(position).getUid();
+        final String idv = mValues.get(position).getPid();
         Vholder.buttonViewOption.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -180,9 +183,9 @@ public class MyProductAdapter extends RecyclerView.Adapter<MyProductAdapter.View
 
                         switch (item.getItemId()) {
                             case R.id.menu_edit:
-                                Intent intent=new Intent(mContext, AddProductActivity.class);
+                                Intent intent = new Intent(mContext, AddProductActivity.class);
                                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                                intent.putExtra("id",String.valueOf(mValues.get(position).getPid()));
+                                intent.putExtra("id", String.valueOf(mValues.get(position).getPid()));
                                 mContext.startActivity(intent);
                                 break;
                             case R.id.menu_delete:
@@ -220,64 +223,67 @@ public class MyProductAdapter extends RecyclerView.Adapter<MyProductAdapter.View
                 popup.show();
             }
         });
-        int my_uid=uidv;
-        if(my_uid==0){
+        int my_uid = uidv;
+        if (my_uid == 0) {
             Vholder.likeButton.setEnabled(false);
         }
-         if(mValues.get(position).getIsLike()==1){ //mValues.get(position).get
+        if (mValues.get(position).getIsLike() == 1) { //mValues.get(position).get
             Vholder.likeButton.setLiked(true);
             Vholder.tv_totallike.setTextColor(Color.RED);
-        }else{
+        } else {
             Vholder.likeButton.setLiked(false);
             Vholder.tv_totallike.setTextColor(Color.BLACK);
         }
-        if(mValues.get(position).getMore()!=null && mValues.get(position).getMore().equalsIgnoreCase("loadmore")){
+        if (mValues.get(position).getMore() != null && mValues.get(position).getMore().equalsIgnoreCase("loadmore")) {
             Vholder.buttonViewOption.setVisibility(View.GONE);
         }
         Vholder.likeButton.setOnLikeListener(new OnLikeListener() {
             @Override
             public void liked(LikeButton likeButton) {
-                int newlike =Integer.parseInt(Vholder.tv_totallike.getText().toString())+1;
+                int newlike = Integer.parseInt(Vholder.tv_totallike.getText().toString()) + 1;
                 Vholder.tv_totallike.setTextColor(Color.RED);
                 Vholder.tv_totallike.setText(String.valueOf(newlike));
-                String url = Config.API_URL+"app_service.php?type=like_me&id="+String.valueOf(idv)+"&uid="+uidv+"&ptype=product";
-                Log.e(Config.TAG,url);
-                function.executeUrl(mContext,"get",url,null);
+                String url = Config.API_URL + "app_service.php?type=like_me&id=" + String.valueOf(idv) + "&uid=" + uidv + "&ptype=product";
+                Log.e(Config.TAG, url);
+                function.executeUrl(mContext, "get", url, null);
             }
+
             @Override
             public void unLiked(LikeButton likeButton) {
-                int newlike = (int) Integer.parseInt( Vholder.tv_totallike.getText().toString())-1;
+                int newlike = (int) Integer.parseInt(Vholder.tv_totallike.getText().toString()) - 1;
                 Vholder.tv_totallike.setTextColor(Color.BLACK);
                 Vholder.tv_totallike.setText(String.valueOf(newlike));
-                String url = Config.API_URL+"app_service.php?type=like_me&id="+String.valueOf(idv)+"&uid="+idv+"&ptype=product";
-                Log.e(Config.TAG,url);
-                function.executeUrl(mContext,"get",url,null);
+                String url = Config.API_URL + "app_service.php?type=like_me&id=" + String.valueOf(idv) + "&uid=" + idv + "&ptype=product";
+                Log.e(Config.TAG, url);
+                function.executeUrl(mContext, "get", url, null);
             }
         });
         Vholder.ratingBar.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
             @Override
-            public void onRatingChanged(RatingBar ratingBar, float rating,boolean fromUser) {
-                Toast.makeText(mContext,""+ratingBar.getRating(),Toast.LENGTH_LONG).show();
-                sendrating(ratingBar.getRating(),uidv,Integer.parseInt(idv));
+            public void onRatingChanged(RatingBar ratingBar, float rating, boolean fromUser) {
+                Toast.makeText(mContext, "" + ratingBar.getRating(), Toast.LENGTH_LONG).show();
+                sendrating(ratingBar.getRating(), uidv, Integer.parseInt(idv));
             }
         });
         Vholder.ll_comment.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent=new Intent(mContext, CommentActivity.class);
-                 intent.putExtra("type","product");
-                  intent.putExtra("id",String.valueOf(mValues.get(position).getPid()));
+                Intent intent = new Intent(mContext, CommentActivity.class);
+                intent.putExtra("type", "product");
+                intent.putExtra("id", String.valueOf(mValues.get(position).getPid()));
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 mContext.startActivity(intent);
             }
         });
 
-
-        if(!PrefManager.getLoginDetail(mContext,"id").equalsIgnoreCase(String.valueOf(mValues.get(position).getUid()))){
+        if (PrefManager.isLogin(mContext)) {
+            if (!PrefManager.getLoginDetail(mContext, "id").equalsIgnoreCase(String.valueOf(mValues.get(position).getUid()))) {
+                Vholder.buttonViewOption.setVisibility(View.GONE);
+            } else {
+                Vholder.buttonViewOption.setVisibility(View.VISIBLE);
+            }
+        }else{
             Vholder.buttonViewOption.setVisibility(View.GONE);
-        }
-        else{
-            Vholder.buttonViewOption.setVisibility(View.VISIBLE);
         }
     }
     @Override

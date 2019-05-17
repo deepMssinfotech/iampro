@@ -142,9 +142,6 @@
         <activity
             android:name=".CheckOutActivity"
             android:label="CheckOut"></activity>
-        <activity
-            android:name=".popup.MenuPopup"
-            android:theme="@style/AppTheme.CustomTheme" />
 
         <!-- [START firebase_service] -->
         <service android:name=".services.MyFirebaseMessagingService">

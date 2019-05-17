@@ -379,7 +379,8 @@ public class AllFeedAdapter extends RecyclerView.Adapter<AllFeedAdapter.ViewHold
             }
 
             Glide.with(mContext).load(R.drawable.image_icon).into(Vholder.imageView_icon);
-        } else if (type.equalsIgnoreCase("video")) {
+        }
+        else if (type.equalsIgnoreCase("video")) {
             Vholder.image.setVisibility(View.GONE);
             Vholder.video_imageView.setVisibility(View.VISIBLE);
             Vholder.video_imageView_ll.setVisibility(View.VISIBLE);
@@ -419,7 +420,8 @@ public class AllFeedAdapter extends RecyclerView.Adapter<AllFeedAdapter.ViewHold
             });
             Glide.with(mContext).load(R.drawable.video_icon).into(Vholder.imageView_icon);
 
-        } else if (type.equalsIgnoreCase("product")) {
+        }
+        else if (type.equalsIgnoreCase("product")) {
             Vholder.imageSlider.setVisibility(View.VISIBLE);
             Vholder.image.setVisibility(View.GONE);
             //String ImageHol = Config.URL_ROOT+"uploads/product/w/500/"+mValues.get(position).getImage();
@@ -470,7 +472,8 @@ public class AllFeedAdapter extends RecyclerView.Adapter<AllFeedAdapter.ViewHold
                 }
             }
             Glide.with(mContext).load(R.drawable.product_icon).into(Vholder.imageView_icon);
-        } else if (type.equalsIgnoreCase("provide")) {
+        }
+        else if (type.equalsIgnoreCase("provide")) {
             Vholder.imageSlider.setVisibility(View.VISIBLE);
             Vholder.image.setVisibility(View.GONE);
             Vholder.favButton.setVisibility(View.VISIBLE);
@@ -522,7 +525,8 @@ public class AllFeedAdapter extends RecyclerView.Adapter<AllFeedAdapter.ViewHold
                 }
             }
             Glide.with(mContext).load(R.drawable.provide_icon).into(Vholder.imageView_icon);
-        } else if (type.equalsIgnoreCase("demand")) {
+        }
+        else if (type.equalsIgnoreCase("demand")) {
             Vholder.imageSlider.setVisibility(View.VISIBLE);
             Vholder.image.setVisibility(View.GONE);
             Vholder.favButton.setVisibility(View.VISIBLE);

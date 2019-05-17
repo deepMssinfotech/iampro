@@ -81,7 +81,7 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import net.gotev.uploadservice.MultipartUploadRequest;
 
 import de.hdodenhof.circleimageview.CircleImageView;
-import dmax.dialog.SpotsDialog;
+
 
 import static android.app.Activity.RESULT_CANCELED;
 
@@ -139,7 +139,6 @@ public class ProfileActivity extends Fragment implements AllFeedAdapter.ItemList
     public void onViewCreated(View v, Bundle savedInstanceState) {
         view =v;
         context = getContext();
-        Config.getCountFromServer(getContext());
         LinearLayout edit_layout = view.findViewById(R.id.edit_layout);
         LinearLayout dashboard_layout = view.findViewById(R.id.dashboard_layout);
         LinearLayout chat_layout = view.findViewById(R.id.chat_layout);
@@ -223,15 +222,12 @@ public class ProfileActivity extends Fragment implements AllFeedAdapter.ItemList
             ll_frienddashboard.setVisibility(View.GONE);
         }else{
             uid= fid;
-
-
             new Handler().postDelayed(new Runnable() {
                 @Override
                 public void run() {
                     gteUsrDetail(fid);
                 }
             }, 1000);
-
             ll_dashboard.setVisibility(View.GONE);
             ll_frienddashboard.setVisibility(View.VISIBLE);
 
@@ -725,13 +721,12 @@ public class ProfileActivity extends Fragment implements AllFeedAdapter.ItemList
     }
     public void getFeed(int start){
         String My_id=PrefManager.getLoginDetail(context,"id");
-        //final ProgressDialog loading = ProgressDialog.show(context,"Processing...","Please wait...",false,false);
 
-        final Dialog dialog = new Dialog(this.getContext());
+        final Dialog dialog = new Dialog(ProfileActivity.this.getContext());
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setContentView(R.layout.progress_dialog);
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
-         dialog.show();
+        dialog.show();
 
          // AlertDialog progressDialog;
         //progressDialog = new SpotsDialog(getContext(), R.style.Custom);

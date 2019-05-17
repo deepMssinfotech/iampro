@@ -15,6 +15,7 @@ import com.mssinfotech.iampro.co.tab.ProvideFragment;
 import com.mssinfotech.iampro.co.tab.UserFragment;
 import com.mssinfotech.iampro.co.tab.VideoFragment;
 import com.mssinfotech.iampro.co.common.Config;
+import com.mssinfotech.iampro.co.utils.PrefManager;
 
 public class HomeActivity extends AppCompatActivity {
     private TabLayout tabLayout;
@@ -41,7 +42,7 @@ public class HomeActivity extends AppCompatActivity {
 
         tabLayout = (TabLayout) findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(viewPager);
-        Config.getCountFromServer(this);
+        PrefManager.getCountFromServer(this);
         setupTabIcons();
     }
     private void setupTabIcons() {

@@ -368,52 +368,6 @@ public class Config
 
     }
 
-    public static final void getCountFromServer(final Context context) {
-        if (PrefManager.isLogin(context)) {
-            //Log.d(TAG, "test servide for 5 sec");
-            String api_url = Config.API_URL + "api.php?type=chat_count&myid=" + PrefManager.getLoginDetail(context, "id");
-            Log.e(Config.TAG, api_url);
-            {
-                StringRequest stringRequest = new StringRequest(api_url,
-                        new Response.Listener<String>() {
-                            @Override
-                            public void onResponse(String response) {
-                                JSONObject result = null;
-                                //Log.d(Config.TAG, response);
-                                try {
-                                    result = new JSONObject(response);
-                                    PrefManager.updateLoginDetail(context,"chatcount", result.getString("chatcount"));
-                                    PrefManager.updateLoginDetail(context,"my_notification", result.getString("my_notification"));
-                                    PrefManager.updateLoginDetail(context,"cart_count", result.getString("cart_count"));
-                                    PrefManager.updateLoginDetail(context,"my_wishlist", result.getString("my_wishlist"));
-                                    PrefManager.updateLoginDetail(context,"panding_friend", result.getString("panding_friend"));
-
-                                    PrefManager.updateLoginDetail(context,"total_count_product", result.getString("total_count_product"));
-                                    PrefManager.updateLoginDetail(context,"total_count_provide", result.getString("total_count_provide"));
-                                    PrefManager.updateLoginDetail(context,"total_count_demand", result.getString("total_count_demand"));
-                                    PrefManager.updateLoginDetail(context,"total_count_image", result.getString("total_count_image"));
-                                    PrefManager.updateLoginDetail(context,"total_count_video", result.getString("total_count_video"));
-                                    PrefManager.updateLoginDetail(context,"total_count_friend", result.getString("total_count_friend"));
-                                    updateAllCount(context);
-                                } catch (JSONException e) {
-                                    e.printStackTrace();
-                                }
-                            }
-                        },
-                        new Response.ErrorListener() {
-                            @Override
-                            public void onErrorResponse(VolleyError error) {
-                                Log.e(Config.TAG, error.toString());
-                            }
-                        });
-
-                //Creating a request queue
-                RequestQueue requestQueue = Volley.newRequestQueue(context);
-                //Adding request to the queue
-                requestQueue.add(stringRequest);
-            }
-        }
-    }
     public static void updateAllCount(final Context context) {
         if(count_chat!=null){count_chat.setText(PrefManager.getLoginDetail(context,"chatcount"));}
         if(count_notify!=null){count_notify.setText(PrefManager.getLoginDetail(context,"my_notification"));}

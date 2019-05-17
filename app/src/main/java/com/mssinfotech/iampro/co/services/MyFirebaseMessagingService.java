@@ -10,11 +10,14 @@ import android.content.Intent;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Build;
+import android.os.Handler;
+import android.os.Looper;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.content.LocalBroadcastManager;
 import android.text.Html;
 import android.text.TextUtils;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
@@ -24,10 +27,12 @@ import org.json.JSONObject;
 
 //import com.mssinfotech.iampro.co.DefaultActivity;
 //import com.mssinfotech.iampro.co.HomeActivity;
+import com.mssinfotech.iampro.co.LoadingActivity;
 import com.mssinfotech.iampro.co.WelcomeActivity;
 import com.mssinfotech.iampro.co.common.Config;
 import com.mssinfotech.iampro.co.utils.NotificationUtils;
 import com.mssinfotech.iampro.co.R;
+import com.mssinfotech.iampro.co.utils.PrefManager;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -63,7 +68,6 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         // Check if message contains a data payload.
         if (remoteMessage.getData().size() > 0) {
             Log.e(TAG, "Data Payload: " + remoteMessage.getData().toString());
-
             try {
                 JSONObject json = new JSONObject(remoteMessage.getData().toString());
                 handleDataMessage(json);
@@ -79,10 +83,9 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
             Intent pushNotification = new Intent(Config.PUSH_NOTIFICATION);
             pushNotification.putExtra("message", message);
             LocalBroadcastManager.getInstance(this).sendBroadcast(pushNotification);
-
             // play notification sound
-            NotificationUtils notificationUtils = new NotificationUtils(getApplicationContext());
-            notificationUtils.playNotificationSound();
+            //NotificationUtils notificationUtils = new NotificationUtils(getApplicationContext());
+            //notificationUtils.playNotificationSound();
         }else{
             // If the app is in background, firebase itself handles the notification
         }
@@ -104,29 +107,34 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
     private void handleDataMessage(JSONObject json) {
         Log.e(TAG, "push json: " + json.toString());
-
         try {
             JSONObject data = json.getJSONObject("data");
-
             String title = data.getString("title");
-            String message = data.getString("message");
+            final String message = data.getString("message");
             boolean isBackground = data.getBoolean("is_background");
             String imageUrl = data.getString("image");
             String url = data.getString("url");
             String timestamp = data.getString("timestamp");
             JSONObject payload = data.getJSONObject("payload");
-
-
-
-            //Config.getCountFromServer(getApplicationContext());
-
-
             if (!NotificationUtils.isAppIsInBackground(getApplicationContext())) {
                 // app is in foreground(App is open), broadcast the push message
-                Intent pushNotification = new Intent(Config.PUSH_NOTIFICATION);
-                pushNotification.putExtra("message", message);
-                pushNotification.putExtra("url", url);
-                LocalBroadcastManager.getInstance(this).sendBroadcast(pushNotification);
+                //Intent pushNotification = new Intent(Config.PUSH_NOTIFICATION);
+                //pushNotification.putExtra("message", message);
+                //pushNotification.putExtra("url", url);
+                //LocalBroadcastManager.getInstance(this).sendBroadcast(pushNotification);
+                //Log.e(TAG, "push isAppIsInBackground: " +message);
+                Context cont=getApplicationContext();
+                //Toast.makeText(cont,message,Toast.LENGTH_LONG).show();
+                Handler handler = new Handler(Looper.getMainLooper());
+                handler.post(new Runnable() {
+                    public void run() {
+                        Toast.makeText(getApplicationContext(),message,Toast.LENGTH_SHORT).show();
+                    }
+                });
+                if(PrefManager.isLogin(cont))
+                    PrefManager.getCountFromServer(getApplicationContext());
+                NotificationUtils notificationUtils = new NotificationUtils(getApplicationContext());
+                notificationUtils.playNotificationSound();
             } else {
                 Log.e(TAG, "title: " + title);
                 Log.e(TAG, "message: " + message);
@@ -136,7 +144,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                 Log.e(TAG, "url: " + url);
                 Log.e(TAG, "timestamp: " + timestamp);
 
-                Intent intent = new Intent(this, WelcomeActivity.class);
+                Intent intent = new Intent(this, LoadingActivity.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 intent.putExtra("message", message);
                 intent.putExtra("url", url);
@@ -195,8 +203,8 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                 }
             }
             // play notification sound
-            NotificationUtils notificationUtils = new NotificationUtils(getApplicationContext());
-            notificationUtils.playNotificationSound();
+            //NotificationUtils notificationUtils = new NotificationUtils(getApplicationContext());
+            //notificationUtils.playNotificationSound();
         } catch (JSONException e) {
             Log.e(TAG, "Json Exception: " + e.getMessage());
         } catch (Exception e) {

@@ -69,7 +69,6 @@ public class function {
         function.executeUrl(context,"get", url, null);
     }
     public static String executeUrl(final Context context, String type, String url, final Map<String, String> params){
-        //final ProgressDialog loading = ProgressDialog.show(context,"Processing...","Please wait...",false,false);
         StringRequest stringRequest = null;
         //Log.d(Config.TAG,"url: "+url);
         if(type.equalsIgnoreCase("get")){

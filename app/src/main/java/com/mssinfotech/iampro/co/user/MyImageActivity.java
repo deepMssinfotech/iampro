@@ -220,12 +220,6 @@ public class MyImageActivity extends Fragment implements MyImageAdapter.ItemList
     private void gteUsrDetail(String id){
         String myurl = Config.API_URL + "ajax.php?type=friend_detail&id=" + id + "&uid=" + uid;
         Log.d(Config.TAG, myurl);
-        final Dialog dialog = new Dialog(this.getContext());
-        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        dialog.setContentView(R.layout.progress_dialog);
-        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
-        dialog.show();
-
         StringRequest stringRequest = new StringRequest(myurl,
                 new Response.Listener<String>() {
                     @Override
@@ -256,12 +250,9 @@ public class MyImageActivity extends Fragment implements MyImageAdapter.ItemList
                                     new PhotoFullPopupWindow(context, R.layout.popup_photo_full, view, Config.BANNER_URL+avatarX, null);
                                 }
                             });
-                           if (dialog.isShowing())
-                               dialog.dismiss();
+
                         } catch (JSONException e) {
                             e.printStackTrace();
-                            if (dialog.isShowing())
-                                dialog.dismiss();
                         }
                     }
                 },
@@ -269,8 +260,6 @@ public class MyImageActivity extends Fragment implements MyImageAdapter.ItemList
                     @Override
                     public void onErrorResponse(VolleyError error) {
                         Log.e(Config.TAG, error.toString());
-                        if (dialog.isShowing())
-                             dialog.dismiss();
                     }
                 });
         //Creating a request queue
@@ -479,15 +468,10 @@ public class MyImageActivity extends Fragment implements MyImageAdapter.ItemList
     } */
     public void getAllAlbum(){
       String url=Config.API_URL+"app_service.php?type=getAlbemsListt&search_type=image&uid="+uid;
+        Log.e("url",url);
         RequestQueue requestQueue = Volley.newRequestQueue(context);
-       /* final ProgressDialog pDialog = new ProgressDialog(context); //Your Activity.this
-        pDialog.setMessage("Loading...!");
-        pDialog.show();*/
-        final Dialog dialog = new Dialog(this.getContext());
-        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        dialog.setContentView(R.layout.progress_dialog);
-        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
-        dialog.show();
+
+
         JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(
                 Request.Method.GET,
                 url,
@@ -512,16 +496,12 @@ public class MyImageActivity extends Fragment implements MyImageAdapter.ItemList
                                  getImages(data);
                                  Log.d("Keyset",""+data);
                              }
-                             if (dialog.isShowing())
-                                 dialog.dismiss();
                         }
                         catch (JSONException e){
                             //pDialog.dismiss();
                             e.printStackTrace();
                             Toast.makeText(context, ""+e.getMessage(), Toast.LENGTH_SHORT).show();
                             Log.d("catch_f",""+e.getMessage());
-                            if (dialog.isShowing())
-                                 dialog.dismiss();
                         }
                     }
                 },
@@ -531,8 +511,6 @@ public class MyImageActivity extends Fragment implements MyImageAdapter.ItemList
                         //pDialog.dismiss();
                         Toast.makeText(context, error.getMessage(), Toast.LENGTH_SHORT).show();
                         Log.d("verror",""+error.getMessage());
-                        if (dialog.isShowing())
-                            dialog.dismiss();
                     }
                 }
         );
@@ -546,9 +524,6 @@ public class MyImageActivity extends Fragment implements MyImageAdapter.ItemList
         // Initialize a new RequestQueue instance
         Log.d("urlimggg",""+url);
         RequestQueue requestQueue = Volley.newRequestQueue(context);
-        //final ProgressDialog pDialog = new ProgressDialog(getApplicationContext()); //Your Activity.this
-        //pDialog.setMessage("Loading...!");
-        //pDialog.show();
         final Dialog dialog = new Dialog(this.getContext());
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setContentView(R.layout.progress_dialog);
@@ -618,11 +593,6 @@ public class MyImageActivity extends Fragment implements MyImageAdapter.ItemList
                             }
                             Log.d("allsampledatav",item.toString());
 
-                           /* adapter = new MyImageAdapter(getApplicationContext(),item,item_name,MyImageActivity.this);
-                            recyclerView.setAdapter(adapter);
-                            GridLayoutManager manager = new GridLayoutManager(getApplicationContext(), 2, GridLayoutManager.VERTICAL, false);
-                            recyclerView.setLayoutManager(manager);
-                            recyclerView.setNestedScrollingEnabled(false); */
                             //dm.setAddedBy(added_bys);
                             dm.setAllItemsInSection(item);
                             Log.d("adm",item.toString());

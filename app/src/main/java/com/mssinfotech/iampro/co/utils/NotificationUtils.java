@@ -89,7 +89,6 @@ public class NotificationUtils {
             }
         } else {
             showSmallNotification(mBuilder, icon, title, message, timeStamp, resultPendingIntent, alarmSound);
-            playNotificationSound();
         }
     }
 
@@ -105,7 +104,7 @@ public class NotificationUtils {
                 .setAutoCancel(true)
                 .setContentTitle(title)
                 .setContentIntent(resultPendingIntent)
-                .setSound(alarmSound)
+                //.setSound(alarmSound)
                 .setStyle(inboxStyle)
                 .setWhen(getTimeMilliSec(timeStamp))
                 .setSmallIcon(R.drawable.iampro)
@@ -115,7 +114,6 @@ public class NotificationUtils {
 
         NotificationManager notificationManager = (NotificationManager) mContext.getSystemService(Context.NOTIFICATION_SERVICE);
         notificationManager.notify(Config.NOTIFICATION_ID, notification);
-        Log.e("showSmallNotification"," notificatoion function");
     }
 
     private void showBigNotification(Bitmap bitmap, NotificationCompat.Builder mBuilder, int icon, String title, String message, String timeStamp, PendingIntent resultPendingIntent, Uri alarmSound) {
@@ -128,7 +126,7 @@ public class NotificationUtils {
                 .setAutoCancel(true)
                 .setContentTitle(title)
                 .setContentIntent(resultPendingIntent)
-                .setSound(alarmSound)
+                //.setSound(alarmSound)
                 .setStyle(bigPictureStyle)
                 .setWhen(getTimeMilliSec(timeStamp))
                 .setSmallIcon(R.drawable.iampro)
@@ -138,7 +136,6 @@ public class NotificationUtils {
 
         NotificationManager notificationManager = (NotificationManager) mContext.getSystemService(Context.NOTIFICATION_SERVICE);
         notificationManager.notify(Config.NOTIFICATION_ID_BIG_IMAGE, notification);
-        Log.e("showBigNotification"," notificatoion function");
     }
 
     /**

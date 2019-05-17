@@ -7,6 +7,7 @@ import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.os.Handler;
 import android.support.annotation.NonNull;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.LocalBroadcastManager;
@@ -53,11 +54,14 @@ public class WelcomeActivity extends AppCompatActivity implements View.OnClickLi
         btnhome = findViewById(R.id.imghome);
         username = findViewById(R.id.username);
         imguser = findViewById(R.id.imguser);
+        Intent intentNotify = getIntent();
+        String RedirectURL = intentNotify.getStringExtra("url");
 
         btnsignin.setOnClickListener(this);
         btnsignup.setOnClickListener(this);
         btnhome.setOnClickListener(this);
         if(PrefManager.isLogin(this)){
+            PrefManager.getCountFromServer(getApplicationContext());
             loginlayout = findViewById(R.id.loginlayout);
             loginlayout.setVisibility(View.VISIBLE);
             //nonloginlayout = findViewById(R.id.nonloginlayout);
@@ -71,12 +75,25 @@ public class WelcomeActivity extends AppCompatActivity implements View.OnClickLi
             Glide.with(this).load(avatar).into(imguser);
             Log.d(Config.TAG,avatar);
             imguser.setOnClickListener(this);
+            if(RedirectURL!=null){
+                Fragment fragment = new NotificationActivity();
+                function.loadFragment(this,fragment,null);
+                /*
+                Class<?> myClass = null;
+                try {
+                    myClass = Class.forName(url);
+                    //Activity obj = (Activity) myClass.newInstance();
+                    Intent myIntent = new Intent(LoadingActivity.this, myClass); //Maybe here also obj must be needed
+                    startActivity(myIntent);
+                    finish();
+                } catch (ClassNotFoundException e) {
+                    e.printStackTrace();
+                }
+                */
+            }
         }
         //Intent i= new Intent(this, ScheduledService.class);
         //this.startService(i);
-        if (fcmMessage != null && !fcmMessage.isEmpty() && !fcmMessage.equals("null")) {
-            Toast.makeText(getApplicationContext(), fcmMessage, Toast.LENGTH_LONG).show();
-        }
         mRegistrationBroadcastReceiver = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
@@ -190,7 +207,7 @@ public class WelcomeActivity extends AppCompatActivity implements View.OnClickLi
                 String[] separated = message.split("OTP is ");
                 //TextView tv = (TextView) findViewById(R.id.txtview);
                 //etotp.setText(separated[1]);
-                Log.e("otp is",message+" otp is "+separated[1]);
+                //Log.e("otp is",message+" otp is "+separated[1]);
             }
         }
     };

@@ -152,11 +152,10 @@ public class CartItemAdapter extends RecyclerView.Adapter<CartItemAdapter.MyView
                     //removeItem(positions);
                     url = Config.API_URL+ "cart.php?type=delete_cart_item&id="+id.toString();
                     removeFromCart(url);
-                }else{
-
-                }
-                //function.executeUrl(context,"get", url, null);
-                 if (qty!=0) {
+                    int perCart = Integer.parseInt(PrefManager.getLoginDetail(context,"cart_count"))-1;
+                    PrefManager.updateLoginDetail(context,"cart_count",(perCart)+"");
+                    Config.count_cart.setText(perCart+"");
+                }else if (qty!=0) {
                      notifyList.get(positions).setqty(String.valueOf(qty));
                      removeFromCart(url);
                      holder.plist_price_text.setText("");
