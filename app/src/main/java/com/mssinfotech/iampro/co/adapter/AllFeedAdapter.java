@@ -281,7 +281,7 @@ public class AllFeedAdapter extends RecyclerView.Adapter<AllFeedAdapter.ViewHold
         final int uid = mValues.get(position).getUid();
         final int id = mValues.get(position).getId();
 
-        String sidd = mValues.get(position).getShareId();
+        final String sidd = mValues.get(position).getShareId();
         final String[] sharedId = sidd.split(",");
         int my_uid = mValues.get(position).getUid();
         if (PrefManager.isLogin(mContext))
@@ -584,7 +584,19 @@ public class AllFeedAdapter extends RecyclerView.Adapter<AllFeedAdapter.ViewHold
             public void onRatingChanged(RatingBar ratingBar, float rating, boolean fromUser) {
                 Toast.makeText(mContext, "" + ratingBar.getRating(), Toast.LENGTH_LONG).show();
                 float ratingb = ratingBar.getRating();
-                sendrating(ratingb, uid, id, type);
+                //sendrating(ratingb, uid, id, type, sharedId);
+                String url=null;
+                if(type.equalsIgnoreCase("image")) {
+                    if (animalsArray.length > 1) {
+                        url = Config.API_URL + "app_service.php?type=rate_me&id=" + String.valueOf(id) + "&uid=" + uid + "&ptype=feed&total_rate="+rating;
+                    } else {
+                        url = Config.API_URL + "app_service.php?type=rate_me&id=" + String.valueOf(animalsArray[0]) + "&uid=" + uid + "&ptype=" + type+"&total_rate="+rating;
+                    }
+                }else{
+                    url = Config.API_URL + "app_service.php?type=rate_me&id=" + String.valueOf(animalsArray[0]) + "&uid=" + uid + "&ptype=" + type+"&total_rate="+rating;
+                }
+                Log.e(Config.TAG, url);
+                function.executeUrl(mContext, "get", url, null);
             }
         });
         Vholder.like_un.setOnLikeListener(new OnLikeListener() {
@@ -593,7 +605,16 @@ public class AllFeedAdapter extends RecyclerView.Adapter<AllFeedAdapter.ViewHold
                 int newlike = Integer.parseInt(Vholder.tv_totallike.getText().toString()) + 1;
                 Vholder.tv_totallike.setTextColor(Color.RED);
                 Vholder.tv_totallike.setText(String.valueOf(newlike));
-                String url = Config.API_URL + "app_service.php?type=like_me&id=" + String.valueOf(animalsArray[0]) + "&uid=" + uid + "&ptype=" + type;
+                String url=null;
+                if(type.equalsIgnoreCase("image")) {
+                    if (animalsArray.length > 1) {
+                        url = Config.API_URL + "app_service.php?type=like_me&id=" + String.valueOf(id) + "&uid=" + uid + "&ptype=feed";
+                    } else {
+                        url = Config.API_URL + "app_service.php?type=like_me&id=" + String.valueOf(animalsArray[0]) + "&uid=" + uid + "&ptype=" + type;
+                    }
+                }else{
+                    url = Config.API_URL + "app_service.php?type=like_me&id=" + String.valueOf(animalsArray[0]) + "&uid=" + uid + "&ptype=" + type;
+                }
                 Log.e(Config.TAG, url);
                 function.executeUrl(mContext, "get", url, null);
             }
@@ -603,7 +624,16 @@ public class AllFeedAdapter extends RecyclerView.Adapter<AllFeedAdapter.ViewHold
                 int newlike = (int) Integer.parseInt(Vholder.tv_totallike.getText().toString()) - 1;
                 Vholder.tv_totallike.setTextColor(Color.BLACK);
                 Vholder.tv_totallike.setText(String.valueOf(newlike));
-                String url = Config.API_URL + "app_service.php?type=like_me&id=" + String.valueOf(id) + "&uid=" + uid + "&ptype=" + type;
+                String url=null;
+                if(type.equalsIgnoreCase("image")) {
+                    if (animalsArray.length > 1) {
+                        url = Config.API_URL + "app_service.php?type=like_me&id=" + String.valueOf(id) + "&uid=" + uid + "&ptype=feed";
+                    } else {
+                        url = Config.API_URL + "app_service.php?type=like_me&id=" + String.valueOf(animalsArray[0]) + "&uid=" + uid + "&ptype=" + type;
+                    }
+                }else{
+                    url = Config.API_URL + "app_service.php?type=like_me&id=" + String.valueOf(animalsArray[0]) + "&uid=" + uid + "&ptype=" + type;
+                }
                 Log.e(Config.TAG, url);
                 function.executeUrl(mContext, "get", url, null);
             }
@@ -705,43 +735,6 @@ public class AllFeedAdapter extends RecyclerView.Adapter<AllFeedAdapter.ViewHold
     }
     public interface ItemListener {
         void onItemClick(FeedModel item);
-    }
-    public void sendrating(float rating,int uid,int id,String type){
-        String urlv=Config.API_URL+ "app_service.php?type=rate_me&id="+id+"&uid="+uid+"&ptype="+type+"&total_rate="+rating;
-        RequestQueue requestQueue = Volley.newRequestQueue(mContext);
-        // Initialize a new JsonObjectRequest instance
-        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(
-                Request.Method.GET,
-                urlv,
-                null,
-                new Response.Listener<JSONObject>() {
-                    @Override
-                    public void onResponse(JSONObject response) {
-                        Log.d("Prod_detaili_profile",""+response);
-                        try{
-                            String status=response.optString("status");
-                            String msgv=response.optString("msg");
-                            if(status.equalsIgnoreCase("success")) {
-                                 Toast.makeText(mContext,""+msgv,Toast.LENGTH_LONG).show();
-                            }
-                            else{
-                                Toast.makeText(mContext,""+msgv,Toast.LENGTH_LONG).show();
-                            }
-                        }
-                        catch (Exception e){
-                            e.printStackTrace();
-                            Toast.makeText(mContext,e.getMessage(),Toast.LENGTH_LONG).show();
-                        }
-                    }
-                },
-                new Response.ErrorListener(){
-                    @Override
-                    public void onErrorResponse(VolleyError error){
-                        Toast.makeText(mContext,error.getMessage(),Toast.LENGTH_LONG).show();
-                    }
-                }
-        );
-        requestQueue.add(jsonObjectRequest);
     }
 }
 

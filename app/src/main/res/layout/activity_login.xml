@@ -42,13 +42,15 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
             <ImageButton
+                android:background="@color/transparent"
                 android:layout_gravity="center"
                 android:id="@+id/user_profile_photo"
                 android:layout_width="100dp"
                 android:layout_height="100dp"
                 android:layout_centerHorizontal="true"
                 android:layout_margin="56dp"
-                android:background="@drawable/iampro"
+                android:scaleType="fitXY"
+                android:src="@drawable/iampro"
                 android:elevation="4dp" />
 
             <android.support.design.widget.TextInputLayout

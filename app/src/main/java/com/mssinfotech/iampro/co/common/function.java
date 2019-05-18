@@ -78,7 +78,7 @@ public class function {
                         public void onResponse(String response) {
                             //loading.dismiss();
                             Config.ResponceResult = response;
-                            //Log.d(Config.TAG,"result is : "+response);
+                            Log.e(Config.TAG,"result is : "+response);
                         }
                     }, new Response.ErrorListener() {
                 @Override
