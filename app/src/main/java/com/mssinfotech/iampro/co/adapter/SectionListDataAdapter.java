@@ -256,6 +256,7 @@ public class SectionListDataAdapter extends RecyclerView.Adapter<SectionListData
                     public void onRatingChanged(RatingBar ratingBar, float rating, boolean fromUser) {
                            sendrating(rating,itemsList.get(i).getUid(),itemsList.get(i).getId(),itemsList.get(i).getType());
                            //Toast.makeText(mContext,itemsList.get(i).getType(),Toast.LENGTH_LONG).show();
+                         holder.ratingBar.setRating(rating);
                     }
                 });
             }

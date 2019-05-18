@@ -26,6 +26,7 @@ import android.widget.VideoView;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
+import com.android.volley.toolbox.JsonObjectRequest;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.bitmap.CircleCrop;
 import com.bumptech.glide.request.RequestOptions;
@@ -279,7 +280,8 @@ public class ImageDetail extends Fragment implements Img_Video_Details.ItemListe
                         // Process the JSON
                         try {
                             JSONObject responses = new JSONObject(response);
-                            int id = responses.optInt("id");
+                            final int id = responses.optInt("id");
+                            final int idv = responses.optInt("id");
                             int albemid = responses.optInt("albemid");
                             String namev = responses.optString("name");
                             int categoryv = responses.optInt("category");
@@ -315,6 +317,21 @@ public class ImageDetail extends Fragment implements Img_Video_Details.ItemListe
                                     .into(imageView_icon);
 
                             ratingBar.setRating(Float.parseFloat(String.valueOf(rating)));
+                            if (PrefManager.isLogin(context)) {
+                /*holder.ratingBar.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                    }
+                }); */
+                                ratingBar.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
+                                    @Override
+                                    public void onRatingChanged(RatingBar ratingBar, float rating, boolean fromUser) {
+                                        sendrating(rating,Integer.parseInt(PrefManager.getLoginDetail(context,"id")),idv,"image");
+                                        //Toast.makeText(mContext,itemsList.get(i).getType(),Toast.LENGTH_LONG).show();
+                                        ratingBar.setRating(rating);
+                                    }
+                                });
+                            }
 
                             videoView.setVisibility(View.GONE);
                             Glide.with(ImageDetail.this)
@@ -540,6 +557,45 @@ public class ImageDetail extends Fragment implements Img_Video_Details.ItemListe
         );
         // Add JsonObjectRequest to the RequestQueue
         requestQueue.add(jsonObjectRequest);
+    }
+    public void sendrating(float rating,int uid,int id,String ptype){
+        String urlv= Config.API_URL+ "app_service.php?type=rate_me&id="+id+"&uid="+uid+"&ptype="+ptype+"&total_rate="+rating;
+
+        RequestQueue requestQueue = Volley.newRequestQueue(ImageDetail.this.context);
+        // Initialize a new JsonObjectRequest instance
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(
+                Request.Method.GET,
+                urlv,
+                null,
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        Log.d("Prod_detaili_profile",""+response);
+                        try{
+                            String status=response.optString("status");
+                            String msgv=response.optString("msg");
+                            if(status.equalsIgnoreCase("success")) {
+                                //Toast.makeText(mContext,""+msgv,Toast.LENGTH_LONG).show();
+                            }
+                            else{
+                                // Toast.makeText(mContext,""+msgv,Toast.LENGTH_LONG).show();
+                            }
+                        }
+                        catch (Exception e){
+                            e.printStackTrace();
+                            Toast.makeText(context,e.getMessage(),Toast.LENGTH_LONG).show();
+                        }
+                    }
+                },
+                new Response.ErrorListener(){
+                    @Override
+                    public void onErrorResponse(VolleyError error){
+                        Toast.makeText(context,error.getMessage(),Toast.LENGTH_LONG).show();
+                    }
+                }
+        );
+        requestQueue.add(jsonObjectRequest);
+
     }
     @Override
     public void onItemClick(ImageDetailModel item) {

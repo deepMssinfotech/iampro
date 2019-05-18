@@ -132,11 +132,10 @@ public class Img_Video_Details extends RecyclerView.Adapter<Img_Video_Details.Vi
               category.setText(String.valueOf(item.getCategory()));
             likeButton.setUnlikeDrawableRes(R.drawable.like);
             likeButton.setLikeDrawableRes(R.drawable.like_un);
-
             String avatar=item.getAvatar();
             String images=item.getImage();
 
-            ratingBar.setRating(item.getRating());
+            //ratingBar.setRating(item.getRating());
 
              uid=item.getUid();
 
@@ -164,8 +163,9 @@ public class Img_Video_Details extends RecyclerView.Adapter<Img_Video_Details.Vi
         final int uid=mValues.get(position).getUid();
          final int id=mValues.get(position).getId();
         final String type=mValues.get(position).getType();
-         if (PrefManager.isLogin(mContext)){
-
+        if (String.valueOf(mValues.get(position).getRating())!=null)
+          Vholder.ratingBar.setRating(mValues.get(position).getRating());
+        // if (PrefManager.isLogin(mContext)){
           Vholder.ll_comments.setOnClickListener(new View.OnClickListener() {
               @Override
               public void onClick(View v) {
@@ -176,10 +176,10 @@ public class Img_Video_Details extends RecyclerView.Adapter<Img_Video_Details.Vi
                   mContext.startActivity(intent);
               }
           });
-         }
-         else{
+         //}
+         /*else{
               Toast.makeText(mContext,"First Login and try again...",Toast.LENGTH_LONG).show();
-         }
+         } */
         Vholder.likeButton.setOnLikeListener(new OnLikeListener() {
             @Override
             public void liked(LikeButton likeButton) {
@@ -363,6 +363,31 @@ public class Img_Video_Details extends RecyclerView.Adapter<Img_Video_Details.Vi
 
              }
          });
+        if (PrefManager.isLogin(mContext)) {
+            Vholder.ratingBar.setFocusable(true);
+            Vholder.ratingBar.setIsIndicator(false);
+            //holder.ratingBar.setClickable(true);
+        }
+        else {
+            Vholder.ratingBar.setFocusable(false);
+            Vholder.ratingBar.setIsIndicator(true);
+            //holder.ratingBar.setClickable(false);
+        }
+        if (PrefManager.isLogin(mContext)) {
+                /*holder.ratingBar.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                    }
+                }); */
+            Vholder.ratingBar.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
+                @Override
+                public void onRatingChanged(RatingBar ratingBar, float rating, boolean fromUser) {
+                    sendrating(rating,mValues.get(position).getUid(),mValues.get(position).getId(),mValues.get(position).getType());
+                    //Toast.makeText(mContext,itemsList.get(i).getType(),Toast.LENGTH_LONG).show();
+                    Vholder.ratingBar.setRating(rating);
+                }
+            });
+        }
     }
     @Override
     public int getItemCount() {
@@ -370,5 +395,44 @@ public class Img_Video_Details extends RecyclerView.Adapter<Img_Video_Details.Vi
     }
     public interface ItemListener {
         void onItemClick(ImageDetailModel item);
+    }
+    public void sendrating(float rating,int uid,int id,String ptype){
+        String urlv= Config.API_URL+ "app_service.php?type=rate_me&id="+id+"&uid="+uid+"&ptype="+ptype+"&total_rate="+rating;
+
+        RequestQueue requestQueue = Volley.newRequestQueue(mContext);
+        // Initialize a new JsonObjectRequest instance
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(
+                Request.Method.GET,
+                urlv,
+                null,
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        Log.d("Prod_detaili_profile",""+response);
+                        try{
+                            String status=response.optString("status");
+                            String msgv=response.optString("msg");
+                            if(status.equalsIgnoreCase("success")) {
+                                //Toast.makeText(mContext,""+msgv,Toast.LENGTH_LONG).show();
+                            }
+                            else{
+                                // Toast.makeText(mContext,""+msgv,Toast.LENGTH_LONG).show();
+                            }
+                        }
+                        catch (Exception e){
+                            e.printStackTrace();
+                            Toast.makeText(mContext,e.getMessage(),Toast.LENGTH_LONG).show();
+                        }
+                    }
+                },
+                new Response.ErrorListener(){
+                    @Override
+                    public void onErrorResponse(VolleyError error){
+                        Toast.makeText(mContext,error.getMessage(),Toast.LENGTH_LONG).show();
+                    }
+                }
+        );
+        requestQueue.add(jsonObjectRequest);
+
     }
 }
