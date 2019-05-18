@@ -90,7 +90,6 @@ public class AllFeedAdapter extends RecyclerView.Adapter<AllFeedAdapter.ViewHold
         SliderLayout imageSlider;
         private View currentFocusedLayout,oldFocusedLayout;
         int id;
-
         //int uid;
         public ViewHolder(View v) {
             super(v);
@@ -404,6 +403,7 @@ public class AllFeedAdapter extends RecyclerView.Adapter<AllFeedAdapter.ViewHold
             Log.d(Config.TAG + "video tag", ImageHol) ;
             Glide.with(mContext).load(ImageHol).into(Vholder.videoImage);*/
             Glide.with(mContext).load(mValues.get(position).getFimage_path()).into(Vholder.video_imageView);
+
             String shared_id = mValues.get(position).getShareId();
             final String[] sidArray = shared_id.split(",");
             Vholder.video_imageView.setOnClickListener(new View.OnClickListener() {
@@ -656,7 +656,7 @@ public class AllFeedAdapter extends RecyclerView.Adapter<AllFeedAdapter.ViewHold
             }
         });
         //Vholder.c
-         if (PrefManager.isLogin(mContext)) {
+         //  if (PrefManager.isLogin(mContext)) {
              Vholder.ll_comment.setOnClickListener(new View.OnClickListener() {
                  @Override
                  public void onClick(View v) {
@@ -699,13 +699,14 @@ public class AllFeedAdapter extends RecyclerView.Adapter<AllFeedAdapter.ViewHold
                      }
                  }
              });
-         }
+        /* }
          else{
                //Toast.makeText(mContext,"First Login and try again...",Toast.LENGTH_LONG).show();
-         }
+         } */
          if (PrefManager.isLogin(mContext) && PrefManager.getLoginDetail(mContext,"id").equalsIgnoreCase(String.valueOf(mValues.get(position).getUid()))){
             //Vholder.
              Vholder.like_un.setEnabled(true);
+             Vholder.ratingBar.setFocusable(false);
              if (type.equalsIgnoreCase("product")){
                  Vholder.iv_buy.setEnabled(true);
              }
@@ -717,10 +718,11 @@ public class AllFeedAdapter extends RecyclerView.Adapter<AllFeedAdapter.ViewHold
              if (type.equalsIgnoreCase("product")){
                Vholder.iv_buy.setEnabled(false);
              }
-             else if (type.equalsIgnoreCase("product") || type.equalsIgnoreCase("provide")){
+             else if (type.equalsIgnoreCase("provide") || type.equalsIgnoreCase("demand")){
                   Vholder.favButton.setEnabled(false);
              }
              Vholder.like_un.setEnabled(false);
+             Vholder.ratingBar.setFocusable(true);
          }
          /*Vholder.video_imageView.setOnClickListener(new View.OnClickListener() {
              @Override
@@ -728,6 +730,19 @@ public class AllFeedAdapter extends RecyclerView.Adapter<AllFeedAdapter.ViewHold
 
              }
          }); */
+        if (PrefManager.isLogin(mContext)) {
+           Vholder.like_un.setEnabled(true);
+           Vholder.ratingBar.setFocusable(true);
+            Vholder.ratingBar.setIsIndicator(false);
+            //holder.ratingBar.setClickable(true);
+        }
+        else {
+           Vholder.like_un.setEnabled(false);
+            Vholder.ratingBar.setFocusable(false);
+            Vholder.ratingBar.setIsIndicator(true);
+            //holder.ratingBar.setClickable(false);
+
+        }
     }
     @Override
     public int getItemCount() {
