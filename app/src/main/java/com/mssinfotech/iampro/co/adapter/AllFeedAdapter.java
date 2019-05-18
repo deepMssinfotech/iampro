@@ -597,6 +597,7 @@ public class AllFeedAdapter extends RecyclerView.Adapter<AllFeedAdapter.ViewHold
                 }
                 Log.e(Config.TAG, url);
                 function.executeUrl(mContext, "get", url, null);
+                Vholder.ratingBar.setRating(rating);
             }
         });
         Vholder.like_un.setOnLikeListener(new OnLikeListener() {
@@ -743,6 +744,8 @@ public class AllFeedAdapter extends RecyclerView.Adapter<AllFeedAdapter.ViewHold
             //holder.ratingBar.setClickable(false);
 
         }
+        if (String.valueOf(mValues.get(position).getAll_rating())!=null)
+        Vholder.ratingBar.setRating(mValues.get(position).getAll_rating());
     }
     @Override
     public int getItemCount() {

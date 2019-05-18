@@ -155,11 +155,13 @@
                           style="?android:ratingBarStyleSmall"
                           android:layout_width="wrap_content"
                           android:layout_height="wrap_content"
-
                           android:isIndicator="false"
+                          android:layout_gravity="center"
                           android:numStars="5"
-                          android:rating="5"
-                          android:padding="10dp"
+                          android:layout_weight="0"
+                          android:rating="4"
+                          android:padding="0dp"
+                            android:layout_marginLeft="10dp"
                           android:stepSize="0.3"/>
                   </LinearLayout>
                   <LinearLayout
