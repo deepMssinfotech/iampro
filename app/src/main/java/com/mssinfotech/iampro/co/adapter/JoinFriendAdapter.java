@@ -84,6 +84,15 @@ public class JoinFriendAdapter extends RecyclerView.Adapter<JoinFriendAdapter.My
         return new MyViewHolder(itemView);
     }
     @Override
+    public long getItemId(int position) {
+        return position;
+    }
+
+    @Override
+    public int getItemViewType(int position) {
+        return position;
+    }
+    @Override
     public void onBindViewHolder(MyViewHolder holder,  int positions) {
         final MyViewHolder Vholder=holder;
         final int position=positions;
@@ -97,7 +106,7 @@ public class JoinFriendAdapter extends RecyclerView.Adapter<JoinFriendAdapter.My
         //holder.total_provide.setText(String.valueOf(item.getTotal_product_provide()));
         //holder.total_video.setText(String.valueOf(item.getTotal_video()));
         //holder.total_user.setText(String.valueOf(item.getTotal_friend()));
-        Glide.with(context).load(item.getAvatar()).apply(Config.options_avatar).into(holder.userimage);
+        Glide.with(context).load(item.getImage()).apply(Config.options_avatar).into(holder.userimage);
          holder. userimage.setOnClickListener(new View.OnClickListener() {
              @Override
              public void onClick(View v) {

@@ -7,31 +7,37 @@
     android:layout_gravity="center_vertical"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     app:mode="same_level"
-    app:dragFromEdge="right">
-    <!--  app:dragFromEdge="right" height=88dp
+    app:dragFromEdge="right"
+   >
+    <!--
+
+
+
+     app:dragFromEdge="right" height=88dp
      com.mssinfotech.iampro.co.swipe.SwipeRevealLayout-->
     <FrameLayout
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:background="@drawable/user_background"
         android:layout_height="match_parent">
 
         <LinearLayout
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:gravity="center_vertical|end"
             android:layout_gravity="center_vertical"
-            android:paddingStart="20dp"
-            android:paddingEnd="20dp"
+            android:padding="10dp"
+            android:background="@drawable/thin_border"
             android:orientation="horizontal">
             <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:layout_marginLeft="10dp"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:padding="5dp"
                 android:orientation="vertical">
 
                 <de.hdodenhof.circleimageview.CircleImageView
                     android:id="@+id/imageView_viewProfile"
+                    android:background="@drawable/user_slide_info_view_profile"
                     android:layout_width="40dp"
                     android:layout_height="40dp"
                     android:padding="10dp"
@@ -49,14 +55,16 @@
             </LinearLayout>
 
             <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
+                android:background="@drawable/thin_border_left"
                 android:layout_weight="1"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:padding="5dp"
                 android:orientation="vertical">
 
                 <de.hdodenhof.circleimageview.CircleImageView
                     android:id="@+id/imageView_frequest"
+                    android:background="@drawable/user_slide_nfo"
                     android:layout_width="40dp"
                     android:layout_height="40dp"
                     android:padding="10dp"
@@ -73,14 +81,16 @@
                     android:text="Friend Request"/>
             </LinearLayout>
             <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:background="@drawable/thin_border_left"
                 android:layout_weight="1"
-                android:layout_marginLeft="10dp"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:padding="5dp"
                 android:orientation="vertical">
 
                 <de.hdodenhof.circleimageview.CircleImageView
                     android:id="@+id/imageView_message"
+                    android:background="@drawable/user_slide_info_message"
                     android:layout_width="40dp"
                     android:layout_height="40dp"
                     android:padding="10dp"
@@ -96,14 +106,16 @@
                     android:text="Message"/>
             </LinearLayout>
             <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:background="@drawable/thin_border_left"
                 android:layout_weight="1"
-                android:layout_marginLeft="10dp"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:padding="5dp"
                 android:orientation="vertical">
                 <de.hdodenhof.circleimageview.CircleImageView
                     android:id="@+id/imageView_block"
                     android:layout_width="40dp"
+                    android:background="@drawable/unblockicone"
                     android:layout_height="40dp"
                     android:padding="10dp"
                     android:layout_gravity="center"
@@ -187,7 +199,7 @@
                                 android:layout_width="77dp"
                                 android:layout_height="77dp"
                                 android:layout_gravity="center"
-                                android:src="@drawable/user_slide_info_message"
+                                android:src="@drawable/iampro"
                                 app:civ_border_color="#FF000000"/>
 
                             <LinearLayout
@@ -217,6 +229,8 @@
                             </LinearLayout>
                         </LinearLayout>
                         <LinearLayout
+                            android:layout_gravity="end"
+                            android:gravity="end"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:orientation="horizontal">

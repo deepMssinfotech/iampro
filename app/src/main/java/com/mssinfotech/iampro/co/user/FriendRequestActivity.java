@@ -1,5 +1,6 @@
 package com.mssinfotech.iampro.co.user;
 
+import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.support.constraint.ConstraintLayout;
@@ -50,6 +51,7 @@ public class FriendRequestActivity extends Fragment  {
     private ConstraintLayout constraintLayout;
     private static String NOTIFY_URL  = "";
      SwipeController swipeController = null;
+     Context context;
     View view;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup parent, Bundle savedInstanceState) {
@@ -60,15 +62,16 @@ public class FriendRequestActivity extends Fragment  {
     public void onViewCreated(View v, Bundle savedInstanceState) {
         view = v;
         super.onCreate(savedInstanceState);
-        NOTIFY_URL  = Config.API_URL+"app_service.php?type=view_friend_list&id="+ PrefManager.getLoginDetail(getContext(),"id");
+        context = getContext();
+        NOTIFY_URL  = Config.API_URL+"app_service.php?type=view_friend_list&id="+ PrefManager.getLoginDetail(context,"id");
         recyclerView = view.findViewById(R.id.recycler_view);
         FriendRequestItemList = new ArrayList<FriendRequestItem>();
-        mAdapter = new FriendRequestAdapter(getContext(), FriendRequestItemList);
-        adapter_swipe = new FriendRequestSwipeAdapter(getContext(), FriendRequestItemList);
-        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getContext());
+        mAdapter = new FriendRequestAdapter(context, FriendRequestItemList);
+        adapter_swipe = new FriendRequestSwipeAdapter(context, FriendRequestItemList);
+        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(context);
         recyclerView.setLayoutManager(mLayoutManager);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
-        recyclerView.addItemDecoration(new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL));
+        recyclerView.addItemDecoration(new DividerItemDecoration(context, DividerItemDecoration.VERTICAL));
         //recyclerView.setAdapter(mAdapter);
          //recyclerView.setAdapter(adapter_swipe);
         constraintLayout = view.findViewById(R.id.constraintLayout);
@@ -82,13 +85,13 @@ public class FriendRequestActivity extends Fragment  {
         prepareWhishList();
 
 
-        swipeController = new SwipeController(FriendRequestActivity.this.getContext(),new SwipeControllerActions() {
+        swipeController = new SwipeController(FriendRequestActivity.this.context,new SwipeControllerActions() {
             @Override
             public void onRightClicked(int position) {
                 //mAdapter.players.remove(position);
                 //mAdapter.notifyItemRemoved(position);
                 //mAdapter.notifyItemRangeChanged(position, mAdapter.getItemCount());
-                //Toast.makeText(getContext(),"Right Clicked"+position,Toast.LENGTH_LONG).show();
+                //Toast.makeText(context,"Right Clicked"+position,Toast.LENGTH_LONG).show();
                  int id= adapter_swipe.notifyList.get(position).getUser_id();
                  int tid=adapter_swipe.notifyList.get(position).getFriend_id();
                 reject(position);
@@ -98,7 +101,7 @@ public class FriendRequestActivity extends Fragment  {
 
             }
             public void onLeftClicked(int position) {
-                //Toast.makeText(getContext(),"Left Clicked"+position,Toast.LENGTH_LONG).show();
+                //Toast.makeText(context,"Left Clicked"+position,Toast.LENGTH_LONG).show();
                 accept(position);
                 adapter_swipe.notifyList.remove(position);
                 adapter_swipe.notifyItemRemoved(position);
@@ -132,7 +135,7 @@ public class FriendRequestActivity extends Fragment  {
                     parseJsonFeed(response);
                     mAdapter.notifyDataSetChanged();
                 }else{
-                    Toast.makeText(getContext(), "Empty Record!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(context, "Empty Record!", Toast.LENGTH_SHORT).show();
                 }
             }
         }, new Response.ErrorListener() {
@@ -216,7 +219,7 @@ public class FriendRequestActivity extends Fragment  {
             // remove the item from recycler view
             mAdapter.removeItem(viewHolder.getAdapterPosition());
             String url=Config.API_URL+"app_service.php?type=delete_friend&id="+Friendid.toString()+"&tid="+id.toString();
-            String responc = function.executeUrl(getContext(),"get",url,null);
+            String responc = function.executeUrl(context,"get",url,null);
             Log.e(Config.TAG,"result : "+responc+"url - "+url);
             // showing snack bar with Undo option
             Snackbar snackbar = Snackbar.make(constraintLayout, "Notification removed ", Snackbar.LENGTH_LONG);
@@ -252,10 +255,10 @@ public class FriendRequestActivity extends Fragment  {
                             JSONObject jsonObject =response;
                             String msg=jsonObject.getString("msg");
                             String status=jsonObject.getString("status");
-                            Toast.makeText(getContext(),""+msg,Toast.LENGTH_LONG).show();
+                            Toast.makeText(context,""+msg,Toast.LENGTH_LONG).show();
                         }
                         catch (JSONException ex){
-                            Toast.makeText(getContext(),""+ex.getMessage(),Toast.LENGTH_LONG).show();
+                            Toast.makeText(context,""+ex.getMessage(),Toast.LENGTH_LONG).show();
                         }
 
                     }
@@ -263,7 +266,7 @@ public class FriendRequestActivity extends Fragment  {
 
             @Override
             public void onErrorResponse(VolleyError error) {
-                 Toast.makeText(getContext(),""+error.getMessage(),Toast.LENGTH_LONG).show();
+                 Toast.makeText(context,""+error.getMessage(),Toast.LENGTH_LONG).show();
             }
         });
     }
@@ -284,17 +287,17 @@ public class FriendRequestActivity extends Fragment  {
                             JSONObject jsonObject = new JSONObject(response);
                             String msg=jsonObject.getString("msg");
                             String status=jsonObject.getString("status");
-                            Toast.makeText(getContext(),""+msg,Toast.LENGTH_LONG).show();
+                            Toast.makeText(context,""+msg,Toast.LENGTH_LONG).show();
                         }
                         catch (JSONException ex){
-                              Toast.makeText(getContext(),""+ex.getMessage(),Toast.LENGTH_LONG).show();
+                              Toast.makeText(context,""+ex.getMessage(),Toast.LENGTH_LONG).show();
                         }
 
                     }
                 }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-             Toast.makeText(getContext(),""+error.getMessage(),Toast.LENGTH_LONG).show();
+             Toast.makeText(context,""+error.getMessage(),Toast.LENGTH_LONG).show();
             }
         });
     }
