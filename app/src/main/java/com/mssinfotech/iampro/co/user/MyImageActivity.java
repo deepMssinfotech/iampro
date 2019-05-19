@@ -524,11 +524,11 @@ public class MyImageActivity extends Fragment implements MyImageAdapter.ItemList
         // Initialize a new RequestQueue instance
         Log.d("urlimggg",""+url);
         RequestQueue requestQueue = Volley.newRequestQueue(context);
-        final Dialog dialog = new Dialog(this.getContext());
+        /*final Dialog dialog = new Dialog(this.getContext());
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setContentView(R.layout.progress_dialog);
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
-        dialog.show();
+        dialog.show();*/
         JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(
                 Request.Method.GET,
                 url,
@@ -606,16 +606,14 @@ public class MyImageActivity extends Fragment implements MyImageAdapter.ItemList
                             adapterr = new MyImageVideoDataAdapter(context, allSampleData,item_name);
                             recyclerView.setLayoutManager(new LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false));
                             recyclerView.setAdapter(adapterr);
-                         if (dialog.isShowing())
-                              dialog.dismiss();
+                            //if (dialog.isShowing())dialog.dismiss();
                         }
                         catch (JSONException e){
                             //pDialog.dismiss();
                             e.printStackTrace();
                             Toast.makeText(context, ""+e.getMessage(), Toast.LENGTH_SHORT).show();
                             Log.d("catch_f",""+e.getMessage());
-                            if (dialog.isShowing())
-                                 dialog.dismiss();
+                            //if (dialog.isShowing())dialog.dismiss();
                         }
                     }
                 },
@@ -625,8 +623,7 @@ public class MyImageActivity extends Fragment implements MyImageAdapter.ItemList
                         //pDialog.dismiss();
                         Toast.makeText(context, error.getMessage(), Toast.LENGTH_SHORT).show();
                         Log.d("verror",""+error.getMessage());
-                        if (dialog.isShowing())
-                             dialog.dismiss();
+                        //if (dialog.isShowing()) dialog.dismiss();
                     }
                 }
         );

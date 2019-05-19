@@ -151,12 +151,12 @@
              android:id="@+id/imageSlider"/>
      </LinearLayout>
   <LinearLayout
+      android:visibility="gone"
       android:layout_width="match_parent"
          android:id="@+id/video_imageView_ll"
       android:layout_height="wrap_content"
       android:orientation="vertical">
 <RelativeLayout
-    android:visibility="gone"
     android:layout_gravity="center"
     android:gravity="center"
     android:layout_width="match_parent"

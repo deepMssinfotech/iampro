@@ -78,6 +78,7 @@ public class AddImageActivity extends AppCompatActivity {
     private GridView gvGallery;
     private Bitmap bitmap=null;
     private GalleryAdapter galleryAdapter;
+    Context context;
     private LinearLayout categoryLayout,albumLayout;
      ArrayList<Uri> mArrayUri = new ArrayList<>();
     ArrayList<String> students = new ArrayList<String>();
@@ -86,6 +87,7 @@ public class AddImageActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_image);
          getSupportActionBar().hide();
+        context=getApplicationContext();
         Config.setLayoutName(getResources().getResourceEntryName(R.layout.activity_add_image));
         tvlayouttype = findViewById(R.id.tvlayouttype);
         tilalbumname = findViewById(R.id.tilalbumname);
@@ -182,7 +184,7 @@ public class AddImageActivity extends AppCompatActivity {
 
                 //ArrayList<Uri> mArrayUri = new ArrayList<>();
                 mArrayUri.add(mImageUri);
-                galleryAdapter = new GalleryAdapter(getApplicationContext(),mArrayUri);
+                galleryAdapter = new GalleryAdapter(context,mArrayUri);
                 gvGallery.setAdapter(galleryAdapter);
                 galleryAdapter.notifyDataSetChanged();
                 gvGallery.setVerticalSpacing(gvGallery.getHorizontalSpacing());
@@ -218,7 +220,7 @@ public class AddImageActivity extends AppCompatActivity {
                         imagesEncodedList.add(imageEncoded);
                         cursor.close();
 
-                        galleryAdapter = new GalleryAdapter(getApplicationContext(),mArrayUri);
+                        galleryAdapter = new GalleryAdapter(context,mArrayUri);
                         gvGallery.setAdapter(galleryAdapter);
                         galleryAdapter.notifyDataSetChanged();
                         gvGallery.setVerticalSpacing(gvGallery.getHorizontalSpacing());
@@ -277,7 +279,7 @@ public class AddImageActivity extends AppCompatActivity {
              }
          }
          catch (Exception e){
-              Toast.makeText(getApplicationContext(),""+e.getMessage(),Toast.LENGTH_LONG).show();
+              Toast.makeText(context,""+e.getMessage(),Toast.LENGTH_LONG).show();
               e.printStackTrace();
          }
     }
@@ -306,20 +308,23 @@ public class AddImageActivity extends AppCompatActivity {
                             String status=jsonObject.getString("status");
                             String msgg=jsonObject.getString("message");
 
-                            Toast.makeText(getApplicationContext(),""+msgg,Toast.LENGTH_LONG).show();
+                            Toast.makeText(context,""+msgg,Toast.LENGTH_LONG).show();
                             if (status.equalsIgnoreCase("success")){
                                 MyImageActivity fragment = new MyImageActivity();
                                 Bundle args = new Bundle();
                                 args.putString("uid",PrefManager.getLoginDetail(AddImageActivity.this,"id"));
                                 function.loadFragment(AddImageActivity.this,fragment,args);
-                                //AddImageActivity.this.finish();
+                                int cntImage = Integer.parseInt(PrefManager.getLoginDetail(context,"total_count_image"))+1;
+                                PrefManager.updateLoginDetail(context,"total_count_image",(cntImage)+"");
+                                Config.image_text.setText(cntImage+"");
+                                finish();
                             }
                         }
                         catch(JSONException e)
                         {
                             loading.dismiss();
                             Log.d("JSoNExceptionv",e.getMessage());
-                            Toast.makeText(getApplicationContext(),e.getMessage(),Toast.LENGTH_LONG).show();
+                            Toast.makeText(context,e.getMessage(),Toast.LENGTH_LONG).show();
                         }
                     }
                 },
@@ -328,7 +333,7 @@ public class AddImageActivity extends AppCompatActivity {
                     public void onErrorResponse(VolleyError volleyError) {
                         //Dismissing the progress dialog
                         loading.dismiss();
-                        Toast.makeText(getApplicationContext(),volleyError.getMessage(),Toast.LENGTH_LONG).show();
+                        Toast.makeText(context,volleyError.getMessage(),Toast.LENGTH_LONG).show();
                     }
                 }){
             @Override
@@ -344,7 +349,7 @@ public class AddImageActivity extends AppCompatActivity {
                 params.put("name",imagename);
                 params.put("about_us",imagedetail);
                 params.put("category",cat);
-                params.put("user_id",PrefManager.getLoginDetail(getApplicationContext(),"id"));
+                params.put("user_id",PrefManager.getLoginDetail(context,"id"));
                 //returning parameters
                 return params;
             }
