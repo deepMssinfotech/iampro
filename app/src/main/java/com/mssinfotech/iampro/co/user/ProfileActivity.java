@@ -820,7 +820,7 @@ public class ProfileActivity extends Fragment implements AllFeedAdapter.ItemList
                                         fimage_path = Config.URL_ROOT + "uploads/album/150/150/" + image;
                                     } else if (type.equalsIgnoreCase("VIDEO")) {
                                         ///uploads/album/400/500/' /uploads/v_image/'
-                                        fimage_path = Config.URL_ROOT + "uploads/video/" + detail;
+                                        fimage_path = Config.URL_ROOT + "uploads/v_image/" + image;
                                     }
                                     //PRODUCT
                                     else if (type.equalsIgnoreCase("PRODUCT")) {
