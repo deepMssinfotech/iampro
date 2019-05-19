@@ -62,7 +62,27 @@ public class function {
         fragmentTransaction.addToBackStack(null);
         fragmentTransaction.commit(); // save the changes
     }
+    public static void updateFragment(Context context, Fragment fragment, Bundle args) {
+        // create a FragmentManager
+        AppCompatActivity activity = (AppCompatActivity) context;
+        FragmentManager fm = activity.getSupportFragmentManager(); //getFragmentManager();
 
+        Fragment tmp = fm.findFragmentByTag(fragment.getClass().getName());
+        if (tmp != null && tmp.isVisible()) {
+            //Toast.makeText(context,"You are already in same page",Toast.LENGTH_LONG).show();
+            //return;
+        }
+        // create a FragmentTransaction to begin the transaction and replace the Fragment
+        if(args != null){
+            fragment.setArguments(args);
+        }
+        FragmentTransaction fragmentTransaction = fm.beginTransaction();
+        // replace the FrameLayout with new Fragment
+        fragmentTransaction.add(android.R.id.content, fragment, fragment.getClass().getName());
+        fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+        fragmentTransaction.disallowAddToBackStack();
+        fragmentTransaction.commit(); // save the changes
+    }
     public static void addtocart(Context context,String pid,String qty,String price){
         String url = Config.API_URL+ "cart.php?type=addtocart&p_type=product&pid="+pid+"&qty="+qty+"&price="+price+"&uid="+ PrefManager.getLoginDetail(context,"id") +"&ip_address="+ Config.IP_ADDRESS;
         Log.d(Config.TAG+"cart",url);

@@ -90,7 +90,6 @@ public class ProfileActivity extends Fragment implements AllFeedAdapter.ItemList
     private static final String TAG = ProfileActivity.class.getSimpleName();
     private static final int FEED_LIMIT=15;
     private static int FEED_START=0;
-
     private List<FeedItem> feedItems;
     ImageView userbackgroud;
     CircleImageView userimage;
@@ -112,7 +111,7 @@ public class ProfileActivity extends Fragment implements AllFeedAdapter.ItemList
     public static String img_name_background= "background_"+String.valueOf(System.currentTimeMillis())+".jpg";
     View view;
     String FrindStatus = "";
-    // ProgressDialog loading = ProgressDialog.show(getContext(),"Processing...","Please wait...",false,false);
+    // ProgressDialog loading = ProgressDialog.show(context,"Processing...","Please wait...",false,false);
     public static String imageType;
     ImageView  changeImage,changeBackground_Image;
     public static final int REQUEST_IMAGE = 100;
@@ -310,9 +309,9 @@ public class ProfileActivity extends Fragment implements AllFeedAdapter.ItemList
             @Override
             public void onClick(View view) {
                 //Toast.makeText(context,"redirect to chat page...",Toast.LENGTH_LONG).show();
-                 Intent intent=new Intent(getContext(), ChatToUser.class);
+                 Intent intent=new Intent(context, ChatToUser.class);
                   intent.putExtra("id",String.valueOf(fid));
-                  getContext().startActivity(intent);
+                  context.startActivity(intent);
             }
         });
 
@@ -336,7 +335,7 @@ public class ProfileActivity extends Fragment implements AllFeedAdapter.ItemList
             }
         });
 
-        if (PrefManager.isLogin(ProfileActivity.this.getContext())){
+        if (PrefManager.isLogin(context)){
             changeBackground_Image.setVisibility(View.VISIBLE);
             changeImage.setVisibility(View.VISIBLE);
         }
@@ -346,7 +345,7 @@ public class ProfileActivity extends Fragment implements AllFeedAdapter.ItemList
         }
     }
     private void showImagePickerOptions() {
-        ImagePickerActivity.showImagePickerOptions(getContext(), new ImagePickerActivity.PickerOptionListener() {
+        ImagePickerActivity.showImagePickerOptions(context, new ImagePickerActivity.PickerOptionListener() {
             @Override
             public void onTakeCameraSelected() {
                 launchCameraIntent();
@@ -359,7 +358,7 @@ public class ProfileActivity extends Fragment implements AllFeedAdapter.ItemList
         });
     }
     private void launchCameraIntent() {
-        Intent intent = new Intent(getContext(), ImagePickerActivity.class);
+        Intent intent = new Intent(context, ImagePickerActivity.class);
         intent.putExtra(ImagePickerActivity.INTENT_IMAGE_PICKER_OPTION,ImagePickerActivity.REQUEST_IMAGE_CAPTURE);
 
         // setting aspect ratio
@@ -381,7 +380,7 @@ public class ProfileActivity extends Fragment implements AllFeedAdapter.ItemList
         startActivityForResult(intent, REQUEST_IMAGE);
     }
     private void launchGalleryIntent() {
-        Intent intent = new Intent(getContext(), ImagePickerActivity.class);
+        Intent intent = new Intent(context, ImagePickerActivity.class);
         intent.putExtra(ImagePickerActivity.INTENT_IMAGE_PICKER_OPTION, ImagePickerActivity.REQUEST_GALLERY_IMAGE);
 
         // setting aspect ratio
@@ -399,7 +398,7 @@ public class ProfileActivity extends Fragment implements AllFeedAdapter.ItemList
     private void gteUsrDetail(String id){
         String myurl = Config.API_URL + "ajax.php?type=friend_detail&id=" + fid + "&uid=" + PrefManager.getLoginDetail(context,"id");
         Log.d(Config.TAG, myurl);
-        final Dialog dialog = new Dialog(this.getContext());
+        final Dialog dialog = new Dialog(context);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setContentView(R.layout.progress_dialog);
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
@@ -595,7 +594,7 @@ public class ProfileActivity extends Fragment implements AllFeedAdapter.ItemList
         //CreateProgressDialog();
         //Toast.makeText(getApplicationContext(), "Video upload remain pleasw wait....", Toast.LENGTH_LONG).show();
         //return;
-        final Dialog dialog = new Dialog(this.getContext());
+        final Dialog dialog = new Dialog(context);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setContentView(R.layout.progress_dialog);
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
@@ -634,7 +633,7 @@ public class ProfileActivity extends Fragment implements AllFeedAdapter.ItemList
         //CreateProgressDialog();
         //Toast.makeText(getApplicationContext(), "Video upload remain pleasw wait....", Toast.LENGTH_LONG).show();
         //return;
-        final Dialog dialog = new Dialog(this.getContext());
+        final Dialog dialog = new Dialog(context);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setContentView(R.layout.progress_dialog);
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
@@ -722,14 +721,14 @@ public class ProfileActivity extends Fragment implements AllFeedAdapter.ItemList
     public void getFeed(int start){
         String My_id=PrefManager.getLoginDetail(context,"id");
 
-        final Dialog dialog = new Dialog(ProfileActivity.this.getContext());
+        final Dialog dialog = new Dialog(context);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setContentView(R.layout.progress_dialog);
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
         dialog.show();
 
          // AlertDialog progressDialog;
-        //progressDialog = new SpotsDialog(getContext(), R.style.Custom);
+        //progressDialog = new SpotsDialog(context, R.style.Custom);
 
         //loading.setContentView(R.layout.confirm_popup);
         URL_FEED = Config.API_URL+ "feed_service.php?type=AllFeeds&start="+start+"&limit="+FEED_LIMIT+"&fid=" +fid+ "&uid=" +My_id+ "&my_id=" +My_id;
@@ -924,7 +923,7 @@ public class ProfileActivity extends Fragment implements AllFeedAdapter.ItemList
 
     public void CreateProgressDialog()
     {
-        progressdialog = new ProgressDialog(ProfileActivity.this.getContext());
+        progressdialog = new ProgressDialog(context);
         progressdialog.setIndeterminate(false);
         progressdialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
         progressdialog.setCancelable(true);
