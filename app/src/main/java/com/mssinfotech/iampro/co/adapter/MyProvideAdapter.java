@@ -111,7 +111,7 @@ public class MyProvideAdapter extends RecyclerView.Adapter<MyProvideAdapter.View
                 myid=String.valueOf(uid);
             }
             ratingBar.setRating(Float.parseFloat(String.valueOf(item.getRating())));
-            uname.setText(item.getFullname());
+            uname.setText(item.getCategory());
             tv_name.setText(item.getName());
             //udate.setText(item.getUdate());
             tv_comments.setText(String.valueOf(item.getComments()));
@@ -152,6 +152,7 @@ public class MyProvideAdapter extends RecyclerView.Adapter<MyProvideAdapter.View
         Vholder.setData(mValues.get(position));
         final int uidv=mValues.get(position).getUid();
         final String idv=mValues.get(position).getPid();
+        Vholder.ratingBar.setRating(mValues.get(position).getRating());
         Vholder.buttonViewOption.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -272,6 +273,29 @@ public class MyProvideAdapter extends RecyclerView.Adapter<MyProvideAdapter.View
             }
         }else{
             Vholder.buttonViewOption.setVisibility(View.GONE);
+        }
+
+        if(PrefManager.isLogin(mContext)) {
+            Vholder.ratingBar.setFocusable(true);
+            Vholder.ratingBar.setIsIndicator(false);
+            Vholder.likeButton.setEnabled(true);
+            Vholder.buttonViewOption.setVisibility(View.VISIBLE);
+            Vholder.buttonViewOption.setEnabled(true);
+        }
+        else {
+            Vholder.likeButton.setEnabled(false);
+            Vholder.ratingBar.setFocusable(false);
+            Vholder.ratingBar.setIsIndicator(true);
+            //holder.ratingBar.setEnabled(false);
+            Vholder.buttonViewOption.setVisibility(View.INVISIBLE);
+            Vholder.buttonViewOption.setEnabled(false);
+        }
+        if (PrefManager.isLogin(mContext) && PrefManager.getLoginDetail(mContext,"id").equalsIgnoreCase(String.valueOf(mValues.get(position).getUid()))){
+            Vholder.buttonViewOption.setVisibility(View.VISIBLE);
+        }
+        else{
+            Vholder.buttonViewOption.setVisibility(View.GONE);
+            Vholder.buttonViewOption.setEnabled(false);
         }
 
     }

@@ -121,7 +121,19 @@ public class SectionImageVideoAdapter extends RecyclerView.Adapter<SectionImageV
         final String pid=singleItem.getId();
         final String uidv=itemsList.get(i).getUid();
 
-        holder. category.setText(itemsList.get(i).getName());
+        holder.category.setText(itemsList.get(position).getCategory());
+
+        holder.tv_name.setText(singleItem.getName());
+        holder.udate.setText(singleItem.getUdate());
+        holder.tv_comments.setText(String.valueOf(singleItem .getComments()));
+        holder.tv_totallike.setText(String.valueOf(singleItem .getTotallike()));
+         try {
+             if (itemsList.get(position).getRating() != null || !itemsList.get(position).getRating().equalsIgnoreCase("") || itemsList.get(position).getRating() != "" || !itemsList.get(position).getRating().isEmpty())
+                 holder.ratingBar.setRating(Float.parseFloat(itemsList.get(position).getRating()));
+         }
+         catch(Exception e){
+             holder.ratingBar.setRating(0);
+         }
         int my_uid=Integer.parseInt(uidv);
         if(my_uid==0){
             holder.likeButton.setEnabled(false);
@@ -134,11 +146,19 @@ public class SectionImageVideoAdapter extends RecyclerView.Adapter<SectionImageV
             holder.tv_totallike.setTextColor(Color.BLACK);
         }
         if(PrefManager.isLogin(mContext)) {
+            holder.ratingBar.setFocusable(true);
+            holder.ratingBar.setIsIndicator(false);
             holder.likeButton.setEnabled(true);
+            holder.buttonViewOption.setVisibility(View.VISIBLE);
+            holder.buttonViewOption.setEnabled(true);
         }
         else {
             holder.likeButton.setEnabled(false);
+            holder.ratingBar.setFocusable(false);
+            holder.ratingBar.setIsIndicator(true);
             //holder.ratingBar.setEnabled(false);
+              holder.buttonViewOption.setVisibility(View.INVISIBLE);
+            holder.buttonViewOption.setEnabled(false);
         }
        /* if(PrefManager.isLogin(mContext)){
             holder.likeButton.setEnabled(true);
@@ -154,18 +174,13 @@ public class SectionImageVideoAdapter extends RecyclerView.Adapter<SectionImageV
                      .load(Config.ALBUM_URL+singleItem.getAvatar())
                      .apply(Config.options_avatar)
                      .into(holder.user_image);
-             holder.category.setText(itemsList.get(i).getFullname());
+             //holder.category.setText(itemsList.get(i).getFullname());
              //holder.ratingBar.setRating(Float.parseFloat(itemsList.get(i).getRating()));
          //}
        //if(singleItem.getRating()!="NAN" || singleItem.getRating().length()>0 || !(singleItem.getRating().equalsIgnoreCase("NAN")) || singleItem.getRating()!="" || !singleItem.getRating().equalsIgnoreCase("")
         // || !singleItem.getRating().isEmpty())
         //holder.ratingBar.setRating(Float.parseFloat(String.valueOf(singleItem.getRating())));
-        holder.tv_name.setText(singleItem.getName());
-        holder.category.setText(singleItem.getFullname());
-        holder.udate.setText(singleItem.getUdate());
-        holder.tv_comments.setText(String.valueOf(singleItem .getComments()));
 
-        holder.tv_totallike.setText(String.valueOf(singleItem .getTotallike()));
         //holder.likeButton.setUnlikeDrawableRes(R.drawable.like);
         holder.likeButton.setUnlikeDrawable(mContext.getResources().getDrawable(R.drawable.like));
         //holder.likeButton.setLikeDrawableRes(R.drawable.like_un);
@@ -510,6 +525,9 @@ public class SectionImageVideoAdapter extends RecyclerView.Adapter<SectionImageV
         }
         if (itemsList.get(i).getUid().equalsIgnoreCase(PrefManager.getLoginDetail(mContext,"id")) && (type.equalsIgnoreCase("Provide") || type.equalsIgnoreCase("Demand"))) {
             holder.buttonViewOption.setVisibility(View.VISIBLE);
+            holder.favButton.setVisibility(View.VISIBLE);
+            holder.favButton.setEnabled(true);
+            holder.likeButton.setEnabled(true);
         }
         else{
             if (type.equalsIgnoreCase("Provide") || type.equalsIgnoreCase("Demand")) {
@@ -598,8 +616,10 @@ public class SectionImageVideoAdapter extends RecyclerView.Adapter<SectionImageV
           }
         if(itemsList.get(i).getMore()!=null && itemsList.get(i).getMore().equalsIgnoreCase("loadmore")){
             //holder.btnMore.setVisibility(View.GONE);
+            holder.category.setText(itemsList.get(position).getFullname());
             holder.buttonViewOption.setVisibility(View.GONE);
             if (type.equalsIgnoreCase("provide") || type.equalsIgnoreCase("demand")){
+                holder.imageView_user.setVisibility(View.VISIBLE);
                 if (PrefManager.isLogin(mContext)){
                     holder.favButton.setEnabled(true);
                     holder.likeButton.setEnabled(true);
@@ -612,7 +632,26 @@ public class SectionImageVideoAdapter extends RecyclerView.Adapter<SectionImageV
                 }
             }
         }
-
+        if(itemsList.get(i).getMore()==null){
+            holder.user_image.setVisibility(View.GONE);
+        }
+       if (PrefManager.isLogin(mContext) && PrefManager.getLoginDetail(mContext,"id").equalsIgnoreCase(itemsList.get(position).getUid())){
+           holder.buttonViewOption.setVisibility(View.VISIBLE);
+       }
+       else{
+           holder.buttonViewOption.setVisibility(View.GONE);
+           holder.buttonViewOption.setEnabled(false);
+       }
+        if (PrefManager.isLogin(mContext)){
+            //holder.favButton.setEnabled(true);
+            holder.likeButton.setEnabled(true);
+            holder.ratingBar.setFocusable(true);
+        }
+        else{
+           // holder.favButton.setEnabled(false);
+            holder.likeButton.setEnabled(false);
+            holder.ratingBar.setFocusable(false);
+        }
         }
     @Override
     public int getItemCount() {
@@ -652,6 +691,7 @@ public class SectionImageVideoAdapter extends RecyclerView.Adapter<SectionImageV
             tv_name=view.findViewById(R.id.tv_name);
             imageView_user=view.findViewById(R.id.imageView_user);
             favButton=view.findViewById(R.id.favButton);
+            if (type.equalsIgnoreCase("product") || type.equalsIgnoreCase("provide") || type.equalsIgnoreCase("demand"))
             user_image= view.findViewById(R.id.imageView_user);
 
             ll_comment=view.findViewById(R.id.ll_comment);
