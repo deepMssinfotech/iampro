@@ -581,6 +581,8 @@ public class MyImageActivity extends Fragment implements MyImageAdapter.ItemList
                                      String totallike=pics.optString("totallike");
                                      String like_unlike=pics.optString("like_unlike");
                                      String rating=pics.optString("rating");
+                                     if (rating.equals(""))
+                                         rating="0";
               item.add(new MyImageModel(id,albemid,name,category,albem_type,image,udate,about_us,group_id,is_featured,status,is_block,comments,totallike,like_unlike,rating,uid));
                                      //singleItem.add(new SingleItemModel(Integer.parseInt(id), name,image,udate,rating,Integer.parseInt(totallike),Integer.parseInt(comments),Integer.parseInt(uid),name,image,"image"));
 

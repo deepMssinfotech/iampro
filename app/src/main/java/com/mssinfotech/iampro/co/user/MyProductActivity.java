@@ -62,7 +62,6 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 public class MyProductActivity extends Fragment implements MyProductAdapter.ItemListener {
     private List<MyProductItem> MyProductItemList;
-
     ImageView userbackgroud;
     CircleImageView userimage;
     TextView username;

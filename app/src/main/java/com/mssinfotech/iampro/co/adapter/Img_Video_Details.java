@@ -299,7 +299,7 @@ public class Img_Video_Details extends RecyclerView.Adapter<Img_Video_Details.Vi
                  // Example: If you have a TextView inside `popup_layout.xml`
                  final ImageView iview=popupViews.findViewById(R.id.expandedImage);
                  SliderLayout imageSlider=popupViews.findViewById(R.id.imageSlider);
-                 Toolbar toolbar=popupViews.findViewById(R.id.toolbar);
+                // Toolbar toolbar=popupViews.findViewById(R.id.toolbar);
 
                  imageSlider.setIndicatorAnimation(IndicatorAnimations.SWAP); //set indicator animation by using SliderLayout.IndicatorAnimations. :WORM or THIN_WORM or COLOR or DROP or FILL or NONE or SCALE or SCALE_DOWN or SLIDE and SWAP!!
                  imageSlider.setSliderTransformAnimation(SliderAnimations.FADETRANSFORMATION);
@@ -367,11 +367,13 @@ public class Img_Video_Details extends RecyclerView.Adapter<Img_Video_Details.Vi
             Vholder.ratingBar.setFocusable(true);
             Vholder.ratingBar.setIsIndicator(false);
             //holder.ratingBar.setClickable(true);
+              Vholder.likeButton.setEnabled(true);
         }
         else {
             Vholder.ratingBar.setFocusable(false);
             Vholder.ratingBar.setIsIndicator(true);
             //holder.ratingBar.setClickable(false);
+             Vholder.likeButton.setEnabled(false);
         }
         if (PrefManager.isLogin(mContext)) {
                 /*holder.ratingBar.setOnClickListener(new View.OnClickListener() {
