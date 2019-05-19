@@ -186,17 +186,29 @@ public class AddVideoActivity extends AppCompatActivity  implements SingleUpload
                     public void onClick(DialogInterface dialog, int which) {
                         switch (which) {
                             case 0:
-                                ImageProcess.chooseVideoFromGallary(AddVideoActivity.this);
+                                chooseVideoFromGallary();
+                                //ImageProcess.chooseVideoFromGallary(AddVideoActivity.this);
                                 break;
                             case 1:
-                                ImageProcess.takeVideoFromCamera(AddVideoActivity.this);
+                                takeVideoFromCamera();
+                                //ImageProcess.takeVideoFromCamera(AddVideoActivity.this);
                                 break;
                         }
                     }
                 });
         pictureDialog.show();
     }
-
+    public void chooseVideoFromGallary() {
+        Intent intent = new Intent(
+                Intent.ACTION_PICK,
+                android.provider.MediaStore.Video.Media.EXTERNAL_CONTENT_URI);
+        intent.setType("video/*");
+        startActivityForResult(intent, Config.GALLERY);
+    }
+    private void takeVideoFromCamera() {
+        Intent intent = new Intent(MediaStore.ACTION_VIDEO_CAPTURE);
+        startActivityForResult(intent, Config.CAMERA);
+    }
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         Log.d("result",""+resultCode);
