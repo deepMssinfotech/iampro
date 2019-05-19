@@ -127,9 +127,13 @@ public class SectionImageVideoAdapter extends RecyclerView.Adapter<SectionImageV
         holder.udate.setText(singleItem.getUdate());
         holder.tv_comments.setText(String.valueOf(singleItem .getComments()));
         holder.tv_totallike.setText(String.valueOf(singleItem .getTotallike()));
-
-        if (itemsList.get(position).getRating()!=null || !itemsList.get(position).getRating().equalsIgnoreCase("") || itemsList.get(position).getRating()!="" || !itemsList.get(position).getRating().isEmpty())
-            holder.ratingBar.setRating(Float.parseFloat(itemsList.get(position).getRating()));
+         try {
+             if (itemsList.get(position).getRating() != null || !itemsList.get(position).getRating().equalsIgnoreCase("") || itemsList.get(position).getRating() != "" || !itemsList.get(position).getRating().isEmpty())
+                 holder.ratingBar.setRating(Float.parseFloat(itemsList.get(position).getRating()));
+         }
+         catch(Exception e){
+             holder.ratingBar.setRating(0);
+         }
         int my_uid=Integer.parseInt(uidv);
         if(my_uid==0){
             holder.likeButton.setEnabled(false);

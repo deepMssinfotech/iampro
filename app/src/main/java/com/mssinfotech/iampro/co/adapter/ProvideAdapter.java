@@ -272,7 +272,24 @@ public class ProvideAdapter extends RecyclerView.Adapter<ProvideAdapter.ViewHold
                     function.executeUrl(mContext, "get", url, null);
                 }
             });
+            if (PrefManager.isLogin(mContext)){
+                likeButton.setEnabled(true);
+                if (favButton!=null)
+                    favButton.setEnabled(true);
 
+                ratingBar.setFocusable(true);
+                ratingBar.setIsIndicator(false);
+
+            }
+            else {
+                likeButton.setEnabled(false);
+                if (favButton!=null)
+                    favButton.setEnabled(false);
+
+                ratingBar.setFocusable(false);
+                ratingBar.setIsIndicator(true);
+
+            }
         }
         @Override
         public void onClick(View view) {
