@@ -107,6 +107,7 @@ public class CommentActivity extends AppCompatActivity implements CommentAdapter
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Config.allowRefresh = true;
         setContentView(R.layout.activity_comment);
         et_comment = findViewById(R.id.et_comment);
         if (PrefManager.isLogin(this)) {

@@ -15,6 +15,7 @@ import android.provider.MediaStore;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewCompat;
 import android.support.v4.widget.NestedScrollView;
@@ -124,11 +125,6 @@ public class ProfileActivity extends Fragment implements AllFeedAdapter.ItemList
     Handler handlers = new Handler();
     FloatingActionButton floatingActionButton;
 
-    public void onBackPressed()
-    {
-        FragmentManager fm =new ProfileActivity().getActivity().getSupportFragmentManager();
-        fm.popBackStack();
-    }
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup parent, Bundle savedInstanceState) {
         // Defines the xml file for the fragment
@@ -343,6 +339,24 @@ public class ProfileActivity extends Fragment implements AllFeedAdapter.ItemList
             changeBackground_Image.setVisibility(View.GONE);
             changeImage.setVisibility(View.GONE);
         }
+    }
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (Config.allowRefresh) {
+            Config.allowRefresh = false;
+            //Toast.makeText(context, "click from BACK", Toast.LENGTH_SHORT).show();
+            Fragment frg = null;
+            AppCompatActivity activity = (AppCompatActivity) context;
+            ProfileActivity fragment = new ProfileActivity();
+            frg = activity.getSupportFragmentManager().findFragmentByTag(fragment.getClass().getName());
+            final FragmentTransaction ft = activity.getSupportFragmentManager().beginTransaction();
+            ft.detach(frg);
+            ft.attach(frg);
+            ft.commit();
+        }
+
+
     }
     private void showImagePickerOptions() {
         ImagePickerActivity.showImagePickerOptions(context, new ImagePickerActivity.PickerOptionListener() {

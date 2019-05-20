@@ -1,13 +1,16 @@
 package com.mssinfotech.iampro.co.tab;
 import android.app.Dialog;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.content.res.AppCompatResources;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
@@ -44,6 +47,7 @@ import com.mssinfotech.iampro.co.model.SectionImageModel;
 import com.mssinfotech.iampro.co.model.SingleItemModel;
 import com.mssinfotech.iampro.co.common.Config;
 import com.mssinfotech.iampro.co.user.MyProvideActivity;
+import com.mssinfotech.iampro.co.user.ProfileActivity;
 import com.mssinfotech.iampro.co.utils.PrefManager;
 import com.viewpagerindicator.CirclePageIndicator;
 
@@ -75,6 +79,7 @@ public class ProvideFragment extends Fragment implements ProvideAdapter.ItemList
      ImageView lprovide_iv;
      ImageView no_rodr;
     View views;
+    Context context;
     //sliderr
     private static ViewPager mPager;
     private static int currentPage = 0;
@@ -93,6 +98,7 @@ public class ProvideFragment extends Fragment implements ProvideAdapter.ItemList
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        context = getContext();
         // Inflate the layout for this fragment
         View view=inflater.inflate(R.layout.fragment_provide, container, false);
         //oolbar =view.findViewById(R.id.toolbar);
@@ -105,8 +111,8 @@ public class ProvideFragment extends Fragment implements ProvideAdapter.ItemList
         super.onViewCreated(view, savedInstanceState);
 
         //createDummyData();
-        if (PrefManager.isLogin(getContext())) {
-            String id = PrefManager.getLoginDetail(getContext(), "id");
+        if (PrefManager.isLogin(context)) {
+            String id = PrefManager.getLoginDetail(context, "id");
             uid = Integer.parseInt(id);
         }
         getProvide();
@@ -116,9 +122,9 @@ public class ProvideFragment extends Fragment implements ProvideAdapter.ItemList
         no_rodr =view.findViewById(R.id.no_record_found);
          imageModelArrayList=new ArrayList<>();
         lprovide_iv=view.findViewById(R.id.lprovide_iv);
-      //  lprovide_iv.setBackground(getContext().getResources().getDrawable(R.drawable.latestprovide));
+      //  lprovide_iv.setBackground(context.getResources().getDrawable(R.drawable.latestprovide));
           lprovide_iv.setVisibility(View.VISIBLE);
-          lprovide_iv.setBackground(AppCompatResources.getDrawable(getContext(),R.drawable.latestprovide));
+          lprovide_iv.setBackground(AppCompatResources.getDrawable(context,R.drawable.latestprovide));
         btn_load_more.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -130,10 +136,28 @@ public class ProvideFragment extends Fragment implements ProvideAdapter.ItemList
         });
         getTopSlider();
     }
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (Config.allowRefresh) {
+            Config.allowRefresh = false;
+            //Toast.makeText(context, "click from BACK", Toast.LENGTH_SHORT).show();
+            Fragment frg = null;
+            AppCompatActivity activity = (AppCompatActivity) context;
+            ProfileActivity fragment = new ProfileActivity();
+            frg = activity.getSupportFragmentManager().findFragmentByTag(fragment.getClass().getName());
+            final FragmentTransaction ft = activity.getSupportFragmentManager().beginTransaction();
+            ft.detach(frg);
+            ft.attach(frg);
+            ft.commit();
+        }
+
+
+    }
     private void init() {
 
         mPager = views.findViewById(R.id.pager);
-        mPager.setAdapter(new SlidingImage_Adapter(getContext(),imageModelArrayList));
+        mPager.setAdapter(new SlidingImage_Adapter(context,imageModelArrayList));
 
         CirclePageIndicator indicator = (CirclePageIndicator)views.findViewById(R.id.indicator);
 
@@ -188,7 +212,7 @@ public class ProvideFragment extends Fragment implements ProvideAdapter.ItemList
 
     private void getTopSlider(){
         final String url=Config.API_URL+ "index.php?type=get_slider&name=TOP_SLIDER";
-        RequestQueue requestQueue = Volley.newRequestQueue(getContext());
+        RequestQueue requestQueue = Volley.newRequestQueue(context);
         // Initialize a new JsonArrayRequest instance
         JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(
                 Request.Method.GET,
@@ -231,7 +255,7 @@ public class ProvideFragment extends Fragment implements ProvideAdapter.ItemList
                         catch (JSONException e){
                             //pDialog.dismiss();
                             e.printStackTrace();
-                            Toast.makeText(getContext(), ""+e.getMessage(), Toast.LENGTH_SHORT).show();
+                            Toast.makeText(context, ""+e.getMessage(), Toast.LENGTH_SHORT).show();
                             Log.d("catch_f",""+e.getMessage());
                         }
                     }
@@ -241,8 +265,8 @@ public class ProvideFragment extends Fragment implements ProvideAdapter.ItemList
                     public void onErrorResponse(VolleyError error){
                         //pDialog.dismiss();
                         // Do something when error occurred
-                        //Snackbar.make(getContext(),"Error...", Snackbar.LENGTH_LONG).show();
-                        Toast.makeText(getContext(), "verror"+error.getMessage(), Toast.LENGTH_SHORT).show();
+                        //Snackbar.make(context,"Error...", Snackbar.LENGTH_LONG).show();
+                        Toast.makeText(context, "verror"+error.getMessage(), Toast.LENGTH_SHORT).show();
                         Log.d("verror",""+error.getMessage());
                     }
                 }
@@ -254,7 +278,7 @@ public class ProvideFragment extends Fragment implements ProvideAdapter.ItemList
     /*public void getProvide(){
         final String url = Config.API_URL+ "app_service.php?type=all_product_classified&uid=&name=PROVIDE&my_id=";
         // Initialize a new RequestQueue instance
-        RequestQueue requestQueue = Volley.newRequestQueue(getContext());
+        RequestQueue requestQueue = Volley.newRequestQueue(context);
 
         // Initialize a new JsonArrayRequest instance
         JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(
@@ -287,7 +311,7 @@ public class ProvideFragment extends Fragment implements ProvideAdapter.ItemList
                                 Log.d("pdata",""+name+""+categoryv+""+image+""+udate);
                                 //SectionDataModel dm = new SectionDataModel();
                                 //dm.setHeaderTitle("Section " + i);
-                                Toast.makeText(getContext(),"rrrresponse_enterrr:",Toast.LENGTH_LONG).show();
+                                Toast.makeText(context,"rrrresponse_enterrr:",Toast.LENGTH_LONG).show();
                                 singleItem.add(new SingleItemModel(name,image,udate));
 
                             }
@@ -299,15 +323,15 @@ public class ProvideFragment extends Fragment implements ProvideAdapter.ItemList
                             Log.d("allsampledatav", allSampleData.toString());
                             my_recycler_view.setHasFixedSize(true);
                             Log.d("allSampleDatas",""+allSampleData.size()+"--"+allSampleData.toString());
-                            RecyclerViewDataAdapter adapter = new RecyclerViewDataAdapter(getContext(), allSampleData);
+                            RecyclerViewDataAdapter adapter = new RecyclerViewDataAdapter(context, allSampleData);
 
-                            my_recycler_view.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
+                            my_recycler_view.setLayoutManager(new LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false));
                             //my_recycler_view.setLayoutManager(new GridLayoutManager(getActivity(), 2));
                             my_recycler_view.setAdapter(adapter);
                         }
                         catch (JSONException e){
                             e.printStackTrace();
-                            Toast.makeText(getContext(), ""+e.getMessage(), Toast.LENGTH_SHORT).show();
+                            Toast.makeText(context, ""+e.getMessage(), Toast.LENGTH_SHORT).show();
                             Log.d("catch_f",""+e.getMessage());
                         }
                     }
@@ -316,8 +340,8 @@ public class ProvideFragment extends Fragment implements ProvideAdapter.ItemList
                     @Override
                     public void onErrorResponse(VolleyError error){
                         // Do something when error occurred
-                        //Snackbar.make(getContext(),"Error...", Snackbar.LENGTH_LONG).show();
-                        Toast.makeText(getContext(), "verror"+error.getMessage(), Toast.LENGTH_SHORT).show();
+                        //Snackbar.make(context,"Error...", Snackbar.LENGTH_LONG).show();
+                        Toast.makeText(context, "verror"+error.getMessage(), Toast.LENGTH_SHORT).show();
                         Log.d("verror",error.getMessage());
                     }
                 }
@@ -330,9 +354,9 @@ public class ProvideFragment extends Fragment implements ProvideAdapter.ItemList
     public void getAllAlbum(){
         //String url=Config.API_URL+ "app_service.php?type=getAlbemsListt&search_type=video&uid="+uid;
         String url=Config.API_URL+ "app_service.php?type=get_category&name=PROVIDE&uid="+uid;
-        RequestQueue requestQueue=Volley.newRequestQueue(getContext());
+        RequestQueue requestQueue=Volley.newRequestQueue(context);
 
-        final Dialog pDialog = new Dialog(this.getContext());
+        final Dialog pDialog = new Dialog(this.context);
         pDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         pDialog.setContentView(R.layout.progress_dialog);
         pDialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
@@ -364,7 +388,7 @@ public class ProvideFragment extends Fragment implements ProvideAdapter.ItemList
                                 //item_name.put(name1,album_name)
                                 if(product_count>0) {
                                     item_name.put(name, String.valueOf(id));
-                                    //Toast.makeText(getContext(),""+product_count,Toast.LENGTH_LONG).show();
+                                    //Toast.makeText(context,""+product_count,Toast.LENGTH_LONG).show();
                                 }
                                 else{
 
@@ -380,7 +404,7 @@ public class ProvideFragment extends Fragment implements ProvideAdapter.ItemList
                         }
                         catch (JSONException e){
                             e.printStackTrace();
-                            Toast.makeText(getContext(), ""+e.getMessage(), Toast.LENGTH_SHORT).show();
+                            Toast.makeText(context, ""+e.getMessage(), Toast.LENGTH_SHORT).show();
                             Log.d("catch_f",""+e.getMessage());
                         }
                     }
@@ -388,7 +412,7 @@ public class ProvideFragment extends Fragment implements ProvideAdapter.ItemList
                 new com.android.volley.Response.ErrorListener(){
                     @Override
                     public void onErrorResponse(VolleyError error){
-                        Toast.makeText(getContext(), error.getMessage(), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(context, error.getMessage(), Toast.LENGTH_SHORT).show();
                         Log.d("verror",""+error.getMessage());
                         pDialog.dismiss();
                     }
@@ -400,16 +424,16 @@ public class ProvideFragment extends Fragment implements ProvideAdapter.ItemList
     }
 
     public void getProvide(){
-       // int uid= Integer.parseInt(PrefManager.getLoginDetail(getContext(),"id"));
+       // int uid= Integer.parseInt(PrefManager.getLoginDetail(context,"id"));
         final String url =Config.API_URL+"app_service.php?type=all_product_classified&uid="+uid+"&name=PROVIDE&my_id="+uid;
         // Initialize a new RequestQueue instance
-        RequestQueue requestQueue = Volley.newRequestQueue(getContext());
-        final Dialog pDialog = new Dialog(this.getContext());
+        RequestQueue requestQueue = Volley.newRequestQueue(context);
+        final Dialog pDialog = new Dialog(this.context);
         pDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         pDialog.setContentView(R.layout.progress_dialog);
         pDialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
         pDialog.show();
-        //Toast.makeText(getContext(), "getProvide", Toast.LENGTH_SHORT).show();
+        //Toast.makeText(context, "getProvide", Toast.LENGTH_SHORT).show();
         // Initialize a new JsonArrayRequest instance
         JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(
                 Request.Method.GET,
@@ -423,7 +447,7 @@ public class ProvideFragment extends Fragment implements ProvideAdapter.ItemList
                             Log.d("response_provide", response.toString());
                             SectionDataModel dm = new SectionDataModel();
                              no_rodr.setVisibility(View.GONE);
-                            //Toast.makeText(getContext(),"rrrresponse_enterrr:1",Toast.LENGTH_LONG).show();
+                            //Toast.makeText(context,"rrrresponse_enterrr:1",Toast.LENGTH_LONG).show();
                             dm.setHeaderTitle("Provide");
                             ArrayList<SingleItemModel> singleItem = new ArrayList<SingleItemModel>();
                        /* if(!singleItem.isEmpty()){
@@ -484,7 +508,7 @@ public class ProvideFragment extends Fragment implements ProvideAdapter.ItemList
                                     allSampleData.add(new DataModel(name, image, udate, categoryv, totallike, isliked, comments, scost, pcost, ratingv, uid, fullname, avatar, idv, "provide",is_favourite));
 
                                 }
-                                // Toast.makeText(getContext(),"rrrresponse_enterrr:2",Toast.LENGTH_LONG).show();
+                                // Toast.makeText(context,"rrrresponse_enterrr:2",Toast.LENGTH_LONG).show();
                                 //dm.setAllItemsInSection(singleItem);
 
                                 //
@@ -497,25 +521,25 @@ public class ProvideFragment extends Fragment implements ProvideAdapter.ItemList
                             arrayList.add(new DataModel("Item 5", android.R.drawable.btn_minus, "#F94336"));
                             arrayList.add(new DataModel("Item 6", android.R.drawable.alert_dark_frame, "#0A9B88")); */
 
-                                //adapter = new RecyclerViewAdapter(getContext(), allSampleData,ProvideFragment.this);
-                                adapter_provide = new ProvideAdapter(getContext(), allSampleData, ProvideFragment.this);
+                                //adapter = new RecyclerViewAdapter(context, allSampleData,ProvideFragment.this);
+                                adapter_provide = new ProvideAdapter(context, allSampleData, ProvideFragment.this);
                                 my_recycler_view.setAdapter(adapter_provide);
 
-                                GridLayoutManager manager = new GridLayoutManager(getContext(), 2, GridLayoutManager.VERTICAL, false);
+                                GridLayoutManager manager = new GridLayoutManager(context, 2, GridLayoutManager.VERTICAL, false);
                                 my_recycler_view.setLayoutManager(manager);
 
                            /* allSampleData.add(dm);
                             Log.d("allsampledatav", allSampleData.toString());
                             my_recycler_view.setHasFixedSize(true);
                             Log.d("allSampleDatas",""+allSampleData.size()+"--"+allSampleData.toString());
-                            RecyclerViewDataAdapter adapter = new RecyclerViewDataAdapter(getContext(), allSampleData);
+                            RecyclerViewDataAdapter adapter = new RecyclerViewDataAdapter(context, allSampleData);
 
-                            my_recycler_view.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
+                            my_recycler_view.setLayoutManager(new LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false));
                             //my_recycler_view.setLayoutManager(new GridLayoutManager(getActivity(), 2));
                             my_recycler_view.setAdapter(adapter); */
                             } catch (JSONException e) {
                                 e.printStackTrace();
-                                Toast.makeText(getContext(), "" + e.getMessage(), Toast.LENGTH_SHORT).show();
+                                Toast.makeText(context, "" + e.getMessage(), Toast.LENGTH_SHORT).show();
                                 Log.d("catch_f", "" + e.getMessage());
                                 pDialog.dismiss();
                                 no_rodr.setVisibility(View.VISIBLE);
@@ -530,8 +554,8 @@ public class ProvideFragment extends Fragment implements ProvideAdapter.ItemList
                     @Override
                     public void onErrorResponse(VolleyError error){
                         // Do something when error occurred
-                        //Snackbar.make(getContext(),"Error...", Snackbar.LENGTH_LONG).show();
-                        Toast.makeText(getContext(), error.getMessage(), Toast.LENGTH_SHORT).show();
+                        //Snackbar.make(context,"Error...", Snackbar.LENGTH_LONG).show();
+                        Toast.makeText(context, error.getMessage(), Toast.LENGTH_SHORT).show();
                         Log.d("verror",""+error.getMessage());
                         pDialog.dismiss();
                     }
@@ -543,7 +567,7 @@ public class ProvideFragment extends Fragment implements ProvideAdapter.ItemList
     }
     @Override
     public void onItemClick(DataModel item) {
-        Toast.makeText(getContext(), item.getName()+ " is clicked", Toast.LENGTH_SHORT).show();
+        Toast.makeText(context, item.getName()+ " is clicked", Toast.LENGTH_SHORT).show();
     }
 
     @Override
@@ -552,7 +576,7 @@ public class ProvideFragment extends Fragment implements ProvideAdapter.ItemList
     }
 
     public void getProvidesMores(final String cname){
-        final Dialog pDialog = new Dialog(getContext());
+        final Dialog pDialog = new Dialog(context);
         pDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         pDialog.setContentView(R.layout.progress_dialog);
         pDialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
@@ -571,7 +595,7 @@ public class ProvideFragment extends Fragment implements ProvideAdapter.ItemList
             url = Config.API_URL+ "app_service.php?type=search_all_items&search_type=PROVIDE&category=" + cname+ "&search_data=&uid=" + uid + "&my_id=" + uid;
 
         }
-        RequestQueue requestQueue = Volley.newRequestQueue(getContext());
+        RequestQueue requestQueue = Volley.newRequestQueue(context);
         JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(
                 Request.Method.GET,
                 url,
@@ -666,28 +690,28 @@ public class ProvideFragment extends Fragment implements ProvideAdapter.ItemList
                             TreeMap<String,String> item_loadmore=new TreeMap<>();
                             item_loadmore.put("loadmore","loadmore");
 
-                            //adapterr = new MyVideoDataAdapter(getContext(),allSampleDatamore,item_loadmore);
-                            //recycler_view_load_more.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
+                            //adapterr = new MyVideoDataAdapter(context,allSampleDatamore,item_loadmore);
+                            //recycler_view_load_more.setLayoutManager(new LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false));
                             //recycler_view_load_more.setAdapter(adapterr);
 
-                            //adapterr = new MyProductAdapter(getContext(),item,ProductFragment.this);
+                            //adapterr = new MyProductAdapter(context,item,ProductFragment.this);
 
                             //recycler_view_load_more.setAdapter(adapterr);
-                            //GridLayoutManager manager = new GridLayoutManager(getContext(), 2, GridLayoutManager.VERTICAL, false);
+                            //GridLayoutManager manager = new GridLayoutManager(context, 2, GridLayoutManager.VERTICAL, false);
                             //recycler_view_load_more.setLayoutManager(manager);
 
                             String type="provide";
-                            adapterr = new MyImageVideoDataAdapter(getContext(), allSampleDatamore,item_loadmore,type);
+                            adapterr = new MyImageVideoDataAdapter(context, allSampleDatamore,item_loadmore,type);
 
-                            //adapterr = new MyProvideAdapter(getContext(),item,ProvideFragment.this);
+                            //adapterr = new MyProvideAdapter(context,item,ProvideFragment.this);
                             //recycler_view_load_more.setAdapter(adapterr);
-                            recycler_view_load_more.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
+                            recycler_view_load_more.setLayoutManager(new LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false));
                             recycler_view_load_more.setAdapter(adapterr);
                         }
                         catch (JSONException e){
                             e.printStackTrace();
                             pDialog.dismiss();
-                            Toast.makeText(getContext(), ""+e.getMessage(),Toast.LENGTH_SHORT).show();
+                            Toast.makeText(context, ""+e.getMessage(),Toast.LENGTH_SHORT).show();
                             Log.d("catch_f",""+e.getMessage());
                         }
                     }
@@ -695,7 +719,7 @@ public class ProvideFragment extends Fragment implements ProvideAdapter.ItemList
                 new com.android.volley.Response.ErrorListener(){
                     @Override
                     public void onErrorResponse(VolleyError error){
-                        Toast.makeText(getContext(), error.getMessage(), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(context, error.getMessage(), Toast.LENGTH_SHORT).show();
                         pDialog.dismiss();
                         Log.d("verror",""+error.getMessage());
                     }

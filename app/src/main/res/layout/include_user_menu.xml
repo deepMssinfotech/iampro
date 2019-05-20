@@ -332,7 +332,7 @@
                         android:layout_height="30dp"
                         android:layout_below="@+id/menu_btn_editprofile"
                         android:gravity="center"
-                        android:text="My Profile"
+                        android:text="Edit Profile"
                         android:textColor="@color/white"
                         android:textSize="10dp" />
                 </RelativeLayout>
@@ -502,7 +502,7 @@
                     <TextView
                         android:textSize="10dp"
                         android:layout_below="@+id/menu_btn_myprovide"
-                        android:text="My Porvide"
+                        android:text="My Provide"
                         android:gravity="center"
                         android:textColor="@color/white"
                         android:layout_width="match_parent"

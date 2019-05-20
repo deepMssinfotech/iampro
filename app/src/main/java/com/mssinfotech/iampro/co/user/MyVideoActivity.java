@@ -16,6 +16,7 @@ import android.provider.MediaStore;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AppCompatActivity;
@@ -756,11 +757,22 @@ public class MyVideoActivity extends Fragment implements MyVideoAdapter.ItemList
     public void onCancelled() {
 
     }
-   @Override
+    @Override
     public void onResume() {
-
         super.onResume();
         uploadReceiver.register(context);
+        if (Config.allowRefresh) {
+            Config.allowRefresh = false;
+            //Toast.makeText(context, "click from BACK", Toast.LENGTH_SHORT).show();
+            Fragment frg = null;
+            AppCompatActivity activity = (AppCompatActivity) context;
+            ProfileActivity fragment = new ProfileActivity();
+            frg = activity.getSupportFragmentManager().findFragmentByTag(fragment.getClass().getName());
+            final FragmentTransaction ft = activity.getSupportFragmentManager().beginTransaction();
+            ft.detach(frg);
+            ft.attach(frg);
+            ft.commit();
+        }
 
     }
     @Override

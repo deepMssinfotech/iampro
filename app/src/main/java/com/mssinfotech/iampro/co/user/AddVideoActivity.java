@@ -378,6 +378,7 @@ public class AddVideoActivity extends AppCompatActivity  implements SingleUpload
                     .setContentText("Uploading in progress")
                     .setSmallIcon(R.drawable.iampro)
                     .setChannelId(CHANNEL_ID)
+                    .setSound(null)
                     .setPriority(NotificationCompat.PRIORITY_DEFAULT);
             NotificationManager manager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
@@ -490,7 +491,7 @@ public class AddVideoActivity extends AppCompatActivity  implements SingleUpload
 
     @Override
     public void onCompleted(int serverResponseCode, byte[] serverResponseBody) {
-        //Toast.makeText(AddVideoActivity.this,""+"Video Uploading Completed...",Toast.LENGTH_LONG).show();
+        Toast.makeText(AddVideoActivity.this,""+"Video Uploading Completed...",Toast.LENGTH_LONG).show();
         int cntVideo = Integer.parseInt(PrefManager.getLoginDetail(context,"total_count_video"))+1;
         PrefManager.updateLoginDetail(context,"total_count_video",(cntVideo)+"");
         Config.video_text.setText(cntVideo+"");

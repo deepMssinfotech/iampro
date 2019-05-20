@@ -60,7 +60,7 @@
                         android:id="@+id/userbackgroud"
                         android:src="@drawable/profile_background"
                         android:layout_width="match_parent"
-                        android:scaleType="fitCenter"
+                        android:scaleType="fitXY"
                         android:layout_height="match_parent" />
                     <RelativeLayout
                         android:layout_marginBottom="@dimen/profile_icon_margin_bottom"

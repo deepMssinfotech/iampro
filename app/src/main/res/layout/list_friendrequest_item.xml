@@ -7,14 +7,9 @@
     android:layout_gravity="center_vertical"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     app:mode="same_level"
+    android:clickable="true"
     app:dragFromEdge="right"
    >
-    <!--
-
-
-
-     app:dragFromEdge="right" height=88dp
-     com.mssinfotech.iampro.co.swipe.SwipeRevealLayout-->
     <FrameLayout
         android:layout_width="match_parent"
         android:background="@drawable/user_background"
@@ -46,9 +41,11 @@
                     app:civ_border_color="#FF000000"/>
                 <TextView
                     android:id="@+id/tv_viewProfile"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:lines="1"
+                    android:lines="2"
+                    android:layout_marginTop="5dp"
+                    android:textSize="10dp"
                     android:layout_gravity="center_horizontal"
                     android:gravity="center_horizontal"
                     android:text="View Profile"/>
@@ -73,11 +70,13 @@
                     app:civ_border_color="#FF000000"/>
                 <TextView
                     android:id="@+id/tv_fRequest"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:lines="1"
+                    android:lines="2"
+                    android:layout_marginTop="5dp"
                     android:layout_gravity="center_horizontal"
                     android:gravity="center_horizontal"
+                    android:textSize="10dp"
                     android:text="Friend Request"/>
             </LinearLayout>
             <LinearLayout
@@ -99,9 +98,12 @@
                     app:civ_border_color="#FF000000"/>
                 <TextView
                     android:id="@+id/tv_sendMessage"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
+                    android:lines="2"
+                    android:layout_marginTop="5dp"
+                    android:textSize="10dp"
                     android:gravity="center_horizontal"
                     android:text="Message"/>
             </LinearLayout>
@@ -122,10 +124,13 @@
                     app:civ_border_width="0dp" />
                 <TextView
                     android:id="@+id/tv_blockUser"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
                     android:gravity="center_horizontal"
+                    android:textSize="10dp"
+                    android:layout_marginTop="5dp"
+                    android:lines="2"
                     android:text="Block"/>
             </LinearLayout>
         </LinearLayout>
@@ -134,14 +139,11 @@
 
     <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:clickable="true">
+        android:layout_height="match_parent">
 
-        <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            xmlns:app="http://schemas.android.com/apk/res-auto"
-            xmlns:card_view="http://schemas.android.com/tools"
             android:orientation="vertical">
 
             <RelativeLayout
@@ -249,7 +251,7 @@
                                     android:background="@drawable/user_circular_corner"
                                     android:layout_height="20dp"
                                     android:textColor="@color/white"
-                                    android:text="4"
+                                    android:text="0"
                                     android:layout_marginTop="5dp"/>
                                 <TextView
                                     android:layout_marginLeft="5dp"
@@ -260,7 +262,7 @@
                                     android:drawableLeft="@drawable/ic_video_white"
                                     android:background="@drawable/user_circular_corner"
                                     android:drawablePadding="7dp"
-                                    android:text="1"
+                                    android:text="0"
                                     android:textColor="@color/white"
                                     android:layout_marginTop="5dp"/>
                                 <TextView
@@ -290,7 +292,7 @@
                                     android:drawableLeft="@drawable/product_white"
                                     android:textColor="@color/white"
                                     android:drawablePadding="7dp"
-                                    android:text="4"
+                                    android:text="0"
                                     android:layout_marginTop="5dp"/>
                                 <TextView
                                     android:layout_marginLeft="5dp"
@@ -299,7 +301,7 @@
                                     android:layout_width="70dp"
                                     android:layout_height="20dp"
                                     android:background="@drawable/user_circular_corner"
-                                    android:text="1"
+                                    android:text="0"
                                     android:drawableLeft="@drawable/provide_white"
                                     android:drawablePadding="7dp"
                                     android:textColor="@color/white"

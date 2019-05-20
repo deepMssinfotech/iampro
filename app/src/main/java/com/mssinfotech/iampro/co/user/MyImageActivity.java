@@ -17,6 +17,7 @@ import android.provider.MediaStore;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -110,11 +111,23 @@ public class MyImageActivity extends Fragment implements MyImageAdapter.ItemList
         // Defines the xml file for the fragment
         return inflater.inflate(R.layout.activity_my_image, parent, false);
     }
-
     @Override
     public void onResume() {
         super.onResume();
-        //((AppCompatActivity)getActivity()).getSupportActionBar().hide();
+        if (Config.allowRefresh) {
+            Config.allowRefresh = false;
+            //Toast.makeText(context, "click from BACK", Toast.LENGTH_SHORT).show();
+            Fragment frg = null;
+            AppCompatActivity activity = (AppCompatActivity) context;
+            ProfileActivity fragment = new ProfileActivity();
+            frg = activity.getSupportFragmentManager().findFragmentByTag(fragment.getClass().getName());
+            final FragmentTransaction ft = activity.getSupportFragmentManager().beginTransaction();
+            ft.detach(frg);
+            ft.attach(frg);
+            ft.commit();
+        }
+
+
     }
     @Override
     public void onViewCreated(View v, Bundle savedInstanceState) {

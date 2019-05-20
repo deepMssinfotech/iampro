@@ -41,13 +41,15 @@ import java.util.Map;
 
 public class function {
 
+
     public static void loadFragment(Context context, Fragment fragment, Bundle args) {
         // create a FragmentManager
+        String FragemntName = fragment.getClass().getName();
         AppCompatActivity activity = (AppCompatActivity) context;
         FragmentManager fm = activity.getSupportFragmentManager(); //getFragmentManager();
-
-        Fragment tmp = fm.findFragmentByTag(fragment.getClass().getName());
-        if (tmp != null && tmp.isVisible()) {
+        Fragment tmp = fm.findFragmentByTag(FragemntName);
+        //Toast.makeText(context,FragemntName+"="+Config.CURRENT_FRAGMENT,Toast.LENGTH_LONG).show();
+        if (FragemntName == Config.CURRENT_FRAGMENT) {
             //Toast.makeText(context,"You are already in same page",Toast.LENGTH_LONG).show();
             //return;
         }
@@ -57,10 +59,12 @@ public class function {
         }
         FragmentTransaction fragmentTransaction = fm.beginTransaction();
         // replace the FrameLayout with new Fragment
-        fragmentTransaction.add(android.R.id.content, fragment, fragment.getClass().getName());
+        fragmentTransaction.add(android.R.id.content, fragment, FragemntName);
         fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
         fragmentTransaction.addToBackStack(null);
         fragmentTransaction.commit(); // save the changes
+        Config.CURRENT_FRAGMENT = FragemntName;
+        //Toast.makeText(context,"You are in page : "+FragemntName,Toast.LENGTH_LONG).show();
     }
     public static void updateFragment(Context context, Fragment fragment, Bundle args) {
         // create a FragmentManager

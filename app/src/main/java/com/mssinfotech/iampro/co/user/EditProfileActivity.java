@@ -51,6 +51,7 @@ import com.mssinfotech.iampro.co.SignupActivity;
 import com.mssinfotech.iampro.co.adapter.GalleryAdapter;
 import com.mssinfotech.iampro.co.common.CircleTransform;
 import com.mssinfotech.iampro.co.common.Config;
+import com.mssinfotech.iampro.co.common.DatePickerFragment;
 import com.mssinfotech.iampro.co.common.ImageProcess;
 import com.mssinfotech.iampro.co.common.function;
 import com.mssinfotech.iampro.co.data.CategoryItem;
@@ -201,7 +202,28 @@ public class EditProfileActivity extends Fragment {
         //ImagePickerActivity.clearCache(getContext());
         getData();
         PrefManager.updateUserData(context,null);
+        setDatePicker(dob);
+    }
+    private void setDatePicker(final TextView textView) {
+        textView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                DatePickerFragment newFragment = new DatePickerFragment();
 
+                Bundle b = new Bundle();
+                b.putInt("customStyle", R.style.CustomDatePickerDialog);
+                newFragment.setArguments(b);
+
+                newFragment.setDatePickerListener(new DatePickerFragment.DatePickerListener() {
+                    @Override
+                    public void onDatePicked(String date) {
+                        textView.setText(date);
+                    }
+                });
+
+                newFragment.show(getFragmentManager(), "datePicker");
+            }
+        });
     }
     public void SaveForm(View v)
     {
@@ -287,7 +309,7 @@ public class EditProfileActivity extends Fragment {
                             Toast.makeText(context,""+msgg,Toast.LENGTH_LONG).show();
                             if (status.equalsIgnoreCase("success")){
                                 ProfileActivity fragment = new ProfileActivity();
-                                function.loadFragment(context,fragment,null);
+                                function.updateFragment(context,fragment,null);
                             }
                         }
                         catch(JSONException e)

@@ -139,7 +139,7 @@ public class WelcomeActivity extends AppCompatActivity implements View.OnClickLi
         // sending gcm token to server
         if(PrefManager.isLogin(this)) {
 
-            String url = Config.API_URL + "ajax.php?type=savefcmregistration&uid="+PrefManager.getLoginDetail(this,"id")+"&token=" + token;
+            String url = Config.API_URL + "api.php?type=savefcmregistration&uid="+PrefManager.getLoginDetail(this,"id")+"&token=" + token;
             Log.e("mss get firebase id", "url "+url);
             function.executeUrl(this, "get", url, null);
         }

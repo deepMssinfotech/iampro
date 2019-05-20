@@ -89,9 +89,10 @@ public class JoinFriendItem {
     }
 
     private String total_demand;
-    public JoinFriendItem(int id,String name,String image,String udate,String category,String total_image,String total_video,String total_friend,String total_product,String total_provide,String total_demand,String is_friend,String friend_status,String tid,int is_block,String user_url){
+    public JoinFriendItem(int id,String name,String image,String udate,String category,String total_image,String total_video,String total_friend,String total_product,String total_provide,String total_demand,String is_friend,String friend_status,String tid,int is_block,String user_url,String city){
         this.id=id;
         this.fullname=name;
+        this.city = city;
         this.image=image;
         this.udate=udate;
         this.category=category;
@@ -101,7 +102,7 @@ public class JoinFriendItem {
         this.total_product=Integer.parseInt(total_product);
         this.total_provide=total_provide;
         this.total_demand=total_demand;
-        //is_friend,friend_status,tid,is_block,user_url
+
         this.is_friend=is_friend;
         this.friend_status=friend_status;
         this.tid=tid;
