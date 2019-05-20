@@ -98,60 +98,80 @@ public class JoinFriendAdapter extends RecyclerView.Adapter<JoinFriendAdapter.My
         final int position=positions;
         final JoinFriendItem item = notifyList.get(position);
         holder.category.setText(item.getCategory());
-        holder.city.setText(item.getCity());
+        //holder.city.setText(item.getCity());
         holder.fullname.setText(item.getFullname());
-        holder.total_demand.setText(String.valueOf(item.getTotal_demand()));
-        holder.total_image.setText(String.valueOf(item.getTotal_img()));
-        holder.total_product.setText(String.valueOf(item.getTotal_product()));
-        holder.total_provide.setText(String.valueOf(item.getTotal_provide()));
-        holder.total_video.setText(String.valueOf(item.getTotal_video()));
-        holder.total_user.setText(String.valueOf(item.getTotal_friend()));
+       // holder.total_demand.setText(String.valueOf(item.getTotal_product_demand()));
+       // holder.total_image.setText(String.valueOf(item.getTotal_img()));
+       // holder.total_product.setText(String.valueOf(item.getTotal_product()));
+        //holder.total_provide.setText(String.valueOf(item.getTotal_product_provide()));
+        //holder.total_video.setText(String.valueOf(item.getTotal_video()));
+        //holder.total_user.setText(String.valueOf(item.getTotal_friend()));
         Glide.with(context).load(item.getImage()).apply(Config.options_avatar).into(holder.userimage);
          holder. userimage.setOnClickListener(new View.OnClickListener() {
              @Override
              public void onClick(View v) {
-                 //Toast.makeText(v.getContext(), "user : "+notifyList.get(position).getId() ,Toast.LENGTH_SHORT).show();
+                 /*Intent intent=new Intent(context, ProfileActivity.class);
+                  intent.putExtra("uid",notifyList.get(position).getUser_id());
+                   context.startActivity(intent);*/
+
                  ProfileActivity fragment = new ProfileActivity();
                  Bundle args = new Bundle();
-                 args.putString("uid",String.valueOf(notifyList.get(position).getId()));
+                 args.putString("uid",String.valueOf(notifyList.get(position).getUser_id()));
                  function.loadFragment(context,fragment,args);
              }
          });
 
-        if (notifyList.get(position).getIs_block()==1){
-            holder.imageView_block.setBackground(AppCompatResources.getDrawable(context,R.drawable.unblockicone));
-            //tv_viewProfile,tv_fRequest,tv_sendMessage,tv_blockUser
-            holder.tv_viewProfile.setText("View Profile");
-            holder.tv_fRequest.setText("Delete "+notifyList.get(position).getFullname());
+        Vholder.imageView_message.setBackground(AppCompatResources.getDrawable(context,R.drawable.user_slide_info_message));
+        Vholder.imageView_frequest.setBackground(AppCompatResources.getDrawable(context,R.drawable.user_slide_nfo));
+        Vholder.imageView_viewProfile.setBackground(AppCompatResources.getDrawable(context,R.drawable.user_slide_info_view_profile));
 
-            holder.tv_sendMessage.setText("Message \t"+notifyList.get(position).getFullname());
-            holder.tv_blockUser.setText("UnBlock");
+        Vholder.imageView_block.setBackground(AppCompatResources.getDrawable(context,R.drawable.unblockicone));
+        if (notifyList.get(position).getIs_block()==1){
+            Vholder.imageView_block.setBackground(AppCompatResources.getDrawable(context,R.drawable.unblockicone));
+            //tv_viewProfile,tv_fRequest,tv_sendMessage,tv_blockUser
+            Vholder.tv_viewProfile.setText("View Profile");
+            Vholder.tv_fRequest.setText("Delete "+notifyList.get(position).getFullname());
+
+            Vholder.tv_sendMessage.setText("Message \t"+notifyList.get(position).getFullname());
+            Vholder.tv_blockUser.setText("UnBlock");
         }
         else if (notifyList.get(position).getIs_block()==2){
-            holder.imageView_block.setBackground(AppCompatResources.getDrawable(context,R.drawable.blockicone));
+            Vholder.imageView_block.setBackground(AppCompatResources.getDrawable(context,R.drawable.blockicone));
 
 
-            holder.tv_viewProfile.setText("View Profile");
-            holder.tv_fRequest.setText("You ");
-            holder.tv_sendMessage.setText("Message \t"+notifyList.get(position).getFullname());
-            holder.tv_blockUser.setText("Block");
+            Vholder.tv_viewProfile.setText("View Profile");
+            Vholder.tv_fRequest.setText("You ");
+            Vholder.tv_sendMessage.setText("Message \t"+notifyList.get(position).getFullname());
+            Vholder.tv_blockUser.setText("Block");
         }
         FrindStatus =notifyList.get(position).getFriend_status();
         if (FrindStatus==null){
             FrindStatus="";
         }
         if(FrindStatus.equals("NO")){
-            holder.tv_fRequest.setText("Add to Friend");
+            Vholder.tv_fRequest.setText("Add to Friend");
         }else if(FrindStatus.equals("PANDING")){
-            holder.tv_fRequest.setText("Cancel Request");
+            Vholder.tv_fRequest.setText("Cancel Request");
         }else{
-            holder.tv_fRequest.setText("Remove Friend");
+            Vholder.tv_fRequest.setText("Remove Friend");
         }
-
-        holder.imageView_frequest.setOnClickListener(new View.OnClickListener() {
+        Vholder.userimage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(v.getContext(), "FREQUEST CLICKED"+position,Toast.LENGTH_SHORT).show();
+                ProfileActivity fragment = new ProfileActivity();
+                Bundle args = new Bundle();
+                args.putString("uid", String.valueOf(notifyList.get(position).getUser_id()));
+                function.loadFragment(context,fragment,args);
+                Toast.makeText(context, ""+notifyList.get(position).getUser_id(), Toast.LENGTH_SHORT).show();
+
+            }
+        });
+
+        //imageView_frequest,imageView_message,imageView_block
+        Vholder.imageView_frequest.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //Toast.makeText(v.getContext(), "FREQUEST CLICKED"+position,Toast.LENGTH_SHORT).show();
                 if (notifyList.get(position).getIs_block()==1){
                     Toast.makeText(context,"This User is blocked can't send Your request...",Toast.LENGTH_LONG).show();
                     return;
@@ -187,7 +207,7 @@ public class JoinFriendAdapter extends RecyclerView.Adapter<JoinFriendAdapter.My
 
             }
         });
-        holder.imageView_message.setOnClickListener(new View.OnClickListener() {
+        Vholder.imageView_message.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (notifyList.get(position).getIs_block()==1){
@@ -210,7 +230,7 @@ public class JoinFriendAdapter extends RecyclerView.Adapter<JoinFriendAdapter.My
 
             }
         });
-        holder.imageView_block.setOnClickListener(new View.OnClickListener() {
+        Vholder.imageView_block.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 //Toast.makeText(v.getContext(), "BLOCK CLICKED"+position, Toast.LENGTH_SHORT).show();
@@ -245,22 +265,22 @@ public class JoinFriendAdapter extends RecyclerView.Adapter<JoinFriendAdapter.My
             }
         });
         //imageView_viewProfile
-        holder.imageView_viewProfile.setOnClickListener(new View.OnClickListener() {
+        Vholder.imageView_viewProfile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(v.getContext(), "VIEWPROFILE CLICKED"+position+"\t"+String.valueOf(notifyList.get(position).getId()), Toast.LENGTH_SHORT).show();
+                Toast.makeText(v.getContext(), "VIEWPROFILE CLICKED"+position+"\t"+String.valueOf(notifyList.get(position).getUser_id()), Toast.LENGTH_SHORT).show();
                 ProfileActivity fragment = new ProfileActivity();
                 Bundle args = new Bundle();
-                args.putString("uid", String.valueOf(notifyList.get(position).getId()));
+                args.putString("uid", String.valueOf(notifyList.get(position).getUser_id()));
                 function.loadFragment(context,fragment,args);
             }
         });
-        if (!PrefManager.isLogin(context)) {
+        if (String.valueOf(notifyList.get(position).getUser_id()).equalsIgnoreCase(PrefManager.getLoginDetail(context,"id"))){
             holder.imageView_frequest.setEnabled(false);
-            holder.imageView_message.setEnabled(false);
-            holder.imageView_block.setEnabled(false);
-        }
+            Vholder.imageView_message.setEnabled(false);
+            Vholder.imageView_block.setEnabled(false);
 
+        }
 
     }
 

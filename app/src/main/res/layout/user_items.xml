@@ -24,7 +24,6 @@
             android:background="@drawable/thin_border"
             android:orientation="horizontal">
             <ImageButton
-
                 android:id="@+id/info_button"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
@@ -51,10 +50,13 @@
                 android:text="Edit"/>
 
             <LinearLayout
+                android:id="@+id/ll_viewProfile"
                 android:layout_weight="1"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:padding="5dp"
+                android:clickable="true"
+                android:focusable="true"
                 android:layout_gravity="center"
                 android:gravity="center"
                 android:orientation="vertical">
@@ -71,13 +73,16 @@
                     android:id="@+id/tv_viewProfile"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:lines="1"
+                    android:paddingTop="5dp"
+                    android:textSize="10dp"
+                    android:lines="2"
                     android:layout_gravity="center_horizontal"
                     android:gravity="center_horizontal"
                     android:text="View Profile"/>
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/ll_frequest"
                 android:background="@drawable/thin_border_left"
                 android:layout_weight="1"
                 android:layout_width="0dp"
@@ -99,12 +104,15 @@
                     android:id="@+id/tv_fRequest"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:lines="1"
+                    android:lines="2"
+                    android:paddingTop="5dp"
+                    android:textSize="10dp"
                     android:layout_gravity="center_horizontal"
                     android:gravity="center_horizontal"
                     android:text="Friend Request"/>
             </LinearLayout>
             <LinearLayout
+                android:id="@+id/ll_message"
                 android:background="@drawable/thin_border_left"
                 android:layout_weight="1"
                 android:layout_width="0dp"
@@ -126,11 +134,15 @@
                  android:id="@+id/tv_sendMessage"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:paddingTop="5dp"
+                android:lines="2"
+                android:textSize="10dp"
                 android:layout_gravity="center_horizontal"
                 android:gravity="center_horizontal"
                 android:text="Message"/>
         </LinearLayout>
             <LinearLayout
+                android:id="@+id/ll_block"
                 android:background="@drawable/thin_border_left"
                 android:layout_weight="1"
                 android:layout_width="0dp"
@@ -150,6 +162,9 @@
                      android:id="@+id/tv_blockUser"
                      android:layout_width="wrap_content"
                      android:layout_height="wrap_content"
+                     android:paddingTop="5dp"
+                     android:lines="2"
+                     android:textSize="10dp"
                      android:layout_gravity="center_horizontal"
                      android:gravity="center_horizontal"
                      android:text="Block"/>
@@ -174,6 +189,7 @@
                 android:layout_height="match_parent"
                 android:orientation="horizontal">
                 <LinearLayout
+                    android:id="@+id/ll_imageView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"

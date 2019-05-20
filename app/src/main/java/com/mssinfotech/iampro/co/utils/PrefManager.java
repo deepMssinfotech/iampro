@@ -13,7 +13,6 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.mssinfotech.iampro.co.common.Config;
-import com.mssinfotech.iampro.co.common.function;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -239,9 +238,6 @@ public class PrefManager {
         return value;
     }
     public static void logout(Context context){
-        String url = Config.API_URL + "api.php?type=removefcmregistration&uid="+getLoginDetail(context,"id");
-        Log.e("mss get firebase id", "url "+url);
-        function.executeUrl(context, "get", url, null);
         usereditor.clear();
         usereditor.commit(); // commit changes
     }

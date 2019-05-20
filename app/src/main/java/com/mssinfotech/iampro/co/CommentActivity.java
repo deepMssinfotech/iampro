@@ -151,6 +151,7 @@ public class CommentActivity extends AppCompatActivity implements CommentAdapter
     public void getFeedDetail(){
         String myurl = Config.API_URL + "app_service.php?type=get_multi_image_video_detail&id="+data_id+"&update_type=image&uid="+user_id+"&login_id="+user_id+"&my_id="+user_id;
         Log.d(Config.TAG, myurl);
+
         StringRequest stringRequest = new StringRequest(myurl,
                 new Response.Listener<String>() {
                     @Override
@@ -163,6 +164,12 @@ public class CommentActivity extends AppCompatActivity implements CommentAdapter
                             udate.setText(result.getString("udate"));
                             tv_comments.setText(result.getString("comment"));
                             tv_totallike.setText(result.getString("likes"));
+                            if (result.getString("is_block").equals("1")){
+                                ll_sendChats.setVisibility(View.GONE);
+                            }
+                            else{
+                                ll_sendChats.setVisibility(View.VISIBLE);
+                            }
                             likeButton.setUnlikeDrawableRes(R.drawable.like);
                             likeButton.setLikeDrawableRes(R.drawable.like_un);
                             int my_uid=Integer.parseInt(user_id);
