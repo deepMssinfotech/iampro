@@ -54,17 +54,20 @@
                     android:layout_height="wrap_content" />
             </RelativeLayout>
         <LinearLayout
+            android:visibility="gone"
             android:background="@drawable/gray"
             android:id="@+id/nonuser_menu"
-            android:visibility="gone"
             android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
             <LinearLayout
+                android:paddingLeft="20dp"
+                android:paddingRight="20dp"
                 android:layout_marginTop="5dp"
                 android:layout_marginBottom="5dp"
                 android:layout_width="match_parent"
-                android:layout_height="115dp"
+                android:layout_height="100dp"
+                android:background="@drawable/thin_border"
                 android:orientation="horizontal"
                 >
                 <RelativeLayout
@@ -80,7 +83,7 @@
                         android:padding="@dimen/menu_img_padding"
                         android:src="@drawable/dashboard_icon"/>
                     <TextView
-                        android:textSize="12dp"
+                        android:textSize="10dp"
                         android:layout_below="@+id/menu_btn_dashboard_nonuser"
                         android:text="Dashboard"
                         android:gravity="center"
@@ -108,7 +111,7 @@
                         android:gravity="center"
                         android:text="Login"
                         android:textColor="@color/white"
-                        android:textSize="12dp" />
+                        android:textSize="10dp" />
                 </RelativeLayout>
                 <RelativeLayout
                     android:layout_weight="1"
@@ -130,7 +133,7 @@
                         android:gravity="center"
                         android:text="Register"
                         android:textColor="@color/white"
-                        android:textSize="12dp" />
+                        android:textSize="10dp" />
                 </RelativeLayout>
                 <RelativeLayout
                     android:layout_weight="1"
@@ -152,7 +155,7 @@
                         android:gravity="center"
                         android:text="Search"
                         android:textColor="@color/white"
-                        android:textSize="12dp" />
+                        android:textSize="10dp" />
                 </RelativeLayout>
                 <RelativeLayout
                     android:layout_weight="1"
@@ -174,7 +177,7 @@
                         android:gravity="center"
                         android:text="Share"
                         android:textColor="@color/white"
-                        android:textSize="12dp" />
+                        android:textSize="10dp" />
                 </RelativeLayout>
                 <RelativeLayout
                     android:layout_weight="1"
@@ -196,16 +199,19 @@
                         android:gravity="center"
                         android:text="Review"
                         android:textColor="@color/white"
-                        android:textSize="12dp" />
+                        android:textSize="10dp" />
                 </RelativeLayout>
             </LinearLayout>
             <LinearLayout
+                android:paddingLeft="20dp"
+                android:paddingRight="20dp"
                 android:layout_marginTop="5dp"
                 android:layout_marginBottom="5dp"
                 android:layout_width="match_parent"
-                android:layout_height="115dp"
+                android:layout_height="100dp"
                 android:layout_gravity="center"
                 android:gravity="center"
+                android:background="@drawable/thin_border"
                 android:orientation="horizontal"
                 >
                 <RelativeLayout
@@ -220,7 +226,7 @@
                         android:padding="@dimen/menu_img_padding"
                         android:src="@drawable/headerwallet"/>
                     <TextView
-                        android:textSize="12dp"
+                        android:textSize="10dp"
                         android:layout_below="@+id/menu_btn_wallet"
                         android:text="Wallet App"
                         android:gravity="center"
@@ -239,7 +245,7 @@
                         android:padding="@dimen/menu_img_padding"
                         android:src="@drawable/headerbrowser"/>
                     <TextView
-                        android:textSize="12dp"
+                        android:textSize="10dp"
                         android:layout_below="@+id/menu_btn_browser"
                         android:text="Browser App"
                         android:gravity="center"
