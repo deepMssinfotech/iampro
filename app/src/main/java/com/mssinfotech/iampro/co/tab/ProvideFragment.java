@@ -144,7 +144,7 @@ public class ProvideFragment extends Fragment implements ProvideAdapter.ItemList
             //Toast.makeText(context, "click from BACK", Toast.LENGTH_SHORT).show();
             Fragment frg = null;
             AppCompatActivity activity = (AppCompatActivity) context;
-            ProfileActivity fragment = new ProfileActivity();
+            ProvideFragment fragment = new ProvideFragment();
             frg = activity.getSupportFragmentManager().findFragmentByTag(fragment.getClass().getName());
             final FragmentTransaction ft = activity.getSupportFragmentManager().beginTransaction();
             ft.detach(frg);

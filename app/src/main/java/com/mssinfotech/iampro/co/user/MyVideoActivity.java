@@ -766,7 +766,7 @@ public class MyVideoActivity extends Fragment implements MyVideoAdapter.ItemList
             //Toast.makeText(context, "click from BACK", Toast.LENGTH_SHORT).show();
             Fragment frg = null;
             AppCompatActivity activity = (AppCompatActivity) context;
-            ProfileActivity fragment = new ProfileActivity();
+            MyVideoActivity fragment = new MyVideoActivity();
             frg = activity.getSupportFragmentManager().findFragmentByTag(fragment.getClass().getName());
             final FragmentTransaction ft = activity.getSupportFragmentManager().beginTransaction();
             ft.detach(frg);

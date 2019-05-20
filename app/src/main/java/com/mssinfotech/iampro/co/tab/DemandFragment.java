@@ -142,7 +142,7 @@ public class DemandFragment extends Fragment implements DemandAdapter.ItemListen
             //Toast.makeText(context, "click from BACK", Toast.LENGTH_SHORT).show();
             Fragment frg = null;
             AppCompatActivity activity = (AppCompatActivity) context;
-            ProfileActivity fragment = new ProfileActivity();
+            DemandFragment fragment = new DemandFragment();
             frg = activity.getSupportFragmentManager().findFragmentByTag(fragment.getClass().getName());
             final FragmentTransaction ft = activity.getSupportFragmentManager().beginTransaction();
             ft.detach(frg);

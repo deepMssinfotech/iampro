@@ -139,7 +139,7 @@ public class HomeFragment extends Fragment implements UserDataAdapter.ItemListen
            //Toast.makeText(context, "click from BACK", Toast.LENGTH_SHORT).show();
            Fragment frg = null;
            AppCompatActivity activity = (AppCompatActivity) context;
-           ProfileActivity fragment = new ProfileActivity();
+           HomeFragment fragment = new HomeFragment();
            frg = activity.getSupportFragmentManager().findFragmentByTag(fragment.getClass().getName());
            final FragmentTransaction ft = activity.getSupportFragmentManager().beginTransaction();
            ft.detach(frg);

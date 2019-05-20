@@ -148,15 +148,13 @@ public class ProductFragment extends Fragment implements ProductAdapter.ItemList
             //Toast.makeText(context, "click from BACK", Toast.LENGTH_SHORT).show();
             Fragment frg = null;
             AppCompatActivity activity = (AppCompatActivity) context;
-            ProfileActivity fragment = new ProfileActivity();
+            ProductFragment fragment = new ProductFragment();
             frg = activity.getSupportFragmentManager().findFragmentByTag(fragment.getClass().getName());
             final FragmentTransaction ft = activity.getSupportFragmentManager().beginTransaction();
             ft.detach(frg);
             ft.attach(frg);
             ft.commit();
         }
-
-
     }
     private void init() {
 

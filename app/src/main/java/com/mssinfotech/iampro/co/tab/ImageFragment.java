@@ -141,7 +141,7 @@ public class ImageFragment extends Fragment implements ImageAdapter.ItemListener
             //Toast.makeText(context, "click from BACK", Toast.LENGTH_SHORT).show();
             Fragment frg = null;
             AppCompatActivity activity = (AppCompatActivity) context;
-            ProfileActivity fragment = new ProfileActivity();
+            ImageFragment fragment = new ImageFragment();
             frg = activity.getSupportFragmentManager().findFragmentByTag(fragment.getClass().getName());
             final FragmentTransaction ft = activity.getSupportFragmentManager().beginTransaction();
             ft.detach(frg);
