@@ -37,7 +37,6 @@ import android.view.ViewGroup;
  */
 import android.content.Context;
 import android.widget.ImageButton;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -45,7 +44,6 @@ import com.mssinfotech.iampro.co.common.Config;
 import com.mssinfotech.iampro.co.common.function;
 import com.mssinfotech.iampro.co.model.UserModel;
 //import com.mssinfotech.iampro.co.swipe.SwipeRevealLayout;
-import com.mssinfotech.iampro.co.product.ProductDetail;
 import com.mssinfotech.iampro.co.user.FriendRequestActivity;
 import com.mssinfotech.iampro.co.user.ProfileActivity;
 import com.mssinfotech.iampro.co.utils.PrefManager;
@@ -57,7 +55,7 @@ public class UserDataAdapter extends RecyclerView.Adapter<UserDataAdapter.ViewHo
     ArrayList<UserModel> mValues;
     Context mContext;
     protected ItemListener mListener;
-       int user_block;
+    int user_block;
     String FrindStatus;
     public UserDataAdapter(Context context, ArrayList<UserModel> values, ItemListener itemListener) {
         mValues = values;
@@ -67,7 +65,7 @@ public class UserDataAdapter extends RecyclerView.Adapter<UserDataAdapter.ViewHo
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         public TextView textView,tv_category,tv_images,tv_videos,tv_users,tv_products,tv_provides,tv_demands,tv_viewProfile,tv_fRequest,tv_sendMessage,tv_blockUser;
         de.hdodenhof.circleimageview.CircleImageView imageView,imageView_frequest,imageView_message,imageView_block,imageView_viewProfile;
-           LinearLayout ll_frequest,ll_message,ll_block,ll_viewProfile,ll_imageView;
+
         UserModel item;
 
         protected ImageButton infoButton;
@@ -84,12 +82,6 @@ public class UserDataAdapter extends RecyclerView.Adapter<UserDataAdapter.ViewHo
             tv_videos=v.findViewById(R.id.tv_videos);
             tv_users=v.findViewById(R.id.tv_users);
             tv_products=v.findViewById(R.id.tv_products);
-            // ll_frequest,ll_message,ll_block,ll_viewProfile
-            ll_frequest=v.findViewById(R.id.ll_frequest);
-            ll_message=v.findViewById(R.id.ll_message);
-            ll_block=v.findViewById(R.id.ll_block);
-            ll_viewProfile=v.findViewById(R.id.ll_viewProfile);
-            ll_imageView=v.findViewById(R.id.ll_imageView);
             tv_provides=v.findViewById(R.id.tv_provides);
                 root=v.findViewById(R.id.root);
             tv_demands=v.findViewById(R.id.tv_demands);
@@ -100,10 +92,13 @@ public class UserDataAdapter extends RecyclerView.Adapter<UserDataAdapter.ViewHo
             imageView_block=v.findViewById(R.id.imageView_block);
             imageView_viewProfile=v.findViewById(R.id.imageView_viewProfile);
 
+
             tv_viewProfile=v.findViewById(R.id.tv_viewProfile);
             tv_fRequest=v.findViewById(R.id.tv_fRequest);
             tv_sendMessage=v.findViewById(R.id.tv_sendMessage);
             tv_blockUser=v.findViewById(R.id.tv_blockUser);
+
+
         }
         public void setData(UserModel item) {
             this.item = item;
@@ -145,13 +140,7 @@ public class UserDataAdapter extends RecyclerView.Adapter<UserDataAdapter.ViewHo
     @Override
     public void onBindViewHolder(ViewHolder Vholders, final int position) {
          final ViewHolder Vholder=Vholders;
-        Vholders.setData(mValues.get(position));
-        Vholders.ll_block.setClickable(true);
-        Vholders.ll_frequest.setClickable(true);
-        Vholders.ll_imageView.setClickable(true);
-        Vholders.ll_message.setClickable(true);
-        Vholders.ll_imageView.setClickable(true);
-        user_block=mValues.get(position).getIs_block();
+        Vholder.setData(mValues.get(position));
         try {
             Vholder.imageView_message.setBackground(AppCompatResources.getDrawable(mContext, R.drawable.user_slide_info_message));
             Vholder.imageView_frequest.setBackground(AppCompatResources.getDrawable(mContext, R.drawable.user_slide_nfo));
@@ -190,7 +179,7 @@ public class UserDataAdapter extends RecyclerView.Adapter<UserDataAdapter.ViewHo
         }else{
             Vholder.tv_fRequest.setText("Remove Friend");
         }
-         Vholder.ll_imageView.setOnClickListener(new View.OnClickListener() {
+         Vholder.imageView.setOnClickListener(new View.OnClickListener() {
              @Override
              public void onClick(View v) {
                  ProfileActivity fragment = new ProfileActivity();
@@ -202,15 +191,15 @@ public class UserDataAdapter extends RecyclerView.Adapter<UserDataAdapter.ViewHo
          });
 
          //imageView_frequest,imageView_message,imageView_block
-        Vholder.ll_frequest.setOnClickListener(new View.OnClickListener() {
+        Vholder.imageView_frequest.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 //Toast.makeText(v.getContext(), "FREQUEST CLICKED"+position,Toast.LENGTH_SHORT).show();
-                 if (user_block==1){
+                 if (mValues.get(position).getIs_block()==1){
                      Toast.makeText(mContext,"This User is blocked can't send Your request...",Toast.LENGTH_LONG).show();
                      return;
                  }
-                 else if (user_block==2){
+                 else if (mValues.get(position).getIs_block()==2){
                      FriendRequestActivity fragment = new FriendRequestActivity();
                      Bundle args = new Bundle();
                      args.putString("uid", String.valueOf(mValues.get(position).getId()));
@@ -241,15 +230,14 @@ public class UserDataAdapter extends RecyclerView.Adapter<UserDataAdapter.ViewHo
 
             }
         });
-        Vholders.ll_message.setOnClickListener(new View.OnClickListener() {
+        Vholder.imageView_message.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //Toast.makeText(v.getContext(), "Redirecting to message1111..."+position, Toast.LENGTH_SHORT).show();
-                if (user_block==1){
+                if (mValues.get(position).getIs_block()==1){
                     Toast.makeText(mContext,"This User is blocked so you can't do any conversation...",Toast.LENGTH_LONG).show();
                     return;
                 }
-                else if (user_block==2) {
+                else if (mValues.get(position).getIs_block()==2) {
                     Toast.makeText(v.getContext(), "Redirecting to message..."+position, Toast.LENGTH_SHORT).show();
                     Intent intentMessage=new Intent(mContext, ChatToUser.class);
                     intentMessage.putExtra("id",String.valueOf(mValues.get(position).getId()));
@@ -257,69 +245,30 @@ public class UserDataAdapter extends RecyclerView.Adapter<UserDataAdapter.ViewHo
                 }
               else{
                     Toast.makeText(v.getContext(), "Redirecting to message...."+position, Toast.LENGTH_SHORT).show();
+
                     Intent intentMessage=new Intent(mContext, ChatToUser.class);
                     intentMessage.putExtra("id",String.valueOf(mValues.get(position).getId()));
                     mContext.startActivity(intentMessage);
                 }
+
             }
         });
-        Vholder.ll_block.setOnClickListener(new View.OnClickListener() {
+        Vholder.imageView_block.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 //Toast.makeText(v.getContext(), "BLOCK CLICKED"+position, Toast.LENGTH_SHORT).show();
-                if (PrefManager.isLogin(mContext)){
-                    final String fid = String.valueOf(mValues.get(position).getId());
-
-                    /*if (user_block == 1) {
-                        // Vholder.imageView_block.setBackground(AppCompatResources.getDrawable(mContext, R.drawable.unblockicone));
-
-                        Glide.with(mContext)
-                                .load(R.drawable.unblockicone)
-                                .into(Vholder.imageView_block);
-
-                        Vholder.tv_blockUser.setText("UnBlock");
-                        //user_block=2;
-
-                    } else if (user_block == 2) {
-                        //Vholder.imageView_block.setBackground(AppCompatResources.getDrawable(mContext, R.drawable.blockicone));
-                        Glide.with(mContext)
-                                .load(R.drawable.blockicone)
-                                .into(Vholder.imageView_block);
-                        Vholder.tv_blockUser.setText("Block");
-                        //user_block=1;
-                    }*/
-
+                final String fid=String.valueOf(mValues.get(position).getId());
                 AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(mContext);
                 alertDialogBuilder.setMessage("Are you sure, ");
-                alertDialogBuilder.setPositiveButton("yes",
-                        new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface arg0, int arg1) {
-                                int statuss=blockUser(String.valueOf(mValues.get(position).getId()));
-                                user_block=statuss;
-                                if (statuss== 1) {
-                                    //Vholder.imageView_block.setBackground(AppCompatResources.getDrawable(mContext, R.drawable.unblockicone));
+                        alertDialogBuilder.setPositiveButton("yes",
+                                new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface arg0, int arg1) {
+                                        blockUser(fid);
+                                    }
+                                });
 
-                                    Glide.with(mContext)
-                                            .load(R.drawable.blockicone)
-                                            .apply(Config.options_avatar)
-                                            .into(Vholder.imageView_block);
-                                    Vholder.tv_blockUser.setText("UnBlock");
-                                    //user_block=2;
-
-                                } else if (statuss== 2) {
-                                    //Vholder.imageView_block.setBackground(AppCompatResources.getDrawable(mContext, R.drawable.blockicone));
-                                    Glide.with(mContext)
-                                            .load(R.drawable.unblockicone)
-                                            .apply(Config.options_avatar)
-                                            .into(Vholder.imageView_block);
-                                    Vholder.tv_blockUser.setText("Block");
-                                    //user_block=1;
-
-                                }
-                            }
-                        });
-                alertDialogBuilder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+                alertDialogBuilder.setNegativeButton("No",new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         //finish();
@@ -329,33 +278,17 @@ public class UserDataAdapter extends RecyclerView.Adapter<UserDataAdapter.ViewHo
                 AlertDialog alertDialog = alertDialogBuilder.create();
                 alertDialog.show();
 
-               /* if (user_block == 1) {
-                   // Vholder.imageView_block.setBackground(AppCompatResources.getDrawable(mContext, R.drawable.unblockicone));
+                if(user_block==1){
+                    Vholder.imageView_block.setBackground(AppCompatResources.getDrawable(mContext,R.drawable.unblockicone));
+                }
+                else if (user_block==2){
+                     Vholder.imageView_block.setBackground(AppCompatResources.getDrawable(mContext,R.drawable.blockicone));
 
-                    Glide.with(mContext)
-                            .load(R.drawable.unblockicone)
-                            .into(Vholder.imageView_block);
-
-                    Vholder.tv_blockUser.setText("UnBlock");
-                    user_block=2;
-
-                } else if (user_block == 2) {
-                    //Vholder.imageView_block.setBackground(AppCompatResources.getDrawable(mContext, R.drawable.blockicone));
-                    Glide.with(mContext)
-                            .load(R.drawable.blockicone)
-                            .into(Vholder.imageView_block);
-                    Vholder.tv_blockUser.setText("Block");
-                    user_block=1;
-                } */
-            }
-                else {
-                     Toast.makeText(mContext,""+"First Login and try again...",Toast.LENGTH_LONG).show();
-                     return;
                 }
             }
         });
         //imageView_viewProfile
-        Vholder.ll_viewProfile.setOnClickListener(new View.OnClickListener() {
+        Vholder.imageView_viewProfile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 //Toast.makeText(v.getContext(), "VIEWPROFILE CLICKED"+position, Toast.LENGTH_SHORT).show();
@@ -399,9 +332,9 @@ public class UserDataAdapter extends RecyclerView.Adapter<UserDataAdapter.ViewHo
         // notify item added by position
         notifyItemInserted(position);
     }
-     public int blockUser(String fid){
-         String url=Config.API_URL+ "app_service.php?type=get_block_user_detail&uid="+ PrefManager.getLoginDetail(mContext,"id")+"&fid="+fid;
-          int statuss=0;
+     public void blockUser(String fid){
+         String url=Config.API_URL+ "app_service.php?type=get_block_user_detail&uid="+ PrefManager.getLoginDetail(mContext,"id")+"&fid=657"+fid;
+
          RequestQueue requestQueue = Volley.newRequestQueue(mContext);
          JsonObjectRequest jsObjRequest = new JsonObjectRequest(Request.Method.POST,url,null,
                  new Response.Listener<JSONObject>() {
@@ -413,12 +346,11 @@ public class UserDataAdapter extends RecyclerView.Adapter<UserDataAdapter.ViewHo
                              String  msg = response.getString("msg");
                             user_block = response.optInt("user_block");
                             Toast.makeText(mContext,""+msg,Toast.LENGTH_LONG).show();
-                             //statuss=response.optInt("user_block");
+
                          }
                          catch(Exception e) {
                              Toast.makeText(mContext,""+e.getMessage(),Toast.LENGTH_LONG).show();
                          }
-                         //return response.optInt("user_block");
                      }
                  },
                  new Response.ErrorListener() {
@@ -428,6 +360,6 @@ public class UserDataAdapter extends RecyclerView.Adapter<UserDataAdapter.ViewHo
                      }
                  });
          requestQueue.add(jsObjRequest);
-    return user_block;
+
      }
 }

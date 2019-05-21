@@ -12,7 +12,6 @@ import com.bumptech.glide.Glide;
 import com.mssinfotech.iampro.co.R;
 import com.mssinfotech.iampro.co.common.Config;
 import com.mssinfotech.iampro.co.data.WhishListItem;
-import com.mssinfotech.iampro.co.utils.PrefManager;
 
 import java.util.List;
 
@@ -75,9 +74,6 @@ public class WhishListAdapter  extends RecyclerView.Adapter<WhishListAdapter.MyV
         // notify the item removed by position
         // to perform recycler view delete animations
         // NOTE: don't call notifyDataSetChanged()
-        int perNoti = Integer.parseInt(PrefManager.getLoginDetail(context,"my_wishlist"))-1;
-        PrefManager.updateLoginDetail(context,"my_wishlist",(perNoti)+"");
-        Config.count_whishlist.setText(perNoti+"");
         notifyItemRemoved(position);
     }
 

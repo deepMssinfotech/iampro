@@ -26,7 +26,6 @@ import android.widget.VideoView;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
-import com.android.volley.toolbox.JsonObjectRequest;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.bitmap.CircleCrop;
 import com.bumptech.glide.request.RequestOptions;
@@ -86,8 +85,6 @@ public class ImageDetail extends Fragment implements Img_Video_Details.ItemListe
     FullscreenVideoView fullscreenVideoView;
      LinearLayout ll_comment;
      NestedScrollView nsv;
-      static int uiddv=0;
-        static int iidv=0;
      public static String avatar_urll;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup parent, Bundle savedInstanceState) {
@@ -266,10 +263,10 @@ public class ImageDetail extends Fragment implements Img_Video_Details.ItemListe
         });
          */
     }
+
     protected void getImageDetail() {
         final String url =  Config.API_URL+ "app_service.php?type=get_image_detail&id=" + id + "&update_type=" + type + "&uid=" + uid + "&login_id=" + uid + "&my_id=" + uid;
-        Log.d("ImageDetail",url);
-
+        Log.d(Config.TAG,url);
         RequestQueue requestQueue = Volley.newRequestQueue(context);
         StringRequest jsonObjectRequest = new StringRequest(
                 Request.Method.GET,
@@ -282,8 +279,7 @@ public class ImageDetail extends Fragment implements Img_Video_Details.ItemListe
                         // Process the JSON
                         try {
                             JSONObject responses = new JSONObject(response);
-                            final int id = responses.optInt("id");
-                            final int idv = responses.optInt("id");
+                            int id = responses.optInt("id");
                             int albemid = responses.optInt("albemid");
                             String namev = responses.optString("name");
                             int categoryv = responses.optInt("category");
@@ -302,7 +298,6 @@ public class ImageDetail extends Fragment implements Img_Video_Details.ItemListe
                             int total_group_image = responses.optInt("total_group_image");
                             int like_unlike = responses.optInt("like_unlike");
                             Double rating = Double.parseDouble(responses.opt("rating").toString());
-                            Double avg_rating=Double.parseDouble(responses.optString("average_rating"));
                             int totallike = responses.optInt("totallike");
                             int comments = responses.optInt("comments");
                             //tv_about_tag,tv_about_msg,fullname,udate,tv_comments,tv_totallike,name,category
@@ -314,13 +309,12 @@ public class ImageDetail extends Fragment implements Img_Video_Details.ItemListe
                             category.setText(category_name);
                            // imageView_icon.setImageResource(R.drawable.image_icon);
 
-
                             Glide.with(getContext())
                                     .load(R.drawable.image_icon)
                                     .apply(Config.options_avatar)
                                     .into(imageView_icon);
 
-
+                            ratingBar.setRating(Float.parseFloat(String.valueOf(rating)));
 
                             videoView.setVisibility(View.GONE);
                             Glide.with(ImageDetail.this)
@@ -329,29 +323,6 @@ public class ImageDetail extends Fragment implements Img_Video_Details.ItemListe
 
                             JSONObject jsonObjectUser = responses.getJSONObject("user_detail");
                             final String added_by=jsonObjectUser.getString("id");
-                            ratingBar.setRating(Float.parseFloat(String.valueOf(avg_rating)));
-                            if (PrefManager.isLogin(context)) {
-                                ratingBar.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
-                                    @Override
-                                    public void onRatingChanged(RatingBar ratingBar, float rating, boolean fromUser) {
-                                        sendrating(rating,Integer.parseInt(added_by),id,"image");
-                                        //Toast.makeText(mContext,itemsList.get(i).getType(),Toast.LENGTH_LONG).show();
-                                        ratingBar.setRating(rating);
-                                    }
-                                });
-                            }
-                            if (PrefManager.isLogin(context)) {
-                                ratingBar.setFocusable(true);
-                                 ratingBar.setIsIndicator(false);
-                                //holder.ratingBar.setClickable(true);
-                                  likeButton.setEnabled(false);
-                            }
-                            else {
-                                 ratingBar.setFocusable(false);
-                                 ratingBar.setIsIndicator(true);
-                                //holder.ratingBar.setClickable(false);
-                                  likeButton.setEnabled(false);
-                            }
                             String fullnamev = jsonObjectUser.optString("fullname");
                             String avatarr = Config.AVATAR_URL + "250/250/" + jsonObjectUser.optString("avatar");
                             final int uid = jsonObjectUser.optInt("id");
@@ -384,7 +355,6 @@ public class ImageDetail extends Fragment implements Img_Video_Details.ItemListe
                                 for (int i = 0; i < group_image.length(); i++) {
                                     JSONObject image_data = group_image.getJSONObject(i);
                                     int iid = image_data.getInt("id");
-                                    iidv=iid;
                                     String namee = image_data.optString("name");
                                     String imagevv = image_data.optString("image");
                                      String imagev=Config.URL_ROOT+ "uploads/album/"+imagevv;
@@ -401,7 +371,6 @@ public class ImageDetail extends Fragment implements Img_Video_Details.ItemListe
                                     String fullnamee = jsonObjectUserr.optString("fullname");
                                     String avataru = Config.AVATAR_URL + "250/250/" + jsonObjectUserr.optString("avatar");
                                     int uidd = jsonObjectUserr.optInt("id");
-                                    uiddv=uidd;
                                     myData.add(new ImageDetailModel(iid, namee, imagev, about_usv, like_unlikev, ratingv, commentsv, totallikev, uidd, fullnamee, avataru, udatev, category_namee, IMAGE_TYPE));
                                 }
                                 Log.d("img_video", "" + myData);
@@ -411,7 +380,6 @@ public class ImageDetail extends Fragment implements Img_Video_Details.ItemListe
                                 recycler_view_review_detail.setAdapter(adapter);
                                 adapter.notifyDataSetChanged();
                             }
-
                         } catch (Exception e) {
                             e.printStackTrace();
                             Toast.makeText(context, e.getMessage(), Toast.LENGTH_LONG).show();
@@ -445,7 +413,7 @@ public class ImageDetail extends Fragment implements Img_Video_Details.ItemListe
                         try{
                             JSONObject responses=new JSONObject(response);
 
-                            final int id =responses.optInt("id");
+                            int id =responses.optInt("id");
                             int albemid =responses.optInt("albemid");
                             String namev =responses.optString("name");
                             int categoryv=responses.optInt("category");
@@ -463,7 +431,6 @@ public class ImageDetail extends Fragment implements Img_Video_Details.ItemListe
                             int total_group_image=responses.optInt("total_group_image");
                             int like_unlike=responses.optInt("like_unlike");
                             Double rating=responses.optDouble("rating");
-                            Double avg_rating=Double.parseDouble(responses.optString("average_rating"));
                             int totallike=responses.optInt("totallike");
                             int comments=responses.optInt("comments");
                             //tv_about_tag,tv_about_msg,fullname,udate,tv_comments,tv_totallike,name,category
@@ -507,31 +474,6 @@ public class ImageDetail extends Fragment implements Img_Video_Details.ItemListe
 
                             JSONObject jsonObjectUser=responses.getJSONObject("user_detail");
                             final String added_by= jsonObjectUser.optString("id");
-
-                            ratingBar.setRating(Float.parseFloat(String.valueOf(avg_rating)));
-                            if (PrefManager.isLogin(context)) {
-                                ratingBar.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
-                                    @Override
-                                    public void onRatingChanged(RatingBar ratingBar, float rating, boolean fromUser) {
-                                        sendrating(rating,Integer.parseInt(added_by),id,"image");
-                                        //Toast.makeText(mContext,itemsList.get(i).getType(),Toast.LENGTH_LONG).show();
-                                        ratingBar.setRating(rating);
-                                    }
-                                });
-                            }
-                            if (PrefManager.isLogin(context)) {
-                                ratingBar.setFocusable(true);
-                                ratingBar.setIsIndicator(false);
-                                //holder.ratingBar.setClickable(true);
-                                likeButton.setEnabled(false);
-                            }
-                            else {
-                                ratingBar.setFocusable(false);
-                                ratingBar.setIsIndicator(true);
-                                //holder.ratingBar.setClickable(false);
-                                likeButton.setEnabled(false);
-                            }
-
                             String fullnamev=jsonObjectUser.optString("fullname");
                             String avatarr=Config.AVATAR_URL+"250/250/"+jsonObjectUser.optString("avatar");
                             int uid=jsonObjectUser.optInt("id");
@@ -598,45 +540,6 @@ public class ImageDetail extends Fragment implements Img_Video_Details.ItemListe
         );
         // Add JsonObjectRequest to the RequestQueue
         requestQueue.add(jsonObjectRequest);
-    }
-    public void sendrating(float rating,int uid,int id,String ptype){
-        String urlv= Config.API_URL+ "app_service.php?type=rate_me&id="+id+"&uid="+uid+"&ptype="+ptype+"&total_rate="+rating;
-
-        RequestQueue requestQueue = Volley.newRequestQueue(ImageDetail.this.context);
-        // Initialize a new JsonObjectRequest instance
-        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(
-                Request.Method.GET,
-                urlv,
-                null,
-                new Response.Listener<JSONObject>() {
-                    @Override
-                    public void onResponse(JSONObject response) {
-                        Log.d("Prod_detaili_profile",""+response);
-                        try{
-                            String status=response.optString("status");
-                            String msgv=response.optString("msg");
-                            if(status.equalsIgnoreCase("success")) {
-                                //Toast.makeText(mContext,""+msgv,Toast.LENGTH_LONG).show();
-                            }
-                            else{
-                                // Toast.makeText(mContext,""+msgv,Toast.LENGTH_LONG).show();
-                            }
-                        }
-                        catch (Exception e){
-                            e.printStackTrace();
-                            Toast.makeText(context,e.getMessage(),Toast.LENGTH_LONG).show();
-                        }
-                    }
-                },
-                new Response.ErrorListener(){
-                    @Override
-                    public void onErrorResponse(VolleyError error){
-                        Toast.makeText(context,error.getMessage(),Toast.LENGTH_LONG).show();
-                    }
-                }
-        );
-        requestQueue.add(jsonObjectRequest);
-
     }
     @Override
     public void onItemClick(ImageDetailModel item) {

@@ -76,11 +76,6 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHold
                      uid = Integer.parseInt(item.getAdded_by());
                  }
                  catch (Exception e){
-                     if (PrefManager.getLoginDetail(mContext,"id")==null)
-                     {
-                         uid=0;
-                     }
-                     else
                      uid =Integer.parseInt(PrefManager.getLoginDetail(mContext,"id"));
                  }
              }

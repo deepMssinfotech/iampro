@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
@@ -60,22 +59,6 @@ public class MyDemandActivity extends Fragment implements MyDemandAdapter.ItemLi
     public View onCreateView(LayoutInflater inflater, ViewGroup parent, Bundle savedInstanceState) {
         // Defines the xml file for the fragment
         return inflater.inflate(R.layout.activity_my_demand, parent, false);
-    }
-    @Override
-    public void onResume() {
-        super.onResume();
-        if (Config.allowRefresh) {
-            Config.allowRefresh = false;
-            //Toast.makeText(context, "click from BACK", Toast.LENGTH_SHORT).show();
-            Fragment frg = null;
-            AppCompatActivity activity = (AppCompatActivity) context;
-            MyDemandActivity fragment = new MyDemandActivity();
-            frg = activity.getSupportFragmentManager().findFragmentByTag(fragment.getClass().getName());
-            final FragmentTransaction ft = activity.getSupportFragmentManager().beginTransaction();
-            ft.detach(frg);
-            ft.attach(frg);
-            ft.commit();
-        }
     }
     @Override
     public void onViewCreated(View v, Bundle savedInstanceState) {

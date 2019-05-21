@@ -117,12 +117,6 @@ public class DemandDetailActivity extends AppCompatActivity implements CommentAd
                 function.loadFragment(DemandDetailActivity.this,fragment,args);
             }
         });
-        if (PrefManager.isLogin(DemandDetailActivity.this)) {
-            favButton.setEnabled(true);
-        }
-        else {
-            favButton.setEnabled(false);
-        }
         getDemandDetail();
     }
     protected void getDemandDetail(){
@@ -242,7 +236,7 @@ public class DemandDetailActivity extends AppCompatActivity implements CommentAd
                                             // Example: If you have a TextView inside `popup_layout.xml`
                                             final ImageView iview=popupView.findViewById(R.id.expandedImage);
                                             SliderLayout imageSlider=popupView.findViewById(R.id.imageSlider);
-                                            //Toolbar toolbar=popupView.findViewById(R.id.toolbar);
+                                            Toolbar toolbar=popupView.findViewById(R.id.toolbar);
 
                                             imageSlider.setIndicatorAnimation(IndicatorAnimations.SWAP); //set indicator animation by using SliderLayout.IndicatorAnimations. :WORM or THIN_WORM or COLOR or DROP or FILL or NONE or SCALE or SCALE_DOWN or SLIDE and SWAP!!
                                             imageSlider.setSliderTransformAnimation(SliderAnimations.FADETRANSFORMATION);

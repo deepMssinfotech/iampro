@@ -9,7 +9,6 @@ import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
@@ -63,6 +62,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 public class MyProductActivity extends Fragment implements MyProductAdapter.ItemListener {
     private List<MyProductItem> MyProductItemList;
+
     ImageView userbackgroud;
     CircleImageView userimage;
     TextView username;
@@ -156,24 +156,6 @@ public class MyProductActivity extends Fragment implements MyProductAdapter.Item
                  MyProductActivity.this.startActivity(i_signup);
             }
         });
-    }
-    @Override
-    public void onResume() {
-        super.onResume();
-        if (Config.allowRefresh) {
-            Config.allowRefresh = false;
-            //Toast.makeText(context, "click from BACK", Toast.LENGTH_SHORT).show();
-            Fragment frg = null;
-            AppCompatActivity activity = (AppCompatActivity) context;
-            MyProductActivity fragment = new MyProductActivity();
-            frg = activity.getSupportFragmentManager().findFragmentByTag(fragment.getClass().getName());
-            final FragmentTransaction ft = activity.getSupportFragmentManager().beginTransaction();
-            ft.detach(frg);
-            ft.attach(frg);
-            ft.commit();
-        }
-
-
     }
     private void gteUsrDetail(String id){
         String myurl = Config.API_URL + "ajax.php?type=friend_detail&id=" + id + "&uid=" + uid;

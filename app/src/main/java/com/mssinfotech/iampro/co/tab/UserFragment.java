@@ -1,6 +1,5 @@
 package com.mssinfotech.iampro.co.tab;
 import android.app.ProgressDialog;
-import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -15,7 +14,6 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.content.res.AppCompatResources;
@@ -94,7 +92,7 @@ public class UserFragment extends Fragment implements UserDataAdapter.ItemListen
     private boolean add = false;
     private Paint p = new Paint();
      ImageView no_rodr;
-Context context;
+
     View views;
     //sliderr
     private static ViewPager mPager;
@@ -116,7 +114,6 @@ Context context;
         // Inflate the layout for this fragment
         View view=inflater.inflate(R.layout.fragment_user, container, false);
          views=view;
-         context = getContext();
         //oolbar =view.findViewById(R.id.toolbar);
         //view.findViewById(R.id.title_tv).setTag("User");
 
@@ -126,8 +123,8 @@ Context context;
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         //createDummyData();
-        if (PrefManager.isLogin(context)) {
-            String id = PrefManager.getLoginDetail(context, "id");
+        if (PrefManager.isLogin(getContext())) {
+            String id = PrefManager.getLoginDetail(getContext(), "id");
             uid = Integer.parseInt(id);
         }
         getUser(15);
@@ -138,11 +135,11 @@ Context context;
         luser_iv=view.findViewById(R.id.luser_iv);
         no_rodr =view.findViewById(R.id.no_record_found);
         luser_iv.setVisibility(View.VISIBLE);
-        luser_iv.setBackground(AppCompatResources.getDrawable(context,R.drawable.user));
+        luser_iv.setBackground(AppCompatResources.getDrawable(getContext(),R.drawable.user));
           btn_load_more=view.findViewById(R.id.btn_load_more);
 
         luser_iv=view.findViewById(R.id.luser_iv);
-               //luser_iv.setBackground(context.getResources().getDrawable(R.drawable.user));
+               //luser_iv.setBackground(getContext().getResources().getDrawable(R.drawable.user));
         btn_load_more.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -159,28 +156,10 @@ Context context;
         getTopSlider();
         //initSwipe();
     }
-    @Override
-    public void onResume() {
-        super.onResume();
-        if (Config.allowRefresh) {
-            Config.allowRefresh = false;
-            //Toast.makeText(context, "click from BACK", Toast.LENGTH_SHORT).show();
-            Fragment frg = null;
-            AppCompatActivity activity = (AppCompatActivity) context;
-            UserFragment fragment = new UserFragment();
-            frg = activity.getSupportFragmentManager().findFragmentByTag(fragment.getClass().getName());
-            final FragmentTransaction ft = activity.getSupportFragmentManager().beginTransaction();
-            ft.detach(frg);
-            ft.attach(frg);
-            ft.commit();
-        }
-
-
-    }
     private void init() {
 
         mPager = views.findViewById(R.id.pager);
-        mPager.setAdapter(new SlidingImage_Adapter(context,imageModelArrayList));
+        mPager.setAdapter(new SlidingImage_Adapter(getContext(),imageModelArrayList));
 
         CirclePageIndicator indicator = (CirclePageIndicator)views.findViewById(R.id.indicator);
 
@@ -235,7 +214,7 @@ Context context;
 
     private void getTopSlider(){
         final String url=Config.API_URL+ "index.php?type=get_slider&name=TOP_SLIDER";
-        RequestQueue requestQueue = Volley.newRequestQueue(context);
+        RequestQueue requestQueue = Volley.newRequestQueue(getContext());
         // Initialize a new JsonArrayRequest instance
         JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(
                 Request.Method.GET,
@@ -278,7 +257,7 @@ Context context;
                         catch (JSONException e){
                             //pDialog.dismiss();
                             e.printStackTrace();
-                            Toast.makeText(context, ""+e.getMessage(), Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getContext(), ""+e.getMessage(), Toast.LENGTH_SHORT).show();
                             Log.d("catch_f",""+e.getMessage());
                         }
                     }
@@ -288,8 +267,8 @@ Context context;
                     public void onErrorResponse(VolleyError error){
                         //pDialog.dismiss();
                         // Do something when error occurred
-                        //Snackbar.make(context,"Error...", Snackbar.LENGTH_LONG).show();
-                        Toast.makeText(context, "verror"+error.getMessage(), Toast.LENGTH_SHORT).show();
+                        //Snackbar.make(getContext(),"Error...", Snackbar.LENGTH_LONG).show();
+                        Toast.makeText(getContext(), "verror"+error.getMessage(), Toast.LENGTH_SHORT).show();
                         Log.d("verror",""+error.getMessage());
                     }
                 }
@@ -302,7 +281,7 @@ Context context;
         final String url = Config.API_URL+ "app_service.php?type=getSelectedUser&limit="+limitss+"&uid="+uid+"&my_id="+uid;
 
         // Initialize a new RequestQueue instance
-        RequestQueue requestQueue = Volley.newRequestQueue(context);
+        RequestQueue requestQueue = Volley.newRequestQueue(getContext());
 
         // Initialize a new JsonArrayRequest instance
         JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(
@@ -367,10 +346,10 @@ Context context;
                                 Log.d("allSampleDatas", "" + allSampleData.size() + "--" + allSampleData.toString());
 
 
-                                adapter = new UserDataAdapter(context, allSampleData, UserFragment.this);
+                                adapter = new UserDataAdapter(getContext(), allSampleData, UserFragment.this);
                                 my_recycler_view.setAdapter(adapter);
 
-                                LinearLayoutManager manager = new LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false);
+                                LinearLayoutManager manager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
                                 my_recycler_view.setLayoutManager(manager);
 
                                 //ItemTouchHelper.SimpleCallback itemTouchHelperCallback = new UserItemTouchHelper(0, ItemTouchHelper.LEFT,UserFragment.this);
@@ -378,7 +357,7 @@ Context context;
 
                             } catch (JSONException e) {
                                 e.printStackTrace();
-                                Toast.makeText(context, "" + e.getMessage(), Toast.LENGTH_SHORT).show();
+                                Toast.makeText(getContext(), "" + e.getMessage(), Toast.LENGTH_SHORT).show();
                                 Log.d("catch_f", "" + e.getMessage());
                                 no_rodr.setVisibility(View.VISIBLE);
                             }
@@ -392,8 +371,8 @@ Context context;
                     @Override
                     public void onErrorResponse(VolleyError error){
                         // Do something when error occurred
-                        //Snackbar.make(context,"Error...", Snackbar.LENGTH_LONG).show();
-                        Toast.makeText(context, "verror"+error.getMessage(), Toast.LENGTH_SHORT).show();
+                        //Snackbar.make(getContext(),"Error...", Snackbar.LENGTH_LONG).show();
+                        Toast.makeText(getContext(), "verror"+error.getMessage(), Toast.LENGTH_SHORT).show();
                         Log.d("verror",""+error.getMessage());
                         no_rodr.setVisibility(View.VISIBLE);
                     }
@@ -408,7 +387,7 @@ Context context;
         ProfileActivity fragment = new ProfileActivity();
         Bundle args = new Bundle();
         args.putString("uid", String.valueOf(uid));
-        function.loadFragment(context,fragment,args);
+        function.loadFragment(getContext(),fragment,args);
 
     }
 
@@ -416,7 +395,7 @@ Context context;
         //final String url = Config.API_URL+ "app_service.php?type=getSelectedUser&limit="+limitss+"&uid="+uid+"&my_id="+uid;
          final String url=Config.API_URL+ "app_service.php?type=getAllUser&name=&uid="+uid+"&my_id="+uid+"&start_limit="+start_limit+"&end_limit="+end_limit;
         // Initialize a new RequestQueue instance
-        RequestQueue requestQueue = Volley.newRequestQueue(context);
+        RequestQueue requestQueue = Volley.newRequestQueue(getContext());
 
         // Initialize a new JsonArrayRequest instance
         JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(
@@ -472,15 +451,15 @@ Context context;
                             Log.d("allSampleDatas",""+allSampleData.size()+"--"+allSampleData.toString());
 
 
-                            adapter = new UserDataAdapter(context, allSampleData,UserFragment.this);
+                            adapter = new UserDataAdapter(getContext(), allSampleData,UserFragment.this);
                             my_recycler_view.setAdapter(adapter);
 
-                            LinearLayoutManager manager = new LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false);
+                            LinearLayoutManager manager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
                             my_recycler_view.setLayoutManager(manager);
                              adapter.notifyDataSetChanged();
 
                             my_recycler_view.setItemAnimator(new DefaultItemAnimator());
-                             my_recycler_view.addItemDecoration(new DividerItemDecoration(context,DividerItemDecoration.VERTICAL));
+                             my_recycler_view.addItemDecoration(new DividerItemDecoration(getContext(),DividerItemDecoration.VERTICAL));
 
                      // ItemTouchHelper.SimpleCallback itemTouchHelperCallback = new UserItemTouchHelper(0, ItemTouchHelper.LEFT,UserFragment.this);
                       //new ItemTouchHelper(itemTouchHelperCallback).attachToRecyclerView(recycler_view_load_more);
@@ -488,7 +467,7 @@ Context context;
                          }
                         catch (JSONException e){
                             e.printStackTrace();
-                            Toast.makeText(context, ""+e.getMessage(), Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getContext(), ""+e.getMessage(), Toast.LENGTH_SHORT).show();
                             Log.d("catch_f",""+e.getMessage());
                         }
                     }
@@ -497,8 +476,8 @@ Context context;
                     @Override
                     public void onErrorResponse(VolleyError error){
                         // Do something when error occurred
-                        //Snackbar.make(context,"Error...", Snackbar.LENGTH_LONG).show();
-                        Toast.makeText(context, "verror"+error.getMessage(), Toast.LENGTH_SHORT).show();
+                        //Snackbar.make(getContext(),"Error...", Snackbar.LENGTH_LONG).show();
+                        Toast.makeText(getContext(), "verror"+error.getMessage(), Toast.LENGTH_SHORT).show();
                         Log.d("verror",error.getMessage());
                     }
                 }
@@ -509,7 +488,7 @@ Context context;
 
       /* @Override
         public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction, int position) {
-        Toast.makeText(context,"swiped",Toast.LENGTH_LONG).show();
+        Toast.makeText(getContext(),"swiped",Toast.LENGTH_LONG).show();
         if (viewHolder instanceof UserDataAdapter.ViewHolder) {
         // get the removed item name to display it in snack bar
         String name =allSampleData.get(viewHolder.getAdapterPosition()).getName();
@@ -551,7 +530,7 @@ Context context;
 
                 if (direction == ItemTouchHelper.LEFT){
                    // adapter.removeItem(position);
-                    Toast.makeText(context,"left",Toast.LENGTH_LONG).show();
+                    Toast.makeText(getContext(),"left",Toast.LENGTH_LONG).show();
                 } else {
                    /* removeView();
                     edit_position = position;
@@ -559,7 +538,7 @@ Context context;
                     et_country.setText(countries.get(position));
                     alertDialog.show(); */
 
-                    Toast.makeText(context,"left",Toast.LENGTH_LONG).show();
+                    Toast.makeText(getContext(),"left",Toast.LENGTH_LONG).show();
 
                 }
             }

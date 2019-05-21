@@ -72,7 +72,7 @@ public class WelcomeActivity extends AppCompatActivity implements View.OnClickLi
             signupimage.setVisibility(View.GONE);
             String avatar=Config.AVATAR_URL+"250/250/"+PrefManager.getLoginDetail(this,"img_url");
             username.setText(PrefManager.getLoginDetail(this,"fname"));
-            Glide.with(this).load(avatar).apply(Config.options_avatar).into(imguser);
+            Glide.with(this).load(avatar).into(imguser);
             Log.d(Config.TAG,avatar);
             imguser.setOnClickListener(this);
             if(RedirectURL!=null){
@@ -139,7 +139,7 @@ public class WelcomeActivity extends AppCompatActivity implements View.OnClickLi
         // sending gcm token to server
         if(PrefManager.isLogin(this)) {
 
-            String url = Config.API_URL + "api.php?type=savefcmregistration&uid="+PrefManager.getLoginDetail(this,"id")+"&token=" + token;
+            String url = Config.API_URL + "ajax.php?type=savefcmregistration&uid="+PrefManager.getLoginDetail(this,"id")+"&token=" + token;
             Log.e("mss get firebase id", "url "+url);
             function.executeUrl(this, "get", url, null);
         }

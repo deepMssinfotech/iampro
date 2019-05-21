@@ -63,7 +63,7 @@ public class IncludeFooter  extends RelativeLayout {
         super(context, attrs);
         inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         inflater.inflate(R.layout.include_footer, this, true);
-        this.context=context;
+         this.context=context;
         Config.count_chat = this.findViewById(R.id.count_chat);
         Config.count_notify = this.findViewById(R.id.count_notify);
         Config.count_cart = this.findViewById(R.id.count_cart);
@@ -77,17 +77,17 @@ public class IncludeFooter  extends RelativeLayout {
         (this.findViewById(R.id.btn_menu_notice)).setOnClickListener(noticeOnClickListener);
         (this.findViewById(R.id.btn_menu_message)).setOnClickListener(messageOnClickListener);
         (this.findViewById(R.id.btn_menu_user)).setOnClickListener(userOnClickListener);
-        if (PrefManager.isLogin(context)) {
+        if (PrefManager.isLogin(getContext())) {
             isLogin = true;
-            String avatar = Config.AVATAR_URL + PrefManager.getLoginDetail(context, "img_url");
-            Glide.with(context).load(avatar).apply(Config.options_avatar).into((ImageView) this.findViewById(R.id.btn_menu_user));
+            String avatar = Config.AVATAR_URL + PrefManager.getLoginDetail(getContext(), "img_url");
+            Glide.with(getContext()).load(avatar).apply(Config.options_avatar).into((ImageView) this.findViewById(R.id.btn_menu_user));
         }
     }
     private OnClickListener moreOnClickListener = new OnClickListener() {
         public void onClick(View v) {
             ImageView menu_btn_dashboard_nonuser,menu_btn_login,menu_btn_register,menu_btn_search,menu_btn_shareit,menu_btn_review,menu_btn_wallet,menu_btn_browser;
             ImageView menu_btn_dashboard,menu_btn_myprofile,menu_btn_editprofile,menu_btn_changepassword,menu_btn_joinedfriend,menu_btn_friendrequest,menu_btn_myphoto,menu_btn_myvideo,menu_btn_myproduct,menu_btn_myprovide,menu_btn_demand,menu_btn_mymessage,menu_btn_mycart,menu_btn_myselling,menu_btn_mypurchase,menu_btn_share,menu_btn_mywhishlist,menu_btn_logout;
-            myDialog = new Dialog(context);
+            myDialog = new Dialog(getContext());
             myDialog.setContentView(R.layout.include_user_menu);
             WindowManager.LayoutParams lp = new WindowManager.LayoutParams();
             lp.copyFrom(myDialog.getWindow().getAttributes());
@@ -107,7 +107,7 @@ public class IncludeFooter  extends RelativeLayout {
             Config.count_whishlist.setText(PrefManager.getLoginDetail(context,"my_wishlist"));
             Config.count_friend_request.setText(PrefManager.getLoginDetail(context,"panding_friend"));
             TextView username = myDialog.findViewById(R.id.username);
-            if(PrefManager.isLogin(context)) {
+            if(PrefManager.isLogin(getContext())) {
                 menu_btn_dashboard = myDialog.findViewById(R.id.menu_btn_dashboard);
                 menu_btn_myprofile = myDialog.findViewById(R.id.menu_btn_myprofile);
                 menu_btn_editprofile = myDialog.findViewById(R.id.menu_btn_editprofile);
@@ -144,14 +144,14 @@ public class IncludeFooter  extends RelativeLayout {
                 menu_btn_share.setOnClickListener(shareOnClickListener);
                 menu_btn_mywhishlist.setOnClickListener(mywhishlistOnClickListener);
                 menu_btn_logout.setOnClickListener(logoutOnClickListener);
-                String avatar = Config.AVATAR_URL + "250/250/" + PrefManager.getLoginDetail(context, "img_url");
-                String background = Config.AVATAR_URL + "h/250/" + PrefManager.getLoginDetail(context, "banner_image");
+                String avatar = Config.AVATAR_URL + "250/250/" + PrefManager.getLoginDetail(getContext(), "img_url");
+                String background = Config.AVATAR_URL + "h/250/" + PrefManager.getLoginDetail(getContext(), "banner_image");
 
                 ImageView userbackgroud = myDialog.findViewById(R.id.userbackgroud);
                 CircleImageView userimage = myDialog.findViewById(R.id.userimage);
-                username.setText(PrefManager.getLoginDetail(context, "fname") + " " + PrefManager.getLoginDetail(context, "lname"));
-                Glide.with(context).load(background).apply(Config.options_background).into(userbackgroud);
-                Glide.with(context).load(avatar).apply(Config.options_avatar).into(userimage);
+                username.setText(PrefManager.getLoginDetail(getContext(), "fname") + " " + PrefManager.getLoginDetail(getContext(), "lname"));
+                Glide.with(getContext()).load(background).apply(Config.options_background).into(userbackgroud);
+                Glide.with(getContext()).load(avatar).apply(Config.options_avatar).into(userimage);
                 nonuser_menu.setVisibility(View.GONE);
                 user_menu.setVisibility(View.VISIBLE);
             }else{
@@ -182,10 +182,10 @@ public class IncludeFooter  extends RelativeLayout {
     private View.OnClickListener dashboardOnClickListener = new View.OnClickListener() {
         public void onClick(View v) {
             //if(function.isSamePage("activity_dashboard"))return;
-            Intent intent = new Intent(context, WelcomeActivity.class);
+            Intent intent = new Intent(getContext(), WelcomeActivity.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
-            context.startActivity(intent);
+            getContext().startActivity(intent);
             removeFragment();
         }
     };
@@ -194,8 +194,8 @@ public class IncludeFooter  extends RelativeLayout {
             //if(function.isSamePage("activity_profile"))return;
             ProfileActivity fragment = new ProfileActivity();
             Bundle args = new Bundle();
-            args.putString("uid",PrefManager.getLoginDetail(context,"id"));
-            function.loadFragment(context,fragment,args);
+            args.putString("uid",PrefManager.getLoginDetail(getContext(),"id"));
+            function.loadFragment(getContext(),fragment,args);
             removeFragment();
         }
     };
@@ -203,28 +203,28 @@ public class IncludeFooter  extends RelativeLayout {
         public void onClick(View v) {
             //if(function.isSamePage("activity_edit_profile"))return;
             EditProfileActivity fragment = new EditProfileActivity();
-            function.loadFragment(context,fragment,null);
+            function.loadFragment(getContext(),fragment,null);
             removeFragment();
         }
     };
     private View.OnClickListener changepasswordOnClickListener = new View.OnClickListener() {
         public void onClick(View v) {
             ChangePasswordActivity fragment= new ChangePasswordActivity();
-            function.loadFragment(context,fragment,null);
+            function.loadFragment(getContext(),fragment,null);
             removeFragment();
         }
     };
     private View.OnClickListener joinedfriendOnClickListener = new View.OnClickListener() {
         public void onClick(View v) {
             JoinFriendActivity fragment = new JoinFriendActivity();
-            function.loadFragment(context,fragment,null);
+            function.loadFragment(getContext(),fragment,null);
             removeFragment();
         }
     };
     private View.OnClickListener friendrequestOnClickListener = new View.OnClickListener() {
         public void onClick(View v) {
             FriendRequestActivity fragment = new FriendRequestActivity();
-            function.loadFragment(context,fragment,null);
+            function.loadFragment(getContext(),fragment,null);
             removeFragment();
         }
     };
@@ -233,8 +233,8 @@ public class IncludeFooter  extends RelativeLayout {
             //if(function.isSamePage("activity_my_image"))return;
             MyImageActivity fragment = new MyImageActivity();
             Bundle args = new Bundle();
-            args.putString("uid",PrefManager.getLoginDetail(context,"id"));
-            function.loadFragment(context,fragment,args);
+            args.putString("uid",PrefManager.getLoginDetail(getContext(),"id"));
+            function.loadFragment(getContext(),fragment,args);
             removeFragment();
         }
     };
@@ -242,8 +242,8 @@ public class IncludeFooter  extends RelativeLayout {
         public void onClick(View v) {
             MyVideoActivity fragment = new MyVideoActivity();
             Bundle args = new Bundle();
-            args.putString("uid",PrefManager.getLoginDetail(context,"id"));
-            function.loadFragment(context,fragment,args);
+            args.putString("uid",PrefManager.getLoginDetail(getContext(),"id"));
+            function.loadFragment(getContext(),fragment,args);
             removeFragment();
         }
     };
@@ -251,8 +251,8 @@ public class IncludeFooter  extends RelativeLayout {
         public void onClick(View v) {
             MyProductActivity fragment = new MyProductActivity();
             Bundle args = new Bundle();
-            args.putString("uid",PrefManager.getLoginDetail(context,"id"));
-            function.loadFragment(context,fragment,args);
+            args.putString("uid",PrefManager.getLoginDetail(getContext(),"id"));
+            function.loadFragment(getContext(),fragment,args);
             removeFragment();
         }
     };
@@ -260,8 +260,8 @@ public class IncludeFooter  extends RelativeLayout {
         public void onClick(View v) {
             MyProvideActivity fragment = new MyProvideActivity();
             Bundle args = new Bundle();
-            args.putString("uid",PrefManager.getLoginDetail(context,"id"));
-            function.loadFragment(context,fragment,args);
+            args.putString("uid",PrefManager.getLoginDetail(getContext(),"id"));
+            function.loadFragment(getContext(),fragment,args);
             removeFragment();
         }
     };
@@ -269,8 +269,8 @@ public class IncludeFooter  extends RelativeLayout {
         public void onClick(View v) {
             MyDemandActivity fragment = new MyDemandActivity();
             Bundle args = new Bundle();
-            args.putString("uid",PrefManager.getLoginDetail(context,"id"));
-            function.loadFragment(context,fragment,args);
+            args.putString("uid",PrefManager.getLoginDetail(getContext(),"id"));
+            function.loadFragment(getContext(),fragment,args);
             removeFragment();
         }
     };
@@ -278,22 +278,22 @@ public class IncludeFooter  extends RelativeLayout {
         public void onClick(View v) {
             MessageActivity fragment = new MessageActivity();
             Bundle args = new Bundle();
-            args.putString("uid",PrefManager.getLoginDetail(context,"id"));
-            function.loadFragment(context,fragment,args);
+            args.putString("uid",PrefManager.getLoginDetail(getContext(),"id"));
+            function.loadFragment(getContext(),fragment,args);
             removeFragment();
         }
     };
     private View.OnClickListener mycartOnClickListener = new View.OnClickListener() {
         public void onClick(View v) {
-          if (PrefManager.isLogin(context)){
+          if (PrefManager.isLogin(getContext())){
               CartActivity fragment = new CartActivity();
               Bundle args = new Bundle();
-              args.putString("uid",PrefManager.getLoginDetail(context,"id"));
-              function.loadFragment(context,fragment,args);
+              args.putString("uid",PrefManager.getLoginDetail(getContext(),"id"));
+              function.loadFragment(getContext(),fragment,args);
               removeFragment();
           }
           else{
-              Toast.makeText(context,""+"First Login and try again...",Toast.LENGTH_LONG).show();
+              Toast.makeText(getContext(),""+"First Login and try again...",Toast.LENGTH_LONG).show();
                  return;
           }
         }
@@ -301,14 +301,14 @@ public class IncludeFooter  extends RelativeLayout {
     private View.OnClickListener mysellingOnClickListener = new View.OnClickListener() {
         public void onClick(View v) {
             MySellingActivity fragment = new MySellingActivity();
-            function.loadFragment(context,fragment,null);
+            function.loadFragment(getContext(),fragment,null);
             removeFragment();
         }
     };
     private View.OnClickListener mypurchaseOnClickListener = new View.OnClickListener() {
         public void onClick(View v) {
             MyPurchsaeActivity fragment = new MyPurchsaeActivity();
-            function.loadFragment(context,fragment,null);
+            function.loadFragment(getContext(),fragment,null);
             removeFragment();
         }
     };
@@ -319,33 +319,25 @@ public class IncludeFooter  extends RelativeLayout {
             sharingIntent.setType("text/plain");
             sharingIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, "Iampro App");
             sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, shareBody);
-            context.startActivity(Intent.createChooser(sharingIntent, getResources().getString(R.string.app_name)));
+            getContext().startActivity(Intent.createChooser(sharingIntent, getResources().getString(R.string.app_name)));
             removeFragment();
         }
     };
     private View.OnClickListener mywhishlistOnClickListener = new View.OnClickListener() {
         public void onClick(View v) {
             MyWhishlistActivity fragment = new MyWhishlistActivity();
-            function.loadFragment(context,fragment,null);
+            function.loadFragment(getContext(),fragment,null);
             removeFragment();
         }
     };
     private View.OnClickListener logoutOnClickListener = new View.OnClickListener() {
         public void onClick(View v) {
-            String url=Config.API_URL+"api/api.php?type=removefcmregistration&uid="+PrefManager.getLoginDetail(context,"id");
-            function.executeUrl(context,"get",url,null);
-            PrefManager.logout(context);
-            Intent intent = new Intent(context, HomeActivity.class);
+            PrefManager.logout(getContext());
+            Intent intent = new Intent(getContext(), HomeActivity.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            context.startActivity(intent);
-            //context.getActivity().finish();
-            AppCompatActivity activity = (AppCompatActivity) context;
-            FragmentManager fm = activity.getSupportFragmentManager();
-            for(int i = 0; i < fm.getBackStackEntryCount(); ++i) {
-                fm.popBackStack();
-            }
+            getContext().startActivity(intent);
+            //getContext().getActivity().finish();
 
-            activity.finish();
             removeFragment();
         }
     };
@@ -353,7 +345,7 @@ public class IncludeFooter  extends RelativeLayout {
         public void onClick(View v) {
             //if(function.isSamePage("activity_login"))return;
             LoginActivity fragment = new LoginActivity();
-            function.loadFragment(context,fragment,null);
+            function.loadFragment(getContext(),fragment,null);
             removeFragment();
         }
     };
@@ -361,35 +353,35 @@ public class IncludeFooter  extends RelativeLayout {
         public void onClick(View v) {
             //if(function.isSamePage("activity_register"))return;
             SignupActivity fragment = new SignupActivity();
-            function.loadFragment(context,fragment,null);
+            function.loadFragment(getContext(),fragment,null);
             removeFragment();
         }
     };
     private View.OnClickListener searchOnClickListener = new View.OnClickListener() {
         public void onClick(View v) {
             SearchActivity fragment = new SearchActivity();
-            function.loadFragment(context,fragment,null);
+            function.loadFragment(getContext(),fragment,null);
             removeFragment();
         }
     };
     private View.OnClickListener reviewOnClickListener = new View.OnClickListener() {
         public void onClick(View v) {
-            final String appPackageName = context.getPackageName(); // package name of the app
+            final String appPackageName = getContext().getPackageName(); // package name of the app
             try {
-                context.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + appPackageName)));
+                getContext().startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + appPackageName)));
             } catch (android.content.ActivityNotFoundException anfe) {
-                context.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=" + appPackageName)));
+                getContext().startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=" + appPackageName)));
             }
         }
     };
     private View.OnClickListener walletOnClickListener = new View.OnClickListener() {
         public void onClick(View v) {
-            function.OpenWallet(context);
+            function.OpenWallet(getContext());
         }
     };
     private View.OnClickListener browserOnClickListener = new View.OnClickListener() {
         public void onClick(View v) {
-            function.OpenBrowser(context,Config.URL_ROOT);
+            function.OpenBrowser(getContext(),Config.URL_ROOT);
         }
     };
     public void removeFragment(){
@@ -398,21 +390,21 @@ public class IncludeFooter  extends RelativeLayout {
     }
     private OnClickListener cartOnClickListener = new OnClickListener() {
         public void onClick(View v) {
-            if (PrefManager.isLogin(context)) {
-                AppCompatActivity activity = (AppCompatActivity) context;
+            if (PrefManager.isLogin(getContext())) {
+                AppCompatActivity activity = (AppCompatActivity) getContext();
                 CartActivity fragment = new CartActivity();
                 Bundle args = new Bundle();
                 args.putString("name", "mragank");
-                function.loadFragment(context, fragment, args);
+                function.loadFragment(getContext(), fragment, args);
             }
              else{
-                  Toast.makeText(context,""+"First Login and try again...",Toast.LENGTH_LONG).show();
+                  Toast.makeText(getContext(),""+"First Login and try again...",Toast.LENGTH_LONG).show();
             }
         }
     };
     private OnClickListener iamproOnClickListener = new OnClickListener() {
         public void onClick(View v) {
-            context.startActivity(new Intent(context, HomeActivity.class));
+            getContext().startActivity(new Intent(getContext(), HomeActivity.class));
         }
     };
     private OnClickListener noticeOnClickListener = new OnClickListener() {
@@ -420,7 +412,7 @@ public class IncludeFooter  extends RelativeLayout {
             NotificationActivity fragment = new NotificationActivity();
             Bundle args = new Bundle();
             args.putString("name", "mragank");
-            function.loadFragment(context,fragment,args);
+            function.loadFragment(getContext(),fragment,args);
         }
     };
     private OnClickListener messageOnClickListener = new OnClickListener() {
@@ -428,7 +420,7 @@ public class IncludeFooter  extends RelativeLayout {
             MessageActivity fragment = new MessageActivity();
             Bundle args = new Bundle();
             args.putString("name", "mragank");
-            function.loadFragment(context,fragment,args);
+            function.loadFragment(getContext(),fragment,args);
 
         }
     };
@@ -438,7 +430,7 @@ public class IncludeFooter  extends RelativeLayout {
                 ProfileActivity fragment = new ProfileActivity();
                 function.loadFragment(context,fragment,null);
             }else {
-                //context.startActivity(new Intent(context, LoginActivity.class));
+                //getContext().startActivity(new Intent(context, LoginActivity.class));
                 LoginActivity loginFragment = new LoginActivity();
                 function.loadFragment(context, loginFragment, null);
             }

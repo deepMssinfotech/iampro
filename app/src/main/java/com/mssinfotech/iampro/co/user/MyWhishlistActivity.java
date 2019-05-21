@@ -2,7 +2,6 @@ package com.mssinfotech.iampro.co.user;
 
 import android.app.Dialog;
 import android.app.ProgressDialog;
-import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
@@ -51,7 +50,6 @@ public class MyWhishlistActivity extends Fragment implements WhishListItemTouchH
     private WhishListAdapter mAdapter;
     private ConstraintLayout constraintLayout;
     private static String WHISH_LIST_URL = "";
-    Context context;
     View view;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup parent, Bundle savedInstanceState) {
@@ -65,12 +63,11 @@ public class MyWhishlistActivity extends Fragment implements WhishListItemTouchH
         recyclerView = view.findViewById(R.id.recycler_view);
         //whishListItemList = new ArrayList<>();
         whishListItemList = new ArrayList<WhishListItem>();
-        context =getContext();
-        mAdapter = new WhishListAdapter(context, whishListItemList);
-        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(context);
+        mAdapter = new WhishListAdapter(getContext(), whishListItemList);
+        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getContext());
         recyclerView.setLayoutManager(mLayoutManager);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
-        recyclerView.addItemDecoration(new DividerItemDecoration(context, DividerItemDecoration.VERTICAL));
+        recyclerView.addItemDecoration(new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL));
         recyclerView.setAdapter(mAdapter);
         constraintLayout = view.findViewById(R.id.constraintLayout);
         // adding item touch helper
@@ -91,7 +88,7 @@ public class MyWhishlistActivity extends Fragment implements WhishListItemTouchH
      */
     private void prepareWhishList() {
         //Log.d(Config.TAG,WHISH_LIST_URL);
-        final Dialog loading = new Dialog(context);
+        final Dialog loading = new Dialog(getContext());
         loading.requestWindowFeature(Window.FEATURE_NO_TITLE);
         loading.setContentView(R.layout.progress_dialog);
         loading.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
@@ -145,7 +142,7 @@ public class MyWhishlistActivity extends Fragment implements WhishListItemTouchH
                         type_image = "product_icon";
                     } else if (feed_type.equalsIgnoreCase("PROVIDE")) {
                         image_path = Config.URL_ROOT + "uploads/product/h/300/" + image;
-                        type_image = "provide_icon";
+                        type_image = "porvide_icon";
                     } else if (feed_type.equalsIgnoreCase("DEMAND")) {
                         image_path = Config.URL_ROOT + "uploads/product/h/300/" + image;
                         type_image = "demand_icon";
@@ -190,7 +187,7 @@ public class MyWhishlistActivity extends Fragment implements WhishListItemTouchH
             // remove the item from recycler view
             mAdapter.removeItem(viewHolder.getAdapterPosition());
             String url=Config.API_URL+"app_service.php?type=delete_wishlist&id="+id.toString();
-            String responc = function.executeUrl(context,"get",url,null);
+            String responc = function.executeUrl(getContext(),"get",url,null);
             Log.e(Config.TAG,"result : "+responc);
             // showing snack bar with Undo option
             Snackbar snackbar = Snackbar.make(constraintLayout, name + " removed from whishlist!", Snackbar.LENGTH_LONG);

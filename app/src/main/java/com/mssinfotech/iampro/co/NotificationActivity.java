@@ -2,7 +2,6 @@ package com.mssinfotech.iampro.co;
 
 import android.app.Dialog;
 import android.app.ProgressDialog;
-import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.support.constraint.ConstraintLayout;
@@ -49,7 +48,6 @@ public class NotificationActivity extends Fragment implements NotificationItemTo
     private NotificationAdapter mAdapter;
     private ConstraintLayout constraintLayout;
     private static String NOTIFY_URL  = "";
-    Context context;
     View view;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup parent, Bundle savedInstanceState) {
@@ -59,15 +57,14 @@ public class NotificationActivity extends Fragment implements NotificationItemTo
     @Override
     public void onViewCreated(View v, Bundle savedInstanceState) {
         view = v ;
-        context = getContext();
-        NOTIFY_URL  = Config.API_URL+"app_service.php?type=getall_notification&uid="+ PrefManager.getLoginDetail(context,"id");
+        NOTIFY_URL  = Config.API_URL+"app_service.php?type=getall_notification&uid="+ PrefManager.getLoginDetail(getContext(),"id");
         recyclerView = view.findViewById(R.id.recycler_view);
         NotificationItemList = new ArrayList<NotificationItem>();
-        mAdapter = new NotificationAdapter(context, NotificationItemList);
-        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(context);
+        mAdapter = new NotificationAdapter(getContext(), NotificationItemList);
+        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getContext());
         recyclerView.setLayoutManager(mLayoutManager);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
-        recyclerView.addItemDecoration(new DividerItemDecoration(context, DividerItemDecoration.VERTICAL));
+        recyclerView.addItemDecoration(new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL));
         recyclerView.setAdapter(mAdapter);
         constraintLayout = view.findViewById(R.id.constraintLayout);
         // adding item touch helper
@@ -83,7 +80,7 @@ public class NotificationActivity extends Fragment implements NotificationItemTo
      * method make volley network call and parses json
      */
     private void prepareWhishList() {
-        final Dialog pDialog = new Dialog(this.context);
+        final Dialog pDialog = new Dialog(this.getContext());
         pDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         pDialog.setContentView(R.layout.progress_dialog);
         pDialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
@@ -99,7 +96,7 @@ public class NotificationActivity extends Fragment implements NotificationItemTo
                     mAdapter.notifyDataSetChanged();
                 }else{
                     pDialog.dismiss();
-                    Toast.makeText(context, "Empty Record!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getContext(), "Empty Record!", Toast.LENGTH_SHORT).show();
                 }
             }
         }, new Response.ErrorListener() {
@@ -138,7 +135,7 @@ public class NotificationActivity extends Fragment implements NotificationItemTo
                         type_image = "product_icon";
                     } else if (feed_type.equalsIgnoreCase("PROVIDE")) {
                         image_path = Config.URL_ROOT + "uploads/product/h/300/" + product_image;
-                        type_image = "provide_icon";
+                        type_image = "porvide_icon";
                     } else if (feed_type.equalsIgnoreCase("DEMAND")) {
                         image_path = Config.URL_ROOT + "uploads/product/h/300/" + product_image;
                         type_image = "demand_icon";
@@ -193,7 +190,7 @@ public class NotificationActivity extends Fragment implements NotificationItemTo
             // remove the item from recycler view
             mAdapter.removeItem(viewHolder.getAdapterPosition());
             String url=Config.API_URL+"app_service.php?type=delete_notification&id="+id.toString();
-            String responc = function.executeUrl(context,"get",url,null);
+            String responc = function.executeUrl(getContext(),"get",url,null);
             Log.e(Config.TAG,"result : "+responc+"url - "+url);
             // showing snack bar with Undo option
             Snackbar snackbar = Snackbar.make(constraintLayout, "Notification removed ", Snackbar.LENGTH_LONG);

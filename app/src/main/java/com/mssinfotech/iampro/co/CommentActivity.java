@@ -81,7 +81,6 @@ public class CommentActivity extends AppCompatActivity implements CommentAdapter
     @Override
     public void onBackPressed() {
         int count = getSupportFragmentManager().getBackStackEntryCount();
-
         if (count == 0) {
             super.onBackPressed();
            /* if (Config.doubleBackToExitPressedOnce) {
@@ -107,7 +106,6 @@ public class CommentActivity extends AppCompatActivity implements CommentAdapter
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Config.allowRefresh = true;
         setContentView(R.layout.activity_comment);
         et_comment = findViewById(R.id.et_comment);
         if (PrefManager.isLogin(this)) {
@@ -151,7 +149,6 @@ public class CommentActivity extends AppCompatActivity implements CommentAdapter
     public void getFeedDetail(){
         String myurl = Config.API_URL + "app_service.php?type=get_multi_image_video_detail&id="+data_id+"&update_type=image&uid="+user_id+"&login_id="+user_id+"&my_id="+user_id;
         Log.d(Config.TAG, myurl);
-
         StringRequest stringRequest = new StringRequest(myurl,
                 new Response.Listener<String>() {
                     @Override
@@ -164,12 +161,6 @@ public class CommentActivity extends AppCompatActivity implements CommentAdapter
                             udate.setText(result.getString("udate"));
                             tv_comments.setText(result.getString("comment"));
                             tv_totallike.setText(result.getString("likes"));
-                            if (result.getString("is_block").equals("1")){
-                                ll_sendChats.setVisibility(View.GONE);
-                            }
-                            else{
-                                ll_sendChats.setVisibility(View.VISIBLE);
-                            }
                             likeButton.setUnlikeDrawableRes(R.drawable.like);
                             likeButton.setLikeDrawableRes(R.drawable.like_un);
                             int my_uid=Integer.parseInt(user_id);

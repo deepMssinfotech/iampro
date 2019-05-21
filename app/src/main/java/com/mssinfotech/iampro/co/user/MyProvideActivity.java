@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
@@ -127,24 +126,6 @@ public class MyProvideActivity extends Fragment implements MyProvideAdapter.Item
         Intent i = new Intent();
         Config.PREVIOUS_PAGE_TAG = i.getStringExtra(Config.PAGE_TAG);
         getProvide();
-    }
-    @Override
-    public void onResume() {
-        super.onResume();
-        if (Config.allowRefresh) {
-            Config.allowRefresh = false;
-            //Toast.makeText(context, "click from BACK", Toast.LENGTH_SHORT).show();
-            Fragment frg = null;
-            AppCompatActivity activity = (AppCompatActivity) context;
-            MyProvideActivity fragment = new MyProvideActivity();
-            frg = activity.getSupportFragmentManager().findFragmentByTag(fragment.getClass().getName());
-            final FragmentTransaction ft = activity.getSupportFragmentManager().beginTransaction();
-            ft.detach(frg);
-            ft.attach(frg);
-            ft.commit();
-        }
-
-
     }
     private void gteUsrDetail(String id){
         String myurl = Config.API_URL + "ajax.php?type=friend_detail&id=" + id + "&uid=" + uid;

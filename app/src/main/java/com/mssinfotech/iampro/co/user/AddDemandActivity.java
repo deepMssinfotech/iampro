@@ -65,7 +65,6 @@ public class AddDemandActivity extends AppCompatActivity {
     Button ibdemandimage,ibDemandMoreImage;
     List<String> imagesEncodedList;
     Intent intent;
-    Context context;
     private GalleryAdapter galleryAdapter;
     ArrayList<Uri> mArrayUri = new ArrayList<>();
     @Override
@@ -78,7 +77,7 @@ public class AddDemandActivity extends AppCompatActivity {
         etdemandname = findViewById(R.id.etdemandname);
         tilbrandname = findViewById(R.id.tilbrandname);
         etbrandname = findViewById(R.id.etbrandname);
-        context = getApplicationContext();
+
         tilsellingcost = findViewById(R.id.tilsellingcost);
         etsellingcost = findViewById(R.id.etsellingcost);
         tildemanddetail=findViewById(R.id.tildemanddetail);
@@ -139,7 +138,7 @@ public class AddDemandActivity extends AppCompatActivity {
                             etbrandname.setText(brand_name);
                             etsellingcost.setText(selling_cost);
                             etdemanddetail.setText(detail);
-                            Glide.with(context).load(pimage).into(imageview);
+                            Glide.with(getApplicationContext()).load(pimage).into(imageview);
 
 
 
@@ -155,7 +154,7 @@ public class AddDemandActivity extends AppCompatActivity {
                     }
                 });
         //Creating a request queue
-        RequestQueue requestQueue = Volley.newRequestQueue(context);
+        RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
         //Adding request to the queue
         requestQueue.add(stringRequest);
     }
@@ -243,7 +242,7 @@ public class AddDemandActivity extends AppCompatActivity {
 
                 //ArrayList<Uri> mArrayUri = new ArrayList<Uri>();
                 mArrayUri.add(mImageUri);
-                galleryAdapter = new GalleryAdapter(context,mArrayUri);
+                galleryAdapter = new GalleryAdapter(getApplicationContext(),mArrayUri);
                 gvGallery.setAdapter(galleryAdapter);
                  galleryAdapter.notifyDataSetChanged();
                 gvGallery.setVerticalSpacing(gvGallery.getHorizontalSpacing());
@@ -275,7 +274,7 @@ public class AddDemandActivity extends AppCompatActivity {
                         imageEncoded  = cursor.getString(columnIndex);
                         imagesEncodedList.add(imageEncoded);
                         cursor.close();
-                        galleryAdapter = new GalleryAdapter(context,mArrayUri);
+                        galleryAdapter = new GalleryAdapter(getApplicationContext(),mArrayUri);
                         gvGallery.setAdapter(galleryAdapter);
                           galleryAdapter.notifyDataSetChanged();
                         gvGallery.setVerticalSpacing(gvGallery.getHorizontalSpacing());
@@ -362,7 +361,7 @@ public class AddDemandActivity extends AppCompatActivity {
                             String status=jsonObject.getString("status");
                             String msgg=jsonObject.getString("msg");
 
-                            Toast.makeText(context,""+msgg,Toast.LENGTH_LONG).show();
+                            Toast.makeText(getApplicationContext(),""+msgg,Toast.LENGTH_LONG).show();
                             if (status.equalsIgnoreCase("success")){
                                 //String urlv=jsonObject.getString("url");
 
@@ -376,17 +375,14 @@ public class AddDemandActivity extends AppCompatActivity {
                                 Bundle args = new Bundle();
                                 args.putString("uid",PrefManager.getLoginDetail(AddDemandActivity.this,"id"));
                                 function.loadFragment(AddDemandActivity.this,fragment,args);
-                                int cntDemand = Integer.parseInt(PrefManager.getLoginDetail(context,"total_count_demand"))+1;
-                                PrefManager.updateLoginDetail(context,"total_count_demand",(cntDemand)+"");
-                                Config.demand_text.setText(cntDemand+"");
-                                finish();
+                                //finish();
                             }
                         }
                         catch(JSONException e)
                         {
                             loading.dismiss();
                             Log.d("JSoNExceptionv",e.getMessage());
-                            Toast.makeText(context,e.getMessage(),Toast.LENGTH_LONG).show();
+                            Toast.makeText(getApplicationContext(),e.getMessage(),Toast.LENGTH_LONG).show();
                         }
                     }
                 },
@@ -395,7 +391,7 @@ public class AddDemandActivity extends AppCompatActivity {
                     public void onErrorResponse(VolleyError volleyError) {
                         //Dismissing the progress dialog
                         loading.dismiss();
-                        Toast.makeText(context,volleyError.getMessage(),Toast.LENGTH_LONG).show();
+                        Toast.makeText(getApplicationContext(),volleyError.getMessage(),Toast.LENGTH_LONG).show();
                     }
                 }){
             @Override
@@ -411,7 +407,7 @@ public class AddDemandActivity extends AppCompatActivity {
                 params.put("detail",demanddetail);
                 params.put("category",cat);
                 params.put("myfile",image);
-                params.put("added_by",PrefManager.getLoginDetail(context,"id"));
+                params.put("added_by",PrefManager.getLoginDetail(getApplicationContext(),"id"));
                 //returning parameters
                 return params;
             }
@@ -443,7 +439,7 @@ public class AddDemandActivity extends AppCompatActivity {
                             String status=jsonObject.getString("status");
                             String msgg=jsonObject.getString("msg");
 
-                            Toast.makeText(context,""+msgg,Toast.LENGTH_LONG).show();
+                            Toast.makeText(getApplicationContext(),""+msgg,Toast.LENGTH_LONG).show();
                             if (status.equalsIgnoreCase("success")){
                                 //String urlv=jsonObject.getString("url");
 
@@ -461,7 +457,7 @@ public class AddDemandActivity extends AppCompatActivity {
                         {
                             loading.dismiss();
                             Log.d("JSoNExceptionv",e.getMessage());
-                            Toast.makeText(context,e.getMessage(),Toast.LENGTH_LONG).show();
+                            Toast.makeText(getApplicationContext(),e.getMessage(),Toast.LENGTH_LONG).show();
                         }
                     }
                 },
@@ -469,7 +465,7 @@ public class AddDemandActivity extends AppCompatActivity {
                     @Override
                     public void onErrorResponse(VolleyError volleyError) {
                         loading.dismiss();
-                        Toast.makeText(context,volleyError.getMessage(),Toast.LENGTH_LONG).show();
+                        Toast.makeText(getApplicationContext(),volleyError.getMessage(),Toast.LENGTH_LONG).show();
                     }
                 }){
             @Override
@@ -486,7 +482,7 @@ public class AddDemandActivity extends AppCompatActivity {
                 // params.put("myfile",image);
                 params.put("product_id",pid);
                 params.put("product_type","DEMAND");
-                params.put("added_by",PrefManager.getLoginDetail(context,"id"));
+                params.put("added_by",PrefManager.getLoginDetail(getApplicationContext(),"id"));
                 //returning parameters
                 return params;
             }

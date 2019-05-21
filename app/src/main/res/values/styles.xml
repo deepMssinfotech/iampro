@@ -84,13 +84,4 @@
         <item name="DialogSpotCount">8</item>
     </style>
 
-    <style name="CustomDatePickerDialog" parent="Theme.AppCompat.Light.Dialog.Alert">
-        <item name="android:dialogTheme">@style/MyDialogTheme</item>
-        <item name="android:datePickerStyle">@style/MyDatePicker</item>
-    </style>
-
-    <style name="MyDialogTheme" parent="Theme.AppCompat.Light.Dialog">
-        <item name="android:datePickerStyle">@style/MyDatePicker</item>
-    </style>
-
 </resources>

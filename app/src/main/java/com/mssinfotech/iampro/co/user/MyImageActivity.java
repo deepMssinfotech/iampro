@@ -17,7 +17,6 @@ import android.provider.MediaStore;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -111,23 +110,11 @@ public class MyImageActivity extends Fragment implements MyImageAdapter.ItemList
         // Defines the xml file for the fragment
         return inflater.inflate(R.layout.activity_my_image, parent, false);
     }
+
     @Override
     public void onResume() {
         super.onResume();
-        if (Config.allowRefresh) {
-            Config.allowRefresh = false;
-            //Toast.makeText(context, "click from BACK", Toast.LENGTH_SHORT).show();
-            Fragment frg = null;
-            AppCompatActivity activity = (AppCompatActivity) context;
-            MyImageActivity fragment = new MyImageActivity();
-            frg = activity.getSupportFragmentManager().findFragmentByTag(fragment.getClass().getName());
-            final FragmentTransaction ft = activity.getSupportFragmentManager().beginTransaction();
-            ft.detach(frg);
-            ft.attach(frg);
-            ft.commit();
-        }
-
-
+        //((AppCompatActivity)getActivity()).getSupportActionBar().hide();
     }
     @Override
     public void onViewCreated(View v, Bundle savedInstanceState) {
@@ -537,11 +524,11 @@ public class MyImageActivity extends Fragment implements MyImageAdapter.ItemList
         // Initialize a new RequestQueue instance
         Log.d("urlimggg",""+url);
         RequestQueue requestQueue = Volley.newRequestQueue(context);
-        /*final Dialog dialog = new Dialog(this.getContext());
+        final Dialog dialog = new Dialog(this.getContext());
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setContentView(R.layout.progress_dialog);
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
-        dialog.show();*/
+        dialog.show();
         JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(
                 Request.Method.GET,
                 url,
@@ -594,8 +581,6 @@ public class MyImageActivity extends Fragment implements MyImageAdapter.ItemList
                                      String totallike=pics.optString("totallike");
                                      String like_unlike=pics.optString("like_unlike");
                                      String rating=pics.optString("rating");
-                                     if (rating.equals(""))
-                                         rating="0";
               item.add(new MyImageModel(id,albemid,name,category,albem_type,image,udate,about_us,group_id,is_featured,status,is_block,comments,totallike,like_unlike,rating,uid));
                                      //singleItem.add(new SingleItemModel(Integer.parseInt(id), name,image,udate,rating,Integer.parseInt(totallike),Integer.parseInt(comments),Integer.parseInt(uid),name,image,"image"));
 
@@ -619,14 +604,16 @@ public class MyImageActivity extends Fragment implements MyImageAdapter.ItemList
                             adapterr = new MyImageVideoDataAdapter(context, allSampleData,item_name);
                             recyclerView.setLayoutManager(new LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false));
                             recyclerView.setAdapter(adapterr);
-                            //if (dialog.isShowing())dialog.dismiss();
+                         if (dialog.isShowing())
+                              dialog.dismiss();
                         }
                         catch (JSONException e){
                             //pDialog.dismiss();
                             e.printStackTrace();
                             Toast.makeText(context, ""+e.getMessage(), Toast.LENGTH_SHORT).show();
                             Log.d("catch_f",""+e.getMessage());
-                            //if (dialog.isShowing())dialog.dismiss();
+                            if (dialog.isShowing())
+                                 dialog.dismiss();
                         }
                     }
                 },
@@ -636,7 +623,8 @@ public class MyImageActivity extends Fragment implements MyImageAdapter.ItemList
                         //pDialog.dismiss();
                         Toast.makeText(context, error.getMessage(), Toast.LENGTH_SHORT).show();
                         Log.d("verror",""+error.getMessage());
-                        //if (dialog.isShowing()) dialog.dismiss();
+                        if (dialog.isShowing())
+                             dialog.dismiss();
                     }
                 }
         );

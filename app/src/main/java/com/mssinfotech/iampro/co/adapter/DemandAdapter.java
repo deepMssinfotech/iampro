@@ -150,21 +150,11 @@ public class DemandAdapter extends RecyclerView.Adapter<DemandAdapter.ViewHolder
             }
             if (PrefManager.isLogin(mContext)){
                 likeButton.setEnabled(true);
-                if (favButton!=null)
                 favButton.setEnabled(true);
-
-                ratingBar.setFocusable(true);
-                ratingBar.setIsIndicator(false);
-
             }
             else {
                 likeButton.setEnabled(false);
-                if (favButton!=null)
                 favButton.setEnabled(false);
-
-                ratingBar.setFocusable(false);
-                 ratingBar.setIsIndicator(true);
-
             }
             tv_daysago.setVisibility(View.VISIBLE);
             tv_daysago.setText(item.getDaysago());

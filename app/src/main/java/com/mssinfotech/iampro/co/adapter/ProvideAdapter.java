@@ -270,27 +270,9 @@ public class ProvideAdapter extends RecyclerView.Adapter<ProvideAdapter.ViewHold
                     String url = Config.API_URL + "app_service.php?type=like_me&id=" + String.valueOf(id) + "&uid=" + uid + "&ptype=provide";
                     Log.e(Config.TAG, url);
                     function.executeUrl(mContext, "get", url, null);
-                    Log.d("like_adapter",""+tv_tlike.getText().toString());
                 }
             });
-            if (PrefManager.isLogin(mContext)){
-                likeButton.setEnabled(true);
-                if (favButton!=null)
-                    favButton.setEnabled(true);
 
-                ratingBar.setFocusable(true);
-                ratingBar.setIsIndicator(false);
-
-            }
-            else {
-                likeButton.setEnabled(false);
-                if (favButton!=null)
-                    favButton.setEnabled(false);
-
-                ratingBar.setFocusable(false);
-                ratingBar.setIsIndicator(true);
-
-            }
         }
         @Override
         public void onClick(View view) {

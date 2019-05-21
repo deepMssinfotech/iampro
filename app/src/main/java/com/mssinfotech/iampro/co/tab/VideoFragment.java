@@ -1,7 +1,6 @@
 package com.mssinfotech.iampro.co.tab;
 import android.app.Dialog;
 import android.app.ProgressDialog;
-import android.content.Context;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.os.Handler;
@@ -9,9 +8,7 @@ import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.content.res.AppCompatResources;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
@@ -46,7 +43,6 @@ import com.mssinfotech.iampro.co.model.SectionImageModel;
 import com.mssinfotech.iampro.co.model.SingleItemModel;
 import com.mssinfotech.iampro.co.common.Config;
 import com.mssinfotech.iampro.co.user.MyVideoActivity;
-import com.mssinfotech.iampro.co.user.ProfileActivity;
 import com.mssinfotech.iampro.co.utils.PrefManager;
 import com.viewpagerindicator.CirclePageIndicator;
 
@@ -75,7 +71,6 @@ public class VideoFragment extends Fragment implements VideoAdapter.ItemListener
      ImageView lvideo_iv;
     ImageView no_rodr;
      View views;
-     Context context;
     //sliderr
     private static ViewPager mPager;
     private static int currentPage = 0;
@@ -95,7 +90,6 @@ public class VideoFragment extends Fragment implements VideoAdapter.ItemListener
             // Inflate the layout for this fragment
             View view=inflater.inflate(R.layout.fragment_video, container, false);
              views=view;
-             context = getContext();
             //oolbar =view.findViewById(R.id.toolbar);
         //view.findViewById(R.id.title_tv).setTag("Video");
             return view;
@@ -104,15 +98,15 @@ public class VideoFragment extends Fragment implements VideoAdapter.ItemListener
         public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
             super.onViewCreated(view, savedInstanceState);
             //createDummyData();
-            if(PrefManager.isLogin(context))
-             uid= Integer.parseInt(PrefManager.getLoginDetail(context,"id"));
+            if(PrefManager.isLogin(getContext()))
+             uid= Integer.parseInt(PrefManager.getLoginDetail(getContext(),"id"));
             getVideo();
             my_recycler_view =view.findViewById(R.id.my_recycler_view);
             recycler_view_load_more=view.findViewById(R.id.recycler_view_load_more);
             lvideo_iv=view.findViewById(R.id.lvideo_iv);
             lvideo_iv.setVisibility(View.VISIBLE);
              no_rodr =view.findViewById(R.id.no_record_found);
-            lvideo_iv.setBackground(AppCompatResources.getDrawable(context,R.drawable.latestvideo));
+            lvideo_iv.setBackground(AppCompatResources.getDrawable(getContext(),R.drawable.latestvideo));
             btn_load_more=view.findViewById(R.id.btn_load_more);
              imageModelArrayList=new ArrayList<>();
             btn_load_more.setOnClickListener(new View.OnClickListener() {
@@ -124,28 +118,11 @@ public class VideoFragment extends Fragment implements VideoAdapter.ItemListener
             });
             getTopSlider();
         }
-    @Override
-    public void onResume() {
-        super.onResume();
-        if (Config.allowRefresh) {
-            Config.allowRefresh = false;
-            //Toast.makeText(context, "click from BACK", Toast.LENGTH_SHORT).show();
-            Fragment frg = null;
-            AppCompatActivity activity = (AppCompatActivity) context;
-            VideoFragment fragment = new VideoFragment();
-            frg = activity.getSupportFragmentManager().findFragmentByTag(fragment.getClass().getName());
-            final FragmentTransaction ft = activity.getSupportFragmentManager().beginTransaction();
-            ft.detach(frg);
-            ft.attach(frg);
-            ft.commit();
-        }
 
-
-    }
     private void init() {
 
         mPager = views.findViewById(R.id.pager);
-        mPager.setAdapter(new SlidingImage_Adapter(context,imageModelArrayList));
+        mPager.setAdapter(new SlidingImage_Adapter(getContext(),imageModelArrayList));
 
         CirclePageIndicator indicator = (CirclePageIndicator)views.findViewById(R.id.indicator);
 
@@ -200,7 +177,7 @@ public class VideoFragment extends Fragment implements VideoAdapter.ItemListener
 
     private void getTopSlider(){
         final String url=Config.API_URL+ "index.php?type=get_slider&name=TOP_SLIDER";
-        RequestQueue requestQueue = Volley.newRequestQueue(context);
+        RequestQueue requestQueue = Volley.newRequestQueue(getContext());
         // Initialize a new JsonArrayRequest instance
         JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(
                 Request.Method.GET,
@@ -243,7 +220,7 @@ public class VideoFragment extends Fragment implements VideoAdapter.ItemListener
                         catch (JSONException e){
                             //pDialog.dismiss();
                             e.printStackTrace();
-                            Toast.makeText(context, ""+e.getMessage(), Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getContext(), ""+e.getMessage(), Toast.LENGTH_SHORT).show();
                             Log.d("catch_f",""+e.getMessage());
                         }
                     }
@@ -253,8 +230,8 @@ public class VideoFragment extends Fragment implements VideoAdapter.ItemListener
                     public void onErrorResponse(VolleyError error){
                         //pDialog.dismiss();
                         // Do something when error occurred
-                        //Snackbar.make(context,"Error...", Snackbar.LENGTH_LONG).show();
-                        Toast.makeText(context, "verror"+error.getMessage(), Toast.LENGTH_SHORT).show();
+                        //Snackbar.make(getContext(),"Error...", Snackbar.LENGTH_LONG).show();
+                        Toast.makeText(getContext(), "verror"+error.getMessage(), Toast.LENGTH_SHORT).show();
                         Log.d("verror",""+error.getMessage());
                     }
                 }
@@ -266,8 +243,8 @@ public class VideoFragment extends Fragment implements VideoAdapter.ItemListener
     public void getVideo(){
         final String url = Config.API_URL+ "app_service.php?type=all_item&name=video&uid="+uid+"&my_id="+uid;
         // Initialize a new RequestQueue instance
-        RequestQueue requestQueue = Volley.newRequestQueue(context);
-        final Dialog pDialog = new Dialog(this.context);
+        RequestQueue requestQueue = Volley.newRequestQueue(getContext());
+        final Dialog pDialog = new Dialog(this.getContext());
         pDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         pDialog.setContentView(R.layout.progress_dialog);
         pDialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
@@ -320,7 +297,7 @@ public class VideoFragment extends Fragment implements VideoAdapter.ItemListener
 
                                     //SectionDataModel dm = new SectionDataModel();
                                     //dm.setHeaderTitle("Section " + i);
-                                    // Toast.makeText(context,"rrrresponse_enterrr:",Toast.LENGTH_LONG).show();
+                                    // Toast.makeText(getContext(),"rrrresponse_enterrr:",Toast.LENGTH_LONG).show();
                                     //singleItem.add(new SingleItemModel(name,image,udate));
                                     //allSampleData.add(new DataModel(name,image,udate,categoryv));
                                     int isliked = student.getInt("like_unlike");
@@ -335,21 +312,21 @@ public class VideoFragment extends Fragment implements VideoAdapter.ItemListener
 
                           /*  my_recycler_view.setHasFixedSize(true);
                             Log.d("allSampleDatas",""+allSampleData.size()+"--"+allSampleData.toString());
-                            RecyclerViewDataAdapter adapter = new RecyclerViewDataAdapter(context, allSampleData);
+                            RecyclerViewDataAdapter adapter = new RecyclerViewDataAdapter(getContext(), allSampleData);
 
-                            my_recycler_view.setLayoutManager(new LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false));
+                            my_recycler_view.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
                             //my_recycler_view.setLayoutManager(new GridLayoutManager(getActivity(), 2));
                             my_recycler_view.setAdapter(adapter); */
 
-                                adapter = new VideoAdapter(context, allSampleData, VideoFragment.this);
+                                adapter = new VideoAdapter(getContext(), allSampleData, VideoFragment.this);
                                 my_recycler_view.setAdapter(adapter);
 
-                                GridLayoutManager manager = new GridLayoutManager(context, 2, GridLayoutManager.VERTICAL, false);
+                                GridLayoutManager manager = new GridLayoutManager(getContext(), 2, GridLayoutManager.VERTICAL, false);
                                 my_recycler_view.setLayoutManager(manager);
 
                             } catch (JSONException e) {
                                 e.printStackTrace();
-                                Toast.makeText(context, "" + e.getMessage(), Toast.LENGTH_SHORT).show();
+                                Toast.makeText(getContext(), "" + e.getMessage(), Toast.LENGTH_SHORT).show();
                                 Log.d("catch_f", "" + e.getMessage());
                                 pDialog.dismiss();
                                 no_rodr.setVisibility(View.VISIBLE);
@@ -364,8 +341,8 @@ public class VideoFragment extends Fragment implements VideoAdapter.ItemListener
                     @Override
                     public void onErrorResponse(VolleyError error){
                         // Do something when error occurred
-                        //Snackbar.make(context,"Error...", Snackbar.LENGTH_LONG).show();
-                        Toast.makeText(context, "verror"+error.getMessage(), Toast.LENGTH_SHORT).show();
+                        //Snackbar.make(getContext(),"Error...", Snackbar.LENGTH_LONG).show();
+                        Toast.makeText(getContext(), "verror"+error.getMessage(), Toast.LENGTH_SHORT).show();
                         Log.d("verror",""+error.getMessage());
                         pDialog.dismiss();
                         no_rodr.setVisibility(View.VISIBLE);
@@ -378,15 +355,15 @@ public class VideoFragment extends Fragment implements VideoAdapter.ItemListener
     }
     @Override
     public void onItemClick(DataModel item) {
-        Toast.makeText(context, item.getName()+ " is clicked", Toast.LENGTH_SHORT).show();
+        Toast.makeText(getContext(), item.getName()+ " is clicked", Toast.LENGTH_SHORT).show();
     }
 
     public void getAllAlbum(){
         //String url=Config.API_URL+ "app_service.php?type=getAlbemsListt&search_type=video&uid="+uid;
         String url=Config.API_URL+ "app_service.php?type=get_category&name=VIDEO&uid="+uid;
-        RequestQueue requestQueue = Volley.newRequestQueue(context);
+        RequestQueue requestQueue = Volley.newRequestQueue(getContext());
 
-        final Dialog pDialog = new Dialog(context);
+        final Dialog pDialog = new Dialog(getContext());
         pDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         pDialog.setContentView(R.layout.progress_dialog);
         pDialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
@@ -412,7 +389,7 @@ public class VideoFragment extends Fragment implements VideoAdapter.ItemListener
                                 //item_name.put(name1,album_name)
                                  if(product_count>0) {
                                      item_name.put(name, String.valueOf(id));
-                                     //Toast.makeText(context,""+product_count,Toast.LENGTH_LONG).show();
+                                     //Toast.makeText(getContext(),""+product_count,Toast.LENGTH_LONG).show();
                                  }
                                  else{
 
@@ -427,7 +404,7 @@ public class VideoFragment extends Fragment implements VideoAdapter.ItemListener
                         }
                         catch (JSONException e){
                             e.printStackTrace();
-                            Toast.makeText(context, ""+e.getMessage(), Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getContext(), ""+e.getMessage(), Toast.LENGTH_SHORT).show();
                             Log.d("catch_f",""+e.getMessage());
                         }
                     }
@@ -435,7 +412,7 @@ public class VideoFragment extends Fragment implements VideoAdapter.ItemListener
                 new com.android.volley.Response.ErrorListener(){
                     @Override
                     public void onErrorResponse(VolleyError error){
-                        Toast.makeText(context, error.getMessage(), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getContext(), error.getMessage(), Toast.LENGTH_SHORT).show();
                         Log.d("verror",""+error.getMessage());
                          pDialog.dismiss();
                     }
@@ -448,8 +425,8 @@ public class VideoFragment extends Fragment implements VideoAdapter.ItemListener
     public void getVideo(final String aid){
         String url=Config.API_URL+"app_service.php?type=getMyAlbemsListt&search_type=video&uid="+uid+"&my_id="+uid+"&album_id="+aid;
         // Initialize a new RequestQueue instance
-        RequestQueue requestQueue = Volley.newRequestQueue(context);
-        final Dialog pDialog = new Dialog(context);
+        RequestQueue requestQueue = Volley.newRequestQueue(getContext());
+        final Dialog pDialog = new Dialog(getContext());
         pDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         pDialog.setContentView(R.layout.progress_dialog);
         pDialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
@@ -529,13 +506,13 @@ public class VideoFragment extends Fragment implements VideoAdapter.ItemListener
                             Log.d("allsampledatav", allSampleDatamore.toString());
                             //my_recycler_view.setHasFixedSize(true);
                             Log.d("allSampleDatas",""+allSampleDatamore.size()+"--"+allSampleDatamore.toString());
-                            adapterr = new MyVideoDataAdapter(context,allSampleDatamore,item_name);
-                            recycler_view_load_more.setLayoutManager(new LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false));
+                            adapterr = new MyVideoDataAdapter(getContext(),allSampleDatamore,item_name);
+                            recycler_view_load_more.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
                             recycler_view_load_more.setAdapter(adapterr);
                         }
                         catch (JSONException e){
                             e.printStackTrace();
-                            Toast.makeText(context, ""+e.getMessage(), Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getContext(), ""+e.getMessage(), Toast.LENGTH_SHORT).show();
                             Log.d("catch_f",""+e.getMessage());
                             pDialog.dismiss();
                         }
@@ -544,7 +521,7 @@ public class VideoFragment extends Fragment implements VideoAdapter.ItemListener
                 new com.android.volley.Response.ErrorListener(){
                     @Override
                     public void onErrorResponse(VolleyError error){
-                        Toast.makeText(context, error.getMessage(), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getContext(), error.getMessage(), Toast.LENGTH_SHORT).show();
                         Log.d("verror",""+error.getMessage());
                          pDialog.dismiss();
                     }
@@ -556,7 +533,7 @@ public class VideoFragment extends Fragment implements VideoAdapter.ItemListener
     }
 
     public void getVideoMores(final String cname){
-        final Dialog pDialog = new Dialog(context);
+        final Dialog pDialog = new Dialog(getContext());
         pDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         pDialog.setContentView(R.layout.progress_dialog);
         pDialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
@@ -574,7 +551,7 @@ public class VideoFragment extends Fragment implements VideoAdapter.ItemListener
             url = Config.API_URL+ "app_service.php?type=search_all_items&search_type=VIDEO&category=" +cname+ "&search_data=&uid=" + uid + "&my_id=" + uid;
 
         }
-        RequestQueue requestQueue = Volley.newRequestQueue(context);
+        RequestQueue requestQueue = Volley.newRequestQueue(getContext());
         JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(
                 Request.Method.GET,
                 url,
@@ -663,17 +640,17 @@ public class VideoFragment extends Fragment implements VideoAdapter.ItemListener
                             Log.d("allSampleDatas",""+allSampleDatamore.size()+"--"+allSampleDatamore.toString());
                             HashMap<String,String> item_loadmore=new HashMap<>();
                             item_loadmore.put("loadmore","loadmore");
-                            //adapterr = new MyImageVideoDataAdapter(context, allSampleDatamore,item_loadmore);
-                            //recycler_view_load_more.setLayoutManager(new LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false));
+                            //adapterr = new MyImageVideoDataAdapter(getContext(), allSampleDatamore,item_loadmore);
+                            //recycler_view_load_more.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
                             //recycler_view_load_more.setAdapter(adapterr);
-                            adapterr = new MyVideoDataAdapter(context,allSampleDatamore,item_loadmore);
-                            recycler_view_load_more.setLayoutManager(new LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false));
+                            adapterr = new MyVideoDataAdapter(getContext(),allSampleDatamore,item_loadmore);
+                            recycler_view_load_more.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
                             recycler_view_load_more.setAdapter(adapterr);
                         }
                         catch (JSONException e){
                             e.printStackTrace();
                             pDialog.dismiss();
-                            Toast.makeText(context, ""+e.getMessage(),Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getContext(), ""+e.getMessage(),Toast.LENGTH_SHORT).show();
                             Log.d("catch_f",""+e.getMessage());
                         }
                     }
@@ -681,7 +658,7 @@ public class VideoFragment extends Fragment implements VideoAdapter.ItemListener
                 new com.android.volley.Response.ErrorListener(){
                     @Override
                     public void onErrorResponse(VolleyError error){
-                        Toast.makeText(context, error.getMessage(), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getContext(), error.getMessage(), Toast.LENGTH_SHORT).show();
                         pDialog.dismiss();
                         Log.d("verror",""+error.getMessage());
                     }

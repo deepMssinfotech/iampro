@@ -32,22 +32,22 @@ public class LoadingActivity extends AppCompatActivity {
 
         }
         */
-        String id = PrefManager.getLoginDetail(this, "id");
-        PrefManager.updateUserData(this, id);
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                Intent mainIntent = new Intent(LoadingActivity.this, WelcomeActivity.class);
-                //Intent mainIntent = new Intent(LoadingActivity.this, MainActivity.class);
-                Intent intent = getIntent();
-                String url = intent.getStringExtra("url");
-                if(url!=null) {
-                    intent.putExtra("url",url);
+            String id = PrefManager.getLoginDetail(this, "id");
+            PrefManager.updateUserData(this, id);
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    Intent mainIntent = new Intent(LoadingActivity.this, WelcomeActivity.class);
+                    //Intent mainIntent = new Intent(LoadingActivity.this, MainActivity.class);
+                    Intent intent = getIntent();
+                    String url = intent.getStringExtra("url");
+                    if(url!=null) {
+                        intent.putExtra("url",url);
+                    }
+                    startActivity(mainIntent);
+                    finish();
                 }
-                startActivity(mainIntent);
-                finish();
-            }
-        }, 4000);
+            }, 3500);
 
     }
 

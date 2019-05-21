@@ -41,32 +41,7 @@ import java.util.Map;
 
 public class function {
 
-
     public static void loadFragment(Context context, Fragment fragment, Bundle args) {
-        // create a FragmentManager
-        String FragemntName = fragment.getClass().getName();
-        AppCompatActivity activity = (AppCompatActivity) context;
-        FragmentManager fm = activity.getSupportFragmentManager(); //getFragmentManager();
-        Fragment tmp = fm.findFragmentByTag(FragemntName);
-        //Toast.makeText(context,FragemntName+"="+Config.CURRENT_FRAGMENT,Toast.LENGTH_LONG).show();
-        if (FragemntName == Config.CURRENT_FRAGMENT) {
-            //Toast.makeText(context,"You are already in same page",Toast.LENGTH_LONG).show();
-            //return;
-        }
-        // create a FragmentTransaction to begin the transaction and replace the Fragment
-        if(args != null){
-            fragment.setArguments(args);
-        }
-        FragmentTransaction fragmentTransaction = fm.beginTransaction();
-        // replace the FrameLayout with new Fragment
-        fragmentTransaction.add(android.R.id.content, fragment, FragemntName);
-        fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
-        fragmentTransaction.addToBackStack(null);
-        fragmentTransaction.commit(); // save the changes
-        Config.CURRENT_FRAGMENT = FragemntName;
-        //Toast.makeText(context,"You are in page : "+FragemntName,Toast.LENGTH_LONG).show();
-    }
-    public static void updateFragment(Context context, Fragment fragment, Bundle args) {
         // create a FragmentManager
         AppCompatActivity activity = (AppCompatActivity) context;
         FragmentManager fm = activity.getSupportFragmentManager(); //getFragmentManager();
@@ -84,9 +59,10 @@ public class function {
         // replace the FrameLayout with new Fragment
         fragmentTransaction.add(android.R.id.content, fragment, fragment.getClass().getName());
         fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
-        fragmentTransaction.disallowAddToBackStack();
+        fragmentTransaction.addToBackStack(null);
         fragmentTransaction.commit(); // save the changes
     }
+
     public static void addtocart(Context context,String pid,String qty,String price){
         String url = Config.API_URL+ "cart.php?type=addtocart&p_type=product&pid="+pid+"&qty="+qty+"&price="+price+"&uid="+ PrefManager.getLoginDetail(context,"id") +"&ip_address="+ Config.IP_ADDRESS;
         Log.d(Config.TAG+"cart",url);
@@ -102,7 +78,7 @@ public class function {
                         public void onResponse(String response) {
                             //loading.dismiss();
                             Config.ResponceResult = response;
-                            Log.e(Config.TAG,"result is : "+response);
+                            //Log.d(Config.TAG,"result is : "+response);
                         }
                     }, new Response.ErrorListener() {
                 @Override

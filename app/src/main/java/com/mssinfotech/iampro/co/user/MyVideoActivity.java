@@ -16,7 +16,6 @@ import android.provider.MediaStore;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AppCompatActivity;
@@ -378,8 +377,15 @@ public class MyVideoActivity extends Fragment implements MyVideoAdapter.ItemList
             Config.showInternetDialog(context);
             return;
         }
+        /*dialog = new ProgressDialog(context);
+        dialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+        dialog.setMessage("Uploading photo, please wait.");
+        dialog.setMax(100);
+        dialog.setCancelable(true);
+        dialog.show(); */
+       // CreateProgressDialog();
 
-        final Dialog dialog = new Dialog(context);
+        final Dialog dialog = new Dialog(this.getContext());
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setContentView(R.layout.progress_dialog);
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
@@ -421,6 +427,48 @@ public class MyVideoActivity extends Fragment implements MyVideoAdapter.ItemList
 
     }
 
+    public void CreateProgressDialog()
+    {
+        progressdialog = new ProgressDialog(MyVideoActivity.this.getContext());
+        progressdialog.setIndeterminate(false);
+        progressdialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+        progressdialog.setCancelable(true);
+        progressdialog.setMax(100);
+        progressdialog.show();
+    }
+
+    public void ShowProgressDialog()
+    {
+        status = 0;
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                while(status < 100){
+                    status +=1;
+                    try{
+                        Thread.sleep(200);
+                    }catch(InterruptedException e){
+                        e.printStackTrace();
+                    }
+
+                    handler.post(new Runnable() {
+                        @Override
+                        public void run() {
+
+                            progressdialog.setProgress(status);
+
+                            if(status == 100){
+
+                                progressdialog.dismiss();
+                            }
+                        }
+                    });
+                }
+            }
+        }).start();
+
+    }
+
 
     @Override
     public void onItemClick(MyImageModel item) {
@@ -430,11 +478,11 @@ public class MyVideoActivity extends Fragment implements MyVideoAdapter.ItemList
         String url=Config.API_URL+ "app_service.php?type=getAlbemsListt&search_type=video&uid="+uid;
         Log.e("url",url);
         RequestQueue requestQueue = Volley.newRequestQueue(context);
-        /*final Dialog dialog = new Dialog(context);
+        final Dialog dialog = new Dialog(this.getContext());
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setContentView(R.layout.progress_dialog);
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
-        dialog.show();*/
+        dialog.show();
         JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(
                 Request.Method.GET,
                 url,
@@ -458,13 +506,15 @@ public class MyVideoActivity extends Fragment implements MyVideoAdapter.ItemList
                                 getVideo(data);
                                 Log.d("Keyset",""+data);
                             }
-                            //if (dialog.isShowing())dialog.dismiss();
+                            if (dialog.isShowing())
+                                dialog.dismiss();
                         }
                         catch (JSONException e){
                             e.printStackTrace();
                             Toast.makeText(context, ""+e.getMessage(), Toast.LENGTH_SHORT).show();
                             Log.d("catch_f",""+e.getMessage());
-                            //if (dialog.isShowing())dialog.dismiss();
+                            if (dialog.isShowing())
+                                dialog.dismiss();
                         }
                     }
                 },
@@ -473,7 +523,8 @@ public class MyVideoActivity extends Fragment implements MyVideoAdapter.ItemList
                     public void onErrorResponse(VolleyError error){
                         Toast.makeText(context, error.getMessage(), Toast.LENGTH_SHORT).show();
                         Log.d("verror",""+error.getMessage());
-                        //if (dialog.isShowing())dialog.dismiss();
+                        if (dialog.isShowing())
+                            dialog.dismiss();
                     }
                 }
         );
@@ -485,13 +536,11 @@ public class MyVideoActivity extends Fragment implements MyVideoAdapter.ItemList
         String url=Config.API_URL+"app_service.php?type=getMyAlbemsListt&search_type=video&uid="+uid+"&my_id="+uid+"&album_id="+aid;
         Log.d("urlimggg",""+url);
         RequestQueue requestQueue = Volley.newRequestQueue(context);
-        /*
-        final Dialog dialog = new Dialog(context);
+        final Dialog dialog = new Dialog(this.getContext());
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setContentView(R.layout.progress_dialog);
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
         dialog.show();
-        */
         // Initialize a new JsonArrayRequest instance
         JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(
                 Request.Method.GET,
@@ -572,13 +621,15 @@ public class MyVideoActivity extends Fragment implements MyVideoAdapter.ItemList
                             adapterr = new MyVideoDataAdapter(context,allSampleData,item_name);
                             recyclerView.setLayoutManager(new LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false));
                             recyclerView.setAdapter(adapterr);
-                            //if (dialog.isShowing())dialog.dismiss();
+                              if (dialog.isShowing())
+                                  dialog.dismiss();
                         }
                         catch (JSONException e){
                             e.printStackTrace();
                             Toast.makeText(context, ""+e.getMessage(), Toast.LENGTH_SHORT).show();
                             Log.d("catch_f",""+e.getMessage());
-                            //if (dialog.isShowing())dialog.dismiss();
+                            if (dialog.isShowing())
+                                dialog.dismiss();
                         }
                     }
                 },
@@ -587,7 +638,8 @@ public class MyVideoActivity extends Fragment implements MyVideoAdapter.ItemList
                     public void onErrorResponse(VolleyError error){
                         Toast.makeText(context, error.getMessage(), Toast.LENGTH_SHORT).show();
                         Log.d("verror",""+error.getMessage());
-                        //if (dialog.isShowing())dialog.dismiss();
+                        if (dialog.isShowing())
+                            dialog.dismiss();
                     }
                 }
         );
@@ -663,7 +715,7 @@ public class MyVideoActivity extends Fragment implements MyVideoAdapter.ItemList
             return;
         }
         //CreateProgressDialog();
-        final Dialog dialog = new Dialog(context);
+        final Dialog dialog = new Dialog(this.getContext());
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setContentView(R.layout.progress_dialog);
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
@@ -737,7 +789,7 @@ public class MyVideoActivity extends Fragment implements MyVideoAdapter.ItemList
     @Override
     public void onCompleted(int serverResponseCode, byte[] serverResponseBody) {
         //Toast.makeText(getContext(),""+"Video uploaded successfully...",Toast.LENGTH_LONG).show();
-        /*AlertDialog.Builder builder = new AlertDialog.Builder(MyVideoActivity.context);
+        /*AlertDialog.Builder builder = new AlertDialog.Builder(MyVideoActivity.this.getContext());
         builder.setCancelable(true);
         builder.setTitle("Confirm!");
         builder.setMessage("Video uploaded successfully...");
@@ -757,28 +809,17 @@ public class MyVideoActivity extends Fragment implements MyVideoAdapter.ItemList
     public void onCancelled() {
 
     }
-    @Override
+   @Override
     public void onResume() {
+
         super.onResume();
         uploadReceiver.register(context);
-        if (Config.allowRefresh) {
-            Config.allowRefresh = false;
-            //Toast.makeText(context, "click from BACK", Toast.LENGTH_SHORT).show();
-            Fragment frg = null;
-            AppCompatActivity activity = (AppCompatActivity) context;
-            MyVideoActivity fragment = new MyVideoActivity();
-            frg = activity.getSupportFragmentManager().findFragmentByTag(fragment.getClass().getName());
-            final FragmentTransaction ft = activity.getSupportFragmentManager().beginTransaction();
-            ft.detach(frg);
-            ft.attach(frg);
-            ft.commit();
-        }
 
     }
     @Override
     public void onPause() {
         super.onPause();
-        uploadReceiver.unregister(context);
+        //uploadReceiver.unregister(context);
     }
     @Override
     public void onAttach(Context context) {

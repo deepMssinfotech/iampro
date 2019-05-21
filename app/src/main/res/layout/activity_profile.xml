@@ -4,7 +4,6 @@
     android:id="@+id/swiperefresh"
     android:layout_width="match_parent"
     android:scrollbars="none"
-    android:clickable="true"
     android:background="@color/white"
     android:layout_height="wrap_content">
 <RelativeLayout
@@ -66,7 +65,7 @@
                                 android:id="@+id/userbackgroud"
                                 android:src="@drawable/profile_background"
                                 android:layout_width="match_parent"
-                                android:scaleType="fitXY"
+                                android:scaleType="fitCenter"
                                 android:layout_height="match_parent" />
                     <RelativeLayout
                         android:layout_marginBottom="@dimen/profile_icon_margin_bottom"

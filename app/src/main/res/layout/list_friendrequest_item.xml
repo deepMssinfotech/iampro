@@ -7,33 +7,31 @@
     android:layout_gravity="center_vertical"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     app:mode="same_level"
-    android:clickable="true"
-    app:dragFromEdge="right"
-   >
+    app:dragFromEdge="right">
+    <!--  app:dragFromEdge="right" height=88dp
+     com.mssinfotech.iampro.co.swipe.SwipeRevealLayout-->
     <FrameLayout
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:background="@drawable/user_background"
         android:layout_height="match_parent">
 
         <LinearLayout
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:gravity="center_vertical|end"
             android:layout_gravity="center_vertical"
-            android:padding="10dp"
-            android:background="@drawable/thin_border"
+            android:paddingStart="20dp"
+            android:paddingEnd="20dp"
             android:orientation="horizontal">
             <LinearLayout
-                android:id="@+id/ll_viewProfile"
-                android:layout_weight="1"
-                android:layout_width="0dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:padding="5dp"
+                android:layout_weight="1"
+                android:layout_marginLeft="10dp"
                 android:orientation="vertical">
 
                 <de.hdodenhof.circleimageview.CircleImageView
                     android:id="@+id/imageView_viewProfile"
-                    android:background="@drawable/user_slide_info_view_profile"
                     android:layout_width="40dp"
                     android:layout_height="40dp"
                     android:padding="10dp"
@@ -42,28 +40,23 @@
                     app:civ_border_color="#FF000000"/>
                 <TextView
                     android:id="@+id/tv_viewProfile"
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:lines="2"
-                    android:layout_marginTop="5dp"
-                    android:textSize="10dp"
+                    android:lines="1"
                     android:layout_gravity="center_horizontal"
                     android:gravity="center_horizontal"
                     android:text="View Profile"/>
             </LinearLayout>
 
             <LinearLayout
-                android:id="@+id/ll_frequest"
-                android:background="@drawable/thin_border_left"
-                android:layout_weight="1"
-                android:layout_width="0dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:padding="5dp"
+                android:layout_marginLeft="10dp"
+                android:layout_weight="1"
                 android:orientation="vertical">
 
                 <de.hdodenhof.circleimageview.CircleImageView
                     android:id="@+id/imageView_frequest"
-                    android:background="@drawable/user_slide_nfo"
                     android:layout_width="40dp"
                     android:layout_height="40dp"
                     android:padding="10dp"
@@ -72,27 +65,22 @@
                     app:civ_border_color="#FF000000"/>
                 <TextView
                     android:id="@+id/tv_fRequest"
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:lines="2"
-                    android:layout_marginTop="5dp"
+                    android:lines="1"
                     android:layout_gravity="center_horizontal"
                     android:gravity="center_horizontal"
-                    android:textSize="10dp"
                     android:text="Friend Request"/>
             </LinearLayout>
             <LinearLayout
-                android:id="@+id/ll_message"
-                android:background="@drawable/thin_border_left"
-                android:layout_weight="1"
-                android:layout_width="0dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:padding="5dp"
+                android:layout_weight="1"
+                android:layout_marginLeft="10dp"
                 android:orientation="vertical">
 
                 <de.hdodenhof.circleimageview.CircleImageView
                     android:id="@+id/imageView_message"
-                    android:background="@drawable/user_slide_info_message"
                     android:layout_width="40dp"
                     android:layout_height="40dp"
                     android:padding="10dp"
@@ -101,40 +89,31 @@
                     app:civ_border_color="#FF000000"/>
                 <TextView
                     android:id="@+id/tv_sendMessage"
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
-                    android:lines="2"
-                    android:layout_marginTop="5dp"
-                    android:textSize="10dp"
                     android:gravity="center_horizontal"
                     android:text="Message"/>
             </LinearLayout>
             <LinearLayout
-                android:id="@+id/ll_block"
-                android:background="@drawable/thin_border_left"
-                android:layout_weight="1"
-                android:layout_width="0dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:padding="5dp"
+                android:layout_weight="1"
+                android:layout_marginLeft="10dp"
                 android:orientation="vertical">
                 <de.hdodenhof.circleimageview.CircleImageView
                     android:id="@+id/imageView_block"
                     android:layout_width="40dp"
-                    android:background="@drawable/unblockicone"
                     android:layout_height="40dp"
                     android:padding="10dp"
                     android:layout_gravity="center"
                     app:civ_border_width="0dp" />
                 <TextView
                     android:id="@+id/tv_blockUser"
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
                     android:gravity="center_horizontal"
-                    android:textSize="10dp"
-                    android:layout_marginTop="5dp"
-                    android:lines="2"
                     android:text="Block"/>
             </LinearLayout>
         </LinearLayout>
@@ -143,11 +122,14 @@
 
     <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:clickable="true">
 
-        <FrameLayout
+        <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            xmlns:card_view="http://schemas.android.com/tools"
             android:orientation="vertical">
 
             <RelativeLayout
@@ -205,7 +187,7 @@
                                 android:layout_width="77dp"
                                 android:layout_height="77dp"
                                 android:layout_gravity="center"
-                                android:src="@drawable/iampro"
+                                android:src="@drawable/user_slide_info_message"
                                 app:civ_border_color="#FF000000"/>
 
                             <LinearLayout
@@ -235,8 +217,6 @@
                             </LinearLayout>
                         </LinearLayout>
                         <LinearLayout
-                            android:layout_gravity="end"
-                            android:gravity="end"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:orientation="horizontal">
@@ -255,7 +235,7 @@
                                     android:background="@drawable/user_circular_corner"
                                     android:layout_height="20dp"
                                     android:textColor="@color/white"
-                                    android:text="0"
+                                    android:text="4"
                                     android:layout_marginTop="5dp"/>
                                 <TextView
                                     android:layout_marginLeft="5dp"
@@ -266,7 +246,7 @@
                                     android:drawableLeft="@drawable/ic_video_white"
                                     android:background="@drawable/user_circular_corner"
                                     android:drawablePadding="7dp"
-                                    android:text="0"
+                                    android:text="1"
                                     android:textColor="@color/white"
                                     android:layout_marginTop="5dp"/>
                                 <TextView
@@ -296,7 +276,7 @@
                                     android:drawableLeft="@drawable/product_white"
                                     android:textColor="@color/white"
                                     android:drawablePadding="7dp"
-                                    android:text="0"
+                                    android:text="4"
                                     android:layout_marginTop="5dp"/>
                                 <TextView
                                     android:layout_marginLeft="5dp"
@@ -305,7 +285,7 @@
                                     android:layout_width="70dp"
                                     android:layout_height="20dp"
                                     android:background="@drawable/user_circular_corner"
-                                    android:text="0"
+                                    android:text="1"
                                     android:drawableLeft="@drawable/provide_white"
                                     android:drawablePadding="7dp"
                                     android:textColor="@color/white"

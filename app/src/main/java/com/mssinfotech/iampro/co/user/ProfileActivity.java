@@ -15,7 +15,6 @@ import android.provider.MediaStore;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewCompat;
 import android.support.v4.widget.NestedScrollView;
@@ -91,6 +90,7 @@ public class ProfileActivity extends Fragment implements AllFeedAdapter.ItemList
     private static final String TAG = ProfileActivity.class.getSimpleName();
     private static final int FEED_LIMIT=15;
     private static int FEED_START=0;
+
     private List<FeedItem> feedItems;
     ImageView userbackgroud;
     CircleImageView userimage;
@@ -112,7 +112,7 @@ public class ProfileActivity extends Fragment implements AllFeedAdapter.ItemList
     public static String img_name_background= "background_"+String.valueOf(System.currentTimeMillis())+".jpg";
     View view;
     String FrindStatus = "";
-    // ProgressDialog loading = ProgressDialog.show(context,"Processing...","Please wait...",false,false);
+    // ProgressDialog loading = ProgressDialog.show(getContext(),"Processing...","Please wait...",false,false);
     public static String imageType;
     ImageView  changeImage,changeBackground_Image;
     public static final int REQUEST_IMAGE = 100;
@@ -125,6 +125,11 @@ public class ProfileActivity extends Fragment implements AllFeedAdapter.ItemList
     Handler handlers = new Handler();
     FloatingActionButton floatingActionButton;
 
+    public void onBackPressed()
+    {
+        FragmentManager fm =new ProfileActivity().getActivity().getSupportFragmentManager();
+        fm.popBackStack();
+    }
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup parent, Bundle savedInstanceState) {
         // Defines the xml file for the fragment
@@ -305,9 +310,9 @@ public class ProfileActivity extends Fragment implements AllFeedAdapter.ItemList
             @Override
             public void onClick(View view) {
                 //Toast.makeText(context,"redirect to chat page...",Toast.LENGTH_LONG).show();
-                 Intent intent=new Intent(context, ChatToUser.class);
+                 Intent intent=new Intent(getContext(), ChatToUser.class);
                   intent.putExtra("id",String.valueOf(fid));
-                  context.startActivity(intent);
+                  getContext().startActivity(intent);
             }
         });
 
@@ -331,7 +336,7 @@ public class ProfileActivity extends Fragment implements AllFeedAdapter.ItemList
             }
         });
 
-        if (PrefManager.isLogin(context)){
+        if (PrefManager.isLogin(ProfileActivity.this.getContext())){
             changeBackground_Image.setVisibility(View.VISIBLE);
             changeImage.setVisibility(View.VISIBLE);
         }
@@ -340,26 +345,8 @@ public class ProfileActivity extends Fragment implements AllFeedAdapter.ItemList
             changeImage.setVisibility(View.GONE);
         }
     }
-    @Override
-    public void onResume() {
-        super.onResume();
-        if (Config.allowRefresh) {
-            Config.allowRefresh = false;
-            //Toast.makeText(context, "click from BACK", Toast.LENGTH_SHORT).show();
-            Fragment frg = null;
-            AppCompatActivity activity = (AppCompatActivity) context;
-            ProfileActivity fragment = new ProfileActivity();
-            frg = activity.getSupportFragmentManager().findFragmentByTag(fragment.getClass().getName());
-            final FragmentTransaction ft = activity.getSupportFragmentManager().beginTransaction();
-            ft.detach(frg);
-            ft.attach(frg);
-            ft.commit();
-        }
-
-
-    }
     private void showImagePickerOptions() {
-        ImagePickerActivity.showImagePickerOptions(context, new ImagePickerActivity.PickerOptionListener() {
+        ImagePickerActivity.showImagePickerOptions(getContext(), new ImagePickerActivity.PickerOptionListener() {
             @Override
             public void onTakeCameraSelected() {
                 launchCameraIntent();
@@ -372,7 +359,7 @@ public class ProfileActivity extends Fragment implements AllFeedAdapter.ItemList
         });
     }
     private void launchCameraIntent() {
-        Intent intent = new Intent(context, ImagePickerActivity.class);
+        Intent intent = new Intent(getContext(), ImagePickerActivity.class);
         intent.putExtra(ImagePickerActivity.INTENT_IMAGE_PICKER_OPTION,ImagePickerActivity.REQUEST_IMAGE_CAPTURE);
 
         // setting aspect ratio
@@ -394,7 +381,7 @@ public class ProfileActivity extends Fragment implements AllFeedAdapter.ItemList
         startActivityForResult(intent, REQUEST_IMAGE);
     }
     private void launchGalleryIntent() {
-        Intent intent = new Intent(context, ImagePickerActivity.class);
+        Intent intent = new Intent(getContext(), ImagePickerActivity.class);
         intent.putExtra(ImagePickerActivity.INTENT_IMAGE_PICKER_OPTION, ImagePickerActivity.REQUEST_GALLERY_IMAGE);
 
         // setting aspect ratio
@@ -412,7 +399,7 @@ public class ProfileActivity extends Fragment implements AllFeedAdapter.ItemList
     private void gteUsrDetail(String id){
         String myurl = Config.API_URL + "ajax.php?type=friend_detail&id=" + fid + "&uid=" + PrefManager.getLoginDetail(context,"id");
         Log.d(Config.TAG, myurl);
-        final Dialog dialog = new Dialog(context);
+        final Dialog dialog = new Dialog(this.getContext());
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setContentView(R.layout.progress_dialog);
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
@@ -608,7 +595,7 @@ public class ProfileActivity extends Fragment implements AllFeedAdapter.ItemList
         //CreateProgressDialog();
         //Toast.makeText(getApplicationContext(), "Video upload remain pleasw wait....", Toast.LENGTH_LONG).show();
         //return;
-        final Dialog dialog = new Dialog(context);
+        final Dialog dialog = new Dialog(this.getContext());
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setContentView(R.layout.progress_dialog);
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
@@ -647,7 +634,7 @@ public class ProfileActivity extends Fragment implements AllFeedAdapter.ItemList
         //CreateProgressDialog();
         //Toast.makeText(getApplicationContext(), "Video upload remain pleasw wait....", Toast.LENGTH_LONG).show();
         //return;
-        final Dialog dialog = new Dialog(context);
+        final Dialog dialog = new Dialog(this.getContext());
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setContentView(R.layout.progress_dialog);
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
@@ -735,14 +722,14 @@ public class ProfileActivity extends Fragment implements AllFeedAdapter.ItemList
     public void getFeed(int start){
         String My_id=PrefManager.getLoginDetail(context,"id");
 
-        final Dialog dialog = new Dialog(context);
+        final Dialog dialog = new Dialog(ProfileActivity.this.getContext());
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setContentView(R.layout.progress_dialog);
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
         dialog.show();
 
          // AlertDialog progressDialog;
-        //progressDialog = new SpotsDialog(context, R.style.Custom);
+        //progressDialog = new SpotsDialog(getContext(), R.style.Custom);
 
         //loading.setContentView(R.layout.confirm_popup);
         URL_FEED = Config.API_URL+ "feed_service.php?type=AllFeeds&start="+start+"&limit="+FEED_LIMIT+"&fid=" +fid+ "&uid=" +My_id+ "&my_id=" +My_id;
@@ -834,7 +821,7 @@ public class ProfileActivity extends Fragment implements AllFeedAdapter.ItemList
                                         fimage_path = Config.URL_ROOT + "uploads/album/150/150/" + image;
                                     } else if (type.equalsIgnoreCase("VIDEO")) {
                                         ///uploads/album/400/500/' /uploads/v_image/'
-                                        fimage_path = Config.URL_ROOT + "uploads/v_image/" + image;
+                                        fimage_path = Config.URL_ROOT + "uploads/video/" + detail;
                                     }
                                     //PRODUCT
                                     else if (type.equalsIgnoreCase("PRODUCT")) {
@@ -937,7 +924,7 @@ public class ProfileActivity extends Fragment implements AllFeedAdapter.ItemList
 
     public void CreateProgressDialog()
     {
-        progressdialog = new ProgressDialog(context);
+        progressdialog = new ProgressDialog(ProfileActivity.this.getContext());
         progressdialog.setIndeterminate(false);
         progressdialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
         progressdialog.setCancelable(true);

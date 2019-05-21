@@ -1,16 +1,13 @@
 package com.mssinfotech.iampro.co.tab;
 import android.app.Dialog;
 import android.app.ProgressDialog;
-import android.content.Context;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.content.res.AppCompatResources;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
@@ -47,7 +44,6 @@ import com.mssinfotech.iampro.co.model.SectionImageModel;
 import com.mssinfotech.iampro.co.model.SingleItemModel;
 import com.mssinfotech.iampro.co.common.Config;
 import com.mssinfotech.iampro.co.user.MyProductActivity;
-import com.mssinfotech.iampro.co.user.ProfileActivity;
 import com.mssinfotech.iampro.co.utils.PrefManager;
 import com.viewpagerindicator.CirclePageIndicator;
 
@@ -78,7 +74,6 @@ public class ProductFragment extends Fragment implements ProductAdapter.ItemList
       ImageView lproduct_iv;
     ImageView no_rodr;
     View views;
-    Context context;
     //sliderr
     private static ViewPager mPager;
     private static int currentPage = 0;
@@ -96,7 +91,7 @@ public class ProductFragment extends Fragment implements ProductAdapter.ItemList
 
     public  void  likeProduct(){
         String url=Config.API_URL+ "app_service.php?type=like_me&id=5&uid=693&ptype=product";
-        Toast.makeText(context,"Frm fragment",Toast.LENGTH_LONG).show();
+        Toast.makeText(getContext(),"Frm fragment",Toast.LENGTH_LONG).show();
     }
 
     @Override
@@ -105,7 +100,6 @@ public class ProductFragment extends Fragment implements ProductAdapter.ItemList
         View view=inflater.inflate(R.layout.fragment_product, container, false);
         //oolbar =view.findViewById(R.id.toolbar);
         views=view;
-        context = getContext();
 
         return view;
     }
@@ -114,8 +108,8 @@ public class ProductFragment extends Fragment implements ProductAdapter.ItemList
         super.onViewCreated(view, savedInstanceState);
 
         //createDummyData();
-        if (PrefManager.isLogin(context)) {
-            String id = PrefManager.getLoginDetail(context, "id");
+        if (PrefManager.isLogin(getContext())) {
+            String id = PrefManager.getLoginDetail(getContext(), "id");
             uid = Integer.parseInt(id);
         }
         getProduct();
@@ -125,41 +119,25 @@ public class ProductFragment extends Fragment implements ProductAdapter.ItemList
         btn_load_more=view.findViewById(R.id.btn_load_more);
         imageModelArrayList=new ArrayList<>();
           lproduct_iv=view.findViewById(R.id.lproduct_iv);
-        //lproduct_iv.setBackground(context.getResources().getDrawable(R.drawable.latestproduct));
+        //lproduct_iv.setBackground(getContext().getResources().getDrawable(R.drawable.latestproduct));
         lproduct_iv.setVisibility(View.VISIBLE);
-        lproduct_iv.setBackground(AppCompatResources.getDrawable(context,R.drawable.latestproduct));
+        lproduct_iv.setBackground(AppCompatResources.getDrawable(getContext(),R.drawable.latestproduct));
         btn_load_more.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 //getProductmore();
                 //recycler_view_load_more.setVisibility(View.VISIBLE);
                 getAllAlbum();
-                //Toast.makeText(context,"loadmore",Toast.LENGTH_LONG).show();
+                //Toast.makeText(getContext(),"loadmore",Toast.LENGTH_LONG).show();
                 btn_load_more.setVisibility(View.GONE);
             }
         });
         getTopSlider();
     }
-    @Override
-    public void onResume() {
-        super.onResume();
-        if (Config.allowRefresh) {
-            Config.allowRefresh = false;
-            //Toast.makeText(context, "click from BACK", Toast.LENGTH_SHORT).show();
-            Fragment frg = null;
-            AppCompatActivity activity = (AppCompatActivity) context;
-            ProductFragment fragment = new ProductFragment();
-            frg = activity.getSupportFragmentManager().findFragmentByTag(fragment.getClass().getName());
-            final FragmentTransaction ft = activity.getSupportFragmentManager().beginTransaction();
-            ft.detach(frg);
-            ft.attach(frg);
-            ft.commit();
-        }
-    }
     private void init() {
 
         mPager = views.findViewById(R.id.pager);
-        mPager.setAdapter(new SlidingImage_Adapter(context,imageModelArrayList));
+        mPager.setAdapter(new SlidingImage_Adapter(getContext(),imageModelArrayList));
 
         CirclePageIndicator indicator = (CirclePageIndicator)views.findViewById(R.id.indicator);
 
@@ -214,7 +192,7 @@ public class ProductFragment extends Fragment implements ProductAdapter.ItemList
 
     private void getTopSlider(){
         final String url=Config.API_URL+ "index.php?type=get_slider&name=TOP_SLIDER";
-        RequestQueue requestQueue = Volley.newRequestQueue(context);
+        RequestQueue requestQueue = Volley.newRequestQueue(getContext());
         // Initialize a new JsonArrayRequest instance
         JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(
                 Request.Method.GET,
@@ -257,7 +235,7 @@ public class ProductFragment extends Fragment implements ProductAdapter.ItemList
                         catch (JSONException e){
                             //pDialog.dismiss();
                             e.printStackTrace();
-                            Toast.makeText(context, ""+e.getMessage(), Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getContext(), ""+e.getMessage(), Toast.LENGTH_SHORT).show();
                             Log.d("catch_f",""+e.getMessage());
                         }
                     }
@@ -267,8 +245,8 @@ public class ProductFragment extends Fragment implements ProductAdapter.ItemList
                     public void onErrorResponse(VolleyError error){
                         //pDialog.dismiss();
                         // Do something when error occurred
-                        //Snackbar.make(context,"Error...", Snackbar.LENGTH_LONG).show();
-                        Toast.makeText(context, "verror"+error.getMessage(), Toast.LENGTH_SHORT).show();
+                        //Snackbar.make(getContext(),"Error...", Snackbar.LENGTH_LONG).show();
+                        Toast.makeText(getContext(), "verror"+error.getMessage(), Toast.LENGTH_SHORT).show();
                         Log.d("verror",""+error.getMessage());
                     }
                 }
@@ -280,9 +258,9 @@ public class ProductFragment extends Fragment implements ProductAdapter.ItemList
     public void getAllAlbum(){
         //String url=Config.API_URL+ "app_service.php?type=getAlbemsListt&search_type=video&uid="+uid;
         String url=Config.API_URL+ "app_service.php?type=get_category&name=PRODUCT&uid="+uid;
-        RequestQueue requestQueue=Volley.newRequestQueue(context);
+        RequestQueue requestQueue=Volley.newRequestQueue(getContext());
 
-        final Dialog pDialog = new Dialog(this.context);
+        final Dialog pDialog = new Dialog(this.getContext());
         pDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         pDialog.setContentView(R.layout.progress_dialog);
         pDialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
@@ -314,7 +292,7 @@ public class ProductFragment extends Fragment implements ProductAdapter.ItemList
                                 //item_name.put(name1,album_name)
                                 if(product_count>0) {
                                     item_name.put(name, String.valueOf(id));
-                                    //Toast.makeText(context,""+product_count,Toast.LENGTH_LONG).show();
+                                    //Toast.makeText(getContext(),""+product_count,Toast.LENGTH_LONG).show();
                                 }
                                 else{
 
@@ -329,7 +307,7 @@ public class ProductFragment extends Fragment implements ProductAdapter.ItemList
                         }
                         catch (JSONException e){
                             e.printStackTrace();
-                            Toast.makeText(context, ""+e.getMessage(), Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getContext(), ""+e.getMessage(), Toast.LENGTH_SHORT).show();
                             Log.d("catch_f",""+e.getMessage());
                         }
                     }
@@ -337,7 +315,7 @@ public class ProductFragment extends Fragment implements ProductAdapter.ItemList
                 new com.android.volley.Response.ErrorListener(){
                     @Override
                     public void onErrorResponse(VolleyError error){
-                        Toast.makeText(context, error.getMessage(), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getContext(), error.getMessage(), Toast.LENGTH_SHORT).show();
                         Log.d("verror",""+error.getMessage());
                         pDialog.dismiss();
                     }
@@ -348,12 +326,12 @@ public class ProductFragment extends Fragment implements ProductAdapter.ItemList
         //getProvide();
     }
     public void getProduct(){
-        //int uid= Integer.parseInt(PrefManager.getLoginDetail(context,"id"));
+        //int uid= Integer.parseInt(PrefManager.getLoginDetail(getContext(),"id"));
         final String url =Config.API_URL+"app_service.php?type=all_product&uid="+uid+"&name=product&my_id="+uid;
         // Initialize a new RequestQueue instance
-        RequestQueue requestQueue = Volley.newRequestQueue(context);
+        RequestQueue requestQueue = Volley.newRequestQueue(getContext());
 
-        final Dialog pDialog = new Dialog(this.context);
+        final Dialog pDialog = new Dialog(this.getContext());
         pDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         pDialog.setContentView(R.layout.progress_dialog);
         pDialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
@@ -413,7 +391,7 @@ public class ProductFragment extends Fragment implements ProductAdapter.ItemList
 
                                     //SectionDataModel dm = new SectionDataModel();
                                     //dm.setHeaderTitle("Section " + i);
-                                    //Toast.makeText(context,"rrrresponse_enterrr:",Toast.LENGTH_LONG).show();
+                                    //Toast.makeText(getContext(),"rrrresponse_enterrr:",Toast.LENGTH_LONG).show();
                                     // singleItem.add(new SingleItemModel(name,image,udate));
                                     //allSampleData.add(new DataModel(name,image,udate,categoryv));
                                     int isliked = student.getInt("like_unlike");
@@ -428,22 +406,22 @@ public class ProductFragment extends Fragment implements ProductAdapter.ItemList
                             /*
                             my_recycler_view.setHasFixedSize(true);
                             Log.d("allSampleDatas",""+allSampleData.size()+"--"+allSampleData.toString());
-                            RecyclerViewDataAdapter adapter = new RecyclerViewDataAdapter(context, allSampleData);
-                            my_recycler_view.setLayoutManager(new LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false));
+                            RecyclerViewDataAdapter adapter = new RecyclerViewDataAdapter(getContext(), allSampleData);
+                            my_recycler_view.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
                             //my_recycler_view.setLayoutManager(new GridLayoutManager(getActivity(), 2));
                             my_recycler_view.setAdapter(adapter);
                              */
-                                //adapter = new RecyclerViewAdapter(context, allSampleData,ProductFragment.this);
+                                //adapter = new RecyclerViewAdapter(getContext(), allSampleData,ProductFragment.this);
                                 //adapter_product
-                                adapter_product = new ProductAdapter(context, allSampleData, ProductFragment.this);
+                                adapter_product = new ProductAdapter(getContext(), allSampleData, ProductFragment.this);
                                 my_recycler_view.setAdapter(adapter_product);
 
-                                GridLayoutManager manager = new GridLayoutManager(context, 2, GridLayoutManager.VERTICAL, false);
+                                GridLayoutManager manager = new GridLayoutManager(getContext(), 2, GridLayoutManager.VERTICAL, false);
                                 my_recycler_view.setLayoutManager(manager);
 
                             } catch (JSONException e) {
                                 e.printStackTrace();
-                                Toast.makeText(context, "" + e.getMessage(), Toast.LENGTH_SHORT).show();
+                                Toast.makeText(getContext(), "" + e.getMessage(), Toast.LENGTH_SHORT).show();
                                 Log.d("catch_f", "" + e.getMessage());
                                 pDialog.dismiss();
                                 no_rodr.setVisibility(View.VISIBLE);
@@ -458,8 +436,8 @@ public class ProductFragment extends Fragment implements ProductAdapter.ItemList
                     @Override
                     public void onErrorResponse(VolleyError error){
                         // Do something when error occurred
-                        //Snackbar.make(context,"Error...", Snackbar.LENGTH_LONG).show();
-                        Toast.makeText(context, error.getMessage(), Toast.LENGTH_SHORT).show();
+                        //Snackbar.make(getContext(),"Error...", Snackbar.LENGTH_LONG).show();
+                        Toast.makeText(getContext(), error.getMessage(), Toast.LENGTH_SHORT).show();
                         Log.d("verror",error.getMessage());
                          pDialog.dismiss();
                     }
@@ -471,7 +449,7 @@ public class ProductFragment extends Fragment implements ProductAdapter.ItemList
     }
     @Override
     public void onItemClick(DataModel item) {
-        //Toast.makeText(context, item.getName() + " is clicked", Toast.LENGTH_SHORT).show();
+        //Toast.makeText(getContext(), item.getName() + " is clicked", Toast.LENGTH_SHORT).show();
     }
 
     @Override
@@ -479,7 +457,7 @@ public class ProductFragment extends Fragment implements ProductAdapter.ItemList
 
     }
     public void getProductMores(final String cname){
-        final Dialog pDialog = new Dialog(this.context);
+        final Dialog pDialog = new Dialog(this.getContext());
         pDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         pDialog.setContentView(R.layout.progress_dialog);
         pDialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
@@ -498,7 +476,7 @@ public class ProductFragment extends Fragment implements ProductAdapter.ItemList
 
         }
          // Initialize a new RequestQueue instance
-        RequestQueue requestQueue = Volley.newRequestQueue(context);
+        RequestQueue requestQueue = Volley.newRequestQueue(getContext());
         JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(
                 Request.Method.GET,
                 url,
@@ -593,14 +571,14 @@ public class ProductFragment extends Fragment implements ProductAdapter.ItemList
                             TreeMap<String,String> item_loadmore=new TreeMap<>();
                             item_loadmore.put("loadmore","loadmore");
                              String type="product";
-                           adapterr = new MyImageVideoDataAdapter(context, allSampleDatamore,item_loadmore,type);
-                           recycler_view_load_more.setLayoutManager(new LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false));
+                           adapterr = new MyImageVideoDataAdapter(getContext(), allSampleDatamore,item_loadmore,type);
+                           recycler_view_load_more.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
                             recycler_view_load_more.setAdapter(adapterr);
                         }
                         catch (JSONException e){
                             e.printStackTrace();
                             pDialog.dismiss();
-                            Toast.makeText(context, ""+e.getMessage(),Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getContext(), ""+e.getMessage(),Toast.LENGTH_SHORT).show();
                             Log.d("catch_f",""+e.getMessage());
                         }
                     }
@@ -608,7 +586,7 @@ public class ProductFragment extends Fragment implements ProductAdapter.ItemList
                 new com.android.volley.Response.ErrorListener(){
                     @Override
                     public void onErrorResponse(VolleyError error){
-                        Toast.makeText(context, error.getMessage(), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getContext(), error.getMessage(), Toast.LENGTH_SHORT).show();
                         pDialog.dismiss();
                         Log.d("verror",""+error.getMessage());
                     }
