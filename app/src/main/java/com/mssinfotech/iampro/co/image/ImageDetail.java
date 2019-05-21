@@ -69,17 +69,16 @@ public class ImageDetail extends Fragment implements Img_Video_Details.ItemListe
     public String uid,id;
     String type="";
     ArrayList<ImageDetailModel> myData=new ArrayList<>();
-
     TextView tv_about_tag,tv_about_msg,fullname,udate,tv_comments,tv_totallike,name,category;
-     ImageView imageView_user,imageView_icon,iv_comments,image;
+    ImageView imageView_user,imageView_icon,iv_comments,image;
     VideoView videoView;
-      RatingBar ratingBar;
-       RecyclerView recycler_view_review_detail;
-       LinearLayout ll_top;
+    RatingBar ratingBar;
+    RecyclerView recycler_view_review_detail;
+    LinearLayout ll_top;
     public static final String IMAGE_TYPE="image";
     public static final String VIDEO_TYPE="video";
-       Img_Video_Details adapter;
-        LikeButton likeButton;
+    Img_Video_Details adapter;
+    LikeButton likeButton;
     View view;
     Intent intent;
     Context context;
@@ -87,18 +86,18 @@ public class ImageDetail extends Fragment implements Img_Video_Details.ItemListe
      LinearLayout ll_comment;
      NestedScrollView nsv;
       static int uiddv=0;
-        static int iidv=0;
-     public static String avatar_urll;
+      static int iidv=0;
+      public static String avatar_urll;
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup parent, Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater,ViewGroup parent, Bundle savedInstanceState) {
         // Defines the xml file for the fragment
         return inflater.inflate(R.layout.activity_image_detail, parent, false);
     }
     @Override
     public void onViewCreated(View v, Bundle savedInstanceState) {
         view =v;
-        intent = getActivity().getIntent();
-        context = getContext();
+        intent = this.getActivity().getIntent();
+        context =ImageDetail.this.getContext();
         tv_about_tag=view.findViewById(R.id.tv_about_tag);
         tv_about_msg=view.findViewById(R.id.tv_about_msg);
         ll_top=view.findViewById(R.id.ll_top);
@@ -106,7 +105,7 @@ public class ImageDetail extends Fragment implements Img_Video_Details.ItemListe
 
         fullname=view.findViewById(R.id.fullname);
         udate=view.findViewById(R.id.udate);
-        likeButton = view.findViewById(R.id.likeButton);
+        likeButton=view.findViewById(R.id.likeButton);
 
         likeButton.setUnlikeDrawableRes(R.drawable.like);
         likeButton.setLikeDrawableRes(R.drawable.like_un);
@@ -267,9 +266,8 @@ public class ImageDetail extends Fragment implements Img_Video_Details.ItemListe
          */
     }
     protected void getImageDetail() {
-        final String url =  Config.API_URL+ "app_service.php?type=get_image_detail&id=" + id + "&update_type=" + type + "&uid=" + uid + "&login_id=" + uid + "&my_id=" + uid;
+        final String url =Config.API_URL+ "app_service.php?type=get_image_detail&id=" + id + "&update_type=" + type + "&uid=" + uid + "&login_id=" + uid + "&my_id=" + uid;
         Log.d("ImageDetail",url);
-
         RequestQueue requestQueue = Volley.newRequestQueue(context);
         StringRequest jsonObjectRequest = new StringRequest(
                 Request.Method.GET,
@@ -283,7 +281,7 @@ public class ImageDetail extends Fragment implements Img_Video_Details.ItemListe
                         try {
                             JSONObject responses = new JSONObject(response);
                             final int id = responses.optInt("id");
-                            final int idv = responses.optInt("id");
+                            //final int idv = responses.optInt("id");
                             int albemid = responses.optInt("albemid");
                             String namev = responses.optString("name");
                             int categoryv = responses.optInt("category");
@@ -313,17 +311,12 @@ public class ImageDetail extends Fragment implements Img_Video_Details.ItemListe
                             name.setText(namev);
                             category.setText(category_name);
                            // imageView_icon.setImageResource(R.drawable.image_icon);
-
-
-                            Glide.with(getContext())
+                            Glide.with(context)
                                     .load(R.drawable.image_icon)
                                     .apply(Config.options_avatar)
                                     .into(imageView_icon);
-
-
-
                             videoView.setVisibility(View.GONE);
-                            Glide.with(ImageDetail.this)
+                            Glide.with(context)
                                     .load(avatar_url)
                                     .into(image);
 
@@ -357,7 +350,7 @@ public class ImageDetail extends Fragment implements Img_Video_Details.ItemListe
                             final int uid = jsonObjectUser.optInt("id");
                             fullname.setText(fullnamev);
 
-                            Glide.with(ImageDetail.this)
+                            Glide.with(context)
                                     .load(avatarr)
                                     .apply(Config.options_avatar)
                                     .into(imageView_user);
@@ -380,7 +373,7 @@ public class ImageDetail extends Fragment implements Img_Video_Details.ItemListe
                                 }
                             });
                             JSONArray group_image = responses.getJSONArray("group_image");
-                            if( group_image.length()>0) {
+                            if(group_image.length()>0) {
                                 for (int i = 0; i < group_image.length(); i++) {
                                     JSONObject image_data = group_image.getJSONObject(i);
                                     int iid = image_data.getInt("id");
@@ -414,7 +407,7 @@ public class ImageDetail extends Fragment implements Img_Video_Details.ItemListe
 
                         } catch (Exception e) {
                             e.printStackTrace();
-                            Toast.makeText(context, e.getMessage(), Toast.LENGTH_LONG).show();
+                            Toast.makeText(context,""+e.getMessage(), Toast.LENGTH_LONG).show();
                         }
                     }
                 },
@@ -422,7 +415,7 @@ public class ImageDetail extends Fragment implements Img_Video_Details.ItemListe
                     @Override
                     public void onErrorResponse(VolleyError error) {
                         // Do something when error occurred
-                        Toast.makeText(context, error.getMessage(), Toast.LENGTH_LONG).show();
+                        Toast.makeText(context,""+error.getMessage(), Toast.LENGTH_LONG).show();
                     }
                 }
         );

@@ -129,13 +129,31 @@ public class JoinFriendAdapter extends RecyclerView.Adapter<JoinFriendAdapter.My
              }
          });
 
-        Vholder.imageView_message.setBackground(AppCompatResources.getDrawable(context,R.drawable.user_slide_info_message));
-        Vholder.imageView_frequest.setBackground(AppCompatResources.getDrawable(context,R.drawable.user_slide_nfo));
-        Vholder.imageView_viewProfile.setBackground(AppCompatResources.getDrawable(context,R.drawable.user_slide_info_view_profile));
+        //Vholder.imageView_message.setBackground(AppCompatResources.getDrawable(context,R.drawable.user_slide_info_message));
+        Glide.with(context)
+                .load(R.drawable.user_slide_info_message)
+                .into(Vholder.imageView_message);
 
-        Vholder.imageView_block.setBackground(AppCompatResources.getDrawable(context,R.drawable.unblockicone));
+        //Vholder.imageView_frequest.setBackground(AppCompatResources.getDrawable(context,R.drawable.user_slide_nfo));
+        Glide.with(context)
+                .load(R.drawable.user_slide_nfo)
+                .into(Vholder.imageView_frequest);
+        //Vholder.imageView_viewProfile.setBackground(AppCompatResources.getDrawable(context,R.drawable.user_slide_info_view_profile));
+
+        Glide.with(context)
+                .load(R.drawable.user_slide_info_view_profile)
+                .into(Vholder.imageView_viewProfile);
+
+        //Vholder.imageView_block.setBackground(AppCompatResources.getDrawable(context,R.drawable.unblockicone));
+        Glide.with(context)
+                .load(R.drawable.unblockicone)
+                .into(Vholder.imageView_block);
+
         if (notifyList.get(position).getIs_block()==1){
-            Vholder.imageView_block.setBackground(AppCompatResources.getDrawable(context,R.drawable.unblockicone));
+            //Vholder.imageView_block.setBackground(AppCompatResources.getDrawable(context,R.drawable.unblockicone));
+            Glide.with(context)
+                    .load(R.drawable.unblockicone)
+                    .into(Vholder.imageView_block);
             //tv_viewProfile,tv_fRequest,tv_sendMessage,tv_blockUser
             Vholder.tv_viewProfile.setText("View Profile");
             Vholder.tv_fRequest.setText("Delete "+notifyList.get(position).getFullname());
@@ -144,8 +162,10 @@ public class JoinFriendAdapter extends RecyclerView.Adapter<JoinFriendAdapter.My
             Vholder.tv_blockUser.setText("UnBlock");
         }
         else if (notifyList.get(position).getIs_block()==2){
-            Vholder.imageView_block.setBackground(AppCompatResources.getDrawable(context,R.drawable.blockicone));
-
+            //Vholder.imageView_block.setBackground(AppCompatResources.getDrawable(context,R.drawable.blockicone));
+            Glide.with(context)
+                    .load(R.drawable.blockicone)
+                    .into( Vholder.imageView_block);
 
             Vholder.tv_viewProfile.setText("View Profile");
             Vholder.tv_fRequest.setText("You ");
@@ -171,119 +191,125 @@ public class JoinFriendAdapter extends RecyclerView.Adapter<JoinFriendAdapter.My
                 args.putString("uid", String.valueOf(notifyList.get(position).getUser_id()));
                 function.loadFragment(context,fragment,args);
                 Toast.makeText(context, ""+notifyList.get(position).getUser_id(), Toast.LENGTH_SHORT).show();
-
             }
         });
-
         //imageView_frequest,imageView_message,imageView_block
         Vholder.ll_frequest.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //Toast.makeText(v.getContext(), "FREQUEST CLICKED"+position,Toast.LENGTH_SHORT).show();
-                if (user_block==1){
-                    Toast.makeText(context,"This User is blocked can't send Your request...",Toast.LENGTH_LONG).show();
-                    return;
-                }
-                else if (user_block==2){
-                    FriendRequestActivity fragment = new FriendRequestActivity();
-                    Bundle args = new Bundle();
-                    args.putString("uid", String.valueOf(notifyList.get(position).getId()));
-                    function.loadFragment(context,fragment,args);
-                }
-                else {
-                    FriendRequestActivity fragment = new FriendRequestActivity();
-                    Bundle args = new Bundle();
-                    args.putString("uid", String.valueOf(notifyList.get(position).getId()));
-                    function.loadFragment(context,fragment,args);
-                }
+                if (PrefManager.isLogin(context)) {
+                    //Toast.makeText(v.getContext(), "FREQUEST CLICKED"+position,Toast.LENGTH_SHORT).show();
+                    if (PrefManager.isLogin(context) && user_block == 1) {
+                        Toast.makeText(context, "This User is blocked can't send Your request...", Toast.LENGTH_LONG).show();
+                        return;
+                    } else if (PrefManager.isLogin(context) && user_block == 2) {
+                        FriendRequestActivity fragment = new FriendRequestActivity();
+                        Bundle args = new Bundle();
+                        args.putString("uid", String.valueOf(notifyList.get(position).getId()));
+                        function.loadFragment(context, fragment, args);
+                    } else {
+                        FriendRequestActivity fragment = new FriendRequestActivity();
+                        Bundle args = new Bundle();
+                        args.putString("uid", String.valueOf(notifyList.get(position).getId()));
+                        function.loadFragment(context, fragment, args);
+                    }
 
-                String myid= PrefManager.getLoginDetail(context,"id");
-                int fid=notifyList.get(position).getId();
-                if(FrindStatus.equals("NO")){
-                    function.executeUrl(context,"get", Config.API_URL+"app_service.php?type=join_friend&fid="+fid+"&uid="+myid,null);
-                    Vholder.tv_fRequest.setText("Delete Request");
-                    FrindStatus = "PANDING";
-                }else if(FrindStatus.equals("PANDING")){
-                    function.executeUrl(context,"get",Config.API_URL+"app_service.php?type=delete_friend&id="+fid+"&tid="+myid,null);
-                    Vholder.tv_fRequest.setText("Add to Friend");
-                    FrindStatus = "NO";
-                }else{
-                    function.executeUrl(context,"get",Config.API_URL+"app_service.php?type=delete_friend&id="+fid+"&tid="+myid,null);
-                    Vholder.tv_fRequest.setText("Add To Friend");
-                    FrindStatus = "NO";
+                    String myid = PrefManager.getLoginDetail(context, "id");
+                    int fid = notifyList.get(position).getId();
+                    if (FrindStatus.equals("NO")) {
+                        function.executeUrl(context, "get", Config.API_URL + "app_service.php?type=join_friend&fid=" + fid + "&uid=" + myid, null);
+                        Vholder.tv_fRequest.setText("Delete Request");
+                        FrindStatus = "PANDING";
+                    } else if (FrindStatus.equals("PANDING")) {
+                        function.executeUrl(context, "get", Config.API_URL + "app_service.php?type=delete_friend&id=" + fid + "&tid=" + myid, null);
+                        Vholder.tv_fRequest.setText("Add to Friend");
+                        FrindStatus = "NO";
+                    } else {
+                        function.executeUrl(context, "get", Config.API_URL + "app_service.php?type=delete_friend&id=" + fid + "&tid=" + myid, null);
+                        Vholder.tv_fRequest.setText("Add To Friend");
+                        FrindStatus = "NO";
+                    }
                 }
-
+                else{
+                     Toast.makeText(context,""+"First Login and try again...",Toast.LENGTH_LONG).show();
+                     return;
+                }
             }
         });
         Vholder.ll_message.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (user_block==1){
-                    Toast.makeText(context,"This User is blocked so you can't do any conversation...",Toast.LENGTH_LONG).show();
-                    return;
-                }
-                else if (user_block==2) {
-                    Toast.makeText(v.getContext(), "Redirecting to message..."+position, Toast.LENGTH_SHORT).show();
-                    Intent intentMessage=new Intent(context, ChatToUser.class);
-                    intentMessage.putExtra("id",String.valueOf(notifyList.get(position).getId()));
-                    context.startActivity(intentMessage);
+                if (PrefManager.isLogin(context)) {
+                    if (user_block == 1) {
+                        Toast.makeText(context, "This User is blocked so you can't do any conversation...", Toast.LENGTH_LONG).show();
+                        return;
+                    } else if (user_block == 2) {
+                        Toast.makeText(v.getContext(), "Redirecting to message..." + position, Toast.LENGTH_SHORT).show();
+                        Intent intentMessage = new Intent(context, ChatToUser.class);
+                        intentMessage.putExtra("id", String.valueOf(notifyList.get(position).getId()));
+                        context.startActivity(intentMessage);
+                    } else {
+                        Toast.makeText(v.getContext(), "Redirecting to message...." + notifyList.get(position).getId(), Toast.LENGTH_SHORT).show();
+
+                        Intent intentMessage = new Intent(context, ChatToUser.class);
+                        intentMessage.putExtra("id", String.valueOf(notifyList.get(position).getId()));
+                        context.startActivity(intentMessage);
+                    }
+
                 }
                 else{
-                    Toast.makeText(v.getContext(), "Redirecting to message...."+notifyList.get(position).getId(), Toast.LENGTH_SHORT).show();
-
-                    Intent intentMessage=new Intent(context, ChatToUser.class);
-                    intentMessage.putExtra("id",String.valueOf(notifyList.get(position).getId()));
-                    context.startActivity(intentMessage);
+                     Toast.makeText(context,""+"First Login and try again...",Toast.LENGTH_LONG).show();
+                     return;
                 }
-
             }
         });
         Vholder.ll_block.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //Toast.makeText(v.getContext(), "BLOCK CLICKED"+position, Toast.LENGTH_SHORT).show();
-                final String fid=String.valueOf(notifyList.get(position).getId());
-                AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(context);
-                alertDialogBuilder.setMessage("Are you sure, ");
-                alertDialogBuilder.setPositiveButton("yes",
-                        new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface arg0, int arg1) {
-                               // blockUser(fid);
-                                int statuss=blockUser(String.valueOf(notifyList.get(position).getId()));
-                                user_block=statuss;
-                                if (statuss== 1) {
-                                    //Vholder.imageView_block.setBackground(AppCompatResources.getDrawable(mContext, R.drawable.unblockicone));
+                if (PrefManager.isLogin(context)) {
+                    //Toast.makeText(v.getContext(), "BLOCK CLICKED"+position, Toast.LENGTH_SHORT).show();
+                    final String fid = String.valueOf(notifyList.get(position).getId());
+                    AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(context);
+                    alertDialogBuilder.setMessage("Are you sure, ");
+                    alertDialogBuilder.setPositiveButton("yes",
+                            new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface arg0, int arg1) {
+                                    // blockUser(fid);
+                                    int statuss = blockUser(String.valueOf(notifyList.get(position).getId()));
+                                    user_block = statuss;
+                                    if (statuss == 1) {
+                                        //Vholder.imageView_block.setBackground(AppCompatResources.getDrawable(mContext, R.drawable.unblockicone));
 
-                                    Glide.with(context)
-                                            .load(R.drawable.blockicone)
-                                            .apply(Config.options_avatar)
-                                            .into(Vholder.imageView_block);
-                                    Vholder.tv_blockUser.setText("UnBlock");
-                                    //user_block=2;
+                                        Glide.with(context)
+                                                .load(R.drawable.blockicone)
+                                                .apply(Config.options_avatar)
+                                                .into(Vholder.imageView_block);
+                                        Vholder.tv_blockUser.setText("UnBlock");
+                                        //user_block=2;
 
-                                } else if (statuss== 2) {
-                                    //Vholder.imageView_block.setBackground(AppCompatResources.getDrawable(mContext, R.drawable.blockicone));
-                                    Glide.with(context)
-                                            .load(R.drawable.unblockicone)
-                                            .apply(Config.options_avatar)
-                                            .into(Vholder.imageView_block);
-                                    Vholder.tv_blockUser.setText("Block");
-                                    //user_block=1;
+                                    } else if (statuss == 2) {
+                                        //Vholder.imageView_block.setBackground(AppCompatResources.getDrawable(mContext, R.drawable.blockicone));
+                                        Glide.with(context)
+                                                .load(R.drawable.unblockicone)
+                                                .apply(Config.options_avatar)
+                                                .into(Vholder.imageView_block);
+                                        Vholder.tv_blockUser.setText("Block");
+                                        //user_block=1;
 
+                                    }
                                 }
-                            }
-                        });
+                            });
 
-                alertDialogBuilder.setNegativeButton("No",new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        //finish();
-                    }
-                });
+                    alertDialogBuilder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            //finish();
+                        }
+                    });
 
-                AlertDialog alertDialog = alertDialogBuilder.create();
-                alertDialog.show();
+                    AlertDialog alertDialog = alertDialogBuilder.create();
+                    alertDialog.show();
 
                /* if(user_block==1){
                     Vholder.imageView_block.setBackground(AppCompatResources.getDrawable(context,R.drawable.unblockicone));
@@ -292,6 +318,11 @@ public class JoinFriendAdapter extends RecyclerView.Adapter<JoinFriendAdapter.My
                     Vholder.imageView_block.setBackground(AppCompatResources.getDrawable(context,R.drawable.blockicone));
 
                 } */
+                }
+                else {
+                     Toast.makeText(context,""+"First Login and try again...",Toast.LENGTH_LONG).show();
+                     return;
+                }
             }
         });
         //imageView_viewProfile

@@ -236,14 +236,12 @@ public class ProfileActivity extends Fragment implements AllFeedAdapter.ItemList
         TextView myuid= includeShortMenu.findViewById(R.id.myuid);
         myuid.setText(uid);
 
-
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
                 getFeed(FEED_START);
             }
         }, 1000);
-
         vFeed.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrollStateChanged(RecyclerView recyclerView,int newState) {
@@ -590,7 +588,6 @@ public class ProfileActivity extends Fragment implements AllFeedAdapter.ItemList
             Config.showInternetDialog(context);
             return;
         }
-
         //CreateProgressDialog();
         //Toast.makeText(getApplicationContext(), "Video upload remain pleasw wait....", Toast.LENGTH_LONG).show();
         //return;
@@ -731,7 +728,7 @@ public class ProfileActivity extends Fragment implements AllFeedAdapter.ItemList
         //progressDialog = new SpotsDialog(context, R.style.Custom);
 
         //loading.setContentView(R.layout.confirm_popup);
-        URL_FEED = Config.API_URL+ "feed_service.php?type=AllFeeds&start="+start+"&limit="+FEED_LIMIT+"&fid=" +fid+ "&uid=" +My_id+ "&my_id=" +My_id;
+        URL_FEED = Config.API_URL+ "feed_service.php?type=AllFeeds&start="+start+"&limit="+FEED_LIMIT+"&fid=" +fid+ "&uid="+My_id+"&my_id=" +My_id;
         Log.e(Config.TAG,URL_FEED);
         RequestQueue requestQueue = Volley.newRequestQueue(context);
 
@@ -743,7 +740,7 @@ public class ProfileActivity extends Fragment implements AllFeedAdapter.ItemList
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
-                        Log.d("Prod_detaili_profile",""+response);
+                        Log.d("Prod_detaili_profile",""+URL_FEED+	"\t"+response);
                         String detail_name="";
                         int selling_cost=0;
                         int purchese_cost=0;

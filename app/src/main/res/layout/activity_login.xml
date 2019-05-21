@@ -68,7 +68,6 @@
                     android:textColorHint="@color/white"
                     android:singleLine="true"
                     android:hint="User Name"
-
                     android:inputType="textEmailAddress" />
             </android.support.design.widget.TextInputLayout>
 

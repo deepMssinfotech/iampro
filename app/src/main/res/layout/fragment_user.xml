@@ -38,11 +38,11 @@
             android:id="@+id/indicator"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-
             android:layout_centerHorizontal="true"
             android:gravity="bottom"
             android:padding="10dip"
             app:centered="true"
+            android:layout_alignBottom="@+id/pager"
             app:fillColor="#df0623"
             app:pageColor="#fff"
             app:snap="false"/>

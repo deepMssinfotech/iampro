@@ -142,7 +142,7 @@ public class ProvideFragment extends Fragment implements ProvideAdapter.ItemList
         final float density = getResources().getDisplayMetrics().density;
 
 //Set circle indicator radius
-        indicator.setRadius(5 * density);
+        indicator.setRadius(2 * density);
 
         NUM_PAGES =imageModelArrayList.size();
 

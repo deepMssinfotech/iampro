@@ -153,16 +153,34 @@ public class UserDataAdapter extends RecyclerView.Adapter<UserDataAdapter.ViewHo
         Vholders.ll_imageView.setClickable(true);
         user_block=mValues.get(position).getIs_block();
         try {
-            Vholder.imageView_message.setBackground(AppCompatResources.getDrawable(mContext, R.drawable.user_slide_info_message));
-            Vholder.imageView_frequest.setBackground(AppCompatResources.getDrawable(mContext, R.drawable.user_slide_nfo));
-            Vholder.imageView_viewProfile.setBackground(AppCompatResources.getDrawable(mContext, R.drawable.user_slide_info_view_profile));
-            Vholder.imageView_block.setBackground(AppCompatResources.getDrawable(mContext, R.drawable.unblockicone));
+            //Vholder.imageView_message.setBackground(AppCompatResources.getDrawable(mContext, R.drawable.user_slide_info_message));
+            Glide.with(mContext)
+                    .load(R.drawable.user_slide_info_message)
+                    .into( Vholder.imageView_message);
+
+           // Vholder.imageView_frequest.setBackground(AppCompatResources.getDrawable(mContext, R.drawable.user_slide_nfo));
+            Glide.with(mContext)
+                    .load(R.drawable.user_slide_nfo)
+                    .into(Vholder.imageView_frequest);
+            //Vholder.imageView_viewProfile.setBackground(AppCompatResources.getDrawable(mContext, R.drawable.user_slide_info_view_profile));
+
+            Glide.with(mContext)
+                    .load(R.drawable.user_slide_info_view_profile)
+                    .into(Vholder.imageView_viewProfile);
+
+            //Vholder.imageView_block.setBackground(AppCompatResources.getDrawable(mContext, R.drawable.unblockicone));
+            Glide.with(mContext)
+                    .load(R.drawable.unblockicone)
+                    .into(Vholder.imageView_block);
         }
         catch (Exception e){
             Log.d("imageView_error",""+e.getMessage());
         }
          if (mValues.get(position).getIs_block()==1){
-             Vholder.imageView_block.setBackground(AppCompatResources.getDrawable(mContext,R.drawable.unblockicone));
+             //Vholder.imageView_block.setBackground(AppCompatResources.getDrawable(mContext,R.drawable.unblockicone));
+             Glide.with(mContext)
+                     .load(R.drawable.unblockicone)
+                     .into(Vholder.imageView_block);
              //tv_viewProfile,tv_fRequest,tv_sendMessage,tv_blockUser
              Vholder.tv_viewProfile.setText("View Profile");
               Vholder.tv_fRequest.setText("Delete "+mValues.get(position).getName());
@@ -171,8 +189,11 @@ public class UserDataAdapter extends RecyclerView.Adapter<UserDataAdapter.ViewHo
                 Vholder.tv_blockUser.setText("UnBlock");
          }
          else if (mValues.get(position).getIs_block()==2){
-             Vholder.imageView_block.setBackground(AppCompatResources.getDrawable(mContext,R.drawable.blockicone));
+             //Vholder.imageView_block.setBackground(AppCompatResources.getDrawable(mContext,R.drawable.blockicone));
 
+             Glide.with(mContext)
+                     .load(R.drawable.blockicone)
+                     .into(Vholder.imageView_block);
 
              Vholder.tv_viewProfile.setText("View Profile");
              Vholder.tv_fRequest.setText("You ");

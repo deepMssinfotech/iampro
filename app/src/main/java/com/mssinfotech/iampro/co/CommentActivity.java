@@ -207,7 +207,6 @@ public class CommentActivity extends AppCompatActivity implements CommentAdapter
                                     Log.e(Config.TAG,url);
                                     function.executeUrl(getApplicationContext(),"get",url,null);
                                 }
-
                                 @Override
                                 public void unLiked(LikeButton likeButton) {
                                     int newlike = (int) Integer.parseInt(tv_totallike.getText().toString())-1;

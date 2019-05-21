@@ -8,12 +8,12 @@ import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.util.AttributeSet;
 import android.util.Log;
+//import android.view.LayoutInflater;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
@@ -27,7 +27,6 @@ import com.mssinfotech.iampro.co.user.MyProductActivity;
 import com.mssinfotech.iampro.co.user.MyProvideActivity;
 import com.mssinfotech.iampro.co.user.MyVideoActivity;
 import com.mssinfotech.iampro.co.utils.PrefManager;
-
 import org.json.JSONException;
 import org.json.JSONObject;
 public class IncludeShortMenu  extends RelativeLayout {

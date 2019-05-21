@@ -1,5 +1,4 @@
 package com.mssinfotech.iampro.co;
-
 import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -36,7 +35,6 @@ import org.json.JSONObject;
 
 import java.util.Hashtable;
 import java.util.Map;
-
 public class LoginActivity extends Fragment {
     TextView btnforgetPassword;
     Button btnprocess;
@@ -75,10 +73,6 @@ public class LoginActivity extends Fragment {
                 function.loadFragment(getContext(),fragmentz,null);
             }
         });
-
-
-
-
         btnforgetPassword.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

@@ -139,7 +139,7 @@ public class ImageFragment extends Fragment implements ImageAdapter.ItemListener
         final float density = getResources().getDisplayMetrics().density;
 
 //Set circle indicator radius
-        indicator.setRadius(5 * density);
+        indicator.setRadius(2 * density);
 
         NUM_PAGES =imageModelArrayList.size();
 
