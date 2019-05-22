@@ -2,7 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-
+    android:background="@drawable/gray"
     android:id="@+id/container"
     android:orientation="vertical" >
     <LinearLayout
@@ -21,7 +21,6 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent">
                     <ImageView
-                        android:scaleType="fitXY"
                         android:id="@+id/userbackgroud"
                         android:src="@drawable/profile_background"
                         android:layout_width="match_parent"
@@ -37,16 +36,13 @@
                 </RelativeLayout>
             </LinearLayout>
             <RelativeLayout
-                android:layout_marginBottom="2dp"
-                android:layout_marginTop="3dp"
-                android:background="@drawable/gray_bar"
+                android:background="@drawable/black"
                 android:layout_alignParentBottom="true"
                 android:layout_width="match_parent"
                 android:orientation="horizontal"
                 android:layout_height="wrap_content">
                 <TextView
                     android:id="@+id/username"
-                    android:textAllCaps="true"
                     android:gravity="bottom"
                     android:textColor="@color/white"
                     android:padding="5dp"
@@ -54,20 +50,16 @@
                     android:layout_height="wrap_content" />
             </RelativeLayout>
         <LinearLayout
-            android:visibility="gone"
-            android:background="@drawable/gray"
             android:id="@+id/nonuser_menu"
+            android:visibility="gone"
             android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
             <LinearLayout
-                android:paddingLeft="20dp"
-                android:paddingRight="20dp"
                 android:layout_marginTop="5dp"
                 android:layout_marginBottom="5dp"
                 android:layout_width="match_parent"
-                android:layout_height="100dp"
-                android:background="@drawable/thin_border"
+                android:layout_height="115dp"
                 android:orientation="horizontal"
                 >
                 <RelativeLayout
@@ -83,7 +75,7 @@
                         android:padding="@dimen/menu_img_padding"
                         android:src="@drawable/dashboard_icon"/>
                     <TextView
-                        android:textSize="10dp"
+                        android:textSize="12dp"
                         android:layout_below="@+id/menu_btn_dashboard_nonuser"
                         android:text="Dashboard"
                         android:gravity="center"
@@ -111,7 +103,7 @@
                         android:gravity="center"
                         android:text="Login"
                         android:textColor="@color/white"
-                        android:textSize="10dp" />
+                        android:textSize="12dp" />
                 </RelativeLayout>
                 <RelativeLayout
                     android:layout_weight="1"
@@ -133,7 +125,7 @@
                         android:gravity="center"
                         android:text="Register"
                         android:textColor="@color/white"
-                        android:textSize="10dp" />
+                        android:textSize="12dp" />
                 </RelativeLayout>
                 <RelativeLayout
                     android:layout_weight="1"
@@ -155,7 +147,7 @@
                         android:gravity="center"
                         android:text="Search"
                         android:textColor="@color/white"
-                        android:textSize="10dp" />
+                        android:textSize="12dp" />
                 </RelativeLayout>
                 <RelativeLayout
                     android:layout_weight="1"
@@ -177,7 +169,7 @@
                         android:gravity="center"
                         android:text="Share"
                         android:textColor="@color/white"
-                        android:textSize="10dp" />
+                        android:textSize="12dp" />
                 </RelativeLayout>
                 <RelativeLayout
                     android:layout_weight="1"
@@ -199,19 +191,21 @@
                         android:gravity="center"
                         android:text="Review"
                         android:textColor="@color/white"
-                        android:textSize="10dp" />
+                        android:textSize="12dp" />
                 </RelativeLayout>
             </LinearLayout>
+            <View
+                android:layout_marginBottom="5dp"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@drawable/white"/>
             <LinearLayout
-                android:paddingLeft="20dp"
-                android:paddingRight="20dp"
                 android:layout_marginTop="5dp"
                 android:layout_marginBottom="5dp"
                 android:layout_width="match_parent"
-                android:layout_height="100dp"
+                android:layout_height="115dp"
                 android:layout_gravity="center"
                 android:gravity="center"
-                android:background="@drawable/thin_border"
                 android:orientation="horizontal"
                 >
                 <RelativeLayout
@@ -226,7 +220,7 @@
                         android:padding="@dimen/menu_img_padding"
                         android:src="@drawable/headerwallet"/>
                     <TextView
-                        android:textSize="10dp"
+                        android:textSize="12dp"
                         android:layout_below="@+id/menu_btn_wallet"
                         android:text="Wallet App"
                         android:gravity="center"
@@ -245,7 +239,7 @@
                         android:padding="@dimen/menu_img_padding"
                         android:src="@drawable/headerbrowser"/>
                     <TextView
-                        android:textSize="10dp"
+                        android:textSize="12dp"
                         android:layout_below="@+id/menu_btn_browser"
                         android:text="Browser App"
                         android:gravity="center"
@@ -254,21 +248,22 @@
                         android:layout_height="match_parent" />
                 </RelativeLayout>
             </LinearLayout>
+            <View
+                android:layout_marginBottom="5dp"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@drawable/white"/>
         </LinearLayout>
         <LinearLayout
-            android:background="@drawable/gray"
             android:id="@+id/user_menu"
             android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
             <LinearLayout
-                android:paddingLeft="20dp"
-                android:paddingRight="20dp"
-                android:background="@drawable/thin_border"
                 android:layout_marginTop="5dp"
                 android:layout_marginBottom="5dp"
                 android:layout_width="match_parent"
-                android:layout_height="100dp"
+                android:layout_height="115dp"
                 android:orientation="horizontal"
                 >
                 <RelativeLayout
@@ -284,13 +279,13 @@
                         android:padding="@dimen/menu_img_padding"
                         android:src="@drawable/dashboard_icon"/>
                     <TextView
-                        android:textSize="10dp"
+                        android:textSize="12dp"
                         android:layout_below="@+id/menu_btn_dashboard"
-                        android:text="Dashboard"
+                        android:text="My Dashboard"
                         android:gravity="center"
                         android:textColor="@color/white"
                         android:layout_width="match_parent"
-                        android:layout_height="30dp" />
+                        android:layout_height="match_parent" />
                 </RelativeLayout>
                 <RelativeLayout
                     android:layout_weight="1"
@@ -307,12 +302,12 @@
 
                     <TextView
                         android:layout_width="match_parent"
-                        android:layout_height="30dp"
+                        android:layout_height="match_parent"
                         android:layout_below="@+id/menu_btn_myprofile"
                         android:gravity="center"
-                        android:text="My Profile"
+                        android:text="View My Profile"
                         android:textColor="@color/white"
-                        android:textSize="10dp" />
+                        android:textSize="12dp" />
                 </RelativeLayout>
                 <RelativeLayout
                     android:layout_weight="1"
@@ -329,12 +324,12 @@
 
                     <TextView
                         android:layout_width="match_parent"
-                        android:layout_height="30dp"
+                        android:layout_height="match_parent"
                         android:layout_below="@+id/menu_btn_editprofile"
                         android:gravity="center"
-                        android:text="My Profile"
+                        android:text="Edit My Profile"
                         android:textColor="@color/white"
-                        android:textSize="10dp" />
+                        android:textSize="12dp" />
                 </RelativeLayout>
                 <RelativeLayout
                     android:layout_weight="1"
@@ -351,12 +346,12 @@
 
                     <TextView
                         android:layout_width="match_parent"
-                        android:layout_height="30dp"
+                        android:layout_height="match_parent"
                         android:layout_below="@+id/menu_btn_changepassword"
                         android:gravity="center"
                         android:text="Change Password"
                         android:textColor="@color/white"
-                        android:textSize="10dp" />
+                        android:textSize="12dp" />
                 </RelativeLayout>
                 <RelativeLayout
                     android:layout_weight="1"
@@ -373,12 +368,12 @@
 
                     <TextView
                         android:layout_width="match_parent"
-                        android:layout_height="30dp"
+                        android:layout_height="match_parent"
                         android:layout_below="@+id/menu_btn_joinedfriend"
                         android:gravity="center"
-                        android:text="My Friend"
+                        android:text="Joined Friend"
                         android:textColor="@color/white"
-                        android:textSize="10dp" />
+                        android:textSize="12dp" />
                 </RelativeLayout>
                 <RelativeLayout
                     android:layout_weight="1"
@@ -397,7 +392,6 @@
                         android:background="@drawable/notify_circle_red"
                         android:id="@+id/count_friend_request"
                         android:layout_marginLeft="40dp"
-                        android:layout_marginTop="5dp"
                         android:text="0"
                         android:textColor="#ffffff"
                         android:textSize="8dp"
@@ -406,22 +400,24 @@
                         android:layout_height="25dp" />
                     <TextView
                         android:layout_width="match_parent"
-                        android:layout_height="30dp"
+                        android:layout_height="match_parent"
                         android:layout_below="@+id/menu_btn_friendrequest"
                         android:gravity="center"
                         android:text="Friend Request"
                         android:textColor="@color/white"
-                        android:textSize="10dp" />
+                        android:textSize="12dp" />
                 </RelativeLayout>
             </LinearLayout>
+            <View
+                android:layout_marginBottom="5dp"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@drawable/white"/>
             <LinearLayout
-                android:paddingLeft="20dp"
-                android:paddingRight="20dp"
-                android:background="@drawable/thin_border"
                 android:layout_marginTop="5dp"
                 android:layout_marginBottom="5dp"
                 android:layout_width="match_parent"
-                android:layout_height="100dp"
+                android:layout_height="115dp"
                 android:orientation="horizontal"
                 >
                 <RelativeLayout
@@ -437,13 +433,13 @@
                         android:padding="@dimen/menu_img_padding"
                         android:src="@drawable/image_icon"/>
                     <TextView
-                        android:textSize="10dp"
+                        android:textSize="12dp"
                         android:layout_below="@+id/menu_btn_myphoto"
                         android:text="My Phoro"
                         android:gravity="center"
                         android:textColor="@color/white"
                         android:layout_width="match_parent"
-                        android:layout_height="30dp" />
+                        android:layout_height="match_parent" />
                 </RelativeLayout>
                 <RelativeLayout
                     android:layout_weight="1"
@@ -458,13 +454,13 @@
                         android:padding="@dimen/menu_img_padding"
                         android:src="@drawable/video_icon"/>
                     <TextView
-                        android:textSize="10dp"
+                        android:textSize="12dp"
                         android:layout_below="@+id/menu_btn_myvideo"
                         android:text="My Video"
                         android:gravity="center"
                         android:textColor="@color/white"
                         android:layout_width="match_parent"
-                        android:layout_height="30dp" />
+                        android:layout_height="match_parent" />
                 </RelativeLayout>
                 <RelativeLayout
                     android:layout_weight="1"
@@ -479,13 +475,13 @@
                         android:padding="@dimen/menu_img_padding"
                         android:src="@drawable/product_icon"/>
                     <TextView
-                        android:textSize="10dp"
+                        android:textSize="12dp"
                         android:layout_below="@+id/menu_btn_myproduct"
                         android:text="My Product"
                         android:gravity="center"
                         android:textColor="@color/white"
                         android:layout_width="match_parent"
-                        android:layout_height="30dp" />
+                        android:layout_height="match_parent" />
                 </RelativeLayout>
                 <RelativeLayout
                     android:layout_weight="1"
@@ -500,13 +496,13 @@
                         android:padding="@dimen/menu_img_padding"
                         android:src="@drawable/provide_icon"/>
                     <TextView
-                        android:textSize="10dp"
+                        android:textSize="12dp"
                         android:layout_below="@+id/menu_btn_myprovide"
                         android:text="My Porvide"
                         android:gravity="center"
                         android:textColor="@color/white"
                         android:layout_width="match_parent"
-                        android:layout_height="30dp" />
+                        android:layout_height="match_parent" />
                 </RelativeLayout>
                 <RelativeLayout
                     android:layout_weight="1"
@@ -521,13 +517,13 @@
                         android:padding="@dimen/menu_img_padding"
                         android:src="@drawable/demand_icon"/>
                     <TextView
-                        android:textSize="10dp"
+                        android:textSize="12dp"
                         android:layout_below="@+id/menu_btn_demand"
                         android:text="My Demand"
                         android:gravity="center"
                         android:textColor="@color/white"
                         android:layout_width="match_parent"
-                        android:layout_height="30dp" />
+                        android:layout_height="match_parent" />
                 </RelativeLayout>
                 <RelativeLayout
                     android:layout_weight="1"
@@ -545,7 +541,6 @@
                         android:background="@drawable/notify_circle_red"
                         android:id="@+id/count_message"
                         android:layout_marginLeft="40dp"
-                        android:layout_marginTop="5dp"
                         android:text="0"
                         android:textColor="#ffffff"
                         android:textSize="10dp"
@@ -554,23 +549,25 @@
                         android:layout_height="25dp" />
 
                     <TextView
-                        android:textSize="10dp"
+                        android:textSize="12dp"
                         android:layout_below="@+id/menu_btn_mymessage"
                         android:text="My Message"
                         android:gravity="center"
                         android:textColor="@color/white"
                         android:layout_width="match_parent"
-                        android:layout_height="30dp" />
+                        android:layout_height="match_parent" />
                 </RelativeLayout>
             </LinearLayout>
+            <View
+                android:layout_marginBottom="5dp"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@drawable/white"/>
             <LinearLayout
-                android:paddingLeft="20dp"
-                android:paddingRight="20dp"
-                android:background="@drawable/thin_border"
                 android:layout_marginTop="5dp"
                 android:layout_marginBottom="5dp"
                 android:layout_width="match_parent"
-                android:layout_height="100dp"
+                android:layout_height="115dp"
                 android:orientation="horizontal"
                 >
                 <RelativeLayout
@@ -589,7 +586,6 @@
                         android:background="@drawable/notify_circle_red"
                         android:id="@+id/count_cart"
                         android:layout_marginLeft="40dp"
-                        android:layout_marginTop="5dp"
                         android:text="0"
                         android:textColor="#ffffff"
                         android:textSize="10dp"
@@ -597,13 +593,13 @@
                         android:layout_width="25dp"
                         android:layout_height="25dp" />
                     <TextView
-                        android:textSize="10dp"
+                        android:textSize="12dp"
                         android:layout_below="@+id/menu_btn_mycart"
                         android:text="My Cart"
                         android:gravity="center"
                         android:textColor="@color/white"
                         android:layout_width="match_parent"
-                        android:layout_height="30dp" />
+                        android:layout_height="match_parent" />
                 </RelativeLayout>
                 <RelativeLayout
                     android:layout_weight="1"
@@ -618,13 +614,13 @@
                         android:padding="@dimen/menu_img_padding"
                         android:src="@drawable/myselling_icon"/>
                     <TextView
-                        android:textSize="10dp"
+                        android:textSize="12dp"
                         android:layout_below="@+id/menu_btn_myselling"
                         android:text="My Selling"
                         android:gravity="center"
                         android:textColor="@color/white"
                         android:layout_width="match_parent"
-                        android:layout_height="30dp" />
+                        android:layout_height="match_parent" />
                 </RelativeLayout>
                 <RelativeLayout
                     android:layout_weight="1"
@@ -639,13 +635,13 @@
                         android:padding="@dimen/menu_img_padding"
                         android:src="@drawable/mypurchase_icon"/>
                     <TextView
-                        android:textSize="10dp"
+                        android:textSize="12dp"
                         android:layout_below="@+id/menu_btn_mypurchase"
                         android:text="My Purchase"
                         android:gravity="center"
                         android:textColor="@color/white"
                         android:layout_width="match_parent"
-                        android:layout_height="30dp" />
+                        android:layout_height="match_parent" />
                 </RelativeLayout>
                 <RelativeLayout
                     android:layout_weight="1"
@@ -660,13 +656,13 @@
                         android:padding="@dimen/menu_img_padding"
                         android:src="@drawable/share_icon"/>
                     <TextView
-                        android:textSize="10dp"
+                        android:textSize="12dp"
                         android:layout_below="@+id/menu_btn_share"
                         android:text="Share"
                         android:gravity="center"
                         android:textColor="@color/white"
                         android:layout_width="match_parent"
-                        android:layout_height="30dp" />
+                        android:layout_height="match_parent" />
                 </RelativeLayout>
                 <RelativeLayout
                     android:layout_weight="1"
@@ -684,7 +680,6 @@
                         android:background="@drawable/notify_circle_red"
                         android:id="@+id/count_whishlist"
                         android:layout_marginLeft="40dp"
-                        android:layout_marginTop="5dp"
                         android:text="0"
                         android:textColor="#ffffff"
                         android:textSize="10dp"
@@ -692,13 +687,13 @@
                         android:layout_width="25dp"
                         android:layout_height="25dp" />
                     <TextView
-                        android:textSize="10dp"
+                        android:textSize="12dp"
                         android:layout_below="@+id/menu_btn_mywhishlist"
                         android:text="My Whishlist"
                         android:gravity="center"
                         android:textColor="@color/white"
                         android:layout_width="match_parent"
-                        android:layout_height="30dp" />
+                        android:layout_height="match_parent" />
                 </RelativeLayout>
                 <RelativeLayout
                     android:layout_weight="1"
@@ -713,15 +708,20 @@
                         android:padding="@dimen/menu_img_padding"
                         android:src="@drawable/logout_icon"/>
                     <TextView
-                        android:textSize="10dp"
+                        android:textSize="12dp"
                         android:layout_below="@+id/menu_btn_logout"
                         android:text="Logout"
                         android:gravity="center"
                         android:textColor="@color/white"
                         android:layout_width="match_parent"
-                        android:layout_height="30dp" />
+                        android:layout_height="match_parent" />
                 </RelativeLayout>
             </LinearLayout>
+            <View
+                android:layout_marginBottom="5dp"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@drawable/white"/>
         </LinearLayout>
     </LinearLayout>
 </LinearLayout>

@@ -3,11 +3,9 @@ package com.mssinfotech.iampro.co.user;
 import android.Manifest;
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.app.Dialog;
 import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
-import android.app.PendingIntent;
 import android.app.ProgressDialog;
 import android.content.ClipData;
 import android.content.Context;
@@ -18,7 +16,6 @@ import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Environment;
@@ -28,7 +25,6 @@ import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.NotificationCompat;
-import android.support.v4.app.NotificationManagerCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AppCompatActivity;
@@ -67,7 +63,6 @@ import com.mssinfotech.iampro.co.utils.Validate;
 //import net.gotev.uploadservice.UploadNotificationConfig;
 
 import net.gotev.uploadservice.MultipartUploadRequest;
-import net.gotev.uploadservice.UploadNotificationConfig;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -95,11 +90,6 @@ public class AddVideoActivity extends AppCompatActivity  implements SingleUpload
     private GalleryAdapter galleryAdapter;
     private LinearLayout categoryLayout, albumLayout;
     private VideoView videoView;
-    int notificationId;
-    NotificationManagerCompat notificationManager;
-    NotificationCompat.Builder builder;
-    String CHANNEL_ID = "my_channel_01";
-    Context context;
     Intent i;
     private final SingleUploadBroadcastReceiver uploadReceiver = new SingleUploadBroadcastReceiver();
     ArrayList<Uri> mArrayUri = new ArrayList<Uri>();
@@ -111,9 +101,6 @@ public class AddVideoActivity extends AppCompatActivity  implements SingleUpload
         Config.setLayoutName(getResources().getResourceEntryName(R.layout.activity_add_video));
         i = new Intent(this, AddVideoActivity.class);
         getSupportActionBar().hide();
-        context = getApplicationContext();
-        notificationId= (int) System.currentTimeMillis();
-
         tvlayouttype = findViewById(R.id.tvlayouttype);
         tilalbumname = findViewById(R.id.tilalbumname);
         etalbumname = findViewById(R.id.etalbumname);
@@ -139,7 +126,29 @@ public class AddVideoActivity extends AppCompatActivity  implements SingleUpload
         });
         function.executeUrl(this, "get", Config.API_URL + "app_service.php?type=delete_temp_data&uid=" + PrefManager.getLoginDetail(this, "id"), null);
         getAlbumList();
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
+            startMyOwnForeground();
+    }
+    private void startMyOwnForeground(){
+        String NOTIFICATION_CHANNEL_ID = "com.example.simpleapp";
+        String channelName = "My Background Service";
+        NotificationChannel chan = null;
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+            chan = new NotificationChannel(NOTIFICATION_CHANNEL_ID, channelName, NotificationManager.IMPORTANCE_NONE);
 
+            chan.setLightColor(Color.BLUE);
+            chan.setLockscreenVisibility(Notification.VISIBILITY_PRIVATE);
+            NotificationManager manager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+            assert manager != null;
+            manager.createNotificationChannel(chan);
+        }
+        NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this, NOTIFICATION_CHANNEL_ID);
+        Notification notification = notificationBuilder.setOngoing(true)
+                .setSmallIcon(R.drawable.iampro)
+                .setContentTitle("App is running in background")
+                .setPriority(NotificationManager.IMPORTANCE_MIN)
+                .setCategory(Notification.CATEGORY_SERVICE)
+                .build();
     }
 
     //Requesting permission
@@ -186,29 +195,17 @@ public class AddVideoActivity extends AppCompatActivity  implements SingleUpload
                     public void onClick(DialogInterface dialog, int which) {
                         switch (which) {
                             case 0:
-                                chooseVideoFromGallary();
-                                //ImageProcess.chooseVideoFromGallary(AddVideoActivity.this);
+                                ImageProcess.chooseVideoFromGallary(AddVideoActivity.this);
                                 break;
                             case 1:
-                                takeVideoFromCamera();
-                                //ImageProcess.takeVideoFromCamera(AddVideoActivity.this);
+                                ImageProcess.takeVideoFromCamera(AddVideoActivity.this);
                                 break;
                         }
                     }
                 });
         pictureDialog.show();
     }
-    public void chooseVideoFromGallary() {
-        Intent intent = new Intent(
-                Intent.ACTION_PICK,
-                android.provider.MediaStore.Video.Media.EXTERNAL_CONTENT_URI);
-        intent.setType("video/*");
-        startActivityForResult(intent, Config.GALLERY);
-    }
-    private void takeVideoFromCamera() {
-        Intent intent = new Intent(MediaStore.ACTION_VIDEO_CAPTURE);
-        startActivityForResult(intent, Config.CAMERA);
-    }
+
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         Log.d("result",""+resultCode);
@@ -339,13 +336,12 @@ public class AddVideoActivity extends AppCompatActivity  implements SingleUpload
             Config.showInternetDialog(this);
             return;
         }
-        //Toast.makeText(context, "Video upload remain pleasw wait....", Toast.LENGTH_LONG).show();
+        //Toast.makeText(getApplicationContext(), "Video upload remain pleasw wait....", Toast.LENGTH_LONG).show();
         //return;
         try {
             String uploadId = UUID.randomUUID().toString();
             uploadReceiver.setDelegate((SingleUploadBroadcastReceiver.Delegate) this);
             uploadReceiver.setUploadID(uploadId);
-
             //Creating a multi part request
             String palbumname= tvlayouttype.getText().toString();
             if(!palbumname.equalsIgnoreCase("videonew"))palbumname=spvideo_album.getSelectedItem().toString();
@@ -362,32 +358,16 @@ public class AddVideoActivity extends AppCompatActivity  implements SingleUpload
                     .addParameter("video_name",videoname)
                     .addParameter("about_us",videodetail)
                     .addParameter("category",cat)
-                    .addParameter("user_id",PrefManager.getLoginDetail(context,"id"))
-                    .addParameter("my_id",PrefManager.getLoginDetail(context,"id"))
-                    .addParameter("uid",PrefManager.getLoginDetail(context,"id"))
+                    .addParameter("user_id",PrefManager.getLoginDetail(getApplicationContext(),"id"))
+                    .addParameter("my_id",PrefManager.getLoginDetail(getApplicationContext(),"id"))
+                    .addParameter("uid",PrefManager.getLoginDetail(getApplicationContext(),"id"))
                     //.setNotificationConfig(new UploadNotificationConfig())
                     .setMaxRetries(2)
                     .startUpload(); //Starting the upload
             MyVideoActivity fragment = new MyVideoActivity();
-            function.updateFragment(AddVideoActivity.this,fragment,null);
-
-            notificationManager = NotificationManagerCompat.from(this);
-            builder = new NotificationCompat.Builder(this, CHANNEL_ID);
-
-            builder.setContentTitle("Upload Video")
-                    .setContentText("Uploading in progress")
-                    .setSmallIcon(R.drawable.iampro)
-                    .setChannelId(CHANNEL_ID)
-                    .setPriority(NotificationCompat.PRIORITY_DEFAULT);
-            NotificationManager manager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                NotificationChannel channel = new NotificationChannel(CHANNEL_ID, "Default channel", NotificationManager.IMPORTANCE_DEFAULT);
-                manager.createNotificationChannel(channel);
-            }
-            int PROGRESS_MAX = 100;
-            int PROGRESS_CURRENT = 0;
-            builder.setProgress(PROGRESS_MAX, PROGRESS_CURRENT, false);
-            manager.notify(notificationId, builder.build());
+            Bundle args = new Bundle();
+            args.putString("uid",PrefManager.getLoginDetail(AddVideoActivity.this,"id"));
+            function.loadFragment(AddVideoActivity.this,fragment,args);
             //finish();
         } catch (Exception exc) {
             Toast.makeText(this, ""+exc.getMessage(), Toast.LENGTH_SHORT).show();
@@ -473,9 +453,7 @@ public class AddVideoActivity extends AppCompatActivity  implements SingleUpload
 
     @Override
     public void onProgress(int progress) {
-        builder.setContentText("Uploading Processing...").setProgress(100,progress,false);
-        notificationManager.notify(notificationId, builder.build());
-        //Toast.makeText(AddVideoActivity.this,""+progress+"% Process Completed",Toast.LENGTH_LONG).show();
+        Toast.makeText(AddVideoActivity.this,""+progress+"\t"+"Percentage Completed",Toast.LENGTH_LONG).show();
     }
 
     @Override
@@ -491,38 +469,19 @@ public class AddVideoActivity extends AppCompatActivity  implements SingleUpload
     @Override
     public void onCompleted(int serverResponseCode, byte[] serverResponseBody) {
         //Toast.makeText(AddVideoActivity.this,""+"Video Uploading Completed...",Toast.LENGTH_LONG).show();
-        int cntVideo = Integer.parseInt(PrefManager.getLoginDetail(context,"total_count_video"))+1;
-        PrefManager.updateLoginDetail(context,"total_count_video",(cntVideo)+"");
-        Config.video_text.setText(cntVideo+"");
-        builder.setContentText("Download complete").setProgress(100,100,false);
-        notificationManager.notify(notificationId, builder.build());
-        /*final Dialog myDialog = new Dialog(context);
-        myDialog.setContentView(R.layout.confirm_popup);
-        TextView yes = myDialog.findViewById(R.id.yes);
-        TextView no = myDialog.findViewById(R.id.no);
-        TextView heading = myDialog.findViewById(R.id.heading);
-        TextView detail = myDialog.findViewById(R.id.detail);
-        heading.setText("Uploading Status!");
-        detail.setText("Video Uploaded Successfully");
-        yes.setText("Go to Video");
-        no.setText("Ok");
-        yes.setOnClickListener(new View.OnClickListener() {
+        AlertDialog.Builder alertDialog = new AlertDialog.Builder(AddVideoActivity.this);
+        alertDialog.setTitle("Uploading Status!");
+        alertDialog.setMessage("Video Uploading Completed...");
+        alertDialog.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
             @Override
-            public void onClick(View v) {
-                MyVideoActivity fragment = new MyVideoActivity();
-                function.loadFragment(AddVideoActivity.this,fragment,null);
-                myDialog.dismiss();
+            public void onClick(DialogInterface dialog, int which) {
+                // dialog.cancel();
+
             }
         });
-        no.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                myDialog.dismiss();
-            }
-        });
-        myDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-        myDialog.show();
-        */
+
+        AlertDialog dialog = alertDialog.create();
+        dialog.show();
     }
     @Override
     public void onCancelled() {
@@ -531,14 +490,14 @@ public class AddVideoActivity extends AppCompatActivity  implements SingleUpload
     public void onResume() {
         super.onResume();
         //LocalBroadcastManager.getInstance(AddVideoActivity.this).registerReceiver(receiver, new IntentFilter("otp"));
-        uploadReceiver.register(this);
+        uploadReceiver.register(AddVideoActivity.this);
 
     }
     @Override
     public void onPause() {
         super.onPause();
        // LocalBroadcastManager.getInstance(context).unregisterReceiver(receiver);
-        uploadReceiver.unregister(this);
+        uploadReceiver.unregister(AddVideoActivity.this);
     }
 
 }

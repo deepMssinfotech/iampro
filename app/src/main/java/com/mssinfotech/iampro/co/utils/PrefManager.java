@@ -50,7 +50,6 @@ public class PrefManager {
         return pref.getBoolean(IS_FIRST_TIME_LAUNCH, true);
     }
     public static void updateCountFromServer(final Context context,String uid) {
-        _context=context;
         if (!uid.isEmpty()) {
             //Log.d(TAG, "test servide for 5 sec");
             String api_url = Config.API_URL + "api.php?type=chat_count&myid=" + uid;
@@ -88,7 +87,6 @@ public class PrefManager {
         }
     }
     public static void updateUserData(final Context context, String myid){
-        _context=context;
         if(myid != null) {
             String myurl = Config.API_URL + "ajax.php?type=friend_detail&id=" + myid + "&uid=" + myid;
             //Log.d(Config.TAG, myurl);
@@ -133,7 +131,6 @@ public class PrefManager {
             requestQueue.add(stringRequest);
         }
     }public static final void getCountFromServer(final Context context) {
-        _context=context;
         if (isLogin(context)) {
             //Log.d(TAG, "test servide for 5 sec");
             String api_url = Config.API_URL + "api.php?type=chat_count&myid=" + getLoginDetail(context, "id");
@@ -225,7 +222,6 @@ public class PrefManager {
             return userpref.getBoolean(IS_LOGIN,false);
     }
     public static boolean updateLoginDetail(Context context, String field, String value) {
-        _context=context;
         usereditor.remove(field);
         usereditor.putString(field, value);
         usereditor.apply();
@@ -236,14 +232,12 @@ public class PrefManager {
         usereditor.commit();
     }
     public static String getLoginDetail(Context context, String field){
-        _context=context;
         if(userpref==null)
             return null;
         String value= userpref.getString(field, null);
         return value;
     }
     public static void logout(Context context){
-        _context=context;
         usereditor.clear();
         usereditor.commit(); // commit changes
     }

@@ -98,9 +98,6 @@ public class SectionVideoAdapter extends RecyclerView.Adapter<SectionVideoAdapte
         final String id=singleItem .getId();
         final String uidd=singleItem.getUid();
 
-         holder.category.setText(itemsList.get(i).getCategory());
-            holder.ratingBar.setRating(Float.parseFloat(itemsList.get(i).getRating()));
-
         //if(!(singleItem.getRating()!="NAN") || !(singleItem.getRating().equalsIgnoreCase("NAN")))
         //holder.ratingBar.setRating(Float.parseFloat(String.valueOf(singleItem.getRating())));
        /* holder. category.setText(singleItem .getCategory());
@@ -153,15 +150,11 @@ public class SectionVideoAdapter extends RecyclerView.Adapter<SectionVideoAdapte
         }
         if (PrefManager.isLogin(mContext)){
             holder.likeButton.setEnabled(true);
-            holder.ratingBar.setFocusable(true);
-            holder.ratingBar.setIsIndicator(false);
         }
         else {
             holder.likeButton.setEnabled(false);
-            holder.ratingBar.setFocusable(false);
-            holder.ratingBar.setIsIndicator(true);
         }
-
+        holder.category.setText(singleItem.getCategory());
         holder.tv_name.setText(singleItem.getName());
         if(itemsList.get(i).getMore()!=null && itemsList.get(i).getMore().equalsIgnoreCase("loadmore")){
             //holder.btnMore.setVisibility(View.GONE);
@@ -183,7 +176,6 @@ public class SectionVideoAdapter extends RecyclerView.Adapter<SectionVideoAdapte
             Log.d("vimagee_path",Config.V_URL+itemsList.get(i).getV_image());
         }
         else{
-
             Glide.with(mContext)
                     .load(Config.V_URL+itemsList.get(i).getImage())
                     .apply(Config.options_video)
@@ -191,9 +183,6 @@ public class SectionVideoAdapter extends RecyclerView.Adapter<SectionVideoAdapte
             holder.videoView.setVisibility(View.VISIBLE);
              Log.d("v_url_main",""+Config.V_URL+itemsList.get(i).getImage());
         }
-
-
-
        // holder.udate.setText(singleItem.getUdate());
         holder.tv_comments.setText(String.valueOf(singleItem.getComments()));
         holder.tv_totallike.setText(String.valueOf(singleItem.getTotallike()));
@@ -362,11 +351,10 @@ public class SectionVideoAdapter extends RecyclerView.Adapter<SectionVideoAdapte
              }
          });
         if(PrefManager.isLogin(mContext)){
-            if(!PrefManager.getLoginDetail(mContext,"id").equalsIgnoreCase(itemsList.get(i).getUid()))
+            if(!PrefManager.getLoginDetail(mContext,"id").equalsIgnoreCase(itemsList.get(i).getUid().toString()))
                 holder.buttonViewOption.setVisibility(View.GONE);
             else
                 holder.buttonViewOption.setVisibility(View.VISIBLE);
-            holder.buttonViewOption.setEnabled(false);
         }
         else{
             holder.buttonViewOption.setVisibility(View.GONE);
@@ -377,40 +365,6 @@ public class SectionVideoAdapter extends RecyclerView.Adapter<SectionVideoAdapte
                     .apply(Config.options_video)
                     .into(holder.videoView);
             holder.videoView.setVisibility(View.VISIBLE);
-        }
-
-        holder.user_image.setVisibility(View.VISIBLE);
-        Glide.with(mContext)
-                .load(Config.AVATAR_URL+singleItem.getAvatar())
-                .apply(Config.options_video)
-                .into(holder.user_image);
-        //holder.category.setText(itemsList.get(i).getFullname());
-        holder.ratingBar.setRating(Float.parseFloat(itemsList.get(i).getRating()));
-        if(itemsList.get(i).getMore()==null){
-            holder.user_image.setVisibility(View.GONE);
-        }
-
-        if(PrefManager.isLogin(mContext)) {
-            holder.ratingBar.setFocusable(true);
-            holder.ratingBar.setIsIndicator(false);
-            holder.likeButton.setEnabled(true);
-            holder.buttonViewOption.setVisibility(View.VISIBLE);
-            holder.buttonViewOption.setEnabled(true);
-        }
-        else {
-            holder.likeButton.setEnabled(false);
-            holder.ratingBar.setFocusable(false);
-            holder.ratingBar.setIsIndicator(true);
-            //holder.ratingBar.setEnabled(false);
-            holder.buttonViewOption.setVisibility(View.INVISIBLE);
-            holder.buttonViewOption.setEnabled(false);
-        }
-        if (PrefManager.isLogin(mContext) && PrefManager.getLoginDetail(mContext,"id").equalsIgnoreCase(itemsList.get(i).getUid())){
-            holder.buttonViewOption.setVisibility(View.VISIBLE);
-        }
-        else{
-            holder.buttonViewOption.setVisibility(View.GONE);
-            holder.buttonViewOption.setEnabled(false);
         }
     }
     @Override

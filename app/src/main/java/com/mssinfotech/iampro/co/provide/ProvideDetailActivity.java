@@ -106,12 +106,6 @@ public class ProvideDetailActivity extends AppCompatActivity implements CommentA
                 function.loadFragment(ProvideDetailActivity.this,fragment,args);
             }
         });
-        if (PrefManager.isLogin(ProvideDetailActivity.this)) {
-            favButton.setEnabled(true);
-        }
-        else {
-             favButton.setEnabled(false);
-        }
         getProvideDetail();
         //getProvideReview();
     }

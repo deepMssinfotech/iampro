@@ -90,8 +90,7 @@ public class SectionProductAdapter extends RecyclerView.Adapter<SectionProductAd
         final String id=singleItem.getId();
         final String pid=singleItem.getId();
         final String uidv=itemsList.get(i).getUid();
-        holder.category.setText(itemsList.get(i).getFullname());
-        holder.ratingBar.setRating(Float.parseFloat(itemsList.get(i).getRating()));
+        holder. category.setText(singleItem .getCategory());
         int my_uid=Integer.parseInt(uidv);
         if(my_uid==0){
             holder.likeButton.setEnabled(false);
@@ -110,6 +109,8 @@ public class SectionProductAdapter extends RecyclerView.Adapter<SectionProductAd
                     .load(Config.ALBUM_URL+singleItem.getAvatar())
                     .apply(Config.options_avatar)
                     .into(holder.user_image);
+            holder.category.setText(itemsList.get(i).getFullname());
+            holder.ratingBar.setRating(Float.parseFloat(itemsList.get(i).getRating()));
         }
         if(singleItem.getRating()!="NAN" || singleItem.getRating().length()>0 || !(singleItem.getRating().equalsIgnoreCase("NAN")) || singleItem.getRating()!="" || !singleItem.getRating().equalsIgnoreCase("") || !singleItem.getRating().isEmpty())
             holder.ratingBar.setRating(Float.parseFloat(String.valueOf(singleItem.getRating())));
@@ -119,7 +120,6 @@ public class SectionProductAdapter extends RecyclerView.Adapter<SectionProductAd
         holder.tv_comments.setText(String.valueOf(singleItem .getComments()));
         if(itemsList.get(i).getMore()!=null && itemsList.get(i).getMore().equalsIgnoreCase("loadmore")){
             //holder.btnMore.setVisibility(View.GONE);
-            holder.category.setText(itemsList.get(i).getFullname());
             holder.iv_delete.setVisibility(View.GONE);
             holder.iv_edit.setVisibility(View.GONE);
         }
@@ -242,30 +242,6 @@ public class SectionProductAdapter extends RecyclerView.Adapter<SectionProductAd
                  //function.addtocart(mContext,itemsList.get(i).getId(), "1",String.valueOf(itemsList.get(i).getScost()));
             }
         });
-
-        if(PrefManager.isLogin(mContext)) {
-            holder.ratingBar.setFocusable(true);
-            holder.ratingBar.setIsIndicator(false);
-            holder.likeButton.setEnabled(true);
-            //holder.buttonViewOption.setVisibility(View.VISIBLE);
-            //holder.buttonViewOption.setEnabled(true);
-        }
-        else {
-            holder.likeButton.setEnabled(false);
-            holder.ratingBar.setFocusable(false);
-            holder.ratingBar.setIsIndicator(true);
-            //holder.ratingBar.setEnabled(false);
-            //holder.buttonViewOption.setVisibility(View.INVISIBLE);
-            //holder.buttonViewOption.setEnabled(false);
-        }
-        if (PrefManager.isLogin(mContext) && PrefManager.getLoginDetail(mContext,"id").equalsIgnoreCase(itemsList.get(i).getUid())){
-            //holder.buttonViewOption.setVisibility(View.VISIBLE);
-        }
-        else{
-            //holder.buttonViewOption.setVisibility(View.GONE);
-            //holder.buttonViewOption.setEnabled(false);
-        }
-
     }
     @Override
     public int getItemCount() {

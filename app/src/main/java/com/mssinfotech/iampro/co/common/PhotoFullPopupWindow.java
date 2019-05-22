@@ -35,9 +35,12 @@ public class PhotoFullPopupWindow extends PopupWindow {
     ViewGroup parent;
     private static PhotoFullPopupWindow instance = null;
 
+
+
     public PhotoFullPopupWindow(Context ctx, int layout, View v, String imageUrl, Bitmap bitmap) {
         super(((LayoutInflater) ctx.getSystemService(LAYOUT_INFLATER_SERVICE)).inflate( R.layout.popup_photo_full, null), ViewGroup.LayoutParams.MATCH_PARENT,
                 ViewGroup.LayoutParams.MATCH_PARENT);
+
         if (Build.VERSION.SDK_INT >= 21) {
             setElevation(5.0f);
         }

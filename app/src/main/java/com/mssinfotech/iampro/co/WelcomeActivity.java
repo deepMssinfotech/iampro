@@ -72,7 +72,7 @@ public class WelcomeActivity extends AppCompatActivity implements View.OnClickLi
             signupimage.setVisibility(View.GONE);
             String avatar=Config.AVATAR_URL+"250/250/"+PrefManager.getLoginDetail(this,"img_url");
             username.setText(PrefManager.getLoginDetail(this,"fname"));
-            Glide.with(this).load(avatar).apply(Config.options_avatar).into(imguser);
+            Glide.with(this).load(avatar).into(imguser);
             Log.d(Config.TAG,avatar);
             imguser.setOnClickListener(this);
             if(RedirectURL!=null){
