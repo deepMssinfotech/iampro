@@ -22,7 +22,7 @@
         android:layout_marginBottom="@dimen/fab_margin_bottom"
         android:layout_marginRight="@dimen/fab_margin_right"
         app:backgroundTint="@color/color_demand_color"
-        app:srcCompat="@android:drawable/ic_input_add" />
+        app:srcCompat="@drawable/ic_add_white"/>
 
     <android.support.v4.widget.NestedScrollView
         android:layout_above="@+id/footer"
