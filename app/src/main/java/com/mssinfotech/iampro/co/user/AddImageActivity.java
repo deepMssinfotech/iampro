@@ -87,6 +87,7 @@ public class AddImageActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_image);
          getSupportActionBar().hide();
+        //getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         Config.setLayoutName(getResources().getResourceEntryName(R.layout.activity_add_image));
         context = getApplicationContext();
         tvlayouttype = findViewById(R.id.tvlayouttype);

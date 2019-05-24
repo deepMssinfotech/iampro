@@ -31,37 +31,38 @@
 
             <LinearLayout
                 android:layout_width="match_parent"
+                android:layout_marginBottom="20dp"
                 android:layout_height="wrap_content">
 
                 <RelativeLayout
                     android:layout_width="0dp"
+                    android:layout_marginRight="4dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1">
 
                     <Button
                         android:id="@+id/add_video_button"
-                        android:background="@drawable/white"
                         android:textColor="@color/black"
+                        android:background="@drawable/btn_others"
                         android:onClick="click_video_button"
-                        style="@style/Widget.AppCompat.Button.Small"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:text="Add Video" />
-
+    <!--  style="@style/Widget.AppCompat.Button.Small"  -->
                 </RelativeLayout>
 
                 <RelativeLayout
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
+                    android:layout_marginLeft="4dp"
                     android:layout_weight="1">
 
                     <Button
-                        android:background="@drawable/black"
-                        android:textColor="@color/white"
+                        android:background="@drawable/btn_others"
+                        android:textColor="@color/black"
                         android:id="@+id/create_album_button"
                         android:onClick="click_album_button"
-                        style="@style/Widget.AppCompat.Button.Small"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="Add Album" />
@@ -193,15 +194,22 @@
         android:layout_height="wrap_content"
         android:layout_width="match_parent"
         android:gravity="bottom"
+        android:padding="4dp"
+        android:layout_marginBottom="20dp"
         android:layout_alignParentBottom="true"
         android:layout_gravity="bottom">
         <Button
             android:id="@+id/button"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="35dp"
             android:onClick="processAddVideo"
+            android:layout_centerHorizontal="true"
+            android:paddingBottom="10dp"
+            android:paddingRight="20dp"
+            android:paddingLeft="20dp"
+            android:paddingTop="10dp"
             android:layout_gravity="bottom"
-            android:background="@drawable/video_color"
+            android:background="@drawable/btn_others"
             android:text="Proceed Now"
             android:textAlignment="center" />
     </RelativeLayout>
