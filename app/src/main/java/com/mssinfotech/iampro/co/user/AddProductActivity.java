@@ -64,21 +64,24 @@ public class AddProductActivity extends AppCompatActivity {
     private Bitmap bitmap=null;
     private String URL_FEED = "",uid="", pid = "";
     private String productname, brandname, purchesecost,sellingcost, productdetail,cat;
-    Button ibproductimage,ibProductMoreImage;
+    Button ibproductimage,ibProductMoreImage,button;
     List<String> imagesEncodedList;
     private GalleryAdapter galleryAdapter;
     protected Handler handler;
     Intent intent;
+    Context context;
     ArrayList<Uri> mArrayUri = new ArrayList<Uri>();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        context = getApplicationContext();
         setContentView(R.layout.activity_add_product);
          getSupportActionBar().hide();
         Config.setLayoutName(getResources().getResourceEntryName(R.layout.activity_add_product));
         tilproductname = findViewById(R.id.tilproductname);
         etproductname = findViewById(R.id.etproductname);
         tilbrandname = findViewById(R.id.tilbrandname);
+        button=findViewById(R.id.button);
         etbrandname = findViewById(R.id.etbrandname);
 
         tilpurchesecost = findViewById(R.id.tilpurchesecost);
@@ -109,12 +112,11 @@ public class AddProductActivity extends AppCompatActivity {
         intent = getIntent();
         pid = intent.getStringExtra("id");
         uid= PrefManager.getLoginDetail(this,"id");
-        if(pid == null ) {
+        if(pid == null) {
 
         }else{
             gteProductDetail(pid);
         }
-
         function.executeUrl(this,"get",Config.API_URL+"app_service.php?type=delete_temp_data&uid="+PrefManager.getLoginDetail(this,"id"),null);
     }
     private void gteProductDetail(String id){
@@ -144,7 +146,7 @@ public class AddProductActivity extends AppCompatActivity {
                             etpurchesecost.setText(purchese_cost);
                             etsellingcost.setText(selling_cost);
                             etproductdetail.setText(detail);
-                            Glide.with(getApplicationContext()).load(pimage).into(imageview);
+                            Glide.with(context).load(pimage).into(imageview);
 
 
 
@@ -162,7 +164,7 @@ public class AddProductActivity extends AppCompatActivity {
                     }
                 });
         //Creating a request queue
-        RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
+        RequestQueue requestQueue = Volley.newRequestQueue(context);
         //Adding request to the queue
         requestQueue.add(stringRequest);
     }
@@ -251,7 +253,7 @@ public class AddProductActivity extends AppCompatActivity {
 
                 //ArrayList<Uri> mArrayUri = new ArrayList<Uri>();
                 mArrayUri.add(mImageUri);
-                galleryAdapter = new GalleryAdapter(getApplicationContext(),mArrayUri);
+                galleryAdapter = new GalleryAdapter(context,mArrayUri);
                 gvGallery.setAdapter(galleryAdapter);
                 galleryAdapter.notifyDataSetChanged();
                 gvGallery.setVerticalSpacing(gvGallery.getHorizontalSpacing());
@@ -284,7 +286,7 @@ public class AddProductActivity extends AppCompatActivity {
                         imagesEncodedList.add(imageEncoded);
                         cursor.close();
 
-                        galleryAdapter = new GalleryAdapter(getApplicationContext(),mArrayUri);
+                        galleryAdapter = new GalleryAdapter(context,mArrayUri);
                         gvGallery.setAdapter(galleryAdapter);
                          galleryAdapter.notifyDataSetChanged();
                         gvGallery.setVerticalSpacing(gvGallery.getHorizontalSpacing());
@@ -301,6 +303,7 @@ public class AddProductActivity extends AppCompatActivity {
         }
     }
     public void processAddProduct(View v){
+        button.setEnabled(false);
         productname=etproductname.getText().toString();
         brandname=etbrandname.getText().toString();
         purchesecost=etpurchesecost.getText().toString();
@@ -311,36 +314,43 @@ public class AddProductActivity extends AppCompatActivity {
         if (Validate.isNull(productname)) {
             tilproductname.setErrorEnabled(true);
             tilproductname.setError("Enter Product Name ");
+            button.setEnabled(true);
             return ;
         } else if (Validate.isNull(brandname)) {
             tilproductname.setErrorEnabled(false);
             tilbrandname.setErrorEnabled(true);
             tilbrandname.setError("Enter Brand  Name");
+            button.setEnabled(true);
             return;
         } else if (Validate.isNull(purchesecost)) {
             tilbrandname.setErrorEnabled(false);
             tilpurchesecost.setErrorEnabled(true);
             tilpurchesecost.setError("Enter Product Purchese Cost");
+            button.setEnabled(true);
             return;
         }
         else if (Validate.isNull(sellingcost)) {
             tilpurchesecost.setErrorEnabled(false);
             tilsellingcost.setErrorEnabled(true);
             tilsellingcost.setError("Enter Product Selling Cost");
+            button.setEnabled(true);
             return;
         }
         else if (Validate.isNull(productdetail)) {
             tilsellingcost.setErrorEnabled(false);
             tilproductdetail.setErrorEnabled(true);
             tilproductdetail.setError("Enter Product Detail");
+            button.setEnabled(true);
             return;
         }else {
             hideKeyboard();
             tilproductdetail.setErrorEnabled(false);
             if(pid == null ) {
                 sendData();
+                button.setEnabled(true);
             }else{
                 updateData();
+                button.setEnabled(true);
             }
         }
     }
@@ -374,7 +384,7 @@ public class AddProductActivity extends AppCompatActivity {
                             String status=jsonObject.getString("status");
                             String msgg=jsonObject.getString("msg");
 
-                            Toast.makeText(getApplicationContext(),""+msgg,Toast.LENGTH_LONG).show();
+                            Toast.makeText(context,""+msgg,Toast.LENGTH_LONG).show();
                             if (status.equalsIgnoreCase("success")){
                                 //String urlv=jsonObject.getString("url");
 
@@ -388,14 +398,18 @@ public class AddProductActivity extends AppCompatActivity {
                                 Bundle args = new Bundle();
                                 args.putString("uid",PrefManager.getLoginDetail(AddProductActivity.this,"id"));
                                 function.loadFragment(AddProductActivity.this,fragment,args);
-                                //finish();
+                                int cntProduct = Integer.parseInt(PrefManager.getLoginDetail(context,"total_count_product"))+1;
+                                PrefManager.updateLoginDetail(context,"total_count_product",(cntProduct)+"");
+                                Config.product_text.setText(cntProduct+"");
+                                finish();
+
                             }
                         }
                         catch(JSONException e)
                         {
                             loading.dismiss();
                             Log.d("JSoNExceptionv",e.getMessage());
-                            Toast.makeText(getApplicationContext(),e.getMessage(),Toast.LENGTH_LONG).show();
+                            Toast.makeText(context,e.getMessage(),Toast.LENGTH_LONG).show();
                         }
                     }
                 },
@@ -404,7 +418,7 @@ public class AddProductActivity extends AppCompatActivity {
                     public void onErrorResponse(VolleyError volleyError) {
                         //Dismissing the progress dialog
                         loading.dismiss();
-                        Toast.makeText(getApplicationContext(),volleyError.getMessage(),Toast.LENGTH_LONG).show();
+                        Toast.makeText(context,volleyError.getMessage(),Toast.LENGTH_LONG).show();
                     }
                 }){
             @Override
@@ -420,7 +434,7 @@ public class AddProductActivity extends AppCompatActivity {
                 params.put("detail",productdetail);
                 params.put("category",cat);
                 params.put("myfile",image);
-                params.put("added_by",PrefManager.getLoginDetail(getApplicationContext(),"id"));
+                params.put("added_by",PrefManager.getLoginDetail(context,"id"));
                 //returning parameters
                 return params;
             }
@@ -452,7 +466,7 @@ public class AddProductActivity extends AppCompatActivity {
                             String status=jsonObject.getString("status");
                             String msgg=jsonObject.getString("msg");
 
-                            Toast.makeText(getApplicationContext(),""+msgg,Toast.LENGTH_LONG).show();
+                            Toast.makeText(context,""+msgg,Toast.LENGTH_LONG).show();
                             if (status.equalsIgnoreCase("success")){
                                 //String urlv=jsonObject.getString("url");
 
@@ -471,7 +485,7 @@ public class AddProductActivity extends AppCompatActivity {
                         {
                             loading.dismiss();
                             Log.d("JSoNExceptionv",e.getMessage());
-                            Toast.makeText(getApplicationContext(),e.getMessage(),Toast.LENGTH_LONG).show();
+                            Toast.makeText(context,e.getMessage(),Toast.LENGTH_LONG).show();
                         }
                     }
                 },
@@ -479,7 +493,7 @@ public class AddProductActivity extends AppCompatActivity {
                     @Override
                     public void onErrorResponse(VolleyError volleyError) {
                         loading.dismiss();
-                        Toast.makeText(getApplicationContext(),volleyError.getMessage(),Toast.LENGTH_LONG).show();
+                        Toast.makeText(context,volleyError.getMessage(),Toast.LENGTH_LONG).show();
                     }
                 }){
             @Override
@@ -496,7 +510,7 @@ public class AddProductActivity extends AppCompatActivity {
                 params.put("category",cat);
                // params.put("myfile",image);
                 params.put("product_id",pid);
-                params.put("added_by",PrefManager.getLoginDetail(getApplicationContext(),"id"));
+                params.put("added_by",PrefManager.getLoginDetail(context,"id"));
                 //returning parameters
                 return params;
             }

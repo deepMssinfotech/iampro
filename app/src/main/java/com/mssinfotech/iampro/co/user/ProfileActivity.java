@@ -15,6 +15,7 @@ import android.provider.MediaStore;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewCompat;
 import android.support.v4.widget.NestedScrollView;
@@ -89,6 +90,7 @@ public class ProfileActivity extends Fragment implements AllFeedAdapter.ItemList
  //,OnLikeListener,OnAnimationEndListener
     private static final String TAG = ProfileActivity.class.getSimpleName();
     private static final int FEED_LIMIT=15;
+
     private static int FEED_START=0;
 
     private List<FeedItem> feedItems;
@@ -134,6 +136,22 @@ public class ProfileActivity extends Fragment implements AllFeedAdapter.ItemList
     public View onCreateView(LayoutInflater inflater, ViewGroup parent, Bundle savedInstanceState) {
         // Defines the xml file for the fragment
         return inflater.inflate(R.layout.activity_profile, parent, false);
+    }
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (Config.allowRefresh) {
+            Config.allowRefresh = false;
+            //Toast.makeText(context, "click from BACK", Toast.LENGTH_SHORT).show();
+            Fragment frg = null;
+            AppCompatActivity activity = (AppCompatActivity) context;
+            ProfileActivity fragment = new ProfileActivity();
+            frg = activity.getSupportFragmentManager().findFragmentByTag(fragment.getClass().getName());
+            final FragmentTransaction ft = activity.getSupportFragmentManager().beginTransaction();
+            ft.detach(frg);
+            ft.attach(frg);
+            ft.commit();
+        }
     }
     @Override
     public void onViewCreated(View v, Bundle savedInstanceState) {

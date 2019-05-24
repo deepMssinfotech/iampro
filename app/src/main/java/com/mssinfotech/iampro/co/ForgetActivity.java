@@ -56,8 +56,10 @@ public class ForgetActivity extends AppCompatActivity   implements View.OnClickL
     public void onClick(View v) {
         switch (v.getId() /*to get clicked view id**/) {
             case R.id.btnLogin:
-                LoginActivity fragment = new LoginActivity();
-                function.loadFragment(ForgetActivity.this,fragment,null);
+                /*LoginActivity fragment = new LoginActivity();
+                function.loadFragment(ForgetActivity.this,fragment,null); */
+                Intent intent=new Intent(ForgetActivity.this,LoginActivity.class);
+                  startActivity(intent);
                 break;
 
             default:

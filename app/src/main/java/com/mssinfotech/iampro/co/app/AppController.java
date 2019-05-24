@@ -1,6 +1,8 @@
 package com.mssinfotech.iampro.co.app;
 
 import android.app.Application;
+import android.content.Context;
+import android.support.multidex.MultiDex;
 import android.text.TextUtils;
 
 import com.android.volley.Request;
@@ -24,7 +26,11 @@ public class AppController extends Application {
         super.onCreate();
         mInstance = this;
     }
-
+    @Override
+    protected void attachBaseContext(Context base) {
+        super.attachBaseContext(base);
+        MultiDex.install(this);
+    }
     public static synchronized AppController getInstance() {
         return mInstance;
     }

@@ -156,9 +156,12 @@ public class OtpForgetActivity extends Fragment {
                                 String status = result.getString("status");
                                 String msg = result.getString("msg");
                                 if (status.equals("success")) {
-                                    LoginActivity fragment = new LoginActivity();
-                                    function.loadFragment(context,fragment,null);
+                                    /*LoginActivity fragment = new LoginActivity();
+                                    function.loadFragment(context,fragment,null); */
                                     //finish();
+                                    Intent intent=new Intent(OtpForgetActivity.this.getContext(),LoginActivity.class);
+                                     OtpForgetActivity.this.getContext().startActivity(intent);
+
                                 } else {
                                     Toast.makeText(getActivity() , msg, Toast.LENGTH_LONG).show();
                                 }

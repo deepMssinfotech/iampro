@@ -72,7 +72,7 @@ public class WelcomeActivity extends AppCompatActivity implements View.OnClickLi
             signupimage.setVisibility(View.GONE);
             String avatar=Config.AVATAR_URL+"250/250/"+PrefManager.getLoginDetail(this,"img_url");
             username.setText(PrefManager.getLoginDetail(this,"fname"));
-            Glide.with(this).load(avatar).into(imguser);
+            Glide.with(this).load(avatar).apply(Config.options_avatar).into(imguser);
             Log.d(Config.TAG,avatar);
             imguser.setOnClickListener(this);
             if(RedirectURL!=null){
@@ -154,7 +154,7 @@ public class WelcomeActivity extends AppCompatActivity implements View.OnClickLi
     public void onClick(View v) {
         switch (v.getId()) { /*to get clicked view id**/
             case R.id.imglogin:
-                LoginActivity fragment = new LoginActivity();
+                /*LoginActivity fragment = new LoginActivity();
                 //function.loadFragment(WelcomeActivity.this,fragment,null);
 
                 AppCompatActivity activity =WelcomeActivity.this;
@@ -162,12 +162,15 @@ public class WelcomeActivity extends AppCompatActivity implements View.OnClickLi
                 // create a FragmentTransaction to begin the transaction and replace the Fragment
                 /*if(args != null){
                     fragment.setArguments(args);
-                }*/
+                }
                fragmentTransaction = fm.beginTransaction();
                 // replace the FrameLayout with new Fragment
                 fragmentTransaction.replace(android.R.id.content,fragment);
                 fragmentTransaction.addToBackStack(null);
-                fragmentTransaction.commit(); // save the changes
+                fragmentTransaction.commit(); */
+                // save the changes
+                Intent intent=new Intent(WelcomeActivity.this,LoginActivity.class);
+                 startActivity(intent);
                 break;
             case R.id.imgsignup:
                 SignupActivity fragmentz = new SignupActivity();

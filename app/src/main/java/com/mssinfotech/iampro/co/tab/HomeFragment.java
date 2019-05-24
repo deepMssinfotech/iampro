@@ -127,21 +127,14 @@ public class HomeFragment extends Fragment implements UserDataAdapter.ItemListen
         return list;
     }*/
     private void init() {
-
         mPager = views.findViewById(R.id.pager);
         mPager.setAdapter(new SlidingImage_Adapter(getContext(),imageModelArrayList));
-
         CirclePageIndicator indicator = (CirclePageIndicator)views.findViewById(R.id.indicator);
-
         indicator.setViewPager(mPager);
-
         final float density = getResources().getDisplayMetrics().density;
-
 //Set circle indicator radius
         indicator.setRadius(2 * density);
-
         NUM_PAGES =imageModelArrayList.size();
-
         // Auto start of viewpager
         final Handler handler = new Handler();
         final Runnable Update = new Runnable() {
@@ -159,10 +152,8 @@ public class HomeFragment extends Fragment implements UserDataAdapter.ItemListen
                 handler.post(Update);
             }
         }, 3000, 3000);
-
         // Pager listener over indicator
         indicator.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
-
             @Override
             public void onPageSelected(int position) {
                 currentPage = position;
@@ -181,7 +172,6 @@ public class HomeFragment extends Fragment implements UserDataAdapter.ItemListen
         });
 
     }
-
      private void getTopSlider(){
         final String url=Config.API_URL+ "index.php?type=get_slider&name=TOP_SLIDER";
          RequestQueue requestQueue = Volley.newRequestQueue(getContext());
@@ -248,21 +238,14 @@ public class HomeFragment extends Fragment implements UserDataAdapter.ItemListen
          requestQueue.add(jsonArrayRequest);
      }
     private void init2() {
-
         mPager2 = views.findViewById(R.id.pager2);
         mPager2.setAdapter(new SlidingImage_Adapter(getContext(),imageModelArrayList2));
-
         CirclePageIndicator indicator2 = (CirclePageIndicator)views.findViewById(R.id.indicator2);
-
         indicator2.setViewPager(mPager);
-
         final float density = getResources().getDisplayMetrics().density;
-
 //Set circle indicator radius
         indicator2.setRadius(2* density);
-
         NUM_PAGES =imageModelArrayList2.size();
-
         // Auto start of viewpager
         final Handler handler = new Handler();
         final Runnable Update = new Runnable() {
@@ -280,27 +263,22 @@ public class HomeFragment extends Fragment implements UserDataAdapter.ItemListen
                 handler.post(Update);
             }
         }, 3000, 3000);
-
         // Pager listener over indicator
         indicator2.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
-
             @Override
             public void onPageSelected(int position) {
                 currentPage = position;
 
             }
-
             @Override
             public void onPageScrolled(int pos, float arg1, int arg2) {
 
             }
-
             @Override
             public void onPageScrollStateChanged(int pos) {
 
             }
         });
-
     }
      public void getSecondSlider(){
          final String url=Config.API_URL+ "index.php?type=get_slider&name=SERVICE_SLIDER";
@@ -641,7 +619,7 @@ public class HomeFragment extends Fragment implements UserDataAdapter.ItemListen
                         // Do something when error occurred
                         //Snackbar.make(getContext(),"Error...", Snackbar.LENGTH_LONG).show();
                         Toast.makeText(getContext(), "verror"+error.getMessage(), Toast.LENGTH_SHORT).show();
-                        Log.d("verror",error.getMessage());
+                        Log.d("verror",""+error.getMessage());
                     }
                 }
         );
@@ -982,7 +960,6 @@ public class HomeFragment extends Fragment implements UserDataAdapter.ItemListen
         // Add JsonArrayRequest to the RequestQueue
         requestQueue.add(jsonArrayRequest);
     }
-
     @Override
     public void onItemClick(UserModel item) {
         //Toast.makeText(getContext(), item.getName()+ " is clicked", Toast.LENGTH_SHORT).show();

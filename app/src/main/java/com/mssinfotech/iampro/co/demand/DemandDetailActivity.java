@@ -1,5 +1,4 @@
 package com.mssinfotech.iampro.co.demand;
-
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -64,12 +63,10 @@ import bg.devlabs.fullscreenvideoview.FullscreenVideoView;
 
 import static com.mssinfotech.iampro.co.common.Config.AVATAR_URL;
 import static com.mssinfotech.iampro.co.common.Config.options_avatar;
-
 public class DemandDetailActivity extends AppCompatActivity implements CommentAdapter.ItemListener
 {
     public String pid="",uid="";
     TextView tv_name,tv_categories,tv_cost,tv_demanddetails,tv_demand_name,tv_demand_email;
-
     de.hdodenhof.circleimageview.CircleImageView user_image;
     RecyclerView recycler_view_review_demand;
     CollapsingToolbarLayout collapsingToolbar;
@@ -85,7 +82,6 @@ public class DemandDetailActivity extends AppCompatActivity implements CommentAd
     {
         //Remove title bar
         this.requestWindowFeature(Window.FEATURE_NO_TITLE);
-
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_demand_detail);
         //items=new ArrayList<>();
@@ -103,9 +99,13 @@ public class DemandDetailActivity extends AppCompatActivity implements CommentAd
         tv_demand_name=findViewById(R.id.tv_demand_name);
         tv_demand_email=findViewById(R.id.tv_demand_email);
         user_image=findViewById(R.id.user_image);
-
         recycler_view_review_demand=findViewById(R.id.recycler_view_review_demand);
-
+            if (!PrefManager.isLogin(DemandDetailActivity.this)){
+                favButton.setEnabled(false);
+            }
+            else{
+                favButton.setEnabled(true);
+            }
         pid=getIntent().getExtras().getString("pid");
         //uid=getIntent().getExtras().getString("uid");
         user_image.setOnClickListener(new View.OnClickListener() {
@@ -124,7 +124,6 @@ public class DemandDetailActivity extends AppCompatActivity implements CommentAd
         String url=Config.API_URL+ "app_service.php?id="+pid+"&uid="+uid+"&my_id="+uid+"&type=provide_details";
         // Initialize a new RequestQueue instance
         RequestQueue requestQueue = Volley.newRequestQueue(DemandDetailActivity.this);
-
         // Initialize a new JsonObjectRequest instance
         StringRequest jsonObjectRequest = new StringRequest(
                 Request.Method.GET,
@@ -137,11 +136,10 @@ public class DemandDetailActivity extends AppCompatActivity implements CommentAd
                         Log.d("Prod_detail_demand",response.toString()+"\t\t"+pid);
                         // Process the JSON
                         try{
-                            if (response.toString().equalsIgnoreCase("") || response==null){
+                            if (response.equalsIgnoreCase("") || response==null){
                                 return;
                             }
                             JSONObject responses=new JSONObject(response);
-
                             // Get the current student (json object) data
                             String name =responses.optString("name");
                             String category =responses.optString("category");
@@ -160,12 +158,35 @@ public class DemandDetailActivity extends AppCompatActivity implements CommentAd
 
                             String avatar_path=AVATAR_URL+avatar;
                             // Display the formatted json data in text view
+                            //doiiing...........................
+                            //JSONObject user_details=responses.optJSONObject("user_detail");
+                            String is_featured=responses.optString("is_featured");
+                            if (is_featured.equalsIgnoreCase("1")) {
+                                if (PrefManager.isLogin(DemandDetailActivity.this)) {
+                                    favButton.setLiked(true);
+                                }
+                            } else {
+                                favButton.setLiked(false);
+                            }
+                              if (PrefManager.isLogin(DemandDetailActivity.this)){
+                                  favButton.setEnabled(true);
+                              }
+                              else{
+                                    favButton.setEnabled(false);
+                              }
                             tv_name.setText(name);
                             tv_categories.setText(category);
                             tv_cost.setText(cost);
                             tv_demanddetails.setText(product_details);
                             tv_demand_name.setText(product_provide_name);
                             tv_demand_email.setText(product_provide_email);
+
+
+                            /*if (itemsList.get(position).getIs_featured().equalsIgnoreCase("1")) {
+                                holder.favButton.setLiked(true);
+                            } else {
+                                holder.favButton.setLiked(false);
+                            } */
 
                             //expandedImage
 
@@ -178,6 +199,8 @@ public class DemandDetailActivity extends AppCompatActivity implements CommentAd
                                     .load(avatar_path)
                                     .apply(Config.options_avatar)
                                     .into(user_image);
+
+
 
                             if (responses.getBoolean("wishlist")){
                                 favButton.setLiked(true);

@@ -12,6 +12,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.mssinfotech.iampro.co.LoginActivity;
 import com.mssinfotech.iampro.co.common.Config;
 
 import org.json.JSONException;
@@ -111,7 +112,7 @@ public class PrefManager {
                         String video_banner_image = result.getString("video_banner_image");
                         String profile_image_gallery = result.getString("profile_image_gallery");
                         String profile_video_gallery = result.getString("profile_video_gallery");
-                        PrefManager.saveLoginDetails(unamee,img_url,id,mobile,fname,lname,email,dob,banner_image,  img_banner_image,  video_banner_image,  profile_image_gallery,  profile_video_gallery);
+                        PrefManager.saveLoginDetails(unamee,img_url,id,mobile,fname,lname,email,dob,banner_image,  img_banner_image,  video_banner_image,  profile_image_gallery,  profile_video_gallery,context);
                         //saveLoginDetails();
                         usereditor.commit();
                     } catch (JSONException e) {
@@ -130,7 +131,8 @@ public class PrefManager {
             //Adding request to the queue
             requestQueue.add(stringRequest);
         }
-    }public static final void getCountFromServer(final Context context) {
+    }
+    public static final void getCountFromServer(final Context context) {
         if (isLogin(context)) {
             //Log.d(TAG, "test servide for 5 sec");
             String api_url = Config.API_URL + "api.php?type=chat_count&myid=" + getLoginDetail(context, "id");
@@ -195,7 +197,8 @@ public class PrefManager {
         usereditor.putString("total_count_video", total_count_video);
         usereditor.commit();
     }
-    public static void saveLoginDetails(String unamee,String avatarv,String id,String mobilev,String fnamem,String lnamem,String email,String dob,String banner_imagev,  String img_banner_image,  String video_banner_image,  String profile_image_gallery,  String profile_video_gallery){
+    public static void saveLoginDetails(String unamee,String avatarv,String id,String mobilev,String fnamem,String lnamem,String email,String dob,String banner_imagev,  String img_banner_image,  String video_banner_image,  String profile_image_gallery,  String profile_video_gallery,Context context){
+          _context=context;
         if(userpref==null)
             userpref=_context.getSharedPreferences(PREF_USER_NAME, PRIVATE_MODE);
         if(usereditor==null)

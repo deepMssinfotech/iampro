@@ -356,7 +356,7 @@ public class ImageFragment extends Fragment implements ImageAdapter.ItemListener
     @Override
     public void onItemClick(DataModel item) {
 
-        Toast.makeText(getContext(), item.getName() + " is clicked", Toast.LENGTH_SHORT).show();
+        //Toast.makeText(getContext(), item.getName() + " is clicked", Toast.LENGTH_SHORT).show();
     }
     public void getAllAlbum(){
         //String url=Config.API_URL+ "app_service.php?type=getAlbemsListt&search_type=image&uid="+uid;

@@ -332,6 +332,22 @@ public class ProvideAdapter extends RecyclerView.Adapter<ProvideAdapter.ViewHold
                  function.loadFragment(mContext,fragment,args);
              }
          });
+
+        if (PrefManager.isLogin(mContext)) {
+            Vholder.likeButton.setEnabled(true);
+            Vholder.ratingBar.setFocusable(true);
+            Vholder.ratingBar.setIsIndicator(false);
+            //holder.ratingBar.setClickable(true);
+              Vholder.favButton.setEnabled(true);
+        }
+        else {
+            Vholder.likeButton.setEnabled(false);
+            Vholder.ratingBar.setFocusable(false);
+            Vholder.ratingBar.setIsIndicator(true);
+             Vholder.favButton.setEnabled(false);
+            //holder.ratingBar.setClickable(false);
+        }
+
     }
     @Override
     public int getItemCount() {

@@ -108,6 +108,12 @@ public class ProvideDetailActivity extends AppCompatActivity implements CommentA
         });
         getProvideDetail();
         //getProvideReview();
+        if (!PrefManager.isLogin(ProvideDetailActivity.this)){
+            favButton.setEnabled(false);
+        }
+        else{
+            favButton.setEnabled(true);
+        }
     }
     protected void getProvideDetail(){
         String url= Config.API_URL+"ajax.php?type=provide_details&id="+pid+"&uid="+PrefManager.getLoginDetail(this,"id");
@@ -141,9 +147,7 @@ public class ProvideDetailActivity extends AppCompatActivity implements CommentA
                             uid = responses.getString("added_by");
                             String image=responses.optString("image");
                             String image_path=Config.OTHER_IMAGE_URL+image;
-
                             String other_image=responses.optString("other_image");
-
                             String other_image_path=Config.OTHER_IMAGE_URL+other_image;
 
                             // Display the formatted json data in text view
@@ -161,6 +165,20 @@ public class ProvideDetailActivity extends AppCompatActivity implements CommentA
                                     .load(avatar_path)
                                     .apply(Config.options_demand)
                                     .into(user_image);
+                            String is_featured=responses.optString("is_featured");
+                            if (is_featured.equalsIgnoreCase("1")) {
+                                if (PrefManager.isLogin(ProvideDetailActivity.this)) {
+                                    favButton.setLiked(true);
+                                }
+                            } else {
+                                favButton.setLiked(false);
+                            }
+                            if (PrefManager.isLogin(ProvideDetailActivity.this)){
+                                 favButton.setEnabled(true);
+                            }
+                            else {
+                                 favButton.setEnabled(false);
+                            }
                             if (responses.getBoolean("wishlist")){
                                 favButton.setLiked(true);
                             }

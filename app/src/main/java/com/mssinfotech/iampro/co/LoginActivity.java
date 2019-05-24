@@ -1,12 +1,15 @@
 package com.mssinfotech.iampro.co;
+import android.app.AppComponentFactory;
 import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
+import android.support.annotation.Nullable;
 import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -35,7 +38,7 @@ import org.json.JSONObject;
 
 import java.util.Hashtable;
 import java.util.Map;
-public class LoginActivity extends Fragment {
+public class LoginActivity extends AppCompatActivity {
     TextView btnforgetPassword;
     Button btnprocess;
     TextInputLayout tilemail,tilpassword;
@@ -43,12 +46,55 @@ public class LoginActivity extends Fragment {
     View view;
     Context context;
     TextView btnSignUp;
+
     @Override
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+          setContentView(R.layout.activity_login);
+        context =LoginActivity.this;
+        tilemail = findViewById(R.id.tilemail);
+        etemail = findViewById(R.id.etemail);
+        btnSignUp=findViewById(R.id.btnSignUp);
+        btnprocess=findViewById(R.id.btnprocess);
+        tilpassword =findViewById(R.id.tilpassword);
+        btnforgetPassword=findViewById(R.id.btnforgetPassword);
+        etpassword =findViewById(R.id.etpassword);
+
+        etemail.setEnabled(true);
+        etpassword.setEnabled(true);
+        tilemail.setEnabled(true);
+        tilpassword.setEnabled(true);
+
+        btnprocess.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                processLogin(v);
+            }
+        });
+        btnSignUp.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                btnSignUp.setEnabled(false);
+                SignupActivity fragmentz = new SignupActivity();
+                function.loadFragment(LoginActivity.this,fragmentz,null);
+                btnSignUp.setEnabled(true);
+            }
+        });
+        btnforgetPassword.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                redirect(v);
+            }
+        });
+    }
+
+    /*@Override
     public View onCreateView(LayoutInflater inflater, ViewGroup parent, Bundle savedInstanceState) {
         // Defines the xml file for the fragment
         return inflater.inflate(R.layout.activity_login, parent, false);
     }
-    @Override
+     */
+    /*@Override
     public void onViewCreated(View v, Bundle savedInstanceState) {
         view = v;
         context = getContext();
@@ -60,6 +106,12 @@ public class LoginActivity extends Fragment {
         tilpassword = view.findViewById(R.id.tilpassword);
         btnforgetPassword=view.findViewById(R.id.btnforgetPassword);
         etpassword = view.findViewById(R.id.etpassword);
+
+        etemail.setEnabled(true);
+        etpassword.setEnabled(true);
+        tilemail.setEnabled(true);
+        tilpassword.setEnabled(true);
+
         btnprocess.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -69,8 +121,10 @@ public class LoginActivity extends Fragment {
         btnSignUp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                btnSignUp.setEnabled(false);
                 SignupActivity fragmentz = new SignupActivity();
                 function.loadFragment(getContext(),fragmentz,null);
+                btnSignUp.setEnabled(true);
             }
         });
         btnforgetPassword.setOnClickListener(new View.OnClickListener() {
@@ -79,7 +133,7 @@ public class LoginActivity extends Fragment {
                 redirect(v);
             }
         });
-    }
+    }*/
     public void redirect(View v){
         Intent i_login = new Intent(context, ForgetActivity.class);
         LoginActivity.this.startActivity(i_login);
@@ -110,13 +164,11 @@ public class LoginActivity extends Fragment {
     }
     public void sendData(final String unamee,final String passwordd)
     {
-
         if (!Config.haveNetworkConnection(context)){
             Config.showInternetDialog(context);
             return;
         }
-
-        final Dialog loading = new Dialog(getContext());
+        final Dialog loading = new Dialog(context);
         loading.requestWindowFeature(Window.FEATURE_NO_TITLE);
         loading.setContentView(R.layout.progress_dialog);
         loading.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
@@ -155,7 +207,8 @@ public class LoginActivity extends Fragment {
                                 String video_banner_image = jsonObject.getString("video_banner_image");
                                 String profile_image_gallery = jsonObject.getString("profile_image_gallery");
                                 String profile_video_gallery = jsonObject.getString("profile_video_gallery");
-                                PrefManager.saveLoginDetails(username,img_url,id,mobile,fname,lname,email,dob,banner_image,  img_banner_image,  video_banner_image,  profile_image_gallery,  profile_video_gallery);
+                                Context context=LoginActivity.this;
+                                PrefManager.saveLoginDetails(username,img_url,id,mobile,fname,lname,email,dob,banner_image,  img_banner_image,  video_banner_image,  profile_image_gallery, profile_video_gallery,context);
                                 PrefManager.setLogin(true);
                                 PrefManager.updateCountFromServer(context,id);
                                 etemail.setText(" ");
@@ -164,7 +217,7 @@ public class LoginActivity extends Fragment {
                                 intent.addCategory(Intent.CATEGORY_HOME);
                                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                                 startActivity(intent);
-                                getActivity().finish();
+                                finish();
                                 loading.dismiss();
                             }
                             else{

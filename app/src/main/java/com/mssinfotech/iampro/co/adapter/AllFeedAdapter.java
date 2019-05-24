@@ -584,7 +584,20 @@ public class AllFeedAdapter extends RecyclerView.Adapter<AllFeedAdapter.ViewHold
             public void onRatingChanged(RatingBar ratingBar, float rating, boolean fromUser) {
                 Toast.makeText(mContext, "" + ratingBar.getRating(), Toast.LENGTH_LONG).show();
                 float ratingb = ratingBar.getRating();
-                sendrating(ratingb, uid, id, type);
+                //sendrating(ratingb, uid, id, type, sharedId);
+                String url=null;
+                if(type.equalsIgnoreCase("image")) {
+                    if (animalsArray.length > 1) {
+                        url = Config.API_URL + "app_service.php?type=rate_me&id=" + String.valueOf(id) + "&uid=" + uid + "&ptype=feed&total_rate="+rating;
+                    } else {
+                        url = Config.API_URL + "app_service.php?type=rate_me&id=" + String.valueOf(animalsArray[0]) + "&uid=" + uid + "&ptype=" + type+"&total_rate="+rating;
+                    }
+                }else{
+                    url = Config.API_URL + "app_service.php?type=rate_me&id=" + String.valueOf(animalsArray[0]) + "&uid=" + uid + "&ptype=" + type+"&total_rate="+rating;
+                }
+                Log.e(Config.TAG, url);
+                function.executeUrl(mContext, "get", url, null);
+                Vholder.ratingBar.setRating(rating);
             }
         });
         Vholder.like_un.setOnLikeListener(new OnLikeListener() {
@@ -593,7 +606,16 @@ public class AllFeedAdapter extends RecyclerView.Adapter<AllFeedAdapter.ViewHold
                 int newlike = Integer.parseInt(Vholder.tv_totallike.getText().toString()) + 1;
                 Vholder.tv_totallike.setTextColor(Color.RED);
                 Vholder.tv_totallike.setText(String.valueOf(newlike));
-                String url = Config.API_URL + "app_service.php?type=like_me&id=" + String.valueOf(animalsArray[0]) + "&uid=" + uid + "&ptype=" + type;
+                String url=null;
+                if(type.equalsIgnoreCase("image")) {
+                    if (animalsArray.length > 1) {
+                        url = Config.API_URL + "app_service.php?type=like_me&id=" + String.valueOf(id) + "&uid=" + uid + "&ptype=feed";
+                    } else {
+                        url = Config.API_URL + "app_service.php?type=like_me&id=" + String.valueOf(animalsArray[0]) + "&uid=" + uid + "&ptype=" + type;
+                    }
+                }else{
+                    url = Config.API_URL + "app_service.php?type=like_me&id=" + String.valueOf(animalsArray[0]) + "&uid=" + uid + "&ptype=" + type;
+                }
                 Log.e(Config.TAG, url);
                 function.executeUrl(mContext, "get", url, null);
             }
@@ -603,7 +625,16 @@ public class AllFeedAdapter extends RecyclerView.Adapter<AllFeedAdapter.ViewHold
                 int newlike = (int) Integer.parseInt(Vholder.tv_totallike.getText().toString()) - 1;
                 Vholder.tv_totallike.setTextColor(Color.BLACK);
                 Vholder.tv_totallike.setText(String.valueOf(newlike));
-                String url = Config.API_URL + "app_service.php?type=like_me&id=" + String.valueOf(id) + "&uid=" + uid + "&ptype=" + type;
+                String url=null;
+                if(type.equalsIgnoreCase("image")) {
+                    if (animalsArray.length > 1) {
+                        url = Config.API_URL + "app_service.php?type=like_me&id=" + String.valueOf(id) + "&uid=" + uid + "&ptype=feed";
+                    } else {
+                        url = Config.API_URL + "app_service.php?type=like_me&id=" + String.valueOf(animalsArray[0]) + "&uid=" + uid + "&ptype=" + type;
+                    }
+                }else{
+                    url = Config.API_URL + "app_service.php?type=like_me&id=" + String.valueOf(animalsArray[0]) + "&uid=" + uid + "&ptype=" + type;
+                }
                 Log.e(Config.TAG, url);
                 function.executeUrl(mContext, "get", url, null);
             }
@@ -632,8 +663,14 @@ public class AllFeedAdapter extends RecyclerView.Adapter<AllFeedAdapter.ViewHold
                  public void onClick(View v) {
                      if (type.equalsIgnoreCase("IMAGE")) {
                          Intent intent = new Intent(mContext, CommentActivity.class);
-                         intent.putExtra("type", "feed_image");
-                         intent.putExtra("id", String.valueOf(id));
+                         Bundle args = new Bundle();
+                         if(sharedId.length>1){
+                             intent.putExtra("id", String.valueOf(id));
+                             intent.putExtra("type","feed_image");
+                         }else{
+                             intent.putExtra("id", String.valueOf(sharedId[0]));
+                             intent.putExtra("type","image");
+                         }
                          intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                          mContext.startActivity(intent);
                      } else if (type.equalsIgnoreCase("VIDEO")) {

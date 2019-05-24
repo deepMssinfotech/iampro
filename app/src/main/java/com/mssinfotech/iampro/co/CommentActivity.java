@@ -111,6 +111,7 @@ public class CommentActivity extends AppCompatActivity implements CommentAdapter
         if (PrefManager.isLogin(this)) {
             user_id =PrefManager.getLoginDetail(this, "id");
         }
+        Config.allowRefresh=true;
         data_type=getIntent().getExtras().getString("type");
         data_id=getIntent().getExtras().getString("id");
         imageView = findViewById(R.id.imageView);
@@ -305,8 +306,8 @@ public class CommentActivity extends AppCompatActivity implements CommentAdapter
                     public void onResponse(String response) {
                         JSONObject result = null;
                         try {
-                            result = new JSONObject(response);
-                            JSONObject userDetail = result.getJSONObject("user_detail");
+                            result=new JSONObject(response);
+                            JSONObject userDetail=result.getJSONObject("user_detail");
                             Glide.with(getApplicationContext()).load(Config.AVATAR_URL+userDetail.getString("avatar")).apply(Config.options_image).into(imageView_user);
                             fullname.setText(userDetail.getString("fullname"));
                             udate.setText(result.getString("udate"));

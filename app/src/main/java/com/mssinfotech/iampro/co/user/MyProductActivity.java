@@ -9,6 +9,8 @@ import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
@@ -60,9 +62,9 @@ import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
-public class MyProductActivity extends Fragment implements MyProductAdapter.ItemListener {
+public class MyProductActivity extends Fragment implements MyProductAdapter.ItemListener, SwipeRefreshLayout.OnRefreshListener{
     private List<MyProductItem> MyProductItemList;
-
+    SwipeRefreshLayout swiperefresh;
     ImageView userbackgroud;
     CircleImageView userimage;
     TextView username;
@@ -145,6 +147,13 @@ public class MyProductActivity extends Fragment implements MyProductAdapter.Item
             }
         });*/
         recyclerView = view.findViewById(R.id.recyclerView);
+        swiperefresh=view.findViewById(R.id.swiperefresh);
+        swiperefresh.setOnRefreshListener(this);
+        // Configure the refreshing colors
+        swiperefresh.setColorSchemeResources(android.R.color.holo_blue_bright,
+                android.R.color.holo_green_light,
+                android.R.color.holo_orange_light,
+                android.R.color.holo_red_light);
         //initAdapter();
         initScrollListener();
         getProduct();
@@ -398,5 +407,26 @@ public class MyProductActivity extends Fragment implements MyProductAdapter.Item
     public void onItemClick(MyProductModel items) {
        Toast.makeText(context,""+items.getPid(),Toast.LENGTH_LONG).show();
 
+    }
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (Config.allowRefresh) {
+            Config.allowRefresh = false;
+            //Toast.makeText(context, "click from BACK", Toast.LENGTH_SHORT).show();
+            Fragment frg = null;
+            AppCompatActivity activity = (AppCompatActivity) context;
+            MyProductActivity fragment = new MyProductActivity();
+            frg = activity.getSupportFragmentManager().findFragmentByTag(fragment.getClass().getName());
+            final FragmentTransaction ft = activity.getSupportFragmentManager().beginTransaction();
+            ft.detach(frg);
+            ft.attach(frg);
+            ft.commit();
+        }
+    }
+
+    @Override
+    public void onRefresh() {
+        getProduct();
     }
 }

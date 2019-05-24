@@ -4,8 +4,11 @@ package com.mssinfotech.iampro.co.adapter;
  * Created by mssinfotech on 18/01/19.
  */
 //import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AlertDialog;
@@ -165,30 +168,24 @@ public class UserDataAdapter extends RecyclerView.Adapter<UserDataAdapter.ViewHo
         catch (Exception e){
             Log.d("imageView_error",""+e.getMessage());
         }
-         if (mValues.get(position).getIs_block()==1){
-             //Vholder.imageView_block.setBackground(AppCompatResources.getDrawable(mContext,R.drawable.unblockicone));
-             Glide.with(mContext)
-                     .load(R.drawable.unblockicone)
-                     .into(Vholder.imageView_block);
-             //tv_viewProfile,tv_fRequest,tv_sendMessage,tv_blockUser
-             Vholder.tv_viewProfile.setText("View Profile");
-              Vholder.tv_fRequest.setText("Delete "+mValues.get(position).getName());
-
-               Vholder.tv_sendMessage.setText("Message \t"+mValues.get(position).getName());
-                Vholder.tv_blockUser.setText("UnBlock");
-         }
-         else if (mValues.get(position).getIs_block()==2){
-             //Vholder.imageView_block.setBackground(AppCompatResources.getDrawable(mContext,R.drawable.blockicone));
-
-             Glide.with(mContext)
-                     .load(R.drawable.blockicone)
-                     .into(Vholder.imageView_block);
-
-             Vholder.tv_viewProfile.setText("View Profile");
-             Vholder.tv_fRequest.setText("You ");
-             Vholder.tv_sendMessage.setText("Message \t"+mValues.get(position).getName());
-             Vholder.tv_blockUser.setText("Block");
-         }
+        Vholder.tv_viewProfile.setText("View Profile");
+        final int[] user_block = {mValues.get(position).getIs_block()};
+        if (user_block[0] ==1){
+            Glide.with(mContext)
+                    .load(R.drawable.unblockicone)
+                    .apply(Config.options_avatar)
+                    .into(Vholder.imageView_block);
+            //tv_viewProfile,tv_fRequest,tv_sendMessage,tv_blockUser
+            Vholder.tv_blockUser.setText("UnBlock");
+        }
+        else if (user_block[0] ==2 || user_block[0] ==0){
+            user_block[0] = 2;
+            Glide.with(mContext)
+                    .load(R.drawable.blockicone)
+                    .apply(Config.options_avatar)
+                    .into(Vholder.imageView_block);
+            Vholder.tv_blockUser.setText("Block");
+        }
         FrindStatus =mValues.get(position).getFriend_status();
          if (FrindStatus==null){
              FrindStatus="";
@@ -277,34 +274,55 @@ public class UserDataAdapter extends RecyclerView.Adapter<UserDataAdapter.ViewHo
         Vholder.imageView_block.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //Toast.makeText(v.getContext(), "BLOCK CLICKED"+position, Toast.LENGTH_SHORT).show();
-                final String fid=String.valueOf(mValues.get(position).getId());
-                AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(mContext);
-                alertDialogBuilder.setMessage("Are you sure, ");
-                        alertDialogBuilder.setPositiveButton("yes",
-                                new DialogInterface.OnClickListener() {
-                                    @Override
-                                    public void onClick(DialogInterface arg0, int arg1) {
-                                        blockUser(fid);
-                                    }
-                                });
-
-                alertDialogBuilder.setNegativeButton("No",new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        //finish();
-                    }
-                });
-
-                AlertDialog alertDialog = alertDialogBuilder.create();
-                alertDialog.show();
-
-                if(user_block==1){
-                    Vholder.imageView_block.setBackground(AppCompatResources.getDrawable(mContext,R.drawable.unblockicone));
+                if (PrefManager.isLogin(mContext)) {
+                    //Toast.makeText(v.getContext(), "BLOCK CLICKED"+position, Toast.LENGTH_SHORT).show();
+                    //final int[] statuss = {};
+                    final String fid = String.valueOf(mValues.get(position).getId());
+                    final Dialog myDialog = new Dialog(mContext);
+                    myDialog.setContentView(R.layout.confirm_popup);
+                    TextView yes = myDialog.findViewById(R.id.yes);
+                    TextView no = myDialog.findViewById(R.id.no);
+                    TextView heading = myDialog.findViewById(R.id.heading);
+                    TextView detail = myDialog.findViewById(R.id.detail);
+                    heading.setText("Confirm");
+                    detail.setText("Are you sure?");
+                    yes.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            String url=Config.API_URL+ "app_service.php?type=get_block_user_detail&uid="+ PrefManager.getLoginDetail(mContext,"id")+"&fid="+mValues.get(position).getId();
+                            function.executeUrl(mContext,"get",url,null);
+                            if(user_block[0] ==1){
+                                user_block[0] =2;
+                                Glide.with(mContext)
+                                        .load(R.drawable.blockicone)
+                                        .apply(Config.options_avatar)
+                                        .into(Vholder.imageView_block);
+                                Vholder.tv_blockUser.setText("Block");
+                            }
+                            else if (user_block[0] ==2){
+                                user_block[0] =1;
+                                Glide.with(mContext)
+                                        .load(R.drawable.unblockicone)
+                                        .apply(Config.options_avatar)
+                                        .into(Vholder.imageView_block);
+                                Vholder.tv_blockUser.setText("UnBlock");
+                            }
+                            //Toast.makeText(mContext,""+"Updated - "+ user_block[0],Toast.LENGTH_LONG).show();
+                            myDialog.dismiss();
+                        }
+                    });
+                    no.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            myDialog.dismiss();
+                        }
+                    });
+                    myDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+                    myDialog.show();
                 }
-                else if (user_block==2){
-                     Vholder.imageView_block.setBackground(AppCompatResources.getDrawable(mContext,R.drawable.blockicone));
-
+                else {
+                    Toast.makeText(mContext,""+"First Login and try again...",Toast.LENGTH_LONG).show();
+                    return;
                 }
             }
         });

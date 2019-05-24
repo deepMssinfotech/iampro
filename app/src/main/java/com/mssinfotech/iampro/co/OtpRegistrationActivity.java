@@ -358,8 +358,11 @@ public class OtpRegistrationActivity extends Fragment  implements SingleUploadBr
                      JSONObject jsonObject = new JSONObject(response);
                        String statusv=jsonObject.optString("status");
                        if (statusv.equalsIgnoreCase("success")){
-                           LoginActivity loginActivity=new LoginActivity();
-                            function.loadFragment(getContext(),loginActivity,null);
+                           /*LoginActivity loginActivity=new LoginActivity();
+                            function.loadFragment(getContext(),loginActivity,null); */
+
+                            Intent intent=new Intent(OtpRegistrationActivity.this.getContext(),LoginActivity.class);
+                           OtpRegistrationActivity.this.getContext().startActivity(intent);
                        }
                      String msgv=jsonObject.optString("msg");
                      Toast.makeText(getContext(),""+msgv,Toast.LENGTH_LONG).show();
@@ -532,9 +535,12 @@ public class OtpRegistrationActivity extends Fragment  implements SingleUploadBr
     public void onCompleted(int serverResponseCode, byte[] serverResponseBody) {
         dialog.dismiss();
         Toast.makeText(getContext(),""+"Register successfully...",Toast.LENGTH_LONG).show();
-        LoginActivity fragment = new LoginActivity();
-        function.loadFragment(context,fragment,null);
+        /*LoginActivity fragment = new LoginActivity();
+        function.loadFragment(context,fragment,null); */
         //finish();
+
+        Intent intent=new Intent(OtpRegistrationActivity.this.getContext(),LoginActivity.class);
+        startActivity(intent);
     }
     @Override
     public void onCancelled() {

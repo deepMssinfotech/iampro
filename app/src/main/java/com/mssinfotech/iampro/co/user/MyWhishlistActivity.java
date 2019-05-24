@@ -2,6 +2,7 @@ package com.mssinfotech.iampro.co.user;
 
 import android.app.Dialog;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
@@ -9,6 +10,7 @@ import android.os.Bundle;
 import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.DividerItemDecoration;
@@ -51,23 +53,41 @@ public class MyWhishlistActivity extends Fragment implements WhishListItemTouchH
     private ConstraintLayout constraintLayout;
     private static String WHISH_LIST_URL = "";
     View view;
+    Context context;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup parent, Bundle savedInstanceState) {
         // Defines the xml file for the fragment
         return inflater.inflate(R.layout.activity_my_whishlist, parent, false);
     }
     @Override
+    public void onResume() {
+        super.onResume();
+        if (Config.allowRefresh) {
+            Config.allowRefresh = false;
+            //Toast.makeText(context, "click from BACK", Toast.LENGTH_SHORT).show();
+            Fragment frg = null;
+            AppCompatActivity activity = (AppCompatActivity) context;
+            MyWhishlistActivity fragment = new MyWhishlistActivity();
+            frg = activity.getSupportFragmentManager().findFragmentByTag(fragment.getClass().getName());
+            final FragmentTransaction ft = activity.getSupportFragmentManager().beginTransaction();
+            ft.detach(frg);
+            ft.attach(frg);
+            ft.commit();
+        }
+    }
+    @Override
     public void onViewCreated(View v, Bundle savedInstanceState) {
         view =v;
-        WHISH_LIST_URL  = Config.API_URL+"app_service.php?type=getall_wishlist&uid="+ PrefManager.getLoginDetail(getContext(),"id");
+        context = getContext();
+        WHISH_LIST_URL  = Config.API_URL+"app_service.php?type=getall_wishlist&uid="+ PrefManager.getLoginDetail(context,"id");
         recyclerView = view.findViewById(R.id.recycler_view);
         //whishListItemList = new ArrayList<>();
         whishListItemList = new ArrayList<WhishListItem>();
-        mAdapter = new WhishListAdapter(getContext(), whishListItemList);
-        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getContext());
+        mAdapter = new WhishListAdapter(context, whishListItemList);
+        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(context);
         recyclerView.setLayoutManager(mLayoutManager);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
-        recyclerView.addItemDecoration(new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL));
+        recyclerView.addItemDecoration(new DividerItemDecoration(context, DividerItemDecoration.VERTICAL));
         recyclerView.setAdapter(mAdapter);
         constraintLayout = view.findViewById(R.id.constraintLayout);
         // adding item touch helper
@@ -88,7 +108,7 @@ public class MyWhishlistActivity extends Fragment implements WhishListItemTouchH
      */
     private void prepareWhishList() {
         //Log.d(Config.TAG,WHISH_LIST_URL);
-        final Dialog loading = new Dialog(getContext());
+        final Dialog loading = new Dialog(context);
         loading.requestWindowFeature(Window.FEATURE_NO_TITLE);
         loading.setContentView(R.layout.progress_dialog);
         loading.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
@@ -187,7 +207,7 @@ public class MyWhishlistActivity extends Fragment implements WhishListItemTouchH
             // remove the item from recycler view
             mAdapter.removeItem(viewHolder.getAdapterPosition());
             String url=Config.API_URL+"app_service.php?type=delete_wishlist&id="+id.toString();
-            String responc = function.executeUrl(getContext(),"get",url,null);
+            String responc = function.executeUrl(context,"get",url,null);
             Log.e(Config.TAG,"result : "+responc);
             // showing snack bar with Undo option
             Snackbar snackbar = Snackbar.make(constraintLayout, name + " removed from whishlist!", Snackbar.LENGTH_LONG);

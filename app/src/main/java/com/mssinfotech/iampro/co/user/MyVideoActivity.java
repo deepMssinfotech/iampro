@@ -16,8 +16,10 @@ import android.provider.MediaStore;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.content.LocalBroadcastManager;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
@@ -79,7 +81,8 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 import static android.app.Activity.RESULT_CANCELED;
 
-public class MyVideoActivity extends Fragment implements MyVideoAdapter.ItemListener,SingleUploadBroadcastReceiver.Delegate {
+public class MyVideoActivity extends Fragment implements MyVideoAdapter.ItemListener,SingleUploadBroadcastReceiver.Delegate, SwipeRefreshLayout.OnRefreshListener {
+    SwipeRefreshLayout swiperefresh;
     ImageView userbackgroud;
     CircleImageView userimage;
     TextView username,tv_category;
@@ -133,6 +136,13 @@ public class MyVideoActivity extends Fragment implements MyVideoAdapter.ItemList
         recyclerView=view.findViewById(R.id.recyclerView);
         tv_category=view.findViewById(R.id.tv_category);
         userbackgroud = view.findViewById(R.id.userbackgroud);
+        swiperefresh=view.findViewById(R.id.swiperefresh);
+        swiperefresh.setOnRefreshListener(this);
+        // Configure the refreshing colors
+        swiperefresh.setColorSchemeResources(android.R.color.holo_blue_bright,
+                android.R.color.holo_green_light,
+                android.R.color.holo_orange_light,
+                android.R.color.holo_red_light);
         changeImage = view.findViewById(R.id.changeImage);
         fab=view.findViewById(R.id.fab);
         changeBackground_Image = view.findViewById(R.id.changeBackground_Image);
@@ -809,12 +819,22 @@ public class MyVideoActivity extends Fragment implements MyVideoAdapter.ItemList
     public void onCancelled() {
 
     }
-   @Override
+    @Override
     public void onResume() {
-
         super.onResume();
         uploadReceiver.register(context);
-
+        if (Config.allowRefresh) {
+            Config.allowRefresh = false;
+            //Toast.makeText(context, "click from BACK", Toast.LENGTH_SHORT).show();
+            Fragment frg = null;
+            AppCompatActivity activity = (AppCompatActivity) context;
+            MyVideoActivity fragment = new MyVideoActivity();
+            frg = activity.getSupportFragmentManager().findFragmentByTag(fragment.getClass().getName());
+            final FragmentTransaction ft = activity.getSupportFragmentManager().beginTransaction();
+            ft.detach(frg);
+            ft.attach(frg);
+            ft.commit();
+        }
     }
     @Override
     public void onPause() {
@@ -825,5 +845,10 @@ public class MyVideoActivity extends Fragment implements MyVideoAdapter.ItemList
     public void onAttach(Context context) {
         super.onAttach(context);
         uploadReceiver.register(context);
+    }
+
+    @Override
+    public void onRefresh() {
+        getAllAlbum();
     }
 }

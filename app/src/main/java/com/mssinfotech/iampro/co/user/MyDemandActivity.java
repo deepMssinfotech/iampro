@@ -4,6 +4,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
@@ -42,8 +44,8 @@ import java.util.ArrayList;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
-public class MyDemandActivity extends Fragment implements MyDemandAdapter.ItemListener{
-
+public class MyDemandActivity extends Fragment implements MyDemandAdapter.ItemListener,SwipeRefreshLayout.OnRefreshListener{
+    SwipeRefreshLayout swiperefresh;
     ImageView userbackgroud;
     CircleImageView userimage;
     TextView username,tv_category;
@@ -61,6 +63,22 @@ public class MyDemandActivity extends Fragment implements MyDemandAdapter.ItemLi
         return inflater.inflate(R.layout.activity_my_demand, parent, false);
     }
     @Override
+    public void onResume() {
+        super.onResume();
+        if (Config.allowRefresh) {
+            Config.allowRefresh = false;
+            //Toast.makeText(context, "click from BACK", Toast.LENGTH_SHORT).show();
+            Fragment frg = null;
+            AppCompatActivity activity = (AppCompatActivity) context;
+            MyDemandActivity fragment = new MyDemandActivity();
+            frg = activity.getSupportFragmentManager().findFragmentByTag(fragment.getClass().getName());
+            final FragmentTransaction ft = activity.getSupportFragmentManager().beginTransaction();
+            ft.detach(frg);
+            ft.attach(frg);
+            ft.commit();
+        }
+    }
+    @Override
     public void onViewCreated(View v, Bundle savedInstanceState) {
         view = v;
         context = getContext();
@@ -75,6 +93,13 @@ public class MyDemandActivity extends Fragment implements MyDemandAdapter.ItemLi
 
         username = view.findViewById(R.id.username);
         userimage = view.findViewById(R.id.userimage);
+        swiperefresh=view.findViewById(R.id.swiperefresh);
+        swiperefresh.setOnRefreshListener(this);
+        // Configure the refreshing colors
+        swiperefresh.setColorSchemeResources(android.R.color.holo_blue_bright,
+                android.R.color.holo_green_light,
+                android.R.color.holo_orange_light,
+                android.R.color.holo_red_light);
          fab=view.findViewById(R.id.fab);
           fab.setOnClickListener(new View.OnClickListener() {
               @Override
@@ -84,10 +109,10 @@ public class MyDemandActivity extends Fragment implements MyDemandAdapter.ItemLi
               }
           });
 
-        if (!PrefManager.isLogin(MyDemandActivity.this.getContext())){
+        if (!PrefManager.isLogin(context)){
             fab.hide();
         }
-        else if (!PrefManager.getLoginDetail(MyDemandActivity.this.getContext(),"id").equalsIgnoreCase(id)) {
+        else if (!PrefManager.getLoginDetail(context,"id").equalsIgnoreCase(id)) {
             fab.hide();
         }
 
@@ -282,5 +307,9 @@ public class MyDemandActivity extends Fragment implements MyDemandAdapter.ItemLi
     @Override
     public void onItemClick(MyProductModel item) {
 
+    }
+    @Override
+    public void onRefresh() {
+        getDemand();
     }
 }

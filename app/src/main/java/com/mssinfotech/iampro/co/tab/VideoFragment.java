@@ -355,7 +355,7 @@ public class VideoFragment extends Fragment implements VideoAdapter.ItemListener
     }
     @Override
     public void onItemClick(DataModel item) {
-        Toast.makeText(getContext(), item.getName()+ " is clicked", Toast.LENGTH_SHORT).show();
+        //Toast.makeText(getContext(), item.getName()+ " is clicked", Toast.LENGTH_SHORT).show();
     }
 
     public void getAllAlbum(){

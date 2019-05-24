@@ -4,6 +4,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
@@ -45,7 +47,8 @@ import java.util.ArrayList;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
-public class MyProvideActivity extends Fragment implements MyProvideAdapter.ItemListener {
+public class MyProvideActivity extends Fragment implements MyProvideAdapter.ItemListener, SwipeRefreshLayout.OnRefreshListener {
+     SwipeRefreshLayout swiperefresh;
     ImageView userbackgroud;
     CircleImageView userimage;
     TextView username,tv_category;
@@ -61,6 +64,22 @@ public class MyProvideActivity extends Fragment implements MyProvideAdapter.Item
     public View onCreateView(LayoutInflater inflater, ViewGroup parent, Bundle savedInstanceState) {
         // Defines the xml file for the fragment
         return inflater.inflate(R.layout.activity_my_provide, parent, false);
+    }
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (Config.allowRefresh) {
+            Config.allowRefresh = false;
+            //Toast.makeText(context, "click from BACK", Toast.LENGTH_SHORT).show();
+            Fragment frg = null;
+            AppCompatActivity activity = (AppCompatActivity) context;
+            MyProvideActivity fragment = new MyProvideActivity();
+            frg = activity.getSupportFragmentManager().findFragmentByTag(fragment.getClass().getName());
+            final FragmentTransaction ft = activity.getSupportFragmentManager().beginTransaction();
+            ft.detach(frg);
+            ft.attach(frg);
+            ft.commit();
+        }
     }
     @Override
     public void onViewCreated(View v, Bundle savedInstanceState) {
@@ -92,6 +111,13 @@ public class MyProvideActivity extends Fragment implements MyProvideAdapter.Item
             fab.hide();
         }
         recyclerView = view.findViewById(R.id.recyclerView);
+        swiperefresh=view.findViewById(R.id.swiperefresh);
+        swiperefresh.setOnRefreshListener(this);
+        // Configure the refreshing colors
+        swiperefresh.setColorSchemeResources(android.R.color.holo_blue_bright,
+                android.R.color.holo_green_light,
+                android.R.color.holo_orange_light,
+                android.R.color.holo_red_light);
         userbackgroud = view.findViewById(R.id.userbackgroud);
         uid= PrefManager.getLoginDetail(context,"id");
         if(id == null || id.equals(uid)) {
@@ -280,5 +306,10 @@ public class MyProvideActivity extends Fragment implements MyProvideAdapter.Item
     @Override
     public void onItemClick(MyProductModel item) {
 
+    }
+
+    @Override
+    public void onRefresh() {
+        getProvide();
     }
 }

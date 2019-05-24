@@ -612,7 +612,18 @@ public class SectionImageVideoAdapter extends RecyclerView.Adapter<SectionImageV
                 }
             }
         }
+        if (PrefManager.isLogin(mContext)) {
+            holder.likeButton.setEnabled(true);
+            holder.ratingBar.setFocusable(true);
+            holder.ratingBar.setIsIndicator(false);
+            //holder.ratingBar.setClickable(true);
+        }
+        else {
+            holder.likeButton.setEnabled(false);
+            holder.ratingBar.setFocusable(false);
+            holder.ratingBar.setIsIndicator(true);
 
+        }
         }
     @Override
     public int getItemCount() {
@@ -717,10 +728,10 @@ public class SectionImageVideoAdapter extends RecyclerView.Adapter<SectionImageV
                             String status=response.optString("status");
                             String msgv=response.optString("msg");
                             if(status.equalsIgnoreCase("success")) {
-                                Toast.makeText(mContext,""+msgv,Toast.LENGTH_LONG).show();
+                                //Toast.makeText(mContext,""+msgv,Toast.LENGTH_LONG).show();
                             }
                             else{
-                                Toast.makeText(mContext,""+msgv,Toast.LENGTH_LONG).show();
+                                //Toast.makeText(mContext,""+msgv,Toast.LENGTH_LONG).show();
                             }
                         }
                         catch (Exception e){

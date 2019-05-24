@@ -305,6 +305,7 @@ public class DemandAdapter extends RecyclerView.Adapter<DemandAdapter.ViewHolder
          } else {
             Vholder.favButton.setLiked(false);
          }
+
          Vholder.tv_comments.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -344,6 +345,20 @@ public class DemandAdapter extends RecyclerView.Adapter<DemandAdapter.ViewHolder
                 function.executeUrl(mContext, "get", url, null);
             }
         });
+        if (PrefManager.isLogin(mContext)) {
+            Vholder.likeButton.setEnabled(true);
+            Vholder.ratingBar.setFocusable(true);
+            Vholder.ratingBar.setIsIndicator(false);
+            //holder.ratingBar.setClickable(true);
+            Vholder.favButton.setEnabled(true);
+        }
+        else {
+            Vholder.likeButton.setEnabled(false);
+            Vholder.ratingBar.setFocusable(false);
+            Vholder.ratingBar.setIsIndicator(true);
+            Vholder.favButton.setEnabled(false);
+            //holder.ratingBar.setClickable(false);
+        }
     }
 
     @Override

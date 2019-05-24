@@ -344,9 +344,13 @@ public class IncludeFooter  extends RelativeLayout {
     private View.OnClickListener loginOnClickListener = new View.OnClickListener() {
         public void onClick(View v) {
             //if(function.isSamePage("activity_login"))return;
-            LoginActivity fragment = new LoginActivity();
+            /*LoginActivity fragment = new LoginActivity();
             function.loadFragment(getContext(),fragment,null);
-            removeFragment();
+            removeFragment(); */
+
+            Intent intent=new Intent(context,LoginActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+              context.startActivity(intent);
         }
     };
     private View.OnClickListener registerOnClickListener = new View.OnClickListener() {
@@ -385,8 +389,7 @@ public class IncludeFooter  extends RelativeLayout {
         }
     };
     public void removeFragment(){
-        if (myDialog!=null && myDialog.isShowing())
-        myDialog.dismiss();
+        if (myDialog!=null && myDialog.isShowing()) myDialog.dismiss();
     }
     private OnClickListener cartOnClickListener = new OnClickListener() {
         public void onClick(View v) {
@@ -431,8 +434,11 @@ public class IncludeFooter  extends RelativeLayout {
                 function.loadFragment(context,fragment,null);
             }else {
                 //getContext().startActivity(new Intent(context, LoginActivity.class));
-                LoginActivity loginFragment = new LoginActivity();
-                function.loadFragment(context, loginFragment, null);
+                /* LoginActivity loginFragment = new LoginActivity();
+                function.loadFragment(context, loginFragment, null); */
+
+                  Intent intent=new Intent(context,LoginActivity.class);
+                  context.startActivity(intent);
             }
         }
     };

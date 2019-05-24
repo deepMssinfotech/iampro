@@ -34,7 +34,7 @@ import java.util.ArrayList;
 public class Config
 {
     public static final String TOPIC_GLOBAL = "global";
-
+    public static  boolean allowRefresh = false;
     // broadcast receiver intent filters
     public static final String REGISTRATION_COMPLETE = "registrationComplete";
     public static final String PUSH_NOTIFICATION = "pushNotification";

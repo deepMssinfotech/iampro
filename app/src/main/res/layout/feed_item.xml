@@ -151,12 +151,12 @@
              android:id="@+id/imageSlider"/>
      </LinearLayout>
   <LinearLayout
+      android:visibility="gone"
       android:layout_width="match_parent"
          android:id="@+id/video_imageView_ll"
       android:layout_height="wrap_content"
       android:orientation="vertical">
 <RelativeLayout
-    android:visibility="gone"
     android:layout_gravity="center"
     android:gravity="center"
     android:layout_width="match_parent"
@@ -231,13 +231,14 @@
         style="?android:ratingBarStyleSmall"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_weight="0.3"
+        android:layout_weight="0"
         android:isIndicator="false"
         android:numStars="5"
-        android:rating="4"
+          android:layout_marginLeft="10dp"
+        android:rating="5"
         android:layout_gravity="center"
-        android:padding="10dp"
-        android:stepSize="0.3"/>
+        android:padding="1dp"
+        android:stepSize="1"/>
       <TextView
           android:id="@+id/tv_taotal_rating"
           android:layout_marginLeft="2dp"

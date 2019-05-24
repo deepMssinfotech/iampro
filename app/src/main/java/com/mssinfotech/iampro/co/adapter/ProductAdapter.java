@@ -45,6 +45,7 @@ import com.mssinfotech.iampro.co.common.Config;
 import com.mssinfotech.iampro.co.common.function;
 import com.mssinfotech.iampro.co.model.DataModel;
 import com.mssinfotech.iampro.co.product.ProductDetail;
+import com.mssinfotech.iampro.co.provide.ProvideDetailActivity;
 import com.mssinfotech.iampro.co.user.ProfileActivity;
 import com.mssinfotech.iampro.co.utils.PrefManager;
 
@@ -289,6 +290,18 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
     @Override
     public void onBindViewHolder(ViewHolder Vholder, final int position) {
         Vholder.setData(mValues.get(position));
+        if (PrefManager.isLogin(mContext)) {
+            Vholder.likeButton.setEnabled(true);
+            Vholder.ratingBar.setFocusable(true);
+            Vholder.ratingBar.setIsIndicator(false);
+            //holder.ratingBar.setClickable(true);
+        }
+        else {
+            Vholder.likeButton.setEnabled(false);
+            Vholder.ratingBar.setFocusable(false);
+            Vholder.ratingBar.setIsIndicator(true);
+            //holder.ratingBar.setClickable(false);
+        }
          Vholder.ll_comments.setOnClickListener(new View.OnClickListener() {
              @Override
              public void onClick(View v) {

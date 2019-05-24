@@ -77,8 +77,12 @@ public class SignupActivity extends Fragment implements View.OnClickListener{
     public void onClick(View v) {
         switch (v.getId() /*to get clicked view id**/) {
             case R.id.btnLogin:
-                LoginActivity fragment = new LoginActivity();
-                function.loadFragment(context,fragment,null);
+                /*LoginActivity fragment = new LoginActivity();
+                function.loadFragment(context,fragment,null); */
+
+                 Intent intent=new Intent(context,LoginActivity.class);
+                   context.startActivity(intent);
+
                 break;
             case R.id.btnRegister:
                 Log.d("btnRegister","btnRegister");
