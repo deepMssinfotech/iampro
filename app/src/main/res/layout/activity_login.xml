@@ -63,6 +63,7 @@
                     android:drawableTint="#000000"
                     android:textColor="@color/white"
                     android:textColorHint="@color/white"
+                    android:drawablePadding="10dp"
                     android:singleLine="true"
                     android:hint="User Name"
                     android:inputType="textEmailAddress" />
@@ -83,6 +84,7 @@
                     android:drawableTint="#000000"
                     android:textColor="@color/white"
                     android:textColorHint="@color/white"
+                    android:drawablePadding="10dp"
                     android:hint="Password"
                     android:inputType="textPassword"
                     android:singleLine="true"/>

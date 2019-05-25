@@ -29,12 +29,14 @@
 
             <LinearLayout
                 android:layout_width="match_parent"
+                  android:layout_marginTop="10dp"
                 android:layout_height="wrap_content">
 
                 <RelativeLayout
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginRight="4dp"
+                    android:layout_marginRight="0dp"
+                    android:gravity="center_horizontal"
                     android:layout_weight="1">
 
                     <Button
@@ -42,8 +44,7 @@
                         android:background="@drawable/btn_others"
                         android:textColor="@color/black"
                         android:onClick="click_image_button"
-
-                        android:layout_width="match_parent"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:text="Add Images" />
@@ -53,6 +54,8 @@
                 <RelativeLayout
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:gravity="center_horizontal"
                     android:layout_marginLeft="4dp"
                     android:layout_weight="1">
                      <!--<Button
@@ -69,7 +72,7 @@
                         android:background="@drawable/btn_others"
                         android:id="@+id/create_album_button"
                         android:onClick="click_album_button"
-                        android:layout_width="match_parent"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Add Album" />
                 </RelativeLayout>
@@ -79,13 +82,14 @@
                 android:id="@+id/categoryLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="14dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginBottom="14dp"
                 android:orientation="horizontal">
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-                    android:layout_marginTop="15dp"
+                    android:layout_marginTop="10dp"
                     android:text="Category : " />
 
                 <Spinner
@@ -99,21 +103,20 @@
                 android:id="@+id/albumLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-
                 android:layout_marginBottom="10dp"
+                android:layout_marginTop="15dp"
                 android:orientation="horizontal">
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-                    android:layout_marginTop="15dp"
+                    android:layout_marginTop="10dp"
                     android:text="Album : " />
 
                 <Spinner
                     android:id="@+id/spimage_album"
                     android:layout_width="match_parent"
                     android:layout_gravity="center_vertical"
-                    android:background="@drawable/btn_attach_add"
                     android:gravity="center_vertical"
                     android:layout_height="40dp" />
 
