@@ -23,7 +23,6 @@
                 android:src="@drawable/iampro" />
         </LinearLayout>
         <LinearLayout
-            android:id="@+id/nonloginlayout"
             android:background="@drawable/loginbglayout"
             android:layout_weight="0"
             android:elevation="20dp"

@@ -13,17 +13,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
-
-  <!-- <android.support.v7.widget.Toolbar
-        android:id="@+id/toolbar"
-        android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"
-        android:background="?attr/colorPrimary"
-        android:elevation="8dp"
-        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
-        app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />  -->
-
   <RelativeLayout
+      android:id="@+id/slderHome1"
       android:layout_width="fill_parent"
       android:layout_height="wrap_content" >
 
@@ -47,6 +38,7 @@
         app:snap="false"/>
   </RelativeLayout>
   <RelativeLayout
+      android:id="@+id/slderHome2"
       android:layout_width="fill_parent"
       android:layout_height="wrap_content">
 
@@ -78,174 +70,3 @@
 
 </LinearLayout>
 </android.support.v4.widget.NestedScrollView>
-<!--<android.support.v4.widget.NestedScrollView
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="fill_parent"
-    android:visibility="gone"
-    android:layout_height="wrap_content"
-    android:fillViewport="true">
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical" >
-        <TextView
-            android:id="@+id/tvImageRV"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="24dp"
-            android:layout_marginStart="24dp"
-            android:layout_marginLeft="24dp"
-            android:layout_marginTop="24dp"
-            android:gravity="left"
-            android:paddingTop="0dp"
-            android:textSize="20sp"
-            android:background="@drawable/ic_launcher_foreground"
-            android:text="@string/image"
-            app:layout_constraintBottom_toTopOf="@+id/video_rv_view"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/my_recycler_view" />
-
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/my_recycler_view"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:layout_constraintBottom_toTopOf="@+id/tvVideoRV"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_chainStyle="packed" />
-
-        <TextView
-            android:id="@+id/tvVideoRV"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="24dp"
-            android:layout_marginStart="24dp"
-            android:layout_marginLeft="24dp"
-            android:layout_marginTop="24dp"
-            android:gravity="left"
-            android:paddingTop="0dp"
-            android:text="@string/video"
-            app:layout_constraintBottom_toTopOf="@+id/video_rv_view"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/my_recycler_view" />
-
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/video_rv_view"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tvVideoRV" />
-
-        <TextView
-            android:id="@+id/tvUserRV"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="24dp"
-            android:layout_marginStart="24dp"
-            android:layout_marginLeft="24dp"
-            android:layout_marginTop="24dp"
-            android:gravity="left"
-            android:paddingTop="0dp"
-            android:text="@string/user"
-            app:layout_constraintBottom_toTopOf="@+id/second_list_view"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/video_rv_view" />
-
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/user_rv_view"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView3"/>
-
-        <TextView
-            android:id="@+id/tvProductRV"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="24dp"
-            android:layout_marginStart="24dp"
-            android:layout_marginLeft="24dp"
-            android:layout_marginTop="24dp"
-            android:gravity="left"
-            android:paddingTop="0dp"
-            android:text="@string/product"
-            app:layout_constraintBottom_toTopOf="@+id/second_list_view"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/video_rv_view"/>
-
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/product_rv_view"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView3"/>
-
-        <TextView
-            android:id="@+id/tvProvideRV"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="24dp"
-            android:layout_marginStart="24dp"
-            android:layout_marginLeft="24dp"
-            android:layout_marginTop="24dp"
-            android:gravity="left"
-            android:paddingTop="0dp"
-            android:text="@string/provide"
-            app:layout_constraintBottom_toTopOf="@+id/second_list_view"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/video_rv_view"/>
-
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/provide_rv_view"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView3"/>
-
-        <TextView
-            android:id="@+id/tvDemandRV"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="24dp"
-            android:layout_marginStart="24dp"
-            android:layout_marginLeft="24dp"
-            android:layout_marginTop="24dp"
-            android:gravity="left"
-            android:paddingTop="0dp"
-            android:text="@string/demand"
-            app:layout_constraintBottom_toTopOf="@+id/second_list_view"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/video_rv_view"/>
-
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/demand_rv_view"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView3"/>
-
-    </LinearLayout>
-     </android.support.v4.widget.NestedScrollView> -->
-
-
-

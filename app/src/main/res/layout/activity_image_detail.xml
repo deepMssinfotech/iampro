@@ -124,7 +124,6 @@
                    android:background="@color/black"
                   android:src="@drawable/iampro"/>
              <ImageView
-                 android:id="@+id/images"
                  android:layout_width="match_parent"
                  android:visibility="gone"
                  android:layout_height="wrap_content"/>

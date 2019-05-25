@@ -138,9 +138,9 @@ public class function {
         requestQueue.add(stringRequest);
         return Config.ResponceResult;
     }
-    public static void getData(final Activity activity, final Context context, final Spinner spinner, String utype){
+    public static void getData(final Activity activity, final Context context, final Spinner spinner,final String utype){
         //Creating a string request
-        String url=Config.API_URL+"app_service.php?type=all_category&name="+utype;
+        String url=Config.API_URL+"app_service.php?type=all_category&name="+utype.toUpperCase();
 
         StringRequest stringRequest = new StringRequest(url,
                 new Response.Listener<String>() {
@@ -155,6 +155,7 @@ public class function {
                             ArrayList<CategoryItem> CatList = new ArrayList<>();
                             //Calling method getStudents to get the students from the JSON Array
                             //Log.d(TAG,result.toString());
+                            CatList.add(new CategoryItem(0, "Select "+utype+" Category"));
                             for(int i=0;i<result.length();i++){
                                 try {
                                     //Getting json object

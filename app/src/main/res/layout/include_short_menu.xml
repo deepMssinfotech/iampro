@@ -7,7 +7,6 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
         <LinearLayout
-            android:id="@+id/innerLay"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -15,7 +14,6 @@
             <LinearLayout
                 android:layout_weight="1"
                 android:layout_width="0dp"
-                android:id="@+id/layout_short_image"
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/shortcut_layout_margin"
                 android:gravity="center"
@@ -49,7 +47,6 @@
                 </RelativeLayout>
             </LinearLayout>
             <LinearLayout
-                android:id="@+id/layout_short_video"
                 android:layout_weight="1"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -84,7 +81,6 @@
                 </RelativeLayout>
             </LinearLayout>
             <LinearLayout
-                android:id="@+id/layout_short_user"
                 android:layout_weight="1"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -119,7 +115,6 @@
                 </RelativeLayout>
             </LinearLayout>
             <LinearLayout
-                android:id="@+id/layout_short_product"
                 android:layout_weight="1"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -154,7 +149,6 @@
                 </RelativeLayout>
             </LinearLayout>
             <LinearLayout
-                android:id="@+id/layout_short_provide"
                 android:layout_weight="1"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -189,7 +183,6 @@
                 </RelativeLayout>
             </LinearLayout>
             <LinearLayout
-                android:id="@+id/layout_short_demand"
                 android:layout_weight="1"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"

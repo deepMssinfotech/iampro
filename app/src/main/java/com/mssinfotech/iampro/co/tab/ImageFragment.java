@@ -1,6 +1,7 @@
 package com.mssinfotech.iampro.co.tab;
 import android.app.Dialog;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.graphics.drawable.ColorDrawable;
 import android.media.Image;
 import android.os.Bundle;
@@ -9,6 +10,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.content.res.AppCompatResources;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
@@ -70,7 +72,7 @@ public class ImageFragment extends Fragment implements ImageAdapter.ItemListener
       ImageView limage_iv;
     ImageView no_rodr;
     View views;
-    //sliderr
+    Context context;    //sliderr
     private static ViewPager mPager;
     private static int currentPage = 0;
     private static int NUM_PAGES = 0;
@@ -88,13 +90,16 @@ public class ImageFragment extends Fragment implements ImageAdapter.ItemListener
                              Bundle savedInstanceState) {
          View view=inflater.inflate(R.layout.fragment_image, container, false);
         views=view;
+        context=getContext();
+        AppCompatActivity activity = (AppCompatActivity) context;
+        activity.setTheme(R.style.ImageAppTheme);
         return view;
     }
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        if (PrefManager.isLogin(getContext()))
-           uid = Integer.parseInt(PrefManager.getLoginDetail(getContext(),"id"));
+        if (PrefManager.isLogin(context))
+           uid = Integer.parseInt(PrefManager.getLoginDetail(context,"id"));
 
         getImage();
         my_recycler_view =view.findViewById(R.id.my_recycler_view);
@@ -105,11 +110,11 @@ public class ImageFragment extends Fragment implements ImageAdapter.ItemListener
         imageModelArrayList=new ArrayList<>();
         limage_iv=view.findViewById(R.id.limage_iv);
         limage_iv.setVisibility(View.VISIBLE);
-        limage_iv.setBackground(AppCompatResources.getDrawable(getContext(),R.drawable.latestphotos));
+        limage_iv.setBackground(AppCompatResources.getDrawable(context,R.drawable.latestphotos));
         btn_load_more.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //Toast.makeText(getContext(),"loadMore",Toast.LENGTH_LONG).show();
+                //Toast.makeText(context,"loadMore",Toast.LENGTH_LONG).show();
                 getAllAlbum();
                 btn_load_more.setVisibility(View.GONE);
             }
@@ -118,9 +123,9 @@ public class ImageFragment extends Fragment implements ImageAdapter.ItemListener
          init();
       /*  my_recycler_view.setHasFixedSize(true);
          Log.d("allSampleDatas",""+allSampleData.size()+"--"+allSampleData.toString());
-        RecyclerViewDataAdapter adapter = new RecyclerViewDataAdapter(getContext(), allSampleData);
+        RecyclerViewDataAdapter adapter = new RecyclerViewDataAdapter(context, allSampleData);
 
-        my_recycler_view.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
+        my_recycler_view.setLayoutManager(new LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false));
 
         my_recycler_view.setAdapter(adapter); */
 
@@ -130,7 +135,7 @@ public class ImageFragment extends Fragment implements ImageAdapter.ItemListener
     private void init() {
 
         mPager = views.findViewById(R.id.pager);
-        mPager.setAdapter(new SlidingImage_Adapter(getContext(),imageModelArrayList));
+        mPager.setAdapter(new SlidingImage_Adapter(context,imageModelArrayList));
 
         CirclePageIndicator indicator = (CirclePageIndicator)views.findViewById(R.id.indicator);
 
@@ -185,7 +190,7 @@ public class ImageFragment extends Fragment implements ImageAdapter.ItemListener
 
     private void getTopSlider(){
         final String url=Config.API_URL+ "index.php?type=get_slider&name=TOP_SLIDER";
-        RequestQueue requestQueue = Volley.newRequestQueue(getContext());
+        RequestQueue requestQueue = Volley.newRequestQueue(context);
         // Initialize a new JsonArrayRequest instance
         JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(
                 Request.Method.GET,
@@ -228,7 +233,7 @@ public class ImageFragment extends Fragment implements ImageAdapter.ItemListener
                         catch (JSONException e){
                             //pDialog.dismiss();
                             e.printStackTrace();
-                            Toast.makeText(getContext(), ""+e.getMessage(), Toast.LENGTH_SHORT).show();
+                            Toast.makeText(context, ""+e.getMessage(), Toast.LENGTH_SHORT).show();
                             Log.d("catch_f",""+e.getMessage());
                         }
                     }
@@ -238,8 +243,8 @@ public class ImageFragment extends Fragment implements ImageAdapter.ItemListener
                     public void onErrorResponse(VolleyError error){
                         //pDialog.dismiss();
                         // Do something when error occurred
-                        //Snackbar.make(getContext(),"Error...", Snackbar.LENGTH_LONG).show();
-                        Toast.makeText(getContext(), "verror"+error.getMessage(), Toast.LENGTH_SHORT).show();
+                        //Snackbar.make(context,"Error...", Snackbar.LENGTH_LONG).show();
+                        Toast.makeText(context, "verror"+error.getMessage(), Toast.LENGTH_SHORT).show();
                         Log.d("verror",""+error.getMessage());
                     }
                 }
@@ -250,13 +255,13 @@ public class ImageFragment extends Fragment implements ImageAdapter.ItemListener
     }
     public void getImage(){
         final String url = Config.API_URL+ "app_service.php?type=all_item&name=image&uid="+uid+"&my_id="+uid;
-        final Dialog pDialog = new Dialog(this.getContext());
+        final Dialog pDialog = new Dialog(this.context);
         pDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         pDialog.setContentView(R.layout.progress_dialog);
         pDialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
         pDialog.show();
         // Initialize a new RequestQueue instance
-        RequestQueue requestQueue = Volley.newRequestQueue(getContext());
+        RequestQueue requestQueue = Volley.newRequestQueue(context);
 
         // Initialize a new JsonArrayRequest instance
         JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(
@@ -319,17 +324,17 @@ public class ImageFragment extends Fragment implements ImageAdapter.ItemListener
                                 Log.d("allsampledatav", allSampleData.toString());
                                 //my_recycler_view.setHasFixedSize(true);
                                 Log.d("allSampleDatas", "" + allSampleData.size() + "--" + allSampleData.toString());
-                                adapter = new ImageAdapter(getContext(), allSampleData, ImageFragment.this);
+                                adapter = new ImageAdapter(context, allSampleData, ImageFragment.this);
                                 my_recycler_view.setItemAnimator(new DefaultItemAnimator());
                                 my_recycler_view.setAdapter(adapter);
 
-                                GridLayoutManager manager = new GridLayoutManager(getContext(), 2, GridLayoutManager.VERTICAL, false);
+                                GridLayoutManager manager = new GridLayoutManager(context, 2, GridLayoutManager.VERTICAL, false);
                                 my_recycler_view.setLayoutManager(manager);
 
                             } catch (JSONException e) {
                                 e.printStackTrace();
                                 pDialog.dismiss();
-                                Toast.makeText(getContext(), "" + e.getMessage(), Toast.LENGTH_SHORT).show();
+                                Toast.makeText(context, "" + e.getMessage(), Toast.LENGTH_SHORT).show();
                                 Log.d("catch_f", "" + e.getMessage());
                                 no_rodr.setVisibility(View.VISIBLE);
                             }
@@ -343,7 +348,7 @@ public class ImageFragment extends Fragment implements ImageAdapter.ItemListener
                 new com.android.volley.Response.ErrorListener(){
                     @Override
                     public void onErrorResponse(VolleyError error){
-                        Toast.makeText(getContext(), "verror"+error.getMessage(), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(context, "verror"+error.getMessage(), Toast.LENGTH_SHORT).show();
                         Log.d("verror",""+error.getMessage());
                         pDialog.dismiss();
                         no_rodr.setVisibility(View.VISIBLE);
@@ -356,14 +361,14 @@ public class ImageFragment extends Fragment implements ImageAdapter.ItemListener
     @Override
     public void onItemClick(DataModel item) {
 
-        //Toast.makeText(getContext(), item.getName() + " is clicked", Toast.LENGTH_SHORT).show();
+        //Toast.makeText(context, item.getName() + " is clicked", Toast.LENGTH_SHORT).show();
     }
     public void getAllAlbum(){
         //String url=Config.API_URL+ "app_service.php?type=getAlbemsListt&search_type=image&uid="+uid;
          //String url=Config.API_URL+ "app_service.php?type=search_all_items&search_type=IMAGE&category_type=&uid="+uid+"&my_id="+uid;
           String url=Config.API_URL+ "app_service.php?type=get_category&name=IMAGE";
-        RequestQueue requestQueue = Volley.newRequestQueue(getContext());
-        final Dialog pDialog = new Dialog(this.getContext());
+        RequestQueue requestQueue = Volley.newRequestQueue(context);
+        final Dialog pDialog = new Dialog(this.context);
         pDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         pDialog.setContentView(R.layout.progress_dialog);
         pDialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
@@ -405,7 +410,7 @@ public class ImageFragment extends Fragment implements ImageAdapter.ItemListener
                         catch (JSONException e){
                             e.printStackTrace();
                             pDialog.dismiss();
-                            Toast.makeText(getContext(), ""+e.getMessage(), Toast.LENGTH_SHORT).show();
+                            Toast.makeText(context, ""+e.getMessage(), Toast.LENGTH_SHORT).show();
                             Log.d("catch_f",""+e.getMessage());
                         }
                     }
@@ -413,7 +418,7 @@ public class ImageFragment extends Fragment implements ImageAdapter.ItemListener
                 new com.android.volley.Response.ErrorListener(){
                     @Override
                     public void onErrorResponse(VolleyError error){
-                        Toast.makeText(getContext(), error.getMessage(), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(context, error.getMessage(), Toast.LENGTH_SHORT).show();
                         Log.d("verror",""+error.getMessage());
                         pDialog.dismiss();
                     }
@@ -424,7 +429,7 @@ public class ImageFragment extends Fragment implements ImageAdapter.ItemListener
         //getProvide();
     }
     public void getImagesMore(final String cname){
-        final Dialog pDialog = new Dialog(this.getContext());
+        final Dialog pDialog = new Dialog(this.context);
         pDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         pDialog.setContentView(R.layout.progress_dialog);
         pDialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
@@ -433,7 +438,7 @@ public class ImageFragment extends Fragment implements ImageAdapter.ItemListener
        // String url=Config.API_URL+"app_service.php?type=getMyAlbemsListt&search_type=image&uid="+uid+"&my_id="+uid+"&album_id="+aid;
         String url=Config.API_URL+ "app_service.php?type=search_all_items&search_type=IMAGE&category="+cname+"persnol&search_data=&uid=&my_id=";
         // Initialize a new RequestQueue instance
-        RequestQueue requestQueue = Volley.newRequestQueue(getContext());
+        RequestQueue requestQueue = Volley.newRequestQueue(context);
         JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(
                 Request.Method.GET,
                 url,
@@ -513,14 +518,14 @@ public class ImageFragment extends Fragment implements ImageAdapter.ItemListener
                             Log.d("allsampledatav", allSampleDatamore.toString());
                             //my_recycler_view.setHasFixedSize(true);
                             Log.d("allSampleDatas",""+allSampleDatamore.size()+"--"+allSampleDatamore.toString());
-                            adapterr = new MyImageVideoDataAdapter(getContext(), allSampleDatamore,item_name);
-                            recycler_view_load_more.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
+                            adapterr = new MyImageVideoDataAdapter(context, allSampleDatamore,item_name);
+                            recycler_view_load_more.setLayoutManager(new LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false));
                             recycler_view_load_more.setAdapter(adapterr);
                         }
                         catch (JSONException e){
                             e.printStackTrace();
                              pDialog.dismiss();
-                            Toast.makeText(getContext(), ""+e.getMessage(),Toast.LENGTH_SHORT).show();
+                            Toast.makeText(context, ""+e.getMessage(),Toast.LENGTH_SHORT).show();
                             Log.d("catch_f",""+e.getMessage());
                         }
                     }
@@ -528,7 +533,7 @@ public class ImageFragment extends Fragment implements ImageAdapter.ItemListener
                 new com.android.volley.Response.ErrorListener(){
                     @Override
                     public void onErrorResponse(VolleyError error){
-                        Toast.makeText(getContext(), error.getMessage(), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(context, error.getMessage(), Toast.LENGTH_SHORT).show();
                         pDialog.dismiss();
                         Log.d("verror",""+error.getMessage());
                     }
@@ -539,7 +544,7 @@ public class ImageFragment extends Fragment implements ImageAdapter.ItemListener
         //getProvide();
     }
     public void getImagesMores(final String cname){
-        final Dialog pDialog = new Dialog(this.getContext());
+        final Dialog pDialog = new Dialog(this.context);
         pDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         pDialog.setContentView(R.layout.progress_dialog);
         pDialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
@@ -558,7 +563,7 @@ public class ImageFragment extends Fragment implements ImageAdapter.ItemListener
             url = Config.API_URL+ "app_service.php?type=search_all_items&search_type=IMAGE&category=" + cname + "&search_data=&uid=" + uid + "&my_id=" + uid;
 
         }
-        RequestQueue requestQueue = Volley.newRequestQueue(getContext());
+        RequestQueue requestQueue = Volley.newRequestQueue(context);
         JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(
                 Request.Method.GET,
                 url,
@@ -647,14 +652,14 @@ public class ImageFragment extends Fragment implements ImageAdapter.ItemListener
                             Log.d("allSampleDatas",""+allSampleDatamore.size()+"--"+allSampleDatamore.toString());
                             TreeMap<String,String> item_loadmore=new TreeMap<>();
                              item_loadmore.put("loadmore","loadmore");
-                            adapterr = new MyImageVideoDataAdapter(getContext(), allSampleDatamore,item_loadmore);
-                            recycler_view_load_more.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
+                            adapterr = new MyImageVideoDataAdapter(context, allSampleDatamore,item_loadmore);
+                            recycler_view_load_more.setLayoutManager(new LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false));
                             recycler_view_load_more.setAdapter(adapterr);
                         }
                         catch (JSONException e){
                             e.printStackTrace();
                             pDialog.dismiss();
-                            Toast.makeText(getContext(), ""+e.getMessage(),Toast.LENGTH_SHORT).show();
+                            Toast.makeText(context, ""+e.getMessage(),Toast.LENGTH_SHORT).show();
                             Log.d("catch_f",""+e.getMessage());
                         }
                     }
@@ -662,7 +667,7 @@ public class ImageFragment extends Fragment implements ImageAdapter.ItemListener
                 new com.android.volley.Response.ErrorListener(){
                     @Override
                     public void onErrorResponse(VolleyError error){
-                        Toast.makeText(getContext(), error.getMessage(), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(context, error.getMessage(), Toast.LENGTH_SHORT).show();
                         pDialog.dismiss();
                         Log.d("verror",""+error.getMessage());
                     }

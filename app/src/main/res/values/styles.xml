@@ -2,15 +2,59 @@
 
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
-        <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
         <item name="android:windowAnimationStyle">@style/WindowAnimationStyle</item>
     </style>
-    <style name="AppTheme.CustomTheme">
-        <item name="android:windowIsTranslucent">true</item>
-        <item name="android:windowCloseOnTouchOutside">true</item>
+
+    <style name="ImageAppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+        <item name="colorPrimary">@color/color_image_color</item>
+        <item name="colorPrimaryDark">@color/color_image_color_dark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:windowAnimationStyle">@style/WindowAnimationStyle</item>
+    </style>
+    <style name="VideoAppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+        <item name="colorPrimary">@color/color_video_color</item>
+        <item name="colorPrimaryDark">@color/color_video_color_dark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:windowAnimationStyle">@style/WindowAnimationStyle</item>
+    </style>
+    <style name="ProductAppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+        <item name="colorPrimary">@color/color_product_color</item>
+        <item name="colorPrimaryDark">@color/color_product_color_dark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:windowAnimationStyle">@style/WindowAnimationStyle</item>
+    </style>
+    <style name="ProvideAppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+        <item name="colorPrimary">@color/color_provide_color</item>
+        <item name="colorPrimaryDark">@color/color_provide_color_dark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:windowAnimationStyle">@style/WindowAnimationStyle</item>
+    </style>
+    <style name="DemandAppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+        <item name="colorPrimary">@color/color_demand_color</item>
+        <item name="colorPrimaryDark">@color/color_demand_color_dark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:windowAnimationStyle">@style/WindowAnimationStyle</item>
+    </style>
+    <style name="UserAppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+        <item name="colorPrimary">@color/color_user_color</item>
+        <item name="colorPrimaryDark">@color/color_user_color_dark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:windowAnimationStyle">@style/WindowAnimationStyle</item>
+    </style>
+
+    <style name="TabAppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+        <item name="colorPrimary">@color/nav</item>
+        <item name="colorPrimaryDark">@color/color_user_color_dark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:windowAnimationStyle">@style/WindowAnimationStyle</item>
+    </style>
+    <style name="MineCustomTabText" parent="TextAppearance.Design.Tab">
+        <item name="android:textSize">8dp</item>
+        <item name="android:padding">0dp</item>
+        <item name="android:layout_margin">0dp</item>
     </style>
     <style name="AppTheme.NoActionBar" >
         <item name="windowActionBar">false</item>
@@ -30,58 +74,11 @@
         <item name="windowNoTitle">true</item>
     </style> -->
 
-    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Dark">
-        <item name="android:textColorSecondary">@android:color/white</item>
-        <item name="colorAccent">@color/colorAccent</item>
-    </style>
-
-    <style name="MyMaterialTheme" parent="MyMaterialTheme.Base">
-        <item name="colorAccent">@color/colorAccent</item>
-    </style>
-
-    <style name="MyMaterialTheme.Base" parent="Theme.AppCompat.Light.DarkActionBar">
-        <item name="windowNoTitle">true</item>
-        <item name="windowActionBar">false</item>
-        <item name="colorPrimary">@color/colorPrimary</item>
-        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-        <item name="colorAccent">@color/colorAccent</item>
-    </style>
-
 
     <style name="MyButton" parent="Theme.AppCompat.Light">
         <item name="colorControlHighlight">@color/teal_100</item>
         <item name="colorButtonNormal">@color/teal_500</item>
     </style>
 
-    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
-
-    <style name="Theme.MaterialButton" parent="AppTheme">
-        <item name="colorAccent">@color/colorAccent</item>
-        <item name="colorButtonNormal">@color/colorPrimaryDark</item>
-        <item name="colorControlHighlight">@color/colorAccent</item>
-    </style>
-    <style name="Base.MyTheme" parent="Theme.AppCompat.Light.NoActionBar">
-        <item name="colorPrimary">@color/primary_500</item>
-        <item name="colorPrimaryDark">@color/primary_700</item>
-        <item name="colorAccent">@color/accent_500</item>
-        <item name="windowActionBar">false</item>
-        <item name="windowActionBarOverlay">true</item>
-        <item name="windowNoTitle">true</item>
-        <item name="android:windowBackground">@android:color/background_light</item>
-    </style>
-
-    <style name="AppTheme.NoActionBar.Splash">
-
-        <item name="android:windowBackground">@drawable/firebase_chat_splash</item>
-
-    </style>
-
-
-    <style name="Custom" parent="android:Theme.DeviceDefault.Dialog">
-        <item name="DialogTitleAppearance">@android:style/TextAppearance.Medium</item>
-        <item name="DialogTitleText">Please Wait</item>
-        <item name="DialogSpotColor">@android:color/holo_orange_dark</item>
-        <item name="DialogSpotCount">8</item>
-    </style>
 
 </resources>

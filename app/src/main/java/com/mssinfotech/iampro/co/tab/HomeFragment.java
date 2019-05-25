@@ -17,6 +17,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 //import android.widget.Toolbar;
 
@@ -89,6 +90,7 @@ public class HomeFragment extends Fragment implements UserDataAdapter.ItemListen
     UserDataAdapter user_adapter;
     ArrayList<UserModel> userSampleData=new ArrayList<>();
     View views;
+    Boolean HindeBannerView = false;
 //sliderr
     private static ViewPager mPager,mPager2;
     private static int currentPage = 0;
@@ -136,6 +138,12 @@ public class HomeFragment extends Fragment implements UserDataAdapter.ItemListen
         indicator.setRadius(2 * density);
         NUM_PAGES =imageModelArrayList.size();
         // Auto start of viewpager
+        if(HindeBannerView==true){
+            RelativeLayout slide = views.findViewById(R.id.slderHome1);
+            slide.setVisibility(View.GONE);
+            RelativeLayout slide2 = views.findViewById(R.id.slderHome2);
+            slide2.setVisibility(View.GONE);
+        }
         final Handler handler = new Handler();
         final Runnable Update = new Runnable() {
             public void run() {
@@ -171,6 +179,18 @@ public class HomeFragment extends Fragment implements UserDataAdapter.ItemListen
             }
         });
 
+    }
+    public void hideSliders(){
+        if(getView()==null)
+        {
+            HindeBannerView=true;
+        }else {
+            HindeBannerView=true;
+            RelativeLayout slide = views.findViewById(R.id.slderHome1);
+            slide.setVisibility(View.GONE);
+            RelativeLayout slide2 = views.findViewById(R.id.slderHome2);
+            slide2.setVisibility(View.GONE);
+        }
     }
      private void getTopSlider(){
         final String url=Config.API_URL+ "index.php?type=get_slider&name=TOP_SLIDER";

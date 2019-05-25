@@ -102,7 +102,6 @@
                         android:orientation="horizontal">
 
                         <TextView
-                            android:id="@+id/tv_sellingprices"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:lines="1"

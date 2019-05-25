@@ -29,7 +29,6 @@
             android:layout_below="@+id/header"
             android:fillViewport="true">
             <LinearLayout
-                android:id="@+id/myLayout"
                 android:orientation="vertical"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -39,8 +38,7 @@
                 <LinearLayout
                         android:background="@color/black"
                         android:orientation="vertical"
-                        android:id="@+id/profile_header"
-                        android:layout_width="match_parent"
+                    android:layout_width="match_parent"
                         android:layout_height="@dimen/profile_header_height">
                         <RelativeLayout
                             android:layout_width="match_parent"
@@ -167,7 +165,6 @@
                             android:layout_height="match_parent">
                             <TextView
                                 android:layout_width="wrap_content"
-                                android:id="@+id/tv_detail"
                                 android:layout_height="wrap_content"
                                 android:layout_alignParentBottom="true"
                                 android:layout_alignParentEnd="true"
@@ -236,7 +233,6 @@
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:id="@+id/tv_message"
                                 android:layout_alignParentBottom="true"
                                 android:layout_alignParentEnd="true"
                                 android:layout_gravity="center_vertical"

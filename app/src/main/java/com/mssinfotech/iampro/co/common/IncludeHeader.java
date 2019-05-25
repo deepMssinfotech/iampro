@@ -23,7 +23,7 @@ public class IncludeHeader extends RelativeLayout {
         ((ImageView)this.findViewById(R.id.browser)).setOnClickListener(browserOnClickListener);
         ((ImageView)this.findViewById(R.id.iampro)).setOnClickListener(iamproOnClickListener);
         ((ImageView)this.findViewById(R.id.wallet)).setOnClickListener(walletOnClickListener);
-        this.findViewById(R.id.tvsearchbox).setOnClickListener(searchboxOnClickListener);
+        //this.findViewById(R.id.tvsearchbox).setOnClickListener(searchboxOnClickListener);
     }
 
     private OnClickListener browserOnClickListener = new OnClickListener() {
@@ -31,14 +31,14 @@ public class IncludeHeader extends RelativeLayout {
             function.OpenBrowser(getContext(),Config.URL_ROOT);
         }
     };
-    //searchboxOnClickListener
+    /*
     private OnClickListener searchboxOnClickListener = new OnClickListener() {
      public void onClick(View v) {
          SearchActivity searchedActivity=new SearchActivity();
          function.loadFragment(getContext(),searchedActivity,null);
      }
     };
-
+    */
     private OnClickListener iamproOnClickListener = new OnClickListener() {
         public void onClick(View v) {
             function.OpenBrowser(getContext(),Config.URL_ROOT);
