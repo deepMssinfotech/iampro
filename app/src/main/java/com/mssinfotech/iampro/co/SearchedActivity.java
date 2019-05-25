@@ -58,9 +58,7 @@ public class SearchedActivity extends AppCompatActivity implements UserDataAdapt
     ArrayList<SectionImageModel> allSampleDatamore=new ArrayList<>();
     ArrayList<SectionDataModel> allSampleDataP=new ArrayList<>();
      ImageView  no_rodr;
-
     ArrayList<UserModel> allSampleData=new ArrayList<>();
-
     MyProductAdapter productAdapter;
     MyProvideAdapter provideAdapter;
     MyDemandAdapter demandAdapter;
@@ -72,7 +70,7 @@ public class SearchedActivity extends AppCompatActivity implements UserDataAdapt
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_searched);
         my_recycler_view=findViewById(R.id.my_recycler_view);
-         searched_iv=findViewById(R.id.searched_iv);
+        searched_iv=findViewById(R.id.searched_iv);
         no_rodr=findViewById(R.id.no_record_found);
         /*
           intent.putExtra("SearchType",SearchType);
