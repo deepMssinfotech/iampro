@@ -2,6 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="#287bbf"
     android:orientation="vertical"
     android:clickable="true"
@@ -48,24 +49,30 @@
                 android:layout_width="100dp"
                 android:layout_height="100dp"
                 android:layout_centerHorizontal="true"
-                android:layout_margin="56dp"
+                android:layout_marginTop="56dp"
+                android:layout_marginBottom="56dp"
                 android:background="@drawable/iampro"
-                android:elevation="4dp" />
+                android:elevation="4dp"/>
                 <LinearLayout
                     android:orientation="horizontal"
                     android:layout_width="match_parent"
+                    android:padding="10dp"
+                    android:layout_marginTop="0dp"
                     android:layout_height="wrap_content">
                     <TextView
                         android:id="@+id/tvpprofession"
                         android:text="Profession : "
-                        android:layout_marginTop="15dp"
+                        android:layout_marginTop="0dp"
                         android:textColor="@color/white"
+                        android:layout_gravity="center_horizontal"
+                        android:gravity="center"
                         android:layout_width="wrap_content"
-                        android:layout_height="match_parent" />
+                        android:layout_height="match_parent"/>
                     <Spinner
                         android:id="@+id/spprofession"
+                        android:layout_marginBottom="10dp"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content" />
+                        android:layout_height="wrap_content"/>
 
                 </LinearLayout>
             <android.support.design.widget.TextInputLayout
@@ -81,9 +88,10 @@
                     android:drawableLeft="@drawable/ic_action_user"
                     android:drawableTint="#000000"
                     android:textColor="@color/white"
+                    android:drawablePadding="10dp"
                     android:hint="First Name"
                     android:inputType="text"
-                    android:singleLine="true" />
+                    android:singleLine="true"/>
             </android.support.design.widget.TextInputLayout>
             <android.support.design.widget.TextInputLayout
                 android:id="@+id/tilLastName"
@@ -98,9 +106,10 @@
                     android:drawableLeft="@drawable/ic_action_user"
                     android:drawableTint="#000000"
                     android:textColor="@color/white"
+                    android:drawablePadding="10dp"
                     android:hint="Last Name"
                     android:inputType="text"
-                    android:singleLine="true" />
+                    android:singleLine="true"/>
             </android.support.design.widget.TextInputLayout>
             <android.support.design.widget.TextInputLayout
                 android:id="@+id/tilMobile"
@@ -116,6 +125,7 @@
                     android:drawableTint="#000000"
                     android:textColor="@color/white"
                     android:hint="Mobile Number"
+                    android:drawablePadding="10dp"
                     android:inputType="number"
                     android:singleLine="true" />
             </android.support.design.widget.TextInputLayout>
@@ -131,6 +141,7 @@
                     android:layout_height="wrap_content"
                     android:drawableLeft="@drawable/ic_action_message"
                     android:drawableTint="#000000"
+                    android:drawablePadding="10dp"
                     android:textColor="@color/white"
                     android:singleLine="true"
                     android:hint="Email Address"
@@ -139,15 +150,16 @@
 
             <Button
                 android:id="@+id/btnRegister"
-                android:layout_width="200dp"
+                android:layout_width="210dp"
                 android:layout_margin="22dp"
                 android:background="@drawable/loginbuttonbg"
                 android:text="Process Now"
-                android:layout_height="40dp"
+                android:layout_height="60dp"
                 android:layout_gravity="center"
+                android:layout_marginTop="20dp"
                 android:textAllCaps="true"
                 android:textColor="#fff"
-                android:textSize="18sp" />
+                android:textSize="16sp" />
             <TextView
                 android:textColor="@color/white"
                 android:id="@+id/btnLogin"

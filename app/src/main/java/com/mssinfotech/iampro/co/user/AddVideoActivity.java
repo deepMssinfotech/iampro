@@ -397,9 +397,10 @@ public class AddVideoActivity extends AppCompatActivity  implements SingleUpload
     }
     public void click_video_button(View v) {
         if (!students.isEmpty()) {
-            add_video_button.setBackgroundResource(R.drawable.black);
+          add_video_button.setBackgroundResource(R.drawable.btn_others_black);
             add_video_button.setTextColor(getResources().getColor(R.color.white));
-            create_album_button.setBackgroundResource(R.drawable.white);
+
+            create_album_button.setBackgroundResource(R.drawable.btn_others);
             create_album_button.setTextColor(getResources().getColor(R.color.black));
             tvlayouttype.setText("add_video");
             albumLayout.setVisibility(View.VISIBLE);
@@ -413,10 +414,12 @@ public class AddVideoActivity extends AppCompatActivity  implements SingleUpload
         }
     }
     public void click_album_button(View v) {
-        add_video_button.setBackgroundResource(R.drawable.white);
+         add_video_button.setBackgroundResource(R.drawable.btn_others);
         add_video_button.setTextColor(getResources().getColor(R.color.black));
-        create_album_button.setBackgroundResource(R.drawable.black);
+
+        create_album_button.setBackgroundResource(R.drawable.btn_others_black);
         create_album_button.setTextColor(getResources().getColor(R.color.white));
+
         tvlayouttype.setText("videonew");
         albumLayout.setVisibility(View.GONE);
         categoryLayout.setVisibility(View.VISIBLE);

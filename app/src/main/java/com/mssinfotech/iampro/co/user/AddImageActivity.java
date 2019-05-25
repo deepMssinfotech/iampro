@@ -364,9 +364,10 @@ public class AddImageActivity extends AppCompatActivity {
     }
     public void click_image_button(View v){
         if (students.size()>0) {
-            add_image_button.setBackgroundResource(R.drawable.black);
+            add_image_button.setBackgroundResource(R.drawable.btn_others_black);
             add_image_button.setTextColor(getResources().getColor(R.color.white));
-            create_album_button.setBackgroundResource(R.drawable.white);
+            create_album_button.setBackgroundResource(R.drawable.btn_others);
+
             create_album_button.setTextColor(getResources().getColor(R.color.black));
             tvlayouttype.setText("add_iamge");
             albumLayout.setVisibility(View.VISIBLE);
@@ -380,9 +381,10 @@ public class AddImageActivity extends AppCompatActivity {
         //return;
     }
     public void click_album_button(View v){
-        add_image_button.setBackgroundResource(R.drawable.white);
+        add_image_button.setBackgroundResource(R.drawable.btn_others);
         add_image_button.setTextColor(getResources().getColor(R.color.black));
-        create_album_button.setBackgroundResource(R.drawable.black);
+        create_album_button.setBackgroundResource(R.drawable.btn_others_black);
+
         create_album_button.setTextColor(getResources().getColor(R.color.white));
         tvlayouttype.setText("imagenew");
         albumLayout.setVisibility(View.GONE);

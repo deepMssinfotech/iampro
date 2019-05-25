@@ -247,13 +247,14 @@
                             android:paddingLeft="5dp"
                             android:id="@+id/tv_images"
                             android:layout_width="70dp"
-                            android:drawableLeft="@drawable/ic_camera_white"
+                            android:drawableLeft="@drawable/tab_image"
                             android:drawablePadding="7dp"
                             android:background="@drawable/user_circular_corner"
                             android:layout_height="20dp"
                             android:textColor="@color/white"
                             android:text="4"
                             android:layout_marginTop="5dp"/>
+                        <!--  ic_camera_white   -->
                         <TextView
                             android:layout_marginLeft="5dp"
                             android:paddingLeft="5dp"
