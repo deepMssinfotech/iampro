@@ -559,6 +559,9 @@ public class MyVideoActivity extends Fragment implements MyVideoAdapter.ItemList
                 new com.android.volley.Response.Listener<JSONArray>() {
                     @Override
                     public void onResponse(JSONArray response) {
+                       if (!allSampleData.isEmpty()){
+                            allSampleData.clear();
+                        }
                         ArrayList<SingleItemModel> singleItem = new ArrayList<SingleItemModel>();
                         SectionImageModel dm = new SectionImageModel();
                         dm.setHeaderTitle(item_name.get(aid));

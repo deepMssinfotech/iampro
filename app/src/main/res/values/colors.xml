@@ -13,6 +13,7 @@
     <color name="color_user_color_dark">#431777</color>
 
     <color name="color_product_color">#ad2c2f</color>
+    <color name="lightgrey">#696969</color>
     <color name="color_product_color_dark">#910105</color>
 
     <color name="color_provide_color">#51aab3</color>

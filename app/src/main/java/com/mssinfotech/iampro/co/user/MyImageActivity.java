@@ -107,6 +107,7 @@ public class MyImageActivity extends Fragment implements MyImageAdapter.ItemList
     int status = 0;
     Handler handler = new Handler();
     String added_bys;
+     Dialog dialog;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup parent, Bundle savedInstanceState) {
         // Defines the xml file for the fragment
@@ -134,6 +135,7 @@ public class MyImageActivity extends Fragment implements MyImageAdapter.ItemList
         view = v;
         context = getContext();
         intent = getActivity().getIntent();
+        dialog=new Dialog(this.getContext());
         Log.e("mragank","img_name_avatar="+img_name_avatar+" \n img_name_background="+img_name_background);
         Bundle args = getArguments();
         //fid = getArguments().getString("uid");
@@ -397,7 +399,7 @@ public class MyImageActivity extends Fragment implements MyImageAdapter.ItemList
          //CreateProgressDialog();
         //Toast.makeText(getApplicationContext(), "Video upload remain pleasw wait....", Toast.LENGTH_LONG).show();
         //return;
-        final Dialog dialog = new Dialog(this.getContext());
+        //final Dialog dialog = new Dialog(this.getContext());
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setContentView(R.layout.progress_dialog);
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
@@ -440,7 +442,7 @@ public class MyImageActivity extends Fragment implements MyImageAdapter.ItemList
         //CreateProgressDialog();
         //Toast.makeText(getApplicationContext(), "Video upload remain pleasw wait....", Toast.LENGTH_LONG).show();
         //return;
-        final Dialog dialog = new Dialog(this.getContext());
+        Dialog dialog = new Dialog(this.getContext());
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setContentView(R.layout.progress_dialog);
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
@@ -545,6 +547,7 @@ public class MyImageActivity extends Fragment implements MyImageAdapter.ItemList
         Log.d("urlimggg",""+url);
         RequestQueue requestQueue = Volley.newRequestQueue(context);
         final Dialog dialog = new Dialog(this.getContext());
+
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setContentView(R.layout.progress_dialog);
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
@@ -557,6 +560,9 @@ public class MyImageActivity extends Fragment implements MyImageAdapter.ItemList
                     @Override
                     public void onResponse(JSONArray response) {
                         //pDialog.dismiss();
+                        if (!allSampleData.isEmpty()){
+                            allSampleData.clear();
+                        }
                         SectionImageModel dm = new SectionImageModel();
                         dm.setHeaderTitle(item_name.get(aid));
                         dm.setAlbemId(aid);
@@ -624,8 +630,10 @@ public class MyImageActivity extends Fragment implements MyImageAdapter.ItemList
                             adapterr = new MyImageVideoDataAdapter(context, allSampleData,item_name);
                             recyclerView.setLayoutManager(new LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false));
                             recyclerView.setAdapter(adapterr);
-                         if (dialog.isShowing())
-                              dialog.dismiss();
+                            if (dialog.isShowing())
+                                dialog.hide();
+                                //dialog.dismiss();
+
                         }
                         catch (JSONException e){
                             //pDialog.dismiss();
@@ -651,6 +659,8 @@ public class MyImageActivity extends Fragment implements MyImageAdapter.ItemList
         // Add JsonArrayRequest to the RequestQueue
         requestQueue.add(jsonArrayRequest);
         //getProvide();
+        if (dialog.isShowing())
+            dialog.dismiss();
     }
     @Override
     public void onItemClick(MyImageModel item) {

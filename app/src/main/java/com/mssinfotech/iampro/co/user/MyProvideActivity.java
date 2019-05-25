@@ -220,6 +220,9 @@ public class MyProvideActivity extends Fragment implements MyProvideAdapter.Item
                 new com.android.volley.Response.Listener<JSONArray>() {
                     @Override
                     public void onResponse(JSONArray response) {
+                        if (!item.isEmpty()){
+                            item.clear();
+                        }
                         Log.d("responsef",response.toString());
                         SectionDataModel dm = new SectionDataModel();
                         dm.setHeaderTitle("Product");
