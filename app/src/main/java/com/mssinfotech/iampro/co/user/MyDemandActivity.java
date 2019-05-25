@@ -305,8 +305,6 @@ public class MyDemandActivity extends Fragment implements MyDemandAdapter.ItemLi
         requestQueue.add(jsonArrayRequest);
         //getProvide();
     }
-
-
     @Override
     public void onItemClick(MyProductModel item) {
 
