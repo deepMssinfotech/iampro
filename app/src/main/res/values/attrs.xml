@@ -16,7 +16,6 @@
     <declare-styleable name="TextViewMontserratLightText">
         <attr name="lightTextColor" format="color" />
     </declare-styleable>
-    <integer name="config_mediumAnimTime">330</integer>
 
     <declare-styleable name="ExpandableTextView">
         <attr name="trimLength" format="integer"/>

@@ -38,7 +38,7 @@ public class UserEditprofileActivity extends AppCompatActivity {
     private static final String TAG =UserEditprofileActivity.class.getSimpleName();
     public static final int REQUEST_IMAGE = 100;
 
-    @BindView(R.id.img_profile)
+    //@BindView(R.id.img_profile)
     ImageView imgProfile;
 
     @Override
@@ -73,7 +73,7 @@ public class UserEditprofileActivity extends AppCompatActivity {
         imgProfile.setColorFilter(ContextCompat.getColor(this, R.color.profile_default_tint));
     }
 
-    @OnClick({R.id.img_plus, R.id.img_profile})
+    //@OnClick({R.id.img_plus, R.id.img_profile})
     void onProfileImageClick() {
         Dexter.withActivity(this)
                 .withPermissions(Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE)

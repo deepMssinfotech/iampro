@@ -22,7 +22,6 @@
     <ImageView
         android:layout_gravity="center"
         android:foregroundGravity="center"
-        android:id="@+id/deleteImage"
         android:src="@drawable/delete"
         android:layout_width="20dp"
         android:layout_height="20dp" />

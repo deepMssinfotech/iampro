@@ -102,7 +102,6 @@
                         android:layout_marginTop="2dp"
                         android:orientation="horizontal">
                         <TextView
-                            android:id="@+id/tv_sellingprices"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:lines="1"
@@ -133,7 +132,6 @@
                     android:layout_gravity="end"
                     android:orientation="vertical">
                     <LinearLayout
-                        android:id="@+id/ll_like"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:orientation="horizontal">
@@ -185,7 +183,6 @@
                 android:layout_weight="1"
                 android:orientation="horizontal">
                 <RatingBar
-                    android:id="@+id/ratingBars"
                     style="?android:ratingBarStyleSmall"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"

@@ -9,6 +9,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.content.res.AppCompatResources;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
@@ -83,7 +84,7 @@ public class DemandFragment extends Fragment implements DemandAdapter.ItemListen
     private ArrayList<com.mssinfotech.iampro.co.data.ImageModel> imageModelArrayList;
 
     public DemandFragment() {
-        // Required empty public constructor
+
     }
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -97,6 +98,9 @@ public class DemandFragment extends Fragment implements DemandAdapter.ItemListen
         //view.findViewById(R.id.title_tv).setTag("Demand");
         views=view;
         context= getContext();
+        // Required empty public constructor
+        AppCompatActivity activity = (AppCompatActivity) context;
+        activity.setTheme(R.style.DemandAppTheme);
         return view;
     }
     @Override

@@ -1,5 +1,6 @@
 package com.mssinfotech.iampro.co.tab;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -94,6 +95,7 @@ public class UserFragment extends Fragment implements UserDataAdapter.ItemListen
      ImageView no_rodr;
 
     View views;
+    Context context;
     //sliderr
     private static ViewPager mPager;
     private static int currentPage = 0;
@@ -101,7 +103,7 @@ public class UserFragment extends Fragment implements UserDataAdapter.ItemListen
     private ArrayList<com.mssinfotech.iampro.co.data.ImageModel> imageModelArrayList;
 
     public UserFragment() {
-        // Required empty public constructor
+
     }
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -114,6 +116,10 @@ public class UserFragment extends Fragment implements UserDataAdapter.ItemListen
         // Inflate the layout for this fragment
         View view=inflater.inflate(R.layout.fragment_user, container, false);
          views=view;
+        context = getContext();
+        // Required empty public constructor
+        AppCompatActivity activity = (AppCompatActivity) context;
+        activity.setTheme(R.style.UserAppTheme);
         //oolbar =view.findViewById(R.id.toolbar);
         //view.findViewById(R.id.title_tv).setTag("User");
 
@@ -123,8 +129,8 @@ public class UserFragment extends Fragment implements UserDataAdapter.ItemListen
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         //createDummyData();
-        if (PrefManager.isLogin(getContext())) {
-            String id = PrefManager.getLoginDetail(getContext(), "id");
+        if (PrefManager.isLogin(context)) {
+            String id = PrefManager.getLoginDetail(context, "id");
             uid = Integer.parseInt(id);
         }
         getUser(15);
@@ -135,11 +141,11 @@ public class UserFragment extends Fragment implements UserDataAdapter.ItemListen
         luser_iv=view.findViewById(R.id.luser_iv);
         no_rodr =view.findViewById(R.id.no_record_found);
         luser_iv.setVisibility(View.VISIBLE);
-        luser_iv.setBackground(AppCompatResources.getDrawable(getContext(),R.drawable.user));
+        luser_iv.setBackground(AppCompatResources.getDrawable(context,R.drawable.user));
           btn_load_more=view.findViewById(R.id.btn_load_more);
 
         luser_iv=view.findViewById(R.id.luser_iv);
-               //luser_iv.setBackground(getContext().getResources().getDrawable(R.drawable.user));
+               //luser_iv.setBackground(context.getResources().getDrawable(R.drawable.user));
         btn_load_more.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -159,7 +165,7 @@ public class UserFragment extends Fragment implements UserDataAdapter.ItemListen
     private void init() {
 
         mPager = views.findViewById(R.id.pager);
-        mPager.setAdapter(new SlidingImage_Adapter(getContext(),imageModelArrayList));
+        mPager.setAdapter(new SlidingImage_Adapter(context,imageModelArrayList));
 
         CirclePageIndicator indicator = (CirclePageIndicator)views.findViewById(R.id.indicator);
 
@@ -214,7 +220,7 @@ public class UserFragment extends Fragment implements UserDataAdapter.ItemListen
 
     private void getTopSlider(){
         final String url=Config.API_URL+ "index.php?type=get_slider&name=TOP_SLIDER";
-        RequestQueue requestQueue = Volley.newRequestQueue(getContext());
+        RequestQueue requestQueue = Volley.newRequestQueue(context);
         // Initialize a new JsonArrayRequest instance
         JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(
                 Request.Method.GET,
@@ -257,7 +263,7 @@ public class UserFragment extends Fragment implements UserDataAdapter.ItemListen
                         catch (JSONException e){
                             //pDialog.dismiss();
                             e.printStackTrace();
-                            Toast.makeText(getContext(), ""+e.getMessage(), Toast.LENGTH_SHORT).show();
+                            Toast.makeText(context, ""+e.getMessage(), Toast.LENGTH_SHORT).show();
                             Log.d("catch_f",""+e.getMessage());
                         }
                     }
@@ -267,8 +273,8 @@ public class UserFragment extends Fragment implements UserDataAdapter.ItemListen
                     public void onErrorResponse(VolleyError error){
                         //pDialog.dismiss();
                         // Do something when error occurred
-                        //Snackbar.make(getContext(),"Error...", Snackbar.LENGTH_LONG).show();
-                        Toast.makeText(getContext(), "verror"+error.getMessage(), Toast.LENGTH_SHORT).show();
+                        //Snackbar.make(context,"Error...", Snackbar.LENGTH_LONG).show();
+                        Toast.makeText(context, "verror"+error.getMessage(), Toast.LENGTH_SHORT).show();
                         Log.d("verror",""+error.getMessage());
                     }
                 }
@@ -281,7 +287,7 @@ public class UserFragment extends Fragment implements UserDataAdapter.ItemListen
         final String url = Config.API_URL+ "app_service.php?type=getSelectedUser&limit="+limitss+"&uid="+uid+"&my_id="+uid;
 
         // Initialize a new RequestQueue instance
-        RequestQueue requestQueue = Volley.newRequestQueue(getContext());
+        RequestQueue requestQueue = Volley.newRequestQueue(context);
 
         // Initialize a new JsonArrayRequest instance
         JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(
@@ -346,10 +352,10 @@ public class UserFragment extends Fragment implements UserDataAdapter.ItemListen
                                 Log.d("allSampleDatas", "" + allSampleData.size() + "--" + allSampleData.toString());
 
 
-                                adapter = new UserDataAdapter(getContext(), allSampleData, UserFragment.this);
+                                adapter = new UserDataAdapter(context, allSampleData, UserFragment.this);
                                 my_recycler_view.setAdapter(adapter);
 
-                                LinearLayoutManager manager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
+                                LinearLayoutManager manager = new LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false);
                                 my_recycler_view.setLayoutManager(manager);
 
                                 //ItemTouchHelper.SimpleCallback itemTouchHelperCallback = new UserItemTouchHelper(0, ItemTouchHelper.LEFT,UserFragment.this);
@@ -357,7 +363,7 @@ public class UserFragment extends Fragment implements UserDataAdapter.ItemListen
 
                             } catch (JSONException e) {
                                 e.printStackTrace();
-                                Toast.makeText(getContext(), "" + e.getMessage(), Toast.LENGTH_SHORT).show();
+                                Toast.makeText(context, "" + e.getMessage(), Toast.LENGTH_SHORT).show();
                                 Log.d("catch_f", "" + e.getMessage());
                                 no_rodr.setVisibility(View.VISIBLE);
                             }
@@ -371,8 +377,8 @@ public class UserFragment extends Fragment implements UserDataAdapter.ItemListen
                     @Override
                     public void onErrorResponse(VolleyError error){
                         // Do something when error occurred
-                        //Snackbar.make(getContext(),"Error...", Snackbar.LENGTH_LONG).show();
-                        Toast.makeText(getContext(), "verror"+error.getMessage(), Toast.LENGTH_SHORT).show();
+                        //Snackbar.make(context,"Error...", Snackbar.LENGTH_LONG).show();
+                        Toast.makeText(context, "verror"+error.getMessage(), Toast.LENGTH_SHORT).show();
                         Log.d("verror",""+error.getMessage());
                         no_rodr.setVisibility(View.VISIBLE);
                     }
@@ -387,7 +393,7 @@ public class UserFragment extends Fragment implements UserDataAdapter.ItemListen
         ProfileActivity fragment = new ProfileActivity();
         Bundle args = new Bundle();
         args.putString("uid", String.valueOf(uid));
-        function.loadFragment(getContext(),fragment,args);
+        function.loadFragment(context,fragment,args);
 
     }
 
@@ -395,7 +401,7 @@ public class UserFragment extends Fragment implements UserDataAdapter.ItemListen
         //final String url = Config.API_URL+ "app_service.php?type=getSelectedUser&limit="+limitss+"&uid="+uid+"&my_id="+uid;
          final String url=Config.API_URL+ "app_service.php?type=getAllUser&name=&uid="+uid+"&my_id="+uid+"&start_limit="+start_limit+"&end_limit="+end_limit;
         // Initialize a new RequestQueue instance
-        RequestQueue requestQueue = Volley.newRequestQueue(getContext());
+        RequestQueue requestQueue = Volley.newRequestQueue(context);
 
         // Initialize a new JsonArrayRequest instance
         JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(
@@ -451,15 +457,15 @@ public class UserFragment extends Fragment implements UserDataAdapter.ItemListen
                             Log.d("allSampleDatas",""+allSampleData.size()+"--"+allSampleData.toString());
 
 
-                            adapter = new UserDataAdapter(getContext(), allSampleData,UserFragment.this);
+                            adapter = new UserDataAdapter(context, allSampleData,UserFragment.this);
                             my_recycler_view.setAdapter(adapter);
 
-                            LinearLayoutManager manager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
+                            LinearLayoutManager manager = new LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false);
                             my_recycler_view.setLayoutManager(manager);
                              adapter.notifyDataSetChanged();
 
                             my_recycler_view.setItemAnimator(new DefaultItemAnimator());
-                             my_recycler_view.addItemDecoration(new DividerItemDecoration(getContext(),DividerItemDecoration.VERTICAL));
+                             my_recycler_view.addItemDecoration(new DividerItemDecoration(context,DividerItemDecoration.VERTICAL));
 
                      // ItemTouchHelper.SimpleCallback itemTouchHelperCallback = new UserItemTouchHelper(0, ItemTouchHelper.LEFT,UserFragment.this);
                       //new ItemTouchHelper(itemTouchHelperCallback).attachToRecyclerView(recycler_view_load_more);
@@ -467,7 +473,7 @@ public class UserFragment extends Fragment implements UserDataAdapter.ItemListen
                          }
                         catch (JSONException e){
                             e.printStackTrace();
-                            Toast.makeText(getContext(), ""+e.getMessage(), Toast.LENGTH_SHORT).show();
+                            Toast.makeText(context, ""+e.getMessage(), Toast.LENGTH_SHORT).show();
                             Log.d("catch_f",""+e.getMessage());
                         }
                     }
@@ -476,8 +482,8 @@ public class UserFragment extends Fragment implements UserDataAdapter.ItemListen
                     @Override
                     public void onErrorResponse(VolleyError error){
                         // Do something when error occurred
-                        //Snackbar.make(getContext(),"Error...", Snackbar.LENGTH_LONG).show();
-                        Toast.makeText(getContext(), "verror"+error.getMessage(), Toast.LENGTH_SHORT).show();
+                        //Snackbar.make(context,"Error...", Snackbar.LENGTH_LONG).show();
+                        Toast.makeText(context, "verror"+error.getMessage(), Toast.LENGTH_SHORT).show();
                         Log.d("verror",error.getMessage());
                     }
                 }
@@ -488,7 +494,7 @@ public class UserFragment extends Fragment implements UserDataAdapter.ItemListen
 
       /* @Override
         public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction, int position) {
-        Toast.makeText(getContext(),"swiped",Toast.LENGTH_LONG).show();
+        Toast.makeText(context,"swiped",Toast.LENGTH_LONG).show();
         if (viewHolder instanceof UserDataAdapter.ViewHolder) {
         // get the removed item name to display it in snack bar
         String name =allSampleData.get(viewHolder.getAdapterPosition()).getName();
@@ -530,7 +536,7 @@ public class UserFragment extends Fragment implements UserDataAdapter.ItemListen
 
                 if (direction == ItemTouchHelper.LEFT){
                    // adapter.removeItem(position);
-                    Toast.makeText(getContext(),"left",Toast.LENGTH_LONG).show();
+                    Toast.makeText(context,"left",Toast.LENGTH_LONG).show();
                 } else {
                    /* removeView();
                     edit_position = position;
@@ -538,7 +544,7 @@ public class UserFragment extends Fragment implements UserDataAdapter.ItemListen
                     et_country.setText(countries.get(position));
                     alertDialog.show(); */
 
-                    Toast.makeText(getContext(),"left",Toast.LENGTH_LONG).show();
+                    Toast.makeText(context,"left",Toast.LENGTH_LONG).show();
 
                 }
             }

@@ -8,7 +8,6 @@
     app:cardCornerRadius="105dp"
     app:cardUseCompatPadding="true">
     <LinearLayout
-        android:id="@+id/popexit"
         android:orientation="horizontal"
         android:background="@drawable/exit_box"
         android:layout_width="match_parent"

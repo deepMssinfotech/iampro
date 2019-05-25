@@ -42,7 +42,6 @@
             android:orientation="vertical">
             <ImageButton
                 android:layout_gravity="center"
-                android:id="@+id/user_profile_photo"
                 android:layout_width="100dp"
                 android:layout_height="100dp"
                 android:layout_centerHorizontal="true"

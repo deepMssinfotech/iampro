@@ -7,7 +7,7 @@
     <LinearLayout
         android:layout_alignParentTop="true"
         android:gravity="center"
-        android:background="@drawable/black"
+        android:background="@color/top_br_color"
         android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
@@ -33,13 +33,14 @@
         <EditText
             android:id="@+id/tvsearchbox"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_margin="@dimen/header_image_margin"
             android:focusable="false"
+            android:textSize="10dp"
+            android:textColor="@color/white"
+            android:textColorHint="@color/white"
             android:background="@drawable/bg_rounded"
-            android:drawableLeft="@drawable/search_ioc"
-            android:drawablePadding="5dp"
             android:hint="Search"
-            android:padding="5dp" />
+            android:paddingLeft="18dp" />
     </LinearLayout>
 </merge>

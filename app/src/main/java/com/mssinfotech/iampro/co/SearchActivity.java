@@ -1,8 +1,11 @@
 package com.mssinfotech.iampro.co;
 
+import android.content.Context;
 import android.content.Intent;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -16,12 +19,14 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.mssinfotech.iampro.co.common.Config;
 import com.mssinfotech.iampro.co.common.function;
+import com.mssinfotech.iampro.co.tab.HomeFragment;
 
 import java.security.acl.Group;
 import java.util.ArrayList;
@@ -41,6 +46,7 @@ public class SearchActivity extends Fragment implements AdapterView.OnItemSelect
     private ImageButton ibtnBack;
     private ImageButton ibtnFilter;
     private RecyclerView rvContent;
+    Context context;
     String myType;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup parent, Bundle savedInstanceState) {
@@ -56,30 +62,50 @@ public class SearchActivity extends Fragment implements AdapterView.OnItemSelect
         //ibtnBack = view.findViewById(R.id.ibtnBack);
         //ibtnFilter = view.findViewById(R.id.ibtnFilter);
         //rvContent = view.findViewById(R.id.rvContent);
-        list.add("IMAGE");
-        list.add("VIDEO");
-        list.add("FRIEND");
-        list.add("PRODUCT");
-        list.add("PROVIDE");
-        list.add("DEMAND");
-        ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item, list);
+        context = getContext();
+        list.add("Select Type");
+        list.add("Image");
+        list.add("Video");
+        list.add("Friend");
+        list.add("Product");
+        list.add("Provide");
+        list.add("Demand");
+        ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(context, android.R.layout.simple_spinner_item, list);
         spnrSearchType = view.findViewById(R.id.spnrSearchType);
         dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spnrSearchType.setAdapter(dataAdapter);
         spnrCategory = view.findViewById(R.id.spnrCategory);
         spnrSearchType.setOnItemSelectedListener(this);
 
+
+        AppCompatActivity activity = (AppCompatActivity) context;
+        FragmentManager fm = getChildFragmentManager(); //getFragmentManager();
+
+        //Fragment fragment = fm.findFragmentById(R.id.homesection);
+        HomeFragment fragment= (HomeFragment) fm.findFragmentById(R.id.homesection);
+        fragment.hideSliders();
+ /*
+
+
+        FragmentTransaction fragmentTransaction = fm.beginTransaction();
+        // replace the FrameLayout with new Fragment
+        fragmentTransaction.add(R.id.homesection, fragment, "HomeFragment");
+        fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+        fragmentTransaction.addToBackStack(null);
+        fragmentTransaction.commit(); // save the changes
+*/
+
         btnSearch.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 String SearchType = spnrSearchType.getSelectedItem().toString();
                 String SearchCat = spnrCategory.getSelectedItem().toString();
                 String SearchData = etSearchData.getText().toString();
-                //Toast.makeText(getContext(), "Clicked on: " + SearchType + " " + SearchCat + " " +SearchData, Toast.LENGTH_SHORT).show();
-                Intent intent=new Intent(getContext(),SearchedActivity.class);
+                //Toast.makeText(context, "Clicked on: " + SearchType + " " + SearchCat + " " +SearchData, Toast.LENGTH_SHORT).show();
+                Intent intent=new Intent(context,SearchedActivity.class);
                 intent.putExtra("SearchType",SearchType);
                 intent.putExtra("SearchCat",SearchCat);
                 intent.putExtra("SearchData",SearchData);
-                  startActivity(intent);
+                startActivity(intent);
             }
         });
         try {
@@ -100,7 +126,7 @@ public class SearchActivity extends Fragment implements AdapterView.OnItemSelect
     }
     @Override
     public void onItemSelected(AdapterView<?> adapterView, View view, int position, long id) {
-        function.getData(getActivity(), getContext(), spnrCategory, list.get(position));
+        function.getData(getActivity(), context, spnrCategory, list.get(position));
         //Toast.makeText(getApplicationContext(), "Clicked on: " + list.get(position), Toast.LENGTH_SHORT).show();
     }
     @Override

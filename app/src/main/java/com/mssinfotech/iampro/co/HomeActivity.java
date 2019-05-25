@@ -1,4 +1,5 @@
 package com.mssinfotech.iampro.co;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
@@ -28,8 +29,7 @@ public class HomeActivity extends AppCompatActivity {
             R.drawable.tab_user,
             R.drawable.tab_product,
             R.drawable.tab_provide,
-            R.drawable.tab_demand,
-            android.R.drawable.alert_dark_frame
+            R.drawable.tab_demand
     };
 
     @Override
@@ -42,6 +42,8 @@ public class HomeActivity extends AppCompatActivity {
 
         tabLayout = (TabLayout) findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(viewPager);
+        tabLayout.setSelectedTabIndicatorColor(Color.parseColor("#FFFFFF"));
+        tabLayout.setTabTextColors(Color.parseColor("#FFFFFF"),Color.parseColor("#FFFFFF"));
         PrefManager.getCountFromServer(this);
         setupTabIcons();
     }

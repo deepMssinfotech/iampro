@@ -149,7 +149,6 @@
             android:background="@color/trans_black"
             android:orientation="horizontal">
             <LinearLayout
-                android:id="@+id/favLayout"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="left"
@@ -296,7 +295,6 @@
             android:maxHeight="50dp"
             android:scrollbarAlwaysDrawVerticalTrack="true"/>
         <ImageView
-            android:id="@+id/imageButton2"
             android:layout_width="40dp"
             android:layout_height="35dp"
             app:srcCompat="@drawable/choice"

@@ -120,7 +120,7 @@ public class EditProfileActivity extends Fragment {
     String uid,fname,background,banner_img;
     TextView username;
     ImageView userbackgroud,changeImage,changeBackground_Image;
-    @BindView(R.id.img_profile)
+    //@BindView(R.id.img_profile)
     ImageView imgProfile;
 
     Spinner spprofession;

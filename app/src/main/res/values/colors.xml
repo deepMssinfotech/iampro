@@ -1,47 +1,39 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="colorPrimary">#000000</color>
-    <color name="colorPrimaryLight">#4f5b62</color>
     <color name="colorAccent">#4f5b62</color>
-    <color name="colorAccentLight">#4f5b62</color>
-    <color name="colorAccentDark">#000000</color>
-    <color name="dividerColor">#6da1a1a1</color>
 
     <color name="color_image_color">#faaa2e</color>
+    <color name="color_image_color_dark">#cf7f02</color>
+
     <color name="color_video_color">#bc277f</color>
+    <color name="color_video_color_dark">#950259</color>
+
     <color name="color_user_color">#633a94</color>
+    <color name="color_user_color_dark">#431777</color>
+
     <color name="color_product_color">#ad2c2f</color>
+    <color name="color_product_color_dark">#910105</color>
+
     <color name="color_provide_color">#51aab3</color>
+    <color name="color_provide_color_dark">#028794</color>
+
     <color name="color_demand_color">#a3bd5a</color>
-
-    <color name="textOnPrimary">@android:color/primary_text_dark</color>
-    <color name="textOnAccent">@android:color/primary_text_light</color>
-
-    <color name="color_divider">#CCCCCC</color>
-    <color name="color_transucent_black">#000000</color>
+    <color name="color_demand_color_dark">#759e01</color>
 
     <!--         Login Activity Colors        -->
-    <color name="loginPrimary">#000000</color>
-    <color name="loginPrimaryDark">#4f5b62</color>
-    <color name="loginAccent">#000000</color>
     <color name="black_overlay">#000000</color>
     <color name="white">#ffffff</color>
     <color name="black">#000000</color>
-    <color name="feed_bg">#d3d6db</color>
-    <color name="feed_item_bg">#ffffff</color>
-    <color name="feed_item_border">#c2c3c8</color>
     <color name="link">#0A80D1</color>
-    <color name="timestamp">#a0a3a7</color>
-
-    <color name="windowBackground">#FFFFFF</color>
-    <color name="navigationBarColor">#000000</color>
+    <color name="nav">#4f4f51</color>
 
     <color name="colorPrimaryDark">#000000</color>
-    <color name="textColorPrimary">#FFFFFF</color>
 
-     <!--home frag -->
+    <!--home frag -->
     <color name="movie_title">#4c4c4c</color>
-
+    <color name="top_br_color">#373435</color>
+    <color name="search_bg_color">#848688</color>
     <!--  home frag2222     -->
 
     <color name="teal_100">#b2dfdb</color>
@@ -54,75 +46,17 @@
 
     <color name="trans_black">#4D000000</color>
 
-    <color name="btn_default_light_normal">#a0a3a7</color>
-    <color name="btn_default_light_pressed">#4f5b62</color>
-    <color name="btn_context_menu_normal">#000000</color>
-    <color name="btn_context_menu_pressed">#4c4c4c</color>
-    <color name="btn_send_normal">#4f5b62</color>
-    <color name="btn_send_pressed">#000000</color>
-    <color name="fab_color_shadow">#000000</color>
     <color name="transparent">#00000000</color>
 
-    <color name="primary_500">#3F51B5</color>
     <!--Indigo 700-->
-    <color name="primary_700">#303F9F</color>
     <!--Pink 500-->
-    <color name="accent_500">#E91E63</color>
     <!--Pink 700-->
-    <color name="accent_700">#C2185B</color>
     <color name="black_trans80">#33000000</color>
-    <color name="grey_500">#9E9E9E</color>
     <color name="grey_300">#E0E0E0</color>
 
-    <color name="primary_dark">#512DA8</color>
-    <color name="primary_light">#D1C4E9</color>
-    <color name="accent">#FF4081</color>
-    <color name="primary_text">#212121</color>
-    <color name="secondary_text">#757575</color>
-    <color name="icons">#FFFFFF</color>
-    <color name="divider">#BDBDBD</color>
-
-    <color name="primary">#673AB7</color>
-
-    <color name="grey_50">#FAFAFA</color>
-    <color name="grey_100">#F5F5F5</color>
-    <color name="grey_200">#EEEEEE</color>
-
-    <color name="grey_400">#BDBDBD</color>
-
-    <color name="grey_600">#757575</color>
-    <color name="grey_700">#616161</color>
-    <color name="grey_800">#424242</color>
-    <color name="grey_900">#212121</color>
-
     <!--may be change-->
-    <color name="list_divider">#E0E0E0</color>
     <color name="bg_bubble_self">#FF9100</color>
-    <color name="list_row_start_color">#F0F4C3</color>
-    <color name="list_row_end_color">#76FF03</color>
 
-    <color name="list_row_hover_end_color">#9E9D24</color>
-    <color name="list_row_hover_start_color">#795548</color>
-
-    <color name="cyan_50">#E0F7FA</color>
-    <color name="cyan_100">#B2EBF2</color>
-    <color name="cyan_200">#80DEEA</color>
-    <color name="cyan_300">#4DD0E1</color>
-    <color name="cyan_400">#26C6DA</color>
-    <color name="cyan_500">#00BCD4</color>
-    <color name="cyan_600">#00ACC1</color>
-    <color name="cyan_700">#0097A7</color>
-    <color name="cyan_800">#00838F</color>
-    <color name="cyan_900">#006064</color>
-    <color name="cyan_A100">#84FFFF</color>
-    <color name="cyan_A200">#18FFFF</color>
-    <color name="cyan_A400">#00E5FF</color>
-    <color name="cyan_A700">#00B8D4</color>
-
-    <color name="gradient_start">#5770f3</color>
-    <color name="gradient_end">#8e5aeb</color>
-    <color name="profile_desc">#D1D1FF</color>
-    <color name="bg_meta_container">#000000</color>
     <color name="profile_default_tint">#e0e0e0</color>
 
 </resources>

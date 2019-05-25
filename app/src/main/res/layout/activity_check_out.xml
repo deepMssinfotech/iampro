@@ -32,7 +32,6 @@
     </LinearLayout>
     </android.support.v4.widget.NestedScrollView>
     <LinearLayout
-        android:id="@+id/llTotal"
         android:layout_above="@+id/llBottom"
         android:layout_width="match_parent"
         android:paddingTop="10dp"
