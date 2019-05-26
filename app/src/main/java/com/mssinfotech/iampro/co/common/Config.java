@@ -56,6 +56,9 @@ public class Config
     public static final String V_URL=URL_ROOT+ "uploads/v_image/300/250/";
     public static final String BANNER_URL=URL_ROOT+ "uploads/media/";
     public static final String MEDIA_URL=URL_ROOT+ "uploads/media/";
+    public static final String PRODUCT_URL=URL_ROOT+ "uploads/product/";
+    public static final String PROVIDE_URL=URL_ROOT+ "uploads/product/";
+    public static final String DEMAND_URL=URL_ROOT+ "uploads/product/";
    // public static final String ALBUM_URL=URL_ROOT+ "uploads/album/w/500/";
     public static final String ALBUM_URL=URL_ROOT+ "uploads/album/160/95/";
     public static final String TOP_SLIDER=URL_ROOT+ "uploads/slider/h/280/";

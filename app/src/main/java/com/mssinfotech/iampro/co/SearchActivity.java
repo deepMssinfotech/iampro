@@ -101,28 +101,13 @@ public class SearchActivity extends Fragment implements AdapterView.OnItemSelect
                 String SearchCat = spnrCategory.getSelectedItem().toString();
                 String SearchData = etSearchData.getText().toString();
                 //Toast.makeText(context, "Clicked on: " + SearchType + " " + SearchCat + " " +SearchData, Toast.LENGTH_SHORT).show();
-                Intent intent=new Intent(context,SearchedActivity.class);
+                Intent intent=new Intent(context,SearchResultActivity.class);
                 intent.putExtra("SearchType",SearchType);
                 intent.putExtra("SearchCat",SearchCat);
                 intent.putExtra("SearchData",SearchData);
                 startActivity(intent);
             }
         });
-        try {
-            Bundle bundle = getArguments();
-            //here is your list array
-            myType = bundle.getString("type");
-        }
-        catch (Exception e){
-            myType="IMAGE";
-        }
-
-        for (int i = 0; i < list.size() ; i++){
-            if(list.get(i).equalsIgnoreCase(myType)){
-                int spinnerPosition = dataAdapter.getPosition(list.get(i));
-                spnrSearchType.setSelection(spinnerPosition);
-            }
-        }
     }
     @Override
     public void onItemSelected(AdapterView<?> adapterView, View view, int position, long id) {
