@@ -221,6 +221,9 @@ public class MyDemandActivity extends Fragment implements MyDemandAdapter.ItemLi
                 new com.android.volley.Response.Listener<JSONArray>() {
                     @Override
                     public void onResponse(JSONArray response) {
+                        if (!item.isEmpty()){
+                            item.clear();
+                        }
                         Log.d("responsef",response.toString());
                         SectionDataModel dm = new SectionDataModel();
                         dm.setHeaderTitle("Product");
@@ -302,8 +305,6 @@ public class MyDemandActivity extends Fragment implements MyDemandAdapter.ItemLi
         requestQueue.add(jsonArrayRequest);
         //getProvide();
     }
-
-
     @Override
     public void onItemClick(MyProductModel item) {
 

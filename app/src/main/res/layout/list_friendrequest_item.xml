@@ -201,8 +201,8 @@
                             android:layout_weight="1">
                             <de.hdodenhof.circleimageview.CircleImageView
                                 android:id="@+id/userimage"
-                                android:layout_width="77dp"
-                                android:layout_height="77dp"
+                                android:layout_width="64dp"
+                                android:layout_height="64dp"
                                 android:layout_gravity="center"
                                 android:src="@drawable/iampro"
                                 app:civ_border_color="#FF000000"/>
@@ -211,25 +211,28 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginLeft="5dp"
+                                android:layout_marginRight="2dp"
+                                android:layout_weight="1"
                                 android:orientation="vertical">
                                 <TextView
                                     android:id="@+id/fullname"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
-                                    android:textSize="17sp"
+                                    android:textSize="15sp"
                                     android:text="@string/app_name"
                                     android:textStyle="bold"/>
                                 <TextView
                                     android:id="@+id/category"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
-                                    android:text="friends"
-                                    />
+                                    android:textStyle="italic"
+                                    android:text="friends" />
                                 <TextView
                                     android:id="@+id/city"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:layout_gravity="center"
+                                    android:textStyle="italic"
                                     android:text="Bhopal" />
                             </LinearLayout>
                         </LinearLayout>
@@ -248,8 +251,8 @@
                                     android:layout_marginLeft="5dp"
                                     android:paddingLeft="5dp"
                                     android:id="@+id/total_image"
-                                    android:layout_width="70dp"
-                                    android:drawableLeft="@drawable/ic_camera_white"
+                                    android:layout_width="57dp"
+                                    android:drawableLeft="@drawable/user_image_icon"
                                     android:drawablePadding="7dp"
                                     android:background="@drawable/user_circular_corner"
                                     android:layout_height="20dp"
@@ -260,9 +263,9 @@
                                     android:layout_marginLeft="5dp"
                                     android:paddingLeft="5dp"
                                     android:id="@+id/total_video"
-                                    android:layout_width="70dp"
+                                    android:layout_width="57dp"
                                     android:layout_height="20dp"
-                                    android:drawableLeft="@drawable/ic_video_white"
+                                    android:drawableLeft="@drawable/user_video_icon"
                                     android:background="@drawable/user_circular_corner"
                                     android:drawablePadding="7dp"
                                     android:text="1"
@@ -272,10 +275,10 @@
                                     android:layout_marginLeft="5dp"
                                     android:paddingLeft="5dp"
                                     android:id="@+id/total_user"
-                                    android:layout_width="70dp"
+                                    android:layout_width="57dp"
                                     android:layout_height="20dp"
                                     android:background="@drawable/user_circular_corner"
-                                    android:drawableLeft="@drawable/user_white"
+                                    android:drawableLeft="@drawable/users_icon"
                                     android:drawablePadding="7dp"
                                     android:text="0"
                                     android:textColor="@color/white"
@@ -289,10 +292,10 @@
                                     android:layout_marginLeft="5dp"
                                     android:paddingLeft="5dp"
                                     android:id="@+id/total_product"
-                                    android:layout_width="70dp"
+                                    android:layout_width="57dp"
                                     android:background="@drawable/user_circular_corner"
                                     android:layout_height="20dp"
-                                    android:drawableLeft="@drawable/product_white"
+                                    android:drawableLeft="@drawable/user_product_icon"
                                     android:textColor="@color/white"
                                     android:drawablePadding="7dp"
                                     android:text="4"
@@ -301,11 +304,11 @@
                                     android:layout_marginLeft="5dp"
                                     android:paddingLeft="5dp"
                                     android:id="@+id/total_provide"
-                                    android:layout_width="70dp"
+                                    android:layout_width="57dp"
                                     android:layout_height="20dp"
                                     android:background="@drawable/user_circular_corner"
                                     android:text="1"
-                                    android:drawableLeft="@drawable/provide_white"
+                                    android:drawableLeft="@drawable/user_provide_icon"
                                     android:drawablePadding="7dp"
                                     android:textColor="@color/white"
                                     android:layout_marginTop="5dp"/>
@@ -313,12 +316,12 @@
                                     android:layout_marginLeft="5dp"
                                     android:paddingLeft="5dp"
                                     android:id="@+id/total_demand"
-                                    android:layout_width="70dp"
+                                    android:layout_width="57dp"
                                     android:layout_height="20dp"
                                     android:layout_marginTop="5dp"
                                     android:textColor="@color/white"
                                     android:background="@drawable/user_circular_corner"
-                                    android:drawableLeft="@drawable/demand_white"
+                                    android:drawableLeft="@drawable/user_demand_icon"
                                     android:drawablePadding="7dp"
                                     android:text="0"/>
                             </LinearLayout>
