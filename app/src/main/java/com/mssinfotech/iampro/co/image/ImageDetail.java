@@ -413,7 +413,8 @@ public class ImageDetail extends AppCompatActivity implements Img_Video_Details.
     protected void getVideoDetail(){
         String url= Config.API_URL+ "app_service.php?type=get_image_detail&id="+id+"&update_type="+type+"&uid=1&login_id="+uid+"&my_id="+uid;
         RequestQueue requestQueue = Volley.newRequestQueue(context);
-
+     if (image!=null)
+         image.setVisibility(View.GONE);
         StringRequest jsonObjectRequest = new StringRequest(
                 Request.Method.GET,
                 url,
@@ -424,7 +425,6 @@ public class ImageDetail extends AppCompatActivity implements Img_Video_Details.
                         // Process the JSON
                         try{
                             JSONObject responses=new JSONObject(response);
-
                             final int id =responses.optInt("id");
                             int albemid =responses.optInt("albemid");
                             String namev =responses.optString("name");

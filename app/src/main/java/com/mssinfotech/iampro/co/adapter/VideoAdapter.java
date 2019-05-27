@@ -54,6 +54,8 @@ import com.mssinfotech.iampro.co.utils.PrefManager;
 
 import java.util.ArrayList;
 
+import es.dmoral.toasty.Toasty;
+
 public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.ViewHolder> {
     ArrayList<DataModel> mValues;
     Context mContext;
@@ -94,18 +96,8 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.ViewHolder> 
             uname=v.findViewById(R.id.uname);
             userImage=v.findViewById(R.id.user_image);
 
-            tv_comments.setOnClickListener(CommnetOnClickListener);
-            iv_comments.setOnClickListener(CommnetOnClickListener);
-            imageView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Intent intent = new Intent(mContext, ImageDetail.class);
-                    intent.putExtra("id", String.valueOf(id));
-                    intent.putExtra("type", "video");
-                    intent.putExtra("uid", String.valueOf(uid));
-                    mContext.startActivity(intent);
-                }
-            });
+            //tv_comments.setOnClickListener(CommnetOnClickListener);
+            //iv_comments.setOnClickListener(CommnetOnClickListener);
         }
         private View.OnClickListener CommnetOnClickListener = new View.OnClickListener() {
             public void onClick(View v) {
@@ -217,8 +209,37 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.ViewHolder> 
         return new ViewHolder(view);
     }
     @Override
-    public void onBindViewHolder(ViewHolder Vholder, int position) {
+    public void onBindViewHolder(ViewHolder Vholder, final int position) {
         Vholder.setData(mValues.get(position));
+        Vholder.imageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //Toast.makeText(mContext,""+mValues.get(position).getId(),Toast.LENGTH_LONG).show();
+                Intent intent = new Intent(mContext, ImageDetail.class);
+                intent.putExtra("id", String.valueOf(mValues.get(position).getId()));
+                intent.putExtra("type", "video");
+                intent.putExtra("uid", String.valueOf(mValues.get(position).getUid()));
+                mContext.startActivity(intent);
+            }
+        });
+        Vholder.tv_comments.setOnClickListener( new View.OnClickListener() {
+            public void onClick(View v) {
+                Intent intent=new Intent(mContext, CommentActivity.class);
+                intent.putExtra("id",String.valueOf(mValues.get(position).getId()));
+                intent.putExtra("type","video");
+                intent.putExtra("uid",PrefManager.getLoginDetail(mContext,"id"));
+                mContext.startActivity(intent);
+            }
+        });
+        Vholder.iv_comments.setOnClickListener( new View.OnClickListener() {
+            public void onClick(View v) {
+                Intent intent=new Intent(mContext, CommentActivity.class);
+                intent.putExtra("id",String.valueOf(mValues.get(position).getId()));
+                intent.putExtra("type","video");
+                intent.putExtra("uid",PrefManager.getLoginDetail(mContext,"id"));
+                mContext.startActivity(intent);
+            }
+        });
     }
     @Override
     public int getItemCount() {
