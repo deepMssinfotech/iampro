@@ -99,12 +99,11 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.ViewHolder> 
             imageView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    ImageDetail fragment = new ImageDetail();
-                    Bundle args = new Bundle();
-                    args.putString("id", String.valueOf(id));
-                    args.putString("type", "video");
-                    args.putString("uid", String.valueOf(uid));
-                    function.loadFragment(mContext,fragment,args);
+                    Intent intent = new Intent(mContext, ImageDetail.class);
+                    intent.putExtra("id", String.valueOf(id));
+                    intent.putExtra("type", "video");
+                    intent.putExtra("uid", String.valueOf(uid));
+                    mContext.startActivity(intent);
                 }
             });
         }

@@ -363,13 +363,11 @@ public class AllFeedAdapter extends RecyclerView.Adapter<AllFeedAdapter.ViewHold
                     sliderView.setOnSliderClickListener(new SliderView.OnSliderClickListener() {
                         @Override
                         public void onSliderClick(SliderView sliderView) {
-                            ImageDetail fragment = new ImageDetail();
-                            Bundle args = new Bundle();
-                            args.putString("id", sidArray[finalI]);
-                            args.putString("type", "image");
-                            args.putString("uid", String.valueOf(mValues.get(position).getUid()));
-                            fragment.setArguments(args);
-                            function.loadFragment(mContext,fragment,args);
+                            Intent intent = new Intent(mContext, ImageDetail.class);
+                            intent.putExtra("id", sidArray[finalI]);
+                            intent.putExtra("type", "image");
+                            intent.putExtra("uid", String.valueOf(mValues.get(position).getUid()));
+                            mContext.startActivity(intent);
                         }
                     });
 
@@ -409,13 +407,12 @@ public class AllFeedAdapter extends RecyclerView.Adapter<AllFeedAdapter.ViewHold
             Vholder.video_imageView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    ImageDetail fragment = new ImageDetail();
-                    Bundle args = new Bundle();
-                    args.putString("id", sidArray[0]);
-                    args.putString("type", "video");
-                    args.putString("uid", String.valueOf(mValues.get(position).getUid()));
-                    fragment.setArguments(args);
-                    function.loadFragment(mContext,fragment,args);
+
+                    Intent intent = new Intent(mContext, ImageDetail.class);
+                    intent.putExtra("id", sidArray[0]);
+                    intent.putExtra("type", "video");
+                    intent.putExtra("uid", String.valueOf(mValues.get(position).getUid()));
+                    mContext.startActivity(intent);
                 }
             });
             Glide.with(mContext).load(R.drawable.video_icon).into(Vholder.imageView_icon);

@@ -89,20 +89,18 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
                   String n_type=notifyList.get(position).getNotify_type();
                   //Toast.makeText(context,""+notifyList.get(position).getP_type()+"\t"+n_type,Toast.LENGTH_LONG).show();
                    if (p_type.equalsIgnoreCase("image") && n_type.equalsIgnoreCase("LIKE")){
-                       ImageDetail fragment = new ImageDetail();
-                       Bundle args = new Bundle();
-                       args.putString("id", String.valueOf(notifyList.get(position).getPid()));
-                       args.putString("type", "image");
-                       args.putString("uid",notifyList.get(position).getUid());
-                       function.loadFragment(context,fragment,args);
+                       Intent intent = new Intent(context, ImageDetail.class);
+                       intent.putExtra("id", String.valueOf(notifyList.get(position).getPid()));
+                       intent.putExtra("type", "image");
+                       intent.putExtra("uid", notifyList.get(position).getUid());
+                       context.startActivity(intent);
                    }
                    else if (p_type.equalsIgnoreCase("video") && n_type.equalsIgnoreCase("LIKE")){
-                       ImageDetail fragment = new ImageDetail();
-                       Bundle args = new Bundle();
-                       args.putString("id", String.valueOf(notifyList.get(position).getPid()));
-                       args.putString("type", "video");
-                       args.putString("uid",notifyList.get(position).getUid());
-                       function.loadFragment(context,fragment,args);
+                       Intent intent = new Intent(context, ImageDetail.class);
+                       intent.putExtra("id", String.valueOf(notifyList.get(position).getPid()));
+                       intent.putExtra("type", "video");
+                       intent.putExtra("uid", notifyList.get(position).getUid());
+                       context.startActivity(intent);
                    }
                    else if (p_type.equalsIgnoreCase("product") && n_type.equalsIgnoreCase("LIKE")){
                         /*ProductDetail fragment = new ProductDetail();

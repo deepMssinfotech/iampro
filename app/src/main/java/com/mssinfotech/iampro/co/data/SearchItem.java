@@ -16,7 +16,7 @@ public class SearchItem {
         this.id = id;
     }
 
-    public void setUser_Id(String user_Id) {
+    public void setUser_Id(String user_id) {
         this.user_id = user_id;
     }
     public String getUser_Id() {

@@ -85,12 +85,11 @@ public class MyImageAdapter extends RecyclerView.Adapter<MyImageAdapter.ViewHold
             imageView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    ImageDetail fragment = new ImageDetail();
-                    Bundle args = new Bundle();
-                    args.putString("id", id);
-                    args.putString("type", "image");
-                    args.putString("uid", uid);
-                    function.loadFragment(mContext,fragment,args);
+                    Intent intent = new Intent(mContext, ImageDetail.class);
+                    intent.putExtra("id", id);
+                    intent.putExtra("type", "image");
+                    intent.putExtra("uid", uid);
+                    mContext.startActivity(intent);
                 }
             });
 

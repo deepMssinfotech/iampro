@@ -61,6 +61,9 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.TreeMap;
+
+import es.dmoral.toasty.Toasty;
+
 public class SectionImageVideoAdapter extends RecyclerView.Adapter<SectionImageVideoAdapter.SingleItemRowHolder>  {
     private ArrayList<MyImageModel> itemsList;
     private Context mContext;
@@ -69,7 +72,7 @@ public class SectionImageVideoAdapter extends RecyclerView.Adapter<SectionImageV
     HashSet<String> heading_name;
     protected MyImageAdapter.ItemListener mListener;
      TreeMap<String,String> item_type;
-      String type="image";
+     String type=null;
     String svalue="error";
     public SectionImageVideoAdapter(Context context, ArrayList<MyImageModel> itemsList,TreeMap<String,String> item_type)  {
         this.itemsList=itemsList;
@@ -84,6 +87,7 @@ public class SectionImageVideoAdapter extends RecyclerView.Adapter<SectionImageV
      }
     @Override
     public SingleItemRowHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
+        //Log.e("asdasdas",this.type);
          //if(item_type.get("loadmore").equalsIgnoreCase("loadmore")){
            if(type.equalsIgnoreCase("product")){
                View v = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.item_product_row, null);
@@ -150,16 +154,16 @@ public class SectionImageVideoAdapter extends RecyclerView.Adapter<SectionImageV
         } */
         //if(itemsList.get(i).getMore().equalsIgnoreCase("loadmore")){
             //holder.user_image.setVisibility(View.VISIBLE);
-             Glide.with(mContext)
-                     .load(Config.ALBUM_URL+singleItem.getAvatar())
-                     .apply(Config.options_avatar)
-                     .into(holder.user_image);
-             holder.category.setText(itemsList.get(i).getFullname());
+         Glide.with(mContext)
+                 .load(Config.ALBUM_URL+singleItem.getAvatar())
+                 .apply(Config.options_avatar)
+                 .into(holder.user_image);
+         holder.category.setText(itemsList.get(i).getFullname());
              //holder.ratingBar.setRating(Float.parseFloat(itemsList.get(i).getRating()));
          //}
        //if(singleItem.getRating()!="NAN" || singleItem.getRating().length()>0 || !(singleItem.getRating().equalsIgnoreCase("NAN")) || singleItem.getRating()!="" || !singleItem.getRating().equalsIgnoreCase("")
         // || !singleItem.getRating().isEmpty())
-        //holder.ratingBar.setRating(Float.parseFloat(String.valueOf(singleItem.getRating())));
+        holder.ratingBar.setRating(Float.parseFloat(String.valueOf(singleItem.getRating())));
         holder.tv_name.setText(singleItem.getName());
         holder.category.setText(singleItem.getFullname());
         holder.udate.setText(singleItem.getUdate());
@@ -273,35 +277,24 @@ public class SectionImageVideoAdapter extends RecyclerView.Adapter<SectionImageV
                     mContext.startActivity(intent);
                 }
                 else if(type.equalsIgnoreCase("image")){
-                    //Toast.makeText(, "", Toast.LENGTH_SHORT).show();
-                    ImageDetail fragment = new ImageDetail();
-                    Bundle args = new Bundle();
-                    args.putString("id",id);
-                    args.putString("type","image");
-                    args.putString("uid",String.valueOf(itemsList.get(i).getUid()));
-                    function.loadFragment(mContext,fragment,args);
+                    Intent intent = new Intent(mContext, ImageDetail.class);
+                    intent.putExtra("id", id);
+                    intent.putExtra("type", "image");
+                    intent.putExtra("uid", String.valueOf(itemsList.get(i).getUid()));
+                    mContext.startActivity(intent);
                 }
                 else if(type.equalsIgnoreCase("video")){
-                    ImageDetail fragment = new ImageDetail();
-                    Bundle args = new Bundle();
-                    args.putString("id", id);
-                    args.putString("type","video");
-                    args.putString("uid",String.valueOf(itemsList.get(i).getUid()));
-                    function.loadFragment(mContext,fragment,args);
-                }
-                else {
-                    ImageDetail fragment = new ImageDetail();
-                    Bundle args = new Bundle();
-                    args.putString("id", id);
-                    args.putString("type","");
-                    args.putString("uid",String.valueOf(itemsList.get(i).getUid()));
-                    function.loadFragment(mContext,fragment,args);
+                    Intent intent = new Intent(mContext, ImageDetail.class);
+                    intent.putExtra("id", id);
+                    intent.putExtra("type", "video");
+                    intent.putExtra("uid", String.valueOf(itemsList.get(i).getUid()));
+                    mContext.startActivity(intent);
                 }
 
             }
         });
 
-        if(type.equalsIgnoreCase("product")){
+         if(type.equalsIgnoreCase("product")){
             holder.user_image.setVisibility(View.VISIBLE);
             Glide.with(mContext)
                     .load(Config.OTHER_IMAGE_URL+singleItem.getImage())
@@ -351,11 +344,23 @@ public class SectionImageVideoAdapter extends RecyclerView.Adapter<SectionImageV
              holder.tv_sellingprice.setText("Rs:"+"\t"+itemsList.get(i).getScost());
 
         }
+         else if(type.equalsIgnoreCase("video")){
+            holder.user_image.setVisibility(View.VISIBLE);
+            Glide.with(mContext)
+                    .load(Config.V_URL+singleItem.getImage())
+                    .apply(Config.options_video)
+                    .into(holder.imageView);
+            Glide.with(mContext)
+                    .load(Config.AVATAR_URL+singleItem.getAvatar())
+                    .apply(Config.options_avatar)
+                    .into(holder.user_image);
+
+        }
         else{
             holder.user_image.setVisibility(View.VISIBLE);
             Glide.with(mContext)
                     .load(Config.ALBUM_URL+singleItem.getImage())
-                    .apply(Config.options_product)
+                    .apply(Config.options_image)
                     .into(holder.imageView);
             Glide.with(mContext)
                     .load(Config.AVATAR_URL+singleItem.getAvatar())

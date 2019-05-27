@@ -72,10 +72,6 @@ public class SearchedActivity extends AppCompatActivity implements UserDataAdapt
         my_recycler_view=findViewById(R.id.my_recycler_view);
         searched_iv=findViewById(R.id.searched_iv);
         no_rodr=findViewById(R.id.no_record_found);
-        /*
-          intent.putExtra("SearchType",SearchType);
-                intent.putExtra("SearchCat",SearchCat);
-                intent.putExtra("SearchData",SearchData); */
         SearchType=getIntent().getExtras().getString("SearchType");
         SearchCat=getIntent().getExtras().getString("SearchCat");
         //SearchData=getIntent().getExtras().getString("SearchData");

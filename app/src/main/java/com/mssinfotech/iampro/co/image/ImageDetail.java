@@ -65,7 +65,7 @@ import bg.devlabs.fullscreenvideoview.orientation.LandscapeOrientation;
 import bg.devlabs.fullscreenvideoview.orientation.PortraitOrientation;
 
 import static com.mssinfotech.iampro.co.common.Config.AVATAR_URL;
-public class ImageDetail extends Fragment implements Img_Video_Details.ItemListener {
+public class ImageDetail extends AppCompatActivity implements Img_Video_Details.ItemListener {
     public String uid,id;
     String type="";
     ArrayList<ImageDetailModel> myData=new ArrayList<>();
@@ -83,67 +83,51 @@ public class ImageDetail extends Fragment implements Img_Video_Details.ItemListe
     Intent intent;
     Context context;
     FullscreenVideoView fullscreenVideoView;
-     LinearLayout ll_comment;
-     NestedScrollView nsv;
-      static int uiddv=0;
-      static int iidv=0;
-      public static String avatar_urll;
+    LinearLayout ll_comment;
+    NestedScrollView nsv;
+    static int uiddv=0;
+    static int iidv=0;
+    public static String avatar_urll;
     @Override
-    public View onCreateView(LayoutInflater inflater,ViewGroup parent, Bundle savedInstanceState) {
-        // Defines the xml file for the fragment
-        return inflater.inflate(R.layout.activity_image_detail, parent, false);
-    }
-    @Override
-    public void onViewCreated(View v, Bundle savedInstanceState) {
-        view =v;
-        intent = this.getActivity().getIntent();
-        context =ImageDetail.this.getContext();
-        tv_about_tag=view.findViewById(R.id.tv_about_tag);
-        tv_about_msg=view.findViewById(R.id.tv_about_msg);
-        ll_top=view.findViewById(R.id.ll_top);
-        nsv=view.findViewById(R.id.nsv);
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        context = getApplicationContext();
+        setContentView(R.layout.activity_image_detail);
+        intent = getIntent();
+        context = getApplicationContext();
+        tv_about_tag=findViewById(R.id.tv_about_tag);
+        tv_about_msg=findViewById(R.id.tv_about_msg);
+        ll_top=findViewById(R.id.ll_top);
+        nsv=findViewById(R.id.nsv);
 
-        fullname=view.findViewById(R.id.fullname);
-        udate=view.findViewById(R.id.udate);
-        likeButton=view.findViewById(R.id.likeButton);
+        fullname=findViewById(R.id.fullname);
+        udate=findViewById(R.id.udate);
+        likeButton=findViewById(R.id.likeButton);
 
         likeButton.setUnlikeDrawableRes(R.drawable.like);
         likeButton.setLikeDrawableRes(R.drawable.like_un);
 
-        tv_comments=view.findViewById(R.id.tv_comments);
-        tv_totallike=view.findViewById(R.id.tv_totallike);
-        name=view.findViewById(R.id.name);
-        category=view.findViewById(R.id.category);
+        tv_comments=findViewById(R.id.tv_comments);
+        tv_totallike=findViewById(R.id.tv_totallike);
+        name=findViewById(R.id.name);
+        category=findViewById(R.id.category);
 
-        imageView_user=view.findViewById(R.id.imageView_user);
-        imageView_icon=view.findViewById(R.id.imageView_icon);
-        iv_comments=view.findViewById(R.id.iv_comments);
-        image=view.findViewById(R.id.image);
-        videoView=view.findViewById(R.id.video);
-        ll_comment=view.findViewById(R.id.ll_comment);
+        imageView_user=findViewById(R.id.imageView_user);
+        imageView_icon=findViewById(R.id.imageView_icon);
+        iv_comments=findViewById(R.id.iv_comments);
+        image=findViewById(R.id.image);
+        videoView=findViewById(R.id.video);
+        ll_comment=findViewById(R.id.ll_comment);
 
-        fullscreenVideoView=view.findViewById(R.id.fullscreenVideoView);
-        ratingBar=view.findViewById(R.id.ratingBar);
+        fullscreenVideoView=findViewById(R.id.fullscreenVideoView);
+        ratingBar=findViewById(R.id.ratingBar);
 
-        recycler_view_review_detail=view.findViewById(R.id.recycler_view_review_detail);
-        Bundle args = getArguments();
+        recycler_view_review_detail=findViewById(R.id.recycler_view_review_detail);
         //fid = getArguments().getString("uid");
-        if (args != null && args.containsKey("uid") && args.getString("uid")!=null) {
-            uid = args.getString("uid").toString();
-        }else {
-            uid = intent.getStringExtra("uid");
-        }
-        if (args != null && args.containsKey("id") && args.getString("id")!=null) {
-            id = args.getString("id").toString();
-        }else {
-            id = intent.getStringExtra("id");
-        }
-        //fid = getArguments().getString("uid");
-        if (args != null && args.containsKey("type") && args.getString("type")!=null) {
-            type = args.getString("type").toString();
-        }else {
-            type = intent.getStringExtra("type");
-        }
+        uid = intent.getStringExtra("uid");
+        id = intent.getStringExtra("id");
+        type = intent.getStringExtra("type");
+
         if(type.equalsIgnoreCase("image")){
              getImageDetail();
         }
@@ -185,7 +169,7 @@ public class ImageDetail extends Fragment implements Img_Video_Details.ItemListe
         image.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                new PhotoFullPopupWindow(getContext(),R.layout.popup_photo_full,ll_top.getRootView(),avatar_urll, null);
+                new PhotoFullPopupWindow(context,R.layout.popup_photo_full,ll_top.getRootView(),avatar_urll, null);
             }
         });
 
@@ -197,9 +181,9 @@ public class ImageDetail extends Fragment implements Img_Video_Details.ItemListe
                 PopupWindow popupWindow = new PopupWindow(popupView,ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
 
                 // Example: If you have a TextView inside `popup_layout.xml`
-                  final ImageView iview=popupView.findViewById(R.id.expandedImage);
-                SliderLayout imageSlider=popupView.findViewById(R.id.imageSlider);
-                Toolbar toolbar=popupView.findViewById(R.id.toolbar);
+                  final ImageView iview=popupfindViewById(R.id.expandedImage);
+                SliderLayout imageSlider=popupfindViewById(R.id.imageSlider);
+                Toolbar toolbar=popupfindViewById(R.id.toolbar);
 
                     imageSlider.setIndicatorAnimation(IndicatorAnimations.SWAP); //set indicator animation by using SliderLayout.IndicatorAnimations. :WORM or THIN_WORM or COLOR or DROP or FILL or NONE or SCALE or SCALE_DOWN or SLIDE and SWAP!!
                     imageSlider.setSliderTransformAnimation(SliderAnimations.FADETRANSFORMATION);
@@ -315,11 +299,13 @@ public class ImageDetail extends Fragment implements Img_Video_Details.ItemListe
                                     .load(R.drawable.image_icon)
                                     .apply(Config.options_avatar)
                                     .into(imageView_icon);
+                            if (videoView!=null)
                             videoView.setVisibility(View.GONE);
                             Glide.with(context)
                                     .load(avatar_url)
                                     .into(image);
-
+                              if (image!=null)
+                                   image.setVisibility(View.VISIBLE);
                             JSONObject jsonObjectUser = responses.getJSONObject("user_detail");
                             final String added_by=jsonObjectUser.getString("id");
                             ratingBar.setRating(Float.parseFloat(String.valueOf(avg_rating)));
@@ -398,6 +384,7 @@ public class ImageDetail extends Fragment implements Img_Video_Details.ItemListe
                                     myData.add(new ImageDetailModel(iid, namee, imagev, about_usv, like_unlikev, ratingv, commentsv, totallikev, uidd, fullnamee, avataru, udatev, category_namee, IMAGE_TYPE));
                                 }
                                 Log.d("img_video", "" + myData);
+                                image.setVisibility(View.VISIBLE);
                                 adapter = new Img_Video_Details(context, myData, ImageDetail.this);
                                 recycler_view_review_detail.setLayoutManager(new LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false));
                                 recycler_view_review_detail.setNestedScrollingEnabled(false);
@@ -481,13 +468,6 @@ public class ImageDetail extends Fragment implements Img_Video_Details.ItemListe
 
                          fullscreenVideoView.setVisibility(View.VISIBLE);
                             String ImageHol = Config.URL_ROOT+"uploads/video/"+imagee;
-                                /*videoView.setVideoPath(ImageHol);
-                                Log.d(Config.TAG, ImageHol);
-                                mediaController = new MediaController(CommentActivity.this);
-                                mediaController.setAnchorView(videoView);
-                                videoView.setMediaController(mediaController);
-                                videoView.requestFocus();
-                                videoView.start();*/
                             fullscreenVideoView.videoUrl(ImageHol)
                                     .enableAutoStart()
                                     .addSeekBackwardButton()

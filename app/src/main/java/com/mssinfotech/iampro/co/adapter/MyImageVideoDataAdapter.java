@@ -87,7 +87,7 @@ public class MyImageVideoDataAdapter extends RecyclerView.Adapter<MyImageVideoDa
         final ArrayList singleSectionItems = dataList.get(i).getAllItemsInSection();
         final String singleSectionAddedBy = dataList.get(i).getAddedBy();
         //dataList.get(i).getAllItemsInSection().get(i).get
-        Log.e(Config.TAG,sectionName);
+        //Log.e(Config.TAG,sectionName);
         //Toast.makeText(mContext, "click event on more, "+sectionName , Toast.LENGTH_SHORT).show();
        itemRowHolder.itemTitle.setText(sectionName);
         //more
@@ -103,20 +103,6 @@ public class MyImageVideoDataAdapter extends RecyclerView.Adapter<MyImageVideoDa
         if (!PrefManager.isLogin(mContext)){
             itemRowHolder.btnMore.setVisibility(View.INVISIBLE);
         }
-      /* else  if(!(singleSectionAddedBy.toString().equalsIgnoreCase(PrefManager.getLoginDetail(mContext,"id")))){
-           itemRowHolder.btnMore.setVisibility(View.INVISIBLE);
-       }*/
-
-         //if(singleSectionItems.get(i))
-       /* if(sectionName.equalsIgnoreCase("Product")){
-            Glide.with(mContext).load(R.drawable.latestproduct).into(itemRowHolder.itemTitle);
-        }
-        else{
-            Glide.with(mContext).load(R.drawable.latestphotos).into(itemRowHolder.itemTitle);
-
-        } */
-        //SectionListDataAdapter itemListDataAdapter = new SectionListDataAdapter(mContext, singleSectionItems);
-
         SectionImageVideoAdapter itemListDataAdapter = new SectionImageVideoAdapter(mContext, singleSectionItems,item_name,type);
 
 
@@ -134,7 +120,7 @@ public class MyImageVideoDataAdapter extends RecyclerView.Adapter<MyImageVideoDa
                 //String albemId=singleSectionItems.get(i).
 
 
-                Toast.makeText(v.getContext(), ""+sectionName+""+albumId, Toast.LENGTH_SHORT).show();
+                //Toast.makeText(v.getContext(), ""+sectionName+""+albumId, Toast.LENGTH_SHORT).show();
 
                 AlertDialog.Builder alertDialog = new AlertDialog.Builder(mContext);
                 alertDialog.setTitle("Delete it!");

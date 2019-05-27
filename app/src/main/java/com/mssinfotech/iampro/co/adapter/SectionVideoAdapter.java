@@ -98,44 +98,6 @@ public class SectionVideoAdapter extends RecyclerView.Adapter<SectionVideoAdapte
         final String id=singleItem .getId();
         final String uidd=singleItem.getUid();
 
-        //if(!(singleItem.getRating()!="NAN") || !(singleItem.getRating().equalsIgnoreCase("NAN")))
-        //holder.ratingBar.setRating(Float.parseFloat(String.valueOf(singleItem.getRating())));
-       /* holder. category.setText(singleItem .getCategory());
-        holder.tv_name.setText(singleItem .getName());
-        udate.setText(item.getUdate());
-        holder.tv_comments.setText(String.valueOf(singleItem .getComments()));
-        holder.tv_totallike.setText(String.valueOf(singleItem .getTotallike()));
-
-        holder.imageView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-               AppCompatActivity activity = (AppCompatActivity) mContext;
-                            ImageDetail fragment = new ImageDetail();
-                            Bundle args = new Bundle();
-                            args.putString("id", id);
-                            args.putString("type", "image");
-                            args.putString("uid", uid);
-                            function.loadFragment(mContext,fragment,args);
-            }
-        });
-
-        Glide.with(mContext)
-                .load(Config.ALBUM_URL+singleItem.getImage())
-                .apply(new RequestOptions()
-                        .circleCrop().bitmapTransform(new CircleCrop())
-                        .fitCenter())
-                .into(holder.imageView); */
-        //ratingBar.setRating(Float.parseFloat(String.valueOf(item.getRating())));
-
-       /* if(itemsList.get(i).getMore().equalsIgnoreCase("loadmore")){
-            holder.user_image.setVisibility(View.VISIBLE);
-            Glide.with(mContext)
-                    .load(Config.ALBUM_URL+singleItem.getAvatar())
-                    .apply(Config.options_avatar)
-                    .into(holder.user_image);
-            holder.category.setText(itemsList.get(i).getFullname());
-            holder.ratingBar.setRating(Float.parseFloat(itemsList.get(i).getRating()));
-        } */
 
         int my_uid=Integer.parseInt(uidd);
         if(my_uid==0){
@@ -222,12 +184,11 @@ public class SectionVideoAdapter extends RecyclerView.Adapter<SectionVideoAdapte
         holder.videoView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ImageDetail fragment = new ImageDetail();
-                Bundle args = new Bundle();
-                args.putString("id", id);
-                args.putString("type", "video");
-                args.putString("uid", uidd);
-                function.loadFragment(mContext,fragment,args);
+                Intent intent = new Intent(mContext, ImageDetail.class);
+                intent.putExtra("id", id);
+                intent.putExtra("type", "video");
+                intent.putExtra("uid", uidd);
+                mContext.startActivity(intent);
             }
         });
         Glide.with(mContext)

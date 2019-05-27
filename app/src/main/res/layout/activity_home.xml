@@ -26,14 +26,14 @@
             android:orientation="vertical">
             <android.support.design.widget.AppBarLayout
                 android:layout_width="match_parent"
-                android:layout_height="45dp"
+                android:layout_height="50dp"
                 android:theme="@style/TabAppTheme">
                 <android.support.design.widget.TabLayout
                     android:id="@+id/tabs"
                     app:tabTextAppearance="@style/MineCustomTabText"
                     android:layout_width="match_parent"
-                    android:layout_height="45dp"
-                    app:tabMode="fixed"
+                    android:layout_height="50dp"
+                    app:tabMode="scrollable"
                     app:tabGravity="center"/>
             </android.support.design.widget.AppBarLayout>
 

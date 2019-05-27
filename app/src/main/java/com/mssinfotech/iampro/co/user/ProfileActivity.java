@@ -156,7 +156,7 @@ public class ProfileActivity extends Fragment implements AllFeedAdapter.ItemList
     @Override
     public void onViewCreated(View v, Bundle savedInstanceState) {
         view =v;
-        context = getContext();
+        context = this.getContext();
         LinearLayout edit_layout = view.findViewById(R.id.edit_layout);
         LinearLayout dashboard_layout = view.findViewById(R.id.dashboard_layout);
         LinearLayout chat_layout = view.findViewById(R.id.chat_layout);
