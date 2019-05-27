@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    xmlns:fab="http://schemas.android.com/apk/res-auto"
     android:id="@+id/container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".HomeActivity">
+
     <com.mssinfotech.iampro.co.common.IncludeHeader
         android:id="@+id/includeheader"
         android:layout_width="match_parent"
@@ -17,7 +18,8 @@
         android:gravity="bottom"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
-        <LinearLayout
+    <LinearLayout
+            android:id="@+id/llaout"
             android:layout_below="@id/includeheader"
             android:layout_above="@id/includefooter"
             android:layout_width="match_parent"
@@ -43,5 +45,63 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 app:layout_behavior="@string/appbar_scrolling_view_behavior"  />
-        </LinearLayout>
+    </LinearLayout>
+
+    <com.github.clans.fab.FloatingActionMenu
+        android:id="@+id/fab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|right"
+        android:background="@color/transparent"
+        android:layout_marginBottom="48dp"
+        android:layout_marginRight="8dp"
+        fab:menu_icon="@drawable/floated_icon"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        app:menu_openDirection="up"
+        app:fab_showShadow="true">
+            <com.github.clans.fab.FloatingActionButton
+                android:id="@+id/menu_image"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_image_36"
+                fab:fab_size="mini"
+                fab:fab_label="Image" />
+            <com.github.clans.fab.FloatingActionButton
+                android:id="@+id/menu_video"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_video_36"
+                fab:fab_size="mini"
+                fab:fab_label="Video" />
+            <com.github.clans.fab.FloatingActionButton
+                android:id="@+id/menu_user"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_users_36"
+                fab:fab_size="mini"
+                fab:fab_label="User" />
+            <com.github.clans.fab.FloatingActionButton
+                android:id="@+id/menu_product"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_product_36"
+                fab:fab_size="mini"
+                fab:fab_label="Product" />
+        <com.github.clans.fab.FloatingActionButton
+            android:id="@+id/menu_provide"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_provide_36"
+            fab:fab_size="mini"
+            fab:fab_label="Provide" />
+        <com.github.clans.fab.FloatingActionButton
+            android:id="@+id/menu_demand"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_demand_36"
+            fab:fab_size="mini"
+            fab:fab_label="Demand" />
+        </com.github.clans.fab.FloatingActionMenu>
+
 </RelativeLayout>

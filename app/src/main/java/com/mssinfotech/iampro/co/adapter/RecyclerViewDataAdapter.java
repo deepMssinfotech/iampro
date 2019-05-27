@@ -23,6 +23,7 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.mssinfotech.iampro.co.R;
 import com.mssinfotech.iampro.co.SearchActivity;
+import com.mssinfotech.iampro.co.SearchResultActivity;
 import com.mssinfotech.iampro.co.SearchedActivity;
 import com.mssinfotech.iampro.co.common.Config;
 import com.mssinfotech.iampro.co.common.function;
@@ -84,98 +85,60 @@ public class RecyclerViewDataAdapter extends RecyclerView.Adapter<RecyclerViewDa
             itemRowHolder.recycler_view_list.setLayoutManager(manager);
             itemRowHolder.recycler_view_list.setAdapter(itemListDataAdapter);
         }
-        itemRowHolder.btnMore.setEnabled(false);
+        //itemRowHolder.btnMore.setEnabled(false);
         itemRowHolder.btnMore.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-            //Toast.makeText(v.getContext(), "click event on more, "+sectionName , Toast.LENGTH_SHORT).show();
+                Toast.makeText(v.getContext(), "click on more, "+sectionName , Toast.LENGTH_SHORT).show();
              if (sectionName.equalsIgnoreCase("Images")){
-                 //Toast.makeText(v.getContext(), "click event on more, "+sectionName , Toast.LENGTH_SHORT).show();
-                 /*ImageFragment fragment = new ImageFragment();
+                 SearchResultActivity fragment = new SearchResultActivity();
                  Bundle args = new Bundle();
-                 args.putString("uid", PrefManager.getLoginDetail(mContext,"id"));
-                 function.loadFragment(mContext,fragment,args); */
-
-                 /*SearchActivity fragments = new SearchActivity();
-                 Bundle args= new Bundle();
-                 args.putString("type",sectionName);
-                 function.loadFragment(mContext,fragments,args); */
-                 //SearchType, SearchCat
-                 Intent a=new Intent(mContext,SearchedActivity.class);
-                  a.putExtra("SearchType",sectionName);
-                  a.putExtra("SearchCat","");
-                  mContext.startActivity(a);
-
+                 args.putString("SearchType","image");
+                 args.putString("SearchCat","");
+                 args.putString("SearchData","");
+                 function.loadFragment(mContext,fragment,args);
 
              }
              else if (sectionName.equalsIgnoreCase("Video")){
-                 //Toast.makeText(v.getContext(), "click event on more, "+sectionName , Toast.LENGTH_SHORT).show();
-                /* SearchActivity fragments = new SearchActivity();
-                 Bundle args= new Bundle();
-                 args.putString("type",sectionName);
-                 function.loadFragment(mContext,fragments,args);*/
-
-                 Intent a=new Intent(mContext,SearchedActivity.class);
-                 a.putExtra("SearchType",sectionName);
-                 a.putExtra("SearchCat","");
-                 mContext.startActivity(a);
-
+                 SearchResultActivity fragment = new SearchResultActivity();
+                 Bundle args = new Bundle();
+                 args.putString("SearchType","video");
+                 args.putString("SearchCat","");
+                 args.putString("SearchData","");
+                 function.loadFragment(mContext,fragment,args);
              }
              else if (sectionName.equalsIgnoreCase("Product")){
-                // Toast.makeText(v.getContext(), "click event on more, "+sectionName , Toast.LENGTH_SHORT).show();
-
-                 /*SearchActivity fragments = new SearchActivity();
-                 Bundle args= new Bundle();
-                 args.putString("type",sectionName);
-                 function.loadFragment(mContext,fragments,args); */
-
-                 Intent a=new Intent(mContext,SearchedActivity.class);
-                 a.putExtra("SearchType",sectionName);
-                 a.putExtra("SearchCat","");
-                 mContext.startActivity(a);
+                 SearchResultActivity fragment = new SearchResultActivity();
+                 Bundle args = new Bundle();
+                 args.putString("SearchType","product");
+                 args.putString("SearchCat","");
+                 args.putString("SearchData","");
+                 function.loadFragment(mContext,fragment,args);
 
              }
              else if (sectionName.equalsIgnoreCase("Provide")){
-                 //Toast.makeText(v.getContext(), "click event on more, "+sectionName , Toast.LENGTH_SHORT).show();
-
-                 /*SearchActivity fragments = new SearchActivity();
-                 Bundle args= new Bundle();
-                 args.putString("type",sectionName);
-                 function.loadFragment(mContext,fragments,args);*/
-
-                 Intent a=new Intent(mContext,SearchedActivity.class);
-                 a.putExtra("SearchType",sectionName);
-                 a.putExtra("SearchCat","");
-                 mContext.startActivity(a);
-
+                 SearchResultActivity fragment = new SearchResultActivity();
+                 Bundle args = new Bundle();
+                 args.putString("SearchType","provide");
+                 args.putString("SearchCat","");
+                 args.putString("SearchData","");
+                 function.loadFragment(mContext,fragment,args);
              }
              else if (sectionName.equalsIgnoreCase("Demand")){
-                 //Toast.makeText(v.getContext(), "click event on more, "+sectionName , Toast.LENGTH_SHORT).show();
-
-                 /*SearchActivity fragments = new SearchActivity();
-                 Bundle args= new Bundle();
-                 args.putString("type",sectionName);
-                 function.loadFragment(mContext,fragments,args);*/
-
-                 Intent a=new Intent(mContext,SearchedActivity.class);
-                 a.putExtra("SearchType",sectionName);
-                 a.putExtra("SearchCat","");
-                 mContext.startActivity(a);
-
+                 SearchResultActivity fragment = new SearchResultActivity();
+                 Bundle args = new Bundle();
+                 args.putString("SearchType","demand");
+                 args.putString("SearchCat","");
+                 args.putString("SearchData","");
+                 function.loadFragment(mContext,fragment,args);
              }
              else if (sectionName.equalsIgnoreCase("FRIEND" ) || sectionName.equalsIgnoreCase("User")){
-                 //Toast.makeText(v.getContext(), "click event on more, "+sectionName , Toast.LENGTH_SHORT).show();
-
-                 /*SearchActivity fragments = new SearchActivity();
-                 Bundle args= new Bundle();
-                 args.putString("type",sectionName);
-                 function.loadFragment(mContext,fragments,args);*/
-
-                 Intent a=new Intent(mContext,SearchedActivity.class);
-                 a.putExtra("SearchType",sectionName);
-                 a.putExtra("SearchCat","");
-                 mContext.startActivity(a);
-
+                 SearchResultActivity fragment = new SearchResultActivity();
+                 Bundle args = new Bundle();
+                 args.putString("SearchType","friend");
+                 args.putString("SearchCat","");
+                 args.putString("SearchData","");
+                 function.loadFragment(mContext,fragment,args);
              }
             }
         });

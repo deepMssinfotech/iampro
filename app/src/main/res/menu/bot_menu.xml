@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:id="@+id/image"
+        android:title="Image"
+        android:icon="@drawable/image_icon"></item>
+    <item android:id="@+id/video"
+        android:title="Video"
+        android:icon="@drawable/video_icon"></item>
+    <item android:id="@+id/user"
+        android:title="User"
+        android:icon="@drawable/users_icon"></item>
+    <item android:id="@+id/product"
+        android:title="Product"
+        android:icon="@drawable/product_icon"></item>
+    <item android:id="@+id/provide"
+        android:title="Provide"
+        android:icon="@drawable/provide_icon"></item>
+    <item android:id="@+id/demand"
+        android:title="Demand"
+        android:icon="@drawable/demand_icon"></item>
+</menu>

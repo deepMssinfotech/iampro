@@ -6,7 +6,7 @@ android {
     defaultConfig {
         vectorDrawables.useSupportLibrary = true
         applicationId "com.mssinfotech.iampro.co"
-        minSdkVersion 19
+        minSdkVersion 21
         multiDexEnabled true
         targetSdkVersion 28
         versionCode 1
@@ -95,5 +95,6 @@ dependencies {
     implementation 'me.relex:photodraweeview:1.1.0'
     //compileOnly 'com.facebook.fresco:fresco:0.12.0'
     implementation 'com.facebook.fresco:fresco:1.13.0'
+    compile 'com.github.clans:fab:1.6.4'
 }
 apply plugin: 'com.google.gms.google-services'
