@@ -622,12 +622,13 @@ public class SectionImageVideoAdapter extends RecyclerView.Adapter<SectionImageV
             holder.ratingBar.setFocusable(true);
             holder.ratingBar.setIsIndicator(false);
             //holder.ratingBar.setClickable(true);
+            holder.buttonViewOption.setVisibility(View.VISIBLE);
         }
         else {
             holder.likeButton.setEnabled(false);
             holder.ratingBar.setFocusable(false);
             holder.ratingBar.setIsIndicator(true);
-
+            holder.buttonViewOption.setVisibility(View.GONE);
         }
         }
     @Override

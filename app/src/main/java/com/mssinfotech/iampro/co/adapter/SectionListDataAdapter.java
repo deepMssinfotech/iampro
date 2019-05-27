@@ -131,12 +131,12 @@ public class SectionListDataAdapter extends RecyclerView.Adapter<SectionListData
                 @Override
                 public void onClick(View v) {
                     if (utype.equals("image") || utype.equals("video")) {
+                        //Toast.makeText(mContext,""+itemsList.get(i).getId()+"\t"+utype,Toast.LENGTH_LONG).show();
                         Intent intent = new Intent(mContext, ImageDetail.class);
-                        intent.putExtra("id", id);
+                        intent.putExtra("id",String.valueOf(itemsList.get(i).getId()));
                         intent.putExtra("type", utype);
-                        intent.putExtra("uid", uid);
+                        intent.putExtra("uid",String.valueOf(itemsList.get(i).getUid()));
                         mContext.startActivity(intent);
-
                     } else if (utype.equals("product")) {
                         Intent intent = new Intent(mContext, ProductDetail.class);
                         //intent.putExtra("id",String.valueOf(item.getPid()));

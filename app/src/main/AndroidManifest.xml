@@ -34,14 +34,18 @@
         android:roundIcon="@drawable/iampro"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-
-        <activity android:name=".SearchResultActivity"
+        <activity
+            android:name=".image.VideoDetail"
+            android:configChanges="orientation|screenSize"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
+        <activity
+            android:name=".SearchResultActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar" ></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".common.FullScreenVideoActivity" />
         <activity
-            android:screenOrientation="portrait"
             android:name=".user.ProfileImageCroperActivity"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
 
         <service
@@ -57,30 +61,30 @@
         </receiver>
 
         <activity
-            android:screenOrientation="portrait"
             android:name=".HomeActivity"
             android:label="@string/app_name"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:screenOrientation="portrait"
             android:name=".WelcomeActivity"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:screenOrientation="portrait"
             android:name=".LoadingActivity"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:screenOrientation="portrait"
             android:name=".LoginActivity"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:screenOrientation="portrait"
             android:name=".ForgetActivity"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:screenOrientation="portrait"
             android:name=".IntroActivity"
             android:label="@string/app_name"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -89,57 +93,57 @@
             </intent-filter>
         </activity>
         <activity
-            android:screenOrientation="portrait"
             android:name=".user.AddImageActivity"
-            android:label="" />
+            android:label=""
+            android:screenOrientation="portrait" />
         <activity
-            android:screenOrientation="portrait"
             android:name=".user.AddVideoActivity"
-            android:label="" />
+            android:label=""
+            android:screenOrientation="portrait" />
         <activity
-            android:screenOrientation="portrait"
             android:name=".user.AddProductActivity"
-            android:label="Add Product" />
+            android:label="Add Product"
+            android:screenOrientation="portrait" />
         <activity
-            android:screenOrientation="portrait"
             android:name=".user.AddProvideActivity"
-            android:label="Add Provide" />
+            android:label="Add Provide"
+            android:screenOrientation="portrait" />
         <activity
-            android:screenOrientation="portrait"
             android:name=".user.AddDemandActivity"
-            android:label="Add Demand" />
+            android:label="Add Demand"
+            android:screenOrientation="portrait" />
         <activity
-            android:screenOrientation="portrait"
             android:name=".demand.DemandDetailActivity"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:screenOrientation="portrait"
             android:name=".product.ProductDetail"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:screenOrientation="portrait"
             android:name=".provide.ProvideDetailActivity"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:screenOrientation="portrait"
             android:name=".CommentActivity"
             android:configChanges="orientation|screenSize"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".ChatToUser"
-            android:screenOrientation="portrait"/>
-
-        <activity android:name=".image.ImageDetail"
-            android:theme="@style/AppTheme.NoActionBar"
-            android:configChanges="orientation|screenSize"
-            android:label="Imagedetail"/>
-
         <activity
-            android:screenOrientation="portrait"
-            android:name=".SearchedActivity"
+            android:name=".ChatToUser"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".image.ImageDetail"
+            android:configChanges="orientation|screenSize"
+            android:label="Imagedetail"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".user.ImagePickerActivity"
+        <activity
+            android:name=".SearchedActivity"
             android:screenOrientation="portrait"
-            /> <!-- uCrop cropping activity -->
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".user.ImagePickerActivity"
+            android:screenOrientation="portrait" /> <!-- uCrop cropping activity -->
         <activity
             android:name="com.yalantis.ucrop.UCropActivity"
             android:screenOrientation="portrait"
@@ -154,10 +158,12 @@
                 android:resource="@xml/file_paths" />
         </provider>
 
-        <activity android:name=".user.UserEditprofileActivity"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".activity.MainActivity"
-            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".user.UserEditprofileActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.MainActivity"
+            android:screenOrientation="portrait" />
 
         <receiver android:name=".services.MySMSBroadCastReceiver">
             <intent-filter android:priority="999">
@@ -165,9 +171,9 @@
             </intent-filter>
         </receiver> <!-- ./Firebase Notifications -->
         <activity
-            android:screenOrientation="portrait"
             android:name=".CheckOutActivity"
-            android:label="CheckOut" /> <!-- [START firebase_service] -->
+            android:label="CheckOut"
+            android:screenOrientation="portrait" /> <!-- [START firebase_service] -->
         <service android:name=".services.MyFirebaseMessagingService">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />

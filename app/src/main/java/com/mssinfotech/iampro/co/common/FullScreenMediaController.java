@@ -35,15 +35,13 @@ public class FullScreenMediaController extends MediaController {
         addView(fullScreen, params);
 
         //fullscreen indicator from intent
-        isFullScreen =  ((Activity)getContext()).getIntent().
-                getStringExtra("fullScreenInd");
+        isFullScreen= ((Activity)getContext()).getIntent().getStringExtra("fullScreenInd");
 
         if("y".equals(isFullScreen)){
             fullScreen.setImageResource(R.drawable.fullscreen_exit);
         }else{
             fullScreen.setImageResource(R.drawable.fullscreen);
         }
-
         //add listener to image button to handle full screen and exit full screen events
         fullScreen.setOnClickListener(new OnClickListener() {
             @Override

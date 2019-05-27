@@ -281,7 +281,7 @@ public class VideoFragment extends Fragment implements VideoAdapter.ItemListener
                                 for (int i = 0; i < response.length(); i++) {
                                     // Get current json object
                                     JSONObject student = response.getJSONObject(i);
-                                    int id = student.optInt("id");
+                                    int id=student.optInt("id");
                                     //int added_by=student.getInt("albumid");
                                     String name = student.optString("name");
                                     String categoryv = student.optString("category");
