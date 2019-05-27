@@ -88,6 +88,7 @@ public class AllFeedAdapter extends RecyclerView.Adapter<AllFeedAdapter.ViewHold
         android.support.v7.widget.AppCompatImageView videoImage;
         FrameLayout videoLayout;
         SliderLayout imageSlider;
+        //LinearLayout ll_comment;
         private View currentFocusedLayout,oldFocusedLayout;
         int id;
 
@@ -296,7 +297,6 @@ public class AllFeedAdapter extends RecyclerView.Adapter<AllFeedAdapter.ViewHold
             Vholder.like_un.setLiked(false);
             Vholder.tv_totallike.setTextColor(Color.BLACK);
         }
-
         if (mValues.get(position).getIs_favrait() == 1) {
             Vholder.favButton.setLiked(true);
         } else {
@@ -654,7 +654,7 @@ public class AllFeedAdapter extends RecyclerView.Adapter<AllFeedAdapter.ViewHold
             }
         });
         //Vholder.c
-         if (PrefManager.isLogin(mContext)) {
+         //if (PrefManager.isLogin(mContext)) {
              Vholder.ll_comment.setOnClickListener(new View.OnClickListener() {
                  @Override
                  public void onClick(View v) {
@@ -703,10 +703,10 @@ public class AllFeedAdapter extends RecyclerView.Adapter<AllFeedAdapter.ViewHold
                      }
                  }
              });
-         }
+        /* }
          else{
                //Toast.makeText(mContext,"First Login and try again...",Toast.LENGTH_LONG).show();
-         }
+         } */
          if (PrefManager.isLogin(mContext) && PrefManager.getLoginDetail(mContext,"id").equalsIgnoreCase(String.valueOf(mValues.get(position).getUid()))){
             //Vholder.
              Vholder.like_un.setEnabled(true);
@@ -732,6 +732,33 @@ public class AllFeedAdapter extends RecyclerView.Adapter<AllFeedAdapter.ViewHold
 
              }
          }); */
+
+        if (PrefManager.isLogin(mContext)) {
+            Vholder.like_un.setEnabled(true);
+            Vholder.ratingBar.setFocusable(true);
+            Vholder.ratingBar.setIsIndicator(false);
+            //holder.ratingBar.setClickable(true);
+            if (type.equalsIgnoreCase("Provide") || type.equalsIgnoreCase("Demand")){
+                 Vholder.favButton.setEnabled(true);
+            }
+            if (type.equalsIgnoreCase("Product")){
+                        Vholder.iv_buy.setEnabled(true);
+            }
+        }
+        else {
+            Vholder.like_un.setEnabled(false);
+            Vholder.ratingBar.setFocusable(false);
+            Vholder.ratingBar.setIsIndicator(true);
+            //holder.ratingBar.setClickable(false);
+            if (type.equalsIgnoreCase("Provide") || type.equalsIgnoreCase("Demand")) {
+                Vholder.favButton.setEnabled(false);
+            }
+              if (type.equalsIgnoreCase("Product")){
+                    Vholder.iv_buy.setEnabled(false);
+              }
+        }
+        Vholder.tv_comments.setEnabled(true);
+        Vholder.iv_comments.setEnabled(true);
     }
     @Override
     public int getItemCount() {
