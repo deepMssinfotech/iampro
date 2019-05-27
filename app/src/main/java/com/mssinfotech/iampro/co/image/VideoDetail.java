@@ -64,6 +64,7 @@ import java.util.ArrayList;
 import bg.devlabs.fullscreenvideoview.FullscreenVideoView;
 import bg.devlabs.fullscreenvideoview.orientation.LandscapeOrientation;
 import bg.devlabs.fullscreenvideoview.orientation.PortraitOrientation;
+import es.dmoral.toasty.Toasty;
 
 import static com.mssinfotech.iampro.co.common.Config.AVATAR_URL;
 public class VideoDetail extends AppCompatActivity implements Img_Video_Details.ItemListener {
@@ -95,6 +96,7 @@ public class VideoDetail extends AppCompatActivity implements Img_Video_Details.
         context = getApplicationContext();
         setContentView(R.layout.activity_image_detail);
         intent = getIntent();
+        Toasty.info(context,"i am in video",Toasty.LENGTH_LONG,true).show();
         context = getApplicationContext();
         tv_about_tag=findViewById(R.id.tv_about_tag);
         tv_about_msg=findViewById(R.id.tv_about_msg);
