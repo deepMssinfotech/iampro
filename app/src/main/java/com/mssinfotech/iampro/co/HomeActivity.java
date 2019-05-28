@@ -2,6 +2,7 @@ package com.mssinfotech.iampro.co;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
@@ -42,6 +43,12 @@ public class HomeActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
+        if(!PrefManager.isLogin(HomeActivity.this)) {
+            FragmentManager fm = getSupportFragmentManager();
+            for (int i = 0; i < fm.getBackStackEntryCount(); ++i) {
+                fm.popBackStack();
+            }
+        }
         menu_image = findViewById(R.id.menu_image);
         menu_video = findViewById(R.id.menu_video);
         menu_user = findViewById(R.id.menu_user);
@@ -128,12 +135,20 @@ public class HomeActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
+        if (!PrefManager.isLogin(HomeActivity.this)){
+
+            FragmentManager fm = getSupportFragmentManager();
+            for (int i = 0; i < fm.getBackStackEntryCount(); ++i) {
+                fm.popBackStack();
+            }
+            Toast.makeText(getApplicationContext(),""+"Logout",Toast.LENGTH_LONG).show();
+        }
         int count = getSupportFragmentManager().getBackStackEntryCount();
 
         if (count == 0) {
             if (Config.doubleBackToExitPressedOnce) {
-                super.onBackPressed();
-                //this.finish();
+                //super.onBackPressed();
+                      HomeActivity.this.finish();
                 // return;
             }
             Config.doubleBackToExitPressedOnce = true;
@@ -145,7 +160,17 @@ public class HomeActivity extends AppCompatActivity {
                 }
             }, 2000);
         } else {
-            getSupportFragmentManager().popBackStack();
+            if (PrefManager.isLogin(HomeActivity.this)) {
+                getSupportFragmentManager().popBackStack();
+            }
+            else
+            {
+                FragmentManager fm = getSupportFragmentManager();
+                for (int i = 0; i < fm.getBackStackEntryCount(); ++i) {
+                    fm.popBackStack();
+                }
+                HomeActivity.this.finish();
+            }
         }
     }
 }

@@ -240,6 +240,19 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.ViewHolder> 
                 mContext.startActivity(intent);
             }
         });
+
+        if (PrefManager.isLogin(mContext)) {
+            Vholder.likeButton.setEnabled(true);
+            Vholder.ratingBar.setFocusable(true);
+            Vholder.ratingBar.setIsIndicator(false);
+            //holder.ratingBar.setClickable(true);
+        }
+        else {
+            Vholder.likeButton.setEnabled(false);
+            Vholder.ratingBar.setFocusable(false);
+            Vholder.ratingBar.setIsIndicator(true);
+            //holder.ratingBar.setClickable(false);
+        }
     }
     @Override
     public int getItemCount() {

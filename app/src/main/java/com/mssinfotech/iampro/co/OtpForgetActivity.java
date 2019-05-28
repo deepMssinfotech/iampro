@@ -10,6 +10,8 @@ import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Handler;
+import android.os.PersistableBundle;
+import android.support.annotation.Nullable;
 import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
@@ -45,7 +47,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
-public class OtpForgetActivity extends Fragment {
+public class OtpForgetActivity extends AppCompatActivity {
 
     private Button btnforgetotpprocess;
 
@@ -58,7 +60,42 @@ public class OtpForgetActivity extends Fragment {
     Intent intent;
     Context context;
     public static final int REQUEST_ID_MULTIPLE_PERMISSIONS = 1;
+
     @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_otp_forget);
+        tilotp= findViewById(R.id.tilotp);
+        etotp = findViewById(R.id.etotp);
+        tilnpassword= findViewById(R.id.tilnpassword);
+        etnpassword = findViewById(R.id.etnpassword);
+        tilcpassword= findViewById(R.id.tilcpassword);
+        context=OtpForgetActivity.this;
+        etcpassword =findViewById(R.id.etcpassword);
+        //Bundle args = getArguments();   //getIntent().getB
+        //fid = getArguments().getString("uid");
+         String args=getIntent().getStringExtra("email");
+         intent=getIntent();
+        if (intent != null) {
+            /*email = args.getStringExtra("email").toString();
+            vcode = args.getString("vcode").toString(); */
+
+            email = intent.getStringExtra("email");
+            vcode = intent.getStringExtra("vcode");
+        }else{
+            //email = intent.getStringExtra("email");
+            //vcode = intent.getStringExtra("vcode");
+        }
+        btnforgetotpprocess = findViewById(R.id.btnforgetotpprocess);
+        btnforgetotpprocess.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                update_password(v);
+            }
+        });
+    }
+
+   /* @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup parent, Bundle savedInstanceState) {
         // Defines the xml file for the fragment
         return inflater.inflate(R.layout.activity_otp_forget, parent, false);
@@ -89,7 +126,8 @@ public class OtpForgetActivity extends Fragment {
             }
         });
         //checkAndRequestPermissions();
-    }
+    } */
+
     private BroadcastReceiver receiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
@@ -98,7 +136,7 @@ public class OtpForgetActivity extends Fragment {
                 String separated = message.replaceAll("[^0-9]", "");
                 //TextView tv = (TextView) findViewById(R.id.txtview);
                 etotp.setText(separated);
-                Toast.makeText(getActivity() , "OTP is : "+separated, Toast.LENGTH_LONG).show();
+                Toast.makeText(OtpForgetActivity.this , "OTP is : "+separated, Toast.LENGTH_LONG).show();
                 Log.e("otp is",separated);
             }
         }
@@ -138,7 +176,7 @@ public class OtpForgetActivity extends Fragment {
             randomNumber = r.nextInt(10000);
             final String url = Config.API_URL + "app_service.php";
             //tv.setText(String.valueOf(randomNumber));
-            final Dialog loading = new Dialog(getContext());
+            final Dialog loading = new Dialog(OtpForgetActivity.this);
             loading.requestWindowFeature(Window.FEATURE_NO_TITLE);
             loading.setContentView(R.layout.progress_dialog);
             loading.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
@@ -159,11 +197,11 @@ public class OtpForgetActivity extends Fragment {
                                     /*LoginActivity fragment = new LoginActivity();
                                     function.loadFragment(context,fragment,null); */
                                     //finish();
-                                    Intent intent=new Intent(OtpForgetActivity.this.getContext(),LoginActivity.class);
-                                     OtpForgetActivity.this.getContext().startActivity(intent);
+                                    Intent intent=new Intent(OtpForgetActivity.this,LoginActivity.class);
+                                     OtpForgetActivity.this.startActivity(intent);
 
                                 } else {
-                                    Toast.makeText(getActivity() , msg, Toast.LENGTH_LONG).show();
+                                    Toast.makeText(OtpForgetActivity.this , msg, Toast.LENGTH_LONG).show();
                                 }
                             } catch (JSONException e) {
                                 e.printStackTrace();

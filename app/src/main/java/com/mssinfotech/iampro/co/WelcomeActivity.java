@@ -228,7 +228,12 @@ public class WelcomeActivity extends AppCompatActivity implements View.OnClickLi
     }
     @Override
     public void onBackPressed() {
-
+        if (!PrefManager.isLogin(WelcomeActivity.this)){
+            FragmentManager fm = getSupportFragmentManager();
+            for (int i = 0; i < fm.getBackStackEntryCount(); ++i) {
+                fm.popBackStack();
+            }
+        }
        /* if (Config.doubleBackToExitPressedOnce) {
             super.onBackPressed();
             //this.finish();

@@ -94,9 +94,9 @@ public class VideoDetail extends AppCompatActivity implements Img_Video_Details.
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         context = getApplicationContext();
-        setContentView(R.layout.activity_image_detail);
+        setContentView(R.layout.activity_video_detail);
         intent = getIntent();
-        Toasty.info(context,"i am in video",Toasty.LENGTH_LONG,true).show();
+        //Toasty.info(context,"i am in video",Toasty.LENGTH_LONG,true).show();
         context = getApplicationContext();
         tv_about_tag=findViewById(R.id.tv_about_tag);
         tv_about_msg=findViewById(R.id.tv_about_msg);
@@ -118,7 +118,7 @@ public class VideoDetail extends AppCompatActivity implements Img_Video_Details.
         imageView_user=findViewById(R.id.imageView_user);
         imageView_icon=findViewById(R.id.imageView_icon);
         iv_comments=findViewById(R.id.iv_comments);
-        image=findViewById(R.id.image);
+
         videoView=findViewById(R.id.video);
         ll_comment=findViewById(R.id.ll_comment);
 
@@ -170,20 +170,13 @@ public class VideoDetail extends AppCompatActivity implements Img_Video_Details.
                 context.startActivity(intent);
             }
         });
-        image.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                new PhotoFullPopupWindow(context,R.layout.popup_photo_full,ll_top.getRootView(),avatar_urll, null);
-            }
-        });
 
         getVideoDetail();
     }
     protected void getVideoDetail(){
         String url= Config.API_URL+ "app_service.php?type=get_image_detail&id="+id+"&update_type="+type+"&uid=1&login_id="+uid+"&my_id="+uid;
         RequestQueue requestQueue = Volley.newRequestQueue(context);
-        if (image!=null)
-            image.setVisibility(View.GONE);
+
         StringRequest jsonObjectRequest = new StringRequest(
                 Request.Method.GET,
                 url,
@@ -245,7 +238,6 @@ public class VideoDetail extends AppCompatActivity implements Img_Video_Details.
                                     .landscapeOrientation(LandscapeOrientation.DEFAULT);
 
 
-                            image.setVisibility(View.GONE);
 
                             JSONObject jsonObjectUser=responses.getJSONObject("user_detail");
                             final String added_by= jsonObjectUser.optString("id");

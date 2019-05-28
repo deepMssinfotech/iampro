@@ -1,14 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:background="#287bbf"
+    android:layout_height="match_parent">
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#287bbf"
-    android:clickable="true"
     android:orientation="vertical"
     android:scrollbarAlwaysDrawVerticalTrack="true">
-    <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
+
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent">
@@ -23,7 +25,7 @@
         android:text="OTP process"
         android:textColor="#fff"
         android:textSize="26sp"
-        android:textStyle="bold" />
+        android:textStyle="bold"/>
 
     <RelativeLayout
         android:layout_width="fill_parent"
@@ -42,8 +44,8 @@
             android:orientation="vertical"
             android:paddingTop="30dp">
             <ImageButton
-                android:layout_width="100dp"
-                android:layout_height="100dp"
+                android:layout_width="99dp"
+                android:layout_height="99dp"
                 android:layout_below="@+id/login_title"
                 android:layout_centerHorizontal="true"
                 android:layout_gravity="center"
@@ -65,6 +67,7 @@
                     android:drawableTint="#000000"
                     android:textColorHint="@color/white"
                     android:textColor="@color/white"
+                    android:drawablePadding="10dp"
                     android:hint="Enter OTP"
                     android:inputType="number"
                     android:singleLine="true" />
@@ -86,6 +89,7 @@
                     android:drawableLeft="@drawable/ic_action_key"
                     android:drawableTint="#000000"
                     android:hint="New Password"
+                    android:drawablePadding="10dp"
                     android:inputType="textPassword"
                     android:singleLine="true" />
             </android.support.design.widget.TextInputLayout>
@@ -106,6 +110,7 @@
                     android:drawableTint="#000000"
                     android:hint="Confirm Password"
                     android:inputType="textPassword"
+                    android:drawablePadding="10dp"
                     android:singleLine="true" />
             </android.support.design.widget.TextInputLayout>
 
@@ -133,6 +138,6 @@
                 android:text="Resend OTP ?" />
         </LinearLayout>
     </RelativeLayout>
-        </RelativeLayout></ScrollView>
-
+        </RelativeLayout>
 </RelativeLayout>
+</ScrollView>

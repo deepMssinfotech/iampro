@@ -7,8 +7,7 @@
     android:layout_gravity="center_vertical"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     app:mode="same_level"
-    app:dragFromEdge="right"
-   >
+    app:dragFromEdge="right">
     <!--
 
      app:dragFromEdge="right" height=88dp
@@ -134,7 +133,10 @@
                     android:textSize="10dp" />
             </LinearLayout>
         </LinearLayout>
-
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:background="@color/black_trans80"/>
     </FrameLayout>
 
     <FrameLayout
@@ -329,6 +331,10 @@
                     </LinearLayout>
                 </android.support.v7.widget.CardView>
             </RelativeLayout>
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:background="@color/black_trans80"/>
         </FrameLayout>
 
 

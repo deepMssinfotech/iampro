@@ -5,6 +5,7 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Handler;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.content.res.AppCompatResources;
@@ -439,6 +440,12 @@ public class SearchedActivity extends AppCompatActivity implements UserDataAdapt
 
     @Override
     public void onBackPressed() {
+        if (!PrefManager.isLogin(SearchedActivity.this)){
+            FragmentManager fm = getSupportFragmentManager();
+            for (int i = 0; i < fm.getBackStackEntryCount(); ++i) {
+                fm.popBackStack();
+            }
+        }
         int count = getSupportFragmentManager().getBackStackEntryCount();
         if (count == 0) {
             if (Config.doubleBackToExitPressedOnce) {
