@@ -131,6 +131,7 @@ public class HomeFragment extends Fragment implements UserDataAdapter.ItemListen
     private void init() {
         mPager = views.findViewById(R.id.pager);
         mPager.setAdapter(new SlidingImage_Adapter(getContext(),imageModelArrayList));
+        //mPager.s
         CirclePageIndicator indicator = (CirclePageIndicator)views.findViewById(R.id.indicator);
         indicator.setViewPager(mPager);
         final float density = getResources().getDisplayMetrics().density;

@@ -1,19 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
- <ScrollView
+ <android.support.v4.widget.NestedScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     android:background="@color/white"
-    android:clickable="true"
-    tools:context=".SearchActivity"
-    >
+    tools:context=".SearchActivity">
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="vertical"
-                >
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
                 <LinearLayout
                     android:layout_margin="10dp"
                     android:layout_width="match_parent"
@@ -75,7 +72,6 @@
                         android:layout_height="wrap_content"
                         android:backgroundTint="#ff9f3f"/>
                     <Button
-
                         android:gravity="center"
                         android:layout_gravity="center"
                         android:background="@drawable/white_circle"
@@ -88,16 +84,23 @@
                         android:layout_height="wrap_content"
                         android:text="Search"/>
                 </LinearLayout>
-                <LinearLayout
+                <FrameLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
                     <fragment
                         android:name="com.mssinfotech.iampro.co.tab.HomeFragment"
                         android:id="@+id/homesection"
-                        android:layout_weight="1"
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"></fragment>
-                </LinearLayout>
+                        android:layout_height="wrap_content"></fragment>
 
+                </FrameLayout>
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/my_recycler_view"
+                    android:layout_width="match_parent"
+                    android:background="@drawable/bg_search"
+                    android:layout_height="match_parent"
+                    android:visibility="gone"
+                    android:nestedScrollingEnabled="false"
+                    android:scrollbars="none"/>
             </LinearLayout>
-</ScrollView>
+</android.support.v4.widget.NestedScrollView>

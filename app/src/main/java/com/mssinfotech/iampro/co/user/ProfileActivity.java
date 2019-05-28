@@ -44,6 +44,7 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.bumptech.glide.Glide;
 import com.mssinfotech.iampro.co.ChatToUser;
+import com.mssinfotech.iampro.co.HomeActivity;
 import com.mssinfotech.iampro.co.R;
 import com.mssinfotech.iampro.co.adapter.AllFeedAdapter;
 import com.mssinfotech.iampro.co.adapter.CommentAdapter;
@@ -140,6 +141,12 @@ public class ProfileActivity extends Fragment implements AllFeedAdapter.ItemList
     @Override
     public void onResume() {
         super.onResume();
+        if (!PrefManager.isLogin(ProfileActivity.this.getContext())){
+            FragmentManager fm = getChildFragmentManager();
+            for (int i = 0; i < fm.getBackStackEntryCount(); ++i) {
+                fm.popBackStack();
+            }
+        }
         if (Config.allowRefresh) {
             Config.allowRefresh = false;
             //Toast.makeText(context, "click from BACK", Toast.LENGTH_SHORT).show();

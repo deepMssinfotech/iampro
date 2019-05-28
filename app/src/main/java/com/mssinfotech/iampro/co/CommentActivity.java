@@ -80,6 +80,12 @@ public class CommentActivity extends AppCompatActivity implements CommentAdapter
      LinearLayout ll_sendChats;
     @Override
     public void onBackPressed() {
+        if (!PrefManager.isLogin(CommentActivity.this)){
+            FragmentManager fm = getSupportFragmentManager();
+            for (int i = 0; i < fm.getBackStackEntryCount(); ++i) {
+                fm.popBackStack();
+            }
+        }
         int count = getSupportFragmentManager().getBackStackEntryCount();
         if (count == 0) {
             super.onBackPressed();

@@ -23,7 +23,7 @@ public class PrefManager {
     SharedPreferences pref;
     SharedPreferences.Editor editor;
     static Context _context;
-    private static SharedPreferences userpref = null;
+    public static SharedPreferences userpref = null;
     private static SharedPreferences.Editor usereditor = null;
     public static final String IS_LOGIN = "IsLoggedIn";
     // shared pref mode

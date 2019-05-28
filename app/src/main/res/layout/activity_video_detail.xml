@@ -115,6 +115,7 @@
                 <bg.devlabs.fullscreenvideoview.FullscreenVideoView
                     android:id="@+id/fullscreenVideoView"
                     android:layout_width="match_parent"
+
                     android:layout_height="wrap_content"/>
 
                 <LinearLayout

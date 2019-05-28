@@ -337,7 +337,7 @@ public class IncludeFooter  extends RelativeLayout {
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             getContext().startActivity(intent);
             //getContext().getActivity().finish();
-
+              PrefManager.userpref=null;
             removeFragment();
         }
     };

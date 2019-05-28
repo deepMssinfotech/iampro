@@ -94,11 +94,17 @@ public class ForgetActivity extends AppCompatActivity   implements View.OnClickL
                                 //if (status.equalsIgnoreCase("success")) {
                                     String vcode = jsonObject.getString("vcode");
                                     Log.d("Lresponse", "" + vcode);
-                                    OtpForgetActivity fragment = new OtpForgetActivity();
+                                   /* OtpForgetActivity fragment = new OtpForgetActivity();
                                     Bundle arg = new Bundle();
                                     arg.putString("vcode", vcode);
                                     arg.putString("email", etemail.getText().toString().trim());
-                                    function.loadFragment(ForgetActivity.this,fragment,arg);
+                                    function.loadFragment(ForgetActivity.this,fragment,arg); */
+
+                                     Intent intent=new Intent(ForgetActivity.this,OtpForgetActivity.class);
+                                     intent.putExtra("vcode",String.valueOf(vcode));
+                                      intent.putExtra("email",etemail.getText().toString().trim());
+                                      startActivity(intent);
+
                                 //}
                             } catch (JSONException e) {
                                 e.printStackTrace();

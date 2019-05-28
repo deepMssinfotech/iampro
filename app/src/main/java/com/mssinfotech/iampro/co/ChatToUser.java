@@ -2,6 +2,7 @@ package com.mssinfotech.iampro.co;
 
 import android.app.ProgressDialog;
 import android.os.Handler;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -301,6 +302,12 @@ public class ChatToUser extends AppCompatActivity implements UserChatAdapter.Ite
 
     @Override
     public void onBackPressed() {
+        if (!PrefManager.isLogin(ChatToUser.this)){
+            FragmentManager fm = getSupportFragmentManager();
+            for (int i = 0; i < fm.getBackStackEntryCount(); ++i) {
+                fm.popBackStack();
+            }
+        }
         int count = getSupportFragmentManager().getBackStackEntryCount();
 
         if (count == 0) {
