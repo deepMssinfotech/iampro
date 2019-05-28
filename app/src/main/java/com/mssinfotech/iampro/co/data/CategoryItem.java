@@ -2,11 +2,14 @@ package com.mssinfotech.iampro.co.data;
 
 public class CategoryItem {
     private Integer id;
-    private String name;
+    private String name,image;
 
     public CategoryItem(Integer id, String name) {
         this.id = id;
         this.name = name;
+    }
+    public CategoryItem() {
+
     }
 
 
@@ -24,6 +27,14 @@ public class CategoryItem {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
     }
 
 

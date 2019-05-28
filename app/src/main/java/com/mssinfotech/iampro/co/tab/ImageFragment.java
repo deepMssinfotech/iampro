@@ -6,6 +6,7 @@ import android.graphics.drawable.ColorDrawable;
 import android.media.Image;
 import android.os.Bundle;
 import android.os.Handler;
+import android.provider.ContactsContract;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -13,6 +14,7 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.content.res.AppCompatResources;
 import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -21,6 +23,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
+import android.view.WindowManager;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Toast;
@@ -28,16 +32,20 @@ import android.widget.Toast;
 import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
+import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
+import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.mssinfotech.iampro.co.R;
 //import com.mssinfotech.iampro.co.adapter.RecyclerViewAdapter;
+import com.mssinfotech.iampro.co.adapter.CategoryListAdapter;
 import com.mssinfotech.iampro.co.adapter.ImageAdapter;
 import com.mssinfotech.iampro.co.adapter.MyImageVideoDataAdapter;
 import com.mssinfotech.iampro.co.adapter.RecyclerViewAdapter;
 import com.mssinfotech.iampro.co.adapter.RecyclerViewDataAdapter;
 import com.mssinfotech.iampro.co.common.SlidingImage_Adapter;
+import com.mssinfotech.iampro.co.data.CategoryItem;
 import com.mssinfotech.iampro.co.data.ImageModel;
 import com.mssinfotech.iampro.co.model.DataModel;
 import com.mssinfotech.iampro.co.model.MyImageModel;
@@ -59,7 +67,10 @@ import java.util.ArrayList;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.TreeMap;
-public class ImageFragment extends Fragment implements ImageAdapter.ItemListener{
+
+import es.dmoral.toasty.Toasty;
+
+public class ImageFragment extends Fragment implements ImageAdapter.ItemListener, CategoryListAdapter.ItemListener{
     ArrayList<DataModel> allSampleData=new ArrayList<>();
     RecyclerView my_recycler_view,recycler_view_load_more;
     ImageAdapter adapter;
@@ -69,13 +80,15 @@ public class ImageFragment extends Fragment implements ImageAdapter.ItemListener
     TreeMap<String,String> item_name = new TreeMap<>();
     ArrayList<SectionImageModel> allSampleDatamore=new ArrayList<>();
     MyImageVideoDataAdapter adapterr;
-      ImageView limage_iv;
+      ImageView limage_iv,imageCatMore;
     ImageView no_rodr;
     View views;
+    private Dialog myDialog;
     Context context;    //sliderr
     private static ViewPager mPager;
     private static int currentPage = 0;
     private static int NUM_PAGES = 0;
+    private ArrayList<CategoryItem> catItemList;
     private ArrayList<com.mssinfotech.iampro.co.data.ImageModel> imageModelArrayList;
     public ImageFragment() {
         // Required empty public constructor
@@ -102,6 +115,8 @@ public class ImageFragment extends Fragment implements ImageAdapter.ItemListener
            uid = Integer.parseInt(PrefManager.getLoginDetail(context,"id"));
 
         getImage();
+
+        imageCatMore = view.findViewById(R.id.imageCatMore);
         my_recycler_view =view.findViewById(R.id.my_recycler_view);
         imageModelArrayList=new ArrayList<>();
         recycler_view_load_more=view.findViewById(R.id.recycler_view_load_more);
@@ -183,6 +198,79 @@ public class ImageFragment extends Fragment implements ImageAdapter.ItemListener
             @Override
             public void onPageScrollStateChanged(int pos) {
 
+            }
+        });
+
+        imageCatMore.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                catItemList = new ArrayList<CategoryItem>();
+                //Toasty.info(context,"check cat").show();
+                myDialog = new Dialog(getContext());
+                myDialog.setContentView(R.layout.popup_category);
+                WindowManager.LayoutParams lp = new WindowManager.LayoutParams();
+                lp.copyFrom(myDialog.getWindow().getAttributes());
+                lp.width = WindowManager.LayoutParams.MATCH_PARENT;
+                lp.height = WindowManager.LayoutParams.MATCH_PARENT;
+                myDialog.getWindow().setAttributes(lp);
+                myDialog.getWindow().getAttributes().windowAnimations = R.style.DialogTheme; //style id
+                myDialog.show();
+                String url=Config.API_URL+"app_service.php?type=all_category&name=IMAGE";
+                StringRequest stringRequest = new StringRequest(url,
+                        new Response.Listener<String>() {
+                            @Override
+                            public void onResponse(String response) {
+                                JSONArray result = null;
+                                try {
+                                    //Parsing the fetched Json String to JSON Object
+                                    result = new JSONArray(response);
+                                    //Storing the Array of JSON String to our JSON Array
+                                    //JSONArray result = j.getJSONArray("data");
+
+
+                                    //Calling method getStudents to get the students from the JSON Array
+                                    //Log.d(TAG,result.toString());
+                                    for(int i=0;i<result.length();i++){
+                                        try {
+                                            CategoryItem catList= new CategoryItem();
+                                            //Getting json object
+                                            JSONObject json = result.getJSONObject(i);
+                                            //Adding the name of the student to array list
+                                            Integer id=json.getInt("id");
+                                            String Name= json.getString("name");
+                                            String Image= Config.URL_ROOT+"uploads/menu_image/"+json.getString("image");
+                                            catList.setId(id);
+                                            catList.setImage(Image);
+                                            catList.setName(Name);
+                                            catItemList.add(catList);
+                                        } catch (JSONException e) {
+                                            e.printStackTrace();
+                                        }
+                                    }
+                                    RecyclerView recyclerView = myDialog.findViewById(R.id.category_image);
+                                    CategoryListAdapter mAdapter = new CategoryListAdapter(context, catItemList,ImageFragment.this);
+                                    RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(context,3);
+                                    recyclerView.setLayoutManager(mLayoutManager);
+                                    recyclerView.setItemAnimator(new DefaultItemAnimator());
+                                    recyclerView.addItemDecoration(new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL));
+                                    recyclerView.setAdapter(mAdapter);
+                                    mAdapter.notifyDataSetChanged();
+
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                        },
+                        new Response.ErrorListener() {
+                            @Override
+                            public void onErrorResponse(VolleyError error) {
+                                Log.e(Config.TAG,error.toString());
+                            }
+                        });
+                //Creating a request queue
+                RequestQueue requestQueue = Volley.newRequestQueue(context);
+                //Adding request to the queue
+                requestQueue.add(stringRequest);
             }
         });
 
@@ -676,5 +764,10 @@ public class ImageFragment extends Fragment implements ImageAdapter.ItemListener
         // Add JsonArrayRequest to the RequestQueue
         requestQueue.add(jsonArrayRequest);
         //getProvide();
+    }
+
+    @Override
+    public void onItemClick(CategoryItem item) {
+
     }
 }
