@@ -10,10 +10,10 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.view.View;
 import android.widget.Toast;
-
 import com.github.clans.fab.FloatingActionButton;
 import com.github.clans.fab.FloatingActionMenu;
 import com.mssinfotech.iampro.co.adapter.HomePagerAdapter;
+import com.mssinfotech.iampro.co.model.Home;
 import com.mssinfotech.iampro.co.tab.DemandFragment;
 import com.mssinfotech.iampro.co.tab.HomeFragment;
 import com.mssinfotech.iampro.co.tab.ImageFragment;
@@ -132,7 +132,6 @@ public class HomeActivity extends AppCompatActivity {
         //adapter.addFragment(new TestFragment(), "TestFragment");
         viewPager.setAdapter(adapter);
     }
-
     @Override
     public void onBackPressed() {
         if (!PrefManager.isLogin(HomeActivity.this)){
@@ -144,7 +143,7 @@ public class HomeActivity extends AppCompatActivity {
             Toast.makeText(getApplicationContext(),""+"Logout",Toast.LENGTH_LONG).show();
         }
         int count = getSupportFragmentManager().getBackStackEntryCount();
-
+        Toast.makeText(HomeActivity.this,""+count,Toast.LENGTH_LONG).show();
         if (count == 0) {
             if (Config.doubleBackToExitPressedOnce) {
                 //super.onBackPressed();

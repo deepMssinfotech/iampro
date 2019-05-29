@@ -249,12 +249,12 @@ public class WelcomeActivity extends AppCompatActivity implements View.OnClickLi
             }
         }, 2000); */
         int count = getSupportFragmentManager().getBackStackEntryCount();
-
+           Toast.makeText(WelcomeActivity.this,""+count,Toast.LENGTH_LONG).show();
         if (count == 0) {
             if (Config.doubleBackToExitPressedOnce) {
-                super.onBackPressed();
+                //super.onBackPressed();
                 this.finish();
-                return;
+                //return;
             }
             Config.doubleBackToExitPressedOnce = true;
             Toast.makeText(this, "Please click BACK again to exit", Toast.LENGTH_SHORT).show();
@@ -262,11 +262,15 @@ public class WelcomeActivity extends AppCompatActivity implements View.OnClickLi
             new Handler().postDelayed(new Runnable() {
                 @Override
                 public void run() {
-                    Config.doubleBackToExitPressedOnce = false;
+                    Config.doubleBackToExitPressedOnce=false;
                 }
             }, 2000);
         } else {
+            if (PrefManager.isLogin(WelcomeActivity.this))
             getSupportFragmentManager().popBackStack();
+            else
+                this.finish();
+
         }
 
     }

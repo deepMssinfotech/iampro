@@ -131,6 +131,7 @@ public class ProfileActivity extends Fragment implements AllFeedAdapter.ItemList
     public void onBackPressed()
     {
         FragmentManager fm =new ProfileActivity().getActivity().getSupportFragmentManager();
+        if (PrefManager.isLogin(getContext()))
         fm.popBackStack();
     }
     @Override
@@ -533,7 +534,6 @@ public class ProfileActivity extends Fragment implements AllFeedAdapter.ItemList
     }
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == RESULT_CANCELED) {
             return;
