@@ -163,7 +163,12 @@ public class SectionImageVideoAdapter extends RecyclerView.Adapter<SectionImageV
          //}
        //if(singleItem.getRating()!="NAN" || singleItem.getRating().length()>0 || !(singleItem.getRating().equalsIgnoreCase("NAN")) || singleItem.getRating()!="" || !singleItem.getRating().equalsIgnoreCase("")
         // || !singleItem.getRating().isEmpty())
-        holder.ratingBar.setRating(Float.parseFloat(String.valueOf(singleItem.getRating())));
+        try {
+            holder.ratingBar.setRating(Float.parseFloat(String.valueOf(singleItem.getRating())));
+        }
+        catch(Exception e){
+            holder.ratingBar.setRating(0);
+        }
         holder.tv_name.setText(singleItem.getName());
         holder.category.setText(singleItem.getFullname());
         holder.udate.setText(singleItem.getUdate());
