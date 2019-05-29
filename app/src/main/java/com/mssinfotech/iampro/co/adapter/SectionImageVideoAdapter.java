@@ -596,7 +596,6 @@ public class SectionImageVideoAdapter extends RecyclerView.Adapter<SectionImageV
                       Log.e(Config.TAG, url);
                       function.executeUrl(mContext, "get", url, null);
                   }
-
                   @Override
                   public void unLiked(LikeButton likeButton) {
                       //Toast.makeText(mContext,"UnLiked",Toast.LENGTH_LONG).show();
@@ -619,6 +618,37 @@ public class SectionImageVideoAdapter extends RecyclerView.Adapter<SectionImageV
                     holder.favButton.setEnabled(false);
                     holder.likeButton.setEnabled(false);
                     holder.ratingBar.setFocusable(false);
+                }
+            }
+            else if (type.equalsIgnoreCase("product")){
+                if (PrefManager.isLogin(mContext)){
+                    holder.favButton.setEnabled(true);
+                    holder.likeButton.setEnabled(true);
+                    holder.ratingBar.setFocusable(true);
+                    holder.ratingBar.setIsIndicator(false);
+                    holder.iv_buy.setEnabled(true);
+                }
+                else{
+                    holder.favButton.setEnabled(false);
+                    holder.likeButton.setEnabled(false);
+                    holder.ratingBar.setFocusable(false);
+                    holder.ratingBar.setIsIndicator(true);
+                    holder.iv_buy.setEnabled(false);
+                }
+            }
+            else {
+                if(PrefManager.isLogin(mContext)) {
+                    holder.likeButton.setEnabled(true);
+                    holder.ratingBar.setFocusable(true);
+                    holder.ratingBar.setIsIndicator(false);
+                    //holder.ratingBar.setClickable(true);
+                    holder.buttonViewOption.setVisibility(View.VISIBLE);
+                }
+                else{
+                    holder.likeButton.setEnabled(false);
+                    holder.ratingBar.setFocusable(false);
+                    holder.ratingBar.setIsIndicator(true);
+                    holder.buttonViewOption.setVisibility(View.GONE);
                 }
             }
         }

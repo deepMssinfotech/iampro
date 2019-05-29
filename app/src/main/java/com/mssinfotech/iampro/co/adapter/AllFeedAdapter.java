@@ -585,12 +585,12 @@ public class AllFeedAdapter extends RecyclerView.Adapter<AllFeedAdapter.ViewHold
                 String url=null;
                 if(type.equalsIgnoreCase("image")) {
                     if (animalsArray.length > 1) {
-                        url = Config.API_URL + "app_service.php?type=rate_me&id=" + String.valueOf(id) + "&uid=" + uid + "&ptype=feed&total_rate="+rating;
+                        url = Config.API_URL + "app_service.php?type=rate_me&id=" +id + "&uid=" + uid + "&ptype=feed&total_rate="+rating;
                     } else {
-                        url = Config.API_URL + "app_service.php?type=rate_me&id=" + String.valueOf(animalsArray[0]) + "&uid=" + uid + "&ptype=" + type+"&total_rate="+rating;
+                        url = Config.API_URL + "app_service.php?type=rate_me&id=" + animalsArray[0] + "&uid=" + uid + "&ptype=" + type+"&total_rate="+rating;
                     }
                 }else{
-                    url = Config.API_URL + "app_service.php?type=rate_me&id=" + String.valueOf(animalsArray[0]) + "&uid=" + uid + "&ptype=" + type+"&total_rate="+rating;
+                    url = Config.API_URL + "app_service.php?type=rate_me&id=" + animalsArray[0] + "&uid=" + uid + "&ptype=" + type+"&total_rate="+rating;
                 }
                 Log.e(Config.TAG, url);
                 function.executeUrl(mContext, "get", url, null);
