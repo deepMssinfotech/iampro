@@ -102,7 +102,7 @@ public class Img_Video_Details extends RecyclerView.Adapter<Img_Video_Details.Vi
             ratingBar=v.findViewById(R.id.ratingBar);
             imageView_user=v.findViewById(R.id.imageView_user);
             imageView_icon=v.findViewById(R.id.imageView_icon);
-            tv_rating=v.findViewById(R.id.tv_rating);
+            //tv_rating=v.findViewById(R.id.tv_rating);
             tv_rating=v.findViewById(R.id.tv_rating);
             iv_comments=v.findViewById(R.id.iv_comments);
             likeButton=v.findViewById(R.id.likeButton);
@@ -169,7 +169,7 @@ public class Img_Video_Details extends RecyclerView.Adapter<Img_Video_Details.Vi
         final int uid=mValues.get(position).getUid();
          final int id=mValues.get(position).getId();
         final String type=mValues.get(position).getType();
-        Vholder.tv_rating.setText(mValues.get(position).getRating());
+        Vholder.tv_rating.setText(String.valueOf(mValues.get(position).getRating()));
         // if (PrefManager.isLogin(mContext)){
 
           Vholder.ll_comments.setOnClickListener(new View.OnClickListener() {
