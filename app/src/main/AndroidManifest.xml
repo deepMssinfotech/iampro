@@ -33,6 +33,7 @@
         android:largeHeap="true"
         android:roundIcon="@drawable/iampro"
         android:supportsRtl="true"
+        android:usesCleartextTraffic="true"
         android:theme="@style/AppTheme">
         <activity
             android:name=".image.VideoDetail"
@@ -79,6 +80,11 @@
             android:theme="@style/AppTheme.NoActionBar"/>
         <activity
             android:name=".ForgetActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar"/>
+
+        <activity
+            android:name=".user.ProfileActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar"/>
         <activity

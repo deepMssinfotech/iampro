@@ -42,6 +42,7 @@ import com.like.LikeButton;
 import com.like.OnLikeListener;
 import com.mssinfotech.iampro.co.CommentActivity;
 import com.mssinfotech.iampro.co.R;
+import com.mssinfotech.iampro.co.WelcomeActivity;
 import com.mssinfotech.iampro.co.common.Config;
 import com.mssinfotech.iampro.co.common.function;
 import com.mssinfotech.iampro.co.image.ImageDetail;
@@ -305,10 +306,15 @@ public class SectionVideoAdapter extends RecyclerView.Adapter<SectionVideoAdapte
          holder.user_image.setOnClickListener(new View.OnClickListener() {
              @Override
              public void onClick(View v) {
-                 ProfileActivity fragment = new ProfileActivity();
+                 /*ProfileActivity fragment = new ProfileActivity();
                  Bundle args = new Bundle();
                  args.putString("uid", String.valueOf(uidd));
-                 function.loadFragment(mContext,fragment,args);
+                 function.loadFragment(mContext,fragment,args);*/
+
+                 Intent intent1=new Intent(mContext,ProfileActivity.class);
+                 intent1.putExtra("uid",String.valueOf(uidd));
+                 mContext.startActivity(intent1);
+
              }
          });
         if(PrefManager.isLogin(mContext)){

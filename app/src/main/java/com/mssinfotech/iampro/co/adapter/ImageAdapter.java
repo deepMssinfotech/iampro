@@ -42,6 +42,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.mssinfotech.iampro.co.WelcomeActivity;
 import com.mssinfotech.iampro.co.common.Config;
 import com.mssinfotech.iampro.co.common.function;
 import com.mssinfotech.iampro.co.image.ImageDetail;
@@ -141,10 +142,15 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ViewHolder> 
             userImage.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    ProfileActivity fragment = new ProfileActivity();
+                    /*ProfileActivity fragment = new ProfileActivity();
                     Bundle args = new Bundle();
                     args.putString("uid", String.valueOf(uid));
-                    function.loadFragment(mContext,fragment,args);
+                    function.loadFragment(mContext,fragment,args); */
+
+                    Intent intent1=new Intent(mContext,ProfileActivity.class);
+                    intent1.putExtra("uid",String.valueOf(uid));
+                    mContext.startActivity(intent1);
+
                 }
             });
             likeButton.setUnlikeDrawableRes(R.drawable.like);

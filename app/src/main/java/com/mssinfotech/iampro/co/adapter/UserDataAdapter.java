@@ -200,10 +200,14 @@ public class UserDataAdapter extends RecyclerView.Adapter<UserDataAdapter.ViewHo
          Vholder.imageView.setOnClickListener(new View.OnClickListener() {
              @Override
              public void onClick(View v) {
-                 ProfileActivity fragment = new ProfileActivity();
+                /* ProfileActivity fragment = new ProfileActivity();
                  Bundle args = new Bundle();
                  args.putString("uid", String.valueOf(mValues.get(position).getId()));
-                 function.loadFragment(mContext,fragment,args);
+                 function.loadFragment(mContext,fragment,args);*/
+
+                 Intent intent=new Intent(mContext,ProfileActivity.class);
+                 intent.putExtra("uid",PrefManager.getLoginDetail(mContext,"id"));
+                 mContext.startActivity(intent);
 
              }
          });
@@ -331,10 +335,14 @@ public class UserDataAdapter extends RecyclerView.Adapter<UserDataAdapter.ViewHo
             @Override
             public void onClick(View v) {
                 //Toast.makeText(v.getContext(), "VIEWPROFILE CLICKED"+position, Toast.LENGTH_SHORT).show();
-                ProfileActivity fragment = new ProfileActivity();
+                /*ProfileActivity fragment = new ProfileActivity();
                 Bundle args = new Bundle();
                 args.putString("uid", String.valueOf(mValues.get(position).getId()));
-                function.loadFragment(mContext,fragment,args);
+                function.loadFragment(mContext,fragment,args); */
+
+                Intent intent=new Intent(mContext,ProfileActivity.class);
+                intent.putExtra("uid",String.valueOf(mValues.get(position).getId()));
+                mContext.startActivity(intent);
             }
         });
         if (String.valueOf(mValues.get(position).getId()).equalsIgnoreCase(PrefManager.getLoginDetail(mContext,"id"))){

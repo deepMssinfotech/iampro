@@ -192,10 +192,15 @@ public class IncludeFooter  extends RelativeLayout {
     private View.OnClickListener myprofileOnClickListener = new View.OnClickListener() {
         public void onClick(View v) {
             //if(function.isSamePage("activity_profile"))return;
-            ProfileActivity fragment = new ProfileActivity();
+           /* ProfileActivity fragment = new ProfileActivity();
             Bundle args = new Bundle();
             args.putString("uid",PrefManager.getLoginDetail(getContext(),"id"));
-            function.loadFragment(getContext(),fragment,args);
+            function.loadFragment(getContext(),fragment,args);*/
+
+            Intent intent1=new Intent(context,ProfileActivity.class);
+            intent1.putExtra("uid",PrefManager.getLoginDetail(context,"id"));
+            context.startActivity(intent1);
+
             removeFragment();
         }
     };
@@ -430,8 +435,12 @@ public class IncludeFooter  extends RelativeLayout {
     private OnClickListener userOnClickListener = new OnClickListener() {
         public void onClick(View v) {
             if(isLogin) {
-                ProfileActivity fragment = new ProfileActivity();
-                function.loadFragment(context,fragment,null);
+                /*ProfileActivity fragment = new ProfileActivity();
+                function.loadFragment(context,fragment,null); */
+
+                Intent intent=new Intent(context,ProfileActivity.class);
+                 intent.putExtra("uid",PrefManager.getLoginDetail(context,"id"));
+                 context.startActivity(intent);
             }else {
                 //getContext().startActivity(new Intent(context, LoginActivity.class));
                 /* LoginActivity loginFragment = new LoginActivity();

@@ -47,11 +47,8 @@ public class ForgetActivity extends AppCompatActivity   implements View.OnClickL
         btnLogin = findViewById(R.id.btnLogin);
         btnLogin.setOnClickListener(this);
         tilemail= findViewById(R.id.tilemail);
-
         etemail = findViewById(R.id.etemail);
-
     }
-
     @Override
     public void onClick(View v) {
         switch (v.getId() /*to get clicked view id**/) {

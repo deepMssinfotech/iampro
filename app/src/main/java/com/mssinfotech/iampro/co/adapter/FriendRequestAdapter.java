@@ -23,6 +23,7 @@ import com.android.volley.toolbox.Volley;
 import com.bumptech.glide.Glide;
 import com.mssinfotech.iampro.co.ChatToUser;
 import com.mssinfotech.iampro.co.R;
+import com.mssinfotech.iampro.co.WelcomeActivity;
 import com.mssinfotech.iampro.co.common.Config;
 import com.mssinfotech.iampro.co.common.function;
 import com.mssinfotech.iampro.co.data.FriendRequestItem;
@@ -142,10 +143,14 @@ public class FriendRequestAdapter extends RecyclerView.Adapter<FriendRequestAdap
         Vholder.userimage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ProfileActivity fragment = new ProfileActivity();
+                /*ProfileActivity fragment = new ProfileActivity();
                 Bundle args = new Bundle();
                 args.putString("uid", String.valueOf(notifyList.get(position).getUser_id()));
-                function.loadFragment(context,fragment,args);
+                function.loadFragment(context,fragment,args);*/
+
+                Intent intent1=new Intent(context,ProfileActivity.class);
+                intent1.putExtra("uid",String.valueOf(notifyList.get(position).getUser_id()));
+                context.startActivity(intent1);
 
             }
         });
@@ -252,10 +257,15 @@ public class FriendRequestAdapter extends RecyclerView.Adapter<FriendRequestAdap
             @Override
             public void onClick(View v) {
                 //Toast.makeText(v.getContext(), "VIEWPROFILE CLICKED"+position, Toast.LENGTH_SHORT).show();
-                ProfileActivity fragment = new ProfileActivity();
+               /* ProfileActivity fragment = new ProfileActivity();
                 Bundle args = new Bundle();
                 args.putString("uid", String.valueOf(notifyList.get(position).getUser_id()));
-                function.loadFragment(context,fragment,args);
+                function.loadFragment(context,fragment,args); */
+
+                Intent intent1=new Intent(context,ProfileActivity.class);
+                intent1.putExtra("uid",String.valueOf(notifyList.get(position).getUser_id()));
+                context.startActivity(intent1);
+
             }
         });
         if (String.valueOf(notifyList.get(position).getUser_id()).equalsIgnoreCase(PrefManager.getLoginDetail(context,"id"))){
@@ -275,13 +285,11 @@ public class FriendRequestAdapter extends RecyclerView.Adapter<FriendRequestAdap
         // NOTE: don't call notifyDataSetChanged()
         notifyItemRemoved(position);
     }
-
     public void restoreItem(FriendRequestItem item, int position) {
         notifyList.add(position, item);
         // notify item added by position
         notifyItemInserted(position);
     }
-
     public void blockUser(String fid){
         String url=Config.API_URL+ "app_service.php?type=get_block_user_detail&uid="+ PrefManager.getLoginDetail(context,"id")+"&fid=657"+fid;
 

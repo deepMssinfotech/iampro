@@ -22,12 +22,14 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.bitmap.CircleCrop;
 import com.bumptech.glide.request.RequestOptions;
 import com.mssinfotech.iampro.co.R;
+import com.mssinfotech.iampro.co.WelcomeActivity;
 import com.mssinfotech.iampro.co.common.Config;
 import com.mssinfotech.iampro.co.common.function;
 import com.mssinfotech.iampro.co.model.FeedModel;
 import com.mssinfotech.iampro.co.model.MyImageModel;
 import com.mssinfotech.iampro.co.model.MyProductModel;
 import com.mssinfotech.iampro.co.user.ProfileActivity;
+import com.mssinfotech.iampro.co.utils.PrefManager;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -80,10 +82,14 @@ public class MyVideoAdapter extends RecyclerView.Adapter<MyVideoAdapter.ViewHold
             videoView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    ProfileActivity fragment = new ProfileActivity();
+                   /* ProfileActivity fragment = new ProfileActivity();
                     Bundle args = new Bundle();
                     args.putString("uid", String.valueOf(uid));
-                    function.loadFragment(mContext,fragment,args);
+                    function.loadFragment(mContext,fragment,args); */
+
+                    Intent intent1=new Intent(mContext,ProfileActivity.class);
+                    intent1.putExtra("uid",String.valueOf(uid));
+                    mContext.startActivity(intent1);
                 }
             });
            // videoView.setVideoPath(Config.V_URL+item.getImage());

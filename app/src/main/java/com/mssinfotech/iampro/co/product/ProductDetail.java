@@ -35,6 +35,7 @@ import com.bumptech.glide.Glide;
 import com.mssinfotech.iampro.co.CartActivity;
 import com.mssinfotech.iampro.co.CommentActivity;
 import com.mssinfotech.iampro.co.R;
+import com.mssinfotech.iampro.co.WelcomeActivity;
 import com.mssinfotech.iampro.co.adapter.CommentAdapter;
 import com.mssinfotech.iampro.co.common.Config;
 import com.mssinfotech.iampro.co.common.PhotoFullPopupWindow;
@@ -102,10 +103,14 @@ public class ProductDetail extends AppCompatActivity implements CommentAdapter.I
         user_image.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ProfileActivity fragment = new ProfileActivity();
+                /*ProfileActivity fragment = new ProfileActivity();
                 Bundle args = new Bundle();
                 args.putString("uid", String.valueOf(uid));
-                function.loadFragment(ProductDetail.this,fragment,args);
+                function.loadFragment(ProductDetail.this,fragment,args);*/
+
+                Intent intent1=new Intent(ProductDetail.this,ProfileActivity.class);
+                intent1.putExtra("uid",String.valueOf(uid));
+                startActivity(intent1);
             }
         });
         getProductDetail();

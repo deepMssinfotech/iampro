@@ -26,6 +26,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.mssinfotech.iampro.co.R;
+import com.mssinfotech.iampro.co.WelcomeActivity;
 import com.mssinfotech.iampro.co.common.Config;
 import com.mssinfotech.iampro.co.common.function;
 import com.mssinfotech.iampro.co.utils.PrefManager;
@@ -93,14 +94,18 @@ public class ChangePasswordActivity extends Fragment {
                             JSONObject result = null;
                             loading.dismiss();
                             try {
-
                                 //Parsing the fetched Json String to JSON Object
                                 result = new JSONObject(s);
                                 String status = result.getString("status");
                                 String msg = result.getString("msg");
                                 if (status.equals("success")) {
-                                    ProfileActivity fragment = new ProfileActivity();
-                                    function.loadFragment(getContext(),fragment,null);
+                                    /*ProfileActivity fragment = new ProfileActivity();
+                                    function.loadFragment(getContext(),fragment,null);*/
+
+                                    Intent intent1=new Intent(ChangePasswordActivity.this.getContext(),ProfileActivity.class);
+                                    intent1.putExtra("uid",PrefManager.getLoginDetail(ChangePasswordActivity.this.getContext(),"id"));
+                                    startActivity(intent1);
+
                                 } else {
                                     Toast.makeText(getContext(), msg, Toast.LENGTH_LONG).show();
                                 }

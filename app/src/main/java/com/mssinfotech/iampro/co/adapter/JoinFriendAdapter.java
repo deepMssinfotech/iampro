@@ -26,6 +26,7 @@ import com.android.volley.toolbox.Volley;
 import com.bumptech.glide.Glide;
 import com.mssinfotech.iampro.co.ChatToUser;
 import com.mssinfotech.iampro.co.R;
+import com.mssinfotech.iampro.co.WelcomeActivity;
 import com.mssinfotech.iampro.co.common.Config;
 import com.mssinfotech.iampro.co.common.function;
 import com.mssinfotech.iampro.co.data.JoinFriendItem;
@@ -113,10 +114,15 @@ public class JoinFriendAdapter extends RecyclerView.Adapter<JoinFriendAdapter.My
         holder.userimage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ProfileActivity fragment = new ProfileActivity();
+               /* ProfileActivity fragment = new ProfileActivity();
                 Bundle args = new Bundle();
                 args.putString("uid",String.valueOf(item.getId()));
-                function.loadFragment(context,fragment,args);
+                function.loadFragment(context,fragment,args);*/
+
+                Intent intent1=new Intent(context,ProfileActivity.class);
+                intent1.putExtra("uid",String.valueOf(item.getId()));
+                context.startActivity(intent1);
+
             }
         });
 
@@ -281,10 +287,15 @@ public class JoinFriendAdapter extends RecyclerView.Adapter<JoinFriendAdapter.My
             @Override
             public void onClick(View v) {
                 //Toast.makeText(v.getContext(), "VIEWPROFILE CLICKED"+position+"\t"+String.valueOf(notifyList.get(position).getId()), Toast.LENGTH_SHORT).show();
-                ProfileActivity fragment = new ProfileActivity();
+                /*ProfileActivity fragment = new ProfileActivity();
                 Bundle args = new Bundle();
                 args.putString("uid", String.valueOf(notifyList.get(position).getId()));
-                function.loadFragment(context,fragment,args);
+                function.loadFragment(context,fragment,args); */
+
+                Intent intent1=new Intent(context,ProfileActivity.class);
+                intent1.putExtra("uid",String.valueOf(notifyList.get(position).getId()));
+                context.startActivity(intent1);
+
             }
         });
         if (String.valueOf(notifyList.get(position).getId()).equalsIgnoreCase(PrefManager.getLoginDetail(context,"id"))){

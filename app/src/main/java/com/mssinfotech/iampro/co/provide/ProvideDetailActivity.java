@@ -30,6 +30,7 @@ import com.like.OnLikeListener;
 import com.mssinfotech.iampro.co.ChatToUser;
 import com.mssinfotech.iampro.co.CommentActivity;
 import com.mssinfotech.iampro.co.R;
+import com.mssinfotech.iampro.co.WelcomeActivity;
 import com.mssinfotech.iampro.co.adapter.CommentAdapter;
 import com.mssinfotech.iampro.co.common.Config;
 import com.mssinfotech.iampro.co.common.PhotoFullPopupWindow;
@@ -100,10 +101,15 @@ public class ProvideDetailActivity extends AppCompatActivity implements CommentA
         user_image.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ProfileActivity fragment = new ProfileActivity();
+                /*ProfileActivity fragment = new ProfileActivity();
                 Bundle args = new Bundle();
                 args.putString("uid", String.valueOf(uid));
-                function.loadFragment(ProvideDetailActivity.this,fragment,args);
+                function.loadFragment(ProvideDetailActivity.this,fragment,args); */
+
+                Intent intent1=new Intent(ProvideDetailActivity.this,ProfileActivity.class);
+                intent1.putExtra("uid",String.valueOf(uid));
+                startActivity(intent1);
+
             }
         });
         getProvideDetail();

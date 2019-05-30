@@ -48,6 +48,7 @@ import com.bumptech.glide.Glide;
 import com.mssinfotech.iampro.co.IntroActivity;
 import com.mssinfotech.iampro.co.R;
 import com.mssinfotech.iampro.co.SignupActivity;
+import com.mssinfotech.iampro.co.WelcomeActivity;
 import com.mssinfotech.iampro.co.adapter.GalleryAdapter;
 import com.mssinfotech.iampro.co.common.CircleTransform;
 import com.mssinfotech.iampro.co.common.Config;
@@ -286,8 +287,12 @@ public class EditProfileActivity extends Fragment {
                             //String urlv=jsonObject.getString("url");
                             Toast.makeText(context,""+msgg,Toast.LENGTH_LONG).show();
                             if (status.equalsIgnoreCase("success")){
-                                ProfileActivity fragment = new ProfileActivity();
-                                function.loadFragment(context,fragment,null);
+                               /* ProfileActivity fragment = new ProfileActivity();
+                                function.loadFragment(context,fragment,null); */
+
+                                Intent intent1=new Intent(getContext(),ProfileActivity.class);
+                                intent1.putExtra("uid",PrefManager.getLoginDetail(getContext(),"id"));
+                                startActivity(intent1);
                             }
                         }
                         catch(JSONException e)
@@ -586,8 +591,12 @@ public class EditProfileActivity extends Fragment {
                     .setMaxRetries(2)
                     .startUpload(); //Starting the upload
              ShowProgressDialog();
-            ProfileActivity fragment = new ProfileActivity();
-            function.loadFragment(context,fragment,null);
+            /*ProfileActivity fragment = new ProfileActivity();
+            function.loadFragment(context,fragment,null); */
+
+            Intent intent1=new Intent(context,ProfileActivity.class);
+            intent1.putExtra("uid",PrefManager.getLoginDetail(context,"id"));
+            startActivity(intent1);
             //getActivity().finish();
         } catch (Exception exc) {
             Toast.makeText(context, ""+exc.getMessage(), Toast.LENGTH_SHORT).show();
@@ -621,8 +630,12 @@ public class EditProfileActivity extends Fragment {
                      .setMaxRetries(2)
                      .startUpload(); //Starting the upload
                    ShowProgressDialog();
-             ProfileActivity fragment = new ProfileActivity();
-             function.loadFragment(context,fragment,null);
+             /*ProfileActivity fragment = new ProfileActivity();
+             function.loadFragment(context,fragment,null); */
+
+             Intent intent1=new Intent(context,ProfileActivity.class);
+             intent1.putExtra("uid",PrefManager.getLoginDetail(context,"id"));
+             startActivity(intent1);
 
               /*
                String uploadId = UUID.randomUUID().toString();

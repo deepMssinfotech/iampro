@@ -40,6 +40,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.Volley;
 import com.mssinfotech.iampro.co.R;
+import com.mssinfotech.iampro.co.WelcomeActivity;
 import com.mssinfotech.iampro.co.adapter.MyImageVideoDataAdapter;
 import com.mssinfotech.iampro.co.adapter.RecyclerViewAdapter;
 import com.mssinfotech.iampro.co.adapter.RecyclerViewDataAdapter;
@@ -390,10 +391,14 @@ public class UserFragment extends Fragment implements UserDataAdapter.ItemListen
     }
     @Override
     public void onItemClick(UserModel item) {
-        ProfileActivity fragment = new ProfileActivity();
+        /*ProfileActivity fragment = new ProfileActivity();
         Bundle args = new Bundle();
         args.putString("uid", String.valueOf(uid));
-        function.loadFragment(context,fragment,args);
+        function.loadFragment(context,fragment,args); */
+
+        Intent intent1=new Intent(UserFragment.this.getContext(),ProfileActivity.class);
+        intent1.putExtra("uid",String.valueOf(uid));
+        startActivity(intent1);
 
     }
 

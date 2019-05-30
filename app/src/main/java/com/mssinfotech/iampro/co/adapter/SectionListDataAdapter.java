@@ -36,6 +36,7 @@ import com.like.LikeButton;
 import com.like.OnLikeListener;
 import com.mssinfotech.iampro.co.CommentActivity;
 import com.mssinfotech.iampro.co.R;
+import com.mssinfotech.iampro.co.WelcomeActivity;
 import com.mssinfotech.iampro.co.common.Config;
 import com.mssinfotech.iampro.co.common.function;
 import com.mssinfotech.iampro.co.demand.DemandDetailActivity;
@@ -192,10 +193,15 @@ public class SectionListDataAdapter extends RecyclerView.Adapter<SectionListData
             holder.user_image.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    ProfileActivity fragment = new ProfileActivity();
+                    /*ProfileActivity fragment = new ProfileActivity();
                     Bundle bundle = new Bundle();
                     bundle.putString("uid", String.valueOf(added_by));
-                    function.loadFragment(mContext, fragment, bundle);
+                    function.loadFragment(mContext, fragment, bundle); */
+
+
+                    Intent intent1=new Intent(mContext,ProfileActivity.class);
+                    intent1.putExtra("uid",String.valueOf(added_by));
+                     mContext.startActivity(intent1);
 
                 }
             });

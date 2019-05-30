@@ -11,7 +11,9 @@ import android.graphics.Bitmap;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Handler;
+import android.os.PersistableBundle;
 import android.provider.MediaStore;
+import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -46,6 +48,7 @@ import com.bumptech.glide.Glide;
 import com.mssinfotech.iampro.co.ChatToUser;
 import com.mssinfotech.iampro.co.HomeActivity;
 import com.mssinfotech.iampro.co.R;
+import com.mssinfotech.iampro.co.WelcomeActivity;
 import com.mssinfotech.iampro.co.adapter.AllFeedAdapter;
 import com.mssinfotech.iampro.co.adapter.CommentAdapter;
 import com.mssinfotech.iampro.co.app.AppController;
@@ -87,7 +90,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 import static android.app.Activity.RESULT_CANCELED;
 
-public class ProfileActivity extends Fragment implements AllFeedAdapter.ItemListener,SwipeRefreshLayout.OnRefreshListener  {
+public class ProfileActivity extends AppCompatActivity implements AllFeedAdapter.ItemListener,SwipeRefreshLayout.OnRefreshListener  {
  //,OnLikeListener,OnAnimationEndListener
     private static final String TAG = ProfileActivity.class.getSimpleName();
     private static final int FEED_LIMIT=15;
@@ -128,27 +131,240 @@ public class ProfileActivity extends Fragment implements AllFeedAdapter.ItemList
     Handler handlers = new Handler();
     FloatingActionButton floatingActionButton;
 
-    public void onBackPressed()
+   /* public void onBackPressed()
     {
         FragmentManager fm =new ProfileActivity().getActivity().getSupportFragmentManager();
-        if (PrefManager.isLogin(getContext()))
+        if (PrefManager.isLogin(ProfileActivity.this))
         fm.popBackStack();
-    }
+    } */
+
     @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_profile);
+
+        context = ProfileActivity.this;
+        LinearLayout edit_layout = findViewById(R.id.edit_layout);
+        LinearLayout dashboard_layout = findViewById(R.id.dashboard_layout);
+        LinearLayout chat_layout =findViewById(R.id.chat_layout);
+        userDetail_Layout = findViewById(R.id.userDetail_Layout);
+        intent = this.getIntent();
+        fid = intent.getStringExtra("uid");
+       /* Bundle args = getArguments();
+        //fid = getArguments().getString("uid");
+        if (args != null && args.containsKey("uid")) {
+            fid = args.getString("uid").toString();
+        }else {
+            fid = intent.getStringExtra("uid");
+        } */
+        uid= PrefManager.getLoginDetail(context,"id");
+        //Toast.makeText(context,uid+"---"+fid,Toast.LENGTH_LONG).show();
+        Log.d(Config.TAG,uid+"--"+fid+" addedby");
+        ll_dashboard=findViewById(R.id.ll_dashboard);
+        ll_frienddashboard=findViewById(R.id.ll_frienddashboard);
+        username = findViewById(R.id.username);
+        userimage =findViewById(R.id.userimage);
+        userbackgroud =findViewById(R.id.userbackgroud);
+        mSwipeRefreshLayout =findViewById(R.id.swiperefresh);
+        mSwipeRefreshLayout.setOnRefreshListener(this);
+        // Configure the refreshing colors
+        mSwipeRefreshLayout.setColorSchemeResources(android.R.color.holo_blue_bright,
+                android.R.color.holo_green_light,
+                android.R.color.holo_orange_light,
+                android.R.color.holo_red_light);
+
+        tv_name=findViewById(R.id.tv_name);
+        tv_dob=findViewById(R.id.tv_dob);
+        tv_categories=findViewById(R.id.tv_categories);
+        tv_email=findViewById(R.id.tv_email);
+        tv_gender=findViewById(R.id.tv_gender);
+        tv_address=findViewById(R.id.tv_address);
+        tv_city=findViewById(R.id.tv_city);
+        tv_state=findViewById(R.id.tv_state);
+        tv_country=findViewById(R.id.tv_country);
+
+        vFeed=findViewById(R.id.rvFeed);
+
+        if(fid == null || fid.isEmpty() || fid.equals(uid)) {
+            String fname=PrefManager.getLoginDetail(context,"fname");
+            String lname=PrefManager.getLoginDetail(context,"lname");
+            String avatar=Config.AVATAR_URL+PrefManager.getLoginDetail(context,"img_url");
+            String background=Config.AVATAR_URL+PrefManager.getLoginDetail(context,"banner_image");
+            username.setText(fname +" "+lname);
+            Glide.with(this).load(background).apply(Config.options_background).into(userbackgroud);
+            Glide.with(this).load(avatar).apply(Config.options_avatar).into(userimage);
+            userbackgroud.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    new PhotoFullPopupWindow(context, R.layout.popup_photo_full, view, Config.AVATAR_URL+PrefManager.getLoginDetail(context,"banner_image"), null);
+                }
+            });
+            userimage.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    //new PhotoFullPopupWindow(context, R.layout.popup_photo_full, view, Config.AVATAR_URL+PrefManager.getLoginDetail(context,"img_url"), null);
+                }
+            });
+            edit_layout.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    EditProfileActivity fragment = new EditProfileActivity();
+                    function.loadFragment(context,fragment,null);
+                }
+            });
+            PrefManager.updateUserData(context,null);
+            tv_name.setText(fname+" "+lname);
+            tv_dob.setText(PrefManager.getLoginDetail(context,"dob"));
+            tv_categories.setText(PrefManager.getLoginDetail(context,"category"));
+            tv_email.setText(PrefManager.getLoginDetail(context,"email"));
+            tv_gender.setText(PrefManager.getLoginDetail(context,"gender"));
+            tv_address.setText(PrefManager.getLoginDetail(context,"address"));
+            tv_city.setText(PrefManager.getLoginDetail(context,"city"));
+            tv_state.setText(PrefManager.getLoginDetail(context,"state"));
+            tv_country.setText(PrefManager.getLoginDetail(context,"country"));
+            userDetail_Layout.setVisibility(View.GONE);
+            fid=uid;
+            ll_dashboard.setVisibility(View.VISIBLE);
+            ll_frienddashboard.setVisibility(View.GONE);
+        }else{
+            uid= fid;
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    gteUsrDetail(fid);
+                }
+            }, 1000);
+            ll_dashboard.setVisibility(View.GONE);
+            ll_frienddashboard.setVisibility(View.VISIBLE);
+
+        }
+        IncludeShortMenu includeShortMenu =findViewById(R.id.includeShortMenu);
+        includeShortMenu.updateCounts(context,uid);
+        TextView myuid= includeShortMenu.findViewById(R.id.myuid);
+        myuid.setText(uid);
+
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                getFeed(FEED_START);
+            }
+        }, 1000);
+        vFeed.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(RecyclerView recyclerView,int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+
+                Toast.makeText(context,"Scroll1",Toast.LENGTH_LONG).show();
+                if (newState == AbsListView.OnScrollListener.SCROLL_STATE_IDLE) {
+                    Toast.makeText(context,"Scroll",Toast.LENGTH_LONG).show();
+                    //get the recyclerview position which is completely visible and first
+                    int positionView = ((LinearLayoutManager)vFeed.getLayoutManager()).findFirstCompletelyVisibleItemPosition();
+                    Log.i("VISISBLE",   ""+positionView);
+                    if (positionView >= 0) {
+                        if (oldFocusedLayout != null) {
+                            //Stop the previous video playback after new scroll
+                            //VideoView vv_dashboard = (VideoView) oldFocusedLayout.findViewById(R.id.vv_dashboard);
+                            //vv_dashboard.stopPlayback();
+                            Toast.makeText(context,mValues.get(positionView)+"",Toast.LENGTH_LONG).show();
+                        }
+                        currentFocusedLayout = ((LinearLayoutManager) vFeed.getLayoutManager()).findViewByPosition(positionView);
+                        //VideoView vv_dashboard = (VideoView) currentFocusedLayout.findViewById(R.id.vv_dashboard);
+                        //to play video of selected recylerview, videosData is an array-list which is send to recyclerview adapter to fill the view. Here we getting that specific video which is displayed through recyclerview.
+                        //playVideo(mValues.get(positionView));
+                        Toast.makeText(context,mValues.get(positionView)+"",Toast.LENGTH_LONG).show();
+                        oldFocusedLayout = currentFocusedLayout;
+                    }
+                }
+
+            }
+
+        });
+        NestedScrollView scroller =findViewById(R.id.scroll_view);
+        if (scroller != null) {
+            scroller.setOnScrollChangeListener(new NestedScrollView.OnScrollChangeListener() {
+                @Override
+                public void onScrollChange(NestedScrollView v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
+                    Log.d(TAG,scrollY+"-----"+v.getMeasuredHeight() +"/"+ v.getChildAt(0).getMeasuredHeight()+"====="+(v.getMeasuredHeight() - v.getChildAt(0).getMeasuredHeight()));
+                    if (scrollY == ( v.getChildAt(0).getMeasuredHeight()-v.getMeasuredHeight() )) {
+                        Log.i(TAG, "BOTTOM SCROLL");
+
+
+                        new Handler().postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                FEED_START=FEED_START+FEED_LIMIT;
+                                getFeed(FEED_START);
+                            }
+                        }, 2000);
+                    }
+                }
+            });
+        }
+        dashboard_layout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (userDetail_Layout.getVisibility() == View.VISIBLE) {
+                    userDetail_Layout.setVisibility(View.GONE);
+                } else {
+                    userDetail_Layout.setVisibility(View.VISIBLE);
+                }
+            }
+        });
+        chat_layout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //Toast.makeText(context,"redirect to chat page...",Toast.LENGTH_LONG).show();
+                Intent intent=new Intent(ProfileActivity.this, ChatToUser.class);
+                intent.putExtra("id",String.valueOf(fid));
+                startActivity(intent);
+            }
+        });
+
+        changeImage = findViewById(R.id.changeImage);
+        changeImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                imageType="userImage";
+                showImagePickerOptions();
+
+            }
+        });
+
+        changeBackground_Image = findViewById(R.id.changeBackground_Image);
+        changeBackground_Image.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //showPictureDialog();
+                imageType="backgroundImage";
+                showImagePickerOptions();
+            }
+        });
+
+        if (PrefManager.isLogin(ProfileActivity.this)){
+            changeBackground_Image.setVisibility(View.VISIBLE);
+            changeImage.setVisibility(View.VISIBLE);
+        }
+        else{
+            changeBackground_Image.setVisibility(View.GONE);
+            changeImage.setVisibility(View.GONE);
+        }
+    }
+
+   /* @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup parent, Bundle savedInstanceState) {
         // Defines the xml file for the fragment
         return inflater.inflate(R.layout.activity_profile, parent, false);
-    }
+    } */
     @Override
     public void onResume() {
         super.onResume();
-        if (!PrefManager.isLogin(ProfileActivity.this.getContext())){
-            FragmentManager fm = getChildFragmentManager();
+        if (!PrefManager.isLogin(ProfileActivity.this)){
+            FragmentManager fm = getSupportFragmentManager();
             for (int i = 0; i < fm.getBackStackEntryCount(); ++i) {
                 fm.popBackStack();
             }
         }
-        if (Config.allowRefresh) {
+       /* if (Config.allowRefresh) {
             Config.allowRefresh = false;
             //Toast.makeText(context, "click from BACK", Toast.LENGTH_SHORT).show();
             Fragment frg = null;
@@ -159,9 +375,9 @@ public class ProfileActivity extends Fragment implements AllFeedAdapter.ItemList
             ft.detach(frg);
             ft.attach(frg);
             ft.commit();
-        }
+        }*/
     }
-    @Override
+   /* @Override
     public void onViewCreated(View v, Bundle savedInstanceState) {
         view =v;
         context = this.getContext();
@@ -368,9 +584,10 @@ public class ProfileActivity extends Fragment implements AllFeedAdapter.ItemList
             changeBackground_Image.setVisibility(View.GONE);
             changeImage.setVisibility(View.GONE);
         }
-    }
+    } */
+
     private void showImagePickerOptions() {
-        ImagePickerActivity.showImagePickerOptions(getContext(), new ImagePickerActivity.PickerOptionListener() {
+        ImagePickerActivity.showImagePickerOptions(ProfileActivity.this, new ImagePickerActivity.PickerOptionListener() {
             @Override
             public void onTakeCameraSelected() {
                 launchCameraIntent();
@@ -383,7 +600,7 @@ public class ProfileActivity extends Fragment implements AllFeedAdapter.ItemList
         });
     }
     private void launchCameraIntent() {
-        Intent intent = new Intent(getContext(), ImagePickerActivity.class);
+        Intent intent = new Intent(ProfileActivity.this, ImagePickerActivity.class);
         intent.putExtra(ImagePickerActivity.INTENT_IMAGE_PICKER_OPTION,ImagePickerActivity.REQUEST_IMAGE_CAPTURE);
 
         // setting aspect ratio
@@ -405,7 +622,7 @@ public class ProfileActivity extends Fragment implements AllFeedAdapter.ItemList
         startActivityForResult(intent, REQUEST_IMAGE);
     }
     private void launchGalleryIntent() {
-        Intent intent = new Intent(getContext(), ImagePickerActivity.class);
+        Intent intent = new Intent(ProfileActivity.this, ImagePickerActivity.class);
         intent.putExtra(ImagePickerActivity.INTENT_IMAGE_PICKER_OPTION, ImagePickerActivity.REQUEST_GALLERY_IMAGE);
 
         // setting aspect ratio
@@ -423,7 +640,7 @@ public class ProfileActivity extends Fragment implements AllFeedAdapter.ItemList
     private void gteUsrDetail(String id){
         String myurl = Config.API_URL + "ajax.php?type=friend_detail&id=" + fid + "&uid=" + PrefManager.getLoginDetail(context,"id");
         Log.d(Config.TAG, myurl);
-        final Dialog dialog = new Dialog(this.getContext());
+        final Dialog dialog = new Dialog(this);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setContentView(R.layout.progress_dialog);
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
@@ -440,9 +657,9 @@ public class ProfileActivity extends Fragment implements AllFeedAdapter.ItemList
                             String lname=result.getString("lname");
                             final String avatarX=result.getString("avatar");
                             final String backgroundX=result.getString("banner_image");
-                            username = view.findViewById(R.id.username);
-                            userimage = view.findViewById(R.id.userimage);
-                            userbackgroud = view.findViewById(R.id.userbackgroud);
+                            username = findViewById(R.id.username);
+                            userimage = findViewById(R.id.userimage);
+                            userbackgroud = findViewById(R.id.userbackgroud);
                             username.setText(fname +" "+lname);
                             Glide.with(context).load(Config.AVATAR_URL+"h/250/"+backgroundX).apply(Config.options_background).into(userbackgroud);
                             Glide.with(context).load(Config.AVATAR_URL+"250/250/"+avatarX).apply(Config.options_avatar).into(userimage);
@@ -468,7 +685,7 @@ public class ProfileActivity extends Fragment implements AllFeedAdapter.ItemList
                             tv_state.setText(result.getString("state"));
                             tv_country.setText(result.getString("country"));
                             userDetail_Layout.setVisibility(View.VISIBLE);
-                            final TextView friend_request = view.findViewById(R.id.friend_request);
+                            final TextView friend_request =findViewById(R.id.friend_request);
                             FrindStatus = result.getString("friend_status");
                             if(FrindStatus.equals("NO")){
                                 friend_request.setText("Add to Friend");
@@ -617,7 +834,7 @@ public class ProfileActivity extends Fragment implements AllFeedAdapter.ItemList
         //CreateProgressDialog();
         //Toast.makeText(getApplicationContext(), "Video upload remain pleasw wait....", Toast.LENGTH_LONG).show();
         //return;
-        final Dialog dialog = new Dialog(this.getContext());
+        final Dialog dialog = new Dialog(this);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setContentView(R.layout.progress_dialog);
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
@@ -636,8 +853,13 @@ public class ProfileActivity extends Fragment implements AllFeedAdapter.ItemList
                     .setMaxRetries(2)
                     .startUpload(); //Starting the upload
             //ShowProgressDialog();
-            ProfileActivity fragment = new ProfileActivity();
-            function.loadFragment(context,fragment,null);
+            /*ProfileActivity fragment = new ProfileActivity();
+            function.loadFragment(context,fragment,null); */
+
+            Intent intent1=new Intent(ProfileActivity.this,ProfileActivity.class);
+            intent1.putExtra("uid",PrefManager.getLoginDetail(ProfileActivity.this,"id"));
+            startActivity(intent1);
+
             //getActivity().finish();
             if (dialog.isShowing())
                  dialog.dismiss();
@@ -656,7 +878,7 @@ public class ProfileActivity extends Fragment implements AllFeedAdapter.ItemList
         //CreateProgressDialog();
         //Toast.makeText(getApplicationContext(), "Video upload remain pleasw wait....", Toast.LENGTH_LONG).show();
         //return;
-        final Dialog dialog = new Dialog(this.getContext());
+        final Dialog dialog = new Dialog(this);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setContentView(R.layout.progress_dialog);
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
@@ -683,8 +905,13 @@ public class ProfileActivity extends Fragment implements AllFeedAdapter.ItemList
                     .setMaxRetries(2)
                     .startUpload(); //Starting the upload
             PrefManager.updateLoginDetail(context,"options_avatar",image_name);
-            ProfileActivity fragment = new ProfileActivity();
-            function.loadFragment(context,fragment,null);
+           /* ProfileActivity fragment = new ProfileActivity();
+            function.loadFragment(context,fragment,null); */
+
+            Intent intent1=new Intent(ProfileActivity.this,ProfileActivity.class);
+            intent1.putExtra("uid",PrefManager.getLoginDetail(ProfileActivity.this,"id"));
+            startActivity(intent1);
+
             if (dialog.isShowing())
                   dialog.dismiss();
 
@@ -744,7 +971,7 @@ public class ProfileActivity extends Fragment implements AllFeedAdapter.ItemList
     public void getFeed(int start){
         String My_id=PrefManager.getLoginDetail(context,"id");
 
-        final Dialog dialog = new Dialog(ProfileActivity.this.getContext());
+        final Dialog dialog = new Dialog(ProfileActivity.this);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setContentView(R.layout.progress_dialog);
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
@@ -757,7 +984,7 @@ public class ProfileActivity extends Fragment implements AllFeedAdapter.ItemList
         URL_FEED = Config.API_URL+ "feed_service.php?type=AllFeeds&start="+start+"&limit="+FEED_LIMIT+"&fid=" +fid+ "&uid="+My_id+"&my_id=" +My_id;
         Log.e(Config.TAG,URL_FEED);
         RequestQueue requestQueue = Volley.newRequestQueue(context);
-
+          Log.d("url_feed",""+URL_FEED);
         // Initialize a new JsonObjectRequest instance
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(
                 Request.Method.GET,
@@ -835,7 +1062,8 @@ public class ProfileActivity extends Fragment implements AllFeedAdapter.ItemList
                                     // int is_favrait = jsonObject.getInt("is_favrait");
                                     int mylikes = jsonObject.getInt("mylikes");
                                     //average_rating
-                                    int all_rating = jsonObject.getInt("average_rating");
+                                    int all_ratingv = jsonObject.getInt("average_rating");
+                                    double all_rating= jsonObject.getDouble("all_rating");
                                     //type all_comment average_rating
 
 
@@ -871,7 +1099,7 @@ public class ProfileActivity extends Fragment implements AllFeedAdapter.ItemList
                                     }
                                     Log.d("image_setdata", "" + fimage_path);
                                     int all_comment = jsonObject.getInt("all_comment");
-                                    int average_rating = jsonObject.getInt("average_rating");
+                                      int average_rating = jsonObject.getInt("average_rating");
                                     if (type.equalsIgnoreCase("PRODUCT") || type.equalsIgnoreCase("PROVIDE") || type.equalsIgnoreCase("DEMAND")) {
                                         mValues.add(new FeedModel(id, shareid, fullname, uid, avatar_path, udate, timespam, is_block, imageArray, fimage_path, comment, likes, mylikes, all_rating, type, all_comment, average_rating, detail_name, selling_cost, purchese_cost, is_favrait));
                                     } else {
@@ -946,7 +1174,7 @@ public class ProfileActivity extends Fragment implements AllFeedAdapter.ItemList
 
     public void CreateProgressDialog()
     {
-        progressdialog = new ProgressDialog(ProfileActivity.this.getContext());
+        progressdialog = new ProgressDialog(ProfileActivity.this);
         progressdialog.setIndeterminate(false);
         progressdialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
         progressdialog.setCancelable(true);

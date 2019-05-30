@@ -301,8 +301,6 @@
             android:layout_alignParentRight="true"
             android:onClick="sendComment"
             android:layout_gravity="right"/>
-
-
     </LinearLayout>
     </LinearLayout>
  </LinearLayout>

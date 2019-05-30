@@ -1,9 +1,7 @@
 package com.mssinfotech.iampro.co.adapter;
-
 /**
  * Created by mssinfotech on 30/01/19.
  */
-
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
@@ -42,6 +40,7 @@ import android.widget.Toast;
 import android.widget.Toolbar;
 import android.widget.VideoView;
 
+import com.mssinfotech.iampro.co.WelcomeActivity;
 import com.mssinfotech.iampro.co.common.Config;
 import com.mssinfotech.iampro.co.common.PhotoFullPopupWindow;
 import com.mssinfotech.iampro.co.common.function;
@@ -68,7 +67,6 @@ import bg.devlabs.fullscreenvideoview.orientation.PortraitOrientation;
 
 import static android.content.Intent.FLAG_ACTIVITY_NEW_TASK;
 import static com.mssinfotech.iampro.co.image.ImageDetail.avatar_urll;
-
 public class Img_Video_Details extends RecyclerView.Adapter<Img_Video_Details.ViewHolder> {
     ArrayList<ImageDetailModel> mValues;
     Context mContext;
@@ -80,7 +78,7 @@ public class Img_Video_Details extends RecyclerView.Adapter<Img_Video_Details.Vi
         mListener=itemListener;
     }
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-       TextView fullname,udate,tv_comments,tv_totallike,name,category;
+       TextView fullname,udate,tv_comments,tv_totallike,name,category,tv_rating;
         ImageView imageView_user,imageView_icon,iv_comments,image;
          FullscreenVideoView fullscreenVideoView;
          VideoView videoView;
@@ -104,16 +102,23 @@ public class Img_Video_Details extends RecyclerView.Adapter<Img_Video_Details.Vi
             ratingBar=v.findViewById(R.id.ratingBar);
             imageView_user=v.findViewById(R.id.imageView_user);
             imageView_icon=v.findViewById(R.id.imageView_icon);
+            tv_rating=v.findViewById(R.id.tv_rating);
+            tv_rating=v.findViewById(R.id.tv_rating);
             iv_comments=v.findViewById(R.id.iv_comments);
             likeButton=v.findViewById(R.id.likeButton);
             image=v.findViewById(R.id.image);
             imageView_user.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    ProfileActivity fragment = new ProfileActivity();
+                    /*ProfileActivity fragment = new ProfileActivity();
                     Bundle args = new Bundle();
                     args.putString("uid", String.valueOf(uid));
-                    function.loadFragment(mContext,fragment,args);
+                    function.loadFragment(mContext,fragment,args); */
+
+                    Intent intent1=new Intent(mContext,ProfileActivity.class);
+                    intent1.putExtra("uid",String.valueOf(uid));
+                    mContext.startActivity(intent1);
+
                 }
             });
            videoView=v.findViewById(R.id.video);
@@ -164,7 +169,8 @@ public class Img_Video_Details extends RecyclerView.Adapter<Img_Video_Details.Vi
         final int uid=mValues.get(position).getUid();
          final int id=mValues.get(position).getId();
         final String type=mValues.get(position).getType();
-         if (PrefManager.isLogin(mContext)){
+        Vholder.tv_rating.setText(mValues.get(position).getRating());
+        // if (PrefManager.isLogin(mContext)){
 
           Vholder.ll_comments.setOnClickListener(new View.OnClickListener() {
               @Override
@@ -176,10 +182,10 @@ public class Img_Video_Details extends RecyclerView.Adapter<Img_Video_Details.Vi
                   mContext.startActivity(intent);
               }
           });
-         }
+        /* }
          else{
               Toast.makeText(mContext,"First Login and try again...",Toast.LENGTH_LONG).show();
-         }
+         } */
         Vholder.likeButton.setOnLikeListener(new OnLikeListener() {
             @Override
             public void liked(LikeButton likeButton) {
@@ -279,10 +285,15 @@ public class Img_Video_Details extends RecyclerView.Adapter<Img_Video_Details.Vi
          Vholder.imageView_user.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ProfileActivity fragment = new ProfileActivity();
+                /*ProfileActivity fragment = new ProfileActivity();
                 Bundle args = new Bundle();
                 args.putString("uid", String.valueOf(uid));
-                function.loadFragment(mContext,fragment,args);
+                function.loadFragment(mContext,fragment,args); */
+
+                Intent intent1=new Intent(mContext,ProfileActivity.class);
+                intent1.putExtra("uid",String.valueOf(uid));
+                mContext.startActivity(intent1);
+
             }
         });
          Vholder.image.setOnClickListener(new View.OnClickListener() {
@@ -363,6 +374,17 @@ public class Img_Video_Details extends RecyclerView.Adapter<Img_Video_Details.Vi
 
              }
          });
+        if (PrefManager.isLogin(mContext)) {
+            Vholder.ratingBar.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
+                @Override
+                public void onRatingChanged(RatingBar ratingBar, float rating, boolean fromUser) {
+                    sendrating(rating,mValues.get(position).getUid(),id,type);
+                    //Toast.makeText(mContext,itemsList.get(i).getType(),Toast.LENGTH_LONG).show();
+                    Vholder.ratingBar.setRating(rating);
+                    Vholder.tv_rating.setText(String.valueOf(rating));
+                }
+            });
+        }
     }
     @Override
     public int getItemCount() {
@@ -370,5 +392,44 @@ public class Img_Video_Details extends RecyclerView.Adapter<Img_Video_Details.Vi
     }
     public interface ItemListener {
         void onItemClick(ImageDetailModel item);
+    }
+    public void sendrating(float rating,int uid,int id,String ptype){
+        String urlv= Config.API_URL+ "app_service.php?type=rate_me&id="+id+"&uid="+uid+"&ptype="+ptype+"&total_rate="+rating;
+
+        RequestQueue requestQueue = Volley.newRequestQueue(mContext);
+        // Initialize a new JsonObjectRequest instance
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(
+                Request.Method.GET,
+                urlv,
+                null,
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        Log.d("Prod_detaili_profile",""+response);
+                        try{
+                            String status=response.optString("status");
+                            String msgv=response.optString("msg");
+                            if(status.equalsIgnoreCase("success")) {
+                                //Toast.makeText(mContext,""+msgv,Toast.LENGTH_LONG).show();
+                            }
+                            else{
+                                // Toast.makeText(mContext,""+msgv,Toast.LENGTH_LONG).show();
+                            }
+                        }
+                        catch (Exception e){
+                            e.printStackTrace();
+                            Toast.makeText(mContext,e.getMessage(),Toast.LENGTH_LONG).show();
+                        }
+                    }
+                },
+                new Response.ErrorListener(){
+                    @Override
+                    public void onErrorResponse(VolleyError error){
+                        Toast.makeText(mContext,error.getMessage(),Toast.LENGTH_LONG).show();
+                    }
+                }
+        );
+        requestQueue.add(jsonObjectRequest);
+
     }
 }

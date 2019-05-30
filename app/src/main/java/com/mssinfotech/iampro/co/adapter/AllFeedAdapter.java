@@ -37,6 +37,7 @@ import com.mssinfotech.iampro.co.R;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.bitmap.CircleCrop;
 import com.bumptech.glide.request.RequestOptions;
+import com.mssinfotech.iampro.co.WelcomeActivity;
 import com.mssinfotech.iampro.co.common.Config;
 import com.mssinfotech.iampro.co.common.function;
 import com.mssinfotech.iampro.co.demand.DemandDetailActivity;
@@ -77,11 +78,11 @@ public class AllFeedAdapter extends RecyclerView.Adapter<AllFeedAdapter.ViewHold
     }
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         AppCompatImageView iv_comments, image, iv_favourite, ivLike,video_imageView;
-        TextView fullname, udate, tv_comments, tv_totallike, detail_name, purchese_cost, selling_cost;
+        TextView fullname, udate, tv_comments, tv_totallike, detail_name, purchese_cost,selling_cost,tv_rating;
         LikeButton like_un, favButton;
         ImageView iv_buy;
         RatingBar ratingBar;
-        LinearLayout ll_showhide, ll_comment,video_imageView_ll;
+        LinearLayout ll_showhide, ll_comment,video_imageView_ll,ll_likes;
         FeedModel item;
         FullscreenVideoView fullscreenVideoView;
         CircleImageView imageView_user,imageView_icon;
@@ -105,7 +106,9 @@ public class AllFeedAdapter extends RecyclerView.Adapter<AllFeedAdapter.ViewHold
             fullscreenVideoView = v.findViewById(R.id.fullscreenVideoView);
             videoImage = v.findViewById(R.id.videoImage);
             videoLayout = v.findViewById(R.id.videoLayout);
+            tv_rating=v.findViewById(R.id.tv_rating);
             iv_buy = v.findViewById(R.id.iv_buy);
+            ll_likes=v.findViewById(R.id.ll_likes);
             //iv_favourite=v.findViewById(R.id.iv_favourite);
             image = v.findViewById(R.id.imageView);
             ratingBar = v.findViewById(R.id.ratingBar);
@@ -129,7 +132,8 @@ public class AllFeedAdapter extends RecyclerView.Adapter<AllFeedAdapter.ViewHold
             final String type = item.getType();
             final String id = String.valueOf(item.getId());
             //final String id=String.valueOf(item.getShareId());
-            ratingBar.setRating(Float.parseFloat(String.valueOf(item.getAverage_rating())));
+            //ratingBar.setRating(Float.parseFloat(String.valueOf(item.getAverage_rating())));
+
             fullname.setText(item.getFullname());
             udate.setText(item.getUdate());
             tv_comments.setText(String.valueOf(item.getComment()));
@@ -141,10 +145,14 @@ public class AllFeedAdapter extends RecyclerView.Adapter<AllFeedAdapter.ViewHold
             imageView_user.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    ProfileActivity fragment = new ProfileActivity();
+                    /*ProfileActivity fragment = new ProfileActivity();
                     Bundle args = new Bundle();
                     args.putString("uid", String.valueOf(uid));
-                    function.loadFragment(mContext,fragment,args);
+                    function.loadFragment(mContext,fragment,args); */
+
+                    Intent intent1=new Intent(mContext,ProfileActivity.class);
+                    intent1.putExtra("uid",String.valueOf(uid));
+                    mContext.startActivity(intent1);
                 }
             });
             tv_totallike.setText(String.valueOf(item.getLikes()));
@@ -284,6 +292,12 @@ public class AllFeedAdapter extends RecyclerView.Adapter<AllFeedAdapter.ViewHold
 
         String sidd = mValues.get(position).getShareId();
         final String[] sharedId = sidd.split(",");
+        /*if (type.equalsIgnoreCase("image") || type.equalsIgnoreCase("video"))
+        Vholder.ratingBar.setRating(Float.parseFloat(String.valueOf(mValues.get(position).getAll_rating())));
+        else
+            Vholder.ratingBar.setRating(Float.parseFloat(String.valueOf(mValues.get(position).getAverage_rating()))); */
+        Vholder.ratingBar.setRating(Float.parseFloat(String.valueOf(mValues.get(position).getAll_rating())));
+        Vholder.tv_rating.setText("("+String.valueOf(mValues.get(position).getAll_rating()+")"));
         int my_uid = mValues.get(position).getUid();
         if (PrefManager.isLogin(mContext))
             my_uid = Integer.parseInt(PrefManager.getLoginDetail(mContext, "id"));
@@ -333,7 +347,7 @@ public class AllFeedAdapter extends RecyclerView.Adapter<AllFeedAdapter.ViewHold
                 }
             }
         });
-        String sid = mValues.get(position).getShareId();
+        final String sid = mValues.get(position).getShareId();
         final String[] animalsArray = sid.split(",");
         if (type.equalsIgnoreCase("image")) {
             //Vholder.image.setVisibility(View.VISIBLE);
@@ -579,24 +593,32 @@ public class AllFeedAdapter extends RecyclerView.Adapter<AllFeedAdapter.ViewHold
         Vholder.ratingBar.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
             @Override
             public void onRatingChanged(RatingBar ratingBar, float rating, boolean fromUser) {
-                Toast.makeText(mContext, "" + ratingBar.getRating(), Toast.LENGTH_LONG).show();
+                //Toast.makeText(mContext, "" + ratingBar.getRating(), Toast.LENGTH_LONG).show();
                 float ratingb = ratingBar.getRating();
                 //sendrating(ratingb, uid, id, type, sharedId);
                 String url=null;
                 if(type.equalsIgnoreCase("image")) {
                     if (animalsArray.length > 1) {
-                        url = Config.API_URL + "app_service.php?type=rate_me&id=" +id + "&uid=" + uid + "&ptype=feed&total_rate="+rating;
+                        url = Config.API_URL + "app_service.php?type=rate_me&id="+id+"&uid="+uid+"&ptype=feed&total_rate="+rating;
                     } else {
-                        url = Config.API_URL + "app_service.php?type=rate_me&id=" + animalsArray[0] + "&uid=" + uid + "&ptype=" + type+"&total_rate="+rating;
+                        url = Config.API_URL + "app_service.php?type=rate_me&id="+sid+"&uid=" + uid + "&ptype=" + type+"&total_rate="+rating;
                     }
                 }else{
-                    url = Config.API_URL + "app_service.php?type=rate_me&id=" + animalsArray[0] + "&uid=" + uid + "&ptype=" + type+"&total_rate="+rating;
+                    url = Config.API_URL + "app_service.php?type=rate_me&id="+sid+"&uid=" + uid + "&ptype=" + type+"&total_rate="+rating;
                 }
                 Log.e(Config.TAG, url);
-                function.executeUrl(mContext, "get", url, null);
+                //function.executeUrl(mContext, "get", url, null);
+                sendrating(url);
                 Vholder.ratingBar.setRating(rating);
+                 Vholder.tv_rating.setText("("+String.valueOf(rating)+")");
             }
         });
+          /*Vholder.ll_likes.setOnClickListener(new View.OnClickListener() {
+              @Override
+              public void onClick(View v) {
+
+              }
+          }); */
         Vholder.like_un.setOnLikeListener(new OnLikeListener() {
             @Override
             public void liked(LikeButton likeButton) {
@@ -732,8 +754,7 @@ public class AllFeedAdapter extends RecyclerView.Adapter<AllFeedAdapter.ViewHold
 
              }
          }); */
-
-        if (PrefManager.isLogin(mContext)) {
+        if(PrefManager.isLogin(mContext)) {
             Vholder.like_un.setEnabled(true);
             Vholder.ratingBar.setFocusable(true);
             Vholder.ratingBar.setIsIndicator(false);
@@ -767,8 +788,11 @@ public class AllFeedAdapter extends RecyclerView.Adapter<AllFeedAdapter.ViewHold
     public interface ItemListener {
         void onItemClick(FeedModel item);
     }
-    public void sendrating(float rating,int uid,int id,String type){
-        String urlv=Config.API_URL+ "app_service.php?type=rate_me&id="+id+"&uid="+uid+"&ptype="+type+"&total_rate="+rating;
+    //public void sendrating(float rating,int uid,int id,String type)
+    public void sendrating(String url){
+        //String urlv=Config.API_URL+ "app_service.php?type=rate_me&id="+id+"&uid="+uid+"&ptype="+type+"&total_rate="+rating;
+        String urlv=url;
+         Log.d("feed_rating",""+urlv);
         RequestQueue requestQueue = Volley.newRequestQueue(mContext);
         // Initialize a new JsonObjectRequest instance
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(
@@ -782,23 +806,24 @@ public class AllFeedAdapter extends RecyclerView.Adapter<AllFeedAdapter.ViewHold
                         try{
                             String status=response.optString("status");
                             String msgv=response.optString("msg");
+                            String totalrating=response.optString("totalrating");
                             if(status.equalsIgnoreCase("success")) {
-                                 Toast.makeText(mContext,""+msgv,Toast.LENGTH_LONG).show();
+                                 //Toast.makeText(mContext,""+msgv+"\t"+totalrating,Toast.LENGTH_LONG).show();
                             }
                             else{
-                                Toast.makeText(mContext,""+msgv,Toast.LENGTH_LONG).show();
+                                //Toast.makeText(mContext,""+msgv,Toast.LENGTH_LONG).show();
                             }
                         }
                         catch (Exception e){
                             e.printStackTrace();
-                            Toast.makeText(mContext,e.getMessage(),Toast.LENGTH_LONG).show();
+                            //Toast.makeText(mContext,e.getMessage(),Toast.LENGTH_LONG).show();
                         }
                     }
                 },
                 new Response.ErrorListener(){
                     @Override
                     public void onErrorResponse(VolleyError error){
-                        Toast.makeText(mContext,error.getMessage(),Toast.LENGTH_LONG).show();
+                        //Toast.makeText(mContext,error.getMessage(),Toast.LENGTH_LONG).show();
                     }
                 }
         );

@@ -195,8 +195,13 @@ public class WelcomeActivity extends AppCompatActivity implements View.OnClickLi
                 //WelcomeActivity.this.finish();
                 break;
             case R.id.imguser:
-                ProfileActivity fragments = new ProfileActivity();
-                function.loadFragment(WelcomeActivity.this,fragments, null);
+                /*ProfileActivity fragments = new ProfileActivity();
+                function.loadFragment(WelcomeActivity.this,fragments, null); */
+
+                 Intent intent1=new Intent(WelcomeActivity.this,ProfileActivity.class);
+                 intent1.putExtra("uid",PrefManager.getLoginDetail(WelcomeActivity.this,"id"));
+                 startActivity(intent1);
+
                 break;
             default:
                 break;

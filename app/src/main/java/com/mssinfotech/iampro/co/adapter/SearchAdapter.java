@@ -215,10 +215,14 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.MyViewHold
         holder.userlayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ProfileActivity fragment = new ProfileActivity();
+                /*ProfileActivity fragment = new ProfileActivity();
                 Bundle args = new Bundle();
                 args.putString("uid", String.valueOf(user_id));
-                function.loadFragment(mContext,fragment,args);
+                function.loadFragment(mContext,fragment,args);*/
+
+                Intent intent=new Intent(mContext,ProfileActivity.class);
+                intent.putExtra("uid",String.valueOf(user_id));
+                mContext.startActivity(intent);
             }
         });
         holder.otherlayout.setOnClickListener(new View.OnClickListener() {
@@ -258,7 +262,7 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.MyViewHold
             @Override
             public void onClick(View v) {
 
-                ProfileActivity myFragment = new ProfileActivity();
+                /*ProfileActivity myFragment = new ProfileActivity();
                 Bundle args = new Bundle();
                 args.putString("uid", String.valueOf(user_id));
                 myFragment.setArguments(args);
@@ -269,7 +273,10 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.MyViewHold
                         .add(android.R.id.content, myFragment,myFragment.getClass().getName())
                         .addToBackStack(null)
                         .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
-                        .commit();
+                        .commit(); */
+                      Intent intent=new Intent(mContext,ProfileActivity.class);
+                      intent.putExtra("uid", String.valueOf(user_id));
+                      mContext.startActivity(intent);
             }
         });
         holder.imageView_icon.setOnClickListener(new View.OnClickListener() {

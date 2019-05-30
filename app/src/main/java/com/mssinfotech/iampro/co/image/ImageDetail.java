@@ -38,6 +38,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.mssinfotech.iampro.co.WelcomeActivity;
 import com.mssinfotech.iampro.co.adapter.Img_Video_Details;
 import com.mssinfotech.iampro.co.common.Config;
 import com.mssinfotech.iampro.co.common.PhotoFullPopupWindow;
@@ -167,7 +168,7 @@ public class ImageDetail extends AppCompatActivity implements Img_Video_Details.
         ll_comment.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(context, CommentActivity.class);
+                Intent intent = new Intent(context,CommentActivity.class);
                 intent.putExtra("type", type);
                 intent.putExtra("id",id);
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -351,10 +352,15 @@ public class ImageDetail extends AppCompatActivity implements Img_Video_Details.
                             imageView_user.setOnClickListener(new View.OnClickListener() {
                                 @Override
                                 public void onClick(View v) {
-                                    ProfileActivity fragment = new ProfileActivity();
+                                    /*ProfileActivity fragment = new ProfileActivity();
                                     Bundle args = new Bundle();
                                     args.putString("uid", String.valueOf(uid));
-                                    function.loadFragment(context,fragment,args);
+                                    function.loadFragment(context,fragment,args); */
+
+                                    Intent intent1=new Intent(ImageDetail.this,ProfileActivity.class);
+                                    intent1.putExtra("uid",PrefManager.getLoginDetail(ImageDetail.this,"id"));
+                                    startActivity(intent1);
+
                                 }
                             });
                             imageView_icon.setOnClickListener(new View.OnClickListener() {

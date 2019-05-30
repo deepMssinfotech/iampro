@@ -14,6 +14,7 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.mssinfotech.iampro.co.CommentActivity;
 import com.mssinfotech.iampro.co.R;
+import com.mssinfotech.iampro.co.WelcomeActivity;
 import com.mssinfotech.iampro.co.common.Config;
 import com.mssinfotech.iampro.co.common.function;
 import com.mssinfotech.iampro.co.data.NotificationItem;
@@ -76,10 +77,14 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
                     intent.putExtra("uid",notifyList.get(position).getUid());
                     context.startActivity(intent); */
 
-                 ProfileActivity fragment = new ProfileActivity();
+                 /*ProfileActivity fragment = new ProfileActivity();
                  Bundle args = new Bundle();
                  args.putString("uid",notifyList.get(position).getUid());
-                 function.loadFragment(context,fragment,args);
+                 function.loadFragment(context,fragment,args); */
+
+                 Intent intent1=new Intent(context,ProfileActivity.class);
+                 intent1.putExtra("uid",notifyList.get(position).getUid());
+                 context.startActivity(intent1);
              }
          });
           holder.product_image.setOnClickListener(new View.OnClickListener() {

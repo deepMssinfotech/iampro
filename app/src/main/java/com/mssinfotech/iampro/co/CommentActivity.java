@@ -49,7 +49,10 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.net.URLEncoder;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 import bg.devlabs.fullscreenvideoview.FullscreenVideoView;
 import bg.devlabs.fullscreenvideoview.orientation.LandscapeOrientation;
@@ -78,6 +81,7 @@ public class CommentActivity extends AppCompatActivity implements CommentAdapter
     CommentAdapter comment_adapter;
     LikeButton likeButton;
      LinearLayout ll_sendChats;
+    String data="";
     @Override
     public void onBackPressed() {
         if (!PrefManager.isLogin(CommentActivity.this)){
@@ -388,10 +392,15 @@ public class CommentActivity extends AppCompatActivity implements CommentAdapter
                             imageView_user.setOnClickListener(new View.OnClickListener() {
                                 @Override
                                 public void onClick(View view) {
-                                    ProfileActivity fragment = new ProfileActivity();
+                                    /*ProfileActivity fragment = new ProfileActivity();
                                     Bundle args = new Bundle();
                                     args.putString("uid", added_user_id);
-                                    function.loadFragment(CommentActivity.this,fragment,args);
+                                    function.loadFragment(CommentActivity.this,fragment,args); */
+
+                                    Intent intent1=new Intent(CommentActivity.this,ProfileActivity.class);
+                                    intent1.putExtra("uid",added_user_id);
+                                    startActivity(intent1);
+
                                 }
                             });
                             if(data_type.equalsIgnoreCase("image")){
@@ -683,7 +692,7 @@ public class CommentActivity extends AppCompatActivity implements CommentAdapter
                             no_rodr.setVisibility(View.GONE);
                         }
                         else{
-                            no_rodr.setVisibility(View.VISIBLE);
+                            //no_rodr.setVisibility(View.VISIBLE);
                         }
                     }
                 },
@@ -701,12 +710,19 @@ public class CommentActivity extends AppCompatActivity implements CommentAdapter
     }
     public void sendComment(View view)
     {
+
         final String comment=et_comment.getText().toString();
-        final String url= Config.API_URL+ "app_service.php?type=product_review&data_id="+data_id+"&comment="+comment+"&id="+user_id+"&data_type="+data_type;
+         try {
+             data = URLEncoder.encode(comment, "UTF-8");
+         }
+         catch (Exception e){
+             data=comment;
+         }
+        final String url= Config.API_URL+ "app_service.php?type=product_review&data_id="+data_id+"&comment="+data+"&id="+user_id+"&data_type="+data_type;
         final RequestQueue requestQueue = Volley.newRequestQueue(this);
         // Initialize a new JsonObjectRequest instance
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(
-                Request.Method.GET,
+                Request.Method.POST,
                url,
                 null,
                 new Response.Listener<JSONObject>() {
@@ -725,8 +741,20 @@ public class CommentActivity extends AppCompatActivity implements CommentAdapter
                         // Do something when error occurred
 
                     }
-
-                });
+                })
+        {
+            @Override
+            protected Map<String, String> getParams()
+            {
+                Map<String, String> params = new HashMap<String, String>();
+                params.put("type", "product_review");
+                params.put("data_id",data_id);
+                params.put("comment",data);
+                params.put("id",user_id);
+                params.put("data_type",data_type);
+                return params;
+            }
+        };
 
         // Add JsonObjectRequest to the RequestQueue
         requestQueue.add(jsonObjectRequest);

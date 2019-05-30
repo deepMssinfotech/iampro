@@ -54,7 +54,7 @@ public class FeedModel {
     private int selling_cost;
     private int purchese_cost;
 
-    public FeedModel(int id, String shareId, String fullname,int uid, String avatar_path, String udate, long timespam, String is_block, ArrayList<String> imageArray, String fimage_path, int comment, int likes, int mylikes, int all_rating, String type, int all_comment, int average_rating,String detail_name,int selling_cost,int purchese_cost,int is_favrait) {
+    public FeedModel(int id, String shareId, String fullname,int uid, String avatar_path, String udate, long timespam, String is_block, ArrayList<String> imageArray, String fimage_path, int comment, int likes, int mylikes, double all_rating, String type, int all_comment, int average_rating,String detail_name,int selling_cost,int purchese_cost,int is_favrait) {
         this.id = id;
         this.shareId = shareId;
         this.fullname = fullname;
@@ -78,7 +78,7 @@ public class FeedModel {
         this.is_favrait=is_favrait;
     }
 
-    public FeedModel(int id, String shareId, String fullname,int uid, String avatar_path, String udate, long timespam, String is_block, ArrayList<String> imageArray, String fimage_path, int comment, int likes, int mylikes, int all_rating, String type, int all_comment, int average_rating) {
+    public FeedModel(int id, String shareId, String fullname,int uid, String avatar_path, String udate, long timespam, String is_block, ArrayList<String> imageArray, String fimage_path, int comment, int likes, int mylikes, double all_rating, String type, int all_comment, int average_rating) {
         this.id = id;
         this.shareId = shareId;
         this.fullname = fullname;
@@ -100,10 +100,10 @@ public class FeedModel {
 
     private int likes;
     private int mylikes;
-    private int all_rating;
+    private double all_rating;
     private String type;
     private int all_comment;
-    private int average_rating;
+    private double average_rating;
 
 
     //id,shareid,fullname,uid,avatar_path,udate,timespam,is_block,imageArray,fimage_path,comment,likes,mylikes,all_rating,type,all_comment,average_rating
@@ -127,11 +127,11 @@ public class FeedModel {
         this.fimage_path = fimage_path;
     }
 
-    public int getAverage_rating() {
+    public double getAverage_rating() {
         return average_rating;
     }
 
-    public void setAverage_rating(int average_rating) {
+    public void setAverage_rating(double average_rating) {
         this.average_rating = average_rating;
     }
 
@@ -199,11 +199,11 @@ public class FeedModel {
         this.imageArray = imageArray;
     }
 
-    public int getAll_rating() {
+    public double getAll_rating() {
         return all_rating;
     }
 
-    public void setAll_rating(int all_rating) {
+    public void setAll_rating(double all_rating) {
         this.all_rating = all_rating;
     }
 

@@ -39,6 +39,7 @@ import com.mssinfotech.iampro.co.ChatToUser;
 import com.mssinfotech.iampro.co.CommentActivity;
 import com.mssinfotech.iampro.co.MessageActivity;
 import com.mssinfotech.iampro.co.R;
+import com.mssinfotech.iampro.co.WelcomeActivity;
 import com.mssinfotech.iampro.co.adapter.CommentAdapter;
 import com.mssinfotech.iampro.co.common.Config;
 import com.mssinfotech.iampro.co.common.PhotoFullPopupWindow;
@@ -111,10 +112,15 @@ public class DemandDetailActivity extends AppCompatActivity implements CommentAd
         user_image.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ProfileActivity fragment = new ProfileActivity();
+               /* ProfileActivity fragment = new ProfileActivity();
                 Bundle args = new Bundle();
                 args.putString("uid", String.valueOf(uid));
-                function.loadFragment(DemandDetailActivity.this,fragment,args);
+                function.loadFragment(DemandDetailActivity.this,fragment,args); */
+
+                Intent intent1=new Intent(DemandDetailActivity.this,ProfileActivity.class);
+                intent1.putExtra("uid",String.valueOf(uid));
+                startActivity(intent1);
+
             }
         });
         getDemandDetail();
